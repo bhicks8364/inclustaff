@@ -1,0 +1,39 @@
+
+
+<h1>All Employees</h1>
+
+<table id="employees" class="display" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+      <th>First name</th>
+      <th>Last name</th>
+      <th>Email</th>
+      <th>Jobs</th>
+      <th>Shifts</th>
+      <th>Total Hours</th>
+      <th>Current Company</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @employees.each do |employee| %>
+      <tr>
+        <td><%= link_to employee.first_name, employee %></td>
+        <td><%= employee.last_name %></td>
+        <td><%= employee.email %></td>
+        <td><%= employee.jobs.active.count %></td>
+        <td><%= employee.shifts.count %></td>
+        <td><%= employee.total_all_hours %></td>
+        <td><%= employee.current_company %></td>
+        <td><%= link_to 'Edit', edit_employee_path(employee) %></td>
+        <td><%= link_to 'Destroy', employee, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Employee', new_employee_path %>

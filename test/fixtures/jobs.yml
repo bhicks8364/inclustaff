@@ -1,0 +1,34 @@
+# == Schema Information
+#
+# Table name: jobs
+#
+#  id          :integer          not null, primary key
+#  employee_id :integer
+#  order_id    :integer
+#  title       :string
+#  description :string
+#  start_date  :date
+#  pay_rate    :decimal(, )
+#  end_date    :date
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  active      :boolean
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  belongs_to: 
+  title: MyString
+  description: MyString
+  start_date: 2015-07-21
+  pay_rate: 9.99
+  end_date: 2015-07-21
+
+two:
+  belongs_to: 
+  title: MyString
+  description: MyString
+  start_date: 2015-07-21
+  pay_rate: 9.99
+  end_date: 2015-07-21

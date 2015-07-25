@@ -1,0 +1,32 @@
+<%= simple_form_for(@job) do |f| %>
+
+
+<div class="row">
+  <div id="new-employee-job">
+    <h4><strong>Employee Information</strong></h4>
+    <%= f.association :employee do |e| %>
+      <%= e.input :first_name %>
+      <%= e.input :last_name %>
+      <%= e.input :email %>
+      <%= e.input :ssn %>
+    <% end %>
+  </div>
+  <div id="new-job-form" class="pull-right">
+        <h4><strong>Job Information</strong></h4>
+    <%= f.association :order, prompt: "Select Department", label: false %>
+    <%= f.input :title, placeholder: "Job Title" %>
+    <%= f.input :description, placeholder: "Job Description" %>
+    <%= f.input :start_date, as: :string, placeholder: "Select start date" %>
+    <%= f.input :pay_rate, as: :currency %>
+  </div>
+</div>
+<div id="job-end-date">
+    <h4><%= f.input :active %></h4>
+    <%= f.input :end_date, as: :string, placeholder: "Select end date" %>
+</div>
+
+
+
+    <%= f.submit %>
+
+<% end %>

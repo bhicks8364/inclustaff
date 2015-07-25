@@ -1,0 +1,27 @@
+# == Schema Information
+#
+# Table name: shifts
+#
+#  id          :integer          not null, primary key
+#  time_in     :datetime
+#  time_out    :datetime
+#  employee_id :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  time_worked :decimal(, )
+#  company_id  :integer
+#  job_id      :integer
+#  state       :string
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  time_in: 2015-07-21 17:51:28
+  time_out: 2015-07-21 17:51:28
+  employee_id: 1
+
+two:
+  time_in: 2015-07-21 17:51:28
+  time_out: 2015-07-21 17:51:28
+  employee_id: 1

@@ -1,0 +1,20 @@
+<%= simple_form_for [@company, @order] do |f| %>
+  <div id="new-job-form" class="pull-right">
+        <h4><strong>Job Information</strong></h4>
+            <%= f.input :title %>
+
+    <%= f.association :company, prompt: "Select Company", label: false %>
+    <%= f.input :title, placeholder: "Job Title" %>
+  </div>
+  <div id="new-job-form" class="pull-right">
+    <%= f.input :pay_range %>
+    <%= f.input :notes %>
+    <%= f.input :number_needed %>
+    <%= f.input :needed_by, as: :string, placeholder: "Select start date" %> %>
+    <%= f.input :urgent %>
+    <%= f.input :active %>
+    <%= f.submit %>
+    
+  </div>
+<% end %>
+    

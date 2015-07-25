@@ -1,0 +1,43 @@
+<div class="row">
+  <h3><strong><%= @employee.name %></strong></h3>
+</div>
+
+
+<div id="employee-job-list" class="col-md-4">
+  <ul>
+  <% @employee.jobs.each do |job| %>
+    <li><%= link_to job.title, job %></li>
+  <% end %>
+  </ul>
+</div>
+
+<h3><%= @employee.ytd_gross_pay %></h3>
+
+
+
+
+  <div id="employee-shift-list" class="list-group pull-right">
+  <h3 id="list-title"><strong>All Shifts:</strong></h3>
+    <%= content_tag_for(:div, @shifts, class: "list-group-item list-group-item-info" ) do |shift| %>
+
+      <%= link_to job_shift_path(shift.job, shift) do %>
+        <h4 class="list-group-item-heading"><strong><%= shift.time_in.strftime("%m/%d/%y") %></strong></h4>
+     
+    <% end %>
+      <p class="list-group-item-text">
+        <br><strong>IN:</strong> <%= shift.time_in.strftime("%I:%M %p") %>
+        <br><strong>OUT:</strong> <%= shift.time_out.strftime("%I:%M %p") %>
+        <hr>
+        <br><strong>Time worked:</strong> <%= shift.time_worked %>
+        </p>
+
+     <% end %>
+</div>
+
+
+
+<%= link_to 'Edit', edit_employee_path(@employee) %> |
+<%= link_to 'Back', employees_path %>
+<hr>
+<%= link_to 'All Shifts', employee_shifts_path(@employee), class: "btn btn-default" %>
+  

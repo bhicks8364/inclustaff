@@ -1,0 +1,23 @@
+<%= @company.name %>
+
+<p>
+  <strong>Time in:</strong>
+  <%= @shift.time_in.strftime("%B %e, %Y at %I:%M %p") %>
+<br>
+  <strong>Time out:</strong>
+  <%= @shift.time_out.strftime("%B %e, %Y at %I:%M %p") %>
+  
+</p>
+
+<h3>Time worked: <%= @shift.time_worked %></h3>
+
+<p>
+  <strong>Employee:</strong>
+  <%= @employee.name %>
+</p>
+
+
+
+<%= link_to 'Edit', edit_job_shift_path(@job, @shift) %> |
+<%= link_to 'New', new_job_shift_path(@job) %>
+<%= link_to 'Back', job_shifts_path(@job) %>

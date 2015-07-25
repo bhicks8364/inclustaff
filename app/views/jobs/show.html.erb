@@ -1,0 +1,48 @@
+<div class="col-md-3">
+    <%= render 'companies/company_contact', locals: @company %>
+</div>
+<hr>
+<br>
+<div class="row">
+<p>
+  <strong>Order Title:</strong>
+  <%= link_to @job.order.title, @job.order %>
+</p>
+<p>
+  <strong>Job Title:</strong>
+  <%= @job.title %>
+</p>
+<p>
+  <strong>Employee:</strong>
+  <%= link_to @employee.name, @employee %>
+</p>
+
+<p>
+  <strong>Company:</strong>
+  <%= link_to @company.name, @company %>
+
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @job.description %>
+</p>
+
+<p>
+  <strong>Start date:</strong>
+  <%= @job.start_date.strftime("%B %e, %Y ") %>
+</p>
+
+<p>
+  <strong>Pay rate:</strong>
+  <%= number_to_currency(@job.pay_rate, :unit => "$") %>
+</p>
+Gross this week: <%= @job.current_week_pay %>
+<hr>
+Total Hours : <%= @job.total_hours %>
+</div>
+
+<%= link_to 'Clock In', new_job_shift_path(@job), class: "btn btn-primary btn-lg btn-block" %>
+<br>
+<%= link_to 'Edit', edit_job_path(@job) %> |
+<%= link_to 'Back', jobs_path %>

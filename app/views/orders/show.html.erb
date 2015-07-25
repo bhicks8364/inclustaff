@@ -1,0 +1,65 @@
+
+
+<h1>  <%= @company.name %></h1>
+  <div class="row">
+    <div class="col-md-5">
+      <%= render 'companies/company_contact', locals: @company %>
+    </div>
+  </div>
+  
+<div>
+  <% if @order.jobs.any? %>
+  <ul>
+    <% @order.jobs.each do |job| %>
+      <li><%= link_to job.title, job %> - <%= job.employee.name %> - <%= job.pay_rate %></li>
+    <% end %>
+    <%= link_to "Add Job", new_company_order_job_path(@company, @order) %>
+  </ul>
+  <% else %>
+  This order has currently has no active jobs. <%= link_to "Add Job", new_company_order_job_path(@company, @order) %>
+  <% end %>
+
+</div>
+
+
+
+
+<p>
+  <strong>Title</strong>
+  <%= @order.title %>
+</p>
+
+<p>
+  <strong>Pay range:</strong>
+  <%= @order.pay_range %>
+</p>
+
+<p>
+  <strong>Notes:</strong>
+  <%= @order.notes %>
+</p>
+
+<p>
+  <strong>Number needed:</strong>
+  <%= @order.number_needed %><br>
+  <strong>Assigned:</strong>
+  <%= @order.jobs.count %>
+</p>
+
+<p>
+  <strong>Needed by:</strong>
+  <%= @order.needed_by.strftime("%B %e, %Y") %>
+</p>
+
+<p>
+  <strong>Urgent:</strong>
+  <%= @order.urgent %>
+<br>
+  <strong>Active:</strong>
+  <%= @order.active %>
+</p>
+
+<%= link_to 'Edit', edit_company_order_path(@company, @order) %> |
+<%= link_to 'Back', company_orders_path(@company) %>
+<hr>
+<%= link_to 'Add Job', new_company_order_job_path(@company, @order) %>

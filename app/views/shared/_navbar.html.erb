@@ -1,0 +1,29 @@
+<header class="navbar <%= content_for?(:navbar_style) ? yield(:navbar_style) : "navbar-default" %> navbar-static-top" role="banner">
+  <div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <%= link_to root_url, class: "navbar-brand" do %>
+        IncluStaff
+      <% end %>
+    </div>
+
+    <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+      <ul class="nav navbar-nav">
+        <li></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+
+          <li><%= link_to "Employees", employees_path %></li>
+          <li><%= link_to "Companies", companies_path %></li>
+          <li><%= link_to "Orders", orders_path  %></li>
+          <li><%= link_to "Jobs", jobs_path  %></li>
+
+      </ul>
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,34 @@
+
+    <h1><%= @company.name %></h1>
+<div class="row">
+  <div class="col-md-3">
+    <%= render 'company_contact', locals: @company %>
+  </div>
+
+</div>
+
+<dl class="dl-horizontal">
+  <% @company.employees.each do |employee| %>
+  <dt><%= employee.name %></dt>
+  <dd> <%= employee.current_job.title %>  <small> -  <%= number_to_currency(employee.pay_rate) %></small> </dd>
+  <% end %>
+</dl>
+
+
+<div>
+  <ul>
+    <li>
+      
+    </li>
+  </ul>
+</div>
+
+<!--COMPANY ORDER-->
+
+<div class="row">
+  <div class="col-md-9 ">
+    <%= render 'orders/table', locals: @company %>
+  </div>
+</div>
+
+

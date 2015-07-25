@@ -1,0 +1,46 @@
+
+
+<h1>All Shifts</h1>
+Job Title: <%= @job.title %>  | Employee: <%= @employee.name %>
+
+<table id="shifts" class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Time in</th>
+      <th>Time out</th>
+      <th>Employee</th>
+      <th>Hours</th>
+      <th>Pay Rate</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @shifts.each do |shift| %>
+      <tr>
+        <td><%= shift.time_in.strftime("%B %e, %Y at %I:%M %p") %></td>
+        <td><%= shift.time_out.strftime("%B %e, %Y at %I:%M %p") %></td>
+        <td><%= shift.employee.name %></td>
+        <td><%= shift.time_worked %></td>
+        <td><%= shift.pay_rate %></td>
+        <td><%= link_to 'Show', job_shift_path(shift.job, shift) %></td>
+        <td><%= link_to 'Edit', edit_job_shift_path(shift.job, shift) %></td>
+        <td><%= link_to 'Destroy', job_shift_path(shift.job, shift), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<hr>
+
+<%= month_calendar table: {class: "table table-bordered"}, tr: {class: "calendar-row"}, td: {class: "day"}, events: @shifts do |date, shifts| %>
+  <strong><%= date.strftime("%m/%d/%y") %></strong>
+<hr>
+  <% shifts.each do |shift| %>
+    <div id="calendar-shift">
+      <strong><%= link_to shift.employee.name, job_shift_path(shift.job, shift) %> - <%= shift.time_worked %></strong>
+    </div>
+  <% end %>
+<% end %>
