@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Week:</strong>
+  <%= @timesheet.week %>
+</p>
+
+<p>
+  <strong>Job:</strong>
+  <%= @timesheet.job_id %>
+</p>
+
+<p>
+  <strong>Reg hours:</strong>
+  <%= @timesheet.reg_hours %>
+</p>
+
+<p>
+  <strong>Ot hours:</strong>
+  <%= @timesheet.ot_hours %>
+</p>
+
+<p>
+  <strong>Gross pay:</strong>
+  <%= number_to_currency(@timesheet.gross_pay) %>
+</p>
+
+<%= render "shifts/table" %>
+
+<hr>
+
+<%= link_to 'Edit', edit_timesheet_path(@timesheet) %> |
+<%= link_to 'Back', timesheets_path %>

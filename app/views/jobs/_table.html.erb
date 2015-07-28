@@ -1,0 +1,45 @@
+<table id="active-jobs" class="table table-bordered" cellspacing="0.5" width="85%%">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Dept./Order</th>
+      <th>Employee</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Start date</th>
+      <th>Pay rate</th> 
+      <th>Hours this week</th>
+      <th>Pay this week</th>
+      <th>YTD Gross Pay</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%= content_tag_for(:tr, @active_jobs) do |job| %>
+        <td><% if job.active %> <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
+            <% else %>
+            <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+            <% end %>
+        </td>
+        <td><%= link_to job.order.title, order_path(job.order) %></td>
+        <td><%= link_to job.employee.name, job.employee %></td>
+        <td><%= link_to job.title, job %></td>
+        <td><%= job.description %></td>
+        <td><%= job.start_date.strftime("%B %e, %Y") %></td>
+        <td><%= number_to_currency(job.pay_rate) %></td>
+        <td><%= job.current_week_hours.round(2) %></td>
+        <td><%= number_to_currency(job.current_week_pay) %></td>
+        <td><%= number_to_currency(job.total_gross_pay) %></td>
+
+        <td><%= link_to 'Edit', edit_job_path(job) %></td>
+        <td><%= link_to 'Destroy', job, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <% end %>
+  
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Job', new_job_path %>

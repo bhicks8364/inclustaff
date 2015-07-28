@@ -19,15 +19,17 @@ class Job < ActiveRecord::Base
     belongs_to :employee
     belongs_to :order
     has_many :shifts, inverse_of: :job
+    has_many :timesheets, :through => :shifts
+    has_one :current_shift,-> { where state: "clocked_in" }, class_name: 'Shift'
     
     accepts_nested_attributes_for :employee
     
     include ArelHelpers::ArelTable
     
     # VALIDATIONS
-    validates_associated :employee
+    # validates_associated :employee
     validates_associated :order
-    validates :employee_id,  presence: true
+    # validates :employee_id,  presence: true
     validates :order_id,  presence: true
     validates :title,  presence: true, length: { maximum: 50 }
     
@@ -36,16 +38,25 @@ class Job < ActiveRecord::Base
 
     # SCOPES
     scope :active, -> { where(active: true)}
+    scope :inactive, -> { where(active: false)}
+    scope :with_employee, ->  { includes(:employee) }
+    scope :on_shift, -> { joins(:shifts).merge(Shift.clocked_in)}
+    scope :worked_today, -> { joins(:shifts).merge(Shift.in_today)}
+    scope :worked_yesterday, -> { joins(:shifts).merge(Shift.in_yesterday)}
+
     
     
     def company
         self.order.company
     end
     
+    def company_name
+        self.order.company.name
+    end
+    
 
     def defaults
         self.active = true if self.active.nil?
-        self.end_date = 2115-07-25 if self.end_date.nil?
     end
     
     def current_week_pay
@@ -66,6 +77,32 @@ class Job < ActiveRecord::Base
     
     def total_hours
         self.shifts.sum(:time_worked)
+    end
+    
+    def total_gross_pay
+        hours = self.shifts.sum(:time_worked)
+        if hours > 40
+            reg_hours = 40
+            ot_hours = hours - 40
+            ot_rate = self.pay_rate * 1.5
+            self.pay_rate * reg_hours + ot_hours * ot_rate
+        else
+            self.pay_rate * hours
+        end
+    end
+    
+    def on_shift?
+        self.shifts.clocked_in.any?
+    end
+    
+    def last_clock_in
+        self.shifts.last.time_in
+    end
+    
+    def last_clock_out
+        if self.shifts.any?
+            self.shifts.last.time_out
+        end
     end
     
     

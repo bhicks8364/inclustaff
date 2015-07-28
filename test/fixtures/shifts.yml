@@ -2,16 +2,17 @@
 #
 # Table name: shifts
 #
-#  id          :integer          not null, primary key
-#  time_in     :datetime
-#  time_out    :datetime
-#  employee_id :integer
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  time_worked :decimal(, )
-#  company_id  :integer
-#  job_id      :integer
-#  state       :string
+#  id           :integer          not null, primary key
+#  time_in      :datetime
+#  time_out     :datetime
+#  employee_id  :integer
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  time_worked  :decimal(, )
+#  job_id       :integer
+#  state        :string
+#  earnings     :decimal(, )
+#  timesheet_id :integer
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

@@ -1,13 +1,44 @@
 
 
-<h1>All Shifts</h1>
-Job Title: <%= @job.title %>  | Employee: <%= @employee.name %>
 
+<h3><strong> <%= @employee.name %></strong></h3> <% if @job %>| <strong> <%= @job.title %></strong>   <small><%= @company.name %></small>
+<div class="well">
+<div class="btn-group" role="group" aria-label="...">
+  <%= link_to "View Company", @company, class: "btn btn-default" %>
+  <%= link_to "View Job", @job, class: "btn btn-default" %>
+  <%= link_to "View Employee", @employee, class: "btn btn-default" %>
+
+</div>
+<div class="btn-group" role="group" aria-label="...">
+  <% if @job.on_shift? %>
+    <%= link_to "You are CLOCKED IN.", job_shift_path(@job, @job.current_shift), class: "btn btn-primary" %>
+    <%= link_to "View Current Timesheet", timesheet_path(@job.current_shift.timesheet), class: "btn btn-primary" %>
+  <% else %>
+    <%= link_to "Clock In", new_job_shift_path(@job), class: "btn btn-primary" %>
+  <% end %>
+
+  
+
+
+
+</div>
+<% if @job.current_week_pay %>
+
+  <h3>Gross Pay</h3>
+  <strong> For the week of <%= Date.today.end_of_week.strftime("%B %e, %Y") %> :</strong> <%= number_to_currency(@job.current_week_pay) %>
+
+<% end %>
+<hr>
+<strong>Shifts this week</strong>
+<%= render "table" %>
+</div>
+<h4>All Shifts</h4>
 <table id="shifts" class="table table-bordered">
   <thead>
     <tr>
-      <th>Time in</th>
-      <th>Time out</th>
+      <th>Work Date</th>
+      <th>Time In</th>
+      <th>Time Out</th>
       <th>Employee</th>
       <th>Hours</th>
       <th>Pay Rate</th>
@@ -20,11 +51,12 @@ Job Title: <%= @job.title %>  | Employee: <%= @employee.name %>
   <tbody>
     <% @shifts.each do |shift| %>
       <tr>
-        <td><%= shift.time_in.strftime("%B %e, %Y at %I:%M %p") %></td>
-        <td><%= shift.time_out.strftime("%B %e, %Y at %I:%M %p") %></td>
+        <td><%= shift.time_in.strftime("%m/%d/%y") %></td>
+        <td><%= shift.time_in.strftime("%I:%M %p") %></td>
+        <td><%= shift.clocked_out? ? shift.time_out.strftime("%I:%M %p") : "Clocked In" %></td>
         <td><%= shift.employee.name %></td>
         <td><%= shift.time_worked %></td>
-        <td><%= shift.pay_rate %></td>
+        <td><%= number_to_currency(shift.pay_rate) %></td>
         <td><%= link_to 'Show', job_shift_path(shift.job, shift) %></td>
         <td><%= link_to 'Edit', edit_job_shift_path(shift.job, shift) %></td>
         <td><%= link_to 'Destroy', job_shift_path(shift.job, shift), method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -32,7 +64,7 @@ Job Title: <%= @job.title %>  | Employee: <%= @employee.name %>
     <% end %>
   </tbody>
 </table>
-
+  <% end %>
 <hr>
 
 <%= month_calendar table: {class: "table table-bordered"}, tr: {class: "calendar-row"}, td: {class: "day"}, events: @shifts do |date, shifts| %>

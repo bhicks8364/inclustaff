@@ -12,3 +12,22 @@ $(document).ready(function() {
     } );
     
 } );
+
+$(document).ready(function() {
+    $('.clockpicker').clockpicker({
+        placement: 'bottom',
+        align: 'right',
+        autoclose: true,
+        // default: Date.now(),
+        donetext: 'Done'
+    });
+    
+    // $( "h3" ).hide( "slow" );
+
+    
+    
+    
+    
+    
+    
+});

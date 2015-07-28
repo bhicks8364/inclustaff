@@ -1,17 +1,30 @@
 <div class="row">
+  <div class="btn-group btn-group-justified" role="group" aria-label="...">
+  <div class="btn-group" role="group">
+    <%= link_to "View Company", @company, class: "btn btn-default" %>
+  </div>
+  <div class="btn-group" role="group">
+    <%= link_to "View Job", @job, class: "btn btn-default" %>
+  </div>
+  <div class="btn-group" role="group">
+    <%= link_to "View Shifts", employee_shifts_path(@employee), class: "btn btn-default" %>  </div>
+</div>
   <h3><strong><%= @employee.name %></strong></h3>
+
+<% if @job != nil %>
+<h3><strong> <%= @job.title %>  </strong> | <small><%= @current_company %></small></h3> 
+<div class="btn-group" role="group" aria-label="...">
+  <%= link_to "View Company", @company, class: "btn btn-default" %>
+  <%= link_to "View Job", @job, class: "btn btn-default" %>
+  <%= link_to "View Shifts", employee_shifts_path(@employee), class: "btn btn-default" %>
+
+</div>
+<% end %>
 </div>
 
 
-<div id="employee-job-list" class="col-md-4">
-  <ul>
-  <% @employee.jobs.each do |job| %>
-    <li><%= link_to job.title, job %></li>
-  <% end %>
-  </ul>
-</div>
 
-<h3><%= @employee.ytd_gross_pay %></h3>
+<h3>Year-to-date Gross Pay :<strong> <%= number_to_currency(@employee.ytd_gross_pay) %> </strong></h3>
 
 
 
@@ -36,8 +49,18 @@
 
 
 
-<%= link_to 'Edit', edit_employee_path(@employee) %> |
-<%= link_to 'Back', employees_path %>
+
+<div id="employee-job-list" class="col-md-4">
+  <ul>
+  <% @employee.jobs.each do |job| %>
+    <li><%= link_to job.title, job %></li>
+  <% end %>
+  </ul>
+</div>
+
 <hr>
-<%= link_to 'All Shifts', employee_shifts_path(@employee), class: "btn btn-default" %>
+<%= link_to 'Edit', edit_employee_path(@employee), class: "btn btn-default"  %> |
+<%= link_to 'Back', employees_path, class: "btn btn-default"  %>
+
+
   

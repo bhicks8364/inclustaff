@@ -1,6 +1,6 @@
 class OrdersController < ApplicationController
   before_action :set_order, only: [:show, :edit, :update, :destroy]
-  before_action :set_company, only: [:index, :new, :create, :edit, :update, :destroy]
+  before_action :set_company, only: [:index]
   
 
   # GET /orders
@@ -17,29 +17,47 @@ class OrdersController < ApplicationController
   # GET /orders/1.json
   def show
     @company = @order.company
+    @active_jobs = @order.jobs.active
+    @inactivejobs = @order.jobs.inactive
   end
     
 
   # GET /orders/new
   def new
+    if params[:company_id]
+      @company = Company.find(params[:company_id])
+      @order = @company.orders.new
 
-    @order = @company.orders.new
+    else
+      @order = Order.new
+    end
+
   end
 
   # GET /orders/1/edit
   def edit
-
+     if params[:company_id]
+      @company = Company.find(params[:company_id])
+    else
+      @order = Order.find(params[:id])
+    end
   end
 
   # POST /orders
   # POST /orders.json
   def create
+    if params[:company_id]
+      @company = Company.find(params[:company_id])
+      @order = @company.orders.new(order_params)
 
-    @order = @company.orders.new(order_params)
+    else
+      @order = Order.new(order_params)
+    end
+
 
     respond_to do |format|
       if @order.save
-        format.html { redirect_to [@company, @order], notice: 'Order was successfully created.' }
+        format.html { redirect_to @order, notice: 'Order was successfully created.' }
         format.json { render :show, status: :created, location: @order }
       else
         format.html { render :new }

@@ -1,23 +1,46 @@
-<%= @company.name %>
-
-<p>
-  <strong>Time in:</strong>
-  <%= @shift.time_in.strftime("%B %e, %Y at %I:%M %p") %>
-<br>
-  <strong>Time out:</strong>
-  <%= @shift.time_out.strftime("%B %e, %Y at %I:%M %p") %>
-  
-</p>
-
-<h3>Time worked: <%= @shift.time_worked %></h3>
-
+<%= @company.name %> - <%= @job.title %>
 <p>
   <strong>Employee:</strong>
   <%= @employee.name %>
 </p>
 
+<p>
+  <strong>Time in:</strong>
+  <%= @shift.time_in.strftime("%I:%M %p") %>
 
 
-<%= link_to 'Edit', edit_job_shift_path(@job, @shift) %> |
-<%= link_to 'New', new_job_shift_path(@job) %>
+<% if @shift.clocked_in? %>
+<strong><h3><%= @shift.state.titleize %></h3></strong>
+<div id="clock-out-button">
+  <button type="button" class="btn btn-default btn-lg"> 
+  <%= link_to 'Clock Out', clock_out_job_shift_path(@job, @shift), method: :patch, 
+                          remote: true, data: {confirm: 'Are you sure you want to clock out now?', 
+                          disable_with: "Clocking Out..."} %>
+  </button>
+</div>
+
+
+
+<% else %>
+<strong><h3><%= @shift.state.titleize %></h3></strong>
+  <strong>Time out:</strong>
+  <%= @shift.time_out.strftime("%I:%M %p") %>
+  <h3>Time worked: <%= @shift.time_worked %></h3>
+  
+  
+  <hr>
+  <%= link_to 'Clock In', new_job_shift_path(@job), class: "btn btn-primary" %>
+<% end %>
+
+  
+</p>
+
+
+
+
+
+
+
+<%= link_to 'Edit', edit_job_shift_path(@job, @shift) %> 
+
 <%= link_to 'Back', job_shifts_path(@job) %>

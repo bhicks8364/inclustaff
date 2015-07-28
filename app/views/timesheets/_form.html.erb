@@ -1,0 +1,16 @@
+<%= simple_form_for(@timesheet) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :week %>
+    <%= f.association :job %>
+    <%= f.input :reg_hours %>
+    <%= f.input :ot_hours %>
+    <%= f.input :gross_pay %>
+    <%= f.association :shifts, as: :check_boxes, label_method: :time_in %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

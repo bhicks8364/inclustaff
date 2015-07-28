@@ -1,34 +1,61 @@
 
     <h1><%= @company.name %></h1>
-<div class="row">
-  <div class="col-md-3">
-    <%= render 'company_contact', locals: @company %>
-  </div>
 
-</div>
+<div class="row"> 
+<% if @clocked_in.any? %>
+<div class="panel panel-default col-md-4">
+  <div class="panel-heading"> <span class="glyphicon glyphicon-time" aria-hidden="true"></span><strong>  Employees Currently Clocked In</strong></div>
+  <div class="panel-body">
 
-<dl class="dl-horizontal">
-  <% @company.employees.each do |employee| %>
-  <dt><%= employee.name %></dt>
-  <dd> <%= employee.current_job.title %>  <small> -  <%= number_to_currency(employee.pay_rate) %></small> </dd>
-  <% end %>
-</dl>
-
-
-<div>
-  <ul>
-    <li>
-      
-    </li>
-  </ul>
-</div>
-
-<!--COMPANY ORDER-->
-
-<div class="row">
-  <div class="col-md-9 ">
-    <%= render 'orders/table', locals: @company %>
+  <%= content_tag_for(:ul, @clocked_in, class: "list-group") do |job| %>
+    <li class="list-group-item"><strong><%= link_to job.employee.name, job.employee %></strong> <small> - <%= link_to job.title, job %></small></li>
+    <li class="list-group-item"><%= job.last_clock_in ? job.last_clock_in.strftime("%I:%M %p") : job.shifts.last.state.titleize %> </li>
+<% end %>
   </div>
 </div>
+<% end %>
+
+<!--TODAY-->
+<% if @today.any? %>
+<div class="panel panel-default col-md-4">
+  <div class="panel-heading"> <span class="glyphicon glyphicon-time" aria-hidden="true"></span><strong>   Worked Today (<%= Date.today.strftime("%m/%d/%y") %>)</strong></div>
+  <div class="panel-body">
+
+  <%= content_tag_for(:ul, @today, class: "list-group") do |shift| %>
+    <li class="list-group-item"><strong><%= link_to shift.employee.name, shift.employee %></strong> <small> - <%= link_to shift.job.title, shift.job %></small></li>
+    <li class="list-group-item"><strong>In:</strong><%= shift.time_in.strftime("%I:%M %p") %><strong>  Out:</strong><%= shift.time_out.strftime("%I:%M %p") %> </li>
+    <li class="list-group-item"><strong>Hours: <%= shift.time_worked %></strong></li>
+<% end %>
+  </div>
+</div>
+<% end %>
 
 
+<!--YESTERDAY-->
+<% if @yesterday.any? %>
+<div class="panel panel-default col-md-4">
+  <div class="panel-heading"> <span class="glyphicon glyphicon-time" aria-hidden="true"></span><strong>   Worked Yesterday (<%= Date.yesterday.strftime("%m/%d/%y") %>)</strong></div>
+  <div class="panel-body">
+
+
+  <%= content_tag_for(:ul, @yesterday, class: "list-group") do |shift| %>
+    <li class="list-group-item"><strong><%= link_to shift.employee.name, shift.employee %></strong> <small> - <%= link_to shift.job.title, shift.job %></small></li>
+    <li class="list-group-item"><strong>In:</strong><%= shift.time_in.strftime("%I:%M %p") %><strong>  Out:</strong><%= shift.time_out.strftime("%I:%M %p") %> </li>
+    <li class="list-group-item"><strong>Hours: <%= shift.time_worked %></strong></li>
+<% end %>
+  </div>
+</div>
+<% end %>
+
+<!--SIDEBAR - COMPANY JOBS-->
+<%= render 'jobs/active' %>
+
+</div>
+
+
+
+<div class="row">
+
+
+
+</div>

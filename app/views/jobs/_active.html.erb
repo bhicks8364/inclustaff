@@ -1,0 +1,28 @@
+<div class="well pull-right">
+<% if @active_jobs.any? %>
+<h4>Active Jobs</h4>
+<%= div_for(@active_jobs) do |job| %>
+<dl>
+  <dt><%= link_to job.employee.name, job.employee %></dt>
+  <dt><small><%= link_to job.title, job %></small></dt>
+  <dd>
+  <small><strong>Start Date:</strong> <%= job.start_date %> | <strong>Pay Rate:</strong> <%= number_to_currency(job.pay_rate) %></small></dd>
+  <% if job.on_shift? %> <dd> <p class="bg-success"><span class="glyphicon glyphicon-time" aria-hidden="true"></span><strong><small>     Clocked In
+      <br> <%= job.last_clock_in.strftime("%m/%d/%y") %> </strong>
+<br><strong>In:</strong> <%= job.last_clock_in.strftime("%I:%M %p") %>  </small></strong></p></dd>
+  
+  <% elsif job.shifts.any? %>
+  <dd> <p class="bg-info"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><strong><small>     Clocked Out <br>
+  <%= job.last_clock_in ? job.last_clock_in.strftime("%I:%M %p") : "No Shifts Yet" %></strong>
+  <br> <strong>In:</strong> <%= job.last_clock_in ? job.last_clock_in.strftime("%I:%M %p") : "No Shifts Yet" %>    |     <strong>Out:</strong> <%= job.last_clock_out ? job.last_clock_out.strftime("%I:%M %p") : "No Shifts Yet" %></small>
+</p>
+  
+  </dd>
+  <% end %>
+  <dd><strong> <small>Pay this week:  </small></strong><%= job.current_week_pay ? number_to_currency(job.current_week_pay) : "$0.00" %><br></dd>
+<hr>
+  <% end %>
+</dl>
+<% end %>
+
+</div>

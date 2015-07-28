@@ -1,0 +1,31 @@
+<table id="timesheets" class="table table-bordered" cellspacing="0.5" width="85%%">
+  <thead>
+    <tr>
+      <th>Employee</th>
+      <th>Company</th>
+      <th>Week</th>
+      <th>Job</th>
+      <th>Reg hours</th>
+      <th>Ot hours</th>
+      <th>Gross pay</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @timesheets.each do |timesheet| %>
+      <tr>
+        <td><%= timesheet.employee.name %></td>
+        <td><%= timesheet.company.name %></td>
+        <td><%= timesheet.week %></td>
+        <td><%= timesheet.job_id %></td>
+        <td><%= timesheet.reg_hours %></td>
+        <td><%= timesheet.ot_hours %></td>
+        <td><%= timesheet.gross_pay %></td>
+        <td><%= link_to 'Show', timesheet %></td>
+        <td><%= link_to 'Edit', edit_timesheet_path(timesheet) %></td>
+        <td><%= link_to 'Destroy', timesheet, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

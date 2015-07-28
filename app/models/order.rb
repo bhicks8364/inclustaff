@@ -21,9 +21,25 @@ class Order < ActiveRecord::Base
   belongs_to :company, inverse_of: :orders
   
   validates_associated :company
+  validates :title,  presence: true
   
-  scope :active, -> { where(active: true)}
-  scope :urgent, -> { where(urgent: true)}
+    # CALLBACKS
+    after_initialize :defaults
+
+    # SCOPES
+    scope :active, -> { where(active: true)}
+    scope :inactive, -> { where(active: false)}
+    scope :urgent, -> { where(urgent: true)}
+    scope :with_active_jobs, -> { joins(:jobs).merge(Job.active)}
+    
+    
+    def defaults
+      self.active = true if self.active.nil?
+    end  
+    
+    
+    
+    
     
     def company_name
       if self.company
@@ -42,6 +58,10 @@ class Order < ActiveRecord::Base
       end
     end
   end
+  
+    def open_jobs
+      self.number_needed - self.jobs.active.count
+    end
   
 
 

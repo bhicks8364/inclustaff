@@ -1,0 +1,12 @@
+<%= div_for(@company.orders.active, class: "well") do |order| %>
+
+    <strong><%= order.title %> - $ <%= order.pay_range %></strong>
+    <p>
+       Est. Start Date: <%= order.needed_by.strftime("%B %e, %Y") %><br>
+      <% if order.jobs.active.any? %>
+      1st placement started on:<%= order.jobs.first.start_date.strftime("%B %e, %Y") %>
+      <% end %>
+    </p>
+    <h5><strong>Available Positions: <%= order.open_jobs %></strong></h5>
+
+<% end %>

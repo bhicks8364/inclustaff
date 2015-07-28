@@ -2,13 +2,14 @@
 #
 # Table name: employees
 #
-#  id         :integer          not null, primary key
-#  first_name :string
-#  last_name  :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  email      :string
-#  ssn        :string
+#  id           :integer          not null, primary key
+#  first_name   :string
+#  last_name    :string
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  email        :string
+#  ssn          :string
+#  phone_number :string
 #
 
 class Employee < ActiveRecord::Base
@@ -18,7 +19,9 @@ class Employee < ActiveRecord::Base
   has_many :companies, :through => :orders
   has_one :current_job, -> { where active: true }, class_name: "Job"
 
-    
+  accepts_nested_attributes_for :jobs
+  
+  
   # VALIDATIONS
   validates :first_name,  presence: true, length: { maximum: 50 }
   validates :last_name,  presence: true, length: { maximum: 50 }
@@ -27,6 +30,13 @@ class Employee < ActiveRecord::Base
   validates :email, presence: true, length: { maximum: 255 },
                   format: { with: VALID_EMAIL_REGEX },
                   uniqueness: { case_sensitive: false }
+  
+  # SCOPES
+  scope :with_active_jobs, -> { joins(:jobs).merge(Job.active)}
+  scope :with_inactive_jobs, -> { joins(:jobs).merge(Job.inactive)}
+  scope :on_shift, -> { joins(:shifts).merge(Shift.clocked_in)}  
+    
+    
     
   def unassigned?
     if self.jobs.any?
@@ -41,7 +51,7 @@ class Employee < ActiveRecord::Base
   end
   
   def verified_active_job_as_current?
-   if self.shifts.last.id ==+ self.current_job.shifts.last.id
+    if self.shifts.last.id ==+ self.current_job.shifts.last.id
      true
     else
       false
@@ -78,7 +88,7 @@ class Employee < ActiveRecord::Base
   end
     
   def current_company
-    if self.jobs.any?
+    if self.jobs.active.any?
       self.current_job.company.name
     else
      "Unassigned"

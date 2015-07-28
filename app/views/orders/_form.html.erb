@@ -1,16 +1,35 @@
 <%= simple_form_for [@company, @order] do |f| %>
-  <div id="new-job-form" class="pull-right">
-        <h4><strong>Job Information</strong></h4>
-            <%= f.input :title %>
+  <div id="new-company-order-form" class="pull-left">
+        <h4><strong>Company Information</strong></h4>
+  <% if @company.nil? %>
+    <%= f.association :company, collection: Company.all, prompt: "Choose a Company" %>
+  <% else %>
+    
+    <%= f.association :company, disabled: true %>
+    
+  <div id="company-contact-well" class="well">
+    <address>
+      <strong><%= link_to @company.name, @company %></strong><br>
+      <%= @company.address %><br>
+      <%= @company.city %>, <%= @company.state %> <%= @company.zipcode %><br>
+      <abbr title="Phone">P:</abbr> (123) 456-7890
+    </address>
 
-    <%= f.association :company, prompt: "Select Company", label: false %>
-    <%= f.input :title, placeholder: "Job Title" %>
+    <address>
+      <strong><%= @company.contact_name %></strong><br>
+      <a href="mailto:#"><%= @company.contact_email %></a>
+    </address>
+
   </div>
+  <% end %>
+  </div>
+  
   <div id="new-job-form" class="pull-right">
-    <%= f.input :pay_range %>
+    <%= f.input :title, placeholder: "Job Title" %>
+    <%= f.input :pay_range, placeholder: "ex. $10.00 - $12.00" %>
     <%= f.input :notes %>
-    <%= f.input :number_needed %>
-    <%= f.input :needed_by, as: :string, placeholder: "Select start date" %> %>
+    <%= f.input :number_needed, collection: 1..10, prompt: "Available Positions" %>
+    <%= f.input :needed_by, as: :string, placeholder: "Select start date" %>
     <%= f.input :urgent %>
     <%= f.input :active %>
     <%= f.submit %>

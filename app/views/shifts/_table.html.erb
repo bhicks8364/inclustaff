@@ -1,0 +1,35 @@
+<div class="well">
+
+</div>
+
+<table id="shifts" class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Work Date</th>
+      <th>Time In</th>
+      <th>Time Out</th>
+      <th>Employee</th>
+      <th>Hours</th>
+      <th>Pay Rate</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @shifts.current_week.each do |shift| %>
+      <tr>
+        <td><%= shift.time_in.strftime("%m/%d/%y") %></td>
+        <td><%= shift.time_in.strftime("%I:%M %p") %></td>
+        <td><%= shift.clocked_out? ? shift.time_out.strftime("%I:%M %p") : "Clocked In" %></td>
+        <td><%= shift.employee.name %></td>
+        <td><%= shift.time_worked %></td>
+        <td><%= number_to_currency(shift.pay_rate) %></td>
+        <td><%= link_to 'Show', job_shift_path(shift.job, shift) %></td>
+        <td><%= link_to 'Edit', edit_job_shift_path(shift.job, shift) %></td>
+        <td><%= link_to 'Destroy', job_shift_path(shift.job, shift), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

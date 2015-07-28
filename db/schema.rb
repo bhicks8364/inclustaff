@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150724140913) do
+ActiveRecord::Schema.define(version: 20150727004105) do
 
   create_table "companies", force: :cascade do |t|
     t.string   "name"
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 20150724140913) do
     t.datetime "updated_at",    null: false
     t.string   "city"
     t.decimal  "balance"
+    t.string   "phone_number"
   end
 
   create_table "employees", force: :cascade do |t|
@@ -68,13 +69,28 @@ ActiveRecord::Schema.define(version: 20150724140913) do
     t.datetime "time_in"
     t.datetime "time_out"
     t.integer  "employee_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
     t.decimal  "time_worked"
     t.integer  "job_id"
     t.string   "state"
+    t.decimal  "earnings"
+    t.integer  "timesheet_id"
   end
 
   add_index "shifts", ["job_id"], name: "index_shifts_on_job_id"
+  add_index "shifts", ["timesheet_id"], name: "index_shifts_on_timesheet_id"
+
+  create_table "timesheets", force: :cascade do |t|
+    t.integer  "week"
+    t.integer  "job_id"
+    t.decimal  "reg_hours"
+    t.decimal  "ot_hours"
+    t.decimal  "gross_pay"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "timesheets", ["job_id"], name: "index_timesheets_on_job_id"
 
 end

@@ -10,6 +10,11 @@ $(document).ready(function() {
         "jQueryUI": true,
         
     } );
+
+
+    $( "#accordion" ).accordion();
+
+
     
 
 } );

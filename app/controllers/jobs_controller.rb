@@ -5,7 +5,12 @@ class JobsController < ApplicationController
   # GET /jobs
   # GET /jobs.json
   def index
-    @jobs = Job.all
+    @jobs = Job.active.with_employee
+  end
+  
+  def archived
+    @archived_jobs = Job.inactive.with_employee
+    @active_jobs = Job.active.with_employee
   end
 
   # GET /jobs/1
@@ -19,11 +24,11 @@ class JobsController < ApplicationController
   def new
     if params[:order_id]
       @order = Order.find(params[:order_id])
-      @job = @order.jobs.new(job_params)
-      @employee = @job.build_employee
+      @job = @order.jobs.new
+      # @employee = @job.build_employee
     else
       @job = Job.new
-      @employee = @job.build_employee
+      # @employee = @job.build_employee
     end
     # @company = Company.find(params[:company_id])
 
@@ -39,16 +44,18 @@ class JobsController < ApplicationController
   def create
     if params[:order_id]
       @order = Order.find(params[:order_id])
+      # @employee = Employee.create(employee_params)
       @job = @order.jobs.new(job_params)
-      @employee = @job.build_employee
+      # @job.order = @order
+      # @employee = @job.create_employee(employee_params)
     else
+      # @employee = Employee.create(employee_params)
       @job = Job.new(job_params)
-      @employee = @job.build_employee
     end
     
     respond_to do |format|
       if @job.save
-        format.html { redirect_to @job, notice: 'Job was successfully created.' }
+        format.html { redirect_to job_path(@job, anchor: "job_#{@job.id}"), notice: 'Job was successfully created.' }
         format.json { render :show, status: :created, location: @job }
       else
         format.html { render :new }
@@ -95,6 +102,9 @@ class JobsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def job_params
       params.require(:job).permit(:order, :title, :active, :description, :start_date, :pay_rate, :end_date, :order_id, :employee_id,
-                            employees_attributes: [:id, :first_name, :last_name, :email, :ssn, :_destroy])
+                            employee_attributes: [:id, :first_name, :last_name, :email, :ssn, :_destroy])
+    end
+    def employee_params
+      params.require(:employee).permit(:first_name, :last_name, :email, :ssn, :phone_number)
     end
 end

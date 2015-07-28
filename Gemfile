@@ -28,6 +28,7 @@ gem "simple_calendar", "~> 1.1.0"
 gem 'arel-helpers'
 gem 'jquery-datatables-rails', '~> 3.3.0'
 gem 'jquery-ui-rails'
+gem 'clockpicker-rails'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

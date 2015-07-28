@@ -1,14 +1,15 @@
 
 
-<h1>Listing Jobs</h1>
+<h1>Active Jobs</h1>
 
-<table id="jobs" class="display" cellspacing="0" width="100%">
+<table id="jobs" class="table table-bordered display" cellspacing="0.5" width="100%">
   <thead>
     <tr>
       <th>Company</th>
       <th>Order</th>
       <th>Employee</th>
       <th>Title</th>
+      <th>Clocked In?</th>
       <th>Description</th>
       <th>Start date</th>
       <th>Pay rate</th>
@@ -28,6 +29,7 @@
         <td><%= link_to job.order.title, order_path(job.order) %></td>
         <td><%= job.employee.name %></td>
         <td><%= job.title %></td>
+        <td><%= job.on_shift? %></td>
         <td><%= job.description %></td>
         <td><%= job.start_date.strftime("%B %e, %Y") %></td>
         <td><%= number_to_currency(job.pay_rate) %></td>

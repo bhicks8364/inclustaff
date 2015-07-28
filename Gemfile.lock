@@ -64,6 +64,8 @@ GEM
       columnize (= 0.9.0)
     celluloid (0.16.0)
       timers (~> 4.0.0)
+    clockpicker-rails (0.0.2)
+      railties (>= 3.1)
     coffee-rails (4.1.0)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.0)
@@ -214,6 +216,7 @@ DEPENDENCIES
   arel-helpers
   bootstrap-sass (~> 3.2.0.2)
   byebug
+  clockpicker-rails
   coffee-rails (~> 4.1.0)
   devise
   gemoji (~> 2.1.0)

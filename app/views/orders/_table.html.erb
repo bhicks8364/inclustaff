@@ -1,45 +1,35 @@
-
-
-<a class="btn btn-primary" role="button" data-toggle="collapse" href="#orderTable" aria-expanded="false" aria-controls="orderTable">
-  Company Orders
-</a>
-
-<div class="collapse" id="orderTable">
-  <div class="well">
-
-<table id="orders" class="display">
+<table id="orders-table" class="table table-bordered" cellspacing="0" width="85%%">
   <thead>
     <tr>
-      <th>Company</th>
-      <th>Pay range</th>
-      <th>Title</th>
-      <th>Notes</th>
-      <th>Needed</th>
-      <th>Filled</th>
-      <th>Needed by</th>
-      <th>Urgent</th>
-      <th>Active</th>
       <th></th>
+      <th>Company</th>
+      <th>Title</th>
+      <th>Pay Range</th>
+      <th>Open </th>
+      <th>Urgent</th>
+      <th>Start Date</th>
       <th></th>
       <th></th>
     </tr>
   </thead>
 
   <tbody>
-    <% @orders.each do |order| %>
+    <% @orders.active.each do |order| %>
       <tr>
-        <td><%= order.company_name %></td>
+        <td><% if order.needs_attention? %> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <% else %>
+        <span class="glyphicon glyphicon-check" aria-hidden="true"></span> 
+            <% end %>
+        </td>
+        <td><%= link_to order.company_name, order.company %></td>
+        <td><%= link_to order.title, order %></td>
         <td><%= order.pay_range %></td>
-        <td><%= order.title %></td>
-        <td><%= order.notes %></td>
-        <td><%= order.number_needed %></td>
-        <td><%= order.jobs.count %></td>
+        <td><%= order.number_needed - order.jobs.active.count %></td>
+        <td><%= order.urgent %></td>
         <td><%= order.needed_by.strftime("%B %e, %Y") %></td>
         <td><%= order.urgent %></td>
-        <td><%= order.active %></td>
-        <td><%= link_to "<span class='glyphicon glyphicon-eye-open' aria-hidden='true'></span>".html_safe, company_order_path(@company, order), class: "btn btn-default" %></td>
-        <td><%= link_to "<span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>".html_safe, edit_company_order_path(@company, order), class: "btn btn-default" %></td>
-        <td><%= link_to "<span class='glyphicon glyphicon-trash' aria-hidden='true'></span>".html_safe, company_order_path(@company, order), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-default" %></td>
+        <td><%= link_to "<span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>".html_safe, edit_company_order_path(order.company, order), class: "btn btn-default" %></td>
+        <td><%= link_to "<span class='glyphicon glyphicon-trash' aria-hidden='true'></span>".html_safe, company_order_path(order.company, order), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-default" %></td>
       </tr>
     <% end %>
   </tbody>
@@ -47,7 +37,8 @@
 
 <br>
 
-<%= link_to 'New Order', new_company_order_path(@company), class: "btn btn-default" %>
+<%= link_to 'New Order', new_order_path, class: "btn btn-default" %>
+
 
 
 

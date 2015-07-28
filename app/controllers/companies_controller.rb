@@ -11,6 +11,10 @@ class CompaniesController < ApplicationController
   # GET /companies/1.json
   def show
     @orders = @company.orders
+    @active_jobs = @company.jobs.active.distinct.with_employee
+    @today = @company.shifts.in_today.distinct
+    @clocked_in = @active_jobs.on_shift.distinct
+    @yesterday = @company.shifts.in_yesterday
   end
 
   # GET /companies/new

@@ -1,8 +1,18 @@
 Rails.application.routes.draw do
+  get  'dashboard' => 'dashboard#company_view'
+  get  'timeclock' => 'dashboard#employee_view'
+  
+  resources :timesheets
   get 'orders' => 'orders#all'
+  get 'archived_jobs' => 'jobs#archived'
   resources :orders
+  
   resources :jobs do
-    resources :shifts
+    resources :shifts do
+      member do
+        patch 'clock_out'
+      end
+    end
   end
 
   resources :companies do
@@ -18,7 +28,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'companies#index'
+  root 'dashboard#home'
 
   # Example of regular route:
 

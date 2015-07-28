@@ -5,10 +5,21 @@ class ShiftsController < ApplicationController
   # GET /shifts
   # GET /shifts.json
   def index
-    @job = Job.find(params[:job_id])
-    @company = @job.company
-    @employee = @job.employee
-    @shifts = @job.shifts
+    if params[:employee_id]
+      @employee = Employee.find(params[:employee_id])
+      @job = @employee.current_job
+      @company = @job.company if @job
+      
+
+      @current_shifts = @job.shifts if @job
+      @shifts = @employee.shifts
+    elsif params[:job_id]
+      @job = Job.find(params[:job_id])
+      @employee = @job.employee
+      @company = @job.company
+      @shifts = @job.shifts
+    end
+
   end
 
   # GET /shifts/1
@@ -42,7 +53,7 @@ class ShiftsController < ApplicationController
     @employee = @job.employee
     @shift = @job.shifts.new(shift_params)
     @shift.employee = @employee
-    @shift.save
+
 
     respond_to do |format|
       if @shift.save
@@ -54,6 +65,16 @@ class ShiftsController < ApplicationController
       end
     end
   end
+  
+  def clock_out
+    sleep 2
+    @shift = Shift.find(params[:id])
+    @shift.clock_out!
+      if @shift.update(shift_params)
+        format.html { redirect_to job_shifts_path(@job), notice: "You're now off the clock." }
+      end
+  end
+
 
   # PATCH/PUT /shifts/1
   # PATCH/PUT /shifts/1.json

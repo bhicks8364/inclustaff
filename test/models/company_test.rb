@@ -13,6 +13,7 @@
 #  updated_at    :datetime         not null
 #  city          :string
 #  balance       :decimal(, )
+#  phone_number  :string
 #
 
 require 'test_helper'
