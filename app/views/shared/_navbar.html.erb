@@ -14,15 +14,18 @@
 
     <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
       <ul class="nav navbar-nav">
-        <li></li>
+        <li><%= link_to "Employees", employees_path %></li>
+        <li><%= link_to "Timesheets", timesheets_path  %></li>
+        <li><%= link_to "Jobs", jobs_path  %></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
 
           <li><%= link_to "Employees", employees_path %></li>
           <li><%= link_to "Companies", companies_path %></li>
-          <li><%= link_to "Orders", orders_path  %></li>
-          <li><%= link_to "Jobs", jobs_path  %></li>
-          <li><%= link_to "Timesheets", timesheets_path  %></li>
+          <li><%= link_to "Departments", orders_path  %></li>
+          <li><%= link_to "Add Employee", new_employee_path, class: "btn btn-primary" %></li>
+          
+          
 
       </ul>
     </nav>

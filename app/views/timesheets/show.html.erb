@@ -1,31 +1,52 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Week:</strong>
-  <%= @timesheet.week %>
-</p>
+<div class="well">
+  <% if @timesheet.clocked_in? %>
+  <p id="clock-status" class="text-center"><strong><%= @timesheet.employee_name %> is currently clocked in. <%= link_to "Clock Out", clock_out_job_shift_path(@job, @current_shift), method: :patch, 
+                          remote: true, data: {confirm: 'Are you sure you want to clock out now?', 
+                          disable_with: "Clocking Out..."}, class: "btn btn-default" %></strong></p>
+                          
+                          
+                          
+<% end %>
 
-<p>
-  <strong>Job:</strong>
-  <%= @timesheet.job_id %>
-</p>
 
-<p>
-  <strong>Reg hours:</strong>
+
+<h3><strong><%= @timesheet.employee.name %></strong> <small><%= @job.title.titleize %></small></h3>
+
+  <h4>For the week of:   <u><%= @timesheet.week_ending.strftime("%B %e, %Y") %></u>. </h4>
+  <h6 class="text-muted"> Week: <%= @timesheet.week %></h6>
+  
+<hr>
+  <strong>Regular hours:</strong>
   <%= @timesheet.reg_hours %>
-</p>
-
-<p>
-  <strong>Ot hours:</strong>
+<br>
+  <strong>Overtime hours:</strong>
   <%= @timesheet.ot_hours %>
-</p>
-
 <p>
   <strong>Gross pay:</strong>
   <%= number_to_currency(@timesheet.gross_pay) %>
 </p>
+<p>
+  <% if @timesheet.clocked_in? %>
+   <strong>Last Clock In:</strong> <%= @current_shift.time_in.strftime("%B %e, %Y  at   %I:%M %p") %>
+  <% else %>
+   <strong>Last Clock In:</strong> <%= @last_complete_shift.time_in.strftime("%B %e, %Y  at   %I:%M %p") %><br>
+   <strong>Last Clock Out:</strong> <%= @last_complete_shift.time_out.strftime("%B %e, %Y  at   %I:%M %p") %><br>
+   <strong>Last Shift Total:</strong> <%= @last_complete_shift.time_worked %> hours
 
-<%= render "shifts/table" %>
+  <% end %>
+ 
+
+</div>
+
+
+
+<hr>
+
+<div class="well">
+  <%= render "shifts/table", :shifts => @shifts %>
+</div>
 
 <hr>
 

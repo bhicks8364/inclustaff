@@ -75,7 +75,15 @@
   max-width: 400px;
 }
 
-
+#clock-status {
+  padding: 5px;
+  max-width: 300px;
+  text-align: center;
+  background-color: rgba(124, 245, 74, 0.53);
+  border: solid 2px;
+  border-color: rgba(124, 245, 74, 0.88);
+  
+}
 
 
 

@@ -15,15 +15,16 @@
     <%= f.input :first_name %>
     <%= f.input :last_name %>
     <%= f.input :email %>
+    <%= f.input :phone_number %>
     <%= f.input :ssn %>
   
   </div>
   <div class="well col-md-4">
-    <%= f.simple_fields_for :jobs do |jobs| %>
-      <%= jobs.input :title %>
-      <%= jobs.input :start_date, as: :date, html5: true %>
-      <%= jobs.input :pay_rate %>
-      <%= jobs.association :order %>
+    <%= f.simple_fields_for :jobs do |job| %>
+      <%= job.input :title %>
+      <%= job.input :start_date, as: :date, html5: true %>
+      <%= job.input :pay_rate %>
+      <%= job.association :order, collection: @companies, as: :grouped_select, group_method: :orders %>
     <% end %>
   </div>
 </div>

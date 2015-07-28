@@ -18,8 +18,9 @@
 class Job < ActiveRecord::Base
     belongs_to :employee
     belongs_to :order
+    has_many :timesheets
     has_many :shifts, inverse_of: :job
-    has_many :timesheets, :through => :shifts
+    has_many :timesheets
     has_one :current_shift,-> { where state: "clocked_in" }, class_name: 'Shift'
     
     accepts_nested_attributes_for :employee
@@ -43,6 +44,7 @@ class Job < ActiveRecord::Base
     scope :on_shift, -> { joins(:shifts).merge(Shift.clocked_in)}
     scope :worked_today, -> { joins(:shifts).merge(Shift.in_today)}
     scope :worked_yesterday, -> { joins(:shifts).merge(Shift.in_yesterday)}
+    scope :worked_last_week, -> { joins(:timesheets).where("timesheets.week <= ?", Date.today.cweek).group("jobs.id") }
 
     
     

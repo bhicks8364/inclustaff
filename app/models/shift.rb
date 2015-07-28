@@ -18,6 +18,7 @@
 class Shift < ActiveRecord::Base
     extend SimpleCalendar
     has_calendar :attribute => :time_in
+    include ArelHelpers::ArelTable
     
     belongs_to :employee, inverse_of: :shifts
     belongs_to :job, inverse_of: :shifts
@@ -38,7 +39,8 @@ class Shift < ActiveRecord::Base
     
     accepts_nested_attributes_for :job
     
-    before_save :calculate_time!, :set_timesheet
+    after_save :update_timesheet!
+    before_save :set_timesheet, :calculate_time, :reg_earnings
     after_initialize :defaults
     
     
@@ -52,7 +54,7 @@ class Shift < ActiveRecord::Base
     end
     
     def set_timesheet
-        self.timesheet = Timesheet.find_or_create_by(job_id: self.job_id, week: Date.today.cweek)
+        self.timesheet = Timesheet.find_or_create_by(job_id: self.job_id, week: self.time_in.to_datetime.cweek) if self.timesheet.nil?
     end
     
     
@@ -109,15 +111,30 @@ class Shift < ActiveRecord::Base
     def clock_out!
         self.update(time_out: Time.current,
                     state: "clocked_out")
+        
+        
     end
     
     # def company
     #     self.job.order.company
     # end
     
-    # def gross_earnings
-    #     self.current_week.sum(:time_worked)
+    # def week_earnings
+    #     hours = self.joins(:timesheet)
+    #             .where(Timesheet[:id].eq(self.timesheet_id)).sum[:time_worked]
+    #     ot_rate = self.pay_rate * 1.5
+    #     if hours > 40
+    #         reg_pay = self.pay_rate * 40
+    #         ot_pay = hours - 40 * ot_rate
+    #         self.earnings = reg_pay + ot_pay
+    #     else
+    #         self.earnings = self.pay_rate * hours
+    #     end
     # end
+    
+    def reg_earnings
+        self.earnings = self.pay_rate * self.time_worked
+    end
     
     
     # def self.time_worked
@@ -126,7 +143,7 @@ class Shift < ActiveRecord::Base
     #     time.round(2)
     # end
     
-    def calculate_time!
+    def calculate_time
         if self.time_out != nil
             time = self.time_out - self.time_in
             time = time / 3600
@@ -136,9 +153,12 @@ class Shift < ActiveRecord::Base
         end
     end
     
-    # def set_company
-        # self.job.company.id = self.company_id
-    # end
+    def update_timesheet!
+        self.timesheet.update(updated_at: Time.current)
+        
+    end
+    
+
     def week
         self.time_out.end_of_week.to_datetime.cweek
     end
@@ -154,6 +174,8 @@ class Shift < ActiveRecord::Base
     def self.yesterday
       where(:time_in => 1.day.ago.beginning_of_day..1.day.ago.end_of_day)
     end
+    
+
     
     
 end

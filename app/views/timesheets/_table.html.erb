@@ -8,6 +8,7 @@
       <th>Reg hours</th>
       <th>Ot hours</th>
       <th>Gross pay</th>
+      <th>Shifts</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -22,6 +23,7 @@
         <td><%= timesheet.reg_hours %></td>
         <td><%= timesheet.ot_hours %></td>
         <td><%= timesheet.gross_pay %></td>
+        <td><%= timesheet.shifts.count %></td>
         <td><%= link_to 'Show', timesheet %></td>
         <td><%= link_to 'Edit', edit_timesheet_path(timesheet) %></td>
         <td><%= link_to 'Destroy', timesheet, method: :delete, data: { confirm: 'Are you sure?' } %></td>

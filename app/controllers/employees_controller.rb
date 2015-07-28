@@ -17,6 +17,7 @@ class EmployeesController < ApplicationController
 
   # GET /employees/new
   def new
+    @companies = Company.all
     @employee = Employee.new
     @employee.jobs.build
   end

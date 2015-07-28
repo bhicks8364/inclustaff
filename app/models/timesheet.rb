@@ -31,9 +31,29 @@ class Timesheet < ActiveRecord::Base
         where(week: Date.today.cweek - 1)
     }
     
+    # scope :underutilized, -> { where('total_hours < 40') }
+    # scope :over_40, -> { where('total_hours > 40') }
+
+    
     
     def employee_name
         self.employee.name
+    end
+    
+    def clocked_in?
+        if self.shifts.clocked_in.any?
+            true
+        else
+            false
+        end
+    end
+    
+    def last_clocked_in
+        self.shifts.last.time_in
+    end
+    
+    def last_clocked_out
+        self.shifts.clocked_out.last.time_out
     end
     
     
@@ -55,16 +75,8 @@ class Timesheet < ActiveRecord::Base
             end
     end
     
-    # def current_week_pay
-    #     hours = self.shifts.current_week.sum(:time_worked)
-    #     if hours > 40
-    #         reg_hours = 40
-    #         ot_hours = hours - 40
-    #         ot_rate = self.pay_rate * 1.5
-    #         self.pay_rate * reg_hours + ot_hours * ot_rate
-    #     else
-    #         self.pay_rate * hours
-    #     end
-    # end
+    def week_ending
+        self.created_at.end_of_week
+    end
     
 end

@@ -32,6 +32,7 @@
 <strong>Shifts this week</strong>
 <%= render "table" %>
 </div>
+<hr>
 <h4>All Shifts</h4>
 <table id="shifts" class="table table-bordered">
   <thead>
@@ -72,7 +73,7 @@
 <hr>
   <% shifts.each do |shift| %>
     <div id="calendar-shift">
-      <strong><%= link_to shift.employee.name, job_shift_path(shift.job, shift) %> - <%= shift.time_worked %></strong>
+      <p class:"bg-success"><strong><%= link_to shift.employee.name, job_shift_path(shift.job, shift) %> - <%= shift.time_worked %></strong></p>
     </div>
   <% end %>
 <% end %>

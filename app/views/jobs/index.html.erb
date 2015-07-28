@@ -35,7 +35,7 @@
         <td><%= number_to_currency(job.pay_rate) %></td>
         <td><%= job.current_week_hours %></td>
         <td><%= number_to_currency(job.current_week_pay) %></td>
-        <td><%= job.end_date.strftime("%B %e, %Y") %></td>
+        <td><% if job.end_date.nil? %><%= job.active? ? "Active" : "Terminated" %><% else %><%=job.end_date.strftime("%B %e, %Y") %><% end %> </td>
         <td><%= link_to 'Show', job %></td>
         <td><%= link_to 'Edit', edit_job_path(job) %></td>
         <td><%= link_to 'Destroy', job, method: :delete, data: { confirm: 'Are you sure?' } %></td>

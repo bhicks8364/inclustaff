@@ -13,8 +13,8 @@
 #
 
 class Employee < ActiveRecord::Base
-  has_many :shifts, inverse_of: :employee
-  has_many :jobs, inverse_of: :employee
+  has_many :shifts, inverse_of: :employee, dependent: :destroy
+  has_many :jobs, inverse_of: :employee, dependent: :destroy
   has_many :orders, :through => :jobs
   has_many :companies, :through => :orders
   has_one :current_job, -> { where active: true }, class_name: "Job"
@@ -34,7 +34,8 @@ class Employee < ActiveRecord::Base
   # SCOPES
   scope :with_active_jobs, -> { joins(:jobs).merge(Job.active)}
   scope :with_inactive_jobs, -> { joins(:jobs).merge(Job.inactive)}
-  scope :on_shift, -> { joins(:shifts).merge(Shift.clocked_in)}  
+  scope :on_shift, -> { joins(:shifts).merge(Shift.clocked_in)} 
+  
     
     
     

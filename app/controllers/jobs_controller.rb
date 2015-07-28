@@ -18,6 +18,7 @@ class JobsController < ApplicationController
   def show
     @employee = @job.employee
     @company = @job.order.company
+    @current_shift = @job.shifts.clocked_in.last if @job.on_shift?
   end
 
   # GET /jobs/new

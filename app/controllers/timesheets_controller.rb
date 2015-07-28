@@ -11,6 +11,11 @@ class TimesheetsController < ApplicationController
   # GET /timesheets/1.json
   def show
     @shifts = @timesheet.shifts
+    @employee = @timesheet.employee
+    @job = @timesheet.job
+    @last_complete_shift = @timesheet.shifts.clocked_out.last
+    @current_shift = @timesheet.shifts.clocked_in.last if @timesheet.clocked_in?
+    
   end
 
   # GET /timesheets/new

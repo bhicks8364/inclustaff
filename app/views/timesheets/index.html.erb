@@ -2,33 +2,7 @@
 
 <h1>Listing Timesheets</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Week</th>
-      <th>Job</th>
-      <th>Reg hours</th>
-      <th>Ot hours</th>
-      <th>Gross pay</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @timesheets.each do |timesheet| %>
-      <tr>
-        <td><%= timesheet.week %></td>
-        <td><%= timesheet.job_id %></td>
-        <td><%= timesheet.reg_hours %></td>
-        <td><%= timesheet.ot_hours %></td>
-        <td><%= timesheet.gross_pay %></td>
-        <td><%= link_to 'Show', timesheet %></td>
-        <td><%= link_to 'Edit', edit_timesheet_path(timesheet) %></td>
-        <td><%= link_to 'Destroy', timesheet, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<%= render 'table' %>
 
 <br>
 
