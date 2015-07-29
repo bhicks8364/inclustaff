@@ -11,9 +11,11 @@ class CompaniesController < ApplicationController
   # GET /companies/1.json
   def show
     @orders = @company.orders
-    @active_jobs = @company.jobs.active.distinct.with_employee
-    @today = @company.shifts.in_today.distinct
-    @clocked_in = @active_jobs.on_shift.distinct
+    @clocked_in = @company.jobs.on_shift
+
+    @with_active_jobs = @orders.with_active_jobs
+    @active_jobs = @company.jobs.active
+    @today = @company.shifts.in_today
     @yesterday = @company.shifts.in_yesterday
   end
 

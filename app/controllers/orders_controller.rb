@@ -7,6 +7,8 @@ class OrdersController < ApplicationController
   # GET /orders.json
   def index
     @orders = @company.orders
+    @with_active_jobs = @orders.with_active_jobs
+    
   end
   
   def all
@@ -17,8 +19,8 @@ class OrdersController < ApplicationController
   # GET /orders/1.json
   def show
     @company = @order.company
-    @active_jobs = @order.jobs.active
     @inactivejobs = @order.jobs.inactive
+    @active_jobs = @order.jobs.active
   end
     
 

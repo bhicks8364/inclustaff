@@ -24,12 +24,38 @@ class Timesheet < ActiveRecord::Base
     before_create :defaults
     before_save :total_timesheet
     
+
+
     scope :this_week, ->{
         where(week: Date.today.cweek)
     }
     scope :last_week, ->{
         where(week: Date.today.cweek - 1)
     }
+    
+    
+    #       # EXPORT TO CSV
+    #   def self.assign_from_row(row)
+    #     # user = User.where(email: row[:email]).first_or_initialize
+    #     timesheet = Timesheet.new row.to_hash.slice(:first_name, :last_name, :email, :profile_type, :role)
+    #     user
+    #   end
+      
+    #   def self.to_csv
+    #     attributes = %w{id last_name first_name email profile_type role}
+    #     CSV.generate(headers: true) do |csv|
+    #       csv << attributes
+          
+    #       all.each do |user|
+    #         csv << user.attributes.values_at(*attributes)
+    #       end
+    #     end
+    #   end
+    
+    
+    
+    
+    
     
     # scope :underutilized, -> { where('total_hours < 40') }
     # scope :over_40, -> { where('total_hours > 40') }

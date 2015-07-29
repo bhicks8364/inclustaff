@@ -107,6 +107,10 @@ class Job < ActiveRecord::Base
         end
     end
     
+    def current_timesheet
+        self.timesheets.this_week.first
+    end
+    
     
     
 end

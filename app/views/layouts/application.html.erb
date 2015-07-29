@@ -10,8 +10,12 @@
 <body>
   <%= render "shared/navbar" %>
   <div class="container">
-  <%= flash.notice %>
-  <%= flash.alert %>
+    
+  <%= render "shared/company_sidebar" %>
+  <% if alert %><div class="alert alert-warning"><%= flash.alert %></div> <% end %>
+
+  <% if notice %> <div class="alert alert-info"><%= flash.notice %></div> <% end %>
+
   <%= yield %>
 </div>
 

@@ -6,7 +6,7 @@
 <div id="order-tabs">
 
   <!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
+  <ul id="order-nav" class="nav nav-tabs nav-justified" role="tablist">
     <li role="presentation" class="active"><a href="#order" aria-controls="order" role="tab" data-toggle="tab">Order Info.</a></li>
     <li role="presentation"><a href="#company" aria-controls="company" role="tab" data-toggle="tab">Company Details</a></li>
     <li role="presentation"><a href="#activejobs" aria-controls="activejobs" role="tab" data-toggle="tab">Active Jobs</a></li>
@@ -21,44 +21,38 @@
   <%= @order.title %></h3>
 
 
-<p>
-  <strong>Pay range:</strong>
-  <%= @order.pay_range %>
-</p>
 
-<p>
-  <strong>Notes:</strong>
-  <%= @order.notes %></p>
+
+
+  <strong>Additional Payroll Information:</strong>
+    <div class="well">
+    <p><%= @order.notes %></p>
+  </div>
+  
   
 <p>
-  <strong>Number needed:</strong>
-  <%= @order.number_needed %><br>
-  <strong>Active Employees:</strong>
-  <%= @order.jobs.active.count %>
-<br/>
-  <strong>Needed by:</strong>
-  <%= @order.needed_by.strftime("%B %e, %Y") %>
-</p>
-
 <p>
-  <strong>Urgent:</strong>
-  <%= @order.urgent %>
+  <strong>Pay Type:</strong>
+  <%= @order.pay_range %>
+</p>
+  <strong>Active Employees:</strong>
+      <%= @order.jobs.active.count %>
+
+<br/>
+
+  <strong>Pay Frequency:</strong>
+  <%= @order.urgent ? "Bi-Weekly" : "Weekly" %>
 <br>
-  <strong>Active:</strong>
-  <%= @order.active %>
+  <strong>Status:</strong>
+  <%= @order.active ? "Active" : "Inactive" %>
 </p>
 
 <%= link_to 'Edit', edit_company_order_path(@company, @order) %> |
 <%= link_to 'Back', company_orders_path(@company) %>
-<hr>
+<br>
 <%= link_to 'Add Job', new_company_order_job_path(@company, @order) %>
-      <hr>
-      <p>
-        Number Needed: <%= @order.number_needed %> <br>
-        Available Positions: <%= @order.open_jobs %>
-      
-      </p>
-      
+<hr>
+
   </div>
 
 
@@ -78,23 +72,23 @@
     </div>
     <hr>
     
-<%= div_for(@company.orders.active, class: "well pull-right") do |order| %>
+<%= div_for(@with_active_jobs, class: "well pull-right") do |order| %>
 <h3><%= order.title %> <strong><small><%= order.urgent ? "URGENT" : ""  %></small></strong></h3>
     <strong>$ <%= order.pay_range %></strong>
     <p>
        Est. Start Date: <%= order.needed_by.strftime("%B %e, %Y") %><br>
       <% if order.jobs.active.any? %>
-      1st placement started on:<%= order.jobs.first.start_date.strftime("%B %e, %Y") %>
+      The first employee in this department started on:<%= order.jobs.first.start_date.strftime("%B %e, %Y") %>
       <% end %>
     </p>
-    <h5><strong>Available Positions: <%= order.open_jobs %></strong></h5>
+
 
 <% end %>
   </div>
   
   
   <div role="tabpanel" class="tab-pane fade" id="activejobs">
-<%= render 'jobs/table' %>
+<%= render 'jobs/table', :active_jobs => @active_jobs %>
 
   </ul>
   </div>

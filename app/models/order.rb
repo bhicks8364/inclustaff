@@ -18,6 +18,7 @@
 class Order < ActiveRecord::Base
   has_many :jobs, inverse_of: :order
   has_many :employees, :through => :jobs
+  has_many :timesheets, :through => :jobs
   belongs_to :company, inverse_of: :orders
   
   validates_associated :company
@@ -31,15 +32,12 @@ class Order < ActiveRecord::Base
     scope :inactive, -> { where(active: false)}
     scope :urgent, -> { where(urgent: true)}
     scope :with_active_jobs, -> { joins(:jobs).merge(Job.active)}
+    scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.this_week)}
     
     
     def defaults
       self.active = true if self.active.nil?
     end  
-    
-    
-    
-    
     
     def company_name
       if self.company
@@ -59,9 +57,9 @@ class Order < ActiveRecord::Base
     end
   end
   
-    def open_jobs
-      self.number_needed - self.jobs.active.count
-    end
+    # def open_jobs
+    #   self.number_needed - self.jobs.active.count
+    # end
   
 
 
