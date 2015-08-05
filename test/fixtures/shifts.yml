@@ -13,6 +13,7 @@
 #  state        :string
 #  earnings     :decimal(, )
 #  timesheet_id :integer
+#  deleted_at   :datetime
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

@@ -4,13 +4,18 @@ class TimesheetsController < ApplicationController
   # GET /timesheets
   # GET /timesheets.json
   def index
-    @timesheets = Timesheet.all
+    @company = current_user.company
+    @all_timesheets = @company.timesheets
+    @timesheets = @company.timesheets.this_week.order(updated_at: :desc)
+    @last_week_timesheets =  @company.timesheets.last_week
+    authorize @timesheets
   end
 
   # GET /timesheets/1
   # GET /timesheets/1.json
   def show
-    @shifts = @timesheet.shifts
+    authorize @timesheet
+    @shifts = @timesheet.shifts.order(time_in: :desc)
     @employee = @timesheet.employee
     @job = @timesheet.job
     @last_complete_shift = @timesheet.shifts.clocked_out.last
@@ -21,16 +26,19 @@ class TimesheetsController < ApplicationController
   # GET /timesheets/new
   def new
     @timesheet = Timesheet.new
+    authorize @timesheet
   end
 
   # GET /timesheets/1/edit
   def edit
+    authorize @timesheet
   end
 
   # POST /timesheets
   # POST /timesheets.json
   def create
     @timesheet = Timesheet.new(timesheet_params)
+    authorize @timesheet
 
     respond_to do |format|
       if @timesheet.save
@@ -46,6 +54,7 @@ class TimesheetsController < ApplicationController
   # PATCH/PUT /timesheets/1
   # PATCH/PUT /timesheets/1.json
   def update
+    authorize @timesheet
     respond_to do |format|
       if @timesheet.update(timesheet_params)
         format.html { redirect_to @timesheet, notice: 'Timesheet was successfully updated.' }
@@ -60,6 +69,7 @@ class TimesheetsController < ApplicationController
   # DELETE /timesheets/1
   # DELETE /timesheets/1.json
   def destroy
+    authorize @timesheet
     @timesheet.destroy
     respond_to do |format|
       format.html { redirect_to timesheets_url, notice: 'Timesheet was successfully destroyed.' }

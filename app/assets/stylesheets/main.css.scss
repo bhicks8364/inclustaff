@@ -1,0 +1,384 @@
+html, body {
+  
+  
+  height:100%; /* needed for container min-height */
+  margin:0;
+  
+//   color: red;
+  
+  // font-family: verdana, arial, helvetica, sans-serif;
+//   font-size: 14px;
+//   line-height: 18px;
+  // background-color: black;
+
+}
+#main-content {
+  font-family: 'Open Sans', sans-serif;
+  // background-image: url("colorful-triangles-background.jpg");
+  // background-repeat: no-repeat;
+  // background-size: auto;
+
+    // position:relative; /* needed for footer positioning*/
+    // margin: auto; /* center, not in IE5 */
+    // width:750px;
+    // background:#f0f0f0;
+    
+    height:auto !important; /* real browsers */
+    height:100%; /* IE6: treaded as min-height*/
+
+    min-height:100%; /* real browsers */
+    background-color: rgb(34, 34, 34); /* MAIN BACKGROUND COLOR */
+}
+div.container-fluid {
+  padding-bottom: 70px;
+  // padding: 20px;
+  padding-top: 0px;
+  padding-right: 5px;
+  padding-left: 5px;
+  height:auto !important; /* real browsers */
+  margin-left: 50px;
+  margin-right: 50px;
+  background-color: rgba(214, 236, 251, 0.82);
+  overflow: auto;
+  // width: 60%;
+  // border:3px solid #8AC007;
+  // padding: 10px;
+}
+
+
+// HEADER
+#main-content > header {
+    background-color: #314050;
+    text-color: white;
+    border-bottom: none;
+    // margin-bottom: 0px;
+    border-color: none;
+    
+    
+    // margin-bottom: 20px;
+}
+
+
+#main-content > nav {
+    background-color: #222;
+    margin-bottom: 0px;
+    border: none; /* NO ROUND CORNERS ON NAVBAR */
+}
+
+
+// // NAV BAR
+#main-content > nav > header {
+    margin-bottom: 0px;
+    border: none; 
+  
+}
+
+
+// // #main-content > header > div > nav > ul {
+// //   color: #A3D2E6;
+// //   text-decoration: none;
+// // }
+
+
+// // #main-content > header > div > div > a > img {
+// //   width: 40%;
+// //   height: 40%;
+// //   padding-top: 10px;
+// //   padding-bottom: 5px;
+// //   margin-left: 15px;
+// //   margin-top: 10px;
+// //   margin-bottom: 15px;
+// // }
+// #home-logo > img {
+//   width: 30%;
+//   height: 30%;
+//   margin-top: 5px;
+//   margin-bottom: 5px;
+  
+// }
+
+
+// #order-nav > li.active > a {
+//   color: #314050;
+//   font-weight: bold;
+// }
+// #order-nav > li {
+//   background-color:  #314050;
+//   border: 0px;
+// }
+// #order-nav > li > a {
+//   color: white;
+// }
+// .center {
+//     margin: auto;
+//     width: 60%;
+//     border: 3px solid #F8F8F8;
+//     padding: 10px;
+// }
+// .table-center {
+//     margin: auto;
+//     width: 100%;
+//     border: 3px solid #F8F8F8;
+//     padding: 10px;
+    
+//     a {
+//       color: white;
+//       font-weight: bold;
+//     }
+// }
+
+// .user {
+//   // border-top: 1px solid #eaeaea;
+//   text-align: left;
+//   margin-top: 2px;
+//   padding: 10px;
+//   background-color: rgba(21, 95, 115, 0.73);
+  
+//   p {
+//     font-weight: bold;
+//     color: black;
+//   }
+  
+//   &:target {
+//       background-color: #D97B2E;
+
+//   }
+// }
+// #home-page {
+//   background-color: #ADBBCA;
+//   height:auto !important;
+//   padding: 10px;
+  
+// }
+// #main-content > header {
+//   margin-bottom: 0;
+// }
+
+// // #new_employee {
+// //   width: 50%;
+// //   background-color: rgba(35, 99, 113, 0.48);
+// //   padding: 20px;
+// //   color: white;
+// //   font-weight: bold;
+  
+// //   .well {
+// //     background-color: rgba(35, 99, 113, 0.48);
+// //   }
+  
+// // }
+.form-group {
+  width: 75%;
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+#order {
+  
+  
+  }
+  p { color: black;
+  text-decoration: none;
+  
+}
+  a {
+  
+    
+
+  
+  font-weight: bold;
+}
+// #main-content > nav > header > div > nav > ul > li > a {
+//   color: rgba(221, 239, 251, 0.77);
+// }
+
+.order > h5 {
+  
+  text-decoration: none;
+  color: black;
+}
+
+.order > p > a {
+      color: rgb(224, 175, 121);
+  
+  text-decoration: none;
+}
+// #main-content > nav > a {
+//   color: white;
+//   text-decoration: none;
+// }
+// #jobs > tbody > tr > td > a {
+//   color: #A3D2E6;
+//   text-decoration: none;
+  
+// }
+
+// .table {
+//   background-color: #ccc;
+// }
+// .table a {
+//   color: black;
+//   text-weight: bold;
+// }
+
+// .modal-content {
+//   padding: 10px;
+// }
+// #order-notes {
+//   max-width: 50%;
+//   margin-top: 5px;
+// }
+// #main-content > div > div.profile-nav > ul {
+//   background-color: #314050;
+// }
+// #main-content > div > div.profile-nav > ul > li {
+//   margin-left: 2px;
+  
+// }
+// #main-content > div > div.profile-nav > ul > li.active > a {
+//   background-color: #ccc;
+// }
+// #main-content > div > div.profile-nav > ul > li.hover > a {
+//   background-color: #ccc;
+// }
+
+
+// #home-page > a.btn.btn-primary.btn-lg.btn-block {
+//   max-width: 50%;
+//   overflow: auto;
+// }
+
+// #companies-table > tbody > tr > td > a {
+//   color: white;
+// }
+
+// #home-page > div.active-company-jobs {
+//   max-width: 50%;
+//   overflow: auto;
+//   margin-top: 10px;
+//   padding: 5px;
+// }
+
+// #main-content > div > div.active_jobs {
+//   background-color: rgba(199, 118, 34, 0.7);
+//   padding: 3px;
+//   overflow: auto;
+//   max-width: 50%;
+//   border: 1px solid transparent;
+//   border-radius: 10px;
+  
+//   a {
+//     color: white;
+//   }
+// }
+
+// #job {
+//   background-color: rgba(2, 5, 34, 0.7);
+// }
+
+
+
+#main-content > div > div > h3 > strong > a {
+  text-decoration: none;
+  color: black;
+  box-shadow: 4px 4px 5px 1px rgba(3, 5, 6, 0.75);
+}
+.table > tbody > tr > td > a {
+  padding: 3px;
+  margin: auto;
+  color: #182C46;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+
+
+// #home-page > div {
+//   max-width: 50%;
+// }
+
+// #company-timesheet-page, #company-show-page, #new-department {
+//   background-color: rgba(204, 204, 204, 0.6);
+//   padding: 10px;
+// }
+
+// #company-contact-well {
+//   max-width: 40%;
+// }
+
+
+// .navbar-default .navbar-nav > li > a {
+//     color: white;
+// }
+
+#main-content > nav > header > div > div > a {
+  width: 60%;
+  height: auto;
+  // margin: auto;
+
+  // max-height: 100%;
+  max-width: 50%;
+}
+#main-content > nav > header > div > div > a > img {
+  width : 150px;
+}
+// #main-content > nav > header > div > nav > ul {
+//   text-align: center;
+// }
+
+// PANELS
+#home-page > div > div.panel {
+  max-width: 400px;
+  // overflow: auto;
+  // margin-right: 10px;
+}
+
+#home-page > div > div.panel{
+  max-width: 400px;
+  // height: 400px;
+  padding-bottom: 30px auto;
+    // overflow: auto;
+    margin-bottom: 20px;
+    background-color: rgba(34, 34, 34, 0.61);
+    border: 1px solid transparent; 
+    color: white;
+    // border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    box-shadow: 4px 4px 5px 1px rgba(3, 5, 6, 0.75);
+
+  .dropdown-menu{
+    width:auto;
+    left:auto;
+    margin:0 auto;
+  }
+}
+
+
+
+// #home-page > div > div{
+//   max-width: 400px;
+//   // color: white;
+//   padding-top: 15px;
+//   margin:0 auto;
+  
+// }
+
+// #manager-home {
+//   padding: 8px;
+// }
+#manager-home > div.panel.panel-default > div.panel-heading {
+  background-color: transparent;
+  color: white;
+}
+.admin-home {
+  background-color: #ccc;
+}
+
+
+#home-page > div > div.active-company-jobs > div {
+  width: 300px;
+  box-shadow: 4px 4px 5px 1px rgba(3, 5, 6, 0.75);
+  background-color: white;
+  padding: 8px;
+  content-align: right;
+  margin-right: 8px;
+}

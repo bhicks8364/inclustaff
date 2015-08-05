@@ -1,6 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<div class="well">
+<div class="timesheet-show-page">
   <% if @timesheet.clocked_in? %>
   <p id="clock-status" class="text-center"><strong><%= @timesheet.employee_name %> is currently clocked in. <%= link_to "Clock Out", clock_out_job_shift_path(@job, @current_shift), method: :patch, 
                           remote: true, data: {confirm: 'Are you sure you want to clock out now?', 
@@ -12,9 +12,9 @@
 
 
 
-<h3><strong><%= @timesheet.employee.name %></strong> <small><%= @job.title.titleize %></small></h3>
+<h3><strong><%= link_to @employee.name, @employee %></strong> <small><%= @job.title.titleize %></small></h3>
 
-  <h4>For the week of:   <u><%= @timesheet.week_ending.strftime("%B %e, %Y") %></u>. </h4>
+  <h4>For the week of:   <u><%= @timesheet.week_ending  %></u>. </h4>
   <h6 class="text-muted"> Week: <%= @timesheet.week %></h6>
   
 <hr>
@@ -38,13 +38,13 @@
   <% end %>
  
 
-</div>
+
 
 
 
 <hr>
-
-<div class="well">
+<h3><strong> Week Ending: <small> <%= @timesheet.week_ending %></small></strong></h3>
+<div class="table-responsive">
   <%= render "shifts/table", :shifts => @shifts %>
 </div>
 
@@ -52,3 +52,4 @@
 
 <%= link_to 'Edit', edit_timesheet_path(@timesheet) %> |
 <%= link_to 'Back', timesheets_path %>
+</div>

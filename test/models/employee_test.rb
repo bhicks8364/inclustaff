@@ -10,6 +10,8 @@
 #  email        :string
 #  ssn          :string
 #  phone_number :string
+#  user_id      :integer
+#  deleted_at   :datetime
 #
 
 require 'test_helper'

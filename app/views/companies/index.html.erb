@@ -1,6 +1,6 @@
 <h1>All Companies</h1>
-
-<table id="companies-table" class="display" cellspacing="0" width="100%">
+<div class="table-responsive">
+  <table id="myTable" class="table" cellspacing="0.5" width="85%">
   <thead>
     <tr>
       <th>Name</th>
@@ -29,7 +29,7 @@
     <% end %>
   </tbody>
 </table>
-
+</div>
 <br>
 
 <%= link_to 'New Company', new_company_path %>

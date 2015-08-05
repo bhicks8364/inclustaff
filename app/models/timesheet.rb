@@ -10,28 +10,33 @@
 #  gross_pay  :decimal(, )
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  deleted_at :datetime
 #
 
 class Timesheet < ActiveRecord::Base
-    belongs_to :job
-    has_many :shifts
+    belongs_to :job, dependent: :destroy
+    has_many :shifts, dependent: :destroy
     has_one :employee, :through => :job
 
     
     delegate :pay_rate, to: :job
     delegate :company, to: :job
+    delegate :manager, to: :job
     
-    before_create :defaults
+
     before_save :total_timesheet
     
 
-
+    scope :with_job, -> { includes(:job)}
     scope :this_week, ->{
         where(week: Date.today.cweek)
     }
     scope :last_week, ->{
         where(week: Date.today.cweek - 1)
     }
+    
+    
+    
     
     
     #       # EXPORT TO CSV
@@ -83,9 +88,9 @@ class Timesheet < ActiveRecord::Base
     end
     
     
-    def defaults
-        self.week = Date.today.cweek
-    end
+    # def defaults
+    #     self.week = Date.today.cweek
+    # end
     
     def total_timesheet
         hours = self.shifts.sum(:time_worked)
@@ -102,7 +107,7 @@ class Timesheet < ActiveRecord::Base
     end
     
     def week_ending
-        self.created_at.end_of_week
+        self.shifts.last.time_out.end_of_week.strftime("%x")
     end
     
 end

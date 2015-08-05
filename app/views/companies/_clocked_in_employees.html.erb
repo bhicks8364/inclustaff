@@ -1,0 +1,10 @@
+<div class="panel panel-default col-md-4">
+  <div class="panel-heading"> <span class="glyphicon glyphicon-time" aria-hidden="true"></span><strong>  Employees Currently Clocked In</strong></div>
+  <div class="panel-body">
+
+  <%= content_tag_for(:ul, @clocked_in, class: "list-group") do |job| %>
+    <li class="list-group-item list-group-item-success"><strong><%= link_to job.employee.name, job.employee %></strong> <small> - <%= link_to job.title, job %></small></li>
+    <li class="list-group-item"><%= job.last_clock_in ? job.last_clock_in.strftime("%I:%M %p") : job.shifts.last.state.titleize %> </li>
+<% end %>
+  </div>
+</div>

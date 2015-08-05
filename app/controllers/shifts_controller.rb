@@ -1,5 +1,6 @@
 class ShiftsController < ApplicationController
   before_action :set_shift, only: [:show, :edit, :update, :destroy]
+  # before_action :authenticate_user!
   # before_action :set_employee, only: [:index, :show, :edit, :update, :destroy]
 
   # GET /shifts
@@ -9,15 +10,15 @@ class ShiftsController < ApplicationController
       @employee = Employee.find(params[:employee_id])
       @job = @employee.current_job
       @company = @job.company if @job
-      
-
       @current_shifts = @job.shifts if @job
-      @shifts = @employee.shifts
+      @shifts = @employee.shifts.order(time_in: :desc)
+      authorize @shifts
     elsif params[:job_id]
       @job = Job.find(params[:job_id])
       @employee = @job.employee
       @company = @job.company
-      @shifts = @job.shifts
+      @shifts = @job.shifts.order(time_in: :desc)
+      authorize @shifts
     end
 
   end
@@ -29,14 +30,17 @@ class ShiftsController < ApplicationController
       @job = Job.find(params[:job_id])
       @employee = @shift.employee
       @company = @job.company
+      authorize @shift
   end
 
   # GET /shifts/new
   def new
     @job = Job.find(params[:job_id])
-    @company = @job.company
+    # @company = @job.company
     @employee = @job.employee
     @shift = @job.shifts.new
+
+    authorize @shift
     # @shift = Shift.new
   end
 
@@ -44,15 +48,18 @@ class ShiftsController < ApplicationController
   def edit
     @job = Job.find(params[:job_id])
     @employee = @job.employee
+    authorize @shift
   end
 
   # POST /shifts
   # POST /shifts.json
   def create
+     
     @job = Job.find(params[:job_id])
-    @employee = @job.employee
+
     @shift = @job.shifts.new(shift_params)
-    @shift.employee = @employee
+    @employee = @job.employee
+    authorize @shift
 
 
     respond_to do |format|
@@ -69,6 +76,7 @@ class ShiftsController < ApplicationController
   def clock_out
     sleep 2
     @shift = Shift.find(params[:id])
+     authorize @shift
     @shift.clock_out!
       if @shift.update(shift_params)
         format.html { redirect_to job_shifts_path(@job), notice: "You're now off the clock." }
@@ -79,6 +87,7 @@ class ShiftsController < ApplicationController
   # PATCH/PUT /shifts/1
   # PATCH/PUT /shifts/1.json
   def update
+     authorize @shift
     @job = Job.find(params[:job_id])
     respond_to do |format|
       if @shift.update(shift_params)
@@ -94,7 +103,9 @@ class ShiftsController < ApplicationController
   # DELETE /shifts/1
   # DELETE /shifts/1.json
   def destroy
+     
     @job = Job.find(params[:job_id])
+    authorize @shift
     @shift.destroy
     respond_to do |format|
       format.html { redirect_to job_shifts_path(@job), notice: 'Shift was successfully destroyed.' }

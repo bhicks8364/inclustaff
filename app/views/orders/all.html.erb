@@ -3,6 +3,7 @@
     <tr>
       <th>Company</th>
       <th>Title</th>
+      <th>Dept. Manager</th>
       <th>Pay</th>
       <th>Employees </th>
       <th>Bi-Weekly</th>
@@ -16,6 +17,7 @@
       <tr>
         <td><%= link_to order.company_name, order.company %></td>
         <td><%= link_to order.title, order %></td>
+        <td><%= order.manager.name %></td>
         <td><%= order.pay_range %></td>
         <td><%= order.jobs.active.count %></td>
         <td><%= order.urgent %></td>
@@ -28,4 +30,4 @@
 
 <br>
 
-<%= link_to 'New Order', new_order_path, class: "btn btn-default" %>
+<%= link_to 'Add New Department', new_order_path, class: "btn btn-primary btn-lg" %>

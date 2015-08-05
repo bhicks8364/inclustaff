@@ -1,10 +1,29 @@
 // body {
-//   background-color: #fff;
-//   color: #333;
+  
+//   padding-bottom: 70px;
+//   height:100%; /* needed for container min-height */
+//   margin:0;
+// //   color: #333;
 //   font-family: verdana, arial, helvetica, sans-serif;
-//   font-size: 13px;
+//   font-size: 14px;
 //   line-height: 18px;
+//   background-color: black;
+
 // }
+
+// #main-content {
+//     position:relative; /* needed for footer positioning*/
+//     margin: auto; /* center, not in IE5 */
+//     width:750px;
+//     background:#f0f0f0;
+
+//     height:auto !important; /* real browsers */
+//     height:100%; /* IE6: treaded as min-height*/
+
+//     min-height:100%; /* real browsers */
+//     background-color: lightslategrey;
+// }
+
 
 // p, ol, ul, td {
 //   font-family: verdana, arial, helvetica, sans-serif;

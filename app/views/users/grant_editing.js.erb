@@ -1,0 +1,2 @@
+$("#updated-at").html("<%= time_ago_in_words(@user.updated_at) %>");
+$('#user-role').html("<%= @user.can_edit %>");

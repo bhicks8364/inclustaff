@@ -1,9 +1,14 @@
 <p id="notice"><%= notice %></p>
+<div id="company-timesheet-page">
+    <h1><%= @company.name %>'s Timesheets</h1>
 
-<h1>Listing Timesheets</h1>
-
-<%= render 'table' %>
+    <%= render 'table' %>
 
 <br>
 
-<%= link_to 'New Timesheet', new_timesheet_path %>
+    <%= link_to 'Back to Company Page', @company, class: "btn btn-default" %>
+    
+    
+    
+</div>
+

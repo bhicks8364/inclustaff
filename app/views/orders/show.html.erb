@@ -2,13 +2,11 @@
 
 <h1>  <%= @company.name %></h1>
 <hr>
-<div class="row">
 <div id="order-tabs">
 
   <!-- Nav tabs -->
   <ul id="order-nav" class="nav nav-tabs nav-justified" role="tablist">
     <li role="presentation" class="active"><a href="#order" aria-controls="order" role="tab" data-toggle="tab">Order Info.</a></li>
-    <li role="presentation"><a href="#company" aria-controls="company" role="tab" data-toggle="tab">Company Details</a></li>
     <li role="presentation"><a href="#activejobs" aria-controls="activejobs" role="tab" data-toggle="tab">Active Jobs</a></li>
     <li role="presentation"><a href="#inactivejobs" aria-controls="inactivejobs" role="tab" data-toggle="tab">Inactive Jobs</a></li>
   </ul>
@@ -25,7 +23,7 @@
 
 
   <strong>Additional Payroll Information:</strong>
-    <div class="well">
+    <div id= "order-notes" class="well well-sm" >
     <p><%= @order.notes %></p>
   </div>
   
@@ -53,37 +51,6 @@
 <%= link_to 'Add Job', new_company_order_job_path(@company, @order) %>
 <hr>
 
-  </div>
-
-
-  <div role="tabpanel" class="tab-pane fade" id="company">
-    <div class="well pull-left">
-      <address>
-        <strong><%= link_to @company.name, @company %></strong><br>
-        <%= @company.address %><br>
-        <%= @company.city %>, <%= @company.state %> <%= @company.zipcode %><br>
-        <abbr title="Phone">P:</abbr> (123) 456-7890
-      </address>
-
-      <address>
-        <strong> <%= @company.contact_name %></strong><br>
-        <a href="mailto:#"><%= @company.contact_email %></a>
-      </address>
-    </div>
-    <hr>
-    
-<%= div_for(@with_active_jobs, class: "well pull-right") do |order| %>
-<h3><%= order.title %> <strong><small><%= order.urgent ? "URGENT" : ""  %></small></strong></h3>
-    <strong>$ <%= order.pay_range %></strong>
-    <p>
-       Est. Start Date: <%= order.needed_by.strftime("%B %e, %Y") %><br>
-      <% if order.jobs.active.any? %>
-      The first employee in this department started on:<%= order.jobs.first.start_date.strftime("%B %e, %Y") %>
-      <% end %>
-    </p>
-
-
-<% end %>
   </div>
   
   
@@ -141,23 +108,3 @@
 
   </div>
   
-  <hr>
-  <hr>
-
-<div class="row">
-  <div>
-  <% if @order.jobs.any? %>
-  <ul>
-    <% @order.jobs.each do |job| %>
-      <li><%= job.active %><%= link_to job.title, job %> - <%= job.employee.name %> - <%= number_to_currency(job.pay_rate) %></li>
-      <li><%= job.start_date %> - <%= job.end_date %> - <%= job.total_hours %></li>
-      <hr>
-    <% end %>
-    <%= link_to "Add Job", new_company_order_job_path(@company, @order) %>
-  </ul>
-  <% else %>
-  This order has currently has no active jobs. <%= link_to "Add Job", new_company_order_job_path(@company, @order) %>
-  <% end %>
-
-</div>
-</div>

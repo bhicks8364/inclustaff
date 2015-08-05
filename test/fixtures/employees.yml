@@ -10,6 +10,8 @@
 #  email        :string
 #  ssn          :string
 #  phone_number :string
+#  user_id      :integer
+#  deleted_at   :datetime
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

@@ -1,26 +1,29 @@
-<div class="row">
-  <div class="btn-group btn-group-justified" role="group" aria-label="...">
-  <div class="btn-group" role="group">
-    <%= link_to "View Company", @company, class: "btn btn-default" %>
-  </div>
-  <div class="btn-group" role="group">
-    <%= link_to "View Job", @job, class: "btn btn-default" %>
-  </div>
-  <div class="btn-group" role="group">
-    <%= link_to "View Shifts", employee_shifts_path(@employee), class: "btn btn-default" %>  </div>
-</div>
-  <h3><strong><%= @employee.name %></strong></h3>
 
-<% if @job != nil %>
-<h3><strong> <%= @job.title %>  </strong> | <small><%= @current_company %></small></h3> 
+
+
+
+<h3><strong> <%= @employee.name %>  </strong>  <small>   <span> <%= @job.title %>  -</span>  <%= @current_company.name %></small></h3> 
+
 <div class="btn-group" role="group" aria-label="...">
-  <%= link_to "View Company", @company, class: "btn btn-default" %>
-  <%= link_to "View Job", @job, class: "btn btn-default" %>
-  <%= link_to "View Shifts", employee_shifts_path(@employee), class: "btn btn-default" %>
+  <%= link_to_if(@current_user.admin?, "View Company", @current_company, class: "btn btn-default") %> 
+  <%= link_to_if(@current_user.id == @employee.user_id, "View Job", @job, class: "btn btn-default") %>
+  <%= link_to_if(@current_user.id == @employee.user_id, "View Shifts", { controller: "shifts", action: "index", employee_id: @employee.id }, class: "btn btn-default") %>
 
 </div>
-<% end %>
-</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -29,7 +32,7 @@
 
 
 
-  <div id="employee-shift-list" class="list-group pull-right">
+
   <h3 id="list-title"><strong>All Shifts:</strong></h3>
     <%= content_tag_for(:div, @shifts, class: "list-group-item list-group-item-info" ) do |shift| %>
 
@@ -45,20 +48,19 @@
         </p>
 
      <% end %>
-</div>
 
 
 
 
-<div id="employee-job-list" class="col-md-4">
+
+
   <ul>
   <% @employee.jobs.each do |job| %>
     <li><%= link_to job.title, job %></li>
   <% end %>
   </ul>
-</div>
 
-<hr>
+
 <%= link_to 'Edit', edit_employee_path(@employee), class: "btn btn-default"  %> |
 <%= link_to 'Back', employees_path, class: "btn btn-default"  %>
 

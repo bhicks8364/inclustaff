@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
   devise_for :users
-  devise_scope :user do
-    get "sign_in", to: "devise/sessions#new"
-    get "sign_out", to: "devise/sessions#new"
-    get "sign_in", to: "devise/sessions#new"
-    get "sign_in", to: "devise/sessions#new"
+  resources :users do
+    member do
+      patch :grant_editing
+    end
   end
+
   get  'dashboard' => 'dashboard#company_view'
   get  'timeclock' => 'dashboard#employee_view'
   

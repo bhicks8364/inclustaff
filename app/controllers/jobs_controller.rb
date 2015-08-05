@@ -1,16 +1,21 @@
 class JobsController < ApplicationController
   before_action :set_job, only: [:show, :edit, :update, :destroy]
+  # before_action :authenticate_user!
   # before_action :set_order
 
   # GET /jobs
   # GET /jobs.json
   def index
-    @jobs = Job.active.with_employee
+    @company = current_user.company if current_user.present?
+    @jobs = @company.jobs.active.with_employee
+    authorize @jobs
   end
   
   def archived
-    @archived_jobs = Job.inactive.with_employee
+    @company = current_user.company if current_user.present?
+    @archived_jobs = @company.jobs.inactive.with_employee
     @active_jobs = Job.active.with_employee
+    authorize @active_jobs
   end
 
   # GET /jobs/1
@@ -19,16 +24,20 @@ class JobsController < ApplicationController
     @employee = @job.employee
     @company = @job.order.company
     @current_shift = @job.shifts.clocked_in.last if @job.on_shift?
+    authorize @job
   end
 
   # GET /jobs/new
   def new
     if params[:order_id]
       @order = Order.find(params[:order_id])
+      @company = @order.company
       @job = @order.jobs.new
       # @employee = @job.build_employee
+      authorize @job
     else
       @job = Job.new
+      authorize @job
       # @employee = @job.build_employee
     end
     # @company = Company.find(params[:company_id])
@@ -37,21 +46,27 @@ class JobsController < ApplicationController
 
   # GET /jobs/1/edit
   def edit
+    @employees = Employee.all
+    @order = @job.order
     @employee = @job.employee
+    authorize @job
   end
 
   # POST /jobs
   # POST /jobs.json
   def create
+   
     if params[:order_id]
       @order = Order.find(params[:order_id])
       # @employee = Employee.create(employee_params)
       @job = @order.jobs.new(job_params)
+       authorize @job
       # @job.order = @order
       # @employee = @job.create_employee(employee_params)
     else
       # @employee = Employee.create(employee_params)
       @job = Job.new(job_params)
+       authorize @job
     end
     
     respond_to do |format|
@@ -68,6 +83,7 @@ class JobsController < ApplicationController
   # PATCH/PUT /jobs/1
   # PATCH/PUT /jobs/1.json
   def update
+    authorize @job
     respond_to do |format|
       if @job.update(job_params)
         format.html { redirect_to @job, notice: 'Job was successfully updated.' }
@@ -82,6 +98,7 @@ class JobsController < ApplicationController
   # DELETE /jobs/1
   # DELETE /jobs/1.json
   def destroy
+    authorize @job
     @job.destroy
     respond_to do |format|
       format.html { redirect_to jobs_url, notice: 'Job was successfully destroyed.' }

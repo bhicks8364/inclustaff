@@ -1,0 +1,102 @@
+<div class="admin-home">
+    <div class="dropdown">
+      <button id="dLabel" class="btn btn-default" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Admin Toolbox
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dLabel">
+          <li><%= link_to "Company Dashboard", dashboard_path %></li>
+          <li><%= link_to "Add New Department", new_order_path %></li>
+          <li><%= link_to "Add Employee", new_employee_path %></li>
+
+      </ul>
+    </div>
+    <div class="active-company-jobs pull-right">
+        <%= render 'jobs/active' %>
+
+    </div>
+    
+    
+    <%= div_for(@all_users) do |user| %>
+            <p><%= link_to user.name, user %> <small> | <%= user.role %></small></p>
+            <p class="text-muted"><%= user.email %> - <%= user.company.name %> | Can Edit? <%= user.can_edit? %></p>
+            
+        <% end %>
+
+
+
+    <%= div_for(@timesheets) do |timesheet| %>
+
+        <%= timesheet.shifts.last.time_out.end_of_week.strftime("%B %e, %Y") %> 
+          <%= timesheet.employee.name %> 
+
+     <% end %>
+  
+  
+  <div class="list-group">
+  <%= link_to "View Departments", orders_path, class: "list-group-item", type: "button" if policy(Order).index?  %>
+  </div>
+  Current payroll cost: <%= number_to_currency( @company.current_payroll_cost) %>
+    <div class="center">
+        
+        <h3><small>Admin Users</small></h3>
+        <%= div_for(@admin_users) do |user| %>
+            <p><%= link_to user.name, user %> <small> | <%= user.role %></small></p>
+            <p class="text-muted"><%= user.email %> - <%= user.company.name %></p>
+            
+        <% end %>
+        <h3><small>Manager Users</small></h3>
+        <%= div_for(@manager_users) do |user| %>
+            <p><%= link_to user.name, user %> <small> | <%= user.role %></small></p>
+            <p class="text-muted"><%= user.email %> - <%= user.company.name %></p>
+            
+        <% end %>
+        <h3><small>Payroll Users</small></h3>
+        <%= div_for(@payroll_users) do |user| %>
+            <p><%= link_to user.name, user %> <small> | <%= user.role %></small></p>
+            <p class="text-muted"><%= user.email %> - <%= user.company.name %></p>
+            
+        <% end %>
+        
+    </div>
+    
+    
+    <% if @clocked_in %>
+<%= render 'clocked_in_employees' %>
+<% end %>
+    
+    
+    
+        <!--TIMESHEETS FOR THE DEPARTMENTS THE CURRENT USER MANAGES-->
+
+    <% if @orders %>
+
+    <%= div_for(@orders, class: "well") do |order| %>
+
+        <strong><%= order.title %> - $ <%= order.pay_range %></strong>
+        <p>
+            <% if order.manager.present? %>
+           Dept. Manager: <%= link_to order.manager.name, order.manager %><br>
+           <% end %>
+          
+              <ul>
+                  <% order.timesheets.this_week.each do |timesheet| %>
+                      <li><%= timesheet.week_ending %> - <%= timesheet.employee.name %></li>
+                  <% end %>
+              </ul>
+         
+        </p>
+        <h5><strong>There are <%= order.jobs.active.count %> employees currently working in this department.</strong></h5>
+
+        <% end %>
+    <% end %>
+    
+    
+
+
+
+  
+        
+
+</div>
+

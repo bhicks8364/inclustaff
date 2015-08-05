@@ -11,18 +11,14 @@
     </div>
   <% end %>
 
-
-<div class="row">
-  <div id="new-employee-job">
-    <h4><strong>Employee Information</strong></h4>
-<%= f.collection_select :employee_id, Employee.all, :id, :name, prompt: true %>
-  </div>
-  <div id="new-job-form" class="pull-right">
         <h4><strong>Job Information</strong></h4>
+    <%= f.association :employee, prompt: "Select Employee", label: false %>
     <%= f.association :order, prompt: "Select Department", label: false %>
+    
     <%= f.input :title, placeholder: "Job Title" %>
     <%= f.input :description, placeholder: "Job Description" %>
     <%= f.input :start_date, html5: true, placeholder: "Select start date" %>
+    
     <div class="input-group">
       <div class="input-group-addon">$</div>
                 <%= f.input :pay_rate, as: :decimal, placeholder: "Pay Rate", label: false %>
@@ -30,8 +26,8 @@
     </div>
 
 
-  </div>
-</div>
+
+
 <div id="job-end-date">
     <h4><%= f.input :active %></h4>
     <%= f.input :end_date, html5: true, prompt: "Select end date" %>

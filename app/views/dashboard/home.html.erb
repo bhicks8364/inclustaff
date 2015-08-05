@@ -1,9 +1,59 @@
-<h1>Home Page</h1>
+<div id="home-page">
+    
+    
+<% if current_user.present? %>
 
-<ul>
-    <li><%= link_to "Company Dashboard", dashboard_path %></li>
-    <li><%= link_to "Employee Dashboard", dashboard_path %></li>
-</ul>
+    
+    
+    
+    <!--EMPLOYEE HOME PAGE VIEW-->
+    
+<% if user_signed_in? && current_user.employee? %>
+<%= render 'dashboard/employee' %>
+
+<%= link_to "Current Timesheet", @current_timesheet, class: "btn btn-default" %>
+
+
+<% end %>
+
+<% if user_signed_in? && current_user.admin? %>
+    <%= render 'dashboard/admin' %>
+<% end %>
+
+<% if user_signed_in? && current_user.manager? %>
+<%= render 'dashboard/manager' %>
+<% end %>
+
+
+
+
+
+
+
+
+
+
+
+<% else %>
+<!--NOT SIGNED IN HOME VIEW-->
+    <div class="jumbotron">
+        <div class="container">
+            <h1>Welcome to IncluStaff</h1>
+            <h3>FROM THE FIRST PUNCH TO THE FINAL INVOICE, INCLUSTAFF DOES IT ALL.</h3>
+            <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+            <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+        </div>
+    </div>
+
+<% end %>
+
+    
+    
+    
+    
+    
+
+</div>
 
 
 

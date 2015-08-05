@@ -1,0 +1,60 @@
+<h3><%= @user.name %>'s Profile</h3>
+        <h1><strong><%= @user.name %></strong></h1>
+          <h3><%= @user.email %>     | <span id="user-role">  <strong><%= @user.can_edit %></span></strong> </h3> 
+          <h6>User Updated:<span id="updated-at"> <%= time_ago_in_words(@user.updated_at) %> ago</span></h6>
+          
+
+<hr>
+  <p><button type="button" class="btn btn-default btn-xs"><%= link_to "Allow to Edit", grant_editing_user_path(@user), method: :patch, remote: true %></button>
+
+<!-- Large modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Company Information</button>
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+        <address>
+          <strong><%= link_to @company.name, @company %></strong><br>
+          <%= @company.address %><br>
+          <%= @company.city %>, <%= @company.state %> <%= @company.zipcode %><br>
+          <abbr title="Phone">P:</abbr> (123) 456-7890
+        </address>
+    
+        <address>
+          <strong><%= @company.contact_name %></strong><br>
+          <a href="mailto:#"><%= @company.contact_email %></a>
+        </address>
+    </div>
+  </div>
+</div>
+
+<!--NAV TABS-->
+<div class='profile-nav'>
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
+    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
+    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
+    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+  </ul>
+  
+  <div class="tab-content">
+  <div role="tabpanel" class="tab-pane fade in active" id="home">
+    <h3><small>Home</small></h3>
+
+    <%= render "employees/modal" %>
+
+    
+  </div>
+  <div role="tabpanel" class="tab-pane fade" id="profile">
+    <h3><small>Profile</small></h3>
+  </div>
+  <div role="tabpanel" class="tab-pane fade" id="messages">...</div>
+  <div role="tabpanel" class="tab-pane fade" id="settings">...</div>
+</div>
+  
+  
+  
+  
+</div>

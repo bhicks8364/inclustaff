@@ -9,13 +9,12 @@
  * compiled file so the styles you add here take precedence over styles defined in any styles
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
- *= require jquery-ui/datepicker
- *= require jquery/clockpicker.min
  *= require dataTables/bootstrap/2/jquery.dataTables.bootstrap
- *= require custom
- *= require anchors
- *= require users
+ *= require main
+ *= require table_styles
+
  */
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
 

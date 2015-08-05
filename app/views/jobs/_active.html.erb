@@ -1,10 +1,8 @@
-<div class="well pull-right">
-<% if @active_jobs.any? %>
+<div class="active-jobs">
+
 <h4>Active Jobs</h4>
-<%= div_for(@active_jobs) do |job| %>
-<dl>
-  <dt><%= link_to job.employee.name, job.employee %></dt>
-  <dt><small><%= link_to job.title, job %></small></dt>
+<%= content_tag_for(:dl, @active_jobs) do |job| %>
+  <dt><%= link_to job.employee.name, job.employee %> | <%= link_to job.title, job %></dt>
   <dd>
   <small><strong>Start Date:</strong> <%= job.start_date %> | <strong>Pay Rate:</strong> <%= number_to_currency(job.pay_rate) %></small></dd>
   <% if job.on_shift? %> <dd> <p class="bg-success"><span class="glyphicon glyphicon-time" aria-hidden="true"></span><strong><small>     Clocked In
@@ -20,9 +18,8 @@
   </dd>
   <% end %>
   <dd><strong> <small>Pay this week:  </small></strong><%= job.current_week_pay ? number_to_currency(job.current_week_pay) : "$0.00" %><br></dd>
-<hr>
   <% end %>
-</dl>
-<% end %>
+
+
 
 </div>

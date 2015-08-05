@@ -1,34 +1,48 @@
-<header class="navbar <%= content_for?(:navbar_style) ? yield(:navbar_style) : "navbar-default" %> navbar-static-top" role="banner">
+<nav class="navbar navbar-inverse">
+<header class="navbar <%= content_for?(:navbar_style) ? yield(:navbar_style) : "navbar-inverse" %> navbar-static-top" role="banner">
   <div class="container">
+
     <div class="navbar-header">
+      <%= link_to root_url, class: "navbar-brand" do %>
+       <%= image_tag("incluStaff_logo.png", alt: "Brand") %>
+      <% end %>
+
       <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <%= link_to root_url, class: "navbar-brand" do %>
-        IncluStaff
-      <% end %>
+       
+      
+      
     </div>
 
     <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
       <ul class="nav navbar-nav">
-        <li><small><%= link_to "Add Employee", new_employee_path, class: "btn btn-default" %></small></li>
-        <li><%= link_to "Employees", employees_path %></li>
-        <li><%= link_to "Timesheets", timesheets_path  %></li>
-        <li><%= link_to "Jobs", jobs_path  %></li>
+      
+        
+        <li><%= link_to "Employees", employees_path if policy(Employee).index? %></li>
+        <li><%= link_to "Timesheets", timesheets_path if policy(Timesheet).index? %></li>
+        <li><%= link_to "Jobs", jobs_path if policy(Job).index? %></li>
+        <li><%= link_to "Companies", companies_path if policy(Company).index? %></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
 
           
-          <li><%= link_to "Companies", companies_path %></li>
-          <li><%= link_to "Departments", orders_path  %></li>
+          
+          
+          
+          
+          
+          
+          
           
           <% if user_signed_in? %>
           <li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
+          <li><%= link_to current_user.email, edit_user_registration_path %></li>
           <% else %>
-          <li><%= link_to "Sign In", sign_in_path %></li>
+          <li><%= link_to "Sign In", new_user_session_path %></li>
           <li><%= link_to "Sign Up", new_user_registration_path %></li>
           <% end %>
           
@@ -38,3 +52,4 @@
     </nav>
   </div>
 </header>
+</nav>

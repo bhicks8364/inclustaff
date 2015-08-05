@@ -1,44 +1,38 @@
-<h1>Company Dashboard</h1>
-<h2><%= @company.name %></h2>
-<hr>
+<div id="company-view">
+    <h1><%= @company.name %>'s Dashboard</h1>
+    <p><%= current_user.name %> | <%= link_to "Profile", current_user, class: "button" %></p>
+    Current payroll cost: <%= number_to_currency( @company.current_payroll_cost) %>
+    <div class="center">
+        <h3><small>Admin Users</small></h3>
+        <%= div_for(@admin_users) do |user| %>
+        
+            <p><%= link_to user.name, user %> <small> | <%= user.role %></small></p>
+            <p class="text-muted"><%= user.email %> - <%= user.company.name %></p>
+            
+            
+        <% end %>
+        <h3><small>Manager Users</small></h3>
+        <%= div_for(@manager_users) do |user| %>
+            <p><%= link_to user.name, user %> <small> | <%= user.role %></small></p>
+            <p class="text-muted"><%= user.email %> - <%= user.company.name %></p>
 
-<%= render 'timesheets/table' %>
+            
+        <% end %>
+        <h3><small>Payroll Users</small></h3>
+        <%= div_for(@payroll_users) do |user| %>
+            <p><%= link_to user.name, user %> <small> | <%= user.role %></small></p>
+            <p class="text-muted"><%= user.email %> - <%= user.company.name %></p>
 
-<hr>
+            
+        <% end %>
+        
 
-<table id="current-timesheets" class="table table-bordered" cellspacing="0.5" width="85%%">
-  <thead>
-    <tr>
-      <th>Status</th>
-      <th>Employee</th>
-      <th>Title</th>
-      <th>Week</th>
-      <th>Last Shift</th>
-      <th>Pay rate</th> 
-      <th>Reg Hours</th>
-      <th>OT Hours</th>
-      <th>Gross Pay</th>
-
-    </tr>
-  </thead>
-
-  <tbody>
-    <%= content_tag_for(:tr, @last_week) do |t| %>
-        <td><% if t.shifts.clocked_in.any? %> <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-            <% else %>
-            <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
-            <% end %>
-        </td>
-        <td><%= link_to t.employee.name, t.employee %></td>
-        <td><%= link_to t.job.title, t.job %></td>
-        <td><%= t.week %></td>
-        <td><%= t.shifts.last.time_in.strftime("%B %e, %Y") %></td>
-        <td><%= number_to_currency(t.pay_rate) %></td>
-        <td><%= t.reg_hours.round(2) %></td>
-        <td><%= t.ot_hours.round(2) %></td>
-        <td><%= number_to_currency(t.gross_pay) %></td>
-
-    <% end %>
-  
-  </tbody>
-</table>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+</div>

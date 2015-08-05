@@ -20,27 +20,27 @@ $(document).ready(function() {
 } );
 
 
-$(document).ready(function() {
+// $(document).ready(function() {
 
-    $('#job_start_date').datepicker({
-        minDate: 0, 
-        maxDate: "+1M +10D", 
-        dateFormat: "yy-mm-dd"
+//     $('#job_start_date').datepicker({
+//         minDate: 0, 
+//         maxDate: "+1M +10D", 
+//         dateFormat: "yy-mm-dd"
         
-    });
-    $('#job_end_date').datepicker({
-        minDate: 0, 
-        maxDate: "+1M +10D", 
-        dateFormat: "yy-mm-dd"
+//     });
+//     $('#job_end_date').datepicker({
+//         minDate: 0, 
+//         maxDate: "+1M +10D", 
+//         dateFormat: "yy-mm-dd"
         
-    });
+//     });
     
-    $('#order_needed_by').datepicker({
-        minDate: 0, 
-        maxDate: "+1M +10D", 
-        dateFormat: "yy-mm-dd"
+//     $('#order_needed_by').datepicker({
+//         minDate: 0, 
+//         maxDate: "+1M +10D", 
+//         dateFormat: "yy-mm-dd"
         
-    });
+//     });
     
     
     
@@ -52,4 +52,4 @@ $(document).ready(function() {
         
         
 
-});
+// });

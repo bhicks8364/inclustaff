@@ -13,6 +13,8 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  title         :string
+#  deleted_at    :datetime
+#  manager_id    :integer
 #
 
 class Order < ActiveRecord::Base
@@ -20,7 +22,7 @@ class Order < ActiveRecord::Base
   has_many :employees, :through => :jobs
   has_many :timesheets, :through => :jobs
   belongs_to :company, inverse_of: :orders
-  
+  belongs_to :manager, -> { where role: "Manager" }, class_name: "User"
   validates_associated :company
   validates :title,  presence: true
   

@@ -13,6 +13,7 @@
 #  state        :string
 #  earnings     :decimal(, )
 #  timesheet_id :integer
+#  deleted_at   :datetime
 #
 
 require 'test_helper'

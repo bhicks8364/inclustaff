@@ -13,6 +13,8 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  title         :string
+#  deleted_at    :datetime
+#  manager_id    :integer
 #
 
 require 'test_helper'

@@ -2,12 +2,12 @@
 // # All this logic will automatically be available in application.js.
 // # You can use CoffeeScript in this file: http://coffeescript.org/
 $(document).ready(function() {
-    $('#companies-table').dataTable( {
+    $('#myTable').dataTable( {
         
-        "paging":   true,
-        "ordering": true,
-        "info":     true,
-        "jQueryUI": true,
+        // "paging":   true,
+        // "ordering": true,
+        // "info":     true,
+        // "jQueryUI": true,
         
     } );
     

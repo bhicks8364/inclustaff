@@ -4,7 +4,8 @@
 <%= simple_form_for [@job, @shift] do |f| %>
       <hr>
 
-<%= f.association :job %>
+
+    <%=  f.association :job, label_method: :title, value_method: :id, include_blank: false, disabled: true %>
 
 
 <div class="well col-md-8">

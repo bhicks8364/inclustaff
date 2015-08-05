@@ -1,54 +1,104 @@
-
+<div id="company-show-page">
     <h1><%= @company.name %></h1>
 
-<div class="row"> 
+      
+  
+  <div class='company-profile-nav'>
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Company Information</a></li>
+    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Company Contacts</a></li>
+    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Current Employees</a></li>
+    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Departments</a></li>
+  </ul>
+  
+  <div class="tab-content">
+  <div role="tabpanel" class="tab-pane fade in active" id="home">
+    <h3><small>Company Information</small></h3>
+    <div class="well">
+    <address>
+      <strong><%= link_to @company.name, @company %></strong><br>
+      <%= @company.address %><br>
+      <%= @company.city %>, <%= @company.state %> <%= @company.zipcode %><br>
+      <abbr title="Phone">P:</abbr> (123) 456-7890
+    </address>
+
+    <address>
+      <strong><%= @company.contact_name %></strong><br>
+      <a href="mailto:#"><%= @company.contact_email %></a>
+    </address>
+
+  </div>
+
+    
+
+    
+  </div>
+  <div role="tabpanel" class="tab-pane fade" id="profile">
+    <h3><small>Company Contacts</small></h3>
+        <%= div_for(@all_users, class:"well") do |user| %>
+            <p><%= link_to user.name, user %> <small> |  <% if user.can_edit? %> <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> <% end %><%= user.role %></small></p>
+            <p class="text-muted"><%= user.email %> - <%= user.company.name %> </p>
+            
+        <% end %>
+  </div>
+  <div role="tabpanel" class="tab-pane fade" id="messages">
+    <h3><small>Current Employees</small></h3>
+        <%= div_for(@employee_users, class:"well") do |user| %>
+            <p><%= link_to user.name, user %> <small> |  <% if user.can_edit? %> <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> <% end %><%= user.role %></small></p>
+            <p class="text-muted"><%= user.email %> - <%= user.company.name %> </p>
+            
+        <% end %>
+  </div>
+  <div role="tabpanel" class="tab-pane fade" id="settings">
+    
+  </div>
+</div>
+  
+  
+  
+  
+</div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+<% if current_user.not_an_employee? %>
+    
+    
+
 <% if @clocked_in.any? %>
 <%= render 'clocked_in_employees' %>
 <% end %>
 
 
-
-<!--TODAY-->
-<!--<% if @today.any? %>-->
-<!--<div class="panel panel-default col-md-4">-->
-<!--  <div class="panel-heading"> <span class="glyphicon glyphicon-time" aria-hidden="true"></span><strong>   Worked Today (<%= Date.today.strftime("%m/%d/%y") %>)</strong></div>-->
-<!--  <div class="panel-body">-->
-
-<!--  <%= content_tag_for(:ul, @today, class: "list-group") do |shift| %>-->
-<!--    <li class="list-group-item"><strong><%= link_to shift.employee.name, shift.employee %></strong> <small> - <%= link_to shift.job.title, shift.job %></small></li>-->
-<!--    <li class="list-group-item"><strong>In:</strong><%= shift.time_in.strftime("%I:%M %p") %><strong>  Out:</strong><%= shift.time_out.strftime("%I:%M %p") %> </li>-->
-<!--    <li class="list-group-item"><strong>Hours: <%= shift.time_worked %></strong></li>-->
-<!--<% end %>-->
-<!--  </div>-->
-<!--</div>-->
-<!--<% end %>-->
-
-
-<!--YESTERDAY-->
-<!--<% if @yesterday.any? %>-->
-<!--<div class="panel panel-default col-md-4">-->
-<!--  <div class="panel-heading"> <span class="glyphicon glyphicon-time" aria-hidden="true"></span><strong>   Worked Yesterday (<%= Date.yesterday.strftime("%m/%d/%y") %>)</strong></div>-->
-<!--  <div class="panel-body">-->
-
-
-<!--  <%= content_tag_for(:ul, @yesterday, class: "list-group") do |shift| %>-->
-<!--    <li class="list-group-item"><strong><%= link_to shift.employee.name, shift.employee %></strong> <small> - <%= link_to shift.job.title, shift.job %></small></li>-->
-<!--    <li class="list-group-item"><strong>In:</strong><%= shift.time_in.strftime("%I:%M %p") %><strong>  Out:</strong><%= shift.time_out.strftime("%I:%M %p") %> </li>-->
-<!--    <li class="list-group-item"><strong>Hours: <%= shift.time_worked %></strong></li>-->
-<!--<% end %>-->
-<!--  </div>-->
-<!--</div>-->
-<!--<% end %>-->
-
 <!--SIDEBAR - COMPANY JOBS-->
+<div class="active-company-jobs">
 <%= render 'jobs/active' %>
-
 </div>
 
 
 
-<div class="row">
+
+
+
+
+<% end %>
+
+
+
+
+
+
+
 
 
 
 </div>
+

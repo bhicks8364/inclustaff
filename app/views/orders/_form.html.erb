@@ -1,13 +1,13 @@
 <%= simple_form_for [@company, @order] do |f| %>
-  <div id="new-company-order-form" class="col-md-4">
-        <h4><strong>Company Information</strong></h4>
+
+        
   <% if @company.nil? %>
     <%= f.association :company, collection: Company.all, prompt: "Choose a Company" %>
   <% else %>
+
     
-    <%= f.association :company, disabled: true %>
-    
-  <div id="company-contact-well" class="well">
+  <div id="company-contact-well" class="well well-sm pull-right">
+    <h4><strong>Company Information</strong></h4>
     <address>
       <strong><%= link_to @company.name, @company %></strong><br>
       <%= @company.address %><br>
@@ -21,17 +21,15 @@
   </div>
   <% end %>
 
-     
-  </div>
-  <div id="new-job-form" class="col-md-4">
-    <h3>Department</h3>
-    <%= f.input :title, placeholder: "Department Name" %>
-    <%= f.input :pay_range, selected: [ "Hourly" ], collection: [ "Hourly", "Salary", "Hourly + Commission"], label: "Pay Type" %>
-    <%= f.input :notes, label: "Additional Payroll Information", placeholder: "Vacation & holiday pay, bonus structure, shift differentials, etc..." %>
+    <h4><strong>Department Information</strong></h4>
+    <%= f.input :title, placeholder: "Enter Department Name", label: false %>
+    <%= f.association :manager, collection: @company.manager_users, prompt: "Choose a Manager", include_blank: false, label: false %>
+    <%= f.input :pay_range, collection: [ "Hourly", "Salary", "Hourly + Commission"], prompt: " Select Pay Type", label: false %>
+    <%= f.input :notes, label: "Additional Payroll Information", placeholder: "Vacation & holiday pay, bonus structure, shift differentials, etc...", label: false %>
     <%= f.input :urgent, as: :boolean, label: "Paid bi-weekly?" %>
     <%= f.input :active, as: :boolean %>
     <%= f.submit %>
     
-  </div>
+
 <% end %>
  

@@ -1,137 +1,141 @@
-#employee-shift-list {
-  width: 30%;
-  border-style: solid;
-  border-width: 2px;
-  border-color: #ccc;
-  background-color: #669999;
-}
-#employee-shift-list a {
-    text-decoration: none;
-}
-#employee-shift-list > p{
-    background-color: #669999;
+
+
+/*#employee-shift-list {*/
+/*  width: 30%;*/
+/*  border-style: solid;*/
+/*  border-width: 2px;*/
+/*  border-color: #ccc;*/
+/*  background-color: #669999;*/
+/*}*/
+/*#employee-shift-list a {*/
+/*    text-decoration: none;*/
+/*}*/
+/*#employee-shift-list > p{*/
+/*    background-color: #669999;*/
   
-}
-#list-title {
-  text-align: center;
-}
+/*}*/
+/*#list-title {*/
+/*  text-align: center;*/
+/*}*/
 
-#new-employee-job {
-  width: 40%;
-  border-style: solid;
-  border-width: 2px;
-  border-color: #669999;
-  background-color: #ccc;
-  padding: 10px;
-  display: inline-block;
-  position: absolute;
-  border-radius: 4px;
-}
-
-#new-job-form {
-  width: 40%;
-  border-style: solid;
-  border-width: 2px;
-  border-color: #669999;
-  background-color: #ccc;
-  padding: 10px;
-  margin: 8px;
-  border-radius: 4px;
-  
-}
-#job-end-date {
-  width: 40%;
-  border-style: solid;
-  border-width: 2px;
-  border-color: #888;
-  background-color: #ccc;
-  padding: 10px;
-  margin: 8px;
-}
-#job-end-date > div.form-group.boolean.optional.job_active > div h4 {
-  position: center;
-}
-
-#company-contact-well {
-  width: 100%;
-  max-width: 250px;
-  background-color: rgba(128, 201, 230, 0.39);
-  margin: 8px;
-  padding: 5px;
-  text-align: center;
-}
-#new-company-order-form {
-  width: 30%;
-  border-style: solid;
-  border-width: 2px;
-  border-color: #669999;
-  background-color: #ccc;
-  padding: 8px;
-  margin: 8px;
-}
-
-.ui-accordion {
-  padding: 5px;
-  max-width: 400px;
-}
-
-#clock-status {
-  padding: 5px;
-  max-width: 300px;
-  text-align: center;
-  background-color: rgba(124, 245, 74, 0.53);
-  border: solid 2px;
-  border-color: rgba(124, 245, 74, 0.88);
-  
-}
-
-#edit-order-buttons {
-  margin: -2px;
-}
-
-.panel {
-  max-width: 410px;
-}
-
-#order-nav li {
+/*#new-employee-job {*/
+  /*width: 50%;*/
+  /*border-style: solid;*/
+  /*border-width: 1px;*/
+  /*border-color: #669999;*/
   /*background-color: #ccc;*/
-  margin-right: 5px;
+  /*padding: 10px;*/
+  /*display: inline-block;*/
+  /*position: absolute;*/
+  /*border-radius: 4px;*/
+  /*margin-left: 20px;*/
+/*}*/
+
+/*#new-job-form {*/
+/*  width: 40%;*/
+/*  border-style: solid;*/
+/*  border-width: 2px;*/
+/*  border-color: #669999;*/
+/*  background-color: #ccc;*/
+/*  padding: 10px;*/
+/*  margin: 8px;*/
+/*  border-radius: 4px;*/
+  
+/*}*/
+/*#job-end-date {*/
+/*  width: 40%;*/
+/*  border-style: solid;*/
+/*  border-width: 2px;*/
+/*  border-color: #888;*/
+/*  background-color: #ccc;*/
+/*  padding: 10px;*/
+/*  margin: 8px;*/
+/*}*/
+/*#job-end-date > div.form-group.boolean.optional.job_active > div h4 {*/
+/*  position: center;*/
+/*}*/
+
+/*#company-contact-well {*/
+/*  width: 100%;*/
+/*  max-width: 250px;*/
+/*  background-color: rgba(128, 201, 230, 0.39);*/
+/*  margin: 8px;*/
+/*  padding: 5px;*/
+/*  text-align: center;*/
+/*}*/
+/*#new-company-order-form {*/
+/*  width: 30%;*/
+/*  border-style: solid;*/
+/*  border-width: 2px;*/
+/*  border-color: #669999;*/
+/*  background-color: #ccc;*/
+/*  padding: 8px;*/
+/*  margin: 8px;*/
+/*}*/
+
+/*.ui-accordion {*/
+/*  padding: 5px;*/
+/*  max-width: 400px;*/
+/*}*/
+
+/*#clock-status {*/
+/*  padding: 5px;*/
+/*  max-width: 300px;*/
+/*  text-align: center;*/
+/*  background-color: rgba(124, 245, 74, 0.53);*/
+/*  border: solid 2px;*/
+/*  border-color: rgba(124, 245, 74, 0.88);*/
+  
+/*}*/
+
+/*#edit-order-buttons {*/
+/*  margin: -2px;*/
+/*}*/
+
+/*.panel {*/
+/*  max-width: 410px;*/
+/*}*/
+
+/*#order-nav li {*/
+  /*background-color: #ccc;*/
+/*  margin-right: 5px;*/
   /*border: solid .75px;*/
   /*border-color: black;*/
-}
-#order-nav .active {
+/*}*/
+/*#order-nav .active {*/
   /*background-color: #ccc;*/
-  padding-bottom: 5px;
+/*  padding-bottom: 5px;*/
 
-}
+/*}*/
 
-.list-group {
-  padding: 5px;
-  padding-top: 8px;
-  margin-left: 8px;
+/*.list-group {*/
+/*  padding: 5px;*/
+/*  padding-top: 8px;*/
+/*  margin-left: 8px;*/
 
-}
+/*}*/
 
-.list-group-item-heading {
-  margin-top: 5px;
-  margin-right: 3px;
-  padding-top: 5px;
-  width: 100%;
-}
-.list-group-item-text {
-  margin-top: 5px;
-}
+/*.list-group-item-heading {*/
+/*  margin-top: 5px;*/
+/*  margin-right: 3px;*/
+/*  padding-top: 5px;*/
+/*  width: 100%;*/
+/*}*/
+/*.list-group-item-text {*/
+/*  margin-top: 5px;*/
+/*}*/
 
-.btn .btn-default {
-  margin-top: 5px;
-}
-.tab-pane {
+/*.btn .btn-default {*/
+/*  margin-top: 5px;*/
+/*}*/
+/*.tab-pane {*/
   /*margin-top: 5px;*/
   /*margin-right: 3px;*/
-  padding: 8px;
+/*  padding: 8px;*/
   /*width: 100%;*/
-}
-
-
+/*}*/
+/*#new_employee {*/
+  /*background-color: black;*/
+/*}*/
 
 

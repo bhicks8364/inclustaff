@@ -13,6 +13,7 @@
 #  state        :string
 #  earnings     :decimal(, )
 #  timesheet_id :integer
+#  deleted_at   :datetime
 #
 
 class Shift < ActiveRecord::Base
@@ -28,19 +29,21 @@ class Shift < ActiveRecord::Base
     # has_one :order, through: :job
     # has_one :company, through: :order
     
-    validates_associated :employee
+    # validates_associated :employee
     validates_associated :job
     validates :job_id, presence: true
-    validates :employee_id, presence: true
+    # validates :employee_id, presence: true
     validates :time_in, presence: true
     
     delegate :pay_rate, to: :job
+    delegate :employee, to: :job
 
     
     accepts_nested_attributes_for :job
     
     after_save :update_timesheet!
-    before_save :set_timesheet, :calculate_time, :reg_earnings
+    before_save :set_timesheet, :calculate_time, :reg_earnings, :set_employee
+    
     after_initialize :defaults
     
     
@@ -50,13 +53,16 @@ class Shift < ActiveRecord::Base
             self.state = "clocked_in"
             self.time_out = self.time_in
             self.earnings = 0.00
+            
         end
     end
     
     def set_timesheet
-        self.timesheet = Timesheet.find_or_create_by(job_id: self.job_id, week: self.time_in.to_datetime.cweek) if self.timesheet.nil?
+        self.timesheet = Timesheet.find_or_create_by(job_id: self.job_id, week: self.time_in.to_datetime.cweek)
     end
-    
+    def set_employee
+        self.job.employee.id = self.employee_id
+    end
     
     def employee_name
         self.employee.name

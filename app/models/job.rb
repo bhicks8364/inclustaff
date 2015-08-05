@@ -13,6 +13,7 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  active      :boolean
+#  deleted_at  :datetime
 #
 
 class Job < ActiveRecord::Base
@@ -24,6 +25,8 @@ class Job < ActiveRecord::Base
     has_one :current_shift,-> { where state: "clocked_in" }, class_name: 'Shift'
     
     accepts_nested_attributes_for :employee
+    
+    delegate :manager, to: :order
     
     include ArelHelpers::ArelTable
     
@@ -42,6 +45,7 @@ class Job < ActiveRecord::Base
     scope :inactive, -> { where(active: false)}
     scope :with_employee, ->  { includes(:employee) }
     scope :on_shift, -> { joins(:shifts).merge(Shift.clocked_in)}
+    scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.this_week)}
     scope :worked_today, -> { joins(:shifts).merge(Shift.in_today)}
     scope :worked_yesterday, -> { joins(:shifts).merge(Shift.in_yesterday)}
     scope :worked_last_week, -> { joins(:timesheets).where("timesheets.week <= ?", Date.today.cweek).group("jobs.id") }

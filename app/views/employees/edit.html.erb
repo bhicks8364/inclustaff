@@ -1,6 +1,32 @@
-<h1>Editing Employee</h1>
+<h1>Edit Employee Information </h1>
 
-<%= render 'form' %>
+<%= simple_form_for(@employee) do |f| %>
+  <% if @employee.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@employee.errors.count, "error") %> prohibited this employee from being saved:</h2>
+
+      <ul>
+      <% @employee.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="well">
+    <%= f.input :first_name, required: true, autofocus: true, placeholder: "First Name" %>
+    <%= f.input :last_name, required: true, placeholder: "Last Name" %>
+    <%= f.input :phone_number, as: :tel, required: true, placeholder: "ex. 555-555-5555" %>
+    <%= f.input :ssn, required: true, maxlength: 4, label: "Social Security Number", placeholder: "Last 4 only" %>
+
+  </div>
+  <hr>
+
+
+
+    <%= f.submit %>
+
+<% end %>
 
 <%= link_to 'Show', @employee %> |
 <%= link_to 'Back', employees_path %>

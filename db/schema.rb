@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150729182421) do
+ActiveRecord::Schema.define(version: 20150803192046) do
 
   create_table "companies", force: :cascade do |t|
     t.string   "name"
@@ -35,9 +35,13 @@ ActiveRecord::Schema.define(version: 20150729182421) do
     t.string   "email"
     t.string   "ssn"
     t.string   "phone_number"
+    t.integer  "user_id"
+    t.datetime "deleted_at"
   end
 
+  add_index "employees", ["deleted_at"], name: "index_employees_on_deleted_at"
   add_index "employees", ["email"], name: "index_employees_on_email"
+  add_index "employees", ["user_id"], name: "index_employees_on_user_id"
 
   create_table "jobs", force: :cascade do |t|
     t.integer  "employee_id"
@@ -50,7 +54,10 @@ ActiveRecord::Schema.define(version: 20150729182421) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.boolean  "active"
+    t.datetime "deleted_at"
   end
+
+  add_index "jobs", ["deleted_at"], name: "index_jobs_on_deleted_at"
 
   create_table "orders", force: :cascade do |t|
     t.integer  "company_id"
@@ -63,7 +70,12 @@ ActiveRecord::Schema.define(version: 20150729182421) do
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.string   "title"
+    t.datetime "deleted_at"
+    t.integer  "manager_id"
   end
+
+  add_index "orders", ["deleted_at"], name: "index_orders_on_deleted_at"
+  add_index "orders", ["manager_id"], name: "index_orders_on_manager_id"
 
   create_table "shifts", force: :cascade do |t|
     t.datetime "time_in"
@@ -76,8 +88,10 @@ ActiveRecord::Schema.define(version: 20150729182421) do
     t.string   "state"
     t.decimal  "earnings"
     t.integer  "timesheet_id"
+    t.datetime "deleted_at"
   end
 
+  add_index "shifts", ["deleted_at"], name: "index_shifts_on_deleted_at"
   add_index "shifts", ["job_id"], name: "index_shifts_on_job_id"
   add_index "shifts", ["timesheet_id"], name: "index_shifts_on_timesheet_id"
 
@@ -89,8 +103,10 @@ ActiveRecord::Schema.define(version: 20150729182421) do
     t.decimal  "gross_pay"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
   end
 
+  add_index "timesheets", ["deleted_at"], name: "index_timesheets_on_deleted_at"
   add_index "timesheets", ["job_id"], name: "index_timesheets_on_job_id"
 
   create_table "users", force: :cascade do |t|
@@ -107,8 +123,15 @@ ActiveRecord::Schema.define(version: 20150729182421) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "role"
+    t.integer  "company_id"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.datetime "deleted_at"
+    t.boolean  "can_edit"
   end
 
+  add_index "users", ["company_id"], name: "index_users_on_company_id"
+  add_index "users", ["deleted_at"], name: "index_users_on_deleted_at"
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   add_index "users", ["role"], name: "index_users_on_role"

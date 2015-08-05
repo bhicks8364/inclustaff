@@ -13,6 +13,7 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  active      :boolean
+#  deleted_at  :datetime
 #
 
 require 'test_helper'

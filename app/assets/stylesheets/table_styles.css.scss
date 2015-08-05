@@ -1,0 +1,55 @@
+#timesheets > thead {
+  background-color: #222;
+  border-bottom: solid 3px rgba(18, 19, 29, 0.84);
+  th {
+    color: white;
+    border: solid 1px rgba(18, 19, 29, 0.64);
+    // padding: 1px;
+    padding: 3px;
+
+    text-align: center;
+  }
+  
+}
+.table > tbody > tr > td {
+    border: solid 1px black;
+    padding: 3px;
+    background-color: #D5D9DC;
+    // padding-right: 5px;
+    text-align: left;
+  }
+.table > tbody > tr > td > a {
+  padding: 3px;
+  margin: auto;
+  color: #182C46;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+
+
+.table > thead  {
+ 
+  tr {
+    background-color: #222;
+    border-bottom: solid 3px rgba(18, 19, 29, 0.84);
+    
+  }
+  th {
+    color: white;
+    border: solid 1px rgba(18, 19, 29, 0.64);
+    // padding: 1px;
+    padding: 3px;
+
+    text-align: center;
+  }
+  
+}
+
+#dataTable {
+  border: solid 3px rgba(82, 118, 142, 0.74);
+  background-color: rgba(82, 118, 142, 0.54);
+  overflow: auto;
+  padding: 8px;
+}
+
