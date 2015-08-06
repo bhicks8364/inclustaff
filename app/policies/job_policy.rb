@@ -11,8 +11,9 @@ class JobPolicy < ApplicationPolicy
     
     def show?
         scope.where(:id => job.id).exists?
-        return true if user.present? && user.not_an_employee?
-        return true if user.employee.id == @record.employee_id && user.employee?
+        return true if user.admin? || user.payroll?
+        return true if user.manager? && job.order.manager_id == user.id
+        return true if user.employee.id == job.employee_id && user.employee?
     end
     
     def create?

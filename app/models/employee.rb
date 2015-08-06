@@ -31,6 +31,9 @@ class Employee < ActiveRecord::Base
   delegate :company, to: :user
   before_save :set_user_info
   
+  
+
+  
   # VALIDATIONS
   # validates :first_name,  presence: true, length: { maximum: 20 }
   # validates :last_name,  presence: true, length: { maximum: 20 }
@@ -62,6 +65,14 @@ class Employee < ActiveRecord::Base
     end
   end
   
+  def clocked_in?
+    if self.shifts.clocked_in.any?
+      true
+    else
+      false
+    end
+  end
+  
   def pay_rate
     self.current_job.pay_rate
   end
@@ -80,8 +91,8 @@ class Employee < ActiveRecord::Base
 
     
   def ytd_gross_pay
-    if self.timesheets.any?
-      self.timesheets.sum(:gross_pay)
+    if self.timesheets.by_year.any?
+      self.timesheets.by_year.sum(:gross_pay)
     else
       0
     end

@@ -2,7 +2,7 @@
     
     <%=
    link_to_if(@current_user.nil?, "Login", { controller: "sessions", action: "new" }) do
-     link_to(@current_user.employee?, { controller: "employees", action: "show", id: @employee.id })
+     link_to(@current_user.employee?, { controller: "dashboard", action: "employee_view", id: @employee.id })
     end %>
     
     

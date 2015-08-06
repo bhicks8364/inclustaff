@@ -6,8 +6,9 @@ class EmployeePolicy < ApplicationPolicy
     
     def show?
         scope.where(:id => employee.id).exists?
-        return true if user.present? && user.not_an_employee?
-        return true if user.id == employee.user_id && user.employee?
+        return true if user.admin?
+        return true if user.manager?
+        return true if user.present? && user.id == employee.user_id 
         
     end
     

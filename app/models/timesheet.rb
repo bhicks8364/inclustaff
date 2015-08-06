@@ -35,7 +35,11 @@ class Timesheet < ActiveRecord::Base
         where(week: Date.today.cweek - 1)
     }
     
+    after_save :update_company_balance!
     
+    def update_company_balance!
+        self.company.set_payroll_cost!
+    end
     
     
     
@@ -62,8 +66,7 @@ class Timesheet < ActiveRecord::Base
     
     
     
-    # scope :underutilized, -> { where('total_hours < 40') }
-    # scope :over_40, -> { where('total_hours > 40') }
+    
 
     
     

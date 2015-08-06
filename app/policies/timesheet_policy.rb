@@ -27,7 +27,7 @@ class TimesheetPolicy < ApplicationPolicy
         create?
     end
     def update?
-        # user.not_an_employee?
+        user.admin?
     end
     
     def edit?

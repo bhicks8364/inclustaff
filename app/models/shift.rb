@@ -20,11 +20,21 @@ class Shift < ActiveRecord::Base
     extend SimpleCalendar
     has_calendar :attribute => :time_in
     include ArelHelpers::ArelTable
+    by_star_field :time_in, :time_out
+
+    
     
     belongs_to :employee, inverse_of: :shifts
     belongs_to :job, inverse_of: :shifts
     belongs_to :timesheet, inverse_of: :shifts
     belongs_to :company, class_name: "Company", foreign_key: "company_id"
+    
+    scope :last_week, ->{
+        where(week: Date.today.cweek - 1)
+    }
+    
+    scope :short_shifts, -> { where('time_worked > 4') }
+    scope :over_8, -> { where('time_worked > 8') }
 
     # has_one :order, through: :job
     # has_one :company, through: :order
@@ -45,6 +55,9 @@ class Shift < ActiveRecord::Base
     before_save :set_timesheet, :calculate_time, :reg_earnings, :set_employee
     
     after_initialize :defaults
+    
+    # SCOPES
+    # @post.next(scope: Post.where(category: @post.category))
     
     
     def defaults

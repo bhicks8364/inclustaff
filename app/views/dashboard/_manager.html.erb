@@ -28,21 +28,33 @@
     <!--TIMESHEETS FOR THE DEPARTMENTS THE CURRENT USER MANAGES-->
 
     <% if @manager_timesheets %>
+    
+    
+           
+          <p>Timesheets for week ending <%= @timesheets.this_week.first.week_ending %></p>
 
     <%= div_for(@manager_timesheets, class: "well") do |order| %>
 
-        <strong><%= order.title %> - $ <%= order.pay_range %></strong>
-        <p>
-           Dept. Manager: <%= link_to order.manager.name, order.manager %><br>
-          
-              <ul>
+        
+              <ul class="list-group">
+                  <p class="lead"><strong><%= order.title %> </strong></p>
+                 <p class="text-right text-muted"><strong>Number of employees: <%= order.jobs.active.count %> </strong></p>
+                 <small><%= order.pay_range %></small>
                   <% order.timesheets.this_week.each do |timesheet| %>
-                      <li><%= timesheet.week_ending %> - <%= timesheet.employee.name %></li>
+                        <% if timesheet.employee.clocked_in? %>
+                    <li class="list-group-item list-group-item-success">
+                        <% else %>
+                    <li class="list-group-item">
+                        <% end %>
+                        <span class="badge"><%= number_to_currency(timesheet.gross_pay) %></span>
+                        <strong><%= timesheet.employee.name %> </strong><%= timesheet.job.title %>
+                    </li>
+                        
                   <% end %>
               </ul>
          
-        </p>
-        <h5><strong>There are <%= order.jobs.active.count %> employees currently working in this department.</strong></h5>
+        
+        
 
         <% end %>
     <% end %>

@@ -1,9 +1,9 @@
 class CompanyPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      # if user.present?
-      # scope.all
-      # end
+      if user.present?
+        scope.where(:company_id => user.company_id)
+      end
     end
   end
   
@@ -12,27 +12,29 @@ class CompanyPolicy < ApplicationPolicy
   end
   
   def show?
-    true
+    return true if user.admin? || user.manager?
+    return true if user.payroll? && user.can_edit?
   end
   
   def create?
-    true
+    user.admin?
   end
   
   def new?
-    true
+    create?
   end
   
   def update?
-    true
+    user.admin?
   end
   
   def edit?
-    true
+    update?
+    
   end
   
   def destroy?
-    true
+    false
   end
   
   

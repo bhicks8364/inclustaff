@@ -7,19 +7,20 @@ class ShiftPolicy < ApplicationPolicy
     end
   
     def index?
-        true
+        user.present? 
     end
     def clock_out?
-        # shift.employee_id == user.id
-        user.present?
+        user.admin? || shift.employee_id == user.id
     end
     
     def show?
         scope.where(:id => shift.id).exists?
+        
     end
     
     def create?
-        user.employee? && user.employee.id == shift.job.employee_id
+        return true if user.admin? 
+        return true if user.employee? && user.employee.id == shift.job.employee_id
         # user.employee?
     end
     

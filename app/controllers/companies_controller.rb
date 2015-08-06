@@ -20,8 +20,10 @@ class CompaniesController < ApplicationController
 
     @with_active_jobs = @orders.with_active_jobs
     @active_jobs = @company.jobs.active
-    @today = @company.shifts.in_today.order(time_in: :desc)
-    @yesterday = @company.shifts.in_yesterday.order(time_in: :desc)
+    @today = @company.shifts.today
+    @yesterday = @company.shifts.yesterday
+    # @today = @company.shifts.in_today.order(time_in: :desc)
+    # @yesterday = @company.shifts.in_yesterday.order(time_in: :desc)
   end
 
   # GET /companies/new

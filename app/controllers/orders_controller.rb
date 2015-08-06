@@ -114,7 +114,8 @@ class OrdersController < ApplicationController
       @order = Order.find(params[:id])
     end
     def set_company
-      @company = Company.find(params[:company_id])
+      @company = current_user.company if current_user.present?
+      # @company = Company.find(params[:company_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

@@ -2,6 +2,15 @@
 // # All this logic will automatically be available in application.js.
 // # You can use CoffeeScript in this file: http://coffeescript.org/
 $(document).ready(function() {
+    $( "#datepicker" ).datepicker({
+        dateFormat: "yy-mm-dd",
+        altField: "#alternate",
+        altFormat: " DD,   MM d, yy"
+    });
+    
+    
+    
+    
     $('#jobs').dataTable( {
         
         "paging":   true,

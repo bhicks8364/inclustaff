@@ -14,7 +14,7 @@
 .table > tbody > tr > td {
     border: solid 1px black;
     padding: 3px;
-    background-color: #D5D9DC;
+    // background-color: #D5D9DC;
     // padding-right: 5px;
     text-align: left;
   }
@@ -31,7 +31,7 @@
 .table > thead  {
  
   tr {
-    background-color: #222;
+    // background-color: #222;
     border-bottom: solid 3px rgba(18, 19, 29, 0.84);
     
   }
@@ -47,9 +47,12 @@
 }
 
 #dataTable {
-  border: solid 3px rgba(82, 118, 142, 0.74);
-  background-color: rgba(82, 118, 142, 0.54);
+  border: solid 3px rgba(34, 34, 34, 0.65);
+  background-color: rgba(34, 34, 34, 0.35);
   overflow: auto;
   padding: 8px;
+}
+.table > thead > tr {
+  background-color: rgb(34, 34, 34);
 }
 

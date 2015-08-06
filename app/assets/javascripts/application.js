@@ -13,7 +13,10 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery/clockpicker.min
+//= require jquery-ui/datepicker
 //= require jquery-ui/accordion
+//= require jquery-ui/draggable
+//= require jquery-ui/sortable
 //= require dataTables/jquery.dataTables
 //= require dataTables/bootstrap/2/jquery.dataTables.bootstrap
 //= require turbolinks

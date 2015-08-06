@@ -43,6 +43,12 @@ class Company < ActiveRecord::Base
     
     def current_payroll_cost
         self.timesheets.this_week.sum(:gross_pay)
+        
+    end
+    
+    def set_payroll_cost!
+        cost = self.timesheets.this_week.sum(:gross_pay)
+        self.update(balance: cost)
     end
     
     
