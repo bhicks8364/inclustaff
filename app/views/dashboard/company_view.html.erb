@@ -1,9 +1,13 @@
 <div id="company-view">
     <h1><%= @company.name %>'s Dashboard</h1>
-    <p><%= current_user.name %> | <%= link_to "Profile", current_user, class: "button" %></p>
-    Current payroll cost: <%= number_to_currency( @company.current_payroll_cost) %>
-    <div class="center">
-        <h3><small>Admin Users</small></h3>
+    <h3><%= current_user.name %> | <%= link_to "View Profile", current_user, class: "btn profile-button" %></h3>
+    
+    <div id="current-payroll"><h2><small>Current payroll cost: <%= number_to_currency( @company.current_payroll_cost) %></small></h2></div>
+   
+    <div id="company-user-list">
+        
+        <div class="admin-list">
+            <h3>Admin Users</h3>
         <%= div_for(@admin_users) do |user| %>
         
             <p><%= link_to user.name, user %> <small> | <%= user.role %></small></p>
@@ -11,28 +15,25 @@
             
             
         <% end %>
-        <h3><small>Manager Users</small></h3>
+        </div>
+        
+        <div class="manager-list">
+        <h3>Manager Users</h3>
         <%= div_for(@manager_users) do |user| %>
             <p><%= link_to user.name, user %> <small> | <%= user.role %></small></p>
             <p class="text-muted"><%= user.email %> - <%= user.company.name %></p>
-
-            
+        
         <% end %>
-        <h3><small>Payroll Users</small></h3>
+        </div>
+        <div class="payroll-list">
+        <h3>Payroll Users</h3>
         <%= div_for(@payroll_users) do |user| %>
             <p><%= link_to user.name, user %> <small> | <%= user.role %></small></p>
             <p class="text-muted"><%= user.email %> - <%= user.company.name %></p>
-
-            
+   
         <% end %>
-        
+             </div>
 
     </div>
-    
-    
-    
-    
-    
-    
-    
+
 </div>

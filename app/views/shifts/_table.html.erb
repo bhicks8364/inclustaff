@@ -17,9 +17,9 @@
   <tbody>
     <% @shifts.each do |shift| %>
       <% if shift.clocked_in? %>
-        <tr class="bg-success">
+        <tr class="clocked_in">
       <% else %>
-        <tr>
+        <tr class="clocked_out">
       <% end %>
       
         <td><%= shift.time_in.strftime("%x") %></td>

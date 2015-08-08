@@ -2,17 +2,19 @@
 <p>
   <strong>Employee:</strong>
   <%= @employee.name %>
+  <%= @shift.time_worked %>
 </p>
 
-<p>
-  <strong>Time in:</strong>
-  <%= @shift.time_in.strftime("%I:%M %p") %>
+
 
 
 <% if @shift.clocked_in? %>
 <strong><h3><span id="shift-state">
     <%= @shift.state.titleize %>
   </span></h3></strong>
+  <p>
+  <strong>Time in:</strong>
+  <%= @shift.time_in.strftime("%I:%M %p") %></p>
   
   <strong><h3><%= @shift.state.titleize %></h3></strong>
   <strong>Time out:</strong>
@@ -32,10 +34,15 @@
 
 
 
-<% else %>
-<strong><h3><%= @shift.state.titleize %></h3></strong>
+<% end %>
+
+<% if @shift.clocked_out? %>
+<strong>@employee<h3><%= @shift.state.titleize %></h3></strong>
   <strong>Time out:</strong>
- 
+ <p>
+  <strong>Time in:</strong>
+  <%= @shift.time_in.strftime("%I:%M %p") %></p>
+  
   <h3>Time Out: <span id="time-out">
  <%= @shift.time_out.strftime("%I:%M %p") %>  </span></h3>
   <h3>Time worked: <span id="time-worked">
@@ -44,11 +51,11 @@
   
   <%= distance_of_time_in_words(@shift.time_in, @shift.time_out, include_seconds: true) %>
   <hr>
-  <%= link_to 'Clock In', new_job_shift_path(@job), class: "btn btn-primary" %>
+  
+  
 <% end %>
 
-  
-</p>
+
 
 
 
@@ -59,3 +66,4 @@
 <%= link_to 'Edit', edit_job_shift_path(@job, @shift) %> 
 
 <%= link_to 'Back', job_shifts_path(@job) %>
+<%= link_to 'Clock In', new_job_shift_path(@job), class: "btn btn-primary" %>

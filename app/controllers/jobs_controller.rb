@@ -46,7 +46,8 @@ class JobsController < ApplicationController
 
   # GET /jobs/1/edit
   def edit
-    @employees = Employee.all
+    @company = @job.company
+    @employees = @company.employees.unassigned
     @order = @job.order
     @employee = @job.employee
     authorize @job

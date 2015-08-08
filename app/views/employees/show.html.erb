@@ -4,13 +4,7 @@
 
 <h3><strong> <%= @employee.name %>  </strong>  <small>   <span> <%= @job.title %> </span>  <%= @current_company.name %></small></h3> 
 
-<div class="btn-group" role="group" aria-label="...">
-  <%= link_to_if(@current_user.admin?, "View Company", @current_company, class: "btn btn-default") %> |
-  <%= link_to_if(@current_user.id == @employee.user_id, "View Job", @job, class: "btn btn-default") %> |
-  <%= link_to_if(@current_user.id == @employee.user_id, "View Shifts", 
-    { controller: "shifts", action: "index", employee_id: @employee.id }, class: "btn btn-default") %>
 
-</div>
 
 
 

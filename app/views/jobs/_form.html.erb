@@ -12,7 +12,8 @@
   <% end %>
 
         <h4><strong>Job Information</strong></h4>
-    <%= f.association :employee, prompt: "Select Employee", label: false %>
+
+    <%= f.association :employee, collection: @company.employees.unassigned.order(:last_name), prompt: "Select Employee", label: false %>
     <%= f.association :order, prompt: "Select Department", label: false %>
     
     <%= f.input :title, placeholder: "Job Title" %>

@@ -1,7 +1,4 @@
-
-<hr>
-
-<div class="well">
+<div id="job-show-page" class="well">
   <% if @job.on_shift? %>
   <p id="clock-status" class="text-center"><strong><%= @job.employee.name %> is currently clocked in. <%= link_to "Clock Out", clock_out_job_shift_path(@job, @current_shift), method: :patch, 
                           remote: true, data: {confirm: 'Are you sure you want to clock out now?', 
@@ -10,8 +7,8 @@
                           
                           
 <% end %>
-<br>
-<div class="row">
+
+
   <div class="col-md-3">
     <%= render 'companies/company_contact', locals: @company %>
 </div>
@@ -25,6 +22,7 @@
   <strong>Job Title:</strong>
   <%= @job.title %>
 </p>
+
 <p>
   <strong>Description:</strong>
   <%= @job.description %>
@@ -41,23 +39,23 @@
   <strong>Pay rate:</strong>
   <%= number_to_currency(@job.pay_rate, :unit => "$") %>
 </p>
-Gross this week: <%= number_to_currency(@job.current_week_pay) %>
-<hr>
-Total Hours : <%= @job.total_hours %>
-</div>
+<p>Gross this week: <%= number_to_currency(@job.current_week_pay) %>
+
+Total Hours : <%= @job.total_hours %></p>
+
 
 <% if @job.on_shift? %>
 Last Clock In Time: <%= @job.last_clock_in.strftime("%I:%M %p") %>
-<br>
-  <%= link_to 'Clock Out', clock_out_job_shift_path(@job, @job.current_shift), method: :patch, 
+
+  <%= link_to 'Clock Out', clock_out_job_shift_path(@job, @job.current_shift), class: "btn clock-out", method: :patch, 
                           remote: true, data: {confirm: 'Are you sure you want to clock out now?', 
                           disable_with: "Clocking Out..."} %>
 <% else %>
-<%= link_to 'Clock In', new_job_shift_path(@job), class: "btn btn-primary btn-lg btn-block" %>
+<%= link_to 'Clock In', new_job_shift_path(@job), class: "btn clock-in" %>
 <% end %>
 
-<br>
 
 
 <%= link_to 'Edit', edit_job_path(@job) %> |
 <%= link_to 'Back', jobs_path %>
+</div>

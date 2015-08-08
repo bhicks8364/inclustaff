@@ -13,6 +13,7 @@ class UsersController < ApplicationController
         @user = User.find(params[:id])
         @company = current_user.company
         @employees = @company.employees
+        @employee = @user.employee if @user.employee?
         skip_authorization
     end
     

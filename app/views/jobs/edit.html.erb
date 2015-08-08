@@ -16,8 +16,8 @@
 
         <h4><strong>Job Information</strong></h4>
     <%= f.association :employee, prompt: "Select Employee", label: false %>
-    <%= f.association :order, prompt: "Select Department", label: false %>
-    
+    <%= f.association :order, prompt: "Select Department", label: false, disabled: true %>
+
     <%= f.input :title, placeholder: "Job Title" %>
     <%= f.input :description, placeholder: "Job Description" %>
     <%= f.input :start_date, as: :string, input_html: { id: "datepicker" } %> 

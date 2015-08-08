@@ -1,3 +1,25 @@
 // Place all the styles related to the Employees controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+#no-employees-alert {
+    padding: 20px;
+    max-width: 500px;
+    align: center;
+    text-align: center;
+    font-weight: bold;
+    margin: auto;
+    overflow: auto;
+    
+}
+
+#no-employees-alert > a {
+    padding-bottom: 5px;
+    padding-top: 5px;
+    
+}
+
+span.glyphicon-warning-sign {
+    font-size: 2em;
+}

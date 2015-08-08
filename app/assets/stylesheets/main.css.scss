@@ -1,77 +1,95 @@
-html, body {
+// html, body {
   
   
-  height:100%; /* needed for container min-height */
-  margin:0;
+//   height:100%; /* needed for container min-height */
+//   margin:0;
+//   // padding-top: 70px;
+//   // height:auto !important;
   
-//   color: red;
+// //   color: red;
   
-  // font-family: verdana, arial, helvetica, sans-serif;
-//   font-size: 14px;
-//   line-height: 18px;
-  // background-color: black;
+//   // font-family: verdana, arial, helvetica, sans-serif;
+// //   font-size: 14px;
+// //   line-height: 18px;
+  
 
-}
-#main-content {
-  font-family: 'Open Sans', sans-serif;
-  // background-image: url("colorful-triangles-background.jpg");
-  // background-repeat: no-repeat;
-  // background-size: auto;
+// }
+// #main-content {
+//   font-family: 'Open Sans', sans-serif;
+//   // padding:25px;
+  
+//   // background-repeat: no-repeat;
+//   // background-size: 100%;
 
-    // position:relative; /* needed for footer positioning*/
-    // margin: auto; /* center, not in IE5 */
-    // width:750px;
-    // background:#f0f0f0;
+//     position: relative; /* needed for footer positioning*/
+//     // margin: auto; /* center, not in IE5 */
+//     width: auto;
+//     // height:100%;
+//     // width: 100%;
+//     // background:#f0f0f0;
     
-    height:auto !important; /* real browsers */
-    height:100%; /* IE6: treaded as min-height*/
+//     height:auto !important; /* real browsers */
+//     /* IE6: treaded as min-height*/
 
-    min-height:100%; /* real browsers */
-    background-color: rgb(34, 34, 34); /* MAIN BACKGROUND COLOR */
-}
-div.container-fluid {
-  padding-bottom: 70px;
-  // padding: 20px;
-  padding-top: 0px;
-  padding-right: 5px;
-  padding-left: 5px;
-  height:auto !important; /* real browsers */
-  margin-left: 50px;
-  margin-right: 50px;
-  background-color: rgba(214, 236, 251, 0.82);
-  overflow: auto;
-  // width: 60%;
-  // border:3px solid #8AC007;
-  // padding: 10px;
-}
-
-
-// HEADER
-#main-content > header {
-    background-color: #314050;
-    text-color: white;
-    border-bottom: none;
-    // margin-bottom: 0px;
-    border-color: none;
-    
-    
-    // margin-bottom: 20px;
-}
-
-
-#main-content > nav {
-    background-color: #222;
-    margin-bottom: 0px;
-    border: none; /* NO ROUND CORNERS ON NAVBAR */
-}
-
-
-// // NAV BAR
-#main-content > nav > header {
-    margin-bottom: 0px;
-    border: none; 
+//     min-height:100%; /* real browsers */
+//   // background-color: rgba(5, 69, 90, 0.23); /* MAIN BACKGROUND COLOR */
+//   // color: rgba(249, 219, 180, 0.97);
+//   background-image: url("http://www.pd4pic.com/images/blur-blurred-lights-night-bokeh-background.jpg");
+//   // background-position: right bottom, left top;
+//   // background-position: absolute;
+//   background-size:cover; 
+//   background-position:center center; 
+//   background-repeat:no-repeat;
+//   // background-size: 100% 100%;
+//   // background-repeat: no-repeat;
+//   // overflow: hidden;
+//   align-items: center;
+// }
+// div.container-fluid {
   
-}
+
+//   // padding-bottom: 70px;
+//   // // padding: 20px;
+//   // padding-top: 0px;
+//   // padding-right: 5px;
+//   // padding-left: 5px;
+//   // height:auto !important; /* real browsers */
+//   // margin-left: 50px;
+//   // margin-right: 50px;
+//   // background-color: rgba(214, 236, 251, 0.82);
+//   // overflow: auto;
+//   // width: 60%;
+//   // border:3px solid #8AC007;
+//   // padding: 10px;
+// }
+
+
+// // HEADER
+// #main-content > header {
+//     background-color: #314050;
+//     text-color: white;
+//     border-bottom: none;
+//     // margin-bottom: 0px;
+//     border-color: none;
+    
+    
+//     // margin-bottom: 20px;
+// }
+
+
+// #main-content > nav {
+//     background-color: #222;
+//     margin-bottom: 0px;
+//     border: none; /* NO ROUND CORNERS ON NAVBAR */
+// }
+
+
+// // // NAV BAR
+// #main-content > nav > header {
+//     margin-bottom: 0px;
+//     border: none; 
+  
+// }
 
 
 // // #main-content > header > div > nav > ul {
@@ -166,11 +184,11 @@ div.container-fluid {
 // //   }
   
 // // }
-.form-group {
-  width: 75%;
-  margin-left: 30px;
-  margin-right: 30px;
-}
+// .form-group {
+//   width: 75%;
+//   margin-left: 30px;
+//   margin-right: 30px;
+// }
 
 #order {
   
@@ -198,7 +216,7 @@ div.container-fluid {
 }
 
 .order > p > a {
-      color: rgb(224, 175, 121);
+      color: rgba(224, 175, 121, .80);
   
   text-decoration: none;
 }
@@ -310,17 +328,17 @@ div.container-fluid {
 //     color: white;
 // }
 
-#main-content > nav > header > div > div > a {
-  width: 60%;
-  height: auto;
-  // margin: auto;
+// #main-content > nav > header > div > div > a {
+//   width: 60%;
+//   height: auto;
+//   // margin: auto;
 
-  // max-height: 100%;
-  max-width: 50%;
-}
-#main-content > nav > header > div > div > a > img {
-  width : 150px;
-}
+//   // max-height: 100%;
+//   max-width: 50%;
+// }
+// #main-content > nav > header > div > div > a > img {
+//   width : 150px;
+// }
 // #main-content > nav > header > div > nav > ul {
 //   text-align: center;
 // }
@@ -338,7 +356,7 @@ div.container-fluid {
   padding-bottom: 30px auto;
     // overflow: auto;
     margin-bottom: 20px;
-    background-color: rgba(34, 34, 34, 0.61);
+    // background-color: rgba(34, 34, 34, 0.61);
     border: 1px solid transparent; 
     color: white;
     // border-radius: 4px;
@@ -366,19 +384,89 @@ div.container-fluid {
 //   padding: 8px;
 // }
 #manager-home > div.panel.panel-default > div.panel-heading {
-  background-color: transparent;
-  color: white;
+  // background-color: transparent;
+  // color: white;
 }
-.admin-home {
-  background-color: #ccc;
-}
+// .admin-home {
+//   background-color: #ccc;
+// }
 
 
-#home-page > div > div.active-company-jobs > div {
-  width: 300px;
+.active-company-jobs > div {
+  width: 400px;
   box-shadow: 4px 4px 5px 1px rgba(3, 5, 6, 0.75);
   background-color: white;
   padding: 8px;
   content-align: right;
   margin-right: 8px;
+}
+  
+  
+.order.well {
+    max-width: 400px;
+    padding: 8px;
+    margin: 0px;
+    margin-bottom: 5px;
+    }
+    ul {
+    color: black;
+    margin: 0px;
+}
+
+
+// USERS SHOW PAGE
+.profile-nav {
+  // background-color: white;
+}
+.profile-nav > ul {
+    background-color: transparent;
+  
+  }
+  li {
+      background-color: rgba(141, 189, 230, 0.7);
+      border-radius: 15px 15px 0px 0px;
+      
+  
+}
+
+.job {
+  
+  box-shadow: 4px 4px 5px 1px rgba(3, 5, 6, 0.75);
+  padding: 5px;
+  margin-right: 10px;
+}
+#home-page > div > div.active-company-jobs.pull-right > div > h3 {
+  padding: 1px;
+  // border-bottom: solid 2px rgb(217, 237, 247);
+  
+}
+.job > dt, dd {
+  padding-left: 5px;
+  padding-top: 5px;
+}
+.job > dd {
+  border-bottom: solid 2px rgba(41, 83, 101, 0.36);
+}
+
+#main-content > div > div {
+  // background-color: rgba(34, 34, 34, 0.62);
+  // box-shadow: 4px 4px 5px 1px rgba(3, 5, 6, 0.75);
+  // color: white;
+  
+}
+#main-content > div > div.profile-nav {
+    // background-color: rgba(34, 34, 34, 0.62);
+    box-shadow: 4px 4px 5px 1px rgba(3, 5, 6, 0.75);
+}
+
+
+.profile-nav {
+  ul {
+    background-color: none;
+  }
+}
+
+// BODY        ##########################
+body {
+  
 }

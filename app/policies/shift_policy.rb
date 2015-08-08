@@ -36,7 +36,7 @@ class ShiftPolicy < ApplicationPolicy
     end
 
     def destroy?
-        user.admin?
+        user.not_an_employee?
     end
     
     

@@ -1,5 +1,16 @@
+<% if @company.employees.unassigned.empty? %>
+<div id="no-employees-alert" class="alert alert-danger" role="alert"><br>
+ <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+<h3>All of your employees are currently assigned to a job. 
+Please add a new employee before continuing.</h3>
+<%= link_to 'Back', company_order_jobs_path(@company, @order), class: "pull-left" %> <%= link_to "Add Employee", new_employee_path, class: "pull-right" %>
+</div>
+
+
+
+<% else %>
 <h1>New Job</h1>
-<input type="text" id="alternate" size="30" class="pull-right"><br>
+<h3><%= @company.name %> <%= @order.title %></h3>
 <%= simple_form_for(@job) do |f| %>
   <% if @job.errors.any? %>
     <div id="error_explanation">
@@ -12,13 +23,15 @@
       </ul>
     </div>
   <% end %>
+  
 
         <h4><strong>Job Information</strong></h4>
-    <%= f.association :employee, prompt: "Select Employee", label: false %>
-    <%= f.association :order, prompt: "Select Department", label: false %>
-    
+    <%= f.association :employee, collection: @company.employees.unassigned.order(:last_name), prompt: "Select Employee", label: false %>
+   
+    <%= f.association :order, prompt: "Select Department", label: false, disabled: true %>
     <%= f.input :title, placeholder: "Job Title" %>
     <%= f.input :description, placeholder: "Job Description" %>
+    <input type="text" id="alternate" size="30" class="pull-right"><br>
     <%= f.input :start_date, as: :string, input_html: { id: "datepicker" } %> 
     
     <div class="input-group">
@@ -33,6 +46,12 @@
     <%= f.submit %>
 
 <% end %>
+<!--FORM END-->
 
 
-<%= link_to 'Back', jobs_path %>
+
+<% end %>
+<!--IF THE COMPANY HAS NO UNASSIGNED EMPLOYEES - - END-->
+
+
+<%= link_to 'Back', company_order_jobs_path(@company, @order) %>

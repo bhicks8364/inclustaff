@@ -47,6 +47,8 @@ class Shift < ActiveRecord::Base
     
     delegate :pay_rate, to: :job
     delegate :employee, to: :job
+    delegate :order, to: :job
+    delegate :manager, to: :job
 
     
     accepts_nested_attributes_for :job

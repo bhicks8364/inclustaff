@@ -1,4 +1,5 @@
-<h2>Sign up</h2>
+<div id="sign_up_page">
+  <h2>Sign up</h2>
 
 <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= f.error_notification %>
@@ -13,9 +14,12 @@
       <%= f.input :role, required: true, collection: [ "Admin", "Manager", "Payroll"], include_blank: false, label: false  %>
       <%= f.input :password, required: true, placeholder: "Choose a password.", label: false, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length) %>
       <%= f.input :password_confirmation, required: true, placeholder: "Please confirm your password.", label: false  %>
+
   <div class="form-actions">
     <%= f.button :submit, "Sign up" %>
   </div>
 <% end %>
-
+  </div>
 <%= render "devise/shared/links" %>
+
+</div>

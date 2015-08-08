@@ -16,6 +16,9 @@
 
 class Employee < ActiveRecord::Base
   acts_as_paranoid
+  include ArelHelpers::ArelTable
+  include ArelHelpers::JoinAssociation
+  
   belongs_to :user
   has_many :shifts, inverse_of: :employee, dependent: :destroy
   has_many :jobs, inverse_of: :employee, dependent: :destroy
@@ -29,6 +32,8 @@ class Employee < ActiveRecord::Base
   accepts_nested_attributes_for :user
   
   delegate :company, to: :user
+  delegate :manager, to: :current_job
+  
   before_save :set_user_info
   
   
@@ -49,6 +54,29 @@ class Employee < ActiveRecord::Base
   scope :with_inactive_jobs, -> { joins(:jobs).merge(Job.inactive)}
   scope :on_shift, -> { joins(:shifts).merge(Shift.clocked_in)} 
   scope :with_current_timesheet, -> { joins(:timesheets).merge(Timesheet.this_week)}
+  # scope :unassigned, -> { join(:jobs).on(users[:id].eq(comments[:user_id]))}
+  
+  # scope :unassigned, -> { with_active_jobs.where(Job[:employee_id])}
+  
+  # Employee.joins(:jobs).where(Job[:id].not_eq(2))
+  
+    # Employee.joins(:jobs).where(Job[:employee_id].not_eq(2))
+    # users.where(users[:name].eq('bob').or(users[:age].lt(25)))
+    scope :unassigned, -> { joins("LEFT OUTER JOIN jobs ON jobs.employee_id = employees.id").where("jobs.id IS null")}
+
+  
+  scope :tardy, -> {
+                     joins(:timesheets).
+                     where("timesheets.submitted_at <= ?", 7.days.ago).
+                     group("employees.id")
+                   }
+  
+  
+  
+  
+  
+  
+  
   
   def set_user_info
     self.email = self.user.email
@@ -91,8 +119,8 @@ class Employee < ActiveRecord::Base
 
     
   def ytd_gross_pay
-    if self.timesheets.by_year.any?
-      self.timesheets.by_year.sum(:gross_pay)
+    if self.timesheets.this_week.any?
+      self.timesheets.this_week.sum(:gross_pay)
     else
       0
     end

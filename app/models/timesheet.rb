@@ -17,6 +17,8 @@ class Timesheet < ActiveRecord::Base
     belongs_to :job, dependent: :destroy
     has_many :shifts, dependent: :destroy
     has_one :employee, :through => :job
+    
+    by_star_field :created_at
 
     
     delegate :pay_rate, to: :job

@@ -39,7 +39,7 @@ class OrderPolicy < ApplicationPolicy
         create?
     end
     def update?
-        user.admin || user.manager? && user.can_edit?
+        user.admin? || user.manager? && user.can_edit?
     end
     
     def edit?

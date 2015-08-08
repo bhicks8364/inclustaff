@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
         :recoverable, :rememberable, :trackable, :validatable
         
-  # scope :employees, -> { where(role: "Employee")}
+  scope :manager_users, -> { where(role: "Manager")}
   
   def name
     "#{first_name} #{last_name}"
@@ -65,7 +65,11 @@ class User < ActiveRecord::Base
     role == "Admin"
   end
   
-  # def set_employee
+  def manager_timesheets
+    if self.manager?
+      self.orders.timesheets
+    end
+  end  # def set_employee
   #   if role == "Employee"
   #     Employee.find_or_create_by(email: self.email) do |employee|
   #       employee.user_id = self.id

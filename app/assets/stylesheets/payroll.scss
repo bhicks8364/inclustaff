@@ -1,0 +1,158 @@
+#home-page {
+    padding: 20px;
+    background-color: rgba(80, 23, 4, 0.2);
+    color: white;
+    display: -webkit-flex; /* Safari */
+    -webkit-flex-flow: row wrap; /* Safari 6.1+ */
+    -webkit-align-content: space-around; /* Safari 7.0+ */
+    display: flex;
+    flex-flow: row wrap;
+    align-content: space-around;
+    
+}
+// #home-page {
+//     padding: 20px;
+//     // background-color: rgba(45, 20, 7, 0.59);
+//     color: white;
+//     display: -webkit-flex; /* Safari */
+//     -webkit-flex-flow: row wrap; /* Safari 6.1+ */
+//     -webkit-align-content: space-around; /* Safari 7.0+ */
+//     display: flex;
+//     flex-flow: row wrap;
+//     align-content: space-around;
+    
+    
+// }
+// #main-content > div {
+//     padding: 20px;
+//     // background-color: rgba(45, 20, 7, 0.59);
+//     color: white;
+//     display: -webkit-flex; /* Safari */
+//     -webkit-flex-flow: row wrap; /* Safari 6.1+ */
+//     -webkit-align-content: space-around; /* Safari 7.0+ */
+//     display: flex;
+//     flex-flow: row wrap;
+//     align-content: space-around;
+    
+// }
+#content.container-fluid {
+    margin-right: 20px;
+    margin-left: 20px;
+    
+    padding-bottom: 50px;
+    background-color: rgba(22, 22, 21, 0.25);
+    padding: 20px;
+    background-color: rgba(80, 23, 4, 0.2);
+    // color: white;
+    // display: -webkit-flex; /* Safari */
+    // -webkit-flex-flow: row wrap; /* Safari 6.1+ */
+    // -webkit-align-content: space-around; /* Safari 7.0+ */
+    // display: flex;
+    // flex-flow: row wrap;
+   
+    
+}
+#content > h1, h2, h3, h4, h5, h6 {
+    color: white;
+}
+#content > h3 {
+    color: white;
+}
+
+// .active-company-jobs > div {
+//   width: 400px;
+//   box-shadow: 4px 4px 5px 1px rgba(3, 5, 6, 0.75);
+  
+//   padding: 8px;
+//   content-align: right;
+//   margin-right: 8px;
+// }
+#content {
+    min-height: 100%
+    #home-page {
+        // background-color: black;
+        min-height: 100%;
+        align-self: center;
+    }
+}
+
+
+.active-company-jobs {
+    // background-color: rgba(255, 255, 255, 0.00); 
+    // box-shadow: 4px 4px 5px 1px rgba(3, 5, 6, 0.75);
+    // margin-right: 8px;
+    div {
+        // background-color: transparent;
+        // width: 85%;
+    
+    
+    // padding: 8px;
+    // content-align: right;
+    
+        
+    }
+}
+
+.active-jobs {
+    float: right;
+    margin-left: 8px;
+    
+    
+    .job {
+        // box-shadow: 4px 4px 5px 1px rgba(3, 5, 6, 0.75);
+        background-color: rgba(34, 34, 34, 0.70);
+        box-shadow: 4px 4px 5px 1px rgba(3, 5, 6, 0.75);
+        padding: 8px;
+        
+        margin-bottom: 3px;
+        
+        
+        
+        dl > a {
+            // background-color: transparent;
+            color: white;
+        dt, dd {
+            
+            padding: 10px;
+            color: black;
+            background-color: rgba(34, 34, 34, 0.84);
+            // -webkit-border-radius: 6px;
+            // -moz-border-radius: 6px;
+            // border-radius: 6px;
+            p {
+                
+                color: black;
+                
+            }
+        }
+    }
+}
+}
+
+// .job > dt {
+//     padding: 5px;
+//     background-color: ;
+//             color: black;
+//             background-color: rgba(34, 34, 34, 0.84);
+// }
+
+
+
+
+
+
+
+
+.active-company-jobs.pull-right > div {
+    // background-color: rgba(48, 33, 49, 0.84);
+    
+    // h3 > span > small > strong { 
+    //     // font-height: 1.5em;
+    //     color: white;
+    //     margin: 0px;
+    //     font-size: 32px;
+        
+        
+    // }
+    
+}

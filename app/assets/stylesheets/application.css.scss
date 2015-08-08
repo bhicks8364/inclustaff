@@ -9,13 +9,89 @@
  * compiled file so the styles you add here take precedence over styles defined in any styles
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
- *= require dataTables/bootstrap/2/jquery.dataTables.bootstrap
- *= require main
- *= require table_styles
- *= require jquery-ui/datepicker
+ 
 
+  *= require dataTables/bootstrap/2/jquery.dataTables.bootstrap
+  *= require jquery-ui/datepicker
+  *= require employees
+  *= require navbar
+  *= require users
+  *= require table_styles
+  *= require companies
  */
+ 
+ 
+ 
+ 
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+html, body {
+  
+  
+  height:100%; /* needed for container min-height */
+  margin:0;
+  // padding-top: 70px;
+  // height:auto !important;
+  
+//   color: red;
+  
+  // font-family: verdana, arial, helvetica, sans-serif;
+//   font-size: 14px;
+//   line-height: 18px;
+  
 
+}
+#main-content {
+  font-family: 'Open Sans', sans-serif;
+  // padding:25px;
+  
+  // background-repeat: no-repeat;
+  // background-size: 100%;
+
+    position: relative; /* needed for footer positioning*/
+    // margin: auto; /* center, not in IE5 */
+    width: auto;
+    // height:100%;
+    // width: 100%;
+    // background:#f0f0f0;
+    
+    height:auto !important; /* real browsers */
+     /* IE6: treaded as min-height*/
+
+    min-height: 100%; /* real browsers */
+  // background-color: rgba(5, 69, 90, 0.23); /* MAIN BACKGROUND COLOR */
+  color: rgba(249, 219, 180, 0.97);
+  background-image: url("http://www.pd4pic.com/images/blur-blurred-lights-night-bokeh-background.jpg");
+  background-attachment: fixed;
+  // background-position: right bottom, left top;
+  // background-position: absolute;
+  background-size:cover; 
+  // background-position:center center; 
+  background-repeat:no-repeat;
+  // background-size: 100% 100%;
+  // background-repeat: no-repeat;
+  // overflow: hidden;
+  // align-items: center;
+}
+
+#content {
+  
+  min-height: 100%;
+}
+.container-fluid {
+  min-height: 100%;
+  // max-width: 90%;
+  padding: 8px;
+  margin: auto;
+}
+
+#welcome-screen > a {
+  background-color: white;
+  font-weight: bold;
+  color: black;
+}
+
+#main-content > nav > div > div.navbar-header > a > img {
+  vertical-align: middle;
+}

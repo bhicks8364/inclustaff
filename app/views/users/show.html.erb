@@ -1,13 +1,36 @@
 <h3><%= @user.name %>'s Profile</h3>
         <h1><strong><%= @user.name %></strong></h1>
-          <h3><%= @user.email %>     | <span id="user-role">  <strong><%= @user.can_edit %></span></strong> </h3> 
+          <h3><%= @user.email %>   </h3>  | <span id="user-role">  <strong><%= @user.can_edit %></strong> </h3></span> 
           <h6>User Updated:<span id="updated-at"> <%= time_ago_in_words(@user.updated_at) %> ago</span></h6>
-          
 
-<hr>
-  <p><button type="button" class="btn btn-default btn-xs"><%= link_to "Allow to Edit", grant_editing_user_path(@user), method: :patch, remote: true %></button>
+  
 
-<!-- Large modal -->
+
+
+<!--NAV TABS-->
+<div id='profile-nav'>
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
+    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
+    <li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li>
+    <% if current_user.admin? || current_user.payroll? %>
+    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+    <% end %>
+  </ul>
+  
+  <div class="tab-content">
+  <div role="tabpanel" class="tab-pane fade in active" id="home">
+    <h3>Hi</h3>
+
+    <%= render "employees/modal" %>
+
+    
+  </div>
+  
+  <div role="tabpanel" class="tab-pane fade" id="profile">
+    <p><!-- Large modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Company Information</button>
 
 <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
@@ -26,32 +49,32 @@
         </address>
     </div>
   </div>
-</div>
-
-<!--NAV TABS-->
-<div class='profile-nav'>
-
-  <!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
-    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
-    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
-    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
-  </ul>
+</div></p>
+  </div>
   
-  <div class="tab-content">
-  <div role="tabpanel" class="tab-pane fade in active" id="home">
-    <h3><small>Home</small></h3>
-
-    <%= render "employees/modal" %>
-
+  <div role="tabpanel" class="tab-pane fade" id="timesheets">
+    
+    <ul id= "user-timesheets">
+      <% if @user.employee? %>
+        <% @employee.timesheets.this_week.each do |timesheet| %>
+          <li><h3><%= timesheet.week_ending %></h3></li>
+        <% end %>
+      <% end %>
+      
+      <% if @user.manager? %>
+        <% @manager.timesheets.this_week.each do |timesheet| %>
+          <%= render 'timesheets/table' %>
+        <% end %>
+      <% end %>
+    </ ul>
+    
+    
     
   </div>
-  <div role="tabpanel" class="tab-pane fade" id="profile">
-    <h3><small>Profile</small></h3>
+  <div role="tabpanel" class="tab-pane fade" id="settings">
+    Hi
+    <p><button type="button" class="btn btn-default btn-xs"><%= link_to "Allow to Edit", grant_editing_user_path(@user), method: :patch, remote: true %></button>
   </div>
-  <div role="tabpanel" class="tab-pane fade" id="messages">...</div>
-  <div role="tabpanel" class="tab-pane fade" id="settings">...</div>
 </div>
   
   

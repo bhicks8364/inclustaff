@@ -23,6 +23,7 @@ class Job < ActiveRecord::Base
     has_many :shifts, inverse_of: :job
     has_many :timesheets
     has_one :current_shift,-> { where state: "clocked_in" }, class_name: 'Shift'
+
     
     accepts_nested_attributes_for :employee
     
@@ -79,6 +80,19 @@ class Job < ActiveRecord::Base
     
     def current_week_hours
         self.shifts.current_week.sum(:time_worked)
+    end
+    
+    def hours_until_ot
+        current_hours = self.current_week_hours
+        return (40 - current_hours).round(2)
+    end
+    
+    def approaching_overtime?
+        if self.current_week_hours > 36
+            true
+        else
+            false
+        end
     end
     
     def total_hours

@@ -1,0 +1,98 @@
+// #home_page {
+//     .admin-home {
+//         background-color: rgba(34, 4, 94, 0.92);
+// }
+// }
+.admin-home > div.active-company-jobs.pull-right {
+    border: solid 5px black;
+}
+.admin-home > div.active-company-jobs.pull-right > div {
+    // border: solid 5px black;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            
+            
+    
+}
+#home-page > div.active-company-jobs.pull-right > div {
+    // background-color: rgba(48, 33, 49, 0.84);
+    
+    h3 > span > small > strong { 
+        // font-height: 1.5em;
+        color: white;
+        margin: 0px;
+        font-size: 32px;
+        
+        
+    }
+    
+}
+
+#admin-home > div.active-company-jobs.pull-right {
+    background-color: white;
+}
+.active-company-jobs > div {
+    width: 85%;
+    box-shadow: 4px 4px 5px 1px rgba(3, 5, 6, 0.75);
+    /* background-color: rgb(255, 255, 255); */
+    padding: 8px;
+    content-align: right;
+    margin-right: 8px;
+    .job {
+        background-color: black;
+        padding: 8px;
+        
+        dl, dt, dd {
+            padding: 10px;
+            // -webkit-border-radius: 6px;
+            // -moz-border-radius: 6px;
+            // border-radius: 6px;
+            p {
+                
+                color: black;
+                
+            }
+        }
+    }
+}
+#admin-home > div.active-company-jobs.pull-right {
+    background-color: transparent;
+    
+}
+#admin-home > div.active-company-jobs.pull-right > div {
+    background-color: rgba(64, 42, 30, 0.71);
+    h3 {
+        margin: 0px;
+        color: white;
+    }
+    
+}
+
+.job {
+    p {
+        color: white;
+        margin-top: 8px;
+    }
+    
+}
+
+#main-content > div > div > a.btn.clock-in {
+    width: 200px;
+    height: 200px;
+    float: right;
+    overflow: auto;
+}
+#main-content > div > div > a.btn.clock-out {
+    width: 200px;
+    height: 200px;
+    float: right;
+    overflow: auto;
+}
+
+#admin-home > div.active-company-jobs.pull-right > div {
+    margin: 8px;
+}
+#company-user-list {
+    margin: 8px;
+}
