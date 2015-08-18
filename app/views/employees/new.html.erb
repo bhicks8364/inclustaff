@@ -1,4 +1,3 @@
-<h1 class="text-center">Add A New Employee</h1>
 
 <%= simple_form_for(@employee, class: "center") do |f| %>
   <% if @employee.errors.any? %>
@@ -15,16 +14,20 @@
 
 
     <%= f.simple_fields_for :user do |user| %>
-      <%= user.input :first_name, required: true, autofocus: true, placeholder: "First Name", label: false %>
+    <h1 class="text-center white">Add A New Employee</h1>
+
+      <div class="form-group">
+        <%= user.input :first_name, required: true, autofocus: true, placeholder: "First Name", label: false %>
       <%= user.input :last_name, required: true, placeholder: "Last Name", label: false  %>
       <%= user.input :email, required: true, placeholder: "Email  ex. example@email.com", label: false  %>
       <%= f.input :phone_number, as: :tel, required: true, placeholder: "Phone Number  ex. 555-555-5555", label: false  %>
       <%= f.input :ssn, required: true, maxlength: 4, label: false, placeholder: "SSN - Last 4 only" %>
-      <%= user.association :company, required: true, prompt: "Select Company", include_blank: false, label: false  %>
+  <%=  user.association :company, label_method: :name, value_method: :id, include_blank: false %>
       <%= user.input :role, required: true, priority: [ "Employee" ], collection: [ "Employee"], include_blank: false, label: false  %>
       <%= user.input :password, required: true, placeholder: "Choose a password.", label: false, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length) %>
       <%= user.input :password_confirmation, required: true, placeholder: "Please confirm your password.", label: false  %>
     <% end %>
+      </div>
 
 
 

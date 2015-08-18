@@ -26,14 +26,15 @@
 class User < ActiveRecord::Base
   has_one :employee
   belongs_to :company
-  # has_many :orders, -> { where manager_id: self.id }, class_name: 'Order'
+
   accepts_nested_attributes_for :employee
+  accepts_nested_attributes_for :company
   
   validates :company_id,  presence: true
   validates :role,  presence: true
 
   
-  # after_commit :set_employee
+  after_commit :set_employee
 
   devise :database_authenticatable, :registerable,
         :recoverable, :rememberable, :trackable, :validatable
@@ -65,21 +66,34 @@ class User < ActiveRecord::Base
     role == "Admin"
   end
   
-  def manager_timesheets
-    if self.manager?
-      self.orders.timesheets
-    end
-  end  # def set_employee
-  #   if role == "Employee"
-  #     Employee.find_or_create_by(email: self.email) do |employee|
-  #       employee.user_id = self.id
-  #       employee.first_name = "New"
-  #       employee.last_name = "Employee"
-  #       employee.ssn = 0000
-  #     end
-
+  # def manager_timesheets
+  #   if self.manager?
+  #     self.orders.collect { |a| a.book } 
   #   end
-  # end
+  # end  
+  
+  def orders
+    Order.by_manager(self.id)
+  end
+  
+  
+  
+  
+  
+  
+  
+  
+  def set_employee
+    if role == "Employee"
+      Employee.find_or_create_by(email: self.email) do |employee|
+        employee.user_id = self.id
+        employee.first_name = self.first_name
+        employee.last_name = self.last_name
+        employee.ssn = 1234
+      end
+
+    end
+  end
   
   
 

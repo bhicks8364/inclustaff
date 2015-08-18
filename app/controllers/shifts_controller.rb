@@ -12,13 +12,13 @@ class ShiftsController < ApplicationController
       @company = @job.company if @job
       @current_shifts = @job.shifts if @job
       @shifts = @employee.shifts.order(time_in: :desc)
-      authorize @shifts
+      # authorize @shifts
     elsif params[:job_id]
       @job = Job.find(params[:job_id])
       @employee = @job.employee
       @company = @job.company
       @shifts = @job.shifts.order(time_in: :desc)
-      authorize @shifts
+      # authorize @shifts
     end
 
   end
@@ -30,7 +30,7 @@ class ShiftsController < ApplicationController
       @job = Job.find(params[:job_id])
       @employee = @shift.employee
       @company = @job.company
-      authorize @shift
+      # authorize @shift
   end
 
   # GET /shifts/new
@@ -40,7 +40,7 @@ class ShiftsController < ApplicationController
     @employee = @job.employee
     @shift = @job.shifts.new
 
-    authorize @shift
+    # authorize @shift
     # @shift = Shift.new
   end
 
@@ -48,7 +48,7 @@ class ShiftsController < ApplicationController
   def edit
     @job = Job.find(params[:job_id])
     @employee = @job.employee
-    authorize @shift
+    # authorize @shift
   end
 
   # POST /shifts
@@ -59,7 +59,7 @@ class ShiftsController < ApplicationController
 
     @shift = @job.shifts.new(shift_params)
     @employee = @job.employee
-    authorize @shift
+    # authorize @shift
 
 
     respond_to do |format|
@@ -76,7 +76,7 @@ class ShiftsController < ApplicationController
   def clock_out
     sleep 2
     @shift = Shift.find(params[:id])
-     authorize @shift
+    # authorize @shift
     @shift.clock_out!
       if @shift.update(shift_params)
         format.html { redirect_to job_shifts_path(@job), notice: "You're now off the clock." }
@@ -87,7 +87,7 @@ class ShiftsController < ApplicationController
   # PATCH/PUT /shifts/1
   # PATCH/PUT /shifts/1.json
   def update
-     authorize @shift
+    # authorize @shift
     @job = Job.find(params[:job_id])
     respond_to do |format|
       if @shift.update(shift_params)

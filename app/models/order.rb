@@ -22,12 +22,18 @@ class Order < ActiveRecord::Base
   has_many :employees, :through => :jobs
   has_many :timesheets, :through => :jobs
   belongs_to :company, inverse_of: :orders
-  belongs_to :manager, -> { where role: "Manager" }, class_name: "User"
+  # belongs_to :manager, -> { where role: "Manager" }, class_name: "User"
+  belongs_to :manager, class_name: "User", foreign_key: "manager_id"
+  
+  # VALIDATIONS
   validates_associated :company
   validates :title,  presence: true
   
     # CALLBACKS
     after_initialize :defaults
+    
+    # NESTED ATTRIBUTES
+    accepts_nested_attributes_for :jobs
 
     # SCOPES
     scope :active, -> { where(active: true)}
@@ -62,6 +68,10 @@ class Order < ActiveRecord::Base
     # def open_jobs
     #   self.number_needed - self.jobs.active.count
     # end
+    
+  def self.by_manager(user_id)
+    where(manager_id: user_id)
+  end 
   
 
 

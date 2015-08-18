@@ -33,6 +33,7 @@ gem 'jquery-ui-rails'
 gem 'clockpicker-rails'
 gem "factory_girl_rails", "~> 4.0"
 
+gem "font-awesome-rails"
 # FOR ACTIVE RECORD DATE QUERY
 gem 'by_star', :git => "git://github.com/radar/by_star"
 

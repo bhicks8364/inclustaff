@@ -14,6 +14,8 @@
 #  earnings     :decimal(, )
 #  timesheet_id :integer
 #  deleted_at   :datetime
+#  in_ip        :string
+#  out_ip       :string
 #
 
 class Shift < ActiveRecord::Base
@@ -68,7 +70,7 @@ class Shift < ActiveRecord::Base
             self.state = "clocked_in"
             self.time_out = self.time_in
             self.earnings = 0.00
-            
+            self.in_ip = self.employee.user.current_sign_in_ip
         end
     end
     
@@ -131,7 +133,8 @@ class Shift < ActiveRecord::Base
     
     def clock_out!
         self.update(time_out: Time.current,
-                    state: "clocked_out")
+                    state: "clocked_out",
+                    out_ip: self.employee.user.current_sign_in_ip)
         
         
     end

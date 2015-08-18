@@ -1,104 +1,127 @@
 <div id="company-show-page">
-    <h1><%= @company.name %></h1>
+    <h1 class="page-header text-center"><%= @company.name %></h1>
 
+
+<div class="row company-header">
+  <div class="col-xs-6 col-sm-4">
+    <address class="">
+      <%= @company.address %> <%= @company.city %>, <%= @company.state %> <%= @company.zipcode %><br>
+      <abbr title="Phone">PH:</abbr> (123) 456-7890
+    </address>
+  </div>
+  <div class="col-xs-6 col-sm-4">
+    <h3 class="text-center"><small>Balance: <%= number_to_currency(@company.balance) %></small></h3>
+  </div>
+  <!-- Optional: clear the XS cols if their content doesn't match in height -->
+  <div class="clearfix visible-xs-block"></div>
+  <div class="col-xs-6 col-sm-4">
+    
+    <address class="text-right">
+      <strong><%= @company.contact_name %></strong><br>
+      <a href="mailto:#"><%= @company.contact_email %></a>
+    </address>
+  </div>
+</div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
       
   
   <div class='company-profile-nav'>
 
   <!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
+  <ul class="nav nav-tabs nav-justified" role="tablist">
     <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Company Information</a></li>
-    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Company Contacts</a></li>
+    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Departments</a></li>
     <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Current Employees</a></li>
-    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Departments</a></li>
+    <li role="presentation"><a href="#company-contacts" aria-controls="company-contacts" role="tab" data-toggle="tab">Company Contacts</a></li>
+    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Timeclock</a></li>
   </ul>
   
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="home">
-    <h3><small>Company Information</small></h3>
-    <div class="well">
-    <address>
-      <strong><%= link_to @company.name, @company %></strong><br>
-      <%= @company.address %><br>
-      <%= @company.city %>, <%= @company.state %> <%= @company.zipcode %><br>
-      <abbr title="Phone">P:</abbr> (123) 456-7890
-    </address>
 
-    <address>
-      <strong><%= @company.contact_name %></strong><br>
-      <a href="mailto:#"><%= @company.contact_email %></a>
-    </address>
-
+    <h3>HOME</h3>
+    <div class="center">
+      <h3>Current Employees</h3>
+    
+        <ul>
+          <% @active_employees.each do |employee| %>
+        
+            <li> <%= link_to employee.name, employee %>  |  <% if employee.clocked_in? %> <span class="glyphicon glyphicon-time" aria-hidden="true"></span> <% end %><%= link_to employee.current_job.title, employee.current_job %></li>
+            <li class="text-muted"><%= employee.email %> - <%= employee.company.name %> </li>
+            
+        <% end %>
+        </ul>
+        
+        <h3>All Employees</h3>
+    
+        <ul>
+          <% @employees.each do |employee| %>
+        
+            <li> <%= link_to employee.name, employee %>  |  <% if employee.clocked_in? %> <span class="glyphicon glyphicon-time" aria-hidden="true"></span> <% end %><%= link_to employee.current_job.title, employee.current_job %></li>
+            <li class="text-muted"><%= employee.email %> - <%= employee.company.name %> </li>
+            
+        <% end %>
+        </ul>
+    </div>
   </div>
+    
 
     
+  
+  <div role="tabpanel" class="tab-pane fade in active" id="company-contacts">
+
+      <h3>Company Contacts</h3>
+       <%= render 'companies/company_users' %>
+
 
     
   </div>
   <div role="tabpanel" class="tab-pane fade" id="profile">
-    <h3><small>Company Contacts</small></h3>
-        <%= div_for(@all_users, class:"well") do |user| %>
-            <p><%= link_to user.name, user %> <small> |  <% if user.can_edit? %> <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> <% end %><%= user.role %></small></p>
-            <p class="text-muted"><%= user.email %> - <%= user.company.name %> </p>
-            
-        <% end %>
+    <%= render 'shared/dept_current_timesheets' %>
+    
   </div>
+  
   <div role="tabpanel" class="tab-pane fade" id="messages">
-    <h3><small>Current Employees</small></h3>
-        <%= div_for(@employee_users, class:"well") do |user| %>
-            <p><%= link_to user.name, user %> <small> |  <% if user.can_edit? %> <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> <% end %><%= user.role %></small></p>
-            <p class="text-muted"><%= user.email %> - <%= user.company.name %> </p>
-            
-        <% end %>
+    Employees
+    
   </div>
+  
+  
+  
   <div role="tabpanel" class="tab-pane fade" id="settings">
-    
-  </div>
-</div>
-  
-  
-  
-  
-</div>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-<% if current_user.not_an_employee? %>
-    
-    
 
-<% if @clocked_in.any? %>
+      <%= render 'jobs/active' %>
+
+    
+    <% if @clocked_in.any? %>
 <%= render 'clocked_in_employees' %>
 <% end %>
+    
+  </div>
 
-
-<!--SIDEBAR - COMPANY JOBS-->
-<div class="active-company-jobs">
-<%= render 'jobs/active' %>
+  
+  
+  
+  
+</div>
+  
+  
+  
+  
+  
+  
 </div>
 
 
 
 
-
-
-
-<% end %>
-
-
-
-
-
-
-
-
-
-
 </div>
-

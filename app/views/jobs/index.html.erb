@@ -23,9 +23,9 @@
   <tbody>
     <% @jobs.each do |job| %>
     <% if job.on_shift? %>
-        <tr class="bg-success">
+        <tr class="clocked_in">
       <% else %>
-        <tr>
+        <tr class="clocked_out">
       <% end %>
         <td><%= link_to job.company.name, job.company  %></td>
         <td><%= link_to job.order.title, order_path(job.order) %></td>
@@ -46,6 +46,5 @@
 
 </div>
 
-<br>
 
-<%= link_to 'New Job', new_company_order_job_path(@company, @order) %>
+

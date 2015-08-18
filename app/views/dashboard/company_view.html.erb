@@ -1,39 +1,40 @@
-<div id="company-view">
-    <h1><%= @company.name %>'s Dashboard</h1>
-    <h3><%= current_user.name %> | <%= link_to "View Profile", current_user, class: "btn profile-button" %></h3>
-    
-    <div id="current-payroll"><h2><small>Current payroll cost: <%= number_to_currency( @company.current_payroll_cost) %></small></h2></div>
-   
-    <div id="company-user-list">
-        
-        <div class="admin-list">
-            <h3>Admin Users</h3>
-        <%= div_for(@admin_users) do |user| %>
-        
-            <p><%= link_to user.name, user %> <small> | <%= user.role %></small></p>
-            <p class="text-muted"><%= user.email %> - <%= user.company.name %></p>
-            
-            
-        <% end %>
-        </div>
-        
-        <div class="manager-list">
-        <h3>Manager Users</h3>
-        <%= div_for(@manager_users) do |user| %>
-            <p><%= link_to user.name, user %> <small> | <%= user.role %></small></p>
-            <p class="text-muted"><%= user.email %> - <%= user.company.name %></p>
-        
-        <% end %>
-        </div>
-        <div class="payroll-list">
-        <h3>Payroll Users</h3>
-        <%= div_for(@payroll_users) do |user| %>
-            <p><%= link_to user.name, user %> <small> | <%= user.role %></small></p>
-            <p class="text-muted"><%= user.email %> - <%= user.company.name %></p>
-   
-        <% end %>
-             </div>
+<div class="container-fluid" >
 
+    <h1><%= @company.name %>'s Dashboard</h1>
+    <h3><%= current_admin.name %> | <%= link_to "View Company Page", @company, class: "btn profile-button" %></h3>
+    
+    <div id="current-payroll col-sm-3"><h2><small>Current payroll cost: <%= number_to_currency( @company.current_payroll_cost) %></small></h2></div>
+   <div class="newly-added col-md-4">
+
+            <% if @company.employees.newly_added.any? %>
+            Newly Added
+            <ul>
+                <% @company.employees.newly_added.each do |employee| %>
+                    <li><%= link_to employee.name, employee.user %></li>
+                
+                <% end %>
+                
+            </ul>
+            <% end %>
+
+      
+                  <% if @company.employees.new_start.any? %>
+           New Starts
+                <ul>
+                    <% @company.employees.new_start.each do |employee| %>
+                <li><strong><%= link_to employee.name, employee %></strong> <%= link_to "View Job", employee.current_job %></li>
+                
+                <% end %>
+                </ul>
+            <% end %>
     </div>
 
+    
+
+</div>
+
+
+<%= render 'companies/company_users' %>
+
+    
 </div>

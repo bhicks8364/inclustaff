@@ -9,13 +9,13 @@ class OrdersController < ApplicationController
     
     @orders = @company.orders
     @with_active_jobs = @orders.with_active_jobs
-    authorize @orders
+    # authorize @orders
     
   end
   
   def all
     @orders = Order.all
-    authorize @orders
+    # authorize @orders
   end
 
   # GET /orders/1
@@ -24,7 +24,8 @@ class OrdersController < ApplicationController
     @company = @order.company
     @inactivejobs = @order.jobs.inactive
     @active_jobs = @order.jobs.active
-    authorize @order
+    @jobs = @order.jobs.active.includes(:shifts)
+    # authorize @order
   end
     
 
@@ -33,12 +34,12 @@ class OrdersController < ApplicationController
     if params[:company_id]
       @company = Company.find(params[:company_id])
       @order = @company.orders.new
-      authorize @order
+      # authorize @order
 
     else
-      @company = current_user.company
-      @order = @company.orders.new
-      authorize @order
+      @order = Order.new
+      @order.jobs.build
+      # authorize @order
     end
 
   end
@@ -47,10 +48,14 @@ class OrdersController < ApplicationController
   def edit
     if params[:company_id]
       @company = Company.find(params[:company_id])
-      authorize @order
+      @order = Order.find(params[:id])
+      @order.jobs.build
+      
+      # authorize @order
     else
       @order = Order.find(params[:id])
-      authorize @order
+      @order.jobs.build
+      # authorize @order
     end
   end
 
@@ -60,12 +65,12 @@ class OrdersController < ApplicationController
     if params[:company_id]
       @company = Company.find(params[:company_id])
       @order = @company.orders.new(order_params)
-      authorize @order
+      # authorize @order
 
     else
-      @company = current_user.company
-      @order = @company.orders.new(order_params)
-      authorize @order
+      @order = Order.new(order_params)
+      # @order.jobs.build
+      # authorize @order
     end
 
 
@@ -83,7 +88,7 @@ class OrdersController < ApplicationController
   # PATCH/PUT /orders/1
   # PATCH/PUT /orders/1.json
   def update
-    authorize @order
+    # authorize @order
     respond_to do |format|
       if @order.update(order_params)
         format.html { redirect_to [@company, @order], notice: 'Order was successfully updated.' }
@@ -114,12 +119,12 @@ class OrdersController < ApplicationController
       @order = Order.find(params[:id])
     end
     def set_company
-      @company = current_user.company if current_user.present?
-      # @company = Company.find(params[:company_id])
+      # @company = current_user.company if current_user.present?
+      @company = Company.find(params[:company_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.require(:order).permit(:id, :company_id, :manager_id, :title, :pay_range, :notes, :number_needed, :needed_by, :urgent, :active, jobs_attributes: [:title, :description, :start_date, :id, :employee_id])
+      params.require(:order).permit(:id, :company_id, :manager_id, :title, :pay_range, :notes, :number_needed, :needed_by, :urgent, :active, jobs_attributes: [:order_id, :title, :description, :start_date, :id, :employee_id, :active])
     end
 end

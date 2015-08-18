@@ -1,0 +1,139 @@
+#admin-home > div.new-employees {
+    border: solid 2px black;
+    // width: 50%;
+    // float: right;
+    color: black;
+    // position: relative;
+    overflow: auto;
+    // padding-left: 15px;
+    // padding-bottom: 15px;
+    p {
+        margin: 0px;
+    }
+}
+
+#admin-home > div > div.newly-added.col-md-4 > ul > li > a {
+    color: black;
+    text-decoration: none;
+}
+
+
+#admin-home {
+    border: 1px solid #c3c3c3;
+    // display: -webkit-flex; /* Safari */
+    // // -webkit-justify-content: space-around; /* Safari 6.1+ */
+    // display: flex;
+    // // justify-content: space-around;
+    // overflow: auto;
+    // display: -webkit-flex; /* Safari */
+    // -webkit-justify-content: space-around; /* Safari 6.1+ */
+    // display: flex;
+    // justify-content: space-around;
+}
+#admin-home > div.col-md-4 {
+    box-shadow: 4px 4px 5px 1px rgba(3, 5, 6, 0.75);
+    
+}
+
+#admin-home > div.active-jobs.ui-draggable-handle {
+    box-shadow: 4px 4px 5px 1px rgba(3, 5, 6, 0.75);
+    // margin-right: 10px;
+    max-height: 500px;
+    // min-width: 300px;
+    overflow: auto;
+}
+
+#admin-home > div > div.col-md-6 {
+    box-shadow: 4px 4px 5px 1px rgba(3, 5, 6, 0.75);
+    margin-right: 5px;
+    max-height: 700px;
+    min-width: 300px;
+    overflow: auto;
+    float: right;
+}
+
+#home-page > div.col-sm-3.col-md-2.sidebar {
+    max-width: 200px;
+    border: 1px solid #c3c3c3;
+    // padding: 2px;
+    padding: 0px;
+    // margin-right: 2px;
+    // background-color: black;
+    ul {
+        
+        background-color: black;
+        padding: 3px;
+        max-width: 200px;
+        li {
+        padding: 0px;
+        a {
+            max-width: 200px;
+            padding: 5px;
+        }
+    }
+    }
+}
+
+
+#admin-home > div.row > div.col-md-8 > div {
+    border: 1px solid #c3c3c3;
+    overflow: auto;
+    padding: 3px;
+}
+
+
+#admin-home > div > div.notifications.col-md-3 > div > p > small > a {
+    color: black;
+    text-decoration: none;
+}
+#admin-home > div > div.notifications.col-md-3 > div > p > a.little-btn {
+    color: black;
+    background-color: rgba(0, 0, 0, 0.72);
+     margin: 0px;
+}
+
+
+#admin-home > div > div.notifications.col-md-3 > div {
+    p {
+       
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    a {
+        color: black;
+    }
+}
+
+#admin-home > div > div.notifications {
+    background-color: black;
+    // max-width: 550px;
+    float: right;
+    min-height: 100%;
+    padding-top: 15px;
+    margin-left: 8px;
+    
+}
+
+.little-btn {
+    border: solid 1px black;
+    padding: 1px;
+    box-shadow: 4px 4px 5px 1px rgba(3, 5, 6, 0.75);
+    float: right;
+    color: black;
+    // margin: auto;
+    
+}
+
+#admin-home > div.notifications.col-md-3.alert-dismissible {
+    float: right;
+}
+
+#admin-home > div.alert {
+    width: 200px;
+    float: right;
+}
+
+#admin-home > div > a {
+    color: black;
+}
+

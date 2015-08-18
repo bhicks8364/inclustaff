@@ -14,6 +14,7 @@
 #  city          :string
 #  balance       :decimal(, )
 #  phone_number  :string
+#  user_id       :integer
 #
 
 require 'test_helper'

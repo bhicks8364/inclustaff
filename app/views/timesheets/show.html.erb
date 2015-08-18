@@ -36,6 +36,12 @@
    <strong>Last Shift Total:</strong> <%= @last_complete_shift.time_worked %> hours
 
   <% end %>
+  <hr>
+  <% if @timesheet.approved? %>
+        <td><%= @timesheet.state.titleize %> </td>
+  <% else %>
+        <td><%= link_to "<span class='glyphicon glyphicon-ok-circle' aria-hidden='true'></span>    Approve".html_safe, approve_timesheet_path(@timesheet), method: :patch, remote: true %></td>
+  <% end %>
  
 
 

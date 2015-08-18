@@ -6,38 +6,72 @@ class JobsController < ApplicationController
   # GET /jobs
   # GET /jobs.json
   def index
-    @company = current_user.company if current_user.present?
-    @jobs = @company.jobs.active.with_employee
-    authorize @jobs
+    if admin_signed_in? 
+      @admin = current_admin
+      @company = @admin.company
+      @jobs = @company.jobs.order(title: :asc)
+      # @timesheets = @company.timesheets.order(updated_at: :desc)
+      # authorize @timesheets
+    elsif user_signed_in? && current_user.not_an_employee?
+      @current_user = current_user if current_user.present?
+      @company = @current_user.company
+      @jobs = @company.jobs.order(title: :asc)
+      # authorize @timesheets
+      elsif user_signed_in? && current_user.employee?
+      @current_user = current_user if current_user.present?
+      @employee = @current_user.employee if @current_user.employee.present?
+      @company = @current_user.company
+      @jobs = @employee.jobs.order(title: :asc) if @employee.jobs.any?
+      # authorize @timesheets
+    end
+    
+    # @company = current_user.company if current_user.present?
+    # @jobs = @company.jobs.active.with_employee
+    # authorize @jobs
   end
   
   def archived
     @company = current_user.company if current_user.present?
     @archived_jobs = @company.jobs.inactive.with_employee
     @active_jobs = Job.active.with_employee
-    authorize @active_jobs
+    # authorize @active_jobs
   end
 
   # GET /jobs/1
   # GET /jobs/1.json
   def show
+    # authorize @job
     @employee = @job.employee
+    @current_timesheet = @job.current_timesheet
     @company = @job.order.company
     @current_shift = @job.shifts.clocked_in.last if @job.on_shift?
-    authorize @job
+    @all_timesheets = @job.timesheets
+    @timesheets = @job.timesheets
+    @last_week_timesheets =  @job.timesheets.last_week
+    
   end
 
   # GET /jobs/new
   def new
+    # if admin_signed_in? 
+    #   @current_admin = current_admin
+    #   @company = @current_admin.company
+      
+    # elsif user_signed_in? && current_user.not_an_employee?
+    #   @current_user = current_user
+    #   @company = @current_user.company
+
+    # end
     if params[:order_id]
       @order = Order.find(params[:order_id])
       @company = @order.company
       @job = @order.jobs.new
       # @employee = @job.build_employee
-      authorize @job
+      # authorize @job
     else
+      
       @job = Job.new
-      authorize @job
+      # authorize @job
       # @employee = @job.build_employee
     end
     # @company = Company.find(params[:company_id])
@@ -59,15 +93,16 @@ class JobsController < ApplicationController
    
     if params[:order_id]
       @order = Order.find(params[:order_id])
+      @company = @order.company
       # @employee = Employee.create(employee_params)
       @job = @order.jobs.new(job_params)
-       authorize @job
+      # authorize @job
       # @job.order = @order
       # @employee = @job.create_employee(employee_params)
     else
       # @employee = Employee.create(employee_params)
       @job = Job.new(job_params)
-       authorize @job
+      # authorize @job
     end
     
     respond_to do |format|
@@ -84,7 +119,7 @@ class JobsController < ApplicationController
   # PATCH/PUT /jobs/1
   # PATCH/PUT /jobs/1.json
   def update
-    authorize @job
+    # authorize @job
     respond_to do |format|
       if @job.update(job_params)
         format.html { redirect_to @job, notice: 'Job was successfully updated.' }

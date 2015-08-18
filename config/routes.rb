@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :admins
   devise_for :users
   resources :users do
     member do
@@ -9,7 +10,13 @@ Rails.application.routes.draw do
   get  'dashboard' => 'dashboard#company_view'
   get  'timeclock' => 'dashboard#employee_view'
   
-  resources :timesheets
+  resources :timesheets do
+    member do
+      patch 'approve'
+    end
+  end  
+  
+  
   get 'orders' => 'orders#all'
   get 'archived_jobs' => 'jobs#archived'
   resources :orders

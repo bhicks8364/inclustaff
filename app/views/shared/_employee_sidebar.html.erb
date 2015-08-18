@@ -1,0 +1,38 @@
+<div class="col-md-2" id="nav-col">
+				<section id="col-left">
+					<div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">	
+						<ul class="nav nav-pills nav-stacked">
+
+									<li><%= link_to current_user do %>
+										<i class="fa fa-dashboard"></i>
+											<span>Dashboard</span>
+										<% end %>
+									</li>
+									<li><%= link_to employee_shifts_path(current_user.employee)  do %>
+										<i class="fa fa-users"></i>
+											<span>Shifts</span>
+										<% end %>
+									</li>
+
+									
+									<li><%= link_to timesheets_path do %>
+										<i class="fa fa-file-text-o"></i>
+											<span>Timesheets</span>
+										<% end %>
+									</li>
+									<li><%= link_to jobs_path do %>
+										<i class="fa fa-briefcase"></i>
+											<span>Jobs</span>
+										<% end %>
+									</li>
+									<% if current_user.employee.present? && current_user.employee.current_job.present? %>
+									<li><%= link_to current_user.employee.current_job do %>
+										<i class="fa fa-users"></i>
+											<span>Company Users</span>
+										<% end %>
+									</li>
+									<% end %>
+						</ul>
+					</div>
+				</section>
+			</div>

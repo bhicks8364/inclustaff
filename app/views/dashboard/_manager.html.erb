@@ -31,9 +31,10 @@
     
     
            
-          <p>Timesheets for week ending <%= @timesheets.this_week.first.week_ending %></p>
+          <div class="manager-timesheets">
+              <p>Timesheets for week ending <%= @timesheets.this_week.first.week_ending %></p>
 
-    <%= div_for(@manager_timesheets, class: "well") do |order| %>
+    <%= div_for(@manager_timesheets) do |order| %>
 
         
               <ul class="list-group">
@@ -42,9 +43,9 @@
                  <small><%= order.pay_range %></small>
                   <% order.timesheets.this_week.each do |timesheet| %>
                         <% if timesheet.employee.clocked_in? %>
-                    <li class="list-group-item list-group-item-success">
+                    <li class="clocked_in">
                         <% else %>
-                    <li class="list-group-item">
+                    <li class="clocked_out">
                         <% end %>
                         <span class="badge"><%= number_to_currency(timesheet.gross_pay) %></span>
                         <strong><%= timesheet.employee.name %> </strong><%= timesheet.job.title %>
@@ -52,15 +53,17 @@
                         
                   <% end %>
               </ul>
+              
+        <% end %>
          
         
         
 
-        <% end %>
     <% end %>
 
     
-    
+     </div>
+         
     
         
         

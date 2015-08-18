@@ -6,42 +6,97 @@ class EmployeesController < ApplicationController
   # GET /employees
   # GET /employees.json
   def index
-    @company = current_user.company if current_user.present?
-    @employees = @company.employees
-    authorize @employees
+    if admin_signed_in? 
+      @admin = current_admin
+      @company = @admin.company
+      @employees = @company.employees.order(last_name: :asc)
+      # authorize @employees
+    elsif user_signed_in? && current_user.not_an_employee?
+      @current_user = current_user if current_user.present?
+      @company = @current_user.company
+      @employees = @company.employees.order(last_name: :asc)
+      # authorize @employees
+    end
   end
 
   # GET /employees/1
   # GET /employees/1.json
   def show
+      
     @current_user = current_user if user_signed_in?
-    @job = @employee.current_job if @employee.current_job != nil
-    @current_company = @employee.company
+    @current_admin = current_user if user_signed_in?
+    
     @company = @employee.company
-    @shifts = @employee.shifts
-    authorize @employee
+    @job = @employee.current_job
+    @jobs = @employee.jobs
+    @timesheets = @employee.timesheets
+    @last_week_timesheets = @timesheets.last_week.order(updated_at: :desc)
+    # @job = @employee.current_job if @employee.current_job != nil
+    # @current_company = @employee.company
+    # @company = @employee.company
+    # @jobs = @employee.jobs.includes(:shifts)
+    # # @timesheets = @employee.timesheets  if @employee.timesheets.any?
+    # @all_timesheets = @employee.timesheets.order(updated_at: :desc) if @employee.timesheets.any?
+    # @timesheets = @all_timesheets.this_week.order(updated_at: :desc) if @employee.timesheets.any?
+    # @last_week_timesheets = @timesheets.last_week.order(updated_at: :desc) if @employee.timesheets.any?
+    # @shifts = @employee.shifts if @employee.shifts.any?
+    # authorize @employee
   end
 
   # GET /employees/new
   def new
-    @companies = Company.all
-    @employee = Employee.new
-    # @employee.jobs.build
-    @employee.build_user
-    authorize @employee
+    if admin_signed_in? 
+      @admin = current_admin
+      @company = @admin.company
+      @employees = @company.employees.order(last_name: :asc)
+      @employee = Employee.new
+      @employee.build_user
+      # authorize @employees
+    elsif user_signed_in? && current_user.not_an_employee?
+      @current_user = current_user if current_user.present?
+      @company = @current_user.company
+      @employees = @company.employees.order(last_name: :asc)
+      @employee = Employee.new
+      @employee.build_user
+      # authorize @employees
+    end
+    # @current_user = current_user if user_signed_in?
+    # @company = @current_user.company 
+    # @employee = Employee.new
+    # # @employee.jobs.build
+    # @employee.build_user
+    # authorize @employee
   end
 
   # GET /employees/1/edit
   def edit
-    authorize @employee
+    # authorize @employee
   end
 
   # POST /employees
   # POST /employees.json
   def create
-    @employee = Employee.new(employee_params)
+    if admin_signed_in? 
+      @admin = current_admin
+      @company = @admin.company
+      @employees = @company.employees.order(last_name: :asc)
+      @employee = Employee.new(employee_params)
+      # @employee.build_user(employee_params)
+      # authorize @employees
+    elsif user_signed_in? && current_user.not_an_employee?
+      @current_user = current_user if current_user.present?
+      @company = @current_user.company
+      @employees = @company.employees.order(last_name: :asc)
+      @employee = Employee.new(employee_params)
+      # @employee.build_user(employee_params)
+      # authorize @employees
+    end
+    # @current_user = current_user if user_signed_in?
+    # @company = @current_user.company
+    # @employee = Employee.new(employee_params)
+    # @employee.company = @company
     
-    authorize @employee
+    # authorize @employee
     # @employee.jobs.new
 
     respond_to do |format|
@@ -59,7 +114,7 @@ class EmployeesController < ApplicationController
   # PATCH/PUT /employees/1.json
   def update
     @employee.update(employee_params)
-    authorize @employee
+    # authorize @employee
     respond_to do |format|
       if @employee.update(employee_params)
         format.html { redirect_to @employee, notice: 'Employee was successfully updated.' }

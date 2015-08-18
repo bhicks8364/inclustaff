@@ -6,21 +6,26 @@ class CompaniesController < ApplicationController
   # GET /companies.json
   def index
     @companies = Company.all
-    authorize @companies
+    # authorize @companies
   end
 
   # GET /companies/1
   # GET /companies/1.json
   def show
-    authorize @company
-    @orders = @company.orders
+    # authorize @company
+    @orders = @company.orders.includes(:timesheets)
+    @all_timesheets = @company.timesheets.order(updated_at: :desc) if @company.timesheets.any?
+    @timesheets = @all_timesheets.this_week.order(updated_at: :desc) if @all_timesheets.any?
+    @last_week_timesheets = @timesheets.last_week.order(updated_at: :desc)
+
     @all_users = @company.company_users
-    @employee_users = @company.employee_users
-    @clocked_in = @company.jobs.on_shift if @company
+    @employees = @company.employees
+    @active_employees = @company.employees.with_active_jobs
+    @clocked_in = @company.jobs.on_shift.includes(:employee) if @company.jobs.any?
 
     @with_active_jobs = @orders.with_active_jobs
     @active_jobs = @company.jobs.active
-    @today = @company.shifts.today
+    @today = @company.shifts.today.order(updated_at: :desc)
     @yesterday = @company.shifts.yesterday
     # @today = @company.shifts.in_today.order(time_in: :desc)
     # @yesterday = @company.shifts.in_yesterday.order(time_in: :desc)
@@ -29,12 +34,12 @@ class CompaniesController < ApplicationController
   # GET /companies/new
   def new
     @company = Company.new
-    authorize @company
+    # authorize @company
   end
 
   # GET /companies/1/edit
   def edit
-    authorize @company
+    # authorize @company
   end
 
   # POST /companies
@@ -42,7 +47,7 @@ class CompaniesController < ApplicationController
   def create
     
     @company = Company.new(company_params)
-    authorize @company
+    # authorize @company
     respond_to do |format|
       if @company.save
         format.html { redirect_to @company, notice: 'Company was successfully created.' }
@@ -57,7 +62,7 @@ class CompaniesController < ApplicationController
   # PATCH/PUT /companies/1
   # PATCH/PUT /companies/1.json
   def update
-    authorize @company
+    # authorize @company
     respond_to do |format|
       if @company.update(company_params)
         format.html { redirect_to @company, notice: 'Company was successfully updated.' }

@@ -1,14 +1,11 @@
 <div id="employee-home-page">
-    
-    <%=
-   link_to_if(@current_user.nil?, "Login", { controller: "sessions", action: "new" }) do
-     link_to(@current_user.employee?, { controller: "dashboard", action: "employee_view", id: @employee.id })
-    end %>
+
     
     
-    <strong><%= current_user.name %></strong> <br>
-<%= current_user.email %>
+    <strong><%= current_user.name %><%= @employee.name %></strong> <br>
+<%= @employee.email %>
 <br>
+<% if @job.present? %>
 <%= @job.title %>  - <%= number_to_currency(@job.pay_rate) %> 
 
 <% if @job.on_shift? %>
@@ -17,11 +14,17 @@
 
 <%= link_to "Clock Out", clock_out_job_shift_path(@job, @current_shift), method: :patch, 
                           remote: true, data: {confirm: 'Are you sure you want to clock out now?', 
-                          disable_with: "Clocking Out..."}, class: "btn btn-primary btn-lg btn-block" if policy(@current_shift).clock_out? %>
+                          disable_with: "Clocking Out..."}, class: "btn btn-primary btn-lg btn-block"  %>
 
 <% else %>
 <%= link_to "Clock In", new_job_shift_path(@job), class: "btn btn-primary btn-lg btn-block" %>
 
 <% end %>
+
+
+
 <br>
+
+<%= render 'shared/single_timesheet' %>
 </div>
+<% end %>

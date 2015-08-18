@@ -2,62 +2,53 @@
 
 
 
-<h3><strong> <%= @employee.name %>  </strong>  <small>   <span> <%= @job.title %> </span>  <%= @current_company.name %></small></h3> 
+<h3> <%= @employee.name %>  <small> <%= @company.name %></small></h3> 
 
 
 
+<h3>Year-to-date Gross Pay : <%= number_to_currency(@employee.ytd_gross_pay) %> </h3>
+<% if @employee.jobs.active.any? %>
+<h3>Current Job:  <%= @job.title %></h3>
+ 
+<%= render 'jobs/table' %>
+<hr>
+<%= render 'timesheets/table' %>
+<% end %>
 
 
+<% if @employee.shifts.any? %>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h3>Year-to-date Gross Pay :<strong> <%= number_to_currency(@employee.ytd_gross_pay) %> </strong></h3>
-
-
-
-
-
-  <h3 id="list-title"><strong>All Shifts:</strong></h3>
-    <%= content_tag_for(:div, @shifts, class: "list-group-item list-group-item-info" ) do |shift| %>
+  <h3 id="list-title">All Shifts:</h3>
+    <%= content_tag_for(:div, @shifts, class: "" ) do |shift| %>
 
       <%= link_to job_shift_path(shift.job, shift) do %>
-        <h4 class="list-group-item-heading"><strong><%= shift.time_in.strftime("%m/%d/%y") %></strong></h4>
+        <h4 class="list-group-item-heading"><%= shift.time_in.strftime("%m/%d/%y") %></h4>
+
+      <div class="scroll-list">
+        <strong><%= shift.time_in.strftime("%I:%M %p") %> </strong> <br>
+        Time IN: <%= shift.time_in.strftime("%I:%M %p") %> | Time OUT: <%= shift.time_out.strftime("%I:%M %p") %>
+        <br>Hours worked: <%= shift.time_worked %>
+        </div>
      
     <% end %>
-      <p class="list-group-item-text">
-        <br><strong>IN:</strong> <%= shift.time_in.strftime("%I:%M %p") %>
-        <br><strong>OUT:</strong> <%= shift.time_out.strftime("%I:%M %p") %>
-        <hr>
-        <br><strong>Time worked:</strong> <%= shift.time_worked %>
-        </p>
-
      <% end %>
 
+<% end %>
 
 
 
 
 
-  <ul>
-  <% @employee.jobs.each do |job| %>
-    <li><%= link_to job.title, job %></li>
-  <% end %>
-  </ul>
 
 
+
+
+
+
+<% if admin_signed_in? %>
 <%= link_to 'Edit', edit_employee_path(@employee), class: "btn btn-default"  %> |
 <%= link_to 'Back', employees_path, class: "btn btn-default"  %>
+<% end %>
 
 
   

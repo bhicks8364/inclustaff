@@ -13,11 +13,6 @@
 
   *= require dataTables/bootstrap/2/jquery.dataTables.bootstrap
   *= require jquery-ui/datepicker
-  *= require employees
-  *= require navbar
-  *= require users
-  *= require table_styles
-  *= require companies
  */
  
  
@@ -25,73 +20,322 @@
  
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import "font-awesome";
+@import "layout";
+@import "elements";
 
-html, body {
+
+
+#logo > img {
+    max-height: 100%;
+    max-width: 100%;
+}
+a#logo.navbar-brand {
+    padding: 5px;
+}
+// html, body {
   
   
-  height:100%; /* needed for container min-height */
-  margin:0;
-  // padding-top: 70px;
-  // height:auto !important;
+//   height:100%; /* needed for container min-height */
+//   margin:0;
+//   // padding-top: 70px;
+//   // height:auto !important;
+//   font-family: 'Open Sans', sans-serif;
+// //   color: red;
   
-//   color: red;
-  
-  // font-family: verdana, arial, helvetica, sans-serif;
+//   // font-family: verdana, arial, helvetica, sans-serif;
 //   font-size: 14px;
-//   line-height: 18px;
+//   // line-height: 18px;
   
 
-}
-#main-content {
-  font-family: 'Open Sans', sans-serif;
-  // padding:25px;
+// }
+// #main-content {
+//   font-family: 'Open Sans', sans-serif;
+//   // padding:25px;
   
-  // background-repeat: no-repeat;
-  // background-size: 100%;
+//   // background-repeat: no-repeat;
+//   // background-size: 100%;
 
-    position: relative; /* needed for footer positioning*/
-    // margin: auto; /* center, not in IE5 */
-    width: auto;
-    // height:100%;
-    // width: 100%;
-    // background:#f0f0f0;
+//     position: relative; /* needed for footer positioning*/
+//     // margin: auto; /* center, not in IE5 */
+//     width: auto;
+//     // height:100%;
+//     // width: 100%;
+//     // background:#f0f0f0;
     
-    height:auto !important; /* real browsers */
-     /* IE6: treaded as min-height*/
+//     height:auto !important; /* real browsers */
+//     /* IE6: treaded as min-height*/
 
-    min-height: 100%; /* real browsers */
-  // background-color: rgba(5, 69, 90, 0.23); /* MAIN BACKGROUND COLOR */
-  color: rgba(249, 219, 180, 0.97);
-  background-image: url("http://www.pd4pic.com/images/blur-blurred-lights-night-bokeh-background.jpg");
-  background-attachment: fixed;
-  // background-position: right bottom, left top;
-  // background-position: absolute;
-  background-size:cover; 
-  // background-position:center center; 
-  background-repeat:no-repeat;
-  // background-size: 100% 100%;
-  // background-repeat: no-repeat;
-  // overflow: hidden;
-  // align-items: center;
-}
+//     min-height: 100%; /* real browsers */
+//   // background-color: rgba(5, 69, 90, 0.23); /* MAIN BACKGROUND COLOR */
+//   color: rgba(249, 219, 180, 0.97);
+//   background-image: url("http://www.pd4pic.com/images/blur-blurred-lights-night-bokeh-background.jpg");
+//   background-attachment: fixed;
+//   // background-position: right bottom, left top;
+//   // background-position: absolute;
+//   background-size:cover; 
+//   // background-position:center center; 
+//   background-repeat:no-repeat;
+//   // background-size: 100% 100%;
+//   // background-repeat: no-repeat;
+//   // overflow: hidden;
+//   // align-items: center;
+// }
 
-#content {
+// #content {
   
-  min-height: 100%;
-}
-.container-fluid {
-  min-height: 100%;
-  // max-width: 90%;
-  padding: 8px;
-  margin: auto;
+//   min-height: 100%;
+// }
+// .container-fluid {
+//   // min-height: 100%;
+//   // max-width: 90%;
+//   // padding: 3px;
+//   // margin: auto;
+//   // overflow: auto;
+// }
+
+// #welcome-screen > a {
+//   background-color: white;
+//   font-weight: bold;
+//   color: black;
+// }
+
+// #main-content > nav > div > div.navbar-header > a > img {
+//   vertical-align: middle;
+//   // margin: 0px;
+// }
+
+// #main-content > nav > div > div.navbar-header > a {
+//   // padding: 3px;
+//   // vertical-align: middle;
+// }
+
+// nav.navbar.navbar-inverse {
+//   // position: relative; 
+//   min-height: auto; 
+//   // padding-bottom: 0px;
+//   /* margin-bottom: 20px; */
+//   /* border: 1px solid transparent; */
+// }
+
+// #home-page  {
+//     max-width: 95%;
+//     box-shadow: 4px 4px 5px 1px rgba(3, 5, 6, 0.75);
+//     // background-color: rgba(243, 178, 123, 0.49);
+//     padding: 15px;
+//     // margin: auto;
+// }
+
+// .white {
+//     color: white;
+// }
+
+// #main-content > nav {
+//   // padding-bottom: none;
+// }
+
+// img {
+//   max-width: 40%;
+// //   height: 40%;
+
+// //   padding-bottom: 5px;
+//   // margin-bottom: 15px;
+// //   margin-top: 10px;
+
+// }
+
+// #main-content > nav > div > div.navbar-header {
+//   // padding: 8px;
+//   margin-bottom: 10px;
+// }
+
+// a {
+//   color: white; 
+//   text-decoration: none;
+// }
+// /* line 52, /usr/local/rvm/gems/ruby-2.2.1/gems/bootstrap-sass-3.2.0.2/assets/stylesheets/bootstrap/_scaffolding.scss */
+// a:hover, a:focus {
+//   color: #2a6496;
+//   text-decoration: none;
+// }
+
+// .manager-timesheets {
+//   // max-width: 400px;
+//   background-color: transparent;
+//   box-shadow: 4px 4px 5px 1px rgba(3, 5, 6, 0.75);
+  
+// }
+
+// #admin-home > div.active-jobs.col-md-4.ui-draggable-handle {
+//   // max-width: 50%;
+//   // float: right;
+//   max-height: 300px;
+// }
+
+
+// .right {
+//     position: absolute;
+//     right: 0px;
+//     width: 300px;
+//     border:3px solid #8AC007;
+//     padding: 10px;
+// }
+
+// #calendar-shift {
+//     box-shadow: 2px -2px 5px 1px rgba(3, 5, 6, 0.85);
+//     /* margin: 0px; */
+//     margin-top: 4px;
+//     background-color: rgba(14, 25, 35, 0.42);
+//     font-size: .8em;
+// }
+
+
+// #content > table.calendar.table {
+//   background-color: rgba(34, 34, 34, 0.85);
+  
+//   thead {
+//     background-color: rgba(34, 34, 34, 0.85);
+    
+//     tr {
+//       border: solid 2px white;
+//       background-color: rgba(34, 34, 34, 0.85);
+//     color: pink;
+//     text-align: right;
+//     }
+//   }
+// }
+// .table.calendar.table {
+//   background-color: rgba(34, 34, 34, 0.45);
+//   color: white;
+//   // overflow: auto;
+//   tbody {
+//     tr {
+      
+//       td {
+//         // border: solid 2px rgba(34, 34, 34, 0.18);
+//         padding: 1px;
+//         text-align: left;
+//         max-height: 100px;
+//         overflow: auto;
+//         p {
+//           margin: 0px;
+//         }
+//         a {
+//           text-decoration: none;
+//           // background-color: transparent;
+//           color: white;
+//         }
+//         a:hover {
+//           text-decoration: none;
+//           background-color: rgba(4, 4, 4, 0.88);
+//         }
+        
+//       }
+//     }
+//   }
+// }
+// p.hours-worked {
+//   margin: -1px;
+// }
+// #calendar-shift > p {
+//   margin: 0px;
+// }
+// .day {
+//     background-color: rgb(0, 0, 0);
+//     height: 150px;
+//     max-height: 150px;
+//     min-width: 100px;
+//     padding: 2px;
+//     margin: 3px;
+//     overflow: auto;
+// }
+
+// #admin-home > div.table-responsive > header {
+//   text-align: center;
+//   span {
+//     margin: 3px;
+//   }
+// }
+
+// #admin-home > div.table-responsive > table > tbody > tr {
+//   overflow: auto;
+//   height: 100px;
+//   max-height: 100px;
+// }
+
+// // .table > thead  {
+// //     color: white;
+ 
+// //   tr {
+// //     color: white;
+// //     // background-color: #222;
+// //     // border-bottom: solid 3px rgba(18, 19, 29, 0.84);
+    
+// //   }
+// //   th {
+// //     // color: white;
+// //     // // border: solid 1px rgba(18, 19, 29, 0.64);
+// //     // // padding: 1px;
+// //     // padding: 3px;
+
+// //     // text-align: center;
+// //   }
+  
+// // }
+
+// button {
+//   color: black;
+//   a {
+//     color: black;
+    
+//   }
+// }
+
+div.progress {
+  overflow: hidden;
+  height: 25px;
+  margin-bottom: 10px;
+  background-color: rgba(16, 16, 15, 0.13);
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-#welcome-screen > a {
-  background-color: white;
-  font-weight: bold;
-  color: black;
+div.progress-bar {
+  float: left;
+  width: 75px;
+//   height: 100%;
+  /* font-size: 12px; */
+  /* line-height: 20px; */
+  /* color: #fff; */
+  text-align: center;
+  background-color: #428bca;
+  -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  -webkit-transition: width 0.6s ease;
+  -o-transition: width 0.6s ease;
+  transition: width 0.6s ease;
 }
 
-#main-content > nav > div > div.navbar-header > a > img {
-  vertical-align: middle;
-}
+
+// .clocked_in {
+//   background-color: rgba(14, 123, 18, 0.72);
+//   td {
+//     color: black;
+//     a {
+//       // background-color: rgba(0, 0, 0, 0.46);
+//       color: black;
+//     }
+//   }
+// }
+
+// .clocked_out {
+//   background-color: rgba(0, 0, 0, 0.46);
+//   td {
+//     color: white;
+//     a {
+//       // background-color: rgba(0, 0, 0, 0.46);
+//       color: white;
+//     }
+//   }
+// }

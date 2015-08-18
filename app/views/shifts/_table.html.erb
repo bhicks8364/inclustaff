@@ -4,7 +4,9 @@
       <th>Work Date</th>
       <th>Employee</th>
       <th>Time In</th>
+      <th>In-ip</th>
       <th>Time Out</th>
+      <th>Out-ip</th>
       <th>Hours</th>
       <th>Pay Rate</th>
       <th>Earnings</th>
@@ -25,7 +27,9 @@
         <td><%= shift.time_in.strftime("%x") %></td>
         <td><%= link_to shift.employee.name, shift.employee %></td>
         <td><%= shift.time_in.strftime("%I:%M %p") %></td>
+        <td><%= shift.in_ip %></td>
         <td><%= shift.clocked_out? ? shift.time_out.strftime("%I:%M %p") : "Clocked In" %></td>
+        <td><%= shift.clocked_out? ? shift.out_ip : "Clocked In" %> </td>
         <td><%= shift.time_worked %></td>
         <td><%= number_to_currency(shift.pay_rate) %></td>
         <td><%= number_to_currency(shift.earnings) %></td>

@@ -14,6 +14,8 @@
 #  earnings     :decimal(, )
 #  timesheet_id :integer
 #  deleted_at   :datetime
+#  in_ip        :string
+#  out_ip       :string
 #
 
 FactoryGirl.define do

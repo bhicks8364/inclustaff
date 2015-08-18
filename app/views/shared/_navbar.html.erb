@@ -1,120 +1,170 @@
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      
-  <!--LOGO IMAGE-->
-      <%= link_to root_url, class: "navbar-brand" do %>
-       <%= image_tag("incluStaff_logo.png", alt: "Brand") %>
+<header class="navbar" id="header-navbar">
+		<div class="container">
+		  <%= link_to root_url, id: "logo", class: "navbar-brand" do %>
+       <%= image_tag("incluStaff_logo.png", alt: "Inclustaff") %>
       <% end %>
-    </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      
-<!--IF USER IS SIGNED IN ##-->
-
-      <ul class="nav navbar-nav navbar-right">
-        <% if current_user.nil? %>
-        <!--NOT SIGNED IN-->
-        <li><%= link_to "Sign In", new_user_session_path %></li>
-        <li><%= link_to "Sign Up", new_user_registration_path %></li>
-        <% end %>
-        
-        <% if user_signed_in? %>
-        <li><%= link_to current_user.name, current_user %></li>
-        <li></li>
-        <!--DROPDOWN-->
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <%= current_user.role %> Toolbox <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-<!--IF USER IS AN ADMIN ##            -->
-            <% if current_user.admin? %>
-              <li><%= link_to "Company Dashboard", dashboard_path %></li>
-              <li role="separator" class="divider"></li>
-              <li><%= link_to "Add New Department", new_order_path %></li>
-              <li><%= link_to "Add Employee", new_employee_path %></li>
-              <li><%= link_to "Add Company", new_company_path %></li>
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
-              <li role="separator" class="divider"></li>
-              <li><%= link_to "Company Page", current_user.company %></li>
-               <li><%= link_to "All Departments", orders_path %></li>
-              <li role="separator" class="divider"></li>
-              <li><%= link_to "Edit Profile", edit_user_registration_path %></li>
-              <li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
-            <% end %>
-<!--#################################-->
-<!--IF USER IS A MANAGER ##            -->
-        <% if current_user.manager? %>
-              <li><%= link_to "Company Dashboard", dashboard_path %></li>
-              <li role="separator" class="divider"></li>
-              <li><%= link_to "Add New Department", new_order_path %></li>
-              <li><%= link_to "Add Employee", new_employee_path %></li>
-              <li><%= link_to "Add Company", new_company_path %></li>
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
-              <li role="separator" class="divider"></li>
-              <li><%= link_to "Company Page", current_user.company %></li>
-               <li><%= link_to "All Departments", orders_path %></li>
-              <li role="separator" class="divider"></li>
-              <li><%= link_to "Edit Profile", edit_user_registration_path %></li>
-              <li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
-        <% end %>
-<!--#################################-->
-<!--IF USER IS A PAYROLL ##            -->
-        <% if current_user.payroll? %>
-              <li><%= link_to "Company Dashboard", dashboard_path %></li>
-              <li role="separator" class="divider"></li>
-              <li><%= link_to "Add New Department", new_order_path %></li>
-              <li><%= link_to "Add Employee", new_employee_path %></li>
-              <li><%= link_to "Add Company", new_company_path %></li>
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
-              <li role="separator" class="divider"></li>
-              <li><%= link_to "Company Page", current_user.company %></li>
-               <li><%= link_to "All Departments", orders_path if policy(Order).index? %></li>
-              <li role="separator" class="divider"></li>
-              <li><%= link_to "Edit Profile", edit_user_registration_path %></li>
-              <li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
-        <% end %>
-<!--#################################-->
-<!--IF USER IS A EMPLOYEE ##            -->
-  <% if current_user.employee? %>
-  
-        <!--IF EMPLOYEE HAS A CURRENT JOB ##-->
-            <% if current_user.employee.current_job.present? %>
-              <li><%= link_to "Current Job", current_user.employee.current_job %></li>
               
-                <!--IF EMPLOYEE HAS ANY SHIFTS ##-->
-                  <% if current_user.employee.shifts.any? %>
-              <li><%= link_to "My Shifts", employee_shifts_path(current_user.employee) %></li>
-                  <% end %>
-                <!--########-->
-                
-            <% end %>
-        <!--#########-->
-        
-              <li><%= link_to "Company Page", current_user.company %></li>
-              <li><a href="#">Action</a></li>
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
-              <li role="separator" class="divider"></li>
-              <li><a href="#">Separated link</a></li>
-              <li role="separator" class="divider"></li>
-              <li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
-  <% end %>
-  <!--#########-->          
-          </ul>
-        </li>
-      </ul>
-<% end %>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
+
+			
+			<button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="fa fa-bars"></span>
+			</button>
+			
+
+			<div class="nav-no-collapse pull-right" id="header-nav">
+				<ul class="nav navbar-nav pull-right">
+					<li class="mobile-search">
+						<a class="btn">
+							<i class="fa fa-search"></i>
+						</a>
+						
+						<div class="drowdown-search">
+							<form role="search">
+								<div class="form-group">
+									<input type="text" class="form-control" placeholder="Search...">
+									<i class="fa fa-search nav-search-icon"></i>
+								</div>
+							</form>
+						</div>
+
+						
+					</li>
+					<% if current_user.nil? && current_admin.nil? %>
+			        <!--NOT SIGNED IN-->
+			        <li><%= link_to "Sign In", new_user_session_path %></li>
+			        <li><%= link_to "Sign Up", new_user_registration_path %></li>
+			        <li><%= link_to "Admin Login", new_admin_session_path %></li>
+			        <% end %>
+			        
+			        <% if user_signed_in? %>
+			        <li><%= link_to current_user.name, current_user %></li>
+			        <% elsif admin_signed_in? %>
+			        <li><%= link_to current_admin.name, root_url %></li>
+			        <% end %>
+			        <% if admin_signed_in? %>
+					<li class="dropdown hidden-xs">
+						<a class="btn dropdown-toggle" data-toggle="dropdown">
+							<i class="fa fa-warning"></i>
+							<span class="count">8</span>
+						</a>
+						<ul class="dropdown-menu notifications-list">
+							<li class="pointer">
+								<div class="pointer-inner">
+									<div class="arrow"></div>
+									<div class="arrow-border"></div>
+								</div>
+							</li>
+							<li class="item-header">You have 6 new notifications</li>
+							<li class="item">
+								<a href="#">
+									<i class="fa fa-comment"></i>
+									<span class="content">New comment on ‘Awesome P...</span>
+									<span class="time"><i class="fa fa-clock-o"></i>13 min.</span>
+								</a>
+							</li>
+							<li class="item">
+								<a href="#">
+									<i class="fa fa-plus"></i>
+									<span class="content">New user registration</span>
+									<span class="time"><i class="fa fa-clock-o"></i>13 min.</span>
+								</a>
+							</li>
+							<li class="item">
+								<a href="#">
+									<i class="fa fa-envelope"></i>
+									<span class="content">New Message from George</span>
+									<span class="time"><i class="fa fa-clock-o"></i>13 min.</span>
+								</a>
+							</li>
+							<li class="item">
+								<a href="#">
+									<i class="fa fa-shopping-cart"></i>
+									<span class="content">New purchase</span>
+									<span class="time"><i class="fa fa-clock-o"></i>13 min.</span>
+								</a>
+							</li>
+							<li class="item">
+								<a href="#">
+									<i class="fa fa-eye"></i>
+									<span class="content">New order</span>
+									<span class="time"><i class="fa fa-clock-o"></i>13 min.</span>
+								</a>
+							</li>
+							<li class="item-footer">
+								<a href="#">
+									View all notifications
+								</a>
+							</li>
+						</ul>
+					</li>
+			<% if admin_signed_in? && current_admin.company.employees.newly_added.any? %>
+					<li class="dropdown hidden-xs">
+						<a class="btn dropdown-toggle" data-toggle="dropdown">
+							<i class="fa fa-users"></i>
+							<span class="count"><%= current_admin.company.employees.newly_added.count %></span>
+						</a>
+						<ul class="dropdown-menu notifications-list messages-list">
+							<li class="pointer">
+								<div class="pointer-inner">
+									<div class="arrow"></div>
+									<div class="arrow-border"></div>
+								</div>
+							</li>
+							<% current_admin.company.employees.newly_added.limit(3).each do |employee| %>
+							<li class="item">
+							  <%= link_to(employee.user) do %>
+								
+									<span class="content">
+										<span class="content-headline">
+											<%= employee.name %>
+										</span>
+										<span class="content-text">
+											<%= employee.current_job.title %>
+										</span>
+									</span>
+									<span class="time"><i class="fa fa-clock-o"></i><%= time_ago_in_words(employee.created_at) %></span>
+								<% end %>
+							</li>
+						<% end %>
+							<li class="item-footer">
+								<%= link_to "View All Employees", employees_url %>
+								</a>
+							</li>
+						</ul>
+					</li>
+			<% end %>
+			
+
+					<li class="hidden-xs"><%= link_to "<i class='fa fa-cog'></i>".html_safe, edit_admin_registration_path, class: "btn" %></li>
+					<li class="dropdown profile-dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<%= image_tag("user-profile-1.png") %>
+							<span class="hidden-xs"><%= current_admin.name %></span> <b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+						  <li><%= link_to "<i class='fa fa-tachometer'></i>  Company Dashboard".html_safe, dashboard_path %></li>
+			              <li role="separator" class="divider"></li>
+			              <li><%= link_to "<i class='fa fa-home'></i> Company Page".html_safe, current_admin.company %></li>
+			              <li><%= link_to "<i class='fa fa-university'></i> Departments".html_safe, orders_path %></li>
+			              <li><%= link_to "<i class='fa fa-plus-square'></i>    Add New Department".html_safe, new_order_path %></li>
+			              <li><%= link_to "<i class='fa fa-users'></i> Employees".html_safe, employees_path %></li>
+			              <li><%= link_to "<i class='fa fa-user-plus'></i> Add Employee".html_safe, new_employee_path %></li>
+			              <li><%= link_to "<i class='fa fa-building'></i>  Add Company".html_safe, new_company_path %></li>
+			              <li><%= link_to "<i class='fa fa-table'></i>  Timesheets ".html_safe, timesheets_path %></li>
+			              <li><%= link_to "<i class='fa fa-briefcase'></i>  Jobs ".html_safe, jobs_path %></li>
+			              <li role="separator" class="divider"></li>
+			              
+			              <li><%= link_to "<i class='fa fa-cog'></i>  Settings".html_safe, edit_admin_registration_path %></li>
+			              <li><%= link_to "<i class='fa fa-power-off'></i>    Logout".html_safe, destroy_admin_session_path, method: :delete %></li>
+						</ul>
+					</li>
+					<li class="hidden-xxs">
+						<%= link_to "<i class='fa fa-power-off'></i>".html_safe, destroy_admin_session_path, class: "btn", method: :delete %>
+					</li>
+				</ul>
+				
+			</div>
+	<% end %>
+		</div>
+	</header>

@@ -35,7 +35,7 @@ class Job < ActiveRecord::Base
     # validates_associated :employee
     validates_associated :order
     # validates :employee_id,  presence: true
-    validates :order_id,  presence: true
+    # validates :order_id,  presence: true
     validates :title,  presence: true, length: { maximum: 50 }
     
     # CALLBACKS
@@ -127,6 +127,14 @@ class Job < ActiveRecord::Base
     
     def current_timesheet
         self.timesheets.this_week.first
+    end
+    def current_percent
+        percent = (self.current_week_hours / 40) * 100
+        if percent > 100
+            100
+        else
+            percent
+        end
     end
     
     

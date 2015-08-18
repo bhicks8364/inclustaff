@@ -8,16 +8,18 @@ class CompanyPolicy < ApplicationPolicy
   end
   
   def index?
-    user.present? && user.admin?
+    # user.present? && user.admin?
   end
   
   def show?
-    return true if user.admin? || user.manager?
-    return true if user.payroll? && user.can_edit?
+    true
+    # return true if user.admin? || user.manager?
+    # return true if user.payroll? && user.can_edit?
+    # return true if user.employee? || user.company_id == company.id
   end
   
   def create?
-    user.admin?
+    # user.admin?
   end
   
   def new?
@@ -25,7 +27,7 @@ class CompanyPolicy < ApplicationPolicy
   end
   
   def update?
-    user.admin?
+    # user.admin?
   end
   
   def edit?

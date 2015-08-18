@@ -1,41 +1,68 @@
-<h3>Active Jobs</h3>
 <div class="active-jobs">
-
+<h3>Active Jobs</h3>
 
 <%= content_tag_for(:dl, @active_jobs) do |job| %>
+
 <% if job.on_shift? %>
 
   <dt class="clocked-in"><h4><%= link_to job.employee.name, job.employee %>   |    <%= link_to job.title, job %> </h4>
-  <h5>Hours this week: </h5> <%= job.current_week_hours %><p class="pull-right"><span class="glyphicon glyphicon-time" aria-hidden="true"></span>     Clocked In</p></dt>
-
   
-
+    Hours: <%= job.current_week_hours %>  | Pay:  <%= job.current_week_pay ? number_to_currency(job.current_week_pay) : "$0.00" %> 
   
+  <p class="pull-right"><span class="glyphicon glyphicon-time" aria-hidden="true"></span>     Clocked In</p>
+ 
+  </dt>
+
      
   <% else %>
   <dt class="clocked-out"><h4><%= link_to job.employee.name, job.employee %>   |    <%= link_to job.title, job %> </h4>
-  Hours this week: <%= job.current_week_hours %>
-  
+   THIS WEEK <br> Hours: <%= job.current_week_hours %>  | Pay:  <%= job.current_week_pay ? number_to_currency(job.current_week_pay) : "$0.00" %> 
 
    <p class=" pull-right"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>    Clocked Out </p></dt>
    <% end %>
-     <dd class="">
    
-   <% if job.shifts.any? %>
-   <%= job.last_clock_in.strftime("%m/%d/%y") %> 
-   <% if job.approaching_overtime? %>
-   <p class="text-danger">Hours until overtime: <%= job.hours_until_ot %></p>
-   <% end %>
-  
-  <br> Time In: <%= job.last_clock_in ? job.last_clock_in.strftime("%I:%M %p") : "No Shifts Yet" %>    |     Out: <%= job.last_clock_out ? job.last_clock_out.strftime("%I:%M %p") : "No Shifts Yet" %>
+   
+  <dd>
+   <p>Time In: <%= job.last_clock_in ? job.last_clock_in.strftime("%I:%M %p") : "No Shifts Yet" %>    |     Time Out: <%= job.last_clock_out ? job.last_clock_out.strftime("%I:%M %p") : "No Shifts Yet" %></p>
     
+
+   
+  <% if job.current_timesheet != nil %>  
+  <%= link_to "<span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span>     View Timesheet".html_safe, timesheet_path(job.current_timesheet), class: "btn btn-default btn-sm pull-right" %>
+<div class="hour-progress col-md-8">
   
+   <% if job.hours_until_ot > 1 %>
+   <div class="progress">
+      <div class="progress-bar progress-bar-success" style="width: <%= job.current_percent %>%">
+        <small>Hrs until OT: <%= job.hours_until_ot %></small> <span class="sr-only">35% Complete (success)</span>
+      </div>
+    </div>
+    <% else %>
+    <div class="progress">
+      <div class="progress-bar progress-bar-success" style="width: <%= job.current_percent %>%"> 
+        <p class="text-center">Hours: <%= job.current_timesheet.reg_hours %> </p> <span class="sr-only">35% Complete (success)</span>
+      </div>
+
+    </div>
+    <div class="progress">
+      <div class="progress-bar progress-bar-danger progress-bar-striped" style="width: <%= job.current_timesheet.ot_hours * 10 %>%">
+        <p class="text-center">OT: <%= job.current_timesheet.ot_hours %></p><span class="sr-only">20% Complete (warning)</span>
+      </div>
+    </div>
+    <% end %>
+</div>
+    
+<% end %>   
+  <p class="job-info"> 
+  <p><%= job.last_clock_in.strftime("%m/%d/%y") %> | Time In: <%= job.last_clock_in.strftime("%I:%M %p") %>  </p>
+</p>
+
   </dd>
+
+
+   <hr>
   <% end %>
-  <p class="job-info"> Pay this week:  <%= job.current_week_pay ? number_to_currency(job.current_week_pay) : "$0.00" %> <br>
   
-  Start Date: <%= job.start_date %> | Pay Rate: <%= number_to_currency(job.pay_rate) %></p>
-  <% end %>
 
 
 

@@ -1,10 +1,18 @@
-<div class="panel panel-default col-md-4">
-  <div class="panel-heading"> <span class="glyphicon glyphicon-time" aria-hidden="true"></span><strong>  Employees Currently Clocked In</strong></div>
-  <div class="panel-body">
+<div class="col-md-8">
 
-  <%= content_tag_for(:ul, @clocked_in, class: "list-group") do |job| %>
-    <li class="list-group-item list-group-item-success"><strong><%= link_to job.employee.name, job.employee %></strong> <small> - <%= link_to job.title, job %></small></li>
-    <li class="list-group-item"><%= job.last_clock_in ? job.last_clock_in.strftime("%I:%M %p") : job.shifts.last.state.titleize %> </li>
+
+  <%= content_tag_for(:ul, @clocked_in, class: "") do |job| %>
+  <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+    <li class="clocked-in"><strong><%= link_to job.employee.name, job.employee %></strong> <small> - <%= link_to job.title, job %></small></li>
+    <li class="clocked-out"><%= job.last_clock_in ? job.last_clock_in.strftime("%I:%M %p") : job.shifts.last.state.titleize %> </li>
+
+<div class="col-md-4">
+  <ul>
+    <li><%= job.employee.user.current_sign_in_at ? job.employee.user.current_sign_in_at.strftime("%A   %x   - %I:%M %p") : "No IP recorded" %></li>
+    <li><%= job.employee.user.current_sign_in_ip %></li>
+    <li><%= job.employee.user.last_sign_in_at ? job.employee.user.last_sign_in_at.strftime("%A   %x   - %I:%M %p") : "No IP recorded" %></li>
+    <li><%= job.employee.user.last_sign_in_ip %></li>
+  </ul>
+</div>
 <% end %>
-  </div>
 </div>

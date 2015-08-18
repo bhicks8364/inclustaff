@@ -10,7 +10,8 @@ class ShiftPolicy < ApplicationPolicy
         user.present? 
     end
     def clock_out?
-        user.admin? || shift.employee_id == user.id
+        user.present? 
+        # user.admin? || shift.employee_id == user.id
     end
     
     def show?

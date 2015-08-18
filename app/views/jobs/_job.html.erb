@@ -1,0 +1,33 @@
+<% if @job.present? %>
+ <h3><small>Job Information</small></h3>
+
+      <strong>Company:</strong>
+  <%= link_to @company.name, @company %>
+
+  <strong>Department:</strong>
+  <%= link_to @job.order.title, @job.order %> <br>
+  <strong>Job Title:</strong>
+  <%= @job.title %>
+  
+  <strong>Pay rate:</strong>
+  <%= number_to_currency(@job.pay_rate, :unit => "$") %>
+
+  <strong>Description:</strong>
+  <%= @job.description %>
+
+  <strong>Employee:</strong>
+  <%= link_to @employee.name, @employee %>
+
+
+  <strong>Start date:</strong>
+  <%= @job.start_date.strftime("%B %e, %Y ") %>
+
+  
+
+<div class="current_week_pay">Gross this week: <%= number_to_currency(@job.current_week_pay) %></div>
+
+Total Hours : <%= @job.total_hours %>
+
+<% else %>
+No current job.
+<% end %>

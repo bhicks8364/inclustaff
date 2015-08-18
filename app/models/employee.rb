@@ -25,13 +25,15 @@ class Employee < ActiveRecord::Base
   has_many :orders, :through => :jobs
   has_many :companies, :through => :orders
   has_one :current_job, -> { where active: true }, class_name: "Job"
+  has_one :current_shift, -> { where state: 'clocked_in' }, class_name: "Shift"
   has_many :timesheets, :through => :jobs
+
 
 
   accepts_nested_attributes_for :jobs
   accepts_nested_attributes_for :user
   
-  delegate :company, to: :user
+  # delegate :company, to: :user
   delegate :manager, to: :current_job
   
   before_save :set_user_info
@@ -62,9 +64,10 @@ class Employee < ActiveRecord::Base
   
     # Employee.joins(:jobs).where(Job[:employee_id].not_eq(2))
     # users.where(users[:name].eq('bob').or(users[:age].lt(25)))
-    scope :unassigned, -> { joins("LEFT OUTER JOIN jobs ON jobs.employee_id = employees.id").where("jobs.id IS null")}
-
-  
+  scope :unassigned, -> { joins("LEFT OUTER JOIN jobs ON jobs.employee_id = employees.id").where("jobs.id IS null")}
+  # scope :unassigned, -> { where(current_job: nil) }
+  scope :new_start, -> { joins(:jobs).where(Job[:start_date].gteq(Date.today.beginning_of_week)) }
+  scope :newly_added, -> { where("employees.created_at >= ?", 7.days.ago) }
   scope :tardy, -> {
                      joins(:timesheets).
                      where("timesheets.submitted_at <= ?", 7.days.ago).
@@ -142,13 +145,11 @@ class Employee < ActiveRecord::Base
     end
   end
     
-  # def current_company
-  #   if self.jobs.active.any?
-  #     self.current_job.company
-  #   else
-  #   "Unassigned"
-  #   end
-  # end
+  def company
+    if self.user.present?
+      self.user.company
+    end
+  end
   
   def self.email
     if self.user != nil

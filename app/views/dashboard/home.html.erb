@@ -1,7 +1,10 @@
-<div id="home-page">
+<% if admin_signed_in? %>
+    <div class=''>
+        <%= render 'dashboard/admin' %>
+    </div>
+    <% end %>
     
     
-<% if current_user.present? %>
 
     
     
@@ -10,15 +13,13 @@
     
 <% if user_signed_in? && current_user.employee? %>
 <%= render 'dashboard/employee' %>
-
+<%= link_to "Dashboard", timeclock_path(@employee), class: "btn btn-default" %>
 <%= link_to "Current Timesheet", @current_timesheet, class: "btn btn-default" %>
-
+<hr> 
+<%= render 'shifts/shift_calendar' %>
 
 <% end %>
 
-<% if user_signed_in? && current_user.admin? %>
-    <%= render 'dashboard/admin' %>
-<% end %>
 
 <% if user_signed_in? && current_user.manager? %>
 <%= render 'dashboard/manager' %>
@@ -38,7 +39,7 @@
 
 
 
-<% else %>
+<% if current_user.nil? && current_admin.nil? %>
             <div class="welcome-screen">
                 <h1>Welcome to IncluStaff</h1>
                 <h3>Simplify the process, optimize your workforce and maximize your profits. </h3>
@@ -75,7 +76,7 @@
 <% end %>
 
     
-</div>
+
 
     
     

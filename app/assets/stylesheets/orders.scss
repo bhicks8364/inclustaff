@@ -1,3 +1,55 @@
 // Place all the styles related to the Orders controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+// div.scroll {
+//       position: relative;
+//     //   height: 500px;
+//   }
+//   ul.nav-pills {
+//     //   top: 10px;
+//     margin-top: 15px;
+    
+//       position: fixed;
+//       background-color: #1E88E5;
+//   }
+//   div.col-sm-9 div {
+//     //   height: 250px;
+//       font-size: 18px;
+//       color: black;
+//     //   align-content: right;
+//   }
+//   #section1 {color: #fff; background-color: #1E88E5;}
+//   #section2 {color: #fff; background-color: #673ab7;}
+//   #section3 {color: #fff; background-color: #ff9800;}
+//   #section41 {color: #fff; background-color: #00bcd4;}
+//   #section42 {color: #fff; background-color: #009688;}
+  
+//   @media screen and (max-width: 810px) {
+//     .order {
+//         margin-left: 150px;
+//     }
+//   }
+  
+  
+ .order {
+    //  margin-left: 150px;
+  // border-top: 3px solid black;
+  // color: #000;
+  // background-color: black;
+  max-width: 85%;
+  padding: 15px;
+  
+  &:target {
+      background-color: #D97B2E;
+
+  }
+}
+
+
+// .order.scroll {
+//     border: solid 3px black;
+// }
+
+
+// #order_1

@@ -2,15 +2,17 @@
 #
 # Table name: timesheets
 #
-#  id         :integer          not null, primary key
-#  week       :integer
-#  job_id     :integer
-#  reg_hours  :decimal(, )
-#  ot_hours   :decimal(, )
-#  gross_pay  :decimal(, )
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  deleted_at :datetime
+#  id          :integer          not null, primary key
+#  week        :integer
+#  job_id      :integer
+#  reg_hours   :decimal(, )
+#  ot_hours    :decimal(, )
+#  gross_pay   :decimal(, )
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  deleted_at  :datetime
+#  state       :string
+#  approved_by :integer
 #
 
 class Timesheet < ActiveRecord::Base
@@ -30,6 +32,8 @@ class Timesheet < ActiveRecord::Base
     
 
     scope :with_job, -> { includes(:job)}
+    scope :approved, -> { where(state: "approved")}
+    scope :pending, -> { where(state: "pending")}
     scope :this_week, ->{
         where(week: Date.today.cweek)
     }
@@ -37,12 +41,45 @@ class Timesheet < ActiveRecord::Base
         where(week: Date.today.cweek - 1)
     }
     
+    after_initialize :defaults
+    
     after_save :update_company_balance!
+    
+    def approved?
+        if self.state == "approved"
+            true
+        else
+            false
+        end
+    end
+    def pending?
+        if self.state == "pending"
+            true
+        else
+            false
+        end
+    end
+
+    def defaults
+        if self.new_record?
+            self.state = "pending"
+        end
+    end
+    
     
     def update_company_balance!
         self.company.set_payroll_cost!
     end
     
+    def last_clock_in
+        self.shifts.last.time_in
+    end
+    
+    def last_clock_out
+        if self.shifts.any?
+            self.shifts.last.time_out
+        end
+    end
     
     
     #       # EXPORT TO CSV
@@ -62,7 +99,13 @@ class Timesheet < ActiveRecord::Base
     #       end
     #     end
     #   end
-    
+    def current?
+        if self.week == Date.today.cweek
+            true
+        else 
+            false
+        end
+    end
     
     
     
@@ -81,6 +124,13 @@ class Timesheet < ActiveRecord::Base
             true
         else
             false
+        end
+    end
+    def clocked_out?
+        if self.shifts.clocked_in.any?
+            false
+        else
+            true
         end
     end
     

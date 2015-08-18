@@ -4,17 +4,24 @@ class TimesheetsController < ApplicationController
   # GET /timesheets
   # GET /timesheets.json
   def index
-    @company = current_user.company
-    @all_timesheets = @company.timesheets
-    @timesheets = @company.timesheets.this_week.order(updated_at: :desc)
-    @last_week_timesheets =  @company.timesheets.last_week
-    authorize @timesheets
+    if admin_signed_in? 
+      @admin = current_admin
+      @company = @admin.company
+      @timesheets = @company.timesheets.order(updated_at: :desc)
+      # authorize @timesheets
+    elsif user_signed_in? && current_user.not_an_employee?
+      @current_user = current_user if current_user.present?
+      @company = @current_user.company
+      @timesheets = @company.timesheets.order(updated_at: :desc)
+      # authorize @timesheets
+    end
+
   end
 
   # GET /timesheets/1
   # GET /timesheets/1.json
   def show
-    authorize @timesheet
+    # authorize @timesheet
     @shifts = @timesheet.shifts.order(time_in: :desc)
     @employee = @timesheet.employee
     @job = @timesheet.job
@@ -26,19 +33,27 @@ class TimesheetsController < ApplicationController
   # GET /timesheets/new
   def new
     @timesheet = Timesheet.new
-    authorize @timesheet
+    # authorize @timesheet
   end
+  
+  def approve
+    @timesheet = Timesheet.find(params[:id])
+    if @timesheet.clocked_out?
+      @timesheet.update(state: "approved", approved_by: current_admin.id)
+    end
+  end
+    
 
   # GET /timesheets/1/edit
   def edit
-    authorize @timesheet
+    # authorize @timesheet
   end
 
   # POST /timesheets
   # POST /timesheets.json
   def create
     @timesheet = Timesheet.new(timesheet_params)
-    authorize @timesheet
+    # authorize @timesheet
 
     respond_to do |format|
       if @timesheet.save
@@ -54,7 +69,7 @@ class TimesheetsController < ApplicationController
   # PATCH/PUT /timesheets/1
   # PATCH/PUT /timesheets/1.json
   def update
-    authorize @timesheet
+    # authorize @timesheet
     respond_to do |format|
       if @timesheet.update(timesheet_params)
         format.html { redirect_to @timesheet, notice: 'Timesheet was successfully updated.' }

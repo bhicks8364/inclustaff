@@ -24,9 +24,9 @@
 }
 .form-group {
 //   width: 75%;
-    margin-top: 30px;
-    margin-left: 30px;
-    margin-right: 30px;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
     label {
     color: black;
 }
@@ -35,7 +35,7 @@
 
 .form-actions > input {
     float: right;
-    margin-right: 20px;
+    margin-right: 10px;
      
     /*float: right;*/
     
@@ -57,7 +57,7 @@
 
 #sign_in_page {
         background-color: rgba(34, 34, 34, 0.62);
-        padding: 25px;
+        padding: 8px;
         margin: auto;
         margin-bottom: 100%;
         max-width: 800px;
@@ -164,4 +164,17 @@ input[type="submit"] {
 .modal-content {
     padding: 25px;
     color: black;
+}
+
+.white {
+    color: white;
+}
+
+ul {
+    text-decoration: none;
+    li {
+        text-decoration: none;
+        
+    }
+    
 }
