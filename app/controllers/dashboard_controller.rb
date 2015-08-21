@@ -1,4 +1,5 @@
 class DashboardController < ApplicationController
+    # before_filter :authenticate_admin!
     
     def home
         if admin_signed_in? 
@@ -56,6 +57,8 @@ class DashboardController < ApplicationController
           @admin = current_admin
           @company = @admin.company
           @timesheets = @company.timesheets.order(updated_at: :desc)
+          @clocked_in = @company.jobs.on_shift.order(updated_at: :desc)
+          @admin_users = @company.admins
           # authorize @timesheets
         elsif user_signed_in? && current_user.not_an_employee?
           @current_user = current_user if current_user.present?
@@ -63,12 +66,12 @@ class DashboardController < ApplicationController
           @timesheets = @company.timesheets.order(updated_at: :desc)
           # authorize @timesheets
         end
-        @clocked_in = @company.jobs.on_shift.order(updated_at: :desc)
+        
         # @timesheets = @company.timesheets.order(updated_at: :desc)
-        @payroll_users = @company.payroll_users
-        @manager_users = @company.manager_users
-        @admin_users = @company.admins
-        @employee_users = @company.employees.with_active_jobs
+        # @payroll_users = @company.payroll_users
+        # @manager_users = @company.manager_users
+        
+        # @employee_users = @company.employees.with_active_jobs
 
         skip_authorization
 

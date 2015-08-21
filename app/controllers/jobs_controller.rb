@@ -56,10 +56,13 @@ class JobsController < ApplicationController
     # if admin_signed_in? 
     #   @current_admin = current_admin
     #   @company = @current_admin.company
+
+    #   @job = @order.jobs.new
       
     # elsif user_signed_in? && current_user.not_an_employee?
     #   @current_user = current_user
     #   @company = @current_user.company
+      
 
     # end
     if params[:order_id]
@@ -69,7 +72,7 @@ class JobsController < ApplicationController
       # @employee = @job.build_employee
       # authorize @job
     else
-      
+    
       @job = Job.new
       # authorize @job
       # @employee = @job.build_employee

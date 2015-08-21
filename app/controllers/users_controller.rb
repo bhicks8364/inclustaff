@@ -4,11 +4,11 @@ class UsersController < ApplicationController
         if admin_signed_in? 
           @admin = current_admin
           @company = @admin.company
-          @users = @company.company_users.order(last_name: :asc)
+          @users = @company.users.order(last_name: :asc)
         elsif user_signed_in? && current_user.not_an_employee?
           @current_user = current_user if current_user.present?
           @company = @current_user.company
-          @users = @company.company_users.order(last_name: :asc)
+          @users = @company.users.order(last_name: :asc)
         end
     end
     
@@ -29,6 +29,7 @@ class UsersController < ApplicationController
         @employees = @company.employees
         @employee = @user.employee if @user.employee?
         @job = @employee.current_job if @employee.present?
+        @jobs = @user.employee.jobs if @user.employee?
         @manager = @user if @user.manager?
         
         if @user.employee?

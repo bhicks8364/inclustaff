@@ -1,11 +1,11 @@
-<% if @company.employees.unassigned.nil? %>
+<% if @company.employees.empty? %>
 <div id="no-employees-alert" class="alert alert-danger" role="alert"><br>
  <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
 <h3>All of your employees are currently assigned to a job. 
 Please add a new employee before continuing.</h3>
 <%= link_to 'Back', company_order_jobs_path(@company, @order), class: "pull-left" %> <%= link_to "Add Employee", new_employee_path, class: "pull-right" %>
 </div>
-<% end %>
+<% else %>
 
 
 <h1>New Job</h1>
@@ -27,7 +27,7 @@ Please add a new employee before continuing.</h3>
   
 
         <h4><strong>Job Information</strong></h4>
-    <%= f.association :employee, collection: Employee.order(:last_name), prompt: "Select Employee", label: false %>
+    <%= f.association :employee, collection: @company.employees.order(:last_name), prompt: "Select Employee", label: false %>
    
 
     <%= f.association :order, label_method: :title, value_method: :id, include_blank: false %>
@@ -49,7 +49,7 @@ Please add a new employee before continuing.</h3>
 
 <% end %>
 <!--FORM END-->
-
+<% end %>
 
 
 <!--IF THE COMPANY HAS NO UNASSIGNED EMPLOYEES - - END-->

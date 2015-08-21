@@ -1,4 +1,4 @@
-$("#out-time").text("<%= @shift.time_out.strftime("%I:%M %p") %>");
+$("#out-time").append("<%= @shift.time_out.strftime("%I:%M %p") %>");
 $("#time-worked").text("<%= @shift.time_worked %>");
 $("#shift-state").text("<%= @shift.state.titleize %>");
-$('#clock-out-button').hide();
+$('#out-button').hide();

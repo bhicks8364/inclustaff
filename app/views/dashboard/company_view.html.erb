@@ -1,40 +1,64 @@
-<div class="container-fluid" >
-
+<div class="col-md-12">
     <h1><%= @company.name %>'s Dashboard</h1>
-    <h3><%= current_admin.name %> | <%= link_to "View Company Page", @company, class: "btn profile-button" %></h3>
-    
-    <div id="current-payroll col-sm-3"><h2><small>Current payroll cost: <%= number_to_currency( @company.current_payroll_cost) %></small></h2></div>
-   <div class="newly-added col-md-4">
-
-            <% if @company.employees.newly_added.any? %>
-            Newly Added
-            <ul>
-                <% @company.employees.newly_added.each do |employee| %>
-                    <li><%= link_to employee.name, employee.user %></li>
-                
-                <% end %>
-                
-            </ul>
-            <% end %>
-
-      
-                  <% if @company.employees.new_start.any? %>
-           New Starts
-                <ul>
-                    <% @company.employees.new_start.each do |employee| %>
-                <li><strong><%= link_to employee.name, employee %></strong> <%= link_to "View Job", employee.current_job %></li>
-                
-                <% end %>
-                </ul>
-            <% end %>
-    </div>
-
-    
-
+    <div class="row">
+		<div class="col-lg-3 col-sm-6 col-xs-12">
+			<div class="main-box infographic-box">
+				<i class="fa fa-users red"></i>
+				<span class="headline">Users</span>
+				<span class="value"><%= @company.users.count %></span>
+			</div>
+		</div>
+		<div class="col-lg-3 col-sm-6 col-xs-12">
+			<div class="main-box infographic-box">
+				<i class="fa fa-money green"></i>
+				<span class="headline">Current Payroll</span>
+				<span class="value"><%= number_to_currency(@company.current_payroll_cost) %></span>
+			</div>
+		</div>
+		<div class="col-lg-3 col-sm-6 col-xs-12">
+			<div class="main-box infographic-box">
+				<i class="fa fa-clock-o"></i>
+				<span class="headline">Clocked In</span>
+				<span class="value"><small><%= pluralize(@company.jobs.on_shift.count, 'Employee') %></small></span>
+			</div>
+		</div>
+		<div class="col-lg-3 col-sm-6 col-xs-12">
+			<div class="main-box infographic-box">
+				<i class="fa fa-eye yellow"></i>
+				<span class="headline">Approaching OT</span>
+				<span class="value"><small><%= pluralize(@company.timesheets.approaching_overtime.count, 'Employee')  %></small></span>
+			</div>
+		</div>
+	</div>
+	<div class='row'>
+		<div class="col-lg-3 col-sm-6 col-xs-12">
+			<div class="main-box infographic-box">
+				<i class="fa fa-building blue"></i>
+				<span class="headline"><%= link_to "View Company Page", @company, class: "btn btn-primary" %></span>
+				<span class="value"><%= @company.users.count %></span>
+			</div>
+		</div>
+		<div class="col-lg-3 col-sm-6 col-xs-12">
+			<div class="main-box infographic-box">
+				<i class="fa fa-money green"></i>
+				<span class="headline">Current Payroll</span>
+				<span class="value"><%= number_to_currency(@company.current_payroll_cost) %></span>
+			</div>
+		</div>
+		<div class="col-lg-3 col-sm-6 col-xs-12">
+			<div class="main-box infographic-box">
+				<i class="fa fa-money green"></i>
+				<span class="headline">Current Payroll</span>
+				<span class="value"><%= number_to_currency(@company.current_payroll_cost) %></span>
+			</div>
+		</div>
+			
+	    
+	</div>
 </div>
 
-
-<%= render 'companies/company_users' %>
-
     
-</div>
+
+
+
+

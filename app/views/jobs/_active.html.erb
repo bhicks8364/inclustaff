@@ -1,7 +1,5 @@
-<div class="active-jobs">
-<h3>Active Jobs</h3>
 
-<%= content_tag_for(:dl, @active_jobs) do |job| %>
+  <%= content_tag_for(:dl, @active_jobs) do |job| %>
 
 <% if job.on_shift? %>
 
@@ -12,6 +10,11 @@
   <p class="pull-right"><span class="glyphicon glyphicon-time" aria-hidden="true"></span>     Clocked In</p>
  
   </dt>
+    <dd>
+   <p>Time In: <%= job.last_clock_in ? job.last_clock_in.strftime("%I:%M %p") : "No Shifts Yet" %>  
+    
+
+  </dd>
 
      
   <% else %>
@@ -19,12 +22,15 @@
    THIS WEEK <br> Hours: <%= job.current_week_hours %>  | Pay:  <%= job.current_week_pay ? number_to_currency(job.current_week_pay) : "$0.00" %> 
 
    <p class=" pull-right"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>    Clocked Out </p></dt>
+     <dd>
+   <p>Last Clock In: <%= job.last_clock_in ? job.last_clock_in.strftime("%I:%M %p") : "No Shifts Yet" %>    |     Last Clock Out: <%= job.last_clock_out ? job.last_clock_out.strftime("%I:%M %p") : "No Shifts Yet" %></p>
+    
+
+  </dd>
    <% end %>
    
    
-  <dd>
-   <p>Time In: <%= job.last_clock_in ? job.last_clock_in.strftime("%I:%M %p") : "No Shifts Yet" %>    |     Time Out: <%= job.last_clock_out ? job.last_clock_out.strftime("%I:%M %p") : "No Shifts Yet" %></p>
-    
+
 
    
   <% if job.current_timesheet != nil %>  
@@ -32,38 +38,28 @@
 <div class="hour-progress col-md-8">
   
    <% if job.hours_until_ot > 1 %>
-   <div class="progress">
+   <div class="progress progress-4x">
       <div class="progress-bar progress-bar-success" style="width: <%= job.current_percent %>%">
         <small>Hrs until OT: <%= job.hours_until_ot %></small> <span class="sr-only">35% Complete (success)</span>
       </div>
     </div>
     <% else %>
-    <div class="progress">
+    <div class="progress progress-4x">
       <div class="progress-bar progress-bar-success" style="width: <%= job.current_percent %>%"> 
         <p class="text-center">Hours: <%= job.current_timesheet.reg_hours %> </p> <span class="sr-only">35% Complete (success)</span>
       </div>
 
     </div>
-    <div class="progress">
+    <div class="progress progress-4x">
       <div class="progress-bar progress-bar-danger progress-bar-striped" style="width: <%= job.current_timesheet.ot_hours * 10 %>%">
         <p class="text-center">OT: <%= job.current_timesheet.ot_hours %></p><span class="sr-only">20% Complete (warning)</span>
       </div>
     </div>
-    <% end %>
+   
 </div>
+ <% end %>
     
 <% end %>   
-  <p class="job-info"> 
-  <p><%= job.last_clock_in.strftime("%m/%d/%y") %> | Time In: <%= job.last_clock_in.strftime("%I:%M %p") %>  </p>
-</p>
-
-  </dd>
 
 
-   <hr>
   <% end %>
-  
-
-
-
-</div>

@@ -1,6 +1,5 @@
 <p id="notice"><%= notice %></p>
 
-<div class="timesheet-show-page">
   <% if @timesheet.clocked_in? %>
   <p id="clock-status" class="text-center"><strong><%= @timesheet.employee_name %> is currently clocked in. <%= link_to "Clock Out", clock_out_job_shift_path(@job, @current_shift), method: :patch, 
                           remote: true, data: {confirm: 'Are you sure you want to clock out now?', 
@@ -10,52 +9,50 @@
                           
 <% end %>
 
-
+<span id='updated-at'></span>
 
 <h3><strong><%= link_to @employee.name, @employee %></strong> <small><%= @job.title.titleize %></small></h3>
 
-  <h4>For the week of:   <u><%= @timesheet.week_ending  %></u>. </h4>
-  <h6 class="text-muted"> Week: <%= @timesheet.week %></h6>
-  
-<hr>
+For the week of: <%= @timesheet.week_ending  %>.
+<br>
+Week: <%= @timesheet.week %>
+<br>
   <strong>Regular hours:</strong>
   <%= @timesheet.reg_hours %>
 <br>
   <strong>Overtime hours:</strong>
   <%= @timesheet.ot_hours %>
-<p>
+<br>
   <strong>Gross pay:</strong>
-  <%= number_to_currency(@timesheet.gross_pay) %>
-</p>
-<p>
-  <% if @timesheet.clocked_in? %>
-   <strong>Last Clock In:</strong> <%= @current_shift.time_in.strftime("%B %e, %Y  at   %I:%M %p") %>
-  <% else %>
-   <strong>Last Clock In:</strong> <%= @last_complete_shift.time_in.strftime("%B %e, %Y  at   %I:%M %p") %><br>
-   <strong>Last Clock Out:</strong> <%= @last_complete_shift.time_out.strftime("%B %e, %Y  at   %I:%M %p") %><br>
-   <strong>Last Shift Total:</strong> <%= @last_complete_shift.time_worked %> hours
+  <%= number_to_currency(@timesheet.gross_pay) %><br>
 
-  <% end %>
-  <hr>
+   <strong>Last Clock In:</strong> <%= @timesheet.last_clock_in.strftime("%B %e, %Y  at   %I:%M %p") %>
+   <br>
+<%= link_to 'View Shifts', '#', id: 'shifts-button', class: 'btn btn-primary btn-sm' %>
+<ul id="shifts-list"> 
+  <%= render @shifts %>
+</ul>
+<hr>
+<section id='shifts-table' class="hide-this">
+  <%= render "shifts/table", :shifts => @shifts %>
+</section>
+<p><%= @timesheet.state.titleize %></p>
   <% if @timesheet.approved? %>
-        <td><%= @timesheet.state.titleize %> </td>
+       <%= link_to "<span class='glyphicon glyphicon-ok-circle' aria-hidden='true'></span>    Approve".html_safe, approve_timesheet_path(@timesheet), method: :patch, remote: true, class: 'btn btn-primary btn-lg' %>
   <% else %>
-        <td><%= link_to "<span class='glyphicon glyphicon-ok-circle' aria-hidden='true'></span>    Approve".html_safe, approve_timesheet_path(@timesheet), method: :patch, remote: true %></td>
+<%= link_to "<span class='glyphicon glyphicon-ok-circle' aria-hidden='true'></span>    Approve".html_safe, approve_timesheet_path(@timesheet), method: :patch, remote: true, id: 'approve-button', class: 'btn btn-primary btn-lg' %>
   <% end %>
  
 
 
 
+<!--<h3><strong> Week Ending: <small> <%= @timesheet.week_ending %></small></strong></h3>-->
+<!--<div class="table-responsive">-->
+<!--  -->
+<!--</div>-->
 
 
-<hr>
-<h3><strong> Week Ending: <small> <%= @timesheet.week_ending %></small></strong></h3>
-<div class="table-responsive">
-  <%= render "shifts/table", :shifts => @shifts %>
-</div>
 
-<hr>
-
-<%= link_to 'Edit', edit_timesheet_path(@timesheet) %> |
-<%= link_to 'Back', timesheets_path %>
-</div>
+<!--<%= link_to 'Edit', edit_timesheet_path(@timesheet) %> |-->
+<!--<%= link_to 'Back', timesheets_path %>-->
+<!--</div>-->

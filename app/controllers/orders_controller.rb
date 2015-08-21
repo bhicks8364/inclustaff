@@ -6,15 +6,45 @@ class OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
-    
-    @orders = @company.orders
-    @with_active_jobs = @orders.with_active_jobs
+    if admin_signed_in? 
+      @admin = current_admin
+      @company = @admin.company
+      @timesheets = @company.timesheets.order(updated_at: :desc)
+      @orders = @company.orders
+      @with_active_jobs = @orders.with_active_jobs
     # authorize @orders
+    elsif user_signed_in? && current_user.not_an_employee?
+      @current_user = current_user if current_user.present?
+      @company = @current_user.company
+      @orders = @company.orders
+      @with_active_jobs = @orders.with_active_jobs
+      @timesheets = @company.timesheets.order(updated_at: :desc)
+    # authorize @orders
+    end
+    
+    
+    
+
     
   end
   
   def all
-    @orders = Order.all
+    if admin_signed_in? 
+      @admin = current_admin
+      @company = @admin.company
+      @timesheets = @company.timesheets.order(updated_at: :desc)
+      @orders = @company.orders
+      @with_active_jobs = @orders.with_active_jobs
+    # authorize @orders
+    elsif user_signed_in? && current_user.not_an_employee?
+      @current_user = current_user if current_user.present?
+      @company = @current_user.company
+      @orders = @company.orders
+      @with_active_jobs = @orders.with_active_jobs
+      @timesheets = @company.timesheets.order(updated_at: :desc)
+    # authorize @orders
+    end
+    # @orders = Order.all
     # authorize @orders
   end
 
@@ -31,16 +61,22 @@ class OrdersController < ApplicationController
 
   # GET /orders/new
   def new
-    if params[:company_id]
-      @company = Company.find(params[:company_id])
+    if admin_signed_in? 
+      @admin = current_admin
+      @company = @admin.company
       @order = @company.orders.new
-      # authorize @order
-
-    else
-      @order = Order.new
-      @order.jobs.build
-      # authorize @order
     end
+    
+    # if params[:company_id]
+    #   @company = Company.find(params[:company_id])
+    #   @order = @company.orders.new
+    #   # authorize @order
+
+    # else
+    #   @order = Order.new
+    #   @order.jobs.build
+    #   # authorize @order
+    # end
 
   end
 

@@ -20,7 +20,7 @@ class Employee < ActiveRecord::Base
   include ArelHelpers::JoinAssociation
   
   belongs_to :user
-  has_many :shifts, inverse_of: :employee, dependent: :destroy
+  has_many :shifts, dependent: :destroy
   has_many :jobs, inverse_of: :employee, dependent: :destroy
   has_many :orders, :through => :jobs
   has_many :companies, :through => :orders
@@ -75,7 +75,11 @@ class Employee < ActiveRecord::Base
                    }
   
   
-  
+  def current_timesheet
+    if self.timesheets.this_week.any?
+      self.timesheets.this_week.last
+    end
+  end
   
   
   
@@ -122,8 +126,8 @@ class Employee < ActiveRecord::Base
 
     
   def ytd_gross_pay
-    if self.timesheets.this_week.any?
-      self.timesheets.this_week.sum(:gross_pay)
+    if self.timesheets.any?
+      self.timesheets.sum(:gross_pay)
     else
       0
     end

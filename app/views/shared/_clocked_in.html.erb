@@ -1,0 +1,28 @@
+<li class="dropdown hidden-xs">
+	<a class="btn dropdown-toggle" data-toggle="dropdown">
+		<i class="fa fa-warning"></i>
+		<span class="count"><%= current_admin.company.jobs.on_shift.count %></span>
+	</a>
+	<ul class="dropdown-menu notifications-list">
+		<li class="pointer">
+			<div class="pointer-inner">
+				<div class="arrow"></div>
+				<div class="arrow-border"></div>
+			</div>
+		</li>
+		<li class="item-header">You have <%= current_admin.company.jobs.on_shift.count %> employees clocked in.</li>
+		<% current_admin.company.jobs.on_shift.each do |job| %>
+		<li class="item">
+			<%= link_to(job.employee) do %>
+				<i class="fa fa-user"></i>
+				<span class="content"><%= job.employee.name %></span>
+				<span class="time"><i class="fa fa-clock-o"></i><%= job.shifts.clocked_in.last.time_in.strftime("%I:%M %p") %></span>
+			<% end %>
+		</li>
+		<% end %>
+		
+		<li class="item-footer">
+			<%= link_to "View all timesheets", timesheets_path %>
+		</li>
+	</ul>
+</li>

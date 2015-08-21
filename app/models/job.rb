@@ -51,6 +51,7 @@ class Job < ActiveRecord::Base
     scope :worked_yesterday, -> { joins(:shifts).merge(Shift.in_yesterday)}
     scope :worked_last_week, -> { joins(:timesheets).where("timesheets.week <= ?", Date.today.cweek).group("jobs.id") }
 
+
     
     
     def company

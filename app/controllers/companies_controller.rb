@@ -14,13 +14,13 @@ class CompaniesController < ApplicationController
   def show
     # authorize @company
     @orders = @company.orders.includes(:timesheets)
-    @all_timesheets = @company.timesheets.order(updated_at: :desc) if @company.timesheets.any?
-    @timesheets = @all_timesheets.this_week.order(updated_at: :desc) if @all_timesheets.any?
+    # @all_timesheets = @company.timesheets.order(updated_at: :desc) if @company.timesheets.any?
+    @timesheets = @company.timesheets.order(updated_at: :desc) 
     @last_week_timesheets = @timesheets.last_week.order(updated_at: :desc)
 
     @all_users = @company.company_users
     @employees = @company.employees
-    @active_employees = @company.employees.with_active_jobs
+    @active_employees = @employees.with_active_jobs
     @clocked_in = @company.jobs.on_shift.includes(:employee) if @company.jobs.any?
 
     @with_active_jobs = @orders.with_active_jobs

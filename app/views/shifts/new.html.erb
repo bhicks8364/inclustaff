@@ -1,5 +1,37 @@
-<h1>New Shift</h1>
+<h3 class="page-header">
+  <strong> <%= @employee.name %>  <small> <%= @job.title %></small></strong>
+</h3>
+<% if user_signed_in? && @current_user.employee == @employee %>
+<h1>You're about to clock in.</h1>
+<% else %>
+<h1>You're about to clock <%= @employee.first_name %> in.</h1>
+<% end %>
 
-<%= render 'form' %>
 
+
+
+<%= simple_form_for [@job, @shift] do |f| %>
+
+
+    
+
+
+<div class="hidden">
+  <div class="input-group clockpicker">
+        <%= f.input :time_in, as: :string %>
+        <%= f.input :time_out, as: :string %>
+        <%=  f.association :job, label_method: :title, value_method: :id, include_blank: false, disabled: true %>
+</div>
+</div>
+
+
+<%= f.button :submit, "Clock In", class: "btn btn-primary btn-lg", data: { disable_with: "Clocking In..."} %>
+
+<% end %>
+
+
+
+
+<% if admin_signed_in? %>
 <%= link_to 'Back', employee_shifts_path(@employee) %>
+<% end %>

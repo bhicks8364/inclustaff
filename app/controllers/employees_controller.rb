@@ -31,6 +31,7 @@ class EmployeesController < ApplicationController
     @jobs = @employee.jobs
     @timesheets = @employee.timesheets
     @last_week_timesheets = @timesheets.last_week.order(updated_at: :desc)
+    @current_timesheet = @employee.current_timesheet
     # @job = @employee.current_job if @employee.current_job != nil
     # @current_company = @employee.company
     # @company = @employee.company
@@ -80,14 +81,14 @@ class EmployeesController < ApplicationController
       @admin = current_admin
       @company = @admin.company
       @employees = @company.employees.order(last_name: :asc)
-      @employee = Employee.new(employee_params)
+      @employee = @company.employees.new(employee_params)
       # @employee.build_user(employee_params)
       # authorize @employees
     elsif user_signed_in? && current_user.not_an_employee?
       @current_user = current_user if current_user.present?
       @company = @current_user.company
       @employees = @company.employees.order(last_name: :asc)
-      @employee = Employee.new(employee_params)
+      @employee = @company.employees.new(employee_params)
       # @employee.build_user(employee_params)
       # authorize @employees
     end

@@ -1,23 +1,20 @@
-<% if @job.present? %>
- <h3><small>Job Information</small></h3>
 
-      <strong>Company:</strong>
-  <%= link_to @company.name, @company %>
+<div class="col-md-6">
+  <% if @job.present? %>
+<h3><small>Current Job</small></h3>
+<h4><strong><%= link_to @job.order.title, @job.order %></strong></h4>
+<h4><small><%= link_to @job.title %></small></h4>
 
-  <strong>Department:</strong>
-  <%= link_to @job.order.title, @job.order %> <br>
-  <strong>Job Title:</strong>
-  <%= @job.title %>
-  
+  <br>
   <strong>Pay rate:</strong>
   <%= number_to_currency(@job.pay_rate, :unit => "$") %>
-
+<br>
   <strong>Description:</strong>
   <%= @job.description %>
-
+<hr>
   <strong>Employee:</strong>
   <%= link_to @employee.name, @employee %>
-
+<br>
 
   <strong>Start date:</strong>
   <%= @job.start_date.strftime("%B %e, %Y ") %>
@@ -28,6 +25,8 @@
 
 Total Hours : <%= @job.total_hours %>
 
+
 <% else %>
 No current job.
 <% end %>
+</div>

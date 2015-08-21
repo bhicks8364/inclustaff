@@ -40,6 +40,7 @@ class Timesheet < ActiveRecord::Base
     scope :last_week, ->{
         where(week: Date.today.cweek - 1)
     }
+    scope :approaching_overtime, -> { where('reg_hours > 36') }
     
     after_initialize :defaults
     
@@ -81,7 +82,11 @@ class Timesheet < ActiveRecord::Base
         end
     end
     
-    
+    def user_approved
+        if self.approved?
+            Admin.find(self.approved_by).name
+        end
+    end
     #       # EXPORT TO CSV
     #   def self.assign_from_row(row)
     #     # user = User.where(email: row[:email]).first_or_initialize

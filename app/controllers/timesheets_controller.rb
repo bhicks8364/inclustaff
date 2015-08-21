@@ -8,6 +8,7 @@ class TimesheetsController < ApplicationController
       @admin = current_admin
       @company = @admin.company
       @timesheets = @company.timesheets.order(updated_at: :desc)
+      
       # authorize @timesheets
     elsif user_signed_in? && current_user.not_an_employee?
       @current_user = current_user if current_user.present?
@@ -36,12 +37,32 @@ class TimesheetsController < ApplicationController
     # authorize @timesheet
   end
   
+  # def approve
+    
+  #   @timesheet.update(state: "approved", approved_by: current_admin.id) if @timesheet.clocked_out?
+  #   # respond_to do |format|
+  #   #   if @timesheet.save
+  #   #     format.html { redirect_to @timesheet, notice: 'Timesheet was successfully created.' }
+  #   #     format.json { render :show, status: :created, location: @timesheet }
+  #   #   else
+  #   #     format.html { render :new }
+  #   #     format.json { render json: @timesheet.errors, status: :unprocessable_entity }
+  #   #   end
+  # end
   def approve
     @timesheet = Timesheet.find(params[:id])
     if @timesheet.clocked_out?
-      @timesheet.update(state: "approved", approved_by: current_admin.id)
+      approved_by = @timesheet.approved? ? nil : current_admin.id
+      state = @timesheet.approved? ? 'pending' : 'approved'
+      @timesheet.update(approved_by: approved_by, state: state)
+      user_approved = @timesheet.approved? ? Admin.find(@timesheet.approved_by).name : @timesheet.state
+      
+      render json: { id: @timesheet.id, approved: @timesheet.approved?, 
+                    state: @timesheet.state.titleize, user_approved: user_approved }
     end
   end
+
+    
     
 
   # GET /timesheets/1/edit

@@ -1,19 +1,13 @@
-<div class="scroll-list">
 
-            Admin Users
+    <p class='text-center'><strong><%= @company.name %>'s Admins</strong></p>
+    <br>
         <%= div_for(@company.admins) do |admin| %>
-        
-            <p><%= admin.name %> </p>
-            <p class="text-muted"><%= admin.email %> - <%= admin.company.name %></p>
-            
-            
+
+            <p><%= admin.name %> <small>
+            <br> <%= admin.email %></small></p>
+    
+    
         <% end %>
 
-        All Users
-        <%= div_for(@company.company_users) do |user| %>
-            <p><%= link_to user.name, user %> <small> | <%= user.role %></small></p>
-            <p class="text-muted"><%= user.email %> - <%= user.company.name %></p>
-   
-        <% end %>
+            
 
-</div>

@@ -6,11 +6,10 @@
            
                
                 <% if order.timesheets.this_week.any? %>
-                
-                <div class="order-timesheets">
-                   <h3 class"sub-header"> <%= order.title %> </h3>
-<h3 class="text-right">Payroll cost: <%= number_to_currency(order.timesheets.this_week.sum(:gross_pay)) %>
-<br><small><%= link_to order.manager.name, order.manager %></small></h5>
+                                   <!--<h3 class"sub-header"> <%= order.title %> </h3>-->
+                   
+<h3 class=""> <strong><%= order.title %></strong> <small>Payroll cost: <%= number_to_currency(order.timesheets.this_week.sum(:gross_pay)) %></small>
+
 <div class="table-responsive">
   
   <table id="timesheets" class="table" cellspacing="0.5" width="85%">
@@ -54,5 +53,3 @@
 
 <% end %>
 <% end %>
-
-</div>

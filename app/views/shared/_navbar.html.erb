@@ -1,6 +1,6 @@
 <header class="navbar" id="header-navbar">
 		<div class="container">
-		  <%= link_to root_url, id: "logo", class: "navbar-brand" do %>
+		  <%= link_to root_url, id: "logo", class: "" do %>
        <%= image_tag("incluStaff_logo.png", alt: "Inclustaff") %>
       <% end %>
               
@@ -39,100 +39,16 @@
 			        
 			        <% if user_signed_in? %>
 			        <li><%= link_to current_user.name, current_user %></li>
+			        <li><%= link_to "<i class='fa fa-power-off'></i>    Logout".html_safe, destroy_user_session_path, method: :delete %></li>
 			        <% elsif admin_signed_in? %>
 			        <li><%= link_to current_admin.name, root_url %></li>
 			        <% end %>
 			        <% if admin_signed_in? %>
-					<li class="dropdown hidden-xs">
-						<a class="btn dropdown-toggle" data-toggle="dropdown">
-							<i class="fa fa-warning"></i>
-							<span class="count">8</span>
-						</a>
-						<ul class="dropdown-menu notifications-list">
-							<li class="pointer">
-								<div class="pointer-inner">
-									<div class="arrow"></div>
-									<div class="arrow-border"></div>
-								</div>
-							</li>
-							<li class="item-header">You have 6 new notifications</li>
-							<li class="item">
-								<a href="#">
-									<i class="fa fa-comment"></i>
-									<span class="content">New comment on ‘Awesome P...</span>
-									<span class="time"><i class="fa fa-clock-o"></i>13 min.</span>
-								</a>
-							</li>
-							<li class="item">
-								<a href="#">
-									<i class="fa fa-plus"></i>
-									<span class="content">New user registration</span>
-									<span class="time"><i class="fa fa-clock-o"></i>13 min.</span>
-								</a>
-							</li>
-							<li class="item">
-								<a href="#">
-									<i class="fa fa-envelope"></i>
-									<span class="content">New Message from George</span>
-									<span class="time"><i class="fa fa-clock-o"></i>13 min.</span>
-								</a>
-							</li>
-							<li class="item">
-								<a href="#">
-									<i class="fa fa-shopping-cart"></i>
-									<span class="content">New purchase</span>
-									<span class="time"><i class="fa fa-clock-o"></i>13 min.</span>
-								</a>
-							</li>
-							<li class="item">
-								<a href="#">
-									<i class="fa fa-eye"></i>
-									<span class="content">New order</span>
-									<span class="time"><i class="fa fa-clock-o"></i>13 min.</span>
-								</a>
-							</li>
-							<li class="item-footer">
-								<a href="#">
-									View all notifications
-								</a>
-							</li>
-						</ul>
-					</li>
+			        <% if admin_signed_in? && current_admin.company.jobs.on_shift.any? %>
+					<%= render 'shared/clocked_in' %>
+					<% end %>
 			<% if admin_signed_in? && current_admin.company.employees.newly_added.any? %>
-					<li class="dropdown hidden-xs">
-						<a class="btn dropdown-toggle" data-toggle="dropdown">
-							<i class="fa fa-users"></i>
-							<span class="count"><%= current_admin.company.employees.newly_added.count %></span>
-						</a>
-						<ul class="dropdown-menu notifications-list messages-list">
-							<li class="pointer">
-								<div class="pointer-inner">
-									<div class="arrow"></div>
-									<div class="arrow-border"></div>
-								</div>
-							</li>
-							<% current_admin.company.employees.newly_added.limit(3).each do |employee| %>
-							<li class="item">
-							  <%= link_to(employee.user) do %>
-								
-									<span class="content">
-										<span class="content-headline">
-											<%= employee.name %>
-										</span>
-										<span class="content-text">
-											<%= employee.current_job.title %>
-										</span>
-									</span>
-									<span class="time"><i class="fa fa-clock-o"></i><%= time_ago_in_words(employee.created_at) %></span>
-								<% end %>
-							</li>
-						<% end %>
-							<li class="item-footer">
-								<%= link_to "View All Employees", employees_url %>
-								</a>
-							</li>
-						</ul>
-					</li>
+					<%= render 'shared/newly_added' %>
 			<% end %>
 			
 

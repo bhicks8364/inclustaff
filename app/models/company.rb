@@ -19,8 +19,10 @@
 
 class Company < ActiveRecord::Base
     # belongs_to :owner, class_name: "User", :foreign_key => :user_id
-    has_many :users
     has_many :admins
+    has_many :users
+    has_many :employees, :through => :users
+    
     has_many :orders
     has_many :jobs, :through => :orders
    
@@ -30,7 +32,7 @@ class Company < ActiveRecord::Base
     has_many :users
     has_many :company_users, -> { where.not(role: "Employee")}, class_name: "User"
     # has_many :employee_users,  -> { where role: "Employee" }, class_name: "User"
-    # has_many :employees, :through => :employee_users  
+    has_many :employees, :through => :users  
     has_many :payroll_users,  -> { where role: "Payroll" }, class_name: "User"
     # has_many :admin_users,  -> { where role: "Admin" }, class_name: "User"
     has_many :manager_users,  -> { where role: "Manager" }, class_name: "User"
@@ -61,6 +63,7 @@ class Company < ActiveRecord::Base
         cost = self.timesheets.this_week.sum(:gross_pay)
         self.update(balance: cost)
     end
+    
     
     
     # c.shifts.current_week.sum(:time_worked)

@@ -35,10 +35,22 @@ class ShiftsController < ApplicationController
 
   # GET /shifts/new
   def new
-    @job = Job.find(params[:job_id])
-    # @company = @job.company
-    @employee = @job.employee
-    @shift = @job.shifts.new
+    if admin_signed_in? 
+      @admin = current_admin
+      @job = Job.find(params[:job_id])
+      # @company = @job.company
+      @employee = @job.employee
+      @shift = @job.shifts.new
+
+      # authorize @timesheets
+    elsif user_signed_in? && current_user.employee?
+      @current_user = current_user if current_user.present?
+      @job = Job.find(params[:job_id])
+      # @company = @job.company
+      @employee = @job.employee
+      @shift = @job.shifts.new
+    end
+
 
     # authorize @shift
     # @shift = Shift.new
@@ -75,12 +87,11 @@ class ShiftsController < ApplicationController
   
   def clock_out
     sleep 2
+    
     @shift = Shift.find(params[:id])
-    # authorize @shift
-    @shift.clock_out!
-      if @shift.update(shift_params)
-        format.html { redirect_to job_shifts_path(@job), notice: "You're now off the clock." }
-      end
+    @shift.update(time_out: Time.current,
+                    state: "clocked_out",
+                    out_ip: @shift.employee.user.current_sign_in_ip)
   end
 
 
