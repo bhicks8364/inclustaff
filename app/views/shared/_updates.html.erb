@@ -1,0 +1,196 @@
+<div class="col-lg-6">
+	<div class="main-box clearfix">
+		
+		<div class="tabs-wrapper">
+			<div class="clearfix">
+				<h2 class="pull-left">At A Glance</h2>
+				<ul class="nav nav-tabs pull-right">
+					<li class="active"><a href="#tab-users" data-toggle="tab">Employees</a></li>
+					<li><a href="#tab-products" data-toggle="tab">Admins</a></li>
+					<li><a href="#tab-todo" data-toggle="tab">Todo</a></li>
+				</ul>
+			</div>
+			
+			<div class="tab-content">
+				<div class="tab-pane fade in active" id="tab-users">
+					<ul class="widget-users row">
+
+						<%= content_tag_for(:li, @current_admin.company.jobs, class: 'col-md-6 ') do |job| %>
+
+			<div class="details">
+								<div class="name">
+									<%= link_to job.employee.name, job.employee %>
+								</div>
+								<div class="time">
+									<i class="fa fa-clock-o"></i> <strong>Last clocked in:</strong> <br><%= job.shifts.any? ? job.shifts.last.time_in.strftime("%b %e at %l:%M%P") : "No shifts yet." %>
+								</div>
+								<% if job.on_shift? %>
+								<div class="type">
+									<span class="label label-success"><%= job.shifts.last.state.titleize %></span>
+								</div>
+							
+						<span id='clock-out-nav' class="center"><%= link_to "<i class='fa fa-sign-out red'></i>".html_safe, clock_out_job_shift_path(job, job.current_shift), class: "table-link", method: :patch, 
+                                remote: true, data: {confirm: 'Are you sure you want to clock out now?'} %></span>
+                                <% else %>
+                                <div class="type">
+									<span class="label label-danger"><%= job.shifts.last.state.titleize %></span>
+								</div>
+							
+						<span id='clock-out-nav' class="center"><%= link_to "<i class='fa fa-sign-in green'></i>".html_safe, new_job_shift_path(job), class: "table-link" %></span>
+                                
+                                <% end %>
+</div>
+
+		<% end %>
+						
+						
+					</ul>
+					<br>
+					<%= link_to "View all users", users_path, class: "btn btn-success pull-right" %>
+				</div>
+				
+				<div class="tab-pane fade" id="tab-products">
+					<ul class="widget-users row">
+
+						<%= content_tag_for(:li, @current_admin.company.admins, class: 'col-md-6') do |admin| %>
+
+			<div class="details">
+								<div class="name">
+									<%= link_to admin.name, admin.company %>
+								</div>
+								<div class="time">
+									<i class="fa fa-clock-o"></i> Last signed in: <%= time_ago_in_words(admin.last_sign_in_at)%>
+								</div>
+								<div class="type">
+									<span class="label label-success"><%= admin.role %></span>
+								</div>
+							
+						<span id='clock-out-nav' class="center"><%= link_to "<i class='fa fa-home red'></i>".html_safe, admin.company, class: "table-link" %></span>
+                                
+			</div>
+	<% end %>
+					</ul>
+					<br>
+					<%= link_to "Dashboard", dashboard_path, class: "btn btn-success pull-right" %>
+				</div>
+				
+				<div class="tab-pane fade" id="tab-todo">
+					<ul class="widget-todo">
+						<li class="clearfix">
+							<div class="name">
+								<div class="checkbox-nice">
+									<input type="checkbox" id="todo-1">
+									<label for="todo-1">
+										New products introduction <span class="label label-danger">High Priority</span>
+									</label>
+								</div>
+							</div>
+						</li>
+						<li class="clearfix">
+							<div class="name">
+								<div class="checkbox-nice">
+									<input type="checkbox" id="todo-2">
+									<label for="todo-2">
+										Checking the stock <span class="label label-success">Low Priority</span>
+									</label>
+								</div>
+							</div>
+							<div class="actions">
+								<a href="#" class="table-link">
+									<i class="fa fa-pencil"></i>
+								</a>
+								<a href="#" class="table-link danger">
+									<i class="fa fa-trash-o"></i>
+								</a>
+							</div>
+						</li>
+						<li class="clearfix">
+							<div class="name">
+								<div class="checkbox-nice">
+									<input type="checkbox" id="todo-3" checked="checked">
+									<label for="todo-3">
+										Buying coffee <span class="label label-warning">Medium Priority</span>
+									</label>
+								</div>
+							</div>
+							<div class="actions">
+								<a href="#" class="table-link">
+									<i class="fa fa-pencil"></i>
+								</a>
+								<a href="#" class="table-link danger">
+									<i class="fa fa-trash-o"></i>
+								</a>
+							</div>
+						</li>
+						<li class="clearfix">
+							<div class="name">
+								<div class="checkbox-nice">
+									<input type="checkbox" id="todo-4">
+									<label for="todo-4">
+										New marketing campaign <span class="label label-success">Low Priority</span>
+									</label>
+								</div>
+							</div>
+						</li>
+						<li class="clearfix">
+							<div class="name">
+								<div class="checkbox-nice">
+									<input type="checkbox" id="todo-5">
+									<label for="todo-5">
+										Calling Mom <span class="label label-warning">Medium Priority</span>
+									</label>
+								</div>
+							</div>
+							<div class="actions">
+								<a href="#" class="table-link badge">
+									<i class="fa fa-cog"></i>
+								</a>
+							</div>
+						</li>
+						<li class="clearfix">
+							<div class="name">
+								<div class="checkbox-nice">
+									<input type="checkbox" id="todo-6">
+									<label for="todo-6">
+										Ryan's birthday <span class="label label-danger">High Priority</span>
+									</label>
+								</div>
+							</div>
+						</li>
+						<li class="clearfix">
+							<div class="name">
+								<div class="checkbox-nice">
+									<input type="checkbox" id="todo-7">
+									<label for="todo-7">
+										Printing new flyer <span class="label label-success">Low Priority</span>
+									</label>
+								</div>
+							</div>
+						</li>
+						<li class="clearfix">
+							<div class="name">
+								<div class="checkbox-nice">
+									<input type="checkbox" id="todo-8">
+									<label for="todo-8">
+										Mila and Ryan wedding <span class="label label-danger">High Priority</span>
+									</label>
+								</div>
+							</div>
+						</li>
+						<li class="clearfix">
+							<div class="name">
+								<div class="checkbox-nice">
+									<input type="checkbox" id="todo-9">
+									<label for="todo-9">
+										Checking the stock <span class="label label-success">Low Priority</span>
+									</label>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+							</div>

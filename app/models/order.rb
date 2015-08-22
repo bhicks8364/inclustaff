@@ -18,12 +18,12 @@
 #
 
 class Order < ActiveRecord::Base
-  has_many :jobs, inverse_of: :order
+  belongs_to :company
+  belongs_to :manager, class_name: "Admin", foreign_key: "manager_id"
+  has_many :jobs
   has_many :employees, :through => :jobs
   has_many :timesheets, :through => :jobs
-  belongs_to :company, inverse_of: :orders
-  # belongs_to :manager, -> { where role: "Manager" }, class_name: "User"
-  belongs_to :manager, class_name: "User", foreign_key: "manager_id"
+
   
   # VALIDATIONS
   validates_associated :company
@@ -69,8 +69,8 @@ class Order < ActiveRecord::Base
     #   self.number_needed - self.jobs.active.count
     # end
     
-  def self.by_manager(user_id)
-    where(manager_id: user_id)
+  def self.by_manager(admin_id)
+    where(manager_id: admin_id)
   end 
   
 

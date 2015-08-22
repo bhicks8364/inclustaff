@@ -1,41 +1,29 @@
 
-  <%= content_tag_for(:dl, @active_jobs) do |job| %>
+  <%= div_for(@active_jobs, class: 'well') do |job| %>
 
-<% if job.on_shift? %>
+  <% if job.on_shift? %>
 
-  <dt class="clocked-in"><h4><%= link_to job.employee.name, job.employee %>   |    <%= link_to job.title, job %> </h4>
+   <h4><%= link_to job.employee.name, job.employee %> | <%= link_to job.title, job %> </h4>
   
     Hours: <%= job.current_week_hours %>  | Pay:  <%= job.current_week_pay ? number_to_currency(job.current_week_pay) : "$0.00" %> 
   
-  <p class="pull-right"><span class="glyphicon glyphicon-time" aria-hidden="true"></span>     Clocked In</p>
- 
-  </dt>
-    <dd>
+    <span class="label label-success label-large pull-right"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> Clocked In</span>
+
    <p>Time In: <%= job.last_clock_in ? job.last_clock_in.strftime("%I:%M %p") : "No Shifts Yet" %>  
-    
 
-  </dd>
-
-     
   <% else %>
-  <dt class="clocked-out"><h4><%= link_to job.employee.name, job.employee %>   |    <%= link_to job.title, job %> </h4>
+  <h4><%= link_to job.employee.name, job.employee %>   |    <%= link_to job.title, job %> </h4>
    THIS WEEK <br> Hours: <%= job.current_week_hours %>  | Pay:  <%= job.current_week_pay ? number_to_currency(job.current_week_pay) : "$0.00" %> 
-
-   <p class=" pull-right"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>    Clocked Out </p></dt>
-     <dd>
-   <p>Last Clock In: <%= job.last_clock_in ? job.last_clock_in.strftime("%I:%M %p") : "No Shifts Yet" %>    |     Last Clock Out: <%= job.last_clock_out ? job.last_clock_out.strftime("%I:%M %p") : "No Shifts Yet" %></p>
+<span class="label label-danger label-large pull-right"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Clocked Out</span>
     
 
-  </dd>
+   <p>Last Clock In: <%= job.last_clock_in ? job.last_clock_in.strftime("%I:%M %p") : "No Shifts Yet" %>    |     Last Clock Out: <%= job.last_clock_out ? job.last_clock_out.strftime("%I:%M %p") : "No Shifts Yet" %></p>
+
+
    <% end %>
-   
-   
+<br>
 
 
-   
-  <% if job.current_timesheet != nil %>  
-  <%= link_to "<span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span>     View Timesheet".html_safe, timesheet_path(job.current_timesheet), class: "btn btn-default btn-sm pull-right" %>
-<div class="hour-progress col-md-8">
   
    <% if job.hours_until_ot > 1 %>
    <div class="progress progress-4x">
@@ -55,11 +43,14 @@
         <p class="text-center">OT: <%= job.current_timesheet.ot_hours %></p><span class="sr-only">20% Complete (warning)</span>
       </div>
     </div>
-   
-</div>
+
+
+
  <% end %>
-    
-<% end %>   
-
-
+   
+  <% if job.current_timesheet != nil %>  
+  <%= link_to "<span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span>     View Timesheet".html_safe, timesheet_path(job.current_timesheet), class: "btn btn-info btn-sm" %>
   <% end %>
+  <% end %>
+
+<hr>

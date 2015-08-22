@@ -21,6 +21,11 @@
 #  last_name              :string
 #  deleted_at             :datetime
 #  can_edit               :boolean
+#  code                   :string
+#  address                :string
+#  city                   :string
+#  state                  :string
+#  zipcode                :string
 #
 
 class User < ActiveRecord::Base
@@ -39,42 +44,24 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
         :recoverable, :rememberable, :trackable, :validatable
         
-  scope :manager_users, -> { where(role: "Manager")}
+  devise :database_authenticatable, :validatable, password_length: 4..6      
+  delegate :ssn, to: :employee
   
   def name
     "#{first_name} #{last_name}"
   end
 
-  
-  def not_an_employee?
-    self.present? && role != "Employee"
-  end
-        
   def employee?
     role == "Employee"
   end
   
-  def manager?
-    role == "Manager"
+  def code
+   self.first_name[0,1] + self.last_name[0,1] + self.ssn.to_s
   end
+
+
   
-  def payroll?
-    role == "Payroll"
-  end
   
-  def admin?
-    role == "Admin"
-  end
-  
-  # def manager_timesheets
-  #   if self.manager?
-  #     self.orders.collect { |a| a.book } 
-  #   end
-  # end  
-  
-  def orders
-    Order.by_manager(self.id)
-  end
   
   
   

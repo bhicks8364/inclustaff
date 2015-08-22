@@ -21,6 +21,7 @@
 #  first_name             :string
 #  last_name              :string
 #  company_id             :integer
+#  role                   :string
 #
 
 class Admin < ActiveRecord::Base
@@ -33,6 +34,15 @@ class Admin < ActiveRecord::Base
          
   def name
     "#{first_name} #{last_name}"
+  end
+  
+    # def manager_timesheets
+  #   if self.manager?
+  #     self.orders.collect { |a| a.book } 
+  #   end
+  # end  
+  def orders
+    Order.by_manager(self.id)
   end
          
          

@@ -12,12 +12,33 @@
 		</li>
 		<li class="item-header">You have <%= current_admin.company.jobs.on_shift.count %> employees clocked in.</li>
 		<% current_admin.company.jobs.on_shift.each do |job| %>
-		<li class="item">
-			<%= link_to(job.employee) do %>
-				<i class="fa fa-user"></i>
-				<span class="content"><%= job.employee.name %></span>
-				<span class="time"><i class="fa fa-clock-o"></i><%= job.shifts.clocked_in.last.time_in.strftime("%I:%M %p") %></span>
-			<% end %>
+
+		<li id="shift-list-nav" class="item">
+
+				
+				<span class="content">
+					<span class="content-headline">
+						<%= job.employee.name %>
+						<br>
+					</span>
+					<span class="content-text">
+						<span class="time"><i class="fa fa-clock-o"></i>&nbsp;<%= job.shifts.clocked_in.last.time_in.strftime("%l:%M %P") %>
+							</span>
+						<span id='clock-out-nav' class="center"><%= link_to "<i class='fa fa-share-square'></i>".html_safe, clock_out_job_shift_path(job, job.current_shift), class: "table-link", method: :patch, 
+                                remote: true, data: {confirm: 'Are you sure you want to clock out now?'} %></span>
+				
+					
+					
+					
+							
+						</span>
+						
+					
+                                
+				</span>
+				
+				
+
 		</li>
 		<% end %>
 		

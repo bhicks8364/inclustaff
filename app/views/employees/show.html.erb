@@ -83,8 +83,8 @@
   							Address
   						</div>
   						<div class="profile-user-details-value">
-  							10880 Malibu Point,<br/> 
-  							Malibu, Calif., 90265
+  							<%= @employee.user.address %>,<br/> 
+  							<%= @employee.user.city %>, <%= @employee.user.state %>, <%= @employee.user.zipcode %>
   						</div>
   					</div>
   					<div class="profile-user-details clearfix">

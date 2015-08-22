@@ -88,6 +88,10 @@ class DashboardController < ApplicationController
         skip_authorization
     end
     
+    def agency_view
+        @current_admin = current_admin if admin_signed_in?
+    end
+    
     
     
 end

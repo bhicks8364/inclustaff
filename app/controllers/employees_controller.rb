@@ -1,7 +1,7 @@
 class EmployeesController < ApplicationController
   before_action :set_employee, only: [:show, :edit, :update, :destroy]
   
-  # before_action :authenticate_user!
+  before_action :authenticate_admin!
 
   # GET /employees
   # GET /employees.json
@@ -9,12 +9,12 @@ class EmployeesController < ApplicationController
     if admin_signed_in? 
       @admin = current_admin
       @company = @admin.company
-      @employees = @company.employees.order(last_name: :asc)
+      @employees = @company.employees.with_active_jobs.order(last_name: :asc)
       # authorize @employees
     elsif user_signed_in? && current_user.not_an_employee?
       @current_user = current_user if current_user.present?
       @company = @current_user.company
-      @employees = @company.employees.order(last_name: :asc)
+      @employees = @company.employees.with_active_jobs.order(last_name: :asc)
       # authorize @employees
     end
   end
@@ -46,21 +46,12 @@ class EmployeesController < ApplicationController
 
   # GET /employees/new
   def new
-    if admin_signed_in? 
+
       @admin = current_admin
       @company = @admin.company
       @employees = @company.employees.order(last_name: :asc)
-      @employee = Employee.new
+      @employee = @company.employees.new
       @employee.build_user
-      # authorize @employees
-    elsif user_signed_in? && current_user.not_an_employee?
-      @current_user = current_user if current_user.present?
-      @company = @current_user.company
-      @employees = @company.employees.order(last_name: :asc)
-      @employee = Employee.new
-      @employee.build_user
-      # authorize @employees
-    end
     # @current_user = current_user if user_signed_in?
     # @company = @current_user.company 
     # @employee = Employee.new

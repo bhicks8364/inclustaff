@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   get  'dashboard' => 'dashboard#company_view'
   get  'timeclock' => 'dashboard#employee_view'
+  get  'agency_access' => 'dashboard#agency_view'
   
   resources :timesheets do
     member do

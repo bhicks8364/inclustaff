@@ -21,6 +21,11 @@
 #  last_name              :string
 #  deleted_at             :datetime
 #  can_edit               :boolean
+#  code                   :string
+#  address                :string
+#  city                   :string
+#  state                  :string
+#  zipcode                :string
 #
 
 require 'rails_helper'

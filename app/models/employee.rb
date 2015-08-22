@@ -21,7 +21,7 @@ class Employee < ActiveRecord::Base
   
   belongs_to :user
   has_many :shifts, dependent: :destroy
-  has_many :jobs, inverse_of: :employee, dependent: :destroy
+  has_many :jobs, dependent: :destroy
   has_many :orders, :through => :jobs
   has_many :companies, :through => :orders
   has_one :current_job, -> { where active: true }, class_name: "Job"
@@ -35,6 +35,7 @@ class Employee < ActiveRecord::Base
   
   # delegate :company, to: :user
   delegate :manager, to: :current_job
+  delegate :code, to: :user
   
   before_save :set_user_info
   

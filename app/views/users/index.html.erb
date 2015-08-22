@@ -14,8 +14,9 @@
 												<tr>
 													<th><span>User</span></th>
 													<th><span>Created</span></th>
-													<th class="text-center"><span>Status</span></th>
+													<th class="text-center"><span>Code</span></th>
 													<th><span>Email</span></th>
+													<th><span></span></th>
 													<th>&nbsp;</th>
 												</tr>
 											</thead>
@@ -31,7 +32,7 @@
 														<%= user.created_at.strftime("%x") %>
 													</td>
 													<td class="text-center">
-														<span class="label label-warning">Pending</span>
+														<span class="label label-info"><%= user.code %></span>
 													</td>
 													<td>
 														<a href="#"><%= user.email %></a>

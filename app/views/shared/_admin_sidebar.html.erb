@@ -1,10 +1,13 @@
 <div class="col-md-2" id="nav-col">
 	<section id="col-left">
-		<div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">	
+		
+		<div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">
+				
 			<ul class="nav nav-pills nav-stacked">
 
 						<li><%= link_to dashboard_path do %>
 							<i class="fa fa-dashboard"></i>
+							
 								<span>Dashboard</span>
 							<% end %>
 						</li>
@@ -26,8 +29,8 @@
 							<% end %>
 						</li>
 						<li><%= link_to users_path do %>
-							<i class="fa fa-users"></i>
-								<span>Company Users</span>
+							<i class="fa fa-list"></i>
+								<span>Employee List</span>
 							<% end %>
 						</li>
 			</ul>

@@ -1,28 +1,31 @@
-<div class="col-md-12">
     <h1><%= @company.name %>'s Dashboard</h1>
+<%= render 'shared/updates' %>
+<div class="col-md-12">
+
+    <span>You are signed in as an <%= @admin.role %>.</span>
     <div class="row">
-		<div class="col-lg-3 col-sm-6 col-xs-12">
+		<div class="col-lg-6 col-sm-6 col-xs-12">
 			<div class="main-box infographic-box">
 				<i class="fa fa-users red"></i>
 				<span class="headline">Users</span>
 				<span class="value"><%= @company.users.count %></span>
 			</div>
 		</div>
-		<div class="col-lg-3 col-sm-6 col-xs-12">
+		<div class="col-lg-6 col-sm-6 col-xs-12">
 			<div class="main-box infographic-box">
 				<i class="fa fa-money green"></i>
 				<span class="headline">Current Payroll</span>
 				<span class="value"><%= number_to_currency(@company.current_payroll_cost) %></span>
 			</div>
 		</div>
-		<div class="col-lg-3 col-sm-6 col-xs-12">
+		<div class="col-lg-6 col-sm-6 col-xs-12">
 			<div class="main-box infographic-box">
 				<i class="fa fa-clock-o"></i>
 				<span class="headline">Clocked In</span>
 				<span class="value"><small><%= pluralize(@company.jobs.on_shift.count, 'Employee') %></small></span>
 			</div>
 		</div>
-		<div class="col-lg-3 col-sm-6 col-xs-12">
+		<div class="col-lg-6 col-sm-6 col-xs-12">
 			<div class="main-box infographic-box">
 				<i class="fa fa-eye yellow"></i>
 				<span class="headline">Approaching OT</span>
@@ -31,21 +34,21 @@
 		</div>
 	</div>
 	<div class='row'>
-		<div class="col-lg-3 col-sm-6 col-xs-12">
-			<div class="main-box infographic-box">
-				<i class="fa fa-building blue"></i>
-				<span class="headline"><%= link_to "View Company Page", @company, class: "btn btn-primary" %></span>
-				<span class="value"><%= @company.users.count %></span>
+		<div class="col-lg-6 col-sm-6 col-xs-12">
+			<div class="main-box ">
+				
+				<span class=""><%= link_to "<i class='fa fa-building blue'></i>     View Company Page".html_safe, @company, class: "btn-comp" %></span>
+				
 			</div>
 		</div>
-		<div class="col-lg-3 col-sm-6 col-xs-12">
+		<div class="col-lg-6 col-sm-6 col-xs-12">
 			<div class="main-box infographic-box">
 				<i class="fa fa-money green"></i>
 				<span class="headline">Current Payroll</span>
-				<span class="value"><%= number_to_currency(@company.current_payroll_cost) %></span>
+				<span class="text-center"></span>
 			</div>
 		</div>
-		<div class="col-lg-3 col-sm-6 col-xs-12">
+		<div class="col-lg-6 col-sm-6 col-xs-12">
 			<div class="main-box infographic-box">
 				<i class="fa fa-money green"></i>
 				<span class="headline">Current Payroll</span>
@@ -56,6 +59,7 @@
 	    
 	</div>
 </div>
+
 
     
 

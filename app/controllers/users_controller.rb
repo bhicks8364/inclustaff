@@ -30,7 +30,7 @@ class UsersController < ApplicationController
         @employee = @user.employee if @user.employee?
         @job = @employee.current_job if @employee.present?
         @jobs = @user.employee.jobs if @user.employee?
-        @manager = @user if @user.manager?
+        
         
         if @user.employee?
             @timesheets = @employee.timesheets.this_week.order(updated_at: :desc)

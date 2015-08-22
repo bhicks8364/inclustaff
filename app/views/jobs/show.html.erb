@@ -24,106 +24,105 @@
   
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="job">
-    <h3><small>Job Information</small></h3>
 
+    <div class='col-md-6'>
+      <strong>Employee:</strong>
+      <%= link_to @employee.name, @employee %><br>
+      <strong>Start date:</strong>
+      <%= @job.start_date.strftime("%B %e, %Y ") %><br>
+      <strong>Gross this week:</strong> <%= number_to_currency(@job.current_week_pay) %><br>
+      <strong>Total Hours : </strong><%= @job.total_hours %>
+      <strong>Total Gross : </strong><%= @job.total_hours %>
+    </div>
+    <div class='col-md-6'>
       <strong>Company:</strong>
-  <%= link_to @company.name, @company %><br>
-
-  <strong>Department:</strong>
-  <%= link_to @job.order.title, @job.order %> <br>
-  
-  <strong>Job Title:</strong><br>
-  <%= @job.title %>
-  
-  <strong>Pay rate:</strong>
-  <%= number_to_currency(@job.pay_rate, :unit => "$") %><br>
-
-  <strong>Description:</strong><br>
-  <%= @job.description %>
-
-  <strong>Employee:</strong>
-  <%= link_to @employee.name, @employee %><br>
+      <%= link_to @company.name, @company %><br>
+    
+      <strong>Department:</strong>
+      <%= link_to @job.order.title, @job.order %> <br>
+      
+      <strong>Job Title:</strong>
+      <%= @job.title %><br>
+      
+      <strong>Pay rate:</strong>
+      <%= number_to_currency(@job.pay_rate, :unit => "$") %><br>
+    </div>
 
 
-  <strong>Start date:</strong>
-  <%= @job.start_date.strftime("%B %e, %Y ") %><br>
+  <div class='col-md-12'>
 
-  
+      <strong>Description:</strong><br>
+  <%= @job.description %><br>
+  </div>
 
-<strong>Gross this week:</strong> <%= number_to_currency(@job.current_week_pay) %><br>
 
-<strong>Total Hours : </strong><%= @job.total_hours %>
-<strong>Total Gross : </strong><%= @job.total_hours %>
-
+</div>
 
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
-    
-    <div class="col-md-4">
+    <h3>Timesheets</h3>
       <%= render 'timesheets/table' %>
-    </div>
+
   </div>
   
   
   
   
   <div role="tabpanel" class="tab-pane fade" id="company-info">
-    <h3><small>Current Employees</small></h3>
-        <%= div_for(@employee_users) do |user| %>
-            <p><%= link_to user.name, user %> <small> |  <% if user.can_edit? %> <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> <% end %><%= user.role %></small></p>
-            <p class="text-muted"><%= user.email %> - <%= user.company.name %> </p>
-            
-        <% end %>
+     <h3>Company Information</h3>
+     <div class='well'>
+       <% if @job.on_shift? %>
+      Last Clock In Time: <%= @job.last_clock_in.strftime("%I:%M %p") %>
+      
+        <%= link_to 'Clock Out', clock_out_job_shift_path(@job, @job.current_shift), class: "btn clock-out", method: :patch, 
+                                remote: true, data: {confirm: 'Are you sure you want to clock out now?', 
+                                disable_with: "Clocking Out..."} %>
+      <% else %>
+      <%= link_to 'Clock In', new_job_shift_path(@job), class: "btn clock-in" %>
+      <% end %>
+      
+      
+      
+      <%= link_to 'Edit', edit_job_path(@job) %> |
+      <%= link_to 'Back', jobs_path %>
+
+     </div>
   </div>
   <div role="tabpanel" class="tab-pane fade" id="settings">
-    
+    <h3>Settings</h3>
   </div>
-</div>
-  
-
-  
-  
-
-
-
-
-<% if @job.on_shift? %>
-Last Clock In Time: <%= @job.last_clock_in.strftime("%I:%M %p") %>
-
-  <%= link_to 'Clock Out', clock_out_job_shift_path(@job, @job.current_shift), class: "btn clock-out", method: :patch, 
-                          remote: true, data: {confirm: 'Are you sure you want to clock out now?', 
-                          disable_with: "Clocking Out..."} %>
-<% else %>
-<%= link_to 'Clock In', new_job_shift_path(@job), class: "btn clock-in" %>
-<% end %>
-
-
-
-<%= link_to 'Edit', edit_job_path(@job) %> |
-<%= link_to 'Back', jobs_path %>
 
   
 
-<% if @current_timesheet %>
+  
+  </div>
 
-<% if @job.hours_until_ot > 5 %>
-   <div class="progress">
-      <div class="progress-bar progress-bar-success" style="width: <%= @job.current_percent %>%">
-        <p class="text-center">Hours: <%= @current_timesheet.reg_hours %> <small>Hours Until Overtime: <%= @job.hours_until_ot %></small></p> <span class="sr-only">35% Complete (success)</span>
-      </div>
-    </div>
-    <% else %>
+
+
+
+
+  
+
+<!--<% if @current_timesheet %>-->
+
+<!--<% if @job.hours_until_ot > 5 %>-->
+<!--   <div class="progress">-->
+<!--      <div class="progress-bar progress-bar-success" style="width: <%= @job.current_percent %>%">-->
+<!--        <p class="text-center">Hours: <%= @current_timesheet.reg_hours %> <small>Hours Until Overtime: <%= @job.hours_until_ot %></small></p> <span class="sr-only">35% Complete (success)</span>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <% else %>-->
     
-    <div class="progress">
-      <div class="progress-bar progress-bar-success" style="width: <%= @job.current_percent %>%">
-        <p class="text-center">Hours: <%= @current_timesheet.reg_hours %> </p> <span class="sr-only">35% Complete (success)</span>
-      </div>
+<!--    <div class="progress">-->
+<!--      <div class="progress-bar progress-bar-success" style="width: <%= @job.current_percent %>%">-->
+<!--        <p class="text-center">Hours: <%= @current_timesheet.reg_hours %> </p> <span class="sr-only">35% Complete (success)</span>-->
+<!--      </div>-->
 
-    </div>
-    <div class="progress">
-      <div class="progress-bar progress-bar-danger progress-bar-striped" style="width: <%= @current_timesheet.ot_hours * 10 %>%">
-        <p class="center">Overtime Hours: <%= @current_timesheet.ot_hours %></p><span class="sr-only">20% Complete (warning)</span>
-      </div>
+<!--    </div>-->
+<!--    <div class="progress">-->
+<!--      <div class="progress-bar progress-bar-danger progress-bar-striped" style="width: <%= @current_timesheet.ot_hours * 10 %>%">-->
+<!--        <p class="center">Overtime Hours: <%= @current_timesheet.ot_hours %></p><span class="sr-only">20% Complete (warning)</span>-->
+<!--      </div>-->
 
-    </div>
-  <% end %>
-  <% end %>
+<!--    </div>-->
+  <!--<% end %>-->
+  <!--<% end %>-->

@@ -1,6 +1,7 @@
 <% if admin_signed_in? %>
     <div class=''>
         <%= render 'dashboard/admin' %>
+        <%= link_to "Agency Portal", agency_access_path, class: "btn btn-primary" %>
     </div>
     <% end %>
     

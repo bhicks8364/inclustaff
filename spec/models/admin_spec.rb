@@ -21,6 +21,7 @@
 #  first_name             :string
 #  last_name              :string
 #  company_id             :integer
+#  role                   :string
 #
 
 require 'rails_helper'
