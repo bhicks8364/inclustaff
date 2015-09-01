@@ -20,7 +20,7 @@
               </div>
             <% end %>
 
-
+        <%= f.input :first_name, required: true, placeholder: "First Name", label: false  %>
 
           <%= f.simple_fields_for :user do |user| %>
 
@@ -31,9 +31,14 @@
                   <%= user.input :last_name, required: true, placeholder: "Last Name", label: false  %>
                   <%= user.input :email, required: true, placeholder: "Email  ex. example@email.com", label: false  %>
                   <%= f.input :phone_number, as: :tel, required: true, placeholder: "Phone Number  ex. 555-555-5555", label: false  %>
+                  <%= user.input :address, required: true, placeholder: "Address", label: false %>
+                  <%= user.input :city, required: true, placeholder: "City", label: false %>
+                  <%= user.input :state, required: true, placeholder: "State", label: false %>
+                  <%= user.input :password %>
+                  <%= user.input :password_confirmation %>
+                  
                   <%= f.input :ssn, required: true, maxlength: 4, label: false, placeholder: "SSN - Last 4 only" %>
-                  <%= user.input :password, required: true, placeholder: "Choose a password.", label: false, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length) %>
-                  <%= user.input :password_confirmation, required: true, placeholder: "Please confirm your password.", label: false  %>
+                  
                   <div class='hidden'>
                     <%=  user.association :company, label_method: :name, value_method: :id, include_blank: false %>
                     <%= user.input :role, required: true, priority: [ "Employee" ], collection: [ "Employee"], include_blank: false, label: false  %>

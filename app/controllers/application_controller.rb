@@ -21,11 +21,11 @@ class ApplicationController < ActionController::Base
   
   private
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:id, :first_name, :last_name, :email, :role, :company_id, :password, :password_confirmation, :can_edit) }
+    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:id, :first_name, :last_name, :email, :role, :company_id, :password, :password_confirmation, :can_edit, :address, :city, :state, :zipcode) }
   end
   
   def update_permitted_parameters
-    devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:id, :first_name, :last_name, :email, :role, :can_edit, :company_id, :password, :password_confirmation, :current_password) }
+    devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:id, :first_name, :last_name, :email, :role, :can_edit, :company_id, :password, :password_confirmation, :current_password, :address, :city, :state, :zipcode) }
   end
   def user_not_authorized
     flash[:alert] = "You are not authorized to perform this action."

@@ -17,7 +17,7 @@
   </thead>
 
   <tbody>
-    <% @timesheets.this_week.each do |timesheet| %>
+    <% @timesheets.each do |timesheet| %>
       <% if timesheet.clocked_in? %>
         <tr class="clocked_in" data-behavior="timesheet" data-id="<%= timesheet.id %>">
       <% else %>

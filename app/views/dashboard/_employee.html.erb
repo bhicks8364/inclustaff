@@ -1,30 +1,23 @@
 <div id="employee-home-page">
-
+<div class="col-md-3">
+    <%= render @current_shift %>
+</div>
     
     
-    <strong><%= current_user.name %><%= @employee.name %></strong> <br>
+<div class="col-md-3">
+    <strong><%= @employee.name %></strong> <br>
 <%= @employee.email %>
 <br>
-<% if @job.present? %>
+
 <%= @job.title %>  - <%= number_to_currency(@job.pay_rate) %> 
-
-<% if @job.on_shift? %>
-<h2>You are currently clocked in. </h2> <h2><strong> You clocked in at <%= @current_shift.time_in.strftime("%I:%M %p") %> on <%= @current_shift.time_in.strftime("%x") %>.</strong></h2>
-<h3><small><%= time_ago_in_words(@current_shift.time_in).titleize %></small></h3>
-
-<%= link_to "Clock Out", clock_out_job_shift_path(@job, @current_shift), method: :patch, 
-                          remote: true, data: {confirm: 'Are you sure you want to clock out now?', 
-                          disable_with: "Clocking Out..."}, class: "btn btn-primary btn-lg btn-block"  %>
-
-<% else %>
-<%= link_to "Clock In", new_job_shift_path(@job), class: "btn btn-primary btn-lg btn-block" %>
-
-<% end %>
-
-
-
-<br>
-
-<%= render 'shared/single_timesheet' %>
 </div>
-<% end %>
+<%= link_to "Dashboard", timeclock_path(@employee), class: "btn btn-default" %>
+<%= link_to "Current Timesheet", @current_timesheet, class: "btn btn-default" %>
+<%= render 'timesheets/table' %>
+
+
+
+
+
+
+</div>

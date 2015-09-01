@@ -1,25 +1,41 @@
 
 <h3 class="page-header">
   <strong> <%= @employee.name %>  <small> <%= @job.title %></small></strong>
+  <%= @employee.code %>
 </h3>
+
+
+<p>Click the button to demonstrate the prompt box.</p>
+
+<button onclick="myFunction()">Try it</button>
+
+<p id="demo"></p>
+
+
+
+
+
+
+<hr>
   
 
-  <span id="shift-state"><%= @shift.state.titleize %></span>
+  <p><span id="shift-state"><%= @shift.state.titleize %></span><br>
   <strong>Time in:</strong>
-  <%= @shift.time_in.strftime("%I:%M %p") %>
+  <%= @shift.time_in.strftime("%I:%M %p") %></p>
   
 
 
 <% if @shift.clocked_in? %>
 
   <%= link_to 'Clock Out', clock_out_job_shift_path(@job, @shift), method: :patch, 
-                          remote: true, id: "out-button", class: "btn btn-primary btn-lg", data: { disable_with: "Clocking Out..."} %>
+                          remote: true, id: "clock-out-button", class: "btn btn-primary btn-lg", data: { disable_with: "Clocking Out..."} %>
 
 
 
 
 
 <% end %>
+<% if @shift.clocked_out? %>
 <strong><h3><%= @shift.state.titleize %></h3></strong>
 <p>
   <strong>Time in:</strong>
@@ -40,3 +56,4 @@
 |
 
 <%= link_to 'Back', job_shifts_path(@job) %>
+<% end %>

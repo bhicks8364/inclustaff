@@ -1,6 +1,6 @@
 class CompaniesController < ApplicationController
   before_action :set_company, only: [:show, :edit, :update, :destroy]
-  # before_action :authenticate_user!
+  before_action :authenticate_admin!
 
   # GET /companies
   # GET /companies.json
@@ -12,19 +12,23 @@ class CompaniesController < ApplicationController
   # GET /companies/1
   # GET /companies/1.json
   def show
+    @current_admin = current_admin
+    @jobs = @company.jobs.active.includes(:employee)
+    @clocked_in = @jobs.on_shift
+    @clocked_out =  @jobs.off_shift.distinct
     # authorize @company
-    @orders = @company.orders.includes(:timesheets)
+    @orders = @company.orders
     # @all_timesheets = @company.timesheets.order(updated_at: :desc) if @company.timesheets.any?
     @timesheets = @company.timesheets.order(updated_at: :desc) 
     @last_week_timesheets = @timesheets.last_week.order(updated_at: :desc)
 
-    @all_users = @company.company_users
+    @all_users = @company.users
     @employees = @company.employees
     @active_employees = @employees.with_active_jobs
-    @clocked_in = @company.jobs.on_shift.includes(:employee) if @company.jobs.any?
+    # @clocked_in = @company.jobs.on_shift.includes(:employee) if @company.jobs.any?
 
     @with_active_jobs = @orders.with_active_jobs
-    @active_jobs = @company.jobs.active
+    
     @today = @company.shifts.today.order(updated_at: :desc)
     @yesterday = @company.shifts.yesterday
     # @today = @company.shifts.in_today.order(time_in: :desc)

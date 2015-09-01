@@ -48,16 +48,15 @@
 <%= link_to 'Edit', edit_company_order_path(@company, @order) %> |
 <%= link_to 'Back', company_orders_path(@company) %>
 <br>
-<%= link_to 'Add Job', new_company_order_job_path(@company, @order) %>
+<%= link_to 'Add Job', new_job_path %>
 <hr>
 
   </div>
   
   
   <div role="tabpanel" class="tab-pane fade" id="activejobs">
-<%= render 'jobs/table', :active_jobs => @active_jobs %>
+<%= render @active_jobs %>
 
-  </ul>
   </div>
   
   

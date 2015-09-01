@@ -2,8 +2,9 @@
   
   <% if @job.on_shift? %>
   <p id="clock-status" class="text-center"><strong><%= @job.employee.name %> is currently clocked in. <%= link_to "Clock Out", clock_out_job_shift_path(@job, @current_shift), method: :patch, 
-                          remote: true, data: {confirm: 'Are you sure you want to clock out now?', 
-                          disable_with: "Clocking Out..."}, class: "btn btn-default" if policy(@current_shift).clock_out? %></strong></p>
+                          remote: true, class: "btn btn-default"  %></strong></p>
+  <% else %>
+  <%= link_to "Clock In", new_job_shift_path(@job), class: "btn btn-primary" %>
                           
                           
                           
@@ -43,6 +44,10 @@
       
       <strong>Job Title:</strong>
       <%= @job.title %><br>
+      <strong>Recruiter:</strong>
+      <%= @job.recruiter.present? ? @job.recruiter.name : "Recruiter unavailable" %><br>
+      <strong>Staff:</strong>
+      <%= @job.staff %><br>
       
       <strong>Pay rate:</strong>
       <%= number_to_currency(@job.pay_rate, :unit => "$") %><br>
@@ -74,10 +79,11 @@
       Last Clock In Time: <%= @job.last_clock_in.strftime("%I:%M %p") %>
       
         <%= link_to 'Clock Out', clock_out_job_shift_path(@job, @job.current_shift), class: "btn clock-out", method: :patch, 
-                                remote: true, data: {confirm: 'Are you sure you want to clock out now?', 
+                                remote: true, id: "clock-out-button", data: {confirm: 'Are you sure you want to clock out now?', 
                                 disable_with: "Clocking Out..."} %>
+                                <%= link_to 'Clock In', new_job_shift_path(@job), id: "clock-in-button", class: "btn btn-default hide-this" %>
       <% else %>
-      <%= link_to 'Clock In', new_job_shift_path(@job), class: "btn clock-in" %>
+      <%= link_to 'Clock In', new_job_shift_path(@job), id: "clock-in-button", class: "btn btn btn-default" %>
       <% end %>
       
       

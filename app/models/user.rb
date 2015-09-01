@@ -16,7 +16,6 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  role                   :string
-#  company_id             :integer
 #  first_name             :string
 #  last_name              :string
 #  deleted_at             :datetime
@@ -26,26 +25,41 @@
 #  city                   :string
 #  state                  :string
 #  zipcode                :string
+#  employee_id            :integer
 #
 
 class User < ActiveRecord::Base
   has_one :employee
-  belongs_to :company
+  has_many :shifts, through: :employee
+  has_one :current_job, through: :employee
+  # belongs_to :company
 
   accepts_nested_attributes_for :employee
-  accepts_nested_attributes_for :company
   
-  validates :company_id,  presence: true
+  # validates :company_id,  presence: true
   validates :role,  presence: true
 
   
-  after_commit :set_employee
+  after_save :set_employee, :set_emp_id
+  
 
   devise :database_authenticatable, :registerable,
         :recoverable, :rememberable, :trackable, :validatable
         
-  devise :database_authenticatable, :validatable, password_length: 4..6      
+  # devise :database_authenticatable, :validatable, password_length: 4..6      
   delegate :ssn, to: :employee
+  
+  # def active_for_authentication?
+  #   # Uncomment the below debug statement to view the properties of the returned self model values.
+  #   # logger.debug self.to_yaml
+
+  #   super && employee.assigned?
+  # end
+  
+  def set_emp_id
+    self.employee_id = self.employee.id
+  end
+
   
   def name
     "#{first_name} #{last_name}"
@@ -59,15 +73,6 @@ class User < ActiveRecord::Base
    self.first_name[0,1] + self.last_name[0,1] + self.ssn.to_s
   end
 
-
-  
-  
-  
-  
-  
-  
-  
-  
   
   
   def set_employee

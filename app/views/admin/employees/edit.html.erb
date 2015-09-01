@@ -1,0 +1,63 @@
+<div class="col-lg-12">
+					
+	<h1>Edit Employee</h1>
+
+	<div class="row">
+		<div class="col-lg-6">
+			<div class="main-box" style="min-height: 820px;">
+			  <%= @employee.email %>
+			  <%= @employee.user.name %>
+				<h2><%= @company.name %></h2>
+				
+				<%= simple_form_for(@employee, class: "center") do |f| %>
+            <% if @employee.errors.any? %>
+              <div id="error_explanation">
+                <h2><%= pluralize(@employee.errors.count, "error") %> prohibited this employee from being saved:</h2>
+                <ul>
+                <% @employee.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+                </ul>
+              </div>
+            <% end %>
+  <%= f.input :first_name, required: true, label: false, disabled: true  %>
+  <%= f.input :last_name, required: true, label: false, disabled: true  %>
+  <%= f.input :phone_number, as: :tel, required: true, placeholder: "Phone Number  ex. 555-555-5555", label: false  %>
+  <%= f.input :email, required: true, label: false, disabled: true  %>
+  <%= f.input :ssn, required: true, maxlength: 4, label: false, placeholder: "SSN - Last 4 only" %>
+
+
+
+          <!--<%= f.simple_fields_for :user do |user| %>-->
+
+
+          <!--        <div class="form-group">-->
+
+          <!--        <%= user.input :email, required: true, placeholder: "Email  ex. example@email.com", label: false  %>-->
+                  
+          <!--        <%= user.input :address, required: true, placeholder: "Address", label: false %>-->
+          <!--        <%= user.input :city, required: true, placeholder: "City", label: false %>-->
+          <!--        <%= user.input :state, required: true, placeholder: "State", label: false %>-->
+
+                  
+          <!--        -->
+                  
+          <!--        <div class='hidden'>-->
+
+          <!--          <%= user.input :role, required: true, priority: [ "Employee" ], collection: [ "Employee"], include_blank: false, label: false  %>-->
+          <!--        </div>-->
+          <!--  <% end %>-->
+            <%= f.button :submit, "Save Changes", class: "btn btn-primary" %>
+        
+        <% end %>
+        
+        <%= link_to 'View All Employees', employees_path, class: 'btn btn-default' %>
+				
+				</div>
+
+			</div>
+		</div>
+	</div>
+	
+
+</div>

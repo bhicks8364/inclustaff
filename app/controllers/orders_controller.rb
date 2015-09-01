@@ -1,6 +1,6 @@
 class OrdersController < ApplicationController
   before_action :set_order, only: [:show, :edit, :update, :destroy]
-  before_action :set_company, only: [:index]
+
   
 
   # GET /orders
@@ -98,21 +98,15 @@ class OrdersController < ApplicationController
   # POST /orders
   # POST /orders.json
   def create
-    if params[:company_id]
+
       @company = Company.find(params[:company_id])
       @order = @company.orders.new(order_params)
-      # authorize @order
 
-    else
-      @order = Order.new(order_params)
-      # @order.jobs.build
-      # authorize @order
-    end
 
 
     respond_to do |format|
-      if @order.save
-        format.html { redirect_to @order, notice: 'Order was successfully created.' }
+      if @order.save 
+        format.html { redirect_to company_order_path(@company, @order), notice: 'Order was successfully created.' }
         format.json { render :show, status: :created, location: @order }
       else
         format.html { render :new }
@@ -124,10 +118,11 @@ class OrdersController < ApplicationController
   # PATCH/PUT /orders/1
   # PATCH/PUT /orders/1.json
   def update
+    @company = Company.find(params[:company_id])
     # authorize @order
     respond_to do |format|
       if @order.update(order_params)
-        format.html { redirect_to [@company, @order], notice: 'Order was successfully updated.' }
+        format.html { redirect_to company_order_path(@company, @order), notice: 'Order was successfully updated.' }
         format.json { render :show, status: :ok, location: @order }
       else
         format.html { render :edit }
@@ -154,10 +149,7 @@ class OrdersController < ApplicationController
 
       @order = Order.find(params[:id])
     end
-    def set_company
-      # @company = current_user.company if current_user.present?
-      @company = Company.find(params[:company_id])
-    end
+
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params

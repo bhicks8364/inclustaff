@@ -37,6 +37,21 @@ gem "font-awesome-rails"
 # FOR ACTIVE RECORD DATE QUERY
 gem 'by_star', :git => "git://github.com/radar/by_star"
 
+
+# STATE MACHINE
+gem 'aasm'
+
+# FOR JAVASCRIPT 
+gem 'gon'
+gem 'jquery-turbolinks'
+gem 'fullcalendar-rails'
+gem 'momentjs-rails'
+gem 'angularjs-rails'
+
+gem 'active_model_serializers'
+gem 'angular-rails-templates'
+gem 'bower-rails'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -56,6 +71,7 @@ group :development, :test do
   gem 'capybara'
   gem 'launchy'
   gem 'ffaker'
+  gem 'populator'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'

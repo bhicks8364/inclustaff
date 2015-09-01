@@ -10,13 +10,13 @@ class JobsController < ApplicationController
       @admin = current_admin
       @company = @admin.company
       @jobs = @company.jobs.order(title: :asc)
-      # @timesheets = @company.timesheets.order(updated_at: :desc)
-      # authorize @timesheets
-    elsif user_signed_in? && current_user.not_an_employee?
-      @current_user = current_user if current_user.present?
-      @company = @current_user.company
-      @jobs = @company.jobs.order(title: :asc)
-      # authorize @timesheets
+    #   # @timesheets = @company.timesheets.order(updated_at: :desc)
+    #   # authorize @timesheets
+    # elsif user_signed_in? && current_user.not_an_employee?
+    #   @current_user = current_user if current_user.present?
+    #   @company = @current_user.company
+    #   @jobs = @company.jobs.order(title: :asc)
+    #   # authorize @timesheets
       elsif user_signed_in? && current_user.employee?
       @current_user = current_user if current_user.present?
       @employee = @current_user.employee if @current_user.employee.present?
@@ -42,6 +42,8 @@ class JobsController < ApplicationController
   def show
     # authorize @job
     @employee = @job.employee
+    @company = @job.company
+    @order = @job.order
     @current_timesheet = @job.current_timesheet
     @company = @job.order.company
     @current_shift = @job.shifts.clocked_in.last if @job.on_shift?
@@ -87,7 +89,7 @@ class JobsController < ApplicationController
     @employees = @company.employees.unassigned
     @order = @job.order
     @employee = @job.employee
-    authorize @job
+    # authorize @job
   end
 
   # POST /jobs
@@ -158,7 +160,7 @@ class JobsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def job_params
-      params.require(:job).permit(:order, :title, :active, :description, :start_date, :pay_rate, :end_date, :order_id, :employee_id,
+      params.require(:job).permit(:order, :recruiter_id, :title, :active, :description, :start_date, :pay_rate, :end_date, :order_id, :employee_id,
                             employee_attributes: [:id, :first_name, :last_name, :email, :ssn, :_destroy])
     end
     def employee_params

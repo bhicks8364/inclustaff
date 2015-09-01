@@ -12,6 +12,7 @@
 #  phone_number :string
 #  user_id      :integer
 #  deleted_at   :datetime
+#  assigned     :boolean
 #
 
 require 'test_helper'

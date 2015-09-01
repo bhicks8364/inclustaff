@@ -6,6 +6,8 @@
     <% end %>
     
     
+    
+    
 
     
     
@@ -14,20 +16,8 @@
     
 <% if user_signed_in? && current_user.employee? %>
 <%= render 'dashboard/employee' %>
-<%= link_to "Dashboard", timeclock_path(@employee), class: "btn btn-default" %>
-<%= link_to "Current Timesheet", @current_timesheet, class: "btn btn-default" %>
-<hr> 
-<%= render 'shifts/shift_calendar' %>
-
-<% end %>
 
 
-<% if user_signed_in? && current_user.manager? %>
-<%= render 'dashboard/manager' %>
-<% end %>
-
-<% if user_signed_in? && current_user.payroll? %>
-<%= render 'dashboard/payroll' %>
 <% end %>
 
 

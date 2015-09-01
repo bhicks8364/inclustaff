@@ -1,0 +1,134 @@
+<div class="container">
+    <div class="page-header">
+        <h1 id="timeline">Timesheets</h1>
+        <%= link_to "Go To Timeclock", home_path, class: "btn btn-info" %>
+    </div>
+    <ul class="timeline">
+      <% @employee.timesheets.order(updated_at: :desc).each do |timesheet| %>
+      <% if timesheet.current? %>
+      <li class="timeline-inverted">
+        <% else %>
+        <li>
+          <% end %>
+          <div class="timeline-badge"><i class="glyphicon glyphicon-check"><%= timesheet.week_ending %></i></div>
+          <div class="timeline-panel">
+            <div class="timeline-heading">
+              <h4 class="timeline-title"><%= timesheet.week_ending %></h4>
+              <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> <%= time_ago_in_words(timesheet.updated_at) %></small></p>
+            </div>
+            <div class="timeline-body">
+                  <% timesheet.shifts.order(updated_at: :desc).each do |shift| %>
+                        <% if shift.clocked_in? %>
+                          <div class="clocked_in">
+                        <% else %>
+                          <div class="clocked_out">
+                        <% end %>
+                         <p>
+                        
+                          <strong class="text-center"> <%= shift.time_in.strftime("%A       - %x") %></strong> 
+                          <br>
+                      
+                  
+                         <%= shift.time_in.strftime("%I:%M %p") %> |<%= shift.clocked_out? ? shift.time_out.strftime("%I:%M %p") : "Clocked In" %> <br>
+                          Hours worked: <%= shift.time_worked %> | Earnings:<%= number_to_currency(shift.earnings) %></p>
+                        </div>
+
+              <% end %>
+              </div>
+            </div>
+
+        </li>
+        
+ 
+        <% end %>
+
+    </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<h1>Employee Dashboard</h1>-->
+<!--<%= @employee.name %>-->
+
+
+<!--<ul>-->
+<!--  <li id="draggable" class="ui-state-highlight">Drag me down</li>-->
+<!--</ul>-->
+ 
+<!--<ul id="sortable">-->
+<!--  <li class="ui-state-default">Item 1</li>-->
+<!--  <li class="ui-state-default">Item 2</li>-->
+<!--  <li class="ui-state-default">Item 3</li>-->
+<!--  <li class="ui-state-default">Item 4</li>-->
+<!--  <li class="ui-state-default">Item 5</li>-->
+<!--</ul>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <!--<h1 class="page-header">Dashboard</h1>-->
+
+          <!--<div class="row placeholders">-->
+          <!--  <div class="col-xs-6 col-sm-3 placeholder">-->
+          <!--    <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">-->
+          <!--    <h4>Label</h4>-->
+          <!--    <span class="text-muted">Something else</span>-->
+          <!--  </div>-->
+          <!--  <div class="col-xs-6 col-sm-3 placeholder">-->
+          <!--    <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">-->
+          <!--    <h4>Label</h4>-->
+          <!--    <span class="text-muted">Something else</span>-->
+          <!--  </div>-->
+          <!--  <div class="col-xs-6 col-sm-3 placeholder">-->
+          <!--    <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">-->
+          <!--    <h4>Label</h4>-->
+          <!--    <span class="text-muted">Something else</span>-->
+          <!--  </div>-->
+          <!--  <div class="col-xs-6 col-sm-3 placeholder">-->
+          <!--    <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">-->
+          <!--    <h4>Label</h4>-->
+          <!--    <span class="text-muted">Something else</span>-->
+          <!--  </div>-->
+          <!--</div>-->

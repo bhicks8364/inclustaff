@@ -1,5 +1,4 @@
-
-
+<% if @jobs %>
 <h1>Active Jobs</h1>
 <div id="dataTable" class="table-responsive">
   <table id="myTable" class="table" cellspacing="0.5" width="85%">
@@ -45,6 +44,10 @@
 </table>
 
 </div>
+
+<% else %>
+<h3>No jobs to show.</h3>
+<% end %>
 
 
 

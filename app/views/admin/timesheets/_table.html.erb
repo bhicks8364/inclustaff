@@ -1,0 +1,77 @@
+<div data-behavior="timesheet-list">
+<table class="table table-products table-hover">
+	<tbody>
+		<% @timesheets.order(created_at: :desc).each do |timesheet| %>
+	      <% if timesheet.clocked_in? %>
+	        <tr class="bg-success" data-behavior="timesheet" data-id="<%= timesheet.id %>">
+	      <% else %>
+	        <tr class="bg-info" data-behavior="timesheet" data-id="<%= timesheet.id %>">
+	      <% end %>
+			<td>
+				<% if timesheet.approved? %><i class="fa fa-check-circle"></i><% else %><i class="fa fa-circle-o"></i><% end %>
+			    <%= timesheet.week_ending %>
+			    
+			</td>
+			
+	        <td class="text-center" data-behavior="timesheet-state">
+	        	
+	          <%if timesheet.approved? %>
+	          <span class="label label-success" data-behavior="approve-user"><%= timesheet.user_approved %>
+	           <% else %>
+	           <span class="label label-primary"> <%= timesheet.state.titleize %>
+	            <% end %>
+	             
+	           </span>
+	           
+	        </td>
+	        <td>
+          <%if timesheet.approved? %>
+          
+          <%= button_tag(type: "button", class: 'btn btn-primary btn-sm', data: { behavior: "timesheet-toggle" }) do %>
+            <span data-behavior="approve-button"> 
+              <% if timesheet.approved? %>
+                <i class='fa fa-times'></i>     Unapprove
+              <% else %>
+                <i class='fa fa-check-circle'></i>     Approve
+              <% end %>
+            </span>
+          <% end %>
+          
+
+           <% else %>
+            
+          <%= button_tag(type: "button", class: 'btn btn-success btn-sm', data: { behavior: "timesheet-toggle" }) do %>
+            <span data-behavior="approve-button"> 
+              <% if timesheet.approved? %>
+                <i class='fa fa-times'></i>     Unapprove
+              <% else %>
+                <i class='fa fa-check-circle'></i>     Approve
+              <% end %>
+            </span>
+          <% end %>
+
+        <% end %>
+
+        </td>
+			<td>
+				<span class="name">
+				<%= timesheet.employee.name %>
+				</span>
+			</td>
+			<td>
+				<span class="price">
+					<i class="fa fa-money"></i> <%= number_to_currency(timesheet.gross_pay) %>
+				</span>
+			</td>
+			<td>
+				<span class="warranty">
+					<i class="fa fa-certificate"></i> <%= timesheet.total_hours %>
+				</span>
+			</td>
+			<td><%= link_to "<i class='fa fa-folder-open'></i>     View".html_safe, timesheet, class: "badge" %>
+        <%= link_to "<i class='fa fa-pencil'></i>     Edit".html_safe, edit_timesheet_path(timesheet), class: "badge" %></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
+</div>

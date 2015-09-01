@@ -1,10 +1,8 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
-#$(document).on "page:change", ->
-    #$('#shifts-button').click ->
-        #$('#shifts-table').toggle()
-        #
+
+        
 
 
 class TimesheetList
@@ -41,13 +39,17 @@ class Timesheet
     else
       @item.find("[data-behavior='timesheet-state']").html "<span class='label label-primary'>#{data.state}</span>"
       @item.find("[data-behavior='approve-button']").html "<i class='fa fa-check-circle'></i>     Approve"
-      @item.find("[data-behavior='approve-user']").html "<p>#{data.user_approved}</p>"
+      @item.find("[data-behavior='approve-user']").hide()
       console.log data.id
       console.log data.state
       
 
 jQuery ->
   new TimesheetList $("[data-behavior='timesheet-list']")
-  #$(document).on "ajax:success", (xhr, status, error) ->
-      #console.log status.responseText
-      #console.log data.id
+      
+      
+      
+      
+      
+      
+      

@@ -2,18 +2,19 @@
 #
 # Table name: jobs
 #
-#  id          :integer          not null, primary key
-#  employee_id :integer
-#  order_id    :integer
-#  title       :string
-#  description :string
-#  start_date  :date
-#  pay_rate    :decimal(, )
-#  end_date    :date
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  active      :boolean
-#  deleted_at  :datetime
+#  id           :integer          not null, primary key
+#  employee_id  :integer
+#  order_id     :integer
+#  title        :string
+#  description  :string
+#  start_date   :date
+#  pay_rate     :decimal(, )
+#  end_date     :date
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  active       :boolean
+#  deleted_at   :datetime
+#  recruiter_id :integer
 #
 
 require 'test_helper'

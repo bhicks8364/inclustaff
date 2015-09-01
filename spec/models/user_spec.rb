@@ -16,7 +16,6 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  role                   :string
-#  company_id             :integer
 #  first_name             :string
 #  last_name              :string
 #  deleted_at             :datetime
@@ -26,6 +25,7 @@
 #  city                   :string
 #  state                  :string
 #  zipcode                :string
+#  employee_id            :integer
 #
 
 require 'rails_helper'

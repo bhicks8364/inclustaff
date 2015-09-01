@@ -1,14 +1,12 @@
-    <h1><%= @company.name %>'s Dashboard</h1>
-<%= render 'shared/updates' %>
-<div class="col-md-12">
-
+<h1><%= @company.name %>'s Dashboard</h1>
     <span>You are signed in as an <%= @admin.role %>.</span>
-    <div class="row">
+
+<div class="col-md-12">
 		<div class="col-lg-6 col-sm-6 col-xs-12">
 			<div class="main-box infographic-box">
 				<i class="fa fa-users red"></i>
-				<span class="headline">Users</span>
-				<span class="value"><%= @company.users.count %></span>
+				<span class="headline">Employees</span>
+				<span class="value"><%= @company.employees.count %></span>
 			</div>
 		</div>
 		<div class="col-lg-6 col-sm-6 col-xs-12">
@@ -18,6 +16,7 @@
 				<span class="value"><%= number_to_currency(@company.current_payroll_cost) %></span>
 			</div>
 		</div>
+		
 		<div class="col-lg-6 col-sm-6 col-xs-12">
 			<div class="main-box infographic-box">
 				<i class="fa fa-clock-o"></i>
@@ -25,42 +24,23 @@
 				<span class="value"><small><%= pluralize(@company.jobs.on_shift.count, 'Employee') %></small></span>
 			</div>
 		</div>
+		
 		<div class="col-lg-6 col-sm-6 col-xs-12">
 			<div class="main-box infographic-box">
 				<i class="fa fa-eye yellow"></i>
 				<span class="headline">Approaching OT</span>
-				<span class="value"><small><%= pluralize(@company.timesheets.approaching_overtime.count, 'Employee')  %></small></span>
+				<span class="value"><small><%= pluralize(@company.timesheets.current_week.approaching_overtime.count, 'Employee')  %></small></span>
 			</div>
 		</div>
-	</div>
-	<div class='row'>
-		<div class="col-lg-6 col-sm-6 col-xs-12">
-			<div class="main-box ">
-				
-				<span class=""><%= link_to "<i class='fa fa-building blue'></i>     View Company Page".html_safe, @company, class: "btn-comp" %></span>
-				
-			</div>
-		</div>
-		<div class="col-lg-6 col-sm-6 col-xs-12">
-			<div class="main-box infographic-box">
-				<i class="fa fa-money green"></i>
-				<span class="headline">Current Payroll</span>
-				<span class="text-center"></span>
-			</div>
-		</div>
-		<div class="col-lg-6 col-sm-6 col-xs-12">
-			<div class="main-box infographic-box">
-				<i class="fa fa-money green"></i>
-				<span class="headline">Current Payroll</span>
-				<span class="value"><%= number_to_currency(@company.current_payroll_cost) %></span>
-			</div>
-		</div>
+	
+
+
+
 			
-	    
-	</div>
+
 </div>
 
-
+<%= render 'shared/updates' %>
     
 
 

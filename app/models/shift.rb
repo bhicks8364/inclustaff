@@ -16,6 +16,11 @@
 #  deleted_at   :datetime
 #  in_ip        :string
 #  out_ip       :string
+#  week         :integer
+#  break_in     :datetime
+#  break_out    :datetime
+#  note         :text
+#  needs_adj    :boolean
 #
 
 class Shift < ActiveRecord::Base
@@ -23,12 +28,14 @@ class Shift < ActiveRecord::Base
     has_calendar :attribute => :time_in
     include ArelHelpers::ArelTable
     by_star_field :time_in, :time_out
+    
+    acts_as_paranoid
 
+    # include AASM
     
-    
-    belongs_to :employee, inverse_of: :shifts
-    belongs_to :job, inverse_of: :shifts
-    belongs_to :timesheet, inverse_of: :shifts
+    belongs_to :employee
+    belongs_to :job
+    belongs_to :timesheet
     belongs_to :company, class_name: "Company", foreign_key: "company_id"
     
     scope :last_week, ->{
@@ -44,41 +51,76 @@ class Shift < ActiveRecord::Base
     # validates_associated :employee
     validates_associated :job
     validates :job_id, presence: true
-    # validates :employee_id, presence: true
     validates :time_in, presence: true
-    
+
     delegate :pay_rate, to: :job
-    delegate :employee, to: :job
     delegate :order, to: :job
     delegate :manager, to: :job
-
-    
+    delegate :code, to: :employee
+    delegate :week_ending, to: :timesheet
     accepts_nested_attributes_for :job
     
+
     after_save :update_timesheet!
-    before_save :set_timesheet, :calculate_time, :reg_earnings, :set_employee
+    before_save :set_timesheet, :reg_earnings
+    before_create :set_employee_ip
+    # before_save :calculate_time, if: :clocked_out?
     
-    after_initialize :defaults
-    
-    # SCOPES
-    # @post.next(scope: Post.where(category: @post.category))
-    
-    
-    def defaults
-        if self.new_record?
-            self.time_in = Time.current
-            self.state = "clocked_in"
-            self.time_out = self.time_in
-            self.earnings = 0.00
-            self.in_ip = self.employee.user.current_sign_in_ip
-        end
+
+    def set_employee_ip
+        self.employee = self.job.employee if self.employee.nil?
+        self.in_ip = self.employee.current_sign_in_ip if self.in_ip.nil?
     end
     
     def set_timesheet
-        self.timesheet = Timesheet.find_or_create_by(job_id: self.job_id, week: self.time_in.to_datetime.cweek)
+        self.timesheet = Timesheet.find_or_create_by(job_id: self.job_id, week: self.week)
     end
-    def set_employee
-        self.job.employee.id = self.employee_id
+    
+    
+    # def clock_in!
+    #     self.update(time_in: Time.current, time_out: nil,
+    #                 state: "Clocked In",
+    #                 out_ip: nil)
+    # end
+    def clock_in!
+        if self.job.off_shift?
+            self.job.shifts.create(time_in: Time.current, time_out: nil,
+                    state: "Clocked In",
+                    in_ip: "admin-clock-in",
+                    out_ip: nil)
+        end
+        # self.update(time_in: Time.current, time_out: nil,
+        #             state: "Clocked In",
+        #             out_ip: nil)
+    end
+    def clock_out!
+        self.update(time_out: Time.current,
+                    state: "Clocked Out")
+    end
+    
+    
+    
+    
+    def clocked_in?
+        if self.state == "Clocked In"
+            true
+        else
+            false
+        end
+    end
+    def clocked_out?
+        if self.state == "Clocked Out"
+            true
+        else
+            false
+        end
+    end
+    def on_break?
+        if self.state == "On Break"
+            true
+        else
+            false
+        end
     end
     
     def employee_name
@@ -108,74 +150,66 @@ class Shift < ActiveRecord::Base
     }
     
     scope :clocked_in, ->{
-        where(state: "clocked_in")
+        where(state: "Clocked In")
     }
     scope :clocked_out, ->{
-        where(state: "clocked_out")
+        where(state: "Clocked Out")
+    }
+    scope :on_break, ->{
+        where(state: "On Break")
     }
     
-    
-    def clocked_in?
-        if self.state == "clocked_in"
-            true
+    def hours_worked
+        if self.clocked_in?
+            time_diff(self.time_in, Time.current).round(2)
         else
-            false
+            time_diff(self.time_in, self.time_out).round(2)
         end
     end
     
-    def clocked_out?
-        if self.state == "clocked_out"
-            true
-        else
-            false
-        end
-    end
-    
-    def clock_out!
-        self.update(time_out: Time.current,
-                    state: "clocked_out",
-                    out_ip: self.employee.user.current_sign_in_ip)
-        
-        
-    end
-    
-    # def company
-    #     self.job.order.company
-    # end
-    
-    # def week_earnings
-    #     hours = self.joins(:timesheet)
-    #             .where(Timesheet[:id].eq(self.timesheet_id)).sum[:time_worked]
-    #     ot_rate = self.pay_rate * 1.5
-    #     if hours > 40
-    #         reg_pay = self.pay_rate * 40
-    #         ot_pay = hours - 40 * ot_rate
-    #         self.earnings = reg_pay + ot_pay
-    #     else
-    #         self.earnings = self.pay_rate * hours
-    #     end
-    # end
+
+
     
     def reg_earnings
-        self.earnings = self.pay_rate * self.time_worked
+        self.time_worked = self.hours_worked
+        
+        self.earnings = self.pay_rate * self.hours_worked
+        
     end
+
     
-    
-    # def self.time_worked
-    #     time = self.time_out - self.time_in
-    #     time = time / 3600
-    #     time.round(2)
-    # end
-    
-    def calculate_time
-        if self.time_out != nil
-            time = self.time_out - self.time_in
+    def break_time
+        if self.break_out != nil
+            time = self.break_in - self.break_out
             time = time / 3600
-            self.time_worked = time.round(2)
+            time.round(2)
         else
-            self.time_worked = 0.00
+            0.00
         end
     end
+    def took_a_break?
+        if break_time > 0.1
+            true
+        else
+            false
+        end
+    end
+
+    # def calculate_time
+
+    #     if time_out.present? && time_in.present?
+    #         end_time = self.time_out
+    #         start_time = self.time_in
+    #         time = (end_time - start_time)
+    #         time = time / 3600
+    #         self.time_worked = time.round(2)
+    #     else
+    #         self.time_worked = 0.00
+    #     end
+
+    # end
+    
+
     
     def update_timesheet!
         self.timesheet.update(updated_at: Time.current)
@@ -183,13 +217,10 @@ class Shift < ActiveRecord::Base
     end
     
 
-    def week
-        self.time_out.end_of_week.to_datetime.cweek
-    end
-    
-    def week_ending
-        self.time_out.end_of_week
-    end
+    # def set_week
+    #     self.week = self.time_in.cweek
+    # end
+
     
     def self.last_week
       where(:time_in => 1.week.ago.beginning_of_week..1.week.ago.end_of_week)
@@ -197,6 +228,25 @@ class Shift < ActiveRecord::Base
     
     def self.yesterday
       where(:time_in => 1.day.ago.beginning_of_day..1.day.ago.end_of_day)
+    end
+    
+    
+    private
+    
+    def time_diff(start_time, end_time)
+      seconds_diff = (start_time - end_time).to_f.abs
+    
+      hours = seconds_diff / 3600
+    #   seconds_diff -= hours * 3600
+    # time_diff(s.time_in, s.time_out)
+    #   minutes = seconds_diff / 60
+    #   seconds_diff -= minutes * 60
+    
+    #   seconds = seconds_diff
+      
+     return hours.to_d
+    
+    #   "#{hours.to_s.rjust(2, '0')}:#{minutes.to_s.rjust(2, '0')}:#{seconds.to_s.rjust(2, '0')}"
     end
     
 

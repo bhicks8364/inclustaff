@@ -5,10 +5,10 @@
              
            
                
-                <% if order.timesheets.this_week.any? %>
+                <% if order.timesheets.any? %>
                                    <!--<h3 class"sub-header"> <%= order.title %> </h3>-->
                    
-<h3 class=""> <strong><%= order.title %></strong> <small>Payroll cost: <%= number_to_currency(order.timesheets.this_week.sum(:gross_pay)) %></small>
+<h3 class=""> <strong><%= order.title %></strong> <small>Payroll cost: <%= number_to_currency(order.timesheets.sum(:gross_pay)) %></small>
 
 <div class="table-responsive">
   
@@ -29,7 +29,7 @@
   </thead>
 
   <tbody>
-    <% order.timesheets.this_week.each do |timesheet| %>
+    <% order.timesheets.each do |timesheet| %>
       <% if timesheet.clocked_in? %>
         <tr class="clocked_in">
       <% else %>

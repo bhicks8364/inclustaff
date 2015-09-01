@@ -1,15 +1,16 @@
 class UsersController < ApplicationController
     
     def index
-        if admin_signed_in? 
-          @admin = current_admin
-          @company = @admin.company
-          @users = @company.users.order(last_name: :asc)
-        elsif user_signed_in? && current_user.not_an_employee?
-          @current_user = current_user if current_user.present?
-          @company = @current_user.company
-          @users = @company.users.order(last_name: :asc)
-        end
+        @users = User.all
+        # if admin_signed_in? 
+        #   @admin = current_admin
+        #   @company = @admin.company
+        #   @users = @company.users.order(last_name: :asc)
+        # elsif user_signed_in? && current_user.not_an_employee?
+        #   @current_user = current_user if current_user.present?
+        #   @company = @current_user.company
+        #   @users = @company.users.order(last_name: :asc)
+        # end
     end
     
     
@@ -24,19 +25,21 @@ class UsersController < ApplicationController
     end
     
     def show
-        @user = User.find(params[:id])
-        @company = @user.company
-        @employees = @company.employees
-        @employee = @user.employee if @user.employee?
-        @job = @employee.current_job if @employee.present?
-        @jobs = @user.employee.jobs if @user.employee?
+        @user = User.includes(:employee, :shifts).find(params[:id])
+        @job = @user.current_job
+        @employee = @user.employee
+        @company = @employee.company
+        # @job = @employee.current_job if @employee.assigned?
         
-        
-        if @user.employee?
-            @timesheets = @employee.timesheets.this_week.order(updated_at: :desc)
-        elsif @user.not_an_employee?
-            @timesheets = @company.timesheets.this_week.order(updated_at: :desc)
-        end
+        @jobs = @employee.jobs.includes(:order)
+        @shifts = @employee.shifts.order(time_out: :desc).limit(10)
+        @timesheets = @employee.timesheets
+        # @company = @user.company
+        # @employee = @user.employee if @user.employee?
+        # @job = @employee.current_job if @employee.present?
+        # @jobs = @employee.jobs if @employee.jobs.any?
+        # @timesheets = @employee.timesheets if @employee.present?
+
             
         
         skip_authorization

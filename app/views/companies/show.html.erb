@@ -52,13 +52,13 @@
   </div>
   <div role="tabpanel" class="tab-pane fade" id="profile">
     <h3>Timesheets by Dept.</h3>
-    <%= render 'shared/dept_current_timesheets' %>
+    <%= render @orders %>
     
   </div>
   
   <div role="tabpanel" class="tab-pane fade" id="employees">
    <h3>Current Employees</h3>
-    <%= render 'jobs/active' %>
+    <%= render @jobs %>
   </div>
   
   

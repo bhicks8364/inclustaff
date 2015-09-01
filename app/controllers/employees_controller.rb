@@ -22,16 +22,15 @@ class EmployeesController < ApplicationController
   # GET /employees/1
   # GET /employees/1.json
   def show
-      
-    @current_user = current_user if user_signed_in?
-    @current_admin = current_user if user_signed_in?
+    @shifts = @employee.shifts.order(time_in: :desc).limit(5) if @employee.shifts.any?
+
     
     @company = @employee.company
-    @job = @employee.current_job
+    @job = @employee.current_job if @employee.current_job.present?
     @jobs = @employee.jobs
     @timesheets = @employee.timesheets
     @last_week_timesheets = @timesheets.last_week.order(updated_at: :desc)
-    @current_timesheet = @employee.current_timesheet
+    @current_timesheet = @employee.current_timesheet if @employee.current_job.present?
     # @job = @employee.current_job if @employee.current_job != nil
     # @current_company = @employee.company
     # @company = @employee.company
@@ -40,7 +39,7 @@ class EmployeesController < ApplicationController
     # @all_timesheets = @employee.timesheets.order(updated_at: :desc) if @employee.timesheets.any?
     # @timesheets = @all_timesheets.this_week.order(updated_at: :desc) if @employee.timesheets.any?
     # @last_week_timesheets = @timesheets.last_week.order(updated_at: :desc) if @employee.timesheets.any?
-    # @shifts = @employee.shifts if @employee.shifts.any?
+    
     # authorize @employee
   end
 
@@ -62,6 +61,8 @@ class EmployeesController < ApplicationController
 
   # GET /employees/1/edit
   def edit
+    @company = @employee.company
+    
     # authorize @employee
   end
 
@@ -105,6 +106,7 @@ class EmployeesController < ApplicationController
   # PATCH/PUT /employees/1
   # PATCH/PUT /employees/1.json
   def update
+    @company = @employee.company
     @employee.update(employee_params)
     # authorize @employee
     respond_to do |format|
@@ -139,6 +141,6 @@ class EmployeesController < ApplicationController
     def employee_params
       params.require(:employee).permit(:first_name, :last_name, :email, :ssn, :phone_number, :user_id,
           jobs_attributes: [:title, :pay_rate, :start_date, :order_id, :id],
-          user_attributes: [:id, :email, :role, :password, :password_confirmation, :first_name, :last_name, :company_id])
+          user_attributes: [:id, :email, :role, :password, :password_confirmation, :first_name, :last_name, :company_id, :current_password, :address, :city, :state, :zipcode])
     end
 end

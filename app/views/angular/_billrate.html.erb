@@ -1,0 +1,15 @@
+<div>
+  <div ng-app ng-init="pay=8.10;rate=1.5" class=" main-box pull-right">
+  <b>Calcuate Bill Rate:</b>
+  <div>
+    Pay rate: <input type="number" min="8.10" ng-model="pay">
+  </div>
+  <div>
+    Mark-up: <input type="number" min="1.4" ng-model="rate">
+  </div>
+  <div>
+    <b>Bill rate:</b> {{pay * rate | currency}}
+  </div>
+</div>
+
+</div>

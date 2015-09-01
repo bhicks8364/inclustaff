@@ -4,7 +4,7 @@
   	<div class="col-lg-3 col-md-4 col-sm-4">
   		<div class="main-box clearfix">
   			<h2><%= @employee.name %></h2>
-  			
+  			<% if @employee.current_job.present? %>
   			<% if @job.on_shift? %>
   			  <div class="profile-status">
   				  <i class="fa fa-clock-o"></i> Clocked In
@@ -14,11 +14,18 @@
   				<i class="fa fa-check-circle"></i> Clocked Out
   			</div>
   			<% end %>
-  			
-  			
   			<div class="profile-label">
-  				<span class="label label-danger"><%= @job.title %></span>
+  				<%= link_to @job.title, @job, class: "btn btn-danger" %>
   			</div>
+  			
+  		<% else %>
+  		<div class="profile-status offline">
+  				<i class="fa fa-times"></i> Unassigned
+  			</div>
+  		
+  		<% end %>
+  			
+  			
   			
   			<div class="profile-stars">
   				<i class="fa fa-star"></i>
@@ -36,16 +43,19 @@
   			<div class="profile-details">
   				<ul class="fa-ul">
   					<li><i class="fa-li fa fa-money green"></i>YTD Gross Pay: <span><%= number_to_currency(@employee.ytd_gross_pay) %></span></li>
-  					<li><i class="fa-li fa fa-comment"></i>Last Pay: <span><%= number_to_currency(@employee.current_timesheet.gross_pay) %></span></li>
+  					<li><i class="fa-li fa fa-comment"></i>Last Pay: <span><%= @current_timesheet.present? ? number_to_currency(@current_timesheet.gross_pay) : "No pay this week" %></span></li>
   					<li><i class="fa-li fa fa-tasks"></i>Tasks done: <span>1024</span></li>
   				</ul>
   			</div>
   			
   			<div class="profile-message-btn center-block text-center">
-  				<a href="#" class="btn btn-success"> 
-  					<i class="fa fa-envelope"></i>
-  					Send message
-  				</a>
+  			  <% if @employee.clocked_in? %>
+  			  
+
+  				<% else @employee.clocked_in? %>
+  				<%= link_to "<i class='fa fa-clock-o'></i>     Clock In".html_safe, new_shift_path, class: "btn btn-success" %> 
+  				
+  				<% end %>
   			</div>
   		</div>
   	</div>
@@ -92,7 +102,7 @@
   							Email
   						</div>
   						<div class="profile-user-details-value">
-  							scarlett@avengers.com
+  						<%= @employee.email %>
   						</div>
   					</div>
   					<div class="profile-user-details clearfix">
@@ -100,24 +110,16 @@
   							Phone number
   						</div>
   						<div class="profile-user-details-value">
-  							011 223 344 556 677
+  							<%= @employee.phone_number %>
   						</div>
   					</div>
   				</div>
-  				<div class="col-sm-4 profile-social">
-  					<ul class="fa-ul">
-  						<li><i class="fa-li fa fa-twitter-square"></i><a href="#">@scjohansson</a></li>
-  						<li><i class="fa-li fa fa-linkedin-square"></i><a href="#">Scarlett Johansson</a></li>
-  						<li><i class="fa-li fa fa-facebook-square"></i><a href="#">Scarlett Johansson</a></li>
-  						<li><i class="fa-li fa fa-skype"></i><a href="#">Black_widow</a></li>
-  						<li><i class="fa-li fa fa-instagram"></i><a href="#">Avenger_Scarlett</a></li>
-  					</ul>
-  				</div>
+
   			</div>
   			
-  			<div class="tabs-wrapper profile-tabs">
+  		<div class="tabs-wrapper profile-tabs">
   				<ul class="nav nav-tabs">
-  					<li class="active"><a href="#tab-activity" data-toggle="tab">Activity</a></li>
+  					<li class="active"><a href="#tab-activity" data-toggle="tab"><i class="fa fa-clock-o"></i> Activity</a></li>
   					<li><a href="#tab-friends" data-toggle="tab">Friends</a></li>
   					<li><a href="#tab-chat" data-toggle="tab">Chat</a></li>
   				</ul>
@@ -126,110 +128,47 @@
   					<div class="tab-pane fade in active" id="tab-activity">
   						
   						<div class="table-responsive">
-  							<table class="table">
+  							<table class="table table-bordered">
   								<tbody>
-  									<tr>
+  								  <%= content_tag_for(:tr, @shifts) do |shift| %>
+                  <% if shift.clocked_out? %>
+  										<td class="text-left">
+  											
+  											
+  											<strong><%= shift.time_out.strftime("%A")%></strong> <br>
+  											<small><%= shift.time_out.strftime("%m/%e")%></small>
+  										</td>
+  										<td class="text-left">
+  											<strong><%= @employee.first_name %> worked <%= shift.time_worked %> hours.<br></strong>
+  											<small> Earned: <%= number_to_currency(shift.earnings) %> </small>
+  										</td>
   										<td class="text-center">
-  											<i class="fa fa-comment"></i>
+  											<strong><%= shift.time_in.strftime("%l:%M%P") %>  <strong>-</strong> <%= shift.time_out.strftime(" %l:%M%P") %></strong><br>
+  											<span></span><small><%= shift.state.humanize %> <%= time_ago_in_words(shift.time_out) %> ago.</small>
+  										</td>
+  								<% else %>
+  								    <td class="text-center">
+  											<i class="fa fa-clock-o"></i>
+  											<%= shift.time_in.strftime("%m/%e") %>
   										</td>
   										<td>
-  											Scarlett Johansson posted a comment in <a href="#">Avengers Initiative</a> project.
+  											<%= @employee.first_name %> <%= shift.state.humanize(capitalize: false) %> <%= time_ago_in_words(shift.time_in) %> ago.
   										</td>
   										<td>
-  											2014/08/08 12:08
+  											<%= shift.clocked_out? ? shift.time_out.strftime("%a at %l:%M%P") : shift.time_in.strftime("%a at %l:%M%P") %>
   										</td>
-  									</tr>
-  									<tr>
-  										<td class="text-center">
-  											<i class="fa fa-truck"></i>
-  										</td>
-  										<td>
-  											Scarlett Johansson changed order status from <span class="label label-primary">Pending</span>
-  											to <span class="label label-success">Completed</span>
-  										</td>
-  										<td>
-  											2014/08/08 12:08
-  										</td>
-  									</tr>
-  									<tr>
-  										<td class="text-center">
-  											<i class="fa fa-check"></i>
-  										</td>
-  										<td>
-  											Scarlett Johansson posted a comment in <a href="#">Lost in Translation opening scene</a> discussion.
-  										</td>
-  										<td>
-  											2014/08/08 12:08
-  										</td>
-  									</tr>
-  									<tr>
-  										<td class="text-center">
-  											<i class="fa fa-users"></i>
-  										</td>
-  										<td>
-  											Scarlett Johansson posted a comment in <a href="#">Avengers Initiative</a> project.
-  										</td>
-  										<td>
-  											2014/08/08 12:08
-  										</td>
-  									</tr>
-  									<tr>
-  										<td class="text-center">
-  											<i class="fa fa-heart"></i>
-  										</td>
-  										<td>
-  											Scarlett Johansson changed order status from <span class="label label-warning">On Hold</span>
-  											to <span class="label label-danger">Disabled</span>
-  										</td>
-  										<td>
-  											2014/08/08 12:08
-  										</td>
-  									</tr>
-  									<tr>
-  										<td class="text-center">
-  											<i class="fa fa-check"></i>
-  										</td>
-  										<td>
-  											Scarlett Johansson posted a comment in <a href="#">Lost in Translation opening scene</a> discussion.
-  										</td>
-  										<td>
-  											2014/08/08 12:08
-  										</td>
-  									</tr>
-  									<tr>
-  										<td class="text-center">
-  											<i class="fa fa-truck"></i>
-  										</td>
-  										<td>
-  											Scarlett Johansson changed order status from <span class="label label-primary">Pending</span>
-  											to <span class="label label-success">Completed</span>
-  										</td>
-  										<td>
-  											2014/08/08 12:08
-  										</td>
-  									</tr>
-  									<tr>
-  										<td class="text-center">
-  											<i class="fa fa-users"></i>
-  										</td>
-  										<td>
-  											Scarlett Johansson posted a comment in <a href="#">Avengers Initiative</a> project.
-  										</td>
-  										<td>
-  											2014/08/08 12:08
-  										</td>
-  									</tr>
-  								</tbody>
-  							</table>
+  									<% end %>
+  										
+  									<% end %>
+                </tbody>
+              </table>
   						</div>
-  						
   					</div>
   					
   					<div class="tab-pane fade" id="tab-friends">
   						<ul class="widget-users row">
   							<li class="col-md-6">
   								<div class="img">
-  									<img src="img/samples/scarlet.png" alt=""/>
   								</div>
   								<div class="details">
   									<div class="name">
@@ -245,7 +184,7 @@
   							</li>
   							<li class="col-md-6">
   								<div class="img">
-  									<img src="img/samples/kunis.png" alt=""/>
+  									
   								</div>
   								<div class="details">
   									<div class="name">
@@ -261,7 +200,6 @@
   							</li>
   							<li class="col-md-6">
   								<div class="img">
-  									<img src="img/samples/ryan.png" alt=""/>
   								</div>
   								<div class="details">
   									<div class="name">
@@ -274,7 +212,6 @@
   							</li>
   							<li class="col-md-6">
   								<div class="img">
-  									<img src="img/samples/robert.png" alt=""/>
   								</div>
   								<div class="details">
   									<div class="name">
@@ -287,7 +224,6 @@
   							</li>
   							<li class="col-md-6">
   								<div class="img">
-  									<img src="img/samples/emma.png" alt=""/>
   								</div>
   								<div class="details">
   									<div class="name">
@@ -300,7 +236,6 @@
   							</li>
   							<li class="col-md-6">
   								<div class="img">
-  									<img src="img/samples/george.png" alt=""/>
   								</div>
   								<div class="details">
   									<div class="name">
@@ -313,7 +248,6 @@
   							</li>
   							<li class="col-md-6">
   								<div class="img">
-  									<img src="img/samples/kunis.png" alt=""/>
   								</div>
   								<div class="details">
   									<div class="name">
@@ -329,7 +263,6 @@
   							</li>
   							<li class="col-md-6">
   								<div class="img">
-  									<img src="img/samples/ryan.png" alt=""/>
   								</div>
   								<div class="details">
   									<div class="name">
@@ -352,7 +285,6 @@
   								
   									<div class="conversation-item item-left clearfix">
   										<div class="conversation-user">
-  											<img src="img/samples/ryan.png" alt=""/>
   										</div>
   										<div class="conversation-body">
   											<div class="name">
@@ -369,7 +301,6 @@
   									</div>
   									<div class="conversation-item item-right clearfix">
   										<div class="conversation-user">
-  											<img src="img/samples/kunis.png" alt=""/>
   										</div>
   										<div class="conversation-body">
   											<div class="name">
@@ -387,7 +318,6 @@
   									</div>
   									<div class="conversation-item item-right clearfix">
   										<div class="conversation-user">
-  											<img src="img/samples/kunis.png" alt=""/>
   										</div>
   										<div class="conversation-body">
   											<div class="name">
@@ -405,7 +335,6 @@
   									</div>
   									<div class="conversation-item item-left clearfix">
   										<div class="conversation-user">
-  											<img src="img/samples/ryan.png" alt=""/>
   										</div>
   										<div class="conversation-body">
   											<div class="name">
@@ -422,7 +351,6 @@
   									</div>
   									<div class="conversation-item item-right clearfix">
   										<div class="conversation-user">
-  											<img src="img/samples/kunis.png" alt=""/>
   										</div>
   										<div class="conversation-body">
   											<div class="name">

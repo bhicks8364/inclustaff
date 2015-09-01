@@ -1,0 +1,13 @@
+<h3>Editing a shift for <%= @employee.name %></h3>
+<%= render 'form' %>
+
+
+<br>
+<% if @shift.took_a_break? %>
+Total break time: <%= @shift.break_time %><br>
+<%= distance_of_time_in_words(@shift.break_out, @shift.break_in)  %>
+<% end %>
+<hr>
+
+<%= link_to 'Back to view', @shift, class: "btn btn-info" %> 
+<%= link_to 'All Company Shifts', shifts_path, class: "btn btn-info" %>

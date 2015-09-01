@@ -1,0 +1,29 @@
+<div id="employee-home-page">
+
+    
+    
+    <strong><%= current_user.name %><%= @employee.name %></strong> <br>
+<%= @employee.email %>
+<br>
+<% if @job.present? %>
+<%= @job.title %>  - <%= number_to_currency(@job.pay_rate) %> 
+
+<% if @job.on_shift? %>
+<h2>You are currently clocked in. </h2> <h2><strong> You clocked in at <%= @current_shift.time_in.strftime("%I:%M %p") %> on <%= @current_shift.time_in.strftime("%x") %>.</strong></h2>
+<h3><small><%= time_ago_in_words(@current_shift.time_in) %></small></h3>
+
+<%= link_to "Clock Out", clock_out_shift_path(@current_shift), method: :patch, 
+                          remote: true, class: "btn btn-primary btn-lg btn-block"  %>
+
+<% else %>
+<%= link_to "Clock In", new_shift_path, class: "btn btn-primary btn-lg btn-block" %>
+
+<% end %>
+
+
+
+<br>
+
+<%= render 'shared/single_timesheet' %>
+</div>
+<% end %>

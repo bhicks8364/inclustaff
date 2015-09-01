@@ -12,7 +12,12 @@
  
 
   *= require dataTables/bootstrap/2/jquery.dataTables.bootstrap
+  *= require jquery-ui
   *= require jquery-ui/datepicker
+  *= require fullcalendar
+  *= require main
+  *= require anchors
+
  */
  
  
@@ -23,6 +28,7 @@
 @import "font-awesome";
 @import "layout";
 @import "elements";
+
 
 
 

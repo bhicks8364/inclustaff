@@ -2,30 +2,25 @@ class DashboardController < ApplicationController
     # before_filter :authenticate_admin!
     
     def home
+        # authenticate_admin!
         if admin_signed_in? 
            @admin = current_admin
            @company = @admin.company
            @shifts = @company.shifts
            @active_jobs = @company.jobs.active.joins(:shifts).group("jobs.title").order("shifts.updated_at DESC, jobs.title ASC") if @company.jobs.any?
-           @timesheets = @company.timesheets.this_week.order(updated_at: :desc)
-        elsif user_signed_in? && current_user.not_an_employee?
-        
-            @current_user = current_user if current_user.present?
-            @company = @current_user.company
-            @timesheets = @company.timesheets.order(updated_at: :desc)
-            @shifts = @company.shifts
-            
+           @timesheets = @company.timesheets
         elsif user_signed_in? && current_user.employee?
         
             @current_user = current_user if current_user.employee?
             @employee = @current_user.employee if @current_user.employee.present?
+            @current_shift = @employee.current_shift if @employee.current_shift.present?
             @company = @employee.company if @employee.company.present?
             @timesheets = @employee.timesheets.order(updated_at: :desc)
             @shifts = @employee.shifts
             @job = @employee.current_job 
-            @current_timesheet = @employee.timesheets.this_week.last
+            @current_timesheet = @employee.timesheets.last
             @shifts = @current_timesheet.shifts if @current_timesheet.present?
-            @current_shift = @current_timesheet.shifts.clocked_in.last  if @current_timesheet.present?
+            
         
         end
         
@@ -53,19 +48,12 @@ class DashboardController < ApplicationController
         # skip_authorization
     end
     def company_view
-        if admin_signed_in? 
           @admin = current_admin
           @company = @admin.company
           @timesheets = @company.timesheets.order(updated_at: :desc)
-          @clocked_in = @company.jobs.on_shift.order(updated_at: :desc)
+          @clocked_in = @company.jobs.on_shift.order(time_in: :desc)
           @admin_users = @company.admins
-          # authorize @timesheets
-        elsif user_signed_in? && current_user.not_an_employee?
-          @current_user = current_user if current_user.present?
-          @company = @current_user.company
-          @timesheets = @company.timesheets.order(updated_at: :desc)
-          # authorize @timesheets
-        end
+          @shifts = @company.shifts.clocked_out.order(time_out: :desc)
         
         # @timesheets = @company.timesheets.order(updated_at: :desc)
         # @payroll_users = @company.payroll_users
@@ -90,6 +78,12 @@ class DashboardController < ApplicationController
     
     def agency_view
         @current_admin = current_admin if admin_signed_in?
+        @company = @current_admin.company
+        @employees = @company.employees
+        @timesheets = @company.timesheets
+        gon.employees = @employees
+        gon.company = @company
+        gon.timesheets = @timesheets
     end
     
     

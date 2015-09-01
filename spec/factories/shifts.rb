@@ -16,6 +16,11 @@
 #  deleted_at   :datetime
 #  in_ip        :string
 #  out_ip       :string
+#  week         :integer
+#  break_in     :datetime
+#  break_out    :datetime
+#  note         :text
+#  needs_adj    :boolean
 #
 
 FactoryGirl.define do

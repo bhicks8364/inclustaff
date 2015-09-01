@@ -1,32 +1,32 @@
 // # Place all the behaviors and hooks related to the matching controller here.
 // # All this logic will automatically be available in application.js.
 // # You can use CoffeeScript in this file: http://coffeescript.org/
-$(document).ready(function() {
-    $( "#datepicker" ).datepicker({
-        dateFormat: "yy-mm-dd",
-        altField: "#alternate",
-        altFormat: " DD,   MM d, yy"
-    });
+// $(document).ready(function() {
+//     $( "#datepicker" ).datepicker({
+//         dateFormat: "yy-mm-dd",
+//         altField: "#alternate",
+//         altFormat: " DD,   MM d, yy"
+//     });
     
     
     
     
-    $('#jobs').dataTable( {
+//     $('#jobs').dataTable( {
         
-        "paging":   true,
-        "ordering": true,
-        "info":     true,
-        "jQueryUI": true,
+//         "paging":   true,
+//         "ordering": true,
+//         "info":     true,
+//         "jQueryUI": true,
         
-    } );
+//     } );
 
 
-    $( "#accordion" ).accordion();
+//     $( "#accordion" ).accordion();
 
 
     
 
-} );
+// } );
 
 
 // $(document).ready(function() {

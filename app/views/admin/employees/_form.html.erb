@@ -1,0 +1,44 @@
+<%= simple_form_for(@employee) do |f| %>
+  <% if @employee.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@employee.errors.count, "error") %> prohibited this employee from being saved:</h2>
+
+      <ul>
+      <% @employee.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="well">
+    <h3 class="text-center"><strong>Employee Information</strong></h3>
+    <%= f.input :first_name, required: true, label: false, autofocus: true, placeholder: "First Name" %>
+    <%= f.input :last_name, required: true, label: false, placeholder: "Last Name" %>
+    <%= f.input :phone_number, as: :tel, required: true, label: false, placeholder: "ex. 555-555-5555" %>
+    <%= f.input :ssn, required: true, maxlength: 4, placeholder: "SSN - Last 4 only" %>
+
+    <%= f.simple_fields_for :user do |user| %>
+      <%= user.input :email, required: true, placeholder: "ex. example@email.com" %>
+
+      <%= user.input :role, required: true, priority: [ "Employee" ], collection: [ "Employee"], include_blank: false %>
+      <%= user.input :password, required: true, placeholder: "Choose a password.", hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length) %>
+      <%= user.input :password_confirmation, required: true, placeholder: "Please confirm your password." %>
+    <% end %>
+  </div>
+  <hr>
+    <div class="well">
+    <%= f.simple_fields_for :jobs do |job| %>
+          <h3 class="text-center"><strong>Job Info</strong></h3>
+      <%= job.input :title, placeholder: "Job Title" %>
+      <%= job.input :start_date, as: :date, html5: true %>
+      <%= job.input :pay_rate, required: true %>
+      <%= job.association :order, collection: @companies, as: :grouped_select, group_method: :orders, include_blank: false %>
+      <%= job.text_field :description, rows: 10 %>
+    <% end %>
+  </div>
+
+
+    <%= f.submit %>
+
+<% end %>

@@ -1,16 +1,16 @@
 <table id="shifts" class="table">
   <thead>
     <tr>
+      <th></th>
       <th>Work Date</th>
       <th>Employee</th>
       <th>Time In</th>
-      <th>In-ip</th>
       <th>Time Out</th>
-      <th>Out-ip</th>
       <th>Hours</th>
       <th>Pay Rate</th>
       <th>Earnings</th>
-      <th></th>
+      <th>In/Out IP</th>
+      
       <th></th>
       <th></th>
     </tr>
@@ -23,19 +23,20 @@
       <% else %>
         <tr class="clocked_out">
       <% end %>
-      
+        <td><%= link_to "<span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span>     View".html_safe, shift, class: "table-link" %></td>
+        
         <td><%= shift.time_in.strftime("%x") %></td>
         <td><%= link_to shift.employee.name, shift.employee %></td>
         <td><%= shift.time_in.strftime("%I:%M %p") %></td>
-        <td><%= shift.in_ip %></td>
+        
         <td><%= shift.clocked_out? ? shift.time_out.strftime("%I:%M %p") : "Clocked In" %></td>
-        <td><%= shift.clocked_out? ? shift.out_ip : "Clocked In" %> </td>
+        
         <td><%= shift.time_worked %></td>
         <td><%= number_to_currency(shift.pay_rate) %></td>
         <td><%= number_to_currency(shift.earnings) %></td>
-        <td><%= link_to "<span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span>     View".html_safe, job_shift_path(shift.job, shift), class: "btn btn-default btn-sm" %></td>
-        <td><%= link_to "<span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>".html_safe, edit_job_shift_path(shift.job, shift) %></td>
-        <td><%= link_to "<span class='glyphicon glyphicon-trash' aria-hidden='true'></span>".html_safe, job_shift_path(shift.job, shift), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><small> <%= shift.in_ip %> <br> <% if shift.clocked_out? %><%= shift.out_ip %><% else %> <%= shift.out_ip.nil? ?  shift.state.titleize : shift.out_ip %><% end %> </small> </td>
+        
+
       </tr>
     <% end %>
   </tbody>

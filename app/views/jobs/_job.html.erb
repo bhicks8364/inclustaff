@@ -1,32 +1,35 @@
-
-<div class="col-md-6">
-  <% if @job.present? %>
-<h3><small>Current Job</small></h3>
-<h4><strong><%= link_to @job.order.title, @job.order %></strong></h4>
-<h4><small><%= link_to @job.title %></small></h4>
-
-  <br>
-  <strong>Pay rate:</strong>
-  <%= number_to_currency(@job.pay_rate, :unit => "$") %>
-<br>
-  <strong>Description:</strong>
-  <%= @job.description %>
-<hr>
-  <strong>Employee:</strong>
-  <%= link_to @employee.name, @employee %>
-<br>
-
-  <strong>Start date:</strong>
-  <%= @job.start_date.strftime("%B %e, %Y ") %>
-
-  
-
-<div class="current_week_pay">Gross this week: <%= number_to_currency(@job.current_week_pay) %></div>
-
-Total Hours : <%= @job.total_hours %>
+<div class="list-group" data-behavior="job-list">
+    <div class="details"data-behavior="job" data-id="<%= job.id %>">
+      <h4 class="list-group-item-heading"><%= link_to job.employee.name, job.employee, class: '' %>   <small><%= link_to job.title %></small></h4>
+   
+      <h5><small><%= link_to job.order.title, company_order_path(@company, job.order) %></small></h5>   
+        
+        <strong>Pay rate:</strong>
+        <%= number_to_currency(job.pay_rate, :unit => "$") %>
+      <br>
+      
+        <div class='time'>
+          <strong>Start date:</strong>
+        <%= job.start_date.strftime("%B %e, %Y ") %>
+        </div>
+      
+        
+      
+      <div class="current_week_pay">Gross this week: <%= number_to_currency(job.current_week_pay) %></div>
+      
+      Total Hours : <%= job.total_hours %>
 
 
-<% else %>
-No current job.
-<% end %>
+
+
+        
+        <div><i class="fa fa-clock-o"></i> <strong>Hours worked:</strong>  <%= job.current_week_hours %>
+        <i class="fa fa-money"></i> <strong>Pay:</strong>  <%= number_to_currency(job.current_week_pay) %><br></div>
+
+             
+    	
+    
+    </div>
 </div>
+
+

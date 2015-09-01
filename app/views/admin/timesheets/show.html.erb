@@ -1,0 +1,92 @@
+
+
+
+<!--<div ng-app="admin" >-->
+  
+
+<!--<div ng-controller="AdminTimesheetsCtrl">-->
+<!--  <h1> Admin Timesheets View</h1>-->
+<!--  <input type="text" placeholder="Search" data-ng-model="nameText" />-->
+<!--  {{nameText}}-->
+<!--  <table class="table table-bordered" ng-if="shifts">-->
+<!--  <tbody>-->
+<!--    <tr ng-repeat="shift in shifts | orderBy: '-id' ">-->
+<!--        <td>{{shift.id}}</td>-->
+<!--        <td>{{shift.employee_id}}</td>-->
+<!--        <td>{{shift.time_in | date:"MM/dd/yyyy"}}</td>-->
+<!--        <td>{{shift.time_out | date:"h:mma"}}</td>-->
+<!--        <td>{{shift.time_in | date:"MM/dd/yyyy '' h:mma"}}</td>-->
+<!--        <td>{{shift.break_out | date:"h:mma"}}</td>-->
+<!--        <td>{{shift.break_in | date:"h:mma"}}</td>-->
+<!--        <td>{{shift.note}}</td>-->
+<!--        <td>{{shift.earnings | currency}}</td>-->
+<!--        <td>{{shift.needs_adj}}</td>-->
+<!--      </tr>-->
+<!--  </tbody>-->
+<!--</table>-->
+  
+<!--</div>  -->
+<!--</div>-->
+
+
+
+<p id="notice"><%= notice %></p>
+<%= render @timesheet.job %>
+  <% if @timesheet.clocked_in? %>
+  <p id="clock-status" class="text-center"><strong><%= @timesheet.employee_name %> is currently clocked in. </p>
+  <%= render @timesheet.current_shift %>
+  
+  <% else %>
+  <%= @timesheet.shifts.last.state %>
+                          
+                          
+                          
+<% end %>
+
+<span id='updated-at'></span>
+
+<h3><strong><%= link_to @employee.name, @employee %></strong> <small><%= @job.title.titleize %></small></h3>
+
+For the week of: <%= @timesheet.week_ending  %>.
+<br>
+Week: <%= @timesheet.week %>
+<br>
+  <strong>Regular hours:</strong>
+  <%= @timesheet.reg_hours %>
+<br>
+  <strong>Overtime hours:</strong>
+  <%= @timesheet.ot_hours %>
+<br>
+  <strong>Gross pay:</strong>
+  <%= number_to_currency(@timesheet.gross_pay) %><br>
+
+   <strong>Last Clock In:</strong> <%= @timesheet.last_clock_in.strftime("%B %e, %Y  at   %I:%M %p") %>
+   <br>
+<%= link_to 'View Shifts', '#', id: 'shifts-button', class: 'btn btn-primary btn-sm' %>
+<ul id="shifts-list"> 
+  <%= render @shifts %>
+</ul>
+<hr>
+<section id='shifts-table' >
+  <%= render "shifts/table", :shifts => @shifts %>
+</section>
+<p><%= @timesheet.state.titleize %></p>
+  <% if @timesheet.approved? %>
+       <%= link_to "<span class='glyphicon glyphicon-ok-circle' aria-hidden='true'></span>    Approve".html_safe, approve_timesheet_path(@timesheet), method: :patch, remote: true, class: 'btn btn-primary btn-lg' %>
+  <% else %>
+<%= link_to "<span class='glyphicon glyphicon-ok-circle' aria-hidden='true'></span>    Approve".html_safe, approve_timesheet_path(@timesheet), method: :patch, remote: true, id: 'approve-button', class: 'btn btn-primary btn-lg' %>
+  <% end %>
+ 
+
+
+
+<!--<h3><strong> Week Ending: <small> <%= @timesheet.week_ending %></small></strong></h3>-->
+<!--<div class="table-responsive">-->
+<!--  -->
+<!--</div>-->
+
+
+
+<!--<%= link_to 'Edit', edit_timesheet_path(@timesheet) %> |-->
+<!--<%= link_to 'Back', timesheets_path %>-->
+<!--</div>-->

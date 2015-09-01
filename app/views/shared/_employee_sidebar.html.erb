@@ -3,12 +3,12 @@
 					<div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">	
 						<ul class="nav nav-pills nav-stacked">
 
-									<li><%= link_to current_user do %>
+									<li><%= link_to timeclock_path do %>
 										<i class="fa fa-dashboard"></i>
 											<span>Dashboard</span>
 										<% end %>
 									</li>
-									<li><%= link_to employee_shifts_path(current_user.employee)  do %>
+									<li><%= link_to shifts_path  do %>
 										<i class="fa fa-users"></i>
 											<span>Shifts</span>
 										<% end %>
@@ -22,13 +22,13 @@
 									</li>
 									<li><%= link_to jobs_path do %>
 										<i class="fa fa-briefcase"></i>
-											<span>Jobs</span>
+											<span>All Jobs</span>
 										<% end %>
 									</li>
 									<% if current_user.employee.present? && current_user.employee.current_job.present? %>
-									<li><%= link_to current_user.employee.current_job do %>
+									<li><%= link_to current_user.current_job do %>
 										<i class="fa fa-users"></i>
-											<span>Company Users</span>
+											<span>Current Job</span>
 										<% end %>
 									</li>
 									<% end %>

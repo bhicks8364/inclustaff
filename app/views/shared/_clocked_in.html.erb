@@ -11,21 +11,16 @@
 			</div>
 		</li>
 		<li class="item-header">You have <%= current_admin.company.jobs.on_shift.count %> employees clocked in.</li>
-		<% current_admin.company.jobs.on_shift.each do |job| %>
-
-		<li id="shift-list-nav" class="item">
-
+		
+			<%= content_tag_for(:li, current_admin.company.jobs.on_shift.order(updated_at: :desc), class: 'item') do |job| %>
 				
 				<span class="content">
-					<span class="content-headline">
-						<%= job.employee.name %>
-						<br>
-					</span>
-					<span class="content-text">
-						<span class="time"><i class="fa fa-clock-o"></i>&nbsp;<%= job.shifts.clocked_in.last.time_in.strftime("%l:%M %P") %>
-							</span>
-						<span id='clock-out-nav' class="center"><%= link_to "<i class='fa fa-share-square'></i>".html_safe, clock_out_job_shift_path(job, job.current_shift), class: "table-link", method: :patch, 
-                                remote: true, data: {confirm: 'Are you sure you want to clock out now?'} %></span>
+
+		
+						<%= render job.current_shift %>
+						
+
+					
 				
 					
 					

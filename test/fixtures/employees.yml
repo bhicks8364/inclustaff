@@ -12,6 +12,7 @@
 #  phone_number :string
 #  user_id      :integer
 #  deleted_at   :datetime
+#  assigned     :boolean
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

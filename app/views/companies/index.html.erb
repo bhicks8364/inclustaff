@@ -1,4 +1,13 @@
 <h1>All Companies</h1>
+<%= javascript_tag do %>
+  window.companiesURL = '<%= j companies_url %>';
+  window.companies = <%= raw Company.limit(10).to_json %>
+<% end %>
+<%= content_tag "div", id: "companies", data: {url: Company.limit(10) } do %>
+  Loading companies...
+<% end %>
+
+
 <div class="table-responsive">
   <table id="myTable" class="table" cellspacing="0.5" width="85%">
   <thead>

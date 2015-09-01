@@ -16,7 +16,7 @@
 #
 
 class Timesheet < ActiveRecord::Base
-    belongs_to :job, dependent: :destroy
+    belongs_to :job
     has_many :shifts, dependent: :destroy
     has_one :employee, :through => :job
     
@@ -26,25 +26,35 @@ class Timesheet < ActiveRecord::Base
     delegate :pay_rate, to: :job
     delegate :company, to: :job
     delegate :manager, to: :job
+    delegate :current_shift, to: :job
     
 
     before_save :total_timesheet
+    after_initialize :defaults
+    
+    after_save :update_company_balance!
     
 
     scope :with_job, -> { includes(:job)}
     scope :approved, -> { where(state: "approved")}
     scope :pending, -> { where(state: "pending")}
-    scope :this_week, ->{
-        where(week: Date.today.cweek)
-    }
+
     scope :last_week, ->{
         where(week: Date.today.cweek - 1)
     }
     scope :approaching_overtime, -> { where('reg_hours > 36') }
     
-    after_initialize :defaults
+    scope :current_week, ->{
+        start = Time.current.beginning_of_week
+        ending = start.end_of_week
+        where(created_at: start..ending)
+    }
     
-    after_save :update_company_balance!
+    def self.without_shifts
+        includes(:shifts).where( :shifts => { :timesheet_id => nil } )
+    end
+    
+    
     
     def approved?
         if self.state == "approved"
@@ -62,9 +72,12 @@ class Timesheet < ActiveRecord::Base
     end
 
     def defaults
-        if self.new_record?
-            self.state = "pending"
-        end
+        self.state = "pending" if self.state.nil?
+        self.week = Date.today.cweek if self.week.nil?
+    end
+    
+    def total_hours
+        self.reg_hours + self.ot_hours
     end
     
     
@@ -167,7 +180,7 @@ class Timesheet < ActiveRecord::Base
     end
     
     def week_ending
-        self.shifts.last.time_out.end_of_week.strftime("%x")
+        self.shifts.last.time_in.end_of_week.strftime("%x")
     end
     
 end

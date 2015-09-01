@@ -1,0 +1,14 @@
+<div class="table-responsive">
+    <%= month_calendar table: {class: "calendar table"}, tr: {class: "calendar-row"}, td: {class: "day"}, events: @shifts do |date, shifts| %>
+  <p class="text-right"><%= date.strftime("%m/%d/%y") %></p>
+
+  <% shifts.each do |shift| %>
+    <div id="calendar-shift">
+      <p class:"bg-success"><%= link_to shift.employee.name, job_shifts_path(shift.job) %>
+     <br><%= shift.time_in.strftime("%I:%M %p") %> - <%= shift.clocked_out? ? shift.time_out.strftime("%I:%M %p") : "Clocked In" %></p>
+     <p class="hours-worked"><% if shift.clocked_out? %> <%= shift.time_worked %> hours <% end %> </p>
+      
+    </div>
+  <% end %>
+<% end %>
+</div>

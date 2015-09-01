@@ -8,12 +8,16 @@ class TimesheetsController < ApplicationController
       @admin = current_admin
       @company = @admin.company
       @timesheets = @company.timesheets.order(updated_at: :desc)
+      gon.timesheets = @timesheets
       
       # authorize @timesheets
-    elsif user_signed_in? && current_user.not_an_employee?
+    elsif user_signed_in? && current_user.employee?
       @current_user = current_user if current_user.present?
-      @company = @current_user.company
-      @timesheets = @company.timesheets.order(updated_at: :desc)
+      @employee = @current_user.employee
+      @company = @employee.company
+      @current_job = @employee.current_job if @employee.current_job.present?
+      @timesheets = @employee.timesheets.order('timesheets.created_at DESC')
+      # gon.jbuilder
       # authorize @timesheets
     end
 
@@ -28,12 +32,16 @@ class TimesheetsController < ApplicationController
     @job = @timesheet.job
     @last_complete_shift = @timesheet.shifts.clocked_out.last
     @current_shift = @timesheet.shifts.clocked_in.last if @timesheet.clocked_in?
+    gon.timesheet = @timesheet
+    gon.pay = @timesheet.gross_pay
+    gon.status = @timesheet.shifts.last.state.titleize
     
   end
 
   # GET /timesheets/new
   def new
     @timesheet = Timesheet.new
+    
     # authorize @timesheet
   end
   

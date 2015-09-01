@@ -39,6 +39,7 @@
 			        
 			        <% if user_signed_in? %>
 			        <li><%= link_to current_user.name, current_user %></li>
+			        <li><%= link_to "Timeclock", home_path %></li>
 			        <li><%= link_to "<i class='fa fa-power-off'></i>    Logout".html_safe, destroy_user_session_path, method: :delete %></li>
 			        <% elsif admin_signed_in? %>
 			        <li><%= link_to current_admin.name, root_url %></li>
@@ -63,7 +64,7 @@
 			              <li role="separator" class="divider"></li>
 			              <li><%= link_to "<i class='fa fa-home'></i> Company Page".html_safe, current_admin.company %></li>
 			              <li><%= link_to "<i class='fa fa-university'></i> Departments".html_safe, orders_path %></li>
-			              <li><%= link_to "<i class='fa fa-plus-square'></i>    Add New Department".html_safe, new_order_path %></li>
+			              <li><%= link_to "<i class='fa fa-plus-square'></i>    Add New Department".html_safe, new_company_order_path(current_admin.company) %></li>
 			              <li><%= link_to "<i class='fa fa-users'></i> Employees".html_safe, employees_path %></li>
 			              <li><%= link_to "<i class='fa fa-user-plus'></i> Add Employee".html_safe, new_employee_path %></li>
 			              <li><%= link_to "<i class='fa fa-building'></i>  Add Company".html_safe, new_company_path %></li>

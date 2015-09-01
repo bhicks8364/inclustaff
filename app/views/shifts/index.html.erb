@@ -15,7 +15,7 @@
 <div class="btn-group" role="group" aria-label="...">
   <% if @job.on_shift? %>
     <%= link_to "You are CLOCKED IN.", job_shift_path(@job, @job.current_shift), class: "btn clock-out" %>
-    <%= link_to "View Current Timesheet", timesheet_path(@job.current_shift.timesheet), class: "btn timesheet" %>
+    <%= link_to "View Current Timesheet", timesheet_path(@job.current_timesheet), class: "btn timesheet" %>
   <% else %>
     <%= link_to "Clock In", new_job_shift_path(@job), class: "btn btn-primary" %>
   <% end %>
@@ -30,7 +30,7 @@
   <h3>Gross Pay</h3>
    For the week of <%= Date.today.end_of_week.strftime("%B %e, %Y") %> : <%= number_to_currency(@job.current_week_pay) %> <br>
    <%= @job.current_timesheet ? number_to_currency(@job.current_timesheet.gross_pay) : "No pay this week" %>
-   <%= @job.current_timesheet ? number_to_currency(@job.current_timesheet.reg_hours) : "No regular hours this week" %>
+   <%= @job.timesheets.first ? number_to_currency(@job.current_timesheet.reg_hours) : "No regular hours this week" %>
    <%= @job.current_timesheet ? number_to_currency(@job.current_timesheet.gross_pay) : "No pay this week" %>
 
 <% end %>
@@ -69,7 +69,7 @@
         <td><%= shift.time_in.strftime("%m/%d/%y") %></td>
         <td><%= shift.time_in.strftime("%I:%M %p") %></td>
         <td><%= shift.clocked_out? ? shift.time_out.strftime("%I:%M %p") : "Clocked In" %></td>
-        <td><%= shift.employee.name %></td>
+        <td><%= shift.job.title %></td>
         <td><%= shift.time_worked %></td>
         <td><%= number_to_currency(shift.pay_rate) %></td>
         <td><%= link_to "<span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span>     View".html_safe, job_shift_path(shift.job, shift), class: "btn btn-default btn-sm" %></td>

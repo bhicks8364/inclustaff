@@ -17,6 +17,7 @@
     <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
     <li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li>
     <li role="presentation"><a href="#current-job" aria-controls="current-job" role="tab" data-toggle="tab">Current Job</a></li>
+    <li role="presentation"><a href="#shifts" aria-controls="shifts" role="tab" data-toggle="tab">Shifts</a></li>
     <% if admin_signed_in? %>
     <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
     <% end %>
@@ -24,19 +25,23 @@
   
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="home">
+    <hr>
 
-      <p>Home</p>
+      <%= render @job %>
+      
     
   </div>
   
   <div role="tabpanel" class="tab-pane fade" id="profile">
+    <% if @user.current_sign_in_at %>
     <ul class="ip-log">
+      
             <li><strong>Current sign in:</strong> <br><%= @user.current_sign_in_at.strftime("%A   %x   - %I:%M %p") %></li>
             <li><%= @user.current_sign_in_ip %></li>
             <li><strong>Last sign in:</strong> <br><%= @user.last_sign_in_at.strftime("%A   %x   - %I:%M %p") %></li>
             <li><%= @user.last_sign_in_ip %></li>
     </ul>
-
+<% end %>
     <hr>
     
 
@@ -56,9 +61,24 @@
   
   <div role="tabpanel" class="tab-pane fade" id="current-job">
     
-  
+  <% if @jobs %>
     <%= render @jobs %>
-      
+    <% else %>
+    <h3><%= @employee.first_name %> is currently unassigned.</h3>
+  <% end %>
+     
+                
+        
+
+            
+  </div>
+  <div role="tabpanel" class="tab-pane fade" id="shifts">
+    
+  <% if @employee.assigned? %>
+    <%= render 'shifts/table' %>
+    <% else %>
+    <h3><%= @employee.first_name %> is currently unassigned.</h3>
+  <% end %>
      
                 
         
@@ -78,7 +98,7 @@
 
   <div role="tabpanel" class="tab-pane fade" id="settings">
     
-    <p><button type="button" class="button"><%= link_to "Allow to Edit", grant_editing_user_path(@user), method: :patch, remote: true %></button>
+    <%= link_to "Allow to Edit", grant_editing_user_path(@user), class: "btn btn-primary", method: :patch, remote: true %></button>
   </div>
 </div>
 </div>

@@ -6,20 +6,7 @@ class ShiftsController < ApplicationController
   # GET /shifts
   # GET /shifts.json
   def index
-    if params[:employee_id]
-      @employee = Employee.find(params[:employee_id])
-      @job = @employee.current_job
-      @company = @job.company if @job
-      @current_shifts = @job.shifts if @job
-      @shifts = @employee.shifts.order(time_in: :desc)
-      # authorize @shifts
-    elsif params[:job_id]
-      @job = Job.find(params[:job_id])
-      @employee = @job.employee
-      @company = @job.company
-      @shifts = @job.shifts.order(time_in: :desc)
-      # authorize @shifts
-    end
+
 
   end
 
@@ -30,17 +17,23 @@ class ShiftsController < ApplicationController
       @job = Job.find(params[:job_id])
       @employee = @shift.employee
       @company = @job.company
+      
+      gon.jbuilder
+
+
       # authorize @shift
   end
 
   # GET /shifts/new
   def new
     if admin_signed_in? 
+      
       @admin = current_admin
       @job = Job.find(params[:job_id])
       # @company = @job.company
       @employee = @job.employee
       @shift = @job.shifts.new
+      
 
       # authorize @timesheets
     elsif user_signed_in? && current_user.employee?
@@ -68,9 +61,11 @@ class ShiftsController < ApplicationController
   def create
      
     @job = Job.find(params[:job_id])
-
-    @shift = @job.shifts.new(shift_params)
     @employee = @job.employee
+
+    @shift = @job.shifts.new(employee: @employee)
+    @shift.startshift
+    # @shift.employee = @employee
     # authorize @shift
 
 
@@ -86,12 +81,19 @@ class ShiftsController < ApplicationController
   end
   
   def clock_out
-    sleep 2
+    sleep 1
     
     @shift = Shift.find(params[:id])
-    @shift.update(time_out: Time.current,
-                    state: "clocked_out",
-                    out_ip: @shift.employee.user.current_sign_in_ip)
+    time_out = Time.current
+    time_worked = @shift.time_diff(@shift.time_in, Time.current)
+    @shift.update(time_out: time_out,
+                    state: "Clocked Out",
+                    out_ip: current_user.current_sign_in_ip,
+                    time_worked: time_worked)
+                    
+    render json: { id: @shift.id, clocked_in: @shift.clocked_in?, 
+                    state: @shift.state, time_out: @shift.time_out, out_ip: @shift.out_ip }
+    
   end
 
 

@@ -23,7 +23,8 @@ class Order < ActiveRecord::Base
   has_many :jobs
   has_many :employees, :through => :jobs
   has_many :timesheets, :through => :jobs
-
+  include ArelHelpers::ArelTable
+  include ArelHelpers::JoinAssociation
   
   # VALIDATIONS
   validates_associated :company
@@ -41,6 +42,7 @@ class Order < ActiveRecord::Base
     scope :urgent, -> { where(urgent: true)}
     scope :with_active_jobs, -> { joins(:jobs).merge(Job.active)}
     scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.this_week)}
+    scope :off_shift, -> { joins(:jobs).merge(Job.off_shift)}
     
     
     def defaults
@@ -68,6 +70,8 @@ class Order < ActiveRecord::Base
     # def open_jobs
     #   self.number_needed - self.jobs.active.count
     # end
+    
+
     
   def self.by_manager(admin_id)
     where(manager_id: admin_id)

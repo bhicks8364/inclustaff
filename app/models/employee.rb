@@ -12,6 +12,7 @@
 #  phone_number :string
 #  user_id      :integer
 #  deleted_at   :datetime
+#  assigned     :boolean
 #
 
 class Employee < ActiveRecord::Base
@@ -19,13 +20,13 @@ class Employee < ActiveRecord::Base
   include ArelHelpers::ArelTable
   include ArelHelpers::JoinAssociation
   
-  belongs_to :user
+  belongs_to :user, dependent: :destroy
   has_many :shifts, dependent: :destroy
   has_many :jobs, dependent: :destroy
   has_many :orders, :through => :jobs
   has_many :companies, :through => :orders
   has_one :current_job, -> { where active: true }, class_name: "Job"
-  has_one :current_shift, -> { where state: 'clocked_in' }, class_name: "Shift"
+  has_one :current_shift, -> { where state: 'Clocked In' }, class_name: "Shift"
   has_many :timesheets, :through => :jobs
 
 
@@ -34,10 +35,19 @@ class Employee < ActiveRecord::Base
   accepts_nested_attributes_for :user
   
   # delegate :company, to: :user
+  delegate :name_title, to: :current_job
   delegate :manager, to: :current_job
+  delegate :recruiter, to: :current_job
   delegate :code, to: :user
-  
+  delegate :current_sign_in_ip, to: :user
+
   before_save :set_user_info
+  before_validation :check_if_assigned
+  
+
+  
+  
+  
   
   
 
@@ -56,17 +66,12 @@ class Employee < ActiveRecord::Base
   scope :with_active_jobs, -> { joins(:jobs).merge(Job.active)}
   scope :with_inactive_jobs, -> { joins(:jobs).merge(Job.inactive)}
   scope :on_shift, -> { joins(:shifts).merge(Shift.clocked_in)} 
+  scope :off_shift, -> { joins(:shifts).merge(Shift.clocked_out)}
   scope :with_current_timesheet, -> { joins(:timesheets).merge(Timesheet.this_week)}
-  # scope :unassigned, -> { join(:jobs).on(users[:id].eq(comments[:user_id]))}
-  
-  # scope :unassigned, -> { with_active_jobs.where(Job[:employee_id])}
-  
-  # Employee.joins(:jobs).where(Job[:id].not_eq(2))
-  
-    # Employee.joins(:jobs).where(Job[:employee_id].not_eq(2))
-    # users.where(users[:name].eq('bob').or(users[:age].lt(25)))
-  scope :unassigned, -> { joins("LEFT OUTER JOIN jobs ON jobs.employee_id = employees.id").where("jobs.id IS null")}
-  # scope :unassigned, -> { where(current_job: nil) }
+
+    
+  scope :unassigned, -> { where(assigned: false) }
+  scope :assigned, -> { where(assigned: true) }
   scope :new_start, -> { joins(:jobs).where(Job[:start_date].gteq(Date.today.beginning_of_week)) }
   scope :newly_added, -> { where("employees.created_at >= ?", 7.days.ago) }
   scope :tardy, -> {
@@ -75,31 +80,48 @@ class Employee < ActiveRecord::Base
                      group("employees.id")
                    }
   
+  def company
+    self.current_job.company if self.current_job.present?
+  end
   
   def current_timesheet
-    if self.timesheets.this_week.any?
-      self.timesheets.this_week.last
+    if self.timesheets.current_week.any?
+      self.timesheets.current_week.last
     end
   end
   
-  
+  def mark_as_assigned!
+    if self.jobs.active.empty?
+      self.update(assigned: false)
+    else
+      self.update(assigned: true)
+    end
+    
+  end 
+  def check_if_assigned
+    if self.current_job.present?
+
+      self.assigned = true
+    else
+      self.assigned = false
+    end
+    
+    return true
+          
+  end
   
   
   
   def set_user_info
-    self.email = self.user.email
-    self.first_name = self.user.first_name
-    self.last_name = self.user.last_name
+
+      self.email = self.user.email
+      self.first_name = self.user.first_name
+      self.last_name = self.user.last_name
+
   end
   
     
-  def unassigned?
-    if self.jobs.any?
-      false
-    else
-      true
-    end
-  end
+  
   
   def clocked_in?
     if self.shifts.clocked_in.any?
@@ -150,19 +172,7 @@ class Employee < ActiveRecord::Base
     end
   end
     
-  def company
-    if self.user.present?
-      self.user.company
-    end
-  end
-  
-  def self.email
-    if self.user != nil
-      self.email = self.user.email
-    else
-      self.email 
-    end
-  end
+
     
     
     

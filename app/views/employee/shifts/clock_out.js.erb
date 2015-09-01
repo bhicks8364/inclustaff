@@ -1,0 +1,5 @@
+jQuery ->
+$("#time-worked").text("<%= @shift.time_worked %>");
+$("#shift-state").text("<%= @shift.state.titleize %>");
+
+$('#clock-out-button').hide();

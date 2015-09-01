@@ -1,0 +1,58 @@
+<p id="notice"><%= notice %></p>
+
+  <% if @timesheet.clocked_in? %>
+  <p id="clock-status" class="text-center"><strong><%= @timesheet.employee_name %> is currently clocked in. <%= link_to "Clock Out", clock_out_job_shift_path(@job, @current_shift), method: :patch, 
+                          remote: true, data: {confirm: 'Are you sure you want to clock out now?', 
+                          disable_with: "Clocking Out..."}, class: "btn btn-default" %></strong></p>
+                          
+                          
+                          
+<% end %>
+
+<span id='updated-at'></span>
+
+<h3><strong><%= link_to @employee.name, @employee %></strong> <small><%= @job.title.titleize %></small></h3>
+
+For the week of: <%= @timesheet.week_ending  %>.
+<br>
+Week: <%= @timesheet.week %>
+<br>
+  <strong>Regular hours:</strong>
+  <%= @timesheet.reg_hours %>
+<br>
+  <strong>Overtime hours:</strong>
+  <%= @timesheet.ot_hours %>
+<br>
+  <strong>Gross pay:</strong>
+  <%= number_to_currency(@timesheet.gross_pay) %><br>
+
+   <strong>Last Clock In:</strong> <%= @timesheet.last_clock_in.strftime("%B %e, %Y  at   %I:%M %p") %>
+   <br>
+<%= link_to 'View Shifts', '#', id: 'shifts-button', class: 'btn btn-primary btn-sm' %>
+<ul id="shifts-list"> 
+  <%= render @shifts %>
+</ul>
+<hr>
+<section id='shifts-table' class="hide-this">
+  <%= render "shifts/table", :shifts => @shifts %>
+</section>
+<p><%= @timesheet.state.titleize %></p>
+  <% if @timesheet.approved? %>
+       <%= link_to "<span class='glyphicon glyphicon-ok-circle' aria-hidden='true'></span>    Approve".html_safe, approve_timesheet_path(@timesheet), method: :patch, remote: true, class: 'btn btn-primary btn-lg' %>
+  <% else %>
+<%= link_to "<span class='glyphicon glyphicon-ok-circle' aria-hidden='true'></span>    Approve".html_safe, approve_timesheet_path(@timesheet), method: :patch, remote: true, id: 'approve-button', class: 'btn btn-primary btn-lg' %>
+  <% end %>
+ 
+
+
+
+<!--<h3><strong> Week Ending: <small> <%= @timesheet.week_ending %></small></strong></h3>-->
+<!--<div class="table-responsive">-->
+<!--  -->
+<!--</div>-->
+
+
+
+<!--<%= link_to 'Edit', edit_timesheet_path(@timesheet) %> |-->
+<!--<%= link_to 'Back', timesheets_path %>-->
+<!--</div>-->

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150821212224) do
+ActiveRecord::Schema.define(version: 20150901004517) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(version: 20150821212224) do
     t.string   "phone_number"
     t.integer  "user_id"
     t.datetime "deleted_at"
+    t.boolean  "assigned"
   end
 
   add_index "employees", ["deleted_at"], name: "index_employees_on_deleted_at"
@@ -82,13 +83,15 @@ ActiveRecord::Schema.define(version: 20150821212224) do
     t.date     "start_date"
     t.decimal  "pay_rate"
     t.date     "end_date"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
     t.boolean  "active"
     t.datetime "deleted_at"
+    t.integer  "recruiter_id"
   end
 
   add_index "jobs", ["deleted_at"], name: "index_jobs_on_deleted_at"
+  add_index "jobs", ["recruiter_id"], name: "index_jobs_on_recruiter_id"
 
   create_table "orders", force: :cascade do |t|
     t.integer  "company_id"
@@ -122,11 +125,17 @@ ActiveRecord::Schema.define(version: 20150821212224) do
     t.datetime "deleted_at"
     t.string   "in_ip"
     t.string   "out_ip"
+    t.integer  "week"
+    t.datetime "break_in"
+    t.datetime "break_out"
+    t.text     "note"
+    t.boolean  "needs_adj"
   end
 
   add_index "shifts", ["deleted_at"], name: "index_shifts_on_deleted_at"
   add_index "shifts", ["job_id"], name: "index_shifts_on_job_id"
   add_index "shifts", ["timesheet_id"], name: "index_shifts_on_timesheet_id"
+  add_index "shifts", ["week"], name: "index_shifts_on_week"
 
   create_table "timesheets", force: :cascade do |t|
     t.integer  "week"
@@ -158,7 +167,6 @@ ActiveRecord::Schema.define(version: 20150821212224) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "role"
-    t.integer  "company_id"
     t.string   "first_name"
     t.string   "last_name"
     t.datetime "deleted_at"
@@ -168,9 +176,9 @@ ActiveRecord::Schema.define(version: 20150821212224) do
     t.string   "city"
     t.string   "state"
     t.string   "zipcode"
+    t.integer  "employee_id"
   end
 
-  add_index "users", ["company_id"], name: "index_users_on_company_id"
   add_index "users", ["deleted_at"], name: "index_users_on_deleted_at"
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
