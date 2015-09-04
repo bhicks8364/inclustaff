@@ -2,26 +2,27 @@
 #
 # Table name: jobs
 #
-#  id           :integer          not null, primary key
-#  employee_id  :integer
-#  order_id     :integer
-#  title        :string
-#  description  :string
-#  start_date   :date
-#  pay_rate     :decimal(, )
-#  end_date     :date
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  active       :boolean
-#  deleted_at   :datetime
-#  recruiter_id :integer
+#  id               :integer          not null, primary key
+#  employee_id      :integer
+#  order_id         :integer
+#  title            :string
+#  description      :string
+#  start_date       :date
+#  pay_rate         :decimal(, )
+#  end_date         :date
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  active           :boolean
+#  deleted_at       :datetime
+#  recruiter_id     :integer
+#  timesheets_count :integer
 #
 
 class Job < ActiveRecord::Base
     belongs_to :employee
-    belongs_to :order
+    belongs_to :order, counter_cache: true
     has_many :timesheets
-    has_many :shifts, inverse_of: :job
+    has_many :shifts
     has_one :current_shift,-> { where state: "Clocked In" }, class_name: 'Shift'
     has_one :current_timesheet,-> { where week: Date.today.cweek  }, class_name: 'Timesheet'
     belongs_to :recruiter, class_name: "Admin", foreign_key: "recruiter_id"
@@ -31,8 +32,18 @@ class Job < ActiveRecord::Base
     
     delegate :manager, to: :order
     delegate :company, to: :order
+    delegate :manager, to: :order
     
     include ArelHelpers::ArelTable
+    include ArelHelpers::JoinAssociation
+
+    # def off_shift
+    #     Job.joins(
+    #     Job.join_association(:shifts, Arel::OuterJoin) do |assoc_name, join_conditions|
+    #       join_conditions.and(Job[:author_id].eq(4))
+    #     end
+    #   )
+    # end
     
     # VALIDATIONS
     # validates_associated :employee
@@ -48,12 +59,15 @@ class Job < ActiveRecord::Base
     scope :active, -> { where(active: true)}
     scope :inactive, -> { where(active: false)}
     scope :with_employee, ->  { includes(:employee) }
-    scope :on_shift, -> { joins(:shifts).merge(Shift.clocked_in)}
+    
+    # THESE WORKED!!!
+    scope :on_shift, -> { joins(:employee).merge(Employee.on_shift)}
     scope :off_shift, -> { joins(:employee).merge(Employee.off_shift)}
-    scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.this_week)}
+
+    scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.current_week)}
     scope :worked_today, -> { joins(:shifts).merge(Shift.in_today)}
     scope :worked_yesterday, -> { joins(:shifts).merge(Shift.in_yesterday)}
-    scope :worked_last_week, -> { joins(:timesheets).where("timesheets.week <= ?", Date.today.cweek).group("jobs.id") }
+    scope :worked_this_week, -> { joins(:timesheets).where("timesheets.week <= ?", Date.today.cweek).group("jobs.id") }
     
     
     
@@ -67,6 +81,16 @@ class Job < ActiveRecord::Base
             true
         end
     end
+    
+    # def self.off_shift
+    #     joins(:shifts).where("shifts.state != ?", "Clocked In").group("jobs.id")
+
+    # end
+    
+    # def self.by_last_shift(shift_id)
+        
+    #     where(recruiter_id: shift_id)
+    # end
     
     def self.by_recuriter(admin_id)
         where(recruiter_id: admin_id)
@@ -93,15 +117,21 @@ class Job < ActiveRecord::Base
     # end
     def clock_in!
         if self.off_shift?
-            self.shifts.create(time_in: Time.current, time_out: nil,
+            self.current_shift.create(time_in: Time.current, time_out: nil,
                     state: "Clocked In",
-                    out_ip: nil)
+                    out_ip: "Admin-Clock-In")
         end
-        # self.update(time_in: Time.current, time_out: nil,
-        #             state: "Clocked In",
-        #             out_ip: nil)
+
     end
-        
+    
+    def clock_out!
+        if self.off_shift? && self.current_shift.present?
+            
+            self.current_shift.update(time_out: Time.current,
+                        state: "Clocked Out",
+                        out_ip: "Admin-Clock-Out" )
+        end
+    end
 
     
     
@@ -167,14 +197,29 @@ class Job < ActiveRecord::Base
 
     
     def last_clock_in
-        self.shifts.last.time_in
+        if self.shifts.any?
+            self.shifts.last.time_in.strftime("%a  - %b %d, %y")
+        else
+            "No shifts yet."
+        end
     end
     
     def last_clock_out
-        if self.shifts.any?
-            self.shifts.last.time_out
+        if self.shifts.clocked_out.any?
+            self.shifts.clocked_out.last.time_out.strftime("%a  - %b %d, %y")
+        else
+            "No complete shifts."
         end
+
     end
+    
+    def ot_rate
+        (pay_rate * 1.5).round(2)
+    end
+    
+    # def pay_rate
+    #     pay_rate.round(2)
+    # end
     
 
     def current_percent

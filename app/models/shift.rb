@@ -2,25 +2,26 @@
 #
 # Table name: shifts
 #
-#  id           :integer          not null, primary key
-#  time_in      :datetime
-#  time_out     :datetime
-#  employee_id  :integer
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  time_worked  :decimal(, )
-#  job_id       :integer
-#  state        :string
-#  earnings     :decimal(, )
-#  timesheet_id :integer
-#  deleted_at   :datetime
-#  in_ip        :string
-#  out_ip       :string
-#  week         :integer
-#  break_in     :datetime
-#  break_out    :datetime
-#  note         :text
-#  needs_adj    :boolean
+#  id             :integer          not null, primary key
+#  time_in        :datetime
+#  time_out       :datetime
+#  employee_id    :integer
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  time_worked    :decimal(, )
+#  job_id         :integer
+#  state          :string
+#  earnings       :decimal(, )
+#  timesheet_id   :integer
+#  deleted_at     :datetime
+#  in_ip          :string
+#  out_ip         :string
+#  week           :integer
+#  break_in       :datetime
+#  break_out      :datetime
+#  note           :text
+#  needs_adj      :boolean
+#  break_duration :decimal(, )
 #
 
 class Shift < ActiveRecord::Base
@@ -35,7 +36,7 @@ class Shift < ActiveRecord::Base
     
     belongs_to :employee
     belongs_to :job
-    belongs_to :timesheet
+    belongs_to :timesheet, counter_cache: true
     belongs_to :company, class_name: "Company", foreign_key: "company_id"
     
     scope :last_week, ->{
@@ -60,16 +61,17 @@ class Shift < ActiveRecord::Base
     delegate :week_ending, to: :timesheet
     accepts_nested_attributes_for :job
     
-
+    
     after_save :update_timesheet!
     before_save :set_timesheet, :reg_earnings
-    before_create :set_employee_ip
-    # before_save :calculate_time, if: :clocked_out?
-    
+    before_create :set_defaults
+    # after_destroy :delete_timesheet
 
-    def set_employee_ip
+
+    def set_defaults
         self.employee = self.job.employee if self.employee.nil?
         self.in_ip = self.employee.current_sign_in_ip if self.in_ip.nil?
+        
     end
     
     def set_timesheet
@@ -84,7 +86,7 @@ class Shift < ActiveRecord::Base
     # end
     def clock_in!
         if self.job.off_shift?
-            self.job.shifts.create(time_in: Time.current, time_out: nil,
+            self.job.shifts.create(time_in: Time.current, time_out: nil, week: Date.today.cweek,
                     state: "Clocked In",
                     in_ip: "admin-clock-in",
                     out_ip: nil)
@@ -152,9 +154,7 @@ class Shift < ActiveRecord::Base
     scope :clocked_in, ->{
         where(state: "Clocked In")
     }
-    scope :clocked_out, ->{
-        where(state: "Clocked Out")
-    }
+    scope :clocked_out, ->{ where(state: ["Clocked Out", nil])}
     scope :on_break, ->{
         where(state: "On Break")
     }
@@ -228,6 +228,16 @@ class Shift < ActiveRecord::Base
     
     def self.yesterday
       where(:time_in => 1.day.ago.beginning_of_day..1.day.ago.end_of_day)
+    end
+    
+    
+
+   
+
+    def delete_timesheet
+      if timesheet.shifts.count.zero?
+        timesheet.destroy
+      end
     end
     
     

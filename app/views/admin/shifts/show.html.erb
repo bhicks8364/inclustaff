@@ -1,11 +1,15 @@
 
-<h3 class="page-header">
+<div class='main-box'>
+
+    <h3 class="page-header">
   <strong> <%= @employee.name %>  <small> <%= @job.title %></small></strong>
   <%= @employee.code %>
 </h3>
 <%= number_to_currency(@shift.earnings) %>
 <br>
 <% if @shift.clocked_out? %>
+<%= distance_of_time_in_words(@shift.time_in, @shift.time_out, include_seconds: true) %>
+<br>
 <%= @shift.time_in.strftime("%I:%M %p") %> - <%= @shift.time_out.strftime("%I:%M %p") %>
 <% else %>
 <%= @shift.time_in.strftime("%I:%M %p") %> - <%= @shift.time_out %>
@@ -14,11 +18,21 @@
 Hours worked: <%= @shift.hours_worked %><br>
 Break: <%= @shift.break_time %>
 <hr>
-<%= link_to 'View Employee', @employee, class: "btn btn-info" %> 
-<%= link_to 'View Timesheet', @shift.timesheet, class: "btn btn-info" %>
 
-<%= link_to 'Edit', edit_shift_path(@shift), class: "btn btn-primary" %>
-<%= link_to 'Delete', @shift, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+<br>
+<%= link_to 'View Employee', admin_employee_path(@employee), class: "btn btn-info" %> 
+<%= link_to 'View Timesheet', admin_timesheet_path(@shift.timesheet), class: "btn btn-info" %>
+
+<%= link_to 'Edit', edit_admin_shift_path(@shift), class: "btn btn-primary" %>
+<%= link_to 'Delete', admin_shift_path(@shift), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+
+  <div class='col-md-6 pull-right'>
+    <%= render @timesheet %> 
+  </div>
+  <div class='col-md-6 pull-left'>
+    <%= render @job %> 
+  </div>
+</div>
 <!--<hr>-->
   
 
@@ -38,7 +52,7 @@ Break: <%= @shift.break_time %>
 <!--<% end %>-->
 <!--<% if @shift.clocked_out? %>-->
 <!--<strong><h3><%= @shift.state.titleize %></h3></strong>-->
-<!--<%= link_to "Add a shift", new_shift_path, class: "btn btn-primary" %>-->
+<!--<%= link_to "Add a shift", new_admin_shift_path, class: "btn btn-primary" %>-->
 <!--<p>-->
 <!--  <strong>Time in:</strong>-->
 <!--  <%= @shift.time_in.strftime("%I:%M %p") %></p>-->
@@ -53,7 +67,7 @@ Break: <%= @shift.break_time %>
 
 <!--<hr>-->
 
-<!--<%= link_to 'Edit', edit_shift_path(@shift) %>    -->
+<!--<%= link_to 'Edit', edit_admin_shift_path(@shift) %>    -->
 <!--|-->
 
-<!--<%= link_to 'All Shift', shifts_path %>-->
+<!--<%= link_to 'All Shift', admin_shifts_path %>-->

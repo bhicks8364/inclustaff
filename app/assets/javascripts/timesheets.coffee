@@ -19,10 +19,11 @@ class Timesheet
 
   setEvents: ->
     @item.find("[data-behavior='timesheet-toggle']").on "click", @handleToggle
+    preventDefault()
 
   handleToggle: =>
     $.ajax(
-      url: "/timesheets/#{@id}/approve",
+      url: "/admin/timesheets/#{@id}/approve",
       method: "PATCH"
       dataType: "JSON"
       success: @handleToggleSuccess
@@ -30,16 +31,24 @@ class Timesheet
 
   handleToggleSuccess: (data) =>
     if data.approved
-      @item.find("[data-behavior='timesheet-state']").html "<span class='label label-success'>#{data.state}</span>"
-      @item.find("[data-behavior='approve-button']").html "<i class='fa fa-times'></i>     Unapprove"
+      #@item.find("[data-behavior='timesheet-state']").html "<span class='label label-success'>#{data.state}</span>"
+      @item.find("[data-behavior='approve-button']").html "<i class='fa fa-times fa-lg red'></i>"
       @item.find("[data-behavior='approve-user']").html "<p>#{data.user_approved}</p>"
+      @item.find("[data-behavior='approved-circle']").html "<i class='fa fa-check-square-o fa-2x'></i>"
       console.log @item
       console.log data.state
-      
     else
-      @item.find("[data-behavior='timesheet-state']").html "<span class='label label-primary'>#{data.state}</span>"
-      @item.find("[data-behavior='approve-button']").html "<i class='fa fa-check-circle'></i>     Approve"
-      @item.find("[data-behavior='approve-user']").hide()
+      @item.find("[data-behavior='approve-button']").html "<i class='fa fa-check-circle fa-lg green'></i>"
+      @item.find("[data-behavior='approved-circle']").html "<i class='fa fa-square-o fa-2x'></i>"
+      
+      
+    if data.clocked_in
+      alert("#{data.name} is currently clocked in. Please clock them out before editing their timesheet.")
+      #@item.find("#t-result").html "<button type='button' class='alert alert-danger close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span>#{data.name} is currently clocked in. Please clock them out before approving their timesheet.</button>"
+      #@item.find("[data-behavior='timesheet-state']").html "<span class='label label-primary'>#{data.state}</span>"
+      #@item.find("[data-behavior='approve-button']").html "<i class='fa fa-check-circle'></i> Approve"
+      #@item.find("[data-behavior='approve-user']").html "<p>#{data.user_approved}</p>"
+      #@item.find("[data-behavior='approved-circle']").html "<i class='fa fa-square-o fa-2x'></i>"
       console.log data.id
       console.log data.state
       

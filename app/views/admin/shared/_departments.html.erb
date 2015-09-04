@@ -1,0 +1,48 @@
+<div class="scroll" data-spy="scroll" data-target="#myScrollspy" data-offset="20">
+
+<div class="container">
+  <div class="row">
+    <nav class="col-sm-3" id="myScrollspy">
+      <ul class="nav nav-pills nav-stacked">
+        <% @company.orders.each do |order| %>
+        <li class="active"><a href="#order_<%=order.id%>"><%= order.title %></a></li>
+        <% end %>
+      </ul>
+    </nav>
+    
+    <div class="col-sm-8">
+      <%= div_for(@company.orders, class:"") do |order| %>
+        <h3><%= order.title %> <small><%= order.manager.name %></small></h>
+        <p><%= order.notes %></p>
+        <p>   <strong>Pay Frequency:</strong>
+          <%= order.urgent ? "Bi-Weekly" : "Weekly" %>
+          <br>
+        <strong>Status:</strong>
+        <%= order.active ? "Active" : "Inactive" %></p>
+        <h4>  <strong>Department: </strong> </h4>
+        <p>
+        <strong>Pay Type:</strong>
+        <%= order.pay_range %>
+        </p>
+        <strong>Active Employees:</strong>
+          <%= order.jobs.active.count %>
+
+<%= link_to 'Edit', edit_company_order_path(@company, order) %> |
+<%= link_to 'Back', company_orders_path(@company) %>
+
+<%= link_to 'Add Job', new_company_order_job_path(@company, order), class: "btn btn-default" %>
+
+
+
+
+      </div>
+      </div>
+            <% end %>
+    
+  </div>
+</div>
+
+</div>
+
+
+

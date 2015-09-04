@@ -20,7 +20,7 @@ class Employee < ActiveRecord::Base
   include ArelHelpers::ArelTable
   include ArelHelpers::JoinAssociation
   
-  belongs_to :user, dependent: :destroy
+  belongs_to :user
   has_many :shifts, dependent: :destroy
   has_many :jobs, dependent: :destroy
   has_many :orders, :through => :jobs
@@ -34,7 +34,7 @@ class Employee < ActiveRecord::Base
   accepts_nested_attributes_for :jobs
   accepts_nested_attributes_for :user
   
-  # delegate :company, to: :user
+  delegate :last_clock_out, to: :current_job
   delegate :name_title, to: :current_job
   delegate :manager, to: :current_job
   delegate :recruiter, to: :current_job
@@ -114,9 +114,9 @@ class Employee < ActiveRecord::Base
   
   def set_user_info
 
-      self.email = self.user.email
-      self.first_name = self.user.first_name
-      self.last_name = self.user.last_name
+      self.email = self.user.email if self.email.nil?
+      self.first_name = self.user.first_name if self.first_name.nil?
+      self.last_name = self.user.last_name if self.last_name.nil?
 
   end
   

@@ -2,24 +2,27 @@
 #
 # Table name: orders
 #
-#  id            :integer          not null, primary key
-#  company_id    :integer
-#  pay_range     :string
-#  notes         :text
-#  number_needed :integer
-#  needed_by     :datetime
-#  urgent        :boolean
-#  active        :boolean
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  title         :string
-#  deleted_at    :datetime
-#  manager_id    :integer
+#  id                 :integer          not null, primary key
+#  company_id         :integer
+#  pay_range          :string
+#  notes              :text
+#  number_needed      :integer
+#  needed_by          :datetime
+#  urgent             :boolean
+#  active             :boolean
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  title              :string
+#  deleted_at         :datetime
+#  manager_id         :integer
+#  jobs_count         :integer
+#  account_manager_id :integer
 #
 
 class Order < ActiveRecord::Base
   belongs_to :company
-  belongs_to :manager, class_name: "Admin", foreign_key: "manager_id"
+  belongs_to :manager, foreign_key: 'manager_id', class_name: "Admin"
+  belongs_to :account_manager, foreign_key: 'account_manager_id',  class_name: "Admin"
   has_many :jobs
   has_many :employees, :through => :jobs
   has_many :timesheets, :through => :jobs

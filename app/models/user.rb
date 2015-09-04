@@ -29,7 +29,7 @@
 #
 
 class User < ActiveRecord::Base
-  has_one :employee
+  has_one :employee, dependent: :destroy
   has_many :shifts, through: :employee
   has_one :current_job, through: :employee
   # belongs_to :company
@@ -40,7 +40,7 @@ class User < ActiveRecord::Base
   validates :role,  presence: true
 
   
-  after_save :set_employee, :set_emp_id
+  after_create :set_employee, :set_emp_id
   
 
   devise :database_authenticatable, :registerable,
@@ -52,7 +52,8 @@ class User < ActiveRecord::Base
   # def active_for_authentication?
   #   # Uncomment the below debug statement to view the properties of the returned self model values.
   #   # logger.debug self.to_yaml
-
+  scope :unassigned, -> { joins(:employee).merge(Employee.unassigned)}
+  scope :assigned, -> { joins(:employee).merge(Employee.with_active_jobs)}
   #   super && employee.assigned?
   # end
   
@@ -77,7 +78,7 @@ class User < ActiveRecord::Base
   
   def set_employee
     if role == "Employee"
-      Employee.find_or_create_by(email: self.email) do |employee|
+      self.employee = Employee.find_or_create_by(email: self.email) do |employee|
         employee.user_id = self.id
         employee.first_name = self.first_name
         employee.last_name = self.last_name

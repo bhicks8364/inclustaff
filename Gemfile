@@ -38,6 +38,12 @@ gem "font-awesome-rails"
 gem 'by_star', :git => "git://github.com/radar/by_star"
 
 
+# PAGINATION
+gem 'will_paginate', '~> 3.0.6'
+
+# PDFs
+gem 'receipts'
+
 # STATE MACHINE
 gem 'aasm'
 

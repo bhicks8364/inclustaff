@@ -1,0 +1,14 @@
+<div class='company-info'>
+    <h3>HOME</h3>
+    
+    <address class="">
+      <%= @company.address %> <%= @company.city %>, <%= @company.state %> <%= @company.zipcode %><br>
+      <abbr title="Phone">PH:</abbr> (123) 456-7890
+    </address>
+    <address class="">
+      <strong><%= @company.contact_name %></strong><br>
+      <a href="mailto:#"><%= @company.contact_email %></a>
+    </address>
+
+    <h3 class="text-center">Balance: <%= number_to_currency(@company.balance) %></h3>
+</div>

@@ -1,6 +1,6 @@
 <% if admin_signed_in? %>
     <div class=''>
-        <%= render 'dashboard/admin' %>
+        <%= render 'admin/dashboard/admin' %>
         <%= link_to "Agency Portal", agency_access_path, class: "btn btn-primary" %>
     </div>
     <% end %>
@@ -14,7 +14,7 @@
     
     <!--EMPLOYEE HOME PAGE VIEW-->
     
-<% if user_signed_in? && current_user.employee? %>
+<% if @employee.present? && @employee.assigned? %>
 <%= render 'dashboard/employee' %>
 
 
@@ -31,37 +31,56 @@
 
 
 <% if current_user.nil? && current_admin.nil? %>
-            <div class="welcome-screen">
-                <h1>Welcome to IncluStaff</h1>
-                <h3>Simplify the process, optimize your workforce and maximize your profits. </h3>
-                <h4 class="pull-center"> From the first punch to the final invoice, IncluStaff does it all.</h4>
-                <a class="btn " href="#" role="button">Learn more &raquo;</a>
-            </div>
-            
-            <div class="row">
+<div class="col-md-12 main-box">
+
+       <strong><h1>From the first punch to the final invoice, IncluStaff does it all.</h1></strong>
+        <h3>Simplify the process, optimize your workforce and maximize your profits.</h3>
+
+
+
                 
-                <div class="col-md-6">
-                    <div class="welcome-screen">
-                        <h1>Welcome to IncluStaff</h1>
-                        <h3>Simplify the process, optimize your workforce and maximize your profits. </h3>
-                        <h4 class="pull-center"> From the first punch to the final invoice, IncluStaff does it all.</h4>
-                        <a class="btn " href="#" role="button">Learn more &raquo;</a>
-                    </div>
-                  
-                  
-                </div>
-                <div class="col-md-6">
-                    <div class="welcome-screen">
-                        <h1>MINIMAL DATA ENTR</h1>
-                        <h3>Optimize your workforce by simplifying your workflow. </h3>
-                        <h4 class="pull-center">  Easily connect to your existing payroll systems or simply export to Excel.</h4>
-                        <a class="btn " href="#" role="button">Learn more &raquo;</a>
-                    </div>
-                    
-                </div>
+        
+        
+        <div class="col-md-4">
+            <div class="welcome-screen text-center">
+
+
+                <strong><h3>Real Time from Any Location</h3></strong>
+                
+                <h5><strong>No more paper timecards!</strong> <br>
+                    Allows employees clock in or out from any computer or mobile device. </h5>
+                
+                
             </div>
-            
-            
+        </div>
+        <div class="col-md-4">
+            <div class="welcome-screen text-center">
+
+
+                <strong><h3>Highlight Top Performers</h3></strong>
+                <h5>
+                    <strong>Quickly identify your All-Stars!</strong> <br>
+          
+                     Easily view bill & fill rates for your entire team with a single click.
+                </h5>
+                
+                
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="welcome-screen text-center">
+
+
+                <strong><h3>Integrate your Payroll</h3></strong>
+                
+                <h5><strong>Cut your processing time in HALF!</strong> <br>
+                    Choose to upload Excel/CSV or connect directly to your existing database. </h5>
+                
+                
+            </div>
+        </div>
+
+</div>            
 
 
 <% end %>

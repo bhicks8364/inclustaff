@@ -9,7 +9,7 @@
 			  <%= @employee.user.name %>
 				<h2><%= @company.name %></h2>
 				
-				<%= simple_form_for(@employee, class: "center") do |f| %>
+				<%= simple_form_for [:admin, @employee] do |f| %>
             <% if @employee.errors.any? %>
               <div id="error_explanation">
                 <h2><%= pluralize(@employee.errors.count, "error") %> prohibited this employee from being saved:</h2>
@@ -51,7 +51,7 @@
         
         <% end %>
         
-        <%= link_to 'View All Employees', employees_path, class: 'btn btn-default' %>
+        <%= link_to 'View All Employees', admin_employees_path, class: 'btn btn-default' %>
 				
 				</div>
 

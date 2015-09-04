@@ -27,6 +27,17 @@ class Admin::TimesheetsController < ApplicationController
     gon.pay = @timesheet.gross_pay
     gon.status = @timesheet.shifts.last.state.titleize
     
+    respond_to do |format|
+      format.html
+      format.json
+      format.pdf {
+        send_data @timesheet.receipt.render,
+          filename: "#{@timesheet.week_ending}-#{@employee.name}-invoice.pdf",
+          type: "application/pdf",
+          disposition: :inline
+      }
+    end
+    
   end
 
   # GET /timesheets/new
@@ -54,9 +65,13 @@ class Admin::TimesheetsController < ApplicationController
       approved_by = @timesheet.approved? ? nil : current_admin.id
       state = @timesheet.approved? ? 'pending' : 'approved'
       @timesheet.update(approved_by: approved_by, state: state)
+      
       user_approved = @timesheet.approved? ? Admin.find(@timesheet.approved_by).name : @timesheet.state
       
       render json: { id: @timesheet.id, approved: @timesheet.approved?, 
+                    state: @timesheet.state.titleize, user_approved: user_approved, clocked_in: @timesheet.clocked_in? }
+    else
+      render json: { id: @timesheet.id, approved: @timesheet.approved?, clocked_in: @timesheet.clocked_in?, name: @timesheet.employee.name,
                     state: @timesheet.state.titleize, user_approved: user_approved }
     end
   end
@@ -104,10 +119,10 @@ class Admin::TimesheetsController < ApplicationController
   # DELETE /timesheets/1
   # DELETE /timesheets/1.json
   def destroy
-    authorize @timesheet
+
     @timesheet.destroy
     respond_to do |format|
-      format.html { redirect_to timesheets_url, notice: 'Timesheet was successfully destroyed.' }
+      format.html { redirect_to admin_timesheets_path, notice: 'Timesheet was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

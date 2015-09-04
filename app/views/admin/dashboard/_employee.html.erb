@@ -1,0 +1,23 @@
+<div id="employee-home-page">
+<div class="col-md-3">
+    <%= render @current_shift %>
+</div>
+    
+    
+<div class="col-md-3">
+    <strong><%= @employee.name %></strong> <br>
+<%= @employee.email %>
+<br>
+
+<%= @job.title %>  - <%= number_to_currency(@job.pay_rate) %> 
+</div>
+<%= link_to "Dashboard", timeclock_path(@employee), class: "btn btn-default" %>
+<%= link_to "Current Timesheet", @current_timesheet, class: "btn btn-default" %>
+<%= render 'timesheets/table' %>
+
+
+
+
+
+
+</div>

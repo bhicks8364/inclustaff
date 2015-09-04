@@ -1,39 +1,30 @@
 class Employee::JobsController < ApplicationController
-  before_action :set_job, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
-  # before_action :set_order
+  before_action :set_employee
+  before_action :set_job, only: [:show, :edit, :update, :destroy]
+  before_action :check_if_assigned, only: [:show, :edit, :update, :destroy]
 
   # GET /jobs
   # GET /jobs.json
   def index
 
-      @current_user = current_user if current_user.present?
-      @employee = @current_user.employee if @current_user.employee.present?
-      @company = @current_user.company
-      @jobs = @employee.jobs.order(title: :asc) if @employee.jobs.any?
+    @jobs = @employee.jobs.actve.order(title: :asc) if @employee.jobs.any?
 
   end
   
   def archived
-    @company = current_user.company if current_user.present?
-    @archived_jobs = @company.jobs.inactive.with_employee
-    @active_jobs = Job.active.with_employee
-    # authorize @active_jobs
+    @archived_jobs = @employee.jobs.inactive.order(end_date: :desc)
+
   end
 
   # GET /jobs/1
   # GET /jobs/1.json
   def show
-    # authorize @job
-    @employee = @job.employee
-    @company = @job.company
-    @order = @job.order
-    @current_timesheet = @job.current_timesheet
-    @company = @job.order.company
-    @current_shift = @job.shifts.clocked_in.last if @job.on_shift?
-    @all_timesheets = @job.timesheets
+
+    @current_timesheet = @job.current_timesheet if @job.current_timesheet.present?
+    @current_shift = @job.current_shift if @job.on_shift?
     @timesheets = @job.timesheets
-    @last_week_timesheets =  @job.timesheets.last_week
+
     
   end
 
@@ -135,11 +126,21 @@ class Employee::JobsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_job
       @job = Job.find(params[:id])
+      @company = @job.company
+      @order = @job.order
     end
     
-    def set_order
-      # @company = Company.find(params[:company_id])
-      # @order = Order.find(params[:order_id])
+    def set_employee
+      @current_user = current_user if current_user.present?
+      @employee = @current_user.employee if @current_user.employee.present?
+    end
+    
+    def check_if_assigned
+      @job = Job.find(params[:id])
+      if @job.employee != @employee
+        redirect_to :root
+      end
+      
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

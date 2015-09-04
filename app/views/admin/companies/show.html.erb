@@ -1,0 +1,82 @@
+<div class="col-lg-12">
+    <div class="row">
+            
+
+
+     <h1 class="page-header text-center"><%= @company.name %></h1>
+
+      
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs nav-justified" role="tablist">
+    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Company Information</a></li>
+    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Departments</a></li>
+    <li role="presentation"><a href="#employees" aria-controls="employees" role="tab" data-toggle="tab">Current Employees</a></li>
+    <li role="presentation"><a href="#company-contacts" aria-controls="company-contacts" role="tab" data-toggle="tab">Company Contacts</a></li>
+    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Timeclock</a></li>
+  </ul>
+  <div class='main-box'>
+  <div class="tab-content">
+  <div role="tabpanel" class="tab-pane fade in active" id="home">
+
+    <h3>HOME</h3>
+    
+    <address class="">
+      <%= @company.address %> <%= @company.city %>, <%= @company.state %> <%= @company.zipcode %><br>
+      <abbr title="Phone">PH:</abbr> (123) 456-7890
+    </address>
+    <address class="">
+      <strong><%= @company.contact_name %></strong><br>
+      <a href="mailto:#"><%= @company.contact_email %></a>
+    </address>
+
+    <h3 class="text-center">Balance: <%= number_to_currency(@company.balance) %></h3>
+
+
+  </div>
+    
+  <div role="tabpanel" class="tab-pane fade " id="company-contacts">
+
+      <h3>Company Contacts</h3>
+       <%= render 'companies/company_users' %>
+
+
+    
+  </div>
+  <div role="tabpanel" class="tab-pane fade" id="profile">
+    <h3>Timesheets by Dept.</h3>
+    <%= render @orders %>
+    
+  </div>
+  
+  <div role="tabpanel" class="tab-pane fade" id="employees">
+   <h3>Current Employees</h3>
+    <%= render @jobs %>
+  </div>
+  
+  
+  
+  <div role="tabpanel" class="tab-pane fade" id="settings">
+
+
+<% if @company.shifts.clocked_in.any? %>
+    
+    <% if @clocked_in.any? %>
+<%= render 'companies/clocked_in_employees' %>
+<% end %>
+<% else %>
+
+  <h3 class='text-center'>There are no employees clocked in at this time.</h3>
+
+<% end %>
+
+  </div>
+
+  
+  
+  
+  
+</div>
+</div>
+</div>
+</div>

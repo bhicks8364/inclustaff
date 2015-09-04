@@ -1,0 +1,41 @@
+<div class="profile-header">
+  				<h3><span>Employee info</span></h3>
+          
+  			</div>
+  			
+  			<div class="row profile-user-info">
+  			  	<% if employee.user.present? %>
+  				<div class="col-sm-8">
+  
+  				
+  					<div class="profile-user-details clearfix">
+  						<%= render employee.current_job %>
+  					</div>
+
+  					
+  					
+  					<div class="profile-user-details clearfix">
+  						<div class="profile-user-details-label">
+  							Email
+  						</div>
+  						<div class="profile-user-details-value">
+  						<%= employee.email %>
+  						</div>
+  					</div>
+  					<div class="profile-user-details clearfix">
+  						<div class="profile-user-details-label">
+  							Phone number
+  						</div>
+  						<div class="profile-user-details-value">
+  							<%= employee.phone_number %>
+  						</div>
+  					</div>
+  					
+  				</div>
+  				  					<% else %>
+  					<div class="alert alert-danger">
+  					 <strong> This employee is not assigned a user.</strong>
+  					<p> Please create a new user account if necessary.</p></div>
+  					<% end %>
+
+  			</div>

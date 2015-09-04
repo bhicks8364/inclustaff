@@ -1,45 +1,27 @@
-<div class="list-group" data-behavior="job-list">
-    <div class="details"data-behavior="job" data-id="<%= job.id %>">
-      <h4 class="list-group-item-heading"><%= link_to job.employee.name, job.employee, class: 'table-link' %></h4>
-    
-      <h4><small><%= link_to job.title %></small></h4>
-      
-        <br>
+
+<div class="shift-list" data-behavior="job-list">
+    <div data-behavior="job" data-id="<%= job.id %>">
+        
+      <h4 class="list-group-item-heading"><%= link_to job.title, admin_job_path(job) %></h4>
+    <%= link_to job.employee.name, admin_employee_path(job.employee), class: 'table-link' %>
+
+       <small>
         <strong>Pay rate:</strong>
         <%= number_to_currency(job.pay_rate, :unit => "$") %>
-      <br>
-        <strong>Description:</strong>
-        <%= job.description %>
-      <hr>
-        <strong>Employee:</strong>
-        <%= link_to @employee.name, @employee %>
-      <br>
-      
-        <strong>Start date:</strong>
-        <%= job.start_date.strftime("%B %e, %Y ") %>
-      <% if job.on_shift? %>
-      <%= job.shifts.last.state %>
-      <% else %>
-        <%= link_to "Clock In", clock_in_job_path(job), method: :patch, remote: true %>
-      <% end %>
-      <div class="text-left">Total gross: <%= number_to_currency(job.total_gross_pay) %><br>
-       Total Hours : <%= job.total_hours %>
-      </div>
-      
-     
+      </small>
+         <%= render job.current_timesheet if job.current_timesheet.present? %>
 
-
-
-
-        
-        <div>
-          <h3>This week</h3><i class="fa fa-clock-o"></i> <strong>Hours:</strong>  <%= job.current_week_hours %><br>
-        <i class="fa fa-money"></i> <strong>Pay:</strong>  <%= number_to_currency(job.current_week_pay) %><br></div>
-
+   
+       <strong>This week</strong><br><i class="fa fa-clock-o"></i> <strong>Hours:</strong>  <%= job.current_week_hours %><br>
+        <i class="fa fa-money"></i> <strong>Pay:</strong>  <%= number_to_currency(job.current_week_pay) %><br>
+        	<% link_to "EDIT", edit_admin_job_path(job), class: "badge badge-info" %>
+       
              
-    	<% link_to "EDIT", edit_job_path(job), class: "btn btn-warning" %>
     
-    </div>
+
+     
+     </div>
+
 </div>
 
 

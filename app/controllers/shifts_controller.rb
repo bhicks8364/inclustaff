@@ -1,5 +1,5 @@
 class ShiftsController < ApplicationController
-  before_action :set_shift, only: [:show, :edit, :update, :destroy]
+  before_action :set_shift, only: [:show, :edit, :update, :destroy, :clock_out]
   # before_action :authenticate_user!
   # before_action :set_employee, only: [:index, :show, :edit, :update, :destroy]
 
@@ -84,6 +84,7 @@ class ShiftsController < ApplicationController
     sleep 1
     
     @shift = Shift.find(params[:id])
+    @job = @shift.job
     time_out = Time.current
     time_worked = @shift.time_diff(@shift.time_in, Time.current)
     @shift.update(time_out: time_out,
@@ -101,10 +102,10 @@ class ShiftsController < ApplicationController
   # PATCH/PUT /shifts/1.json
   def update
     # authorize @shift
-    @job = Job.find(params[:job_id])
+    @job = @shift.job
     respond_to do |format|
       if @shift.update(shift_params)
-        format.html { redirect_to [@job, @shift], notice: 'Shift was successfully updated.' }
+        format.html { redirect_to admin_shift_path(@shift), notice: 'Shift was successfully updated.' }
         format.json { render :show, status: :ok, location: @shift }
       else
         format.html { render :edit }
@@ -117,8 +118,8 @@ class ShiftsController < ApplicationController
   # DELETE /shifts/1.json
   def destroy
      
-    @job = Job.find(params[:job_id])
-    authorize @shift
+    
+    # authorize @shift
     @shift.destroy
     respond_to do |format|
       format.html { redirect_to job_shifts_path(@job), notice: 'Shift was successfully destroyed.' }

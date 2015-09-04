@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150901004517) do
+ActiveRecord::Schema.define(version: 20150902173843) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -83,11 +83,12 @@ ActiveRecord::Schema.define(version: 20150901004517) do
     t.date     "start_date"
     t.decimal  "pay_rate"
     t.date     "end_date"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.boolean  "active"
     t.datetime "deleted_at"
     t.integer  "recruiter_id"
+    t.integer  "timesheets_count"
   end
 
   add_index "jobs", ["deleted_at"], name: "index_jobs_on_deleted_at"
@@ -101,13 +102,16 @@ ActiveRecord::Schema.define(version: 20150901004517) do
     t.datetime "needed_by"
     t.boolean  "urgent"
     t.boolean  "active"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.string   "title"
     t.datetime "deleted_at"
     t.integer  "manager_id"
+    t.integer  "jobs_count"
+    t.integer  "account_manager_id"
   end
 
+  add_index "orders", ["account_manager_id"], name: "index_orders_on_account_manager_id"
   add_index "orders", ["deleted_at"], name: "index_orders_on_deleted_at"
   add_index "orders", ["manager_id"], name: "index_orders_on_manager_id"
 
@@ -115,8 +119,8 @@ ActiveRecord::Schema.define(version: 20150901004517) do
     t.datetime "time_in"
     t.datetime "time_out"
     t.integer  "employee_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
     t.decimal  "time_worked"
     t.integer  "job_id"
     t.string   "state"
@@ -130,6 +134,7 @@ ActiveRecord::Schema.define(version: 20150901004517) do
     t.datetime "break_out"
     t.text     "note"
     t.boolean  "needs_adj"
+    t.decimal  "break_duration"
   end
 
   add_index "shifts", ["deleted_at"], name: "index_shifts_on_deleted_at"
@@ -143,11 +148,12 @@ ActiveRecord::Schema.define(version: 20150901004517) do
     t.decimal  "reg_hours"
     t.decimal  "ot_hours"
     t.decimal  "gross_pay"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
     t.datetime "deleted_at"
     t.string   "state"
     t.integer  "approved_by"
+    t.integer  "shifts_count"
   end
 
   add_index "timesheets", ["deleted_at"], name: "index_timesheets_on_deleted_at"

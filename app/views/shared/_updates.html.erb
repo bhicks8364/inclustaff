@@ -1,9 +1,9 @@
-<div class="col-md-8">
+<div class="col-md-12">
 	<div class="main-box clearfix">
 		
 		<div class="tabs-wrapper">
 			<div class="clearfix">
-				<h2 class="pull-left">At A Glance</h2>
+				<h2 class="pull-left">This week<small><%= Date.today.end_of_week.strftime("%A  %b %d, %Y") %></small></h2>
 				<ul class="nav nav-tabs pull-right">
 					<li class="active"><a href="#tab-users" data-toggle="tab">Clocked In</a></li>
 					<li><a href="#tab-products" data-toggle="tab">Clocked Out</a></li>
@@ -13,10 +13,10 @@
 			
 			<div class="tab-content">
 				<div class="tab-pane fade in active" id="tab-users">
-					<span ><%= link_to "New Shift     <i class='fa fa-sign-in'></i>".html_safe, new_shift_path, class: "badge badge-success" %></span>
+					<span ><%= link_to "New Shift     <i class='fa fa-sign-in'></i>".html_safe, new_admin_shift_path, class: "badge badge-success" %></span>
 				
 						
-						<%= render @company.shifts.clocked_in.order(time_in: :desc) %>
+						<div class="shift-list"><%= render @jobs %></div>
 
 			
 
@@ -26,13 +26,13 @@
 				
 				<div class="tab-pane fade" id="tab-products">
 					
-						<%= render @shifts %>
+			
 					
 				</div>
 				
 				<div class="tab-pane fade" id="tab-todo">
 					
-						<%= render 'timesheets/table' %>
+						<%= render 'admin/timesheets/table' %>
 				
 				</div>
 				

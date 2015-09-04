@@ -26,6 +26,7 @@
 
 class Admin < ActiveRecord::Base
   belongs_to :company
+  has_many :orders, :through => :company
   has_many :shifts, :through => :company
 
   # Include default devise modules. Others available are:
@@ -33,6 +34,58 @@ class Admin < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
          
+         
+         
+  scope :account_managers, -> { where(role: "Account Manager")}
+  scope :owners, -> { where(role: "Owner")}
+  scope :payroll_admins, -> { where(role: "Payroll")}
+  scope :hr, -> { where(role: "HR")}
+  scope :recruiters, -> { where(role: "Recruiter")}
+  scope :limited, -> { where(role: "Limited Access")}
+         
+  
+  def account_manager?
+    if self.role == "Account Manager"
+      true
+    else
+      false
+    end
+  end
+  def owner?
+    if self.role == "Owner"
+      true
+    else
+      false
+    end
+  end
+  def payroll?
+    if self.role == "Payroll"
+      true
+    else
+      false
+    end
+  end
+  def recruiter?
+    if self.role == "Recruiter"
+      true
+    else
+      false
+    end
+  end
+  def hr?
+    if self.role == "HR"
+      true
+    else
+      false
+    end
+  end
+  def limited?
+    if self.role == "Limited Access"
+      true
+    else
+      false
+    end
+  end
          
   def name
     "#{first_name} #{last_name}"

@@ -11,7 +11,8 @@ class Shift
     @setEvents()
 
   setEvents: ->
-    @item.find("[data-behavior='shift-button']").on "click", @handleOut
+    @item.find("[data-behavior='out-button']").on "click", @handleOut
+
     
   handleOut: =>
     $.ajax(
@@ -23,18 +24,16 @@ class Shift
 
   handleOutSuccess: (data) =>
     if data.clocked_out
-      @item.find("[data-behavior='out-time']").html " <strong>Out:</strong> #{data.time_in}"
-      @item.find("[data-behavior='shift-state']").html "<span class='label label-default'>#{data.state}</span>"
+      alert("Sucessfuly clocked out! #{data.time_out} - #{data.state}")
       console.log data.state
       
     else
-#
-      #@item.find("[data-behavior='shift-button']").html "<i class='fa fa-sign-out red fa-lg''></i>"
-      #@item.find("[data-behavior='shift-state']").html "<span class='label label-success'>#{data.state}</span>"
-      #@item.find("[data-behavior='in-time']").html "<strong>In:</strong> #{data.time_in}"
-      console.log data.state
-      console.log data.time_in
-      alert("new shift created! #{data.time_in}")
+      alert("Uh-Oh! Something went wrong! #{data.time_out} - #{data.state}")
+      
+      
+  
+      
+      
       
 
 jQuery ->

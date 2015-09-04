@@ -1,0 +1,13 @@
+
+    <p class='text-center'><strong><%= @company.name %>'s Admins</strong></p>
+    <br>
+        <%= div_for(@company.admins) do |admin| %>
+
+            <p><%= admin.name %> <small>
+            <br> <%= admin.email %></small></p>
+    
+    
+        <% end %>
+
+            
+

@@ -45,7 +45,7 @@
 
 <span id='updated-at'></span>
 
-<h3><strong><%= link_to @employee.name, @employee %></strong> <small><%= @job.title.titleize %></small></h3>
+<h3><strong><%= link_to @employee.name, admin_employee_path(@employee) %></strong> <small><%= @job.title.titleize %></small></h3>
 
 For the week of: <%= @timesheet.week_ending  %>.
 <br>
@@ -64,21 +64,18 @@ Week: <%= @timesheet.week %>
    <br>
 <%= link_to 'View Shifts', '#', id: 'shifts-button', class: 'btn btn-primary btn-sm' %>
 <ul id="shifts-list"> 
-  <%= render @shifts %>
+  <%= render @shifts.limit(1) %>
 </ul>
 <hr>
-<section id='shifts-table' >
-  <%= render "shifts/table", :shifts => @shifts %>
-</section>
+
 <p><%= @timesheet.state.titleize %></p>
-  <% if @timesheet.approved? %>
-       <%= link_to "<span class='glyphicon glyphicon-ok-circle' aria-hidden='true'></span>    Approve".html_safe, approve_timesheet_path(@timesheet), method: :patch, remote: true, class: 'btn btn-primary btn-lg' %>
-  <% else %>
-<%= link_to "<span class='glyphicon glyphicon-ok-circle' aria-hidden='true'></span>    Approve".html_safe, approve_timesheet_path(@timesheet), method: :patch, remote: true, id: 'approve-button', class: 'btn btn-primary btn-lg' %>
-  <% end %>
+  
  
 
-
+<%= link_to(admin_timesheet_path(@timesheet, format: :pdf), class: 'btn btn-primary') do %>
+  					<i class="fa fa-download fa-lg"></i> Download PDF
+  				
+  				<% end %>
 
 <!--<h3><strong> Week Ending: <small> <%= @timesheet.week_ending %></small></strong></h3>-->
 <!--<div class="table-responsive">-->

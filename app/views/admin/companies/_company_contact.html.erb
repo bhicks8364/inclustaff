@@ -1,0 +1,19 @@
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Company Information</button>
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+        <address>
+          <strong><%= link_to @company.name, @company %></strong><br>
+          <%= @company.address %><br>
+          <%= @company.city %>, <%= @company.state %> <%= @company.zipcode %><br>
+          <abbr title="Phone">P:</abbr> (123) 456-7890
+        </address>
+        
+                  <address>
+          <strong><%= @company.contact_name %></strong><br>
+          <a href="mailto:#"><%= @company.contact_email %></a>
+        </address>
+    </div>
+  </div>
+</div>

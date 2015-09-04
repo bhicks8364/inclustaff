@@ -2,21 +2,22 @@
 #
 # Table name: timesheets
 #
-#  id          :integer          not null, primary key
-#  week        :integer
-#  job_id      :integer
-#  reg_hours   :decimal(, )
-#  ot_hours    :decimal(, )
-#  gross_pay   :decimal(, )
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  deleted_at  :datetime
-#  state       :string
-#  approved_by :integer
+#  id           :integer          not null, primary key
+#  week         :integer
+#  job_id       :integer
+#  reg_hours    :decimal(, )
+#  ot_hours     :decimal(, )
+#  gross_pay    :decimal(, )
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  deleted_at   :datetime
+#  state        :string
+#  approved_by  :integer
+#  shifts_count :integer
 #
 
 class Timesheet < ActiveRecord::Base
-    belongs_to :job
+    belongs_to :job, counter_cache: true
     has_many :shifts, dependent: :destroy
     has_one :employee, :through => :job
     
@@ -24,8 +25,10 @@ class Timesheet < ActiveRecord::Base
 
     
     delegate :pay_rate, to: :job
+    delegate :ot_rate, to: :job
     delegate :company, to: :job
     delegate :manager, to: :job
+    delegate :recruiter, to: :job
     delegate :current_shift, to: :job
     
 
@@ -49,6 +52,39 @@ class Timesheet < ActiveRecord::Base
         ending = start.end_of_week
         where(created_at: start..ending)
     }
+    
+    def receipt
+        Receipts::Receipt.new(
+          id: id,
+          message: "Staffing Invoice",
+          company: {
+            name: "IncluStaff LLC",
+            address: "8364 Oberlin Rd\nElyria, OH 44035",
+            email: "contact@inclustaff.com",
+            logo: Rails.root.join("app/assets/images/incluStaff_logo.png")
+          },
+          
+          line_items: [
+            ["Week Ending",           week_ending],
+            ["Employee", "#{job.name_title} (#{employee.code})"],
+            ["Reg Hrs",        "#{reg_hours} ($#{pay_rate.round(2)})"],
+            ["OT Hrs",       "#{ot_hours} ($#{ot_rate})"],
+            ["Amount",         "$#{gross_pay.round(2)}"],
+            ["Due Date",     "#{(created_at + 14.days).strftime("%x")}"],
+            ["Transaction ID", id]
+          ]
+        )
+    end
+   
+    def bill_to
+       company.owner
+    end
+       
+    
+    
+    
+    
+    
     
     def self.without_shifts
         includes(:shifts).where( :shifts => { :timesheet_id => nil } )

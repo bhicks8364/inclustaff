@@ -1,0 +1,59 @@
+<div class="clock" data-behavior="job-list">
+ 
+    <div data-behavior="job" data-id="<%= @job.id %>">
+      <% if @job.on_shift? %>
+              <span data-behavior="time-in">
+                  <strong> In:</strong>
+                  <%= @job.current_shift.time_in.strftime("%l:%M%P") %>
+              </span>
+            
+     
+              
+             
+               <span data-behavior="job-out-button" >
+                 <button class='badge badge-danger'>
+                  <i class='fa fa-sign-out'></i> Clock Out
+                </button>
+               </span>
+               <span data-behavior="job-in-button" class="hide-this">
+                 <button class='badge badge-success'>
+                  <i class='fa fa-sign-in'></i> Clock In
+                </button>
+               </span>
+
+    
+               <span data-behavior="time-out">
+               </span>
+
+
+          
+
+        <% else %>
+              <span data-behavior="time-in">
+              </span>
+              <span data-behavior="job-out-button" class="hide-this">
+                 <button class='badge badge-danger'>
+                  <i class='fa fa-sign-out'></i> Clock Out
+                </button>
+               </span>
+
+
+               <span data-behavior="job-in-button">
+                 <button class='badge badge-success'>
+                  <i class='fa fa-sign-in'></i> Clock In
+                </button>
+               </span> 
+
+
+
+           <span data-behavior="time-out">
+           </span>
+
+       
+      <% end %>
+
+             
+    	
+    
+    </div>
+</div>

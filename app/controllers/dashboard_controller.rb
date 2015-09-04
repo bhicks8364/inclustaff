@@ -1,18 +1,21 @@
 class DashboardController < ApplicationController
     # before_filter :authenticate_admin!
-    
+    layout 'new_employee'
     def home
         # authenticate_admin!
         if admin_signed_in? 
            @admin = current_admin
            @company = @admin.company
+        #   @manager = @admin if @admin.account_manager?
+           
+           @orders = @company.orders
            @shifts = @company.shifts
            @active_jobs = @company.jobs.active.joins(:shifts).group("jobs.title").order("shifts.updated_at DESC, jobs.title ASC") if @company.jobs.any?
            @timesheets = @company.timesheets
         elsif user_signed_in? && current_user.employee?
         
-            @current_user = current_user if current_user.employee?
-            @employee = @current_user.employee if @current_user.employee.present?
+            @current_user = current_user if user_signed_in? && current_user.employee?
+            @employee = @current_user.employee if @current_user.present? && @current_user.employee.present?
             @current_shift = @employee.current_shift if @employee.current_shift.present?
             @company = @employee.company if @employee.company.present?
             @timesheets = @employee.timesheets.order(updated_at: :desc)
@@ -50,6 +53,7 @@ class DashboardController < ApplicationController
     def company_view
           @admin = current_admin
           @company = @admin.company
+          @jobs = @current_admin.company.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 5).order('id DESC')
           @timesheets = @company.timesheets.order(updated_at: :desc)
           @clocked_in = @company.jobs.on_shift.order(time_in: :desc)
           @admin_users = @company.admins

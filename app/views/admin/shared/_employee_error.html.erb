@@ -1,0 +1,7 @@
+<% if @company.employees.unassigned.empty? %>
+<div id="no-employees-alert" class="alert alert-danger" role="alert"><br>
+ <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+<h3>All of your employees are currently assigned to a job. 
+Please add a new employee before continuing.</h3>
+<%= link_to 'Back', company_order_jobs_path(@company, @order), class: "pull-left" %> <%= link_to "Add Employee", new_employee_path, class: "pull-right" %>
+</div>

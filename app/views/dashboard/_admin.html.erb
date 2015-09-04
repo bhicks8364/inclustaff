@@ -1,34 +1,9 @@
 <div class="main-box">
-									<h2>All kinds of lists</h2>
+				<span>You are signed in as an <%= @admin.role %>.</span>
+				<% if @admin.account_manager? %>
+				<%= render 'manager' %>
+				<% end %>
+						
+						
 									
-									<h3><span>Font Awesome List</span></h3>
-									<ul class="fa-ul">
-										<li><i class="fa-li fa fa-check-square"></i>List icons (like these)</li>
-										<li><i class="fa-li fa fa-check-square"></i>can be used</li>
-										<li><i class="fa-li fa fa-spinner fa-spin"></i>to replace</li>
-										<li><i class="fa-li fa fa-square"></i>default bullets in lists</li>
-									</ul>
-									
-									<h3><span>Unordered List</span></h3>
-									<ul>
-										<li>
-											Item 1
-										</li>
-										<li>
-											Item 2
-											<ul>
-												<li>Subitem 2-1</li>
-												<li><strong>Subitem 2-2 (Bold)</strong></li>
-												<li><em>Subitem 2-1 (Italic)</em></li>
-											</ul>
-										</li>
-									</ul>
-									
-									<h3><span>Ordered List</span></h3>
-									<ol>
-										<li>Ordered Item 1</li>
-										<li>Ordered Item 2</li>
-										<li>Ordered Item 3</li>
-									</ol>
-									
-								</div>
+</div>

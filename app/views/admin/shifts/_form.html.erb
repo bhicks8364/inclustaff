@@ -1,5 +1,5 @@
 <div class="main-box">
-<%= simple_form_for @shift do |f| %>
+<%= simple_form_for [:admin, @shift] do |f| %>
 <div class="form-group">
 
     <% if @job.present? %>

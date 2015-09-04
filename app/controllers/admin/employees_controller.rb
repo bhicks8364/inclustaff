@@ -22,10 +22,10 @@ class Admin::EmployeesController < ApplicationController
     @company = @employee.company
     @job = @employee.current_job if @employee.current_job.present?
     @jobs = @employee.jobs
-    @timesheets = @employee.timesheets.order(created_at: :desc).limit(2)
-    @last_week_timesheets = @timesheets.last_week.order(updated_at: :desc)
+    @timesheets = @employee.timesheets.order(created_at: :desc).limit(2) if @employee.timesheets.any?
+    @last_week_timesheets = @timesheets.last_week.order(updated_at: :desc) if @timesheets
     @current_timesheet = @employee.current_timesheet if @employee.current_job.present?
-    # @job = @employee.current_job if @employee.current_job != nil
+    @current_job = @employee.current_job if @employee.current_job != nil
     # @current_company = @employee.company
     # @company = @employee.company
     # @jobs = @employee.jobs.includes(:shifts)
@@ -40,11 +40,11 @@ class Admin::EmployeesController < ApplicationController
   # GET /employees/new
   def new
 
-      @admin = current_admin
-      @company = @admin.company
-      @employees = @company.employees.order(last_name: :asc)
-      @employee = Employee.new
-      @employee.build_user
+    @admin = current_admin
+    @company = @admin.company
+    @employees = @company.employees.order(last_name: :asc)
+    @employee = Employee.new
+    @employee.build_user
     # @current_user = current_user if user_signed_in?
     # @company = @current_user.company 
     # @employee = Employee.new
@@ -75,7 +75,7 @@ class Admin::EmployeesController < ApplicationController
 
     respond_to do |format|
       if @employee.save
-        format.html { redirect_to @employee, notice: 'Employee was successfully created.' }
+        format.html { redirect_to admin_employee_path(@employee), notice: 'Employee was successfully created.' }
         format.json { render :show, status: :created, location: @employee }
       else
         format.html { render :new }
@@ -93,7 +93,7 @@ class Admin::EmployeesController < ApplicationController
     # authorize @employee
     respond_to do |format|
       if @employee.update(employee_params)
-        format.html { redirect_to @employee, notice: 'Employee was successfully updated.' }
+        format.html { redirect_to admin_employee_path(@employee), notice: 'Employee was successfully updated.' }
         format.json { render :show, status: :ok, location: @employee }
       else
         format.html { render :edit }

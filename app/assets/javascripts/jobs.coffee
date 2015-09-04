@@ -11,11 +11,35 @@ class Job
     @setEvents()
 
   setEvents: ->
-    @item.find("[data-behavior='job-button']").on "click", @handleOut
+    @item.find("[data-behavior='job-in-button']").on "click", @handleIn
+    @item.find("[data-behavior='job-out-button']").on "click", @handleOut
+  
+  handleIn: =>
+    $.ajax(
+      url: "/admin/jobs/#{@id}/clock_in",
+      method: "PATCH"
+      dataType: "JSON"
+      success: @handleInSuccess
+    )
+
+  handleInSuccess: (data) =>
+    if data.clocked_in
+      @item.find("[data-behavior='job-in-button']").hide()
+      @item.find("[data-behavior='job-out-button']").show()
+      @item.find("[data-behavior='last-in']").hide()
+      @item.find("[data-behavior='last-out']").hide()
+      @item.find("[data-behavior='time-in']").html "<strong> In:</strong> #{data.time_in}"
+      console.log data.time_in
+      console.log data.time_out
+      
+    else
+      alert("Uh-Oh! Something went wrong! #{data.time_in} - #{data.state}")
+      console.log data.time_in
+      console.log data.time_out
     
   handleOut: =>
     $.ajax(
-      url: "/jobs/#{@id}/clock_in",
+      url: "/admin/jobs/#{@id}/clock_out",
       method: "PATCH"
       dataType: "JSON"
       success: @handleOutSuccess
@@ -23,18 +47,26 @@ class Job
 
   handleOutSuccess: (data) =>
     if data.clocked_out
-      @item.find("[data-behavior='out-time']").html " <strong>Out:</strong> #{data.time_in}"
-      @item.find("[data-behavior='job-state']").html "<span class='label label-default'>#{data.state}</span>"
-      console.log data.state
       
-    else
-#
-      #@item.find("[data-behavior='job-button']").html "<i class='fa fa-sign-out red fa-lg''></i>"
-      #@item.find("[data-behavior='job-state']").html "<span class='label label-success'>#{data.state}</span>"
-      #@item.find("[data-behavior='in-time']").html "<strong>In:</strong> #{data.time_in}"
+      #@item.find(".shift-item").hide()
+      @item.find("[data-behavior='job-out-button']").hide()
+      @item.find("[data-behavior='job-in-button']").show()
+      @item.find("[data-behavior='time-in']").html "<strong> In:</strong> #{data.time_in}"
+      @item.find("[data-behavior='time-out']").html "<strong> Out:</strong> #{data.time_out}"
+     
+      #@item.find("[data-behavior='shift-state']").html "<span class='label label-danger'>#{data.state}</span>"
       console.log data.state
       console.log data.time_in
-      alert("new job created! #{data.time_in}")
+      console.log data.time_out
+      
+    else
+      alert("Uh-Oh! Something went wrong! #{data.time_out} - #{data.state}")
+      console.log data.time_in
+      console.log data.time_out
+      
+      
+      
+  
       
 
 jQuery ->

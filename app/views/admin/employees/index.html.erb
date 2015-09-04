@@ -1,74 +1,74 @@
 <div class="col-lg-12">
 					
-						<div class="clearfix">
-							<h1 class="pull-left">Employees</h1>
+	<div class="clearfix">
+	<h3 class="pull-left">Employees</h3>
+	
+	</div>
 
-						</div>
-						
-						<div class="row">
-							<div class="col-lg-12">
-								<div class="main-box clearfix">
-									<div class="table-responsive">
-										<table class="table user-list">
-											<thead>
-												<tr>
-													<th><span>Employee</span></th>
-													<th><span>Created</span></th>
-													<th class="text-center"><span>Status</span></th>
-													<th><span>Week Gross</span></th>
-													<th><span>YTD Gross</span></th>
-													<th>&nbsp;</th>
-												</tr>
-											</thead>
-											<tbody>
-												<%= content_tag_for(:tr, @employees) do |employee| %>
-													<td>
-													    <%= image_tag("User_Circle.png") %>
-														<%= link_to employee.name, employee, class: "user-link" %>
-														<span class="user-subhead"><%= employee.current_job ? employee.current_job.title : "Unassigned" %></span>
-													</td>
-													<td>
-														<%= employee.created_at.strftime("%x") %>
-													</td>
-													<td class="text-center">
-													  <% if employee.current_job.on_shift? %>
-													    <span class="label label-success">Clocked In</span>
-													  <% else %>
-													  <span class="label label-primary">Clocked Out</span>
-													  
-													  <% end %>
-														
-													</td>
-													<td><%= number_to_currency(employee.current_job.current_week_pay) %></td>
-                          <td><%= number_to_currency(employee.current_job.total_gross_pay) %></td>
-													<td style="width: 20%;">
-														<%= link_to employee_path(employee, class: "table-link" ) do %>
-															<span class="fa-stack">
-																<i class="fa fa-square fa-stack-2x"></i>
-																<i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
-															</span>
-														<% end %>
-														<%= link_to edit_employee_path(employee, class: "table-link" ) do %>
-															<span class="fa-stack">
-																<i class="fa fa-square fa-stack-2x"></i>
-																<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-															</span>
-														<% end %>
-				
-														<%= link_to(employee, method: :delete) do %>
-															<span class="fa-stack">
-																<i class="fa fa-square fa-stack-2x"></i>
-																<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-															</span>
-														<% end %>
-													</td>
-												<% end %>
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="main-box clearfix">
+				<div class="table-responsive">
+					<table class="table user-list">
+						<thead>
+							<tr>
+								<th><span>Name</span></th>
+
+								<th style="width: 20%;" class="text-center"><span>Status</span></th>
+								<th><span>Week Gross</span></th>
+								<th><span>YTD Gross</span></th>
+								<th>&nbsp;</th>
+							</tr>
+						</thead>
+						<tbody>
+							<%= content_tag_for(:tr, @employees) do |employee| %>
+								<td>
+								    <%= image_tag("User_Circle.png") %>
+									<%= link_to employee.name, admin_employee_path(employee), class: "user-link" %>
+									<span class="user-subhead"><%= employee.current_job ? employee.current_job.title : "Unassigned" %></span>
+									
+								</td>
+
+								<td style="width: 20%;" class="text-center">
+								  <% if employee.current_job.on_shift? %>
+								    <span class="label label-success">Clocked In</span>
+								  <% else %>
+								  <span class="label label-primary">Clocked Out</span>
+								  
+								  <% end %>
+									
+								</td>
+								<td><%= number_to_currency(employee.current_job.current_week_pay) %></td>
+		<td><%= number_to_currency(employee.current_job.total_gross_pay) %></td>
+								<td style="width: 20%;">
+									<%= link_to admin_employee_path(employee, class: "table-link" ) do %>
+										<span class="fa-stack">
+											<i class="fa fa-square fa-stack-2x"></i>
+											<i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+										</span>
+									<% end %>
+									<%= link_to edit_admin_employee_path(employee, class: "table-link" ) do %>
+										<span class="fa-stack">
+											<i class="fa fa-square fa-stack-2x"></i>
+											<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+										</span>
+									<% end %>
+		
+									<%= link_to(admin_employee_path(employee), method: :delete) do %>
+										<span class="fa-stack">
+											<i class="fa fa-square fa-stack-2x"></i>
+											<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+										</span>
+									<% end %>
+								</td>
+							<% end %>
+						</tbody>
+					</table>
+				</div>
+	</div>
+</div>
 
         
-
+</div>
+</div>
 

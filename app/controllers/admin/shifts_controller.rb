@@ -4,13 +4,15 @@ class Admin::ShiftsController < ApplicationController
   before_action :set_admin
 
   def index
-    @shifts = @current_admin.shifts.current_week.order(time_in: :desc)
-    gon.shifts = @shifts
+    @jobs = @current_admin.company.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 5).order('id DESC')
+    @shifts = @current_admin.shifts.paginate(:page => params[:page], :per_page => 5).order('id DESC')
+    # gon.shifts = @shifts
   end
   
   def show
     @employee = @shift.employee
     @job = @shift.job
+    @timesheet = @shift.timesheet
     gon.shift = @shift
   end
 
@@ -47,37 +49,66 @@ class Admin::ShiftsController < ApplicationController
   
   def clock_out
     @shift = Shift.find(params[:id])
-    if @shift.clocked_in?
-      @shift.out_ip = current_admin.last_name + "-admin"
-      @shift.clock_out!
-    elsif @shift.clocked_out?
-      @shift.clock_in!
-    end
-    respond_to do |format|
-      if @shift.save
-        time_out = @shift.time_out.nil? ? @shift.state : @shift.time_out.strftime("%l:%M%P")
-        
-        format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, 
-                    state: @shift.state, time_out: time_out,
-                    out_ip: @shift.out_ip, time_in: @shift.time_in.strftime("%l:%M%P"),
-                    in_ip: @shift.in_ip } }
+    if @shift.clock_in?
+      
+      @shift.update(time_out: Time.current,
+                          state: "Clocked Out",
+                          out_ip: "Admin-Clock-Out" )
+      
+      respond_to do |format|
+        if @shift.save
   
-      else
-
-        format.html { render :edit }
-        format.json { render json: @shift.errors, status: :unprocessable_entity }
-        
-        
+          
+          format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
+                      state: @shift.state, time_out: @shift.time_out.strftime("%l:%M%P"),
+                      out_ip: @shift.out_ip, time_in: @shift.time_in.strftime("%l:%M%P"),
+                      in_ip: @shift.in_ip } }
+    
+        else
+  
+          format.html { render :edit }
+          format.json { render json: @shift.errors, status: :unprocessable_entity }
+          
+          
+        end
       end
     end
   end
+  
+  def clock_in
+    @shift = Shift.find(params[:id])
+    @job = @shift.job
+      if @shift.clocked_out?
+        @shift = @job.shifts.create(time_in: Time.current, week: Date.today.cweek,
+                                    state: "Clocked In",
+                                    in_ip: @current_admin.last_name + "-admin")
+        respond_to do |format|
+          if @shift.save
+            
+            
+            format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
+                        state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out,
+                        in_ip: @shift.in_ip } }
+      
+          else
+    
+            format.html { render :new }
+            format.json { render json: @shift.errors, status: :unprocessable_entity }
+            
+            
+          end
+          
+        end
+      end
+  end
+
   
   
   def clock_out_all
     @shifts = @current_admin.shifts.clocked_in
     @shifts.each { |shift| shift.update(time_out: Time.current,
                       state: "Clocked Out",
-                      out_ip: current_admin.last_name + "-admin")}
+                      out_ip: @current_admin.last_name + "-admin")}
     respond_to do |format|
         format.js 
     end
@@ -94,7 +125,7 @@ class Admin::ShiftsController < ApplicationController
 
     respond_to do |format|
       if @shift.update(shift_params)
-        format.html { redirect_to @shift, notice: 'Shift was successfully updated.' }
+        format.html { redirect_to admin_shift_path(@shift), notice: 'Shift was successfully updated.' }
         format.json { render :show, status: :ok, location: @shift }
       else
         format.html { render :edit }

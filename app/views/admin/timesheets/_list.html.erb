@@ -1,0 +1,51 @@
+
+<ul class="package-features">
+    
+
+</ul>
+<div class="col-md-3 col-sm-6 col-xs-12 pricing-package">
+	<div class="pricing-package-inner">
+		<div class="package-header green-bg">
+			<span class="stars center-block">
+				<i class="fa fa-cog"></i>
+				
+			</span>
+			<h3>Timesheets</h3>
+		</div>
+		<div class="package-content">
+			<div class="package-price">
+				&dollar;12<span class="package-month">/mo</span>
+			</div>
+			
+			<ul class="package-features" data-behavior="timesheet-list">>
+			    <% @timesheets.order(updated_at: :desc).each do |timesheet| %>
+                    <% if timesheet.approved? %>
+                        <li class="has-feature" data-behavior="timesheet" data-id="<%= timesheet.id %>">
+                		    <span><% if timesheet.clocked_in?%><i class="fa fa-cog fa-spin"></i><% end %></span><%= timesheet.week_ending %> - <%= timesheet.employee.name %>
+                	    
+                	    </li>
+                        
+                    <% else %>
+                        <li class="has-nofeature" data-behavior="timesheet" data-id="<%= timesheet.id %>">
+                		  <span><% if timesheet.clocked_in?%><i class="fa fa-cog fa-spin"></i><% end %></span>  <%= timesheet.week_ending %> - <%= timesheet.employee.name %>
+                	    
+                	    
+                	    
+                	    </li>
+                    
+                    <% end %>
+    
+    
+    
+    <% end %>
+
+			</ul>
+			
+		</div>
+	</div>
+	<div class="package-footer">
+		<button class="btn btn-success">
+			<span class="fa fa-download fa-lg"></span> Try now
+		</button>
+	</div>
+</div>

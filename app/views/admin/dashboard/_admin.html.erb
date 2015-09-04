@@ -1,0 +1,18 @@
+<div class="main-box">
+				<span>You are signed in as an <%= @admin.role %>.</span>
+			<% if @admin.owner? %>
+			<div class='main-box'>	
+			<%= render 'admin/timesheets/table' %></div>
+				<% end %>	
+				
+				
+				
+				
+				
+				<% if @admin.account_manager? %>
+				<%= render 'manager' %>
+				<% end %>
+						
+						
+									
+</div>

@@ -1,7 +1,7 @@
 <h1>Editing Job</h1>
 <input type="text" id="alternate" size="30" class="pull-right"><br>
 
-<%= simple_form_for(@job) do |f| %>
+<%= simple_form_for [:admin, @job] do |f| %>
   <% if @job.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@job.errors.count, "error") %> prohibited this job from being saved:</h2>

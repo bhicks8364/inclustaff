@@ -1,10 +1,9 @@
 class Admin::JobsController < ApplicationController
-  before_action :set_job, only: [:show, :edit, :update, :destroy, :clock_in]
+  before_action :set_job, only: [:show, :edit, :update, :destroy, :clock_in, :clock_out]
   before_action :authenticate_admin!
-  # before_action :set_order
 
-  # GET /jobs
-  # GET /jobs.json
+
+
   def index
     @admin = current_admin
     @company = @admin.company
@@ -13,23 +12,25 @@ class Admin::JobsController < ApplicationController
   end
   
   def archived
-    @company = current_user.company if current_user.present?
+    @admin = current_admin
+    @company = @admin.company
     @archived_jobs = @company.jobs.inactive.with_employee
-    @active_jobs = Job.active.with_employee
+    @active_jobs = @company.active.with_employee
+    
+    @all_jobs = Job.all
     # authorize @active_jobs
   end
+
+
+
+
 
   # GET /jobs/1
   # GET /jobs/1.json
   def show
-
-    @employee = @job.employee
-    @order = @job.order
-    @current_timesheet = @job.current_timesheet
-    @company = @job.company
-    @current_shift = @job.shifts.clocked_in.last if @job.on_shift?
-    @all_timesheets = @job.timesheets
-    @timesheets = @job.timesheets
+    @timesheet = @job.current_timesheet if @job.current_timesheet.present?
+    @shift = @job.shifts.last if @job.shifts.any?
+    @timesheets = @job.timesheets if @job.timesheets.any?
     @last_week_timesheets =  @job.timesheets.last_week
     
   end
@@ -57,12 +58,32 @@ class Admin::JobsController < ApplicationController
   def clock_in
 
     if @job.off_shift?
-      @job.clock_in!
-      @shift = @job.current_shift
+      @shift = @job.shifts.create(time_in: Time.current, week: Date.today.cweek,
+                                  state: "Clocked In",
+                                  in_ip: "Admin-Clock-In")
 
     
       respond_to do |format|
-          format.js
+          format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
+                    state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out,
+                    in_ip: @shift.in_ip } }
+
+      end
+    end
+  end
+  
+  def clock_out
+
+    if @job.on_shift? && @job.current_shift.present?
+        @shift = @job.current_shift
+        @shift.update(time_out: Time.current,
+                        state: "Clocked Out",
+                        out_ip: "Admin-Clock-Out" )
+    
+      respond_to do |format|
+          format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
+                    state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out.strftime("%l:%M%P"),
+                    in_ip: @shift.in_ip } }
 
       end
     end
@@ -70,10 +91,9 @@ class Admin::JobsController < ApplicationController
 
   # GET /jobs/1/edit
   def edit
-    @company = @job.company
+
     @employees = @company.employees.unassigned
-    @order = @job.order
-    @employee = @job.employee
+
     # authorize @job
   end
 
@@ -97,7 +117,7 @@ class Admin::JobsController < ApplicationController
     
     respond_to do |format|
       if @job.save
-        format.html { redirect_to job_path(@job, anchor: "job_#{@job.id}"), notice: 'Job was successfully created.' }
+        format.html { redirect_to admin_job_path(@job, anchor: "job_#{@job.id}"), notice: 'Job was successfully created.' }
         format.json { render :show, status: :created, location: @job }
       else
         format.html { render :new }
@@ -112,7 +132,7 @@ class Admin::JobsController < ApplicationController
     # authorize @job
     respond_to do |format|
       if @job.update(job_params)
-        format.html { redirect_to @job, notice: 'Job was successfully updated.' }
+        format.html { redirect_to admin_job_path(@job), notice: 'Job was successfully updated.' }
         format.json { render :show, status: :ok, location: @job }
       else
         format.html { render :edit }
@@ -136,6 +156,9 @@ class Admin::JobsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_job
       @job = Job.includes(:employee, :order).find(params[:id])
+      @employee = @job.employee
+      @order = @job.order
+      @company = @job.company
     end
     
     def set_order

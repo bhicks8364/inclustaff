@@ -23,7 +23,7 @@
 		<%= render 'shared/navbar' %>
 	<div class="container">
 		<div class="row">
-		<% if admin_signed_in? %><%= render 'shared/admin_sidebar' %><% end %>
+		<% if admin_signed_in? %><%= render 'admin/shared/admin_sidebar' %><% end %>
 		<% if user_signed_in? %><%= render 'shared/employee_sidebar' %><% end %>
 			<div class="col-md-10" id="content-wrapper">
 

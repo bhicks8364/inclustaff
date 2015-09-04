@@ -4,24 +4,44 @@ namespace :db do
   task :populate => :environment do
 	require 'populator'
 	require 'ffaker'
-	  Company.populate 10 do |company|
-		company.name = FFaker::Company.name
-		company.city = FFaker::Address.city
-		company.state = FFaker::AddressUS.state
-		company.zipcode = FFaker::AddressUS.zip_code
-		company.address = FFaker::AddressUS.street_address
-		company.phone_number = FFaker::PhoneNumber.phone_number
-		puts company.name
-	  end
+		def range (min, max)
+	    	rand * (max-min) + min
+		end
+	
+		Company.populate 5 do |company|
+			company.name = FFaker::Company.name
+			company.city = FFaker::Address.city
+			company.state = FFaker::AddressUS.state
+			company.zipcode = FFaker::AddressUS.zip_code
+			company.address = FFaker::AddressUS.street_address
+			company.phone_number = FFaker::PhoneNumber.phone_number
+			Order.populate(1..5) do |order|
+				order.company_id = company.id
+				order.title = FFaker::Skill.specialty + "Dept."
+				order.notes = FFaker::BaconIpsum.sentences
+				order.active = true
+				Job.populate(2..5) do |job|
+					job.order_id = order.id
+					job.title = FFaker::Job.title
+					job.employee_id = job.id
+					job.pay_rate = range(8.10, 27.57)
+					job.description = FFaker::BaconIpsum.sentences
+					job.active = true
+					puts job.employee_id
+			  	end
+			end
+			
+		end
 	  puts 'All done!!!'
   end
+
   
-  desc "Create 25 employees with random names and descriptions"
+  desc "Create 25 employees with random names and addresses"
   task :pop_emp => :environment do
 	require 'populator'
 	require 'ffaker'
 	password = "password"
-	  User.populate 25 do |user|
+	  User.populate 45 do |user|
 		user.first_name = FFaker::Name.first_name
 		user.last_name = FFaker::Name.last_name
 		user.email = FFaker::Internet.email
@@ -32,6 +52,20 @@ namespace :db do
 		user.role = "Employee"
 		user.encrypted_password = User.new(:password => password).encrypted_password
 		user.sign_in_count = 0
+		Employee.populate 1 do |employee|
+			employee.user_id = user.id
+			employee.first_name = user.first_name
+			employee.last_name = user.last_name
+			employee.email = user.email
+			employee.ssn = 1234..9999
+			employee.phone_number = FFaker::PhoneNumber.short_phone_number
+
+			
+	
+	
+			
+			puts employee.first_name
+		  end
 		
 
 
@@ -40,6 +74,8 @@ namespace :db do
 	  end
 	  puts 'All done!!!'
   end
+  
+
   
   
   

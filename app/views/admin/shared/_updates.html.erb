@@ -1,0 +1,44 @@
+<div class="col-md-12">
+	<div class="main-box clearfix">
+		
+		<div class="tabs-wrapper">
+			<div class="clearfix">
+				<h2 class="pull-left">This week<small><%= Date.today.end_of_week.strftime("%A  %b %d, %Y") %></small></h2>
+				<ul class="nav nav-tabs pull-right">
+					<li class="active"><a href="#tab-users" data-toggle="tab">Clocked In</a></li>
+					<li><a href="#tab-products" data-toggle="tab">Clocked Out</a></li>
+					<li><a href="#tab-todo" data-toggle="tab">Timesheets</a></li>
+				</ul>
+			</div>
+			
+			<div class="tab-content">
+				<div class="tab-pane fade in active" id="tab-users">
+					<span ><%= link_to "New Shift     <i class='fa fa-sign-in'></i>".html_safe, new_admin_shift_path, class: "badge badge-success" %></span>
+				
+						
+					<!--<%= render @jobs %>-->
+
+			
+
+					<br>
+					<%= link_to "View all users", users_path, class: "badge badge-success pull-right" %>
+				</div>
+				
+				<div class="tab-pane fade" id="tab-products">
+					
+					
+					<!--<%= render @employees %>-->
+			
+					
+				</div>
+				
+				<div class="tab-pane fade" id="tab-todo">
+					
+						<%= render 'admin/timesheets/table' %>
+				
+				</div>
+				
+			</div>
+		</div>
+	</div>
+					

@@ -1,24 +1,51 @@
-.job {
+// .job {
 
   
-  &:target {
-      background-color: rgba(23, 230, 13, 0.28);
+//   &:target {
+//       background-color: rgba(23, 230, 13, 0.28);
 
-  }
-}
+//   }
+// }
 
 
-.shift-item {
-  padding: 8px;
-  margin: 5px;
-  max-width: 90%;
-}
+// .shift-item {
+//   padding: 8px;
+//   align-self: center;
+//   max-width: 85%;
+//   border: 2px solid black;
+// }
 
 
 .btn.clock-button {
+  -webkit-box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.75);
+  box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.75);
   background-color: transparent;
+  // color: ;
   border-bottom: 0px;
 }
 .btn.clock-button:hover { 
-    background-color: yellow;
+    background-color: blue;
 }
+
+
+.shift-list {
+
+  max-width: 100%;
+  border: 2px solid rgba(54, 54, 54, 0.19);
+}
+.clock {
+
+  // padding: 8px;
+  // margin: auto;
+  // max-width: 100%;
+  // border: 2px solid rgba(54, 54, 54, 0.19);
+}
+
+// #shift-group {
+//   border: 2px solid black;
+//   div {
+//     padding: 5px;
+//     margin: 3px;
+//   }
+// }

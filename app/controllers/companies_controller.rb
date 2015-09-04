@@ -22,7 +22,7 @@ class CompaniesController < ApplicationController
     @timesheets = @company.timesheets.order(updated_at: :desc) 
     @last_week_timesheets = @timesheets.last_week.order(updated_at: :desc)
 
-    @all_users = @company.users
+    @all_users = @company.admins
     @employees = @company.employees
     @active_employees = @employees.with_active_jobs
     # @clocked_in = @company.jobs.on_shift.includes(:employee) if @company.jobs.any?

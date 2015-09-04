@@ -11,7 +11,7 @@ Please add a new employee before continuing.</h3>
 <h1>New Job</h1>
 <h3><%= @company.name %> </h3>
 
-<%= simple_form_for(@job) do |f| %>
+<%= simple_form_for [:admin, @job] do |f| %>
   <% if @job.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@job.errors.count, "error") %> prohibited this job from being saved:</h2>
@@ -55,4 +55,4 @@ Please add a new employee before continuing.</h3>
 <!--IF THE COMPANY HAS NO UNASSIGNED EMPLOYEES - - END-->
 
 
-<%= link_to 'Back', company_orders_path(@company) %>
+<%= link_to 'Back', admin_orders_path %>
