@@ -1,4 +1,4 @@
-class CompaniesController < ApplicationController
+class Admin::CompaniesController < ApplicationController
   before_action :set_company, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_admin!
 
@@ -93,7 +93,7 @@ class CompaniesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_company
-      @company = Company.includes(:orders, :jobs).find(params[:id])
+      @company = Company.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

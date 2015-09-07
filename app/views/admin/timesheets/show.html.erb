@@ -31,8 +31,9 @@
 
 
 <p id="notice"><%= notice %></p>
-<%= render @timesheet.job %>
-  <% if @timesheet.clocked_in? %>
+<div><%= render @timesheet.job %></div>
+
+<div>  <% if @timesheet.clocked_in? %>
   <p id="clock-status" class="text-center"><strong><%= @timesheet.employee_name %> is currently clocked in. </p>
   <%= render @timesheet.current_shift %>
   
@@ -45,7 +46,7 @@
 
 <span id='updated-at'></span>
 
-<h3><strong><%= link_to @employee.name, admin_employee_path(@employee) %></strong> <small><%= @job.title.titleize %></small></h3>
+<strong><%= link_to @employee.name, admin_employee_path(@employee) %></strong> <small><%= @job.title.titleize %></small>
 
 For the week of: <%= @timesheet.week_ending  %>.
 <br>
@@ -61,16 +62,9 @@ Week: <%= @timesheet.week %>
   <%= number_to_currency(@timesheet.gross_pay) %><br>
 
    <strong>Last Clock In:</strong> <%= @timesheet.last_clock_in.strftime("%B %e, %Y  at   %I:%M %p") %>
-   <br>
-<%= link_to 'View Shifts', '#', id: 'shifts-button', class: 'btn btn-primary btn-sm' %>
-<ul id="shifts-list"> 
-  <%= render @shifts.limit(1) %>
-</ul>
-<hr>
 
-<p><%= @timesheet.state.titleize %></p>
   
- 
+ <%= render 'admin/shifts/table' %>
 
 <%= link_to(admin_timesheet_path(@timesheet, format: :pdf), class: 'btn btn-primary') do %>
   					<i class="fa fa-download fa-lg"></i> Download PDF
@@ -85,5 +79,5 @@ Week: <%= @timesheet.week %>
 
 
 <!--<%= link_to 'Edit', edit_timesheet_path(@timesheet) %> |-->
-<!--<%= link_to 'Back', timesheets_path %>-->
-<!--</div>-->
+<%= link_to 'Back', admin_timesheets_path %>
+</div>

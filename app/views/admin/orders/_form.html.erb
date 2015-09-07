@@ -21,13 +21,14 @@
   </div>
   <% end %>
 
-    <h4><strong>Department Information</strong></h4>
-    <%= f.input :title, placeholder: "Enter Department Name", label: false %>
-    <%= f.association :manager, collection: @company.admins.order(:last_name), prompt: "Choose a Company Manager", label: false %>
+    <h4><strong>Job Order Information</strong></h4>
+    <%= f.input :title, placeholder: "Title", label: false %>
+    <%= f.input :number_needed, collection: 1..10, prompt: "How many people are needed?", label: false %>
+    <%= f.input :mark_up, collection: [ 1.4, 1.5, 1.6 ], prompt: " Select Mark Up", label: false %>
     <%= f.association :account_manager, collection: @account_managers.order(:last_name), prompt: "Choose aa Account Manager", label: false %>
     <%= f.input :pay_range, collection: [ "Hourly", "Salary", "Hourly + Commission"], prompt: " Select Pay Type", label: false %>
-    <%= f.input :notes, label: "Additional Payroll Information", placeholder: "Vacation & holiday pay, bonus structure, shift differentials, etc...", label: false %>
-    <%= f.input :urgent, as: :boolean, label: "Paid bi-weekly?" %>
+    <%= f.input :notes, label: "Job Requirements", placeholder: "Please list desired skills, qualifications, etc...", label: false, row: 10 %>
+    <%= f.input :urgent, as: :boolean, label: "Do you need someone ASAP?" %>
     <%= f.input :active, as: :boolean %>
     <%= f.submit %>
     

@@ -29,6 +29,10 @@ class Company < ActiveRecord::Base
     has_many :recruiters, -> { where role: 'Recruiter' }, class_name: "Admin"
     has_many :payroll_admin,  -> { where role: "Payroll" }, class_name: "Admin"
     has_many :account_managers,  -> { where role: "Account Manager" }, class_name: "Admin"
+    include ArelHelpers::ArelTable
+    include ArelHelpers::JoinAssociation
+    
+    
     
    
     
@@ -54,11 +58,17 @@ class Company < ActiveRecord::Base
     
     def current_payroll_cost
         self.timesheets.current_week.sum(:gross_pay)
-        
     end
+    def current_billing
+        self.timesheets.current_week.sum(:total_bill)
+    end
+    def last_week_billing
+        self.timesheets.last_week.sum(:total_bill)
+    end
+
     
     def set_payroll_cost!
-        cost = self.timesheets.current_week.sum(:gross_pay)
+        cost = self.timesheets.approved.sum(:total_bill)
         self.update(balance: cost)
     end
     

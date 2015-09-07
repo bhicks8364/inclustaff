@@ -14,6 +14,7 @@
 #  state        :string
 #  approved_by  :integer
 #  shifts_count :integer
+#  total_bill   :decimal(, )
 #
 
 require 'test_helper'

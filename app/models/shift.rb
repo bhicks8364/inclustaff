@@ -50,7 +50,6 @@ class Shift < ActiveRecord::Base
     # has_one :company, through: :order
     
     # validates_associated :employee
-    validates_associated :job
     validates :job_id, presence: true
     validates :time_in, presence: true
 
@@ -69,15 +68,20 @@ class Shift < ActiveRecord::Base
 
 
     def set_defaults
-        self.employee = self.job.employee if self.employee.nil?
+        self.employee = self.job.employee if self.employee.nil? 
         self.in_ip = self.employee.current_sign_in_ip if self.in_ip.nil?
         
     end
     
     def set_timesheet
-        self.timesheet = Timesheet.find_or_create_by(job_id: self.job_id, week: self.week)
+        if self.timesheet_id.nil?
+            self.timesheet = Timesheet.find_or_create_by(job_id: self.job_id, week: self.week)
+        end
     end
     
+    def to_s
+        "#{self.hours_worked.round(2)}     #{self.time_in.strftime('%m/%d   %r')} - #{self.time_out? ? self.time_out.strftime('%r') : self.state }"
+    end
     
     # def clock_in!
     #     self.update(time_in: Time.current, time_out: nil,

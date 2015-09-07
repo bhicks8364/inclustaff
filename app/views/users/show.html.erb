@@ -28,7 +28,7 @@
     <% if @employee.assigned? %>
      <%= render @job %>
      <% else %>
-     <%= @employee.first_name %> is currently unassigned.
+     <%= @employee.first_name %> is currently unassigned. 
      <% end %>
 
      
@@ -52,8 +52,7 @@
   </div>
   
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
-    <h3><%= @user.name %>'s Timesheets</h3>
-    <%= render 'shared/current_timesheets' %>
+
 
       
      
@@ -65,7 +64,11 @@
   
   <div role="tabpanel" class="tab-pane fade" id="current-job">
     
-
+  <% if @jobs %>
+    <%= render @jobs %>
+    <% else %>
+    <h3><%= @employee.first_name %> is currently unassigned.</h3>
+  <% end %>
      
                 
         
@@ -75,9 +78,9 @@
   <div role="tabpanel" class="tab-pane fade" id="shifts">
     
   <% if @employee.assigned? %>
-    <%= render 'admin/shifts/table' %>
+
     <% else %>
-    <h3><%= @employee.first_name %> is currently unassigned.</h3>
+    <h3> <%= @employee.first_name %> is currently unassigned.</h3>
   <% end %>
      
                 

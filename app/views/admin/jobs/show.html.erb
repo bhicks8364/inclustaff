@@ -18,7 +18,11 @@
       <strong>Job Title:</strong>
       <%= @job.title %><br>
       <strong>Recruiter:</strong>
-      <%= @job.recruiter.present? ? @job.recruiter.name : "Recruiter unavailable" %><br>
+      <% if @job.recruiter.present? %>
+      <%= link_to @job.recruiter.name, @job.recruiter %>
+      <% else %>
+      No Recruiter Available.
+      <% end %><br>
       <strong>Staff:</strong>
       <%= @job.staff %><br>
       

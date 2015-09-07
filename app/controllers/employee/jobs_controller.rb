@@ -8,7 +8,7 @@ class Employee::JobsController < ApplicationController
   # GET /jobs.json
   def index
 
-    @jobs = @employee.jobs.actve.order(title: :asc) if @employee.jobs.any?
+    @jobs = @employee.jobs.active.order(title: :asc) if @employee.jobs.any?
 
   end
   

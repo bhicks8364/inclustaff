@@ -31,8 +31,9 @@ class Job < ActiveRecord::Base
     accepts_nested_attributes_for :employee
     
     delegate :manager, to: :order
+    delegate :mark_up, to: :order
     delegate :company, to: :order
-    delegate :manager, to: :order
+    delegate :account_manager, to: :order
     
     include ArelHelpers::ArelTable
     include ArelHelpers::JoinAssociation
@@ -97,8 +98,8 @@ class Job < ActiveRecord::Base
     end
     
     def staff
-        if manager.present? && recruiter.present?
-            "#{manager.role}: #{manager.name} | #{recruiter.role}: #{recruiter.name}"
+        if account_manager.present? && recruiter.present?
+            "#{account_manager.role}: #{account_manager.name} | #{recruiter.role}: #{recruiter.name}"
         else
             "#{company.owner.role}: #{company.owner.name}"
         end
@@ -132,7 +133,6 @@ class Job < ActiveRecord::Base
                         out_ip: "Admin-Clock-Out" )
         end
     end
-
     
     
     def company
@@ -194,6 +194,8 @@ class Job < ActiveRecord::Base
         end
     end
     
+    
+    
 
     
     def last_clock_in
@@ -215,6 +217,14 @@ class Job < ActiveRecord::Base
     
     def ot_rate
         (pay_rate * 1.5).round(2)
+    end
+    
+    def bill_rate
+        (pay_rate * mark_up).round(2)
+    end
+    
+    def mark_up_percent
+        (self.mark_up * 100 - 100).to_i.to_s + "%" 
     end
     
     # def pay_rate

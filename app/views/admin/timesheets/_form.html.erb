@@ -1,19 +1,34 @@
-<%= simple_form_for(@timesheet) do |f| %>
+<%= simple_form_for( [:admin, @timesheet]) do |f| %>
   <%= f.error_notification %>
+  
+  <% if @job.present? %>
+    <%= @job.name_title %> 
+    <% else %>
+
+
+    
+    <% end %>
 
   <div class="form-inputs">
-    <%= f.input :week %>
-    <%= f.association :job %>
-    <%= f.input :reg_hours %>
-    <%= f.input :ot_hours %>
-    <%= f.input :gross_pay %>
+    <%= f.input :week, disabled: true %> %>
+    
+    <%= f.input :reg_hours, disabled: true %>
+    <%= f.input :ot_hours, disabled: true %>
+    <%= f.input :gross_pay, disabled: true %>
 
   </div>
-  <%= f.simple_fields_for(:shifts) do |s| %>
-    <%= s.input :time_worked %>
-     <%= s.input :id %>
+  <div class='col-md-4' id='shifts'>
+    <%= f.simple_fields_for :shifts do |shift| %>
+      <%= render 'shift_fields', f: shift %>
+    <% end %>
+    
+    <div class='links'>
+      <%= link_to_add_association 'add shift', f, :shifts %>
+    </div>
+  </div>
+
   
-  <% end %>
+
 
   <div class="form-actions">
     <%= f.button :submit %>

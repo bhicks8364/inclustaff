@@ -17,6 +17,7 @@
 #  manager_id         :integer
 #  jobs_count         :integer
 #  account_manager_id :integer
+#  mark_up            :decimal(, )
 #
 
 class Order < ActiveRecord::Base
@@ -26,6 +27,7 @@ class Order < ActiveRecord::Base
   has_many :jobs
   has_many :employees, :through => :jobs
   has_many :timesheets, :through => :jobs
+  has_many :current_timesheets, :through => :jobs
   include ArelHelpers::ArelTable
   include ArelHelpers::JoinAssociation
   
@@ -50,6 +52,7 @@ class Order < ActiveRecord::Base
     
     def defaults
       self.active = true if self.active.nil?
+      self.urgent = false if self.urgent.nil?
     end  
     
     def company_name
@@ -70,14 +73,26 @@ class Order < ActiveRecord::Base
     end
   end
   
-    # def open_jobs
-    #   self.number_needed - self.jobs.active.count
-    # end
+  def filled?
+    if self.number_needed <= self.jobs.count 
+        true
+      else
+        false
+    end
+  end
+  
+    def open_jobs
+      self.number_needed - self.jobs.active.count
+    end
     
 
     
   def self.by_manager(admin_id)
     where(manager_id: admin_id)
+  end
+  
+  def self.by_account_manager(admin_id)
+    where(account_manager_id: admin_id)
   end 
   
 

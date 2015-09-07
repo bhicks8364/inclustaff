@@ -1,6 +1,18 @@
 class Admin::DashboardController < ApplicationController
     before_filter :authenticate_admin!
-    
+    layout 'admin_layout'
+    def owner
+       @admin = current_admin
+       @company = @admin.company
+       
+       
+       @orders = @company.orders
+       @shifts = @company.shifts
+       @jobs = @company.jobs.active.includes(:employee)
+    #   @jobs = @company.jobs.active.joins(:shifts).group("jobs.title").order("shifts.updated_at DESC, jobs.title ASC") if @company.jobs.any?
+       @timesheets = @company.timesheets
+        skip_authorization
+    end
     def home
        @admin = current_admin
        @company = @admin.company
@@ -10,12 +22,12 @@ class Admin::DashboardController < ApplicationController
        @shifts = @company.shifts
        @jobs = @company.jobs.active.joins(:shifts).group("jobs.title").order("shifts.updated_at DESC, jobs.title ASC") if @company.jobs.any?
        @timesheets = @company.timesheets
-        
+        skip_authorization
     end
     def company_view
           @admin = current_admin
           @company = @admin.company
-          @jobs = @current_admin.company.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 5).order('id DESC')
+          @jobs = @current_admin.company.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 10).order('id DESC')
           @timesheets = @company.timesheets.order(updated_at: :desc)
           @clocked_in = @company.jobs.on_shift.order(time_in: :desc)
           @admin_users = @company.admins

@@ -38,7 +38,7 @@
   <div role="tabpanel" class="tab-pane fade " id="company-contacts">
 
       <h3>Company Contacts</h3>
-       <%= render 'companies/company_users' %>
+       <%= render 'admin/companies/company_users' %>
 
 
     
@@ -62,7 +62,7 @@
 <% if @company.shifts.clocked_in.any? %>
     
     <% if @clocked_in.any? %>
-<%= render 'companies/clocked_in_employees' %>
+<%= render 'admin/companies/clocked_in_employees' %>
 <% end %>
 <% else %>
 

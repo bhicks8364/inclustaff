@@ -1,0 +1,47 @@
+
+
+<div class="nested-fields">
+
+<div class="form-group">
+   <div class="field">
+    <%= f.label :state %>
+    <%= f.select :state, ["Clocked In", "Clocked Out"], wrapper_html: { id: 'shift-state' }, selected: "Clocked In" %>
+  </div>
+</div>
+
+    <label for="TimeIn">Time In: </label>
+    <br>
+    <%= f.datetime_select :time_in, ampm: true, order: [:month, :day, :hour, :minute], default: Time.current %>
+    
+    <br>
+<div class="form-group clocked-out">
+  <div class="field time-out-field">
+    <%= f.label :time_out, "Time Out" %><br>
+     <%= f.datetime_select :time_out, ampm: true, order: [:month, :day, :hour, :minute], default: Time.current %>
+  </div>
+    <div class="field">
+        <%= f.label :break_out, "Break Start" %><br>
+        <%= f.time_select :break_out, ampm: true, order: [:hour, :minute], default: Time.current %>
+    </div>
+    <div class="field">
+        <%= f.label :break_in, "Break End" %><br>
+        <%= f.time_select :break_in, ampm: true, ampm: true, order: [:hour, :minute], default: Time.current, class: "form-control" %>
+    </div>
+
+</div>
+
+                              
+
+
+
+
+
+
+
+<div class="form-group">
+    <label for="Not">Notes: </label>
+    <%= f.text_field :note, placeholder: "Add a note." %>
+</div>
+<%= link_to_remove_association "remove shift", f %>
+
+</div>

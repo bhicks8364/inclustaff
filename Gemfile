@@ -44,6 +44,9 @@ gem 'will_paginate', '~> 3.0.6'
 # PDFs
 gem 'receipts'
 
+# NESTED FORMS
+gem "cocoon"
+
 # STATE MACHINE
 gem 'aasm'
 

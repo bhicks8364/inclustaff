@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   devise_for :admins
   devise_for :users, controllers: {
         sessions: 'users/sessions',
-        registrations: 'users/registrations'
+        # registrations: 'users/registrations'
       }
   resources :companies do
     resources :orders
@@ -12,11 +12,13 @@ Rails.application.routes.draw do
   
 
   namespace :admin do
+    resources :companies
     resources :shifts
     resources :timesheets
     resources :employees
     resources :orders
     get  'dashboard' => 'dashboard#company_view'
+    get  'owner' => 'dashboard#owner'
   
     get  'agency_access' => 'dashboard#agency_view'
     

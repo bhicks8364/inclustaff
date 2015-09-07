@@ -42,7 +42,12 @@ class Admin::TimesheetsController < ApplicationController
 
   # GET /timesheets/new
   def new
+    @admin = current_admin
+    @company = @admin.company
+    @jobs = @company.jobs.active
+    @employees = @company.employees
     @timesheet = Timesheet.new
+    @timesheet.shifts.new
     
     # authorize @timesheet
   end
@@ -81,6 +86,9 @@ class Admin::TimesheetsController < ApplicationController
 
   # GET /timesheets/1/edit
   def edit
+    @job = @timesheet.job
+    @timesheet.shifts.new
+    
     # authorize @timesheet
   end
 
@@ -88,11 +96,15 @@ class Admin::TimesheetsController < ApplicationController
   # POST /timesheets.json
   def create
     @timesheet = Timesheet.new(timesheet_params)
+    
+    @timesheet.shifts.last
+    
+    
     # authorize @timesheet
 
     respond_to do |format|
       if @timesheet.save
-        format.html { redirect_to @timesheet, notice: 'Timesheet was successfully created.' }
+        format.html { redirect_to admin_timesheets_path(@timesheet), notice: 'Timesheet was successfully created.' }
         format.json { render :show, status: :created, location: @timesheet }
       else
         format.html { render :new }
@@ -104,10 +116,11 @@ class Admin::TimesheetsController < ApplicationController
   # PATCH/PUT /timesheets/1
   # PATCH/PUT /timesheets/1.json
   def update
+    @timesheet.update(timesheet_params)
     # authorize @timesheet
     respond_to do |format|
       if @timesheet.update(timesheet_params)
-        format.html { redirect_to @timesheet, notice: 'Timesheet was successfully updated.' }
+        format.html { redirect_to admin_timesheets_path(@timesheet), notice: 'Timesheet was successfully updated.' }
         format.json { render :show, status: :ok, location: @timesheet }
       else
         format.html { render :edit }
@@ -135,6 +148,8 @@ class Admin::TimesheetsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def timesheet_params
-      params.require(:timesheet).permit(:week, :job_id, :reg_hours, :ot_hours, :gross_pay)
+      params.require(:timesheet).permit(:week, :job_id, :reg_hours, :ot_hours, :gross_pay, 
+        :shifts_attributes => [:id, :state, :job_id, :needs_adj, :employee_id, :note, 
+        :time_in, :time_out, :break_out, :break_in, :break_duration, :in_ip, :out_ip, :_destroy])
     end
 end

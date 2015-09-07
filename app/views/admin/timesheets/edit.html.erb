@@ -1,6 +1,42 @@
 <h1>Editing Timesheet</h1>
+<%= simple_form_for( [:admin, @timesheet]) do |f| %>
+  <%= f.error_notification %>
+  
+  <% if @job.present? %>
+    <%= @job.name_title %> 
+    <% else %>
 
-<%= render 'form' %>
 
-<%= link_to 'Show', @timesheet %> |
-<%= link_to 'Back', timesheets_path %>
+    
+    <% end %>
+
+  <div class="col-md-4 form-inputs">
+    <%= f.input :week, disabled: true %>
+    
+    <%= f.input :reg_hours, disabled: true %>
+    <%= f.input :ot_hours, disabled: true %>
+    <%= f.input :gross_pay, disabled: true %>
+
+  </div>
+  <div class="col-md-4 form-inputs">
+     
+  <div class='col-md-4 pull-right' id='shifts'>
+    <%= f.simple_fields_for :shifts do |shift| %>
+      <%= render 'shift_fields', f: shift %>
+    <% end %>
+    
+    <div class='links'>
+      <%= link_to_add_association 'add shift', f, :shifts %>
+    </div>
+  </div>
+
+  
+
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>
+
+<%= link_to 'Show', admin_timesheets_path(@timesheet) %> |
+<%= link_to 'Back', admin_timesheets_path %>

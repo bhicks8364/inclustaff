@@ -2,7 +2,7 @@
 
 
 <div class="col-md-12">
-	<%= render 'companies/company_contact' %>
+	<div class='row'>
 		<div class="col-lg-6 col-sm-6 col-xs-12">
 			<div class="main-box infographic-box">
 				<i class="fa fa-users red"></i>
@@ -13,8 +13,8 @@
 		<div class="col-lg-6 col-sm-6 col-xs-12">
 			<div class="main-box infographic-box">
 				<i class="fa fa-money green"></i>
-				<span class="headline">Current Payroll</span>
-				<span class="value"><%= number_to_currency(@company.current_payroll_cost) %></span>
+				<span class="headline">Total Payroll</span>
+				<span class="value"><%= number_to_currency(@company.balance) %></span>
 			</div>
 		</div>
 		
@@ -28,22 +28,73 @@
 		
 		<div class="col-lg-6 col-sm-6 col-xs-12">
 			<div class="main-box infographic-box">
-				<i class="fa fa-eye yellow"></i>
-				<span class="headline">Approaching OT</span>
-				<span class="value"><small><%= pluralize(@company.timesheets.current_week.approaching_overtime.count, 'Employee')  %></small></span>
+				<i class="fa fa-exclamation red"></i>
+				<span class="headline">URGENT</span>
+				<span class="value"><small><%= pluralize(@company.orders.urgent.count, 'Orders')  %></small></span>
 			</div>
 		</div>
-	
+	</div>
+	<%= render 'admin/shared/infoboxes' %>
 
+
+
+	<div class="row">
+		<div class="col-lg-8">
+			<div class="main-box clearfix">
+				<h2>Current Jobs</h2>
+				<div class="table-responsive">
+					<table class="table table-striped table-hover">
+						<thead>
+							<tr>
+							  <th>Employee</th>
+						      <th>Title</th>
+						      <th>Pay rate</th> 
+						      <th>Hours</th>
+						      <th>Total Gross</th>
+						      <th>Last In</th>
+							</tr>
+						</thead>
+						<tbody>
+							<% @jobs.each do |job| %>
+							<% if job.on_shift? %>
+								<tr class="bg-danger">
+							<% else%>
+								<tr class="bg-success">
+							<% end %>
+								<td><%= render 'admin/jobs/modal', job: job %> <%= link_to job.employee.name, admin_employee_path(job.employee) %></td>
+    							<td><%= link_to job.title, admin_job_path(job) %></td>	
+								<td class="text-center"><%= number_to_currency(job.pay_rate) %></td>
+								<td><%= job.total_hours.round(2) %></td>
+						        <td><%= number_to_currency(job.total_gross_pay) %></td>
+						        <td><%= job.last_clock_in %></td>
+							</tr>
+							<% end %>
+							
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<div class="main-box clearfix">
+				<h2>Clocked In</h2>
+				<%= render @jobs.on_shift %>
+				
+			</div>
+		</div>
+	</div>
+	<div class='row'>
+		<div class='lg-6'>
+			<%= render 'admin/shared/updates' %>
+		</div>
+	</div>
+	    
 
 
 			
 
 </div>
-
-<%= render 'admin/shared/updates' %>
-    
-
 
 
 

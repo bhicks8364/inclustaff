@@ -17,6 +17,7 @@
 #  manager_id         :integer
 #  jobs_count         :integer
 #  account_manager_id :integer
+#  mark_up            :decimal(, )
 #
 
 require 'test_helper'

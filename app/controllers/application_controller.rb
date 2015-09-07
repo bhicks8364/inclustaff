@@ -5,18 +5,18 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :update_permitted_parameters, if: :devise_controller?
-  # after_action :verify_authorized, unless: :devise_controller?
+  after_action :verify_authorized, unless: :devise_controller?
   
   # Globally rescue Authorization Errors in controller.
   # Returning 403 Forbidden if permission is denied
-  # rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  # def after_sign_in_path_for(admin)
-  #       dashboard_path
-  # end
-  # def after_sign_in_path_for(user)
-  #       current_user
-  # end
+  def after_sign_in_path_for(admin)
+        current_admin
+  end
+  def after_sign_in_path_for(user)
+        home_path
+  end
   
   
   private

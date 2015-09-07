@@ -26,9 +26,9 @@ class Job
     if data.clocked_in
       @item.find("[data-behavior='job-in-button']").hide()
       @item.find("[data-behavior='job-out-button']").show()
-      @item.find("[data-behavior='last-in']").hide()
-      @item.find("[data-behavior='last-out']").hide()
-      @item.find("[data-behavior='time-in']").html "<strong> In:</strong> #{data.time_in}"
+      @item.find("[data-behavior='time-out']").hide()
+      @item.find("[data-behavior='time-in']").html "<small><strong> In:</strong> #{data.time_in}</small>"
+      @item.find("[data-behavior='shift-state']").html "<strong>CLOCKED IN</strong><br>"
       console.log data.time_in
       console.log data.time_out
       
@@ -51,10 +51,10 @@ class Job
       #@item.find(".shift-item").hide()
       @item.find("[data-behavior='job-out-button']").hide()
       @item.find("[data-behavior='job-in-button']").show()
-      @item.find("[data-behavior='time-in']").html "<strong> In:</strong> #{data.time_in}"
-      @item.find("[data-behavior='time-out']").html "<strong> Out:</strong> #{data.time_out}"
+      @item.find("[data-behavior='time-in']").html "<small><strong> In:</strong> #{data.time_in}</small>"
+      @item.find("[data-behavior='time-out']").html "<small><strong> Out:</strong> #{data.time_out}</small>"
      
-      #@item.find("[data-behavior='shift-state']").html "<span class='label label-danger'>#{data.state}</span>"
+      @item.find("[data-behavior='shift-state']").html "<strong>CLOCKED OUT</strong><br>"
       console.log data.state
       console.log data.time_in
       console.log data.time_out

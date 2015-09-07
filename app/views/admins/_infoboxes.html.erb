@@ -1,0 +1,57 @@
+<div class="row">
+	<div class="col-lg-3 col-sm-6 col-xs-12">
+		<div class="main-box infographic-box text-center">
+			
+			
+			<% if @admin.recruiter? %>
+			<%= link_to "<span class='headline'><i class='fa fa-user fa-2x pull-left red'></i> <strong>Company Placements</strong></span>".html_safe, admin_jobs_path %>
+			<span class="value"><%= @company.jobs.active.count %></span>
+			<% elsif @admin.account_manager? %>
+			<%= link_to "<span class='headline'><i class='fa fa-user fa-2x pull-left red'></i> <strong>Company Job Orders</strong></span>".html_safe, admin_jobs_path %>
+			<span class="value"><%= @admin.account_orders.count %></span>
+			<% else %>
+			No activity.
+			<% end %>
+			
+			
+			
+			
+			
+			
+			
+		</div>
+	</div>
+	<div class="col-lg-3 col-sm-6 col-xs-12">
+		<div class="main-box infographic-box text-center">
+			<% if @admin.recruiter? %>
+			<%= link_to "<span class='headline'><i class='fa fa-briefcase fa-2x pull-left'></i> <strong>#{@admin.first_name}'s Placements</strong></span>".html_safe, admin_jobs_path %>
+			<span class="value"><%= @jobs.count %> </span>
+			<% elsif @admin.account_manager? %>
+			<%= link_to "<span class='headline'><i class='fa fa-briefcase fa-2x pull-left'></i> <strong>#{@admin.first_name}'s Job Orders</strong></span>".html_safe, admin_jobs_path %>
+			<span class="value"><%= @orders.count %> </span>
+			<% else %>
+			No activity.
+			<% end %>
+			
+			
+			
+		</div>
+	</div>
+	<div class="col-lg-3 col-sm-6 col-xs-12">
+		<div class="main-box infographic-box" "text-center">
+			<i class="fa fa-money green"></i>
+			<span class="headline">Current Billings</span>
+			
+			<span class="text-center"><%= number_to_currency(@jobs.sum(:total_bill)) %></span><br>
+			<span class="price text-muted"><small>Company: <%= number_to_currency(@company.timesheets.current_week.sum(:total_bill)) %></small></span>
+		</div>
+	</div>
+	<div class="col-lg-3 col-sm-6 col-xs-12">
+		<div class="main-box infographic-box" "text-center">
+			<i class="fa fa-usd green"></i>
+			<span class="headline">Current Payroll</span>
+			<span class="price"><%= number_to_currency(@jobs.sum(:gross_pay)) %></span><br>
+			<span class="price text-muted"><small>YTD: <%= number_to_currency(@jobs.sum(:gross_pay)) %></small></span>
+		</div>
+	</div>
+</div>

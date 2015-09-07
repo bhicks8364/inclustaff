@@ -1,9 +1,11 @@
 <div class="main-box">
 				<span>You are signed in as an <%= @admin.role %>.</span>
 			<% if @admin.owner? %>
+			<%= link_to 'Owner Dashboard', admin_owner_path %>
 			<div class='main-box'>	
 			<%= render 'admin/timesheets/table' %></div>
 				<% end %>	
+				
 				
 				
 				

@@ -1,16 +1,12 @@
-class UsersController < ApplicationController
+class AdminsController < ApplicationController
     
-    # def index
-    #     if admin_signed_in? 
-    #       @admin = current_admin
-    #       @company = @admin.company
-    #       @users = @company.users.order(last_name: :asc)
-    #     elsif user_signed_in? && current_user.not_an_employee?
-    #       @current_user = current_user if current_user.present?
-    #       @company = @current_user.company
-    #       @users = @company.users.order(last_name: :asc)
-    #     end
-    # end
+    def index
+        
+          @admin = current_admin
+          @company = @admin.company
+          @admins = @company.admins.order(last_name: :asc)
+        
+    end
     
     
     # def grant_editing
@@ -25,8 +21,17 @@ class UsersController < ApplicationController
     
     def show
         @admin = Admin.find(params[:id])
+        @orders = @admin.account_orders if @admin.account_manager?
         @company = @admin.company
+        @orders = @company.orders if @admin.owner?
+        @jobs = @company.jobs.with_current_timesheets.distinct if @admin.owner?
+        
+        @jobs = @admin.jobs.with_current_timesheets.distinct if @admin.account_manager?
+        @jobs = @admin.recruiter_jobs.with_current_timesheets.distinct if @admin.recruiter?
+        
         @employees = @company.employees
+        # @jobs = Job.by_recuriter(@admin).with_current_timesheets if @admin.recruiter?
+        # @jobs = @company.jobs.active if @company.jobs.any?
 
 
             

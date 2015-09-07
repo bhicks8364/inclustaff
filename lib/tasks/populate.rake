@@ -41,7 +41,7 @@ namespace :db do
 	require 'populator'
 	require 'ffaker'
 	password = "password"
-	  User.populate 45 do |user|
+	  User.populate 100 do |user|
 		user.first_name = FFaker::Name.first_name
 		user.last_name = FFaker::Name.last_name
 		user.email = FFaker::Internet.email
@@ -72,6 +72,96 @@ namespace :db do
 		
 		puts user.first_name
 	  end
+	  puts 'All done!!!'
+  end
+  
+  desc "Create 25 employees with random names and addresses"
+  task :pop_admin => :environment do
+	require 'populator'
+	require 'ffaker'
+	password = "password"
+	  Admin.populate 5 do |admin|
+		admin.first_name = FFaker::Name.first_name
+		admin.last_name = FFaker::Name.last_name
+		admin.email = FFaker::Internet.email
+		admin.company_id = 1
+		admin.role = "Recruiter"
+		admin.encrypted_password = Admin.new(:password => password).encrypted_password
+		admin.sign_in_count = 0
+		admin.failed_attempts = 0
+		puts admin.first_name
+	  end
+	  Admin.populate 2 do |admin|
+		admin.first_name = FFaker::Name.first_name
+		admin.last_name = FFaker::Name.last_name
+		admin.email = FFaker::Internet.email
+		admin.company_id = 1
+		admin.role = "Account Manager"
+		admin.encrypted_password = Admin.new(:password => password).encrypted_password
+		admin.sign_in_count = 0
+		admin.failed_attempts = 0
+		puts admin.first_name
+	  end
+	  Admin.populate 5 do |admin|
+		admin.first_name = FFaker::Name.first_name
+		admin.last_name = FFaker::Name.last_name
+		admin.email = FFaker::Internet.email
+		admin.company_id = 2
+		admin.role = "Recruiter"
+		admin.encrypted_password = Admin.new(:password => password).encrypted_password
+		admin.sign_in_count = 0
+		admin.failed_attempts = 0
+		puts admin.first_name
+	  end
+	  Admin.populate 2 do |admin|
+		admin.first_name = FFaker::Name.first_name
+		admin.last_name = FFaker::Name.last_name
+		admin.email = FFaker::Internet.email
+		admin.company_id = 2
+		admin.role = "Account Manager"
+		admin.encrypted_password = Admin.new(:password => password).encrypted_password
+		admin.sign_in_count = 0
+		admin.failed_attempts = 0
+		puts admin.first_name
+	  end
+	  Admin.populate 1 do |admin|
+		admin.first_name = FFaker::Name.first_name
+		admin.last_name = FFaker::Name.last_name
+		admin.email = FFaker::Internet.email
+		admin.company_id = 2
+		admin.role = "Owner"
+		admin.encrypted_password = Admin.new(:password => password).encrypted_password
+		admin.sign_in_count = 0
+		admin.failed_attempts = 0
+		puts admin.first_name
+	  end
+	  Admin.populate 1 do |admin|
+		admin.first_name = FFaker::Name.first_name
+		admin.last_name = FFaker::Name.last_name
+		admin.email = FFaker::Internet.email
+		admin.company_id = 1
+		admin.role = "Owner"
+		admin.encrypted_password = Admin.new(:password => password).encrypted_password
+		admin.sign_in_count = 0
+		admin.failed_attempts = 0
+		puts admin.first_name
+	  end
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
 	  puts 'All done!!!'
   end
   

@@ -8,6 +8,7 @@ class Admin::JobsController < ApplicationController
     @admin = current_admin
     @company = @admin.company
     @jobs = @company.jobs.order(title: :asc)
+    authorize @jobs
 
   end
   
@@ -56,7 +57,7 @@ class Admin::JobsController < ApplicationController
   end
 
   def clock_in
-
+    authorize @job, :clock_out?
     if @job.off_shift?
       @shift = @job.shifts.create(time_in: Time.current, week: Date.today.cweek,
                                   state: "Clocked In",
@@ -73,7 +74,7 @@ class Admin::JobsController < ApplicationController
   end
   
   def clock_out
-
+     authorize @job, :clock_out?
     if @job.on_shift? && @job.current_shift.present?
         @shift = @job.current_shift
         @shift.update(time_out: Time.current,
@@ -94,7 +95,7 @@ class Admin::JobsController < ApplicationController
 
     @employees = @company.employees.unassigned
 
-    # authorize @job
+    authorize @job
   end
 
   # POST /jobs
@@ -106,13 +107,13 @@ class Admin::JobsController < ApplicationController
       @company = @order.company
       # @employee = Employee.create(employee_params)
       @job = @order.jobs.new(job_params)
-      # authorize @job
+      authorize @job
       # @job.order = @order
       # @employee = @job.create_employee(employee_params)
     else
       # @employee = Employee.create(employee_params)
       @job = Job.new(job_params)
-      # authorize @job
+      authorize @job
     end
     
     respond_to do |format|
@@ -129,10 +130,10 @@ class Admin::JobsController < ApplicationController
   # PATCH/PUT /jobs/1
   # PATCH/PUT /jobs/1.json
   def update
-    # authorize @job
+    authorize @job
     respond_to do |format|
       if @job.update(job_params)
-        format.html { redirect_to admin_job_path(@job), notice: 'Job was successfully updated.' }
+        format.html { redirect_to admin_jobs_path(anchor: "job_#{@job.id}"), notice: 'Job was successfully created.' }
         format.json { render :show, status: :ok, location: @job }
       else
         format.html { render :edit }
@@ -156,14 +157,14 @@ class Admin::JobsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_job
       @job = Job.includes(:employee, :order).find(params[:id])
+      
       @employee = @job.employee
       @order = @job.order
       @company = @job.company
     end
     
-    def set_order
-      # @company = Company.find(params[:company_id])
-      # @order = Order.find(params[:order_id])
+    def pundit_user
+      current_admin
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

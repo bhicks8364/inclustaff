@@ -32,7 +32,7 @@ class UsersController < ApplicationController
         # @job = @employee.current_job if @employee.assigned?
         
         @jobs = @employee.jobs.includes(:order)
-        @shifts = @employee.shifts.order(time_out: :desc).limit(10)
+        @shifts = @employee.shifts.order(time_out: :desc).limit(1)
         @timesheets = @employee.timesheets
         # @company = @user.company
         # @employee = @user.employee if @user.employee?

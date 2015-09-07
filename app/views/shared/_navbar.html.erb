@@ -36,9 +36,9 @@
 			        
 			        <li><%= link_to current_user.name, current_user %></li>
 			        <% if current_user.employee.assigned? %>
-			        	<li><%= link_to "Timeclock", current_user.employee.job %></li>
+			        	<li><%= link_to "Timeclock", current_user.employee.current_job %></li>
 			        	<li><%= link_to "Timesheets", timesheets_path %></li>
-			        	<li><%= link_to "Profile", current_user.employee %></li>
+			        	<li><%= link_to "Profile", current_user %></li>
 			        	<li><%= link_to "Home", home_path %></li>
 			        <% else %>
 			        	<li><%= link_to "Home", home_path %></li>

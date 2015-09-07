@@ -27,6 +27,7 @@
 class Admin < ActiveRecord::Base
   belongs_to :company
   has_many :orders, :through => :company
+  has_many :jobs, :through => :orders
   has_many :shifts, :through => :company
 
   # Include default devise modules. Others available are:
@@ -96,10 +97,21 @@ class Admin < ActiveRecord::Base
   #     self.orders.collect { |a| a.book } 
   #   end
   # end  
-  def orders
-    Order.by_manager(self.id)
+  def account_orders
+    Order.by_account_manager(self.id)
   end
-         
+  
+  def recruiter_jobs
+    Job.by_recuriter(self.id) if self.recruiter?
+  end
+  
+  def billing
+    if self.recruiter? && self.recruiter_jobs.any?
+      recruiter_jobs.joins(:current_timesheet).sum(:total_bill)
+    elsif self.account_manager? && self.account_orders.any?
+      account_orders.joins(:current_timesheets).sum(:total_bill)
+    end
+  end         
          
          
          

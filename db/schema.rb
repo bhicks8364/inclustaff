@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150902173843) do
+ActiveRecord::Schema.define(version: 20150906183456) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -109,6 +109,7 @@ ActiveRecord::Schema.define(version: 20150902173843) do
     t.integer  "manager_id"
     t.integer  "jobs_count"
     t.integer  "account_manager_id"
+    t.decimal  "mark_up"
   end
 
   add_index "orders", ["account_manager_id"], name: "index_orders_on_account_manager_id"
@@ -154,6 +155,7 @@ ActiveRecord::Schema.define(version: 20150902173843) do
     t.string   "state"
     t.integer  "approved_by"
     t.integer  "shifts_count"
+    t.decimal  "total_bill"
   end
 
   add_index "timesheets", ["deleted_at"], name: "index_timesheets_on_deleted_at"

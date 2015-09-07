@@ -35,7 +35,7 @@ class Employee < ActiveRecord::Base
   accepts_nested_attributes_for :user
   
   delegate :last_clock_out, to: :current_job
-  delegate :name_title, to: :current_job
+  # delegate :name_title, to: :current_job
   delegate :manager, to: :current_job
   delegate :recruiter, to: :current_job
   delegate :code, to: :user
@@ -44,7 +44,13 @@ class Employee < ActiveRecord::Base
   before_save :set_user_info
   before_validation :check_if_assigned
   
-
+  def name_title
+    if current_job.nil?
+      "#{first_name} #{last_name} - Unassigned"
+    else
+      current_job.name_title
+    end
+  end
   
   
   

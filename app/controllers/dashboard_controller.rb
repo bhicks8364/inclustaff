@@ -48,7 +48,7 @@ class DashboardController < ApplicationController
 
         
         # @current_timesheet = @job.current_timesheet if @employee.present?
-        # skip_authorization
+        skip_authorization
     end
     def company_view
           @admin = current_admin
@@ -88,6 +88,7 @@ class DashboardController < ApplicationController
         gon.employees = @employees
         gon.company = @company
         gon.timesheets = @timesheets
+        skip_authorization
     end
     
     

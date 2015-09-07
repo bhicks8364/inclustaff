@@ -38,7 +38,7 @@
 
   // padding: 8px;
   // margin: auto;
-  // max-width: 100%;
+  max-width: 50%;
   // border: 2px solid rgba(54, 54, 54, 0.19);
 }
 
@@ -49,3 +49,26 @@
 //     margin: 3px;
 //   }
 // }
+.job-modal {
+
+  // padding: 8px;
+  border: 2px solid rgba(54, 54, 54, 0.19);
+}
+
+.modal-body {
+  padding: 5px;
+}
+
+
+#timesheet-tools {
+  border: 2px solid rgba(54, 54, 54, 0.19);
+  text-align: center;
+
+}
+
+
+.conversation-wrapper {
+	max-height: 500px;
+	overflow: scroll;
+	
+}

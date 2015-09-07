@@ -14,17 +14,26 @@
 #  state        :string
 #  approved_by  :integer
 #  shifts_count :integer
+#  total_bill   :decimal(, )
 #
 
 class Timesheet < ActiveRecord::Base
     belongs_to :job, counter_cache: true
     has_many :shifts, dependent: :destroy
     has_one :employee, :through => :job
+    include ArelHelpers::ArelTable
+    
+    
+    accepts_nested_attributes_for :shifts, reject_if: :all_blank, allow_destroy: true
+    
+    validates_associated :shifts
+    
     
     by_star_field :created_at
 
-    
+    delegate :mark_up, to: :job
     delegate :pay_rate, to: :job
+    delegate :bill_rate, to: :job
     delegate :ot_rate, to: :job
     delegate :company, to: :job
     delegate :manager, to: :job
@@ -32,10 +41,26 @@ class Timesheet < ActiveRecord::Base
     delegate :current_shift, to: :job
     
 
-    before_save :total_timesheet
+    before_save :total_timesheet, if: :has_a_job?
     after_initialize :defaults
     
-    after_save :update_company_balance!
+    after_save :update_company_balance!, if: :has_a_job?
+    before_create :set_job, unless: :has_a_job?
+    
+    def has_a_job?
+        self.job.present?
+    end
+    
+    def set_job
+        self.job = self.shifts.first.job
+    end
+    
+    # def pay_rate
+    #     self.job.pay_rate
+    # end
+    
+
+        
     
 
     scope :with_job, -> { includes(:job)}
@@ -46,12 +71,14 @@ class Timesheet < ActiveRecord::Base
         where(week: Date.today.cweek - 1)
     }
     scope :approaching_overtime, -> { where('reg_hours > 36') }
-    
     scope :current_week, ->{
-        start = Time.current.beginning_of_week
-        ending = start.end_of_week
-        where(created_at: start..ending)
+        where(week: Date.today.cweek)
     }
+    # scope :current_week, ->{
+    #     start = Time.current.beginning_of_week
+    #     ending = start.end_of_week
+    #     where(created_at: start..ending)
+    # }
     
     def receipt
         Receipts::Receipt.new(
@@ -67,9 +94,11 @@ class Timesheet < ActiveRecord::Base
           line_items: [
             ["Week Ending",           week_ending],
             ["Employee", "#{job.name_title} (#{employee.code})"],
-            ["Reg Hrs",        "#{reg_hours} ($#{pay_rate.round(2)})"],
-            ["OT Hrs",       "#{ot_hours} ($#{ot_rate})"],
-            ["Amount",         "$#{gross_pay.round(2)}"],
+            ["Mark up",        "#{mark_up_percent}    ($#{mark_up.round(2)})"],
+            ["Reg Hrs",        "#{reg_hours}    ($#{pay_rate.round(2)})"],
+            ["OT Hrs",       "#{ot_hours}    ($#{ot_rate.round(2)})"],
+            ["Gross Pay",         "$#{gross_pay.round(2)}"],
+            ["Total Bill",         "$#{total_bill.round(2)}"],
             ["Due Date",     "#{(created_at + 14.days).strftime("%x")}"],
             ["Transaction ID", id]
           ]
@@ -196,6 +225,14 @@ class Timesheet < ActiveRecord::Base
         self.shifts.clocked_out.last.time_out
     end
     
+    # def total_bill
+    #     (self.gross_pay * self.mark_up).round(2)
+    # end
+    
+    def mark_up_percent
+        (self.mark_up * 100 - 100).to_i.to_s + "%" 
+    end
+    
     
     # def defaults
     #     self.week = Date.today.cweek
@@ -212,6 +249,8 @@ class Timesheet < ActiveRecord::Base
                 self.reg_hours = hours
                 self.ot_hours = 0
                 self.gross_pay = self.pay_rate * hours
+                self.total_bill = self.gross_pay * self.mark_up
+                
             end
     end
     

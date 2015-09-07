@@ -10,7 +10,7 @@ class Admin::EmployeesController < ApplicationController
       @company = @admin.company
       @employees = @company.employees.with_active_jobs.order(last_name: :asc)
       gon.employees = @employees
-      # authorize @employees
+      authorize @employees
   end
 
   # GET /employees/1
@@ -34,7 +34,7 @@ class Admin::EmployeesController < ApplicationController
     # @timesheets = @all_timesheets.this_week.order(updated_at: :desc) if @employee.timesheets.any?
     # @last_week_timesheets = @timesheets.last_week.order(updated_at: :desc) if @employee.timesheets.any?
     
-    # authorize @employee
+    authorize @employee
   end
 
   # GET /employees/new

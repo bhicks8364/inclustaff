@@ -8,9 +8,9 @@
 											<span>Dashboard</span>
 										<% end %>
 									</li>
-									<li><%= link_to jobs_path do %>
-										<i class="fa fa-briefcase"></i>
-											<span>All Jobs</span>
+									<li><%= link_to home_path do %>
+										<i class="fa fa-home"></i>
+											<span>Home</span>
 										<% end %>
 									</li>
 									<li><%= link_to current_user do %>
@@ -21,9 +21,9 @@
 									
 									<% if current_user.employee.assigned? %>
 									
-									<li><%= link_to shifts_path  do %>
-										<i class="fa fa-users"></i>
-											<span>Shifts</span>
+									<li><%= link_to jobs_path  do %>
+										<i class="fa fa-briefcase"></i>
+											<span>Jobs</span>
 										<% end %>
 									</li>
 

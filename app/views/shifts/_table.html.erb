@@ -23,10 +23,10 @@
       <% else %>
         <tr class="clocked_out">
       <% end %>
-        <td><%= link_to "<span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span>     View".html_safe, shift, class: "table-link" %></td>
+       
         
         <td><%= shift.time_in.strftime("%x") %></td>
-        <td><%= link_to shift.employee.name, shift.employee %></td>
+        <td><%= link_to shift.employee.name, shift.employee.user %></td>
         <td><%= shift.time_in.strftime("%I:%M %p") %></td>
         
         <td><%= shift.clocked_out? ? shift.time_out.strftime("%I:%M %p") : "Clocked In" %></td>

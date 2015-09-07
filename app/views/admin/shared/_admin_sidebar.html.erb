@@ -18,7 +18,7 @@
 							<% end %>
 						</li>
 						
-						<li><%= link_to current_admin.company do %>
+						<li><%= link_to current_admin do %>
 							<i class="fa fa-home"></i>
 							
 								<span>Home</span>
@@ -27,14 +27,14 @@
 						<li><%= link_to admin_orders_path do %>
 							<i class="fa fa-university"></i>
 							
-								<span>Departments</span>
+								<span>Orders</span>
 							<% end %>
 						</li>
 						
 						<li><%= link_to new_admin_order_path do %>
 							<i class='fa fa-plus-square'></i>
 							
-								<span>New Department</span>
+								<span>Add Order</span>
 							<% end %>
 						</li>
 						
@@ -44,9 +44,9 @@
 								<span>Add Employee</span>
 							<% end %>
 						</li>
-						<li><%= link_to new_company_order_path(current_admin.company) do %>
-							<i class="fa fa-building"></i>
-								<span>Add Department</span>
+						<li><%= link_to admins_path do %>
+							<i class="fa fa-users"></i>
+								<span>Admin Users</span>
 							<% end %>
 						</li>
 
