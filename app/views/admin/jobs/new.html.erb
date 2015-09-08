@@ -3,7 +3,7 @@
  <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
 <h3>All of your employees are currently assigned to a job. 
 Please add a new employee before continuing.</h3>
-<%= link_to 'Back', jobs_path, class: "pull-left" %> <%= link_to "Add Employee", new_employee_path, class: "pull-right" %>
+<%= link_to 'Back', jobs_path, class: "pull-left" %> <%= link_to "Add Employee", new_admin_employee_path, class: "pull-right" %>
 </div>
 <% else %>
 
@@ -32,7 +32,7 @@ Please add a new employee before continuing.</h3>
     <%= f.association :order, collection: @company.orders.active.order(:title), prompt: "Select Department", label: false %>
 
     <%= f.input :title, placeholder: "Job Title" %>
-    <%= f.input :description, placeholder: "Job Description" %>
+    <%= f.input :description, placeholder: "Job Description", data: {behavior: 'autocomplete'} %>
     <input type="text" id="alternate" size="30" class="pull-right"><br>
     <%= f.input :start_date, as: :string, input_html: { id: "datepicker" } %> 
     

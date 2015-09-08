@@ -22,6 +22,7 @@
 #  last_name              :string
 #  company_id             :integer
 #  role                   :string
+#  username               :string
 #
 
 class Admin < ActiveRecord::Base
@@ -29,12 +30,13 @@ class Admin < ActiveRecord::Base
   has_many :orders, :through => :company
   has_many :jobs, :through => :orders
   has_many :shifts, :through => :company
-
+  
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
          
+  before_create :set_username
          
          
   scope :account_managers, -> { where(role: "Account Manager")}
@@ -113,7 +115,9 @@ class Admin < ActiveRecord::Base
     end
   end         
          
-         
+    def set_username
+      self.username = self.name.gsub(/\s(.)/) {|e| $1.upcase}
+    end
          
          
          

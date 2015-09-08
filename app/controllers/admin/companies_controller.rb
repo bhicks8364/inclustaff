@@ -6,7 +6,7 @@ class Admin::CompaniesController < ApplicationController
   # GET /companies.json
   def index
     @companies = Company.all
-    # authorize @companies
+    authorize @companies
   end
 
   # GET /companies/1
@@ -16,7 +16,7 @@ class Admin::CompaniesController < ApplicationController
     @jobs = @company.jobs.active.includes(:employee)
     @clocked_in = @jobs.on_shift
     @clocked_out =  @jobs.off_shift.distinct
-    # authorize @company
+    authorize @company
     @orders = @company.orders
     # @all_timesheets = @company.timesheets.order(updated_at: :desc) if @company.timesheets.any?
     @timesheets = @company.timesheets.order(updated_at: :desc) 
@@ -38,7 +38,7 @@ class Admin::CompaniesController < ApplicationController
   # GET /companies/new
   def new
     @company = Company.new
-    # authorize @company
+    authorize @company
   end
 
   # GET /companies/1/edit
@@ -51,7 +51,7 @@ class Admin::CompaniesController < ApplicationController
   def create
     
     @company = Company.new(company_params)
-    # authorize @company
+    authorize @company
     respond_to do |format|
       if @company.save
         format.html { redirect_to @company, notice: 'Company was successfully created.' }
@@ -94,6 +94,7 @@ class Admin::CompaniesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_company
       @company = Company.find(params[:id])
+      authorize @company
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

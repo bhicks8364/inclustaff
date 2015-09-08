@@ -9,6 +9,7 @@ class Admin::TimesheetsController < ApplicationController
       @company = @admin.company
       @timesheets = @company.timesheets.order(created_at: :desc)
       gon.timesheets = @timesheets.includes(:employee)
+      authorize @timesheets
 
 
   end
@@ -16,7 +17,7 @@ class Admin::TimesheetsController < ApplicationController
   # GET /timesheets/1
   # GET /timesheets/1.json
   def show
-    # authorize @timesheet
+    authorize @timesheet
     @shifts = @timesheet.shifts.order(time_in: :desc)
     @employee = @timesheet.employee
     @job = @timesheet.job
@@ -66,6 +67,7 @@ class Admin::TimesheetsController < ApplicationController
   # end
   def approve
     @timesheet = Timesheet.find(params[:id])
+    authorize @timesheet, :approve?
     if @timesheet.clocked_out?
       approved_by = @timesheet.approved? ? nil : current_admin.id
       state = @timesheet.approved? ? 'pending' : 'approved'
@@ -141,6 +143,9 @@ class Admin::TimesheetsController < ApplicationController
   end
 
   private
+    def pundit_user
+      current_admin
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_timesheet
       @timesheet = Timesheet.find(params[:id])

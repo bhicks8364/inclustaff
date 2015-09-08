@@ -5,7 +5,12 @@ class AdminsController < ApplicationController
           @admin = current_admin
           @company = @admin.company
           @admins = @company.admins.order(last_name: :asc)
-        
+        skip_authorization
+        respond_to do |format|
+          format.json
+          format.html
+
+      end
     end
     
     

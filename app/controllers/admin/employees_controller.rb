@@ -50,7 +50,7 @@ class Admin::EmployeesController < ApplicationController
     # @employee = Employee.new
     # # @employee.jobs.build
     # @employee.build_user
-    # authorize @employee
+    authorize @employee
   end
 
   # GET /employees/1/edit
@@ -65,6 +65,7 @@ class Admin::EmployeesController < ApplicationController
   # POST /employees.json
   def create
     @employee = Employee.new(employee_params)
+    authorize @employee
     @employee.build_user
 
       @admin = current_admin
@@ -114,9 +115,13 @@ class Admin::EmployeesController < ApplicationController
   end
 
   private
+    def pundit_user
+      current_admin
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_employee
       @employee = Employee.find(params[:id])
+      authorize @employee
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

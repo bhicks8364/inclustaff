@@ -19,8 +19,10 @@ namespace :db do
 				order.company_id = company.id
 				order.title = FFaker::Skill.specialty + "Dept."
 				order.notes = FFaker::BaconIpsum.sentences
+				order.number_needed = 1..4
 				order.active = true
-				Job.populate(2..5) do |job|
+				orber.urgrnt = false
+				Job.populate(1..2) do |job|
 					job.order_id = order.id
 					job.title = FFaker::Job.title
 					job.employee_id = job.id
@@ -41,7 +43,7 @@ namespace :db do
 	require 'populator'
 	require 'ffaker'
 	password = "password"
-	  User.populate 100 do |user|
+	  User.populate 50 do |user|
 		user.first_name = FFaker::Name.first_name
 		user.last_name = FFaker::Name.last_name
 		user.email = FFaker::Internet.email

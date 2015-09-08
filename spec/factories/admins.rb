@@ -22,6 +22,7 @@
 #  last_name              :string
 #  company_id             :integer
 #  role                   :string
+#  username               :string
 #
 
 FactoryGirl.define do

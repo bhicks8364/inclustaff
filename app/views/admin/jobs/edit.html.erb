@@ -24,7 +24,7 @@
     <%= f.association :order, label_method: :title, value_method: :id, include_blank: false %>
 
     <%= f.input :title, placeholder: "Job Title" %>
-    <%= f.input :description, placeholder: "Job Description" %>
+    <%= f.text_area :description, placeholder: "Job Description", data: {behavior: 'autocomplete'}, row: 10 %>
     <%= f.input :start_date, as: :string, input_html: { id: "datepicker" } %> 
     
     <div class="input-group">

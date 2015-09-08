@@ -46,6 +46,8 @@ gem 'receipts'
 
 # NESTED FORMS
 gem "cocoon"
+# AUTOCOMPLETE & @MENTIONS
+gem 'jquery-atwho-rails'
 
 # STATE MACHINE
 gem 'aasm'

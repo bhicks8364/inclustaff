@@ -15,7 +15,7 @@
 //= require jquery_ujs
 //= require jquery-ui
 //= require jquery-ui/draggable
-
+//= require jquery.atwho
 
 
 
@@ -24,9 +24,11 @@
 //= require shifts
 //= require startshift
 //= require jobs
+//= require autocomplete
 
 //= require bootstrap-sprockets
 //= require cocoon
+
 
 
 

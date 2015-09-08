@@ -29,6 +29,14 @@
       <strong>Pay rate:</strong>
       <%= number_to_currency(@job.pay_rate, :unit => "$") %><br>
       
+      <strong>Mentioned Admins</strong>
+      <% if @job.mentioned_admins.any? %>
+        <% @job.mentioned_admins.each do |admin|%>
+          <%= admin.name %> - <%= admin.role %>
+        <% end %>
+      <% else %>
+      No admins were mentioned.
+      <% end %>
       
       <% link_to "EDIT", edit_admin_job_path(@job), class: "btn btn-warning" %>
     </div>

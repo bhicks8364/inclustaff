@@ -19,6 +19,7 @@ class JobPolicy < ApplicationPolicy
     end
     
     def show?
+        return true if user.owner? || user.payroll?
         user.recruiter? && user.id == job.recruiter_id
         # scope.where(:id => job.id).exists?
         # return true if user.admin? || user.payroll?
@@ -27,6 +28,8 @@ class JobPolicy < ApplicationPolicy
     end
     
     def create?
+        return true if user.owner? || user.payroll?
+        # user.recruiter? && user.id == job.recruiter_id
         # user.not_an_employee?
     end
     def clock_in?

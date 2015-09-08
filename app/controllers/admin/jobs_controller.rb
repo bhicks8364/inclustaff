@@ -29,6 +29,7 @@ class Admin::JobsController < ApplicationController
   # GET /jobs/1
   # GET /jobs/1.json
   def show
+    authorize @job
     @timesheet = @job.current_timesheet if @job.current_timesheet.present?
     @shift = @job.shifts.last if @job.shifts.any?
     @timesheets = @job.timesheets if @job.timesheets.any?
@@ -38,18 +39,19 @@ class Admin::JobsController < ApplicationController
 
   # GET /jobs/new
   def new
-
+    
     if params[:order_id]
       @order = Order.find(params[:order_id])
       @company = @order.company
       @job = @order.jobs.new
-
+      authorize @job
     else
       @company = current_admin.company
       @orders = @company.orders
 
     
       @job = @job = Job.new
+      authorize @job
 
     end
 

@@ -72,6 +72,23 @@ class Job < ActiveRecord::Base
     
     
     
+    def mentions
+        @mentions ||= begin
+                        regex = /@([\w]+)/
+                        description.scan(regex).flatten
+                      end
+        
+    end
+    
+    def mentioned_admins
+        @mentioned_admins ||= Admin.where(username: mentions)
+    end
+    def requested_employees
+        @requested_employees ||= User.where(last_name: mentions)
+    end
+    
+    
+    
     def on_shift?
         self.shifts.clocked_in.any?
     end

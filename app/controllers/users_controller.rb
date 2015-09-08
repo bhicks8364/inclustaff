@@ -2,6 +2,8 @@ class UsersController < ApplicationController
     
     def index
         @users = User.all
+        skip_authorization
+        
         # if admin_signed_in? 
         #   @admin = current_admin
         #   @company = @admin.company
@@ -16,12 +18,12 @@ class UsersController < ApplicationController
     
     def grant_editing
         @user = User.find(params[:id])
-        # authorize @user
         if @user.can_edit?
             @user.update(can_edit: false)
         else
             @user.update(can_edit: true)
         end
+        skip_authorization
     end
     
     def show
