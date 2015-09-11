@@ -2,7 +2,7 @@
 <div class="job" data-behavior="job-list">
     <div data-behavior="job" data-id="<%= job.id %>">
         
-      <h4 class="list-group-item-heading"><%= link_to job.title, admin_job_path(job) %></h4>
+      <h5 class="list-group-item-heading"><%= link_to job.title, admin_job_path(job) %></h5>
        
     <%= link_to job.employee.name, admin_employee_path(job.employee), class: 'table-link' %>
     
@@ -19,10 +19,10 @@
               </span>
              
                
-            <button data-behavior="job-out-button" class='badge badge-danger'>
+            <button data-behavior="job-out-button_<%= job.id %>" class='badge badge-danger'>
             <i class='fa fa-sign-out'></i> Clock Out
           </button>
-          <button data-behavior="job-in-button" class='hide-this badge badge-success'>
+          <button data-behavior="job-in-button_<%= job.id %>" class='hide-this badge badge-success'>
             <i class='fa fa-sign-out'></i> Clock In
           </button>
            <span data-behavior="time-out">
@@ -38,10 +38,10 @@
         <span data-behavior="time-in">
           
         </span>
-          <button data-behavior="job-in-button" class='badge badge-success'>
+          <button data-behavior="job-in-button_<%= job.id %>" class='badge badge-success'>
             <i class='fa fa-sign-in'></i> Clock In
           </button>
-          <button data-behavior="job-out-button" class='hide-this badge badge-danger'>
+          <button data-behavior="job-out-button_<%= job.id %>" class='hide-this badge badge-danger'>
             <i class='fa fa-sign-out'></i> Clock Out
           </button>
         

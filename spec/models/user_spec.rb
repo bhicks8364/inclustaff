@@ -26,6 +26,7 @@
 #  state                  :string
 #  zipcode                :string
 #  employee_id            :integer
+#  agency_id              :integer
 #
 
 require 'rails_helper'

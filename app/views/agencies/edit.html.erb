@@ -1,0 +1,13 @@
+<%= simple_form_for(@agency) do |f| %>
+
+
+    <%= f.input :name %>
+    
+    <%= f.association :orders, as: :check_boxes %>
+    <%= f.association :admins %>
+
+
+
+    <%= f.submit %>
+
+<% end %>

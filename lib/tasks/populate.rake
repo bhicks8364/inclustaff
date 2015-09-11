@@ -17,20 +17,21 @@ namespace :db do
 			company.phone_number = FFaker::PhoneNumber.phone_number
 			Order.populate(1..5) do |order|
 				order.company_id = company.id
-				order.title = FFaker::Skill.specialty + "Dept."
+				order.agency_id = 1..2
+				order.title = FFaker::Skill.specialty 
 				order.notes = FFaker::BaconIpsum.sentences
 				order.number_needed = 1..4
 				order.active = true
 				orber.urgrnt = false
-				Job.populate(1..2) do |job|
-					job.order_id = order.id
-					job.title = FFaker::Job.title
-					job.employee_id = job.id
-					job.pay_rate = range(8.10, 27.57)
-					job.description = FFaker::BaconIpsum.sentences
-					job.active = true
-					puts job.employee_id
-			  	end
+				# Job.populate(1..2) do |job|
+				# 	job.order_id = order.id
+				# 	job.title = FFaker::Job.title
+				# 	job.employee_id = job.id
+				# 	job.pay_rate = range(8.10, 27.57)
+				# 	job.description = FFaker::BaconIpsum.sentences
+				# 	job.active = true
+				# 	puts job.employee_id
+			 # 	end
 			end
 			
 		end
@@ -82,11 +83,31 @@ namespace :db do
 	require 'populator'
 	require 'ffaker'
 	password = "password"
+	  
+	  Agency.populate 1 do |agency|
+		agency.name = "Global Technical Recruiters"
+		puts agency.name
+	  end
+	  Agency.populate 2 do |agency|
+		agency.name = FFaker::Company.name
+		puts agency.name
+	  end
+	  Admin.populate 1 do |admin|
+		admin.first_name = "Brittany"
+		admin.last_name = "Hicks"
+		admin.email = "bhicks@email.com"
+		admin.agency_id = 1
+		admin.role = "Owner"
+		admin.encrypted_password = Admin.new(:password => password).encrypted_password
+		admin.sign_in_count = 0
+		admin.failed_attempts = 0
+		puts admin.first_name
+	  end
 	  Admin.populate 5 do |admin|
 		admin.first_name = FFaker::Name.first_name
 		admin.last_name = FFaker::Name.last_name
 		admin.email = FFaker::Internet.email
-		admin.company_id = 1
+		admin.agency_id = 1
 		admin.role = "Recruiter"
 		admin.encrypted_password = Admin.new(:password => password).encrypted_password
 		admin.sign_in_count = 0
@@ -97,7 +118,7 @@ namespace :db do
 		admin.first_name = FFaker::Name.first_name
 		admin.last_name = FFaker::Name.last_name
 		admin.email = FFaker::Internet.email
-		admin.company_id = 1
+		admin.agency_id = 1
 		admin.role = "Account Manager"
 		admin.encrypted_password = Admin.new(:password => password).encrypted_password
 		admin.sign_in_count = 0
@@ -108,7 +129,7 @@ namespace :db do
 		admin.first_name = FFaker::Name.first_name
 		admin.last_name = FFaker::Name.last_name
 		admin.email = FFaker::Internet.email
-		admin.company_id = 2
+		admin.agency_id = 2
 		admin.role = "Recruiter"
 		admin.encrypted_password = Admin.new(:password => password).encrypted_password
 		admin.sign_in_count = 0
@@ -119,7 +140,7 @@ namespace :db do
 		admin.first_name = FFaker::Name.first_name
 		admin.last_name = FFaker::Name.last_name
 		admin.email = FFaker::Internet.email
-		admin.company_id = 2
+		admin.agency_id = 2
 		admin.role = "Account Manager"
 		admin.encrypted_password = Admin.new(:password => password).encrypted_password
 		admin.sign_in_count = 0
@@ -130,7 +151,7 @@ namespace :db do
 		admin.first_name = FFaker::Name.first_name
 		admin.last_name = FFaker::Name.last_name
 		admin.email = FFaker::Internet.email
-		admin.company_id = 2
+		admin.agency_id = 2
 		admin.role = "Owner"
 		admin.encrypted_password = Admin.new(:password => password).encrypted_password
 		admin.sign_in_count = 0
@@ -141,7 +162,7 @@ namespace :db do
 		admin.first_name = FFaker::Name.first_name
 		admin.last_name = FFaker::Name.last_name
 		admin.email = FFaker::Internet.email
-		admin.company_id = 1
+		admin.agency_id = 1
 		admin.role = "Owner"
 		admin.encrypted_password = Admin.new(:password => password).encrypted_password
 		admin.sign_in_count = 0

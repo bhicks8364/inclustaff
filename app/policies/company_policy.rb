@@ -8,7 +8,7 @@ class CompanyPolicy < ApplicationPolicy
   end
   
   def index?
-    # user.present? && user.admin?
+   return true if user.agency?
   end
   
   def show?
@@ -19,7 +19,7 @@ class CompanyPolicy < ApplicationPolicy
   end
   
   def create?
-    # user.admin?
+   return true if user.owner? || user.account_manager?
   end
   
   def new?
@@ -27,7 +27,7 @@ class CompanyPolicy < ApplicationPolicy
   end
   
   def update?
-    # user.admin?
+    return true if user.owner? || user.account_manager?
   end
   
   def edit?

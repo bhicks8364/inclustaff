@@ -18,7 +18,7 @@
     <%= f.association :employee, prompt: "Select Employee", label: false, disabled: true %>
     <%= f.association :order, prompt: "Select Department", label: false, disabled: true %>
   
-    <%= f.association :recruiter, collection: @company.recruiters.order(:last_name), prompt: "Select Recruiter", label: false %>
+    <%= f.association :recruiter, collection: @agency.recruiters.order(:last_name), prompt: "Select Recruiter", label: false %>
    
 
     <%= f.association :order, label_method: :title, value_method: :id, include_blank: false %>

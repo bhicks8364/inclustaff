@@ -5,13 +5,16 @@ class DashboardController < ApplicationController
         # authenticate_admin!
         if admin_signed_in? 
            @admin = current_admin
-           @company = @admin.company
-        #   @manager = @admin if @admin.account_manager?
-           
-           @orders = @company.orders
-           @shifts = @company.shifts
-           @active_jobs = @company.jobs.active.joins(:shifts).group("jobs.title").order("shifts.updated_at DESC, jobs.title ASC") if @company.jobs.any?
-           @timesheets = @company.timesheets
+           @agency = @admin.agency if @admin.agency?
+           @company = @admin.company if @admin.company?
+       
+           @orders = @agency.orders if @agency.present?
+           @orders = @company.orders if @company.present?
+           @shifts = @agency.shifts if @agency.present?
+           @jobs = @agency.jobs.active if @agency.present?
+           @jobs = @company.jobs.active if @company.present?
+           @timesheets = @agency.timesheets if @agency.present?
+           @timesheets = @company.timesheets if @company.present?
         elsif user_signed_in? && current_user.employee?
         
             @current_user = current_user if user_signed_in? && current_user.employee?
@@ -82,9 +85,9 @@ class DashboardController < ApplicationController
     
     def agency_view
         @current_admin = current_admin if admin_signed_in?
-        @company = @current_admin.company
-        @employees = @company.employees
-        @timesheets = @company.timesheets
+        @agency = @current_admin.agency
+        @employees = @agency.employees
+        @timesheets = @agency.timesheets
         gon.employees = @employees
         gon.company = @company
         gon.timesheets = @timesheets

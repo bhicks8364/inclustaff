@@ -13,6 +13,7 @@
 #  user_id      :integer
 #  deleted_at   :datetime
 #  assigned     :boolean
+#  resume_id    :string
 #
 
 class Employee < ActiveRecord::Base
@@ -21,6 +22,7 @@ class Employee < ActiveRecord::Base
   include ArelHelpers::JoinAssociation
   
   belongs_to :user
+  attachment :resume, extension: ["pdf", "doc", "docx"]
   has_many :shifts, dependent: :destroy
   has_many :jobs, dependent: :destroy
   has_many :orders, :through => :jobs

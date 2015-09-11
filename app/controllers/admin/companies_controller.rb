@@ -91,6 +91,10 @@ class Admin::CompaniesController < ApplicationController
   end
 
   private
+  
+    def pundit_user
+      current_admin
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_company
       @company = Company.find(params[:id])

@@ -6,9 +6,19 @@ class Admin::EmployeesController < ApplicationController
   # GET /employees
   # GET /employees.json
   def index
-      @admin = current_admin
+    @admin = current_admin
+    if @admin.agency?
+      @agency = @admin.agency
+      @employees = @agency.employees.includes(:jobs) if @agency.present?
+    elsif @admin.company?
       @company = @admin.company
-      @employees = @company.employees.with_active_jobs.order(last_name: :asc)
+      @employees = @company.employees if @company.present?
+    end
+    
+    # @employees = Employee.all
+      
+      
+
       gon.employees = @employees
       authorize @employees
   end
@@ -66,7 +76,7 @@ class Admin::EmployeesController < ApplicationController
   def create
     @employee = Employee.new(employee_params)
     authorize @employee
-    @employee.build_user
+    
 
       @admin = current_admin
       @company = @admin.company
@@ -126,7 +136,7 @@ class Admin::EmployeesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def employee_params
-      params.require(:employee).permit(:first_name, :last_name, :email, :ssn, :phone_number, :user_id,
+      params.require(:employee).permit(:first_name, :last_name, :email, :ssn, :phone_number, :user_id, :resume,
           jobs_attributes: [:title, :pay_rate, :start_date, :order_id, :id],
           user_attributes: [:id, :email, :role, :password, :password_confirmation, :first_name, :last_name, :company_id, :current_password, :address, :city, :state, :zipcode])
     end

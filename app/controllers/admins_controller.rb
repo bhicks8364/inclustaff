@@ -1,16 +1,30 @@
 class AdminsController < ApplicationController
-    
+    before_filter :authenticate_admin!
+    layout 'admin_layout'
     def index
-        
-          @admin = current_admin
+      @admin = current_admin
+        if @admin.agency?
+          @agency = @admin.agency
+        elsif @admin.company?
           @company = @admin.company
-          @admins = @company.admins.order(last_name: :asc)
+        end
+        @admins = Admin.agency_admins
+          # @admins = @company.admins.order(last_name: :asc) if @company.present?
+          # @admins = @agency.admins.order(last_name: :asc) if @agency.present?
         skip_authorization
         respond_to do |format|
           format.json
           format.html
 
       end
+    end
+    
+    def follow
+        @admin = Admin.find(params[:id])
+        
+        current_admin.events.create(action: "followed", eventable: @admin)
+        redirect_to events_path
+    skip_authorization
     end
     
     
@@ -25,16 +39,28 @@ class AdminsController < ApplicationController
     # end
     
     def show
+        
         @admin = Admin.find(params[:id])
-        @orders = @admin.account_orders if @admin.account_manager?
-        @company = @admin.company
-        @orders = @company.orders if @admin.owner?
-        @jobs = @company.jobs.with_current_timesheets.distinct if @admin.owner?
+        if @admin.company?
+            @company = @admin.company
+            @employees = @company.employees
+            @orders = @company.orders
+            @events = @admin.events
+            @company_orders = @company.orders if @admin.owner?
+            @company_jobs = @company.jobs if @company.jobs.any?
+            @jobs = @company.jobs.with_current_timesheets.distinct if @admin.company?
+        elsif @admin.agency?
+            @agency = @admin.agency
+            @employees = Employee.unassigned.order(:last_name)
+            @orders = @agency.orders
+            @acct_orders = @admin.account_orders if @admin.account_manager?
+            @events = @admin.events
+            @recruiter_jobs = @admin.recruiter_jobs.with_current_timesheets.distinct if @admin.recruiter?
+            @jobs = @agency.jobs.with_current_timesheets.distinct if @admin.agency?
+            
+        end
         
-        @jobs = @admin.jobs.with_current_timesheets.distinct if @admin.account_manager?
-        @jobs = @admin.recruiter_jobs.with_current_timesheets.distinct if @admin.recruiter?
-        
-        @employees = @company.employees
+        # @employees = @company.employees if @company.employees.any?
         # @jobs = Job.by_recuriter(@admin).with_current_timesheets if @admin.recruiter?
         # @jobs = @company.jobs.active if @company.jobs.any?
 

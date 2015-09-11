@@ -20,9 +20,18 @@
 
 
 		<%= render 'admin/shared/navbar' %>
+
 	<div class="container">
 		<div class="row">
-	<% if admin_signed_in? %><%= render 'admin/shared/admin_sidebar' %>
+	<% if admin_signed_in? %>
+	
+	<% if current_admin.company? %>
+	<%= render 'admin/shared/company_sidebar' %>
+	<% elsif current_admin.agency? %>
+	<%= render 'admin/shared/admin_sidebar' %>
+	<% end %>
+	
+	
 			<div class="col-md-10" id="content-wrapper">
 <% else %>
 <div class="col-md-12" id="content-wrapper">

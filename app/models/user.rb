@@ -26,6 +26,7 @@
 #  state                  :string
 #  zipcode                :string
 #  employee_id            :integer
+#  agency_id              :integer
 #
 
 class User < ActiveRecord::Base
@@ -40,7 +41,20 @@ class User < ActiveRecord::Base
   validates :role,  presence: true
 
   
+  
+  scope :unassigned, -> { joins(:employee).merge(Employee.unassigned)}
+  
+  
   after_create :set_employee, :set_emp_id
+  after_initialize :set_role
+  
+  def set_role
+    self.role = "Employee"
+  end
+  
+  def online?
+    updated_at > 10.minutes.ago
+  end
   
 
   devise :database_authenticatable, :registerable,
@@ -54,6 +68,7 @@ class User < ActiveRecord::Base
   #   # logger.debug self.to_yaml
   scope :unassigned, -> { joins(:employee).merge(Employee.unassigned)}
   scope :assigned, -> { joins(:employee).merge(Employee.with_active_jobs)}
+  scope :online, -> { where("updated_at > ?", 10.minutes.ago) }
   #   super && employee.assigned?
   # end
   

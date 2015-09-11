@@ -20,17 +20,28 @@
 class Company < ActiveRecord::Base
     
     has_many :orders
+    has_many :agencies, :through => :orders
     has_many :jobs, :through => :orders
     has_many :employees, :through => :jobs
     has_many :shifts, :through => :jobs
     has_many :timesheets, :through => :jobs
+    has_many :account_managers, :through => :orders
+    has_many :recruiters, :through => :jobs
     has_many :admins
+    has_many :events, :through => :admins
     has_one :owner, -> { where role: 'Owner' }, class_name: "Admin"
-    has_many :recruiters, -> { where role: 'Recruiter' }, class_name: "Admin"
-    has_many :payroll_admin,  -> { where role: "Payroll" }, class_name: "Admin"
-    has_many :account_managers,  -> { where role: "Account Manager" }, class_name: "Admin"
+    # has_many :recruiters, -> { where role: 'Recruiter' }, class_name: "Admin"
+    # has_many :payroll_admin,  -> { where role: "Payroll" }, class_name: "Admin"
+    # has_many :account_managers,  -> { where role: "Account Manager" }, class_name: "Admin"
     include ArelHelpers::ArelTable
     include ArelHelpers::JoinAssociation
+    
+    
+    def current_agency
+        if self.orders.any?
+            self.orders.last.agency
+        end
+    end
     
     
     

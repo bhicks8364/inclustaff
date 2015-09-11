@@ -7,23 +7,42 @@ class Admin::OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
-
+    if params[:company_id]
+      @company = Company.find(params[:company_id])
+      @orders = @company.orders
+      
+    else
       @admin = current_admin
-      @company = @admin.company
-      @orders = @company.orders.active
-      # @timesheets = @company.timesheets.order(updated_at: :desc)
-      # @orders = @company.orders
-      # @with_active_jobs = @orders.with_active_jobs
+      
+      if @admin.agency?
+      
+        @agency = @admin.agency
+      elsif @admin.company?
+        @company = @admin.company
+      end
+      
+      @orders = @company.orders.active.order(created_at: :desc) if @company.present?
+      @orders = @agency.orders.active.order(created_at: :desc) if @agency.present?
+
+    end
+    
+    
+    authorize @orders
 
   end
   
   def all
 
-      @admin = current_admin
+    @admin = current_admin
+    if @admin.agency?
+      @agency = @admin.agency
+    elsif @admin.company?
       @company = @admin.company
-      # @timesheets = @company.timesheets.order(updated_at: :desc)
-      @orders = @company.orders
-      # @with_active_jobs = @orders.with_active_jobs
+    end
+    
+      @orders = @company.orders.order(created_at: :desc) if @company.present?
+      @orders = @agency.orders.order(created_at: :desc) if @agency.present?
+      authorize @orders
     
   end
 
@@ -34,26 +53,41 @@ class Admin::OrdersController < ApplicationController
     @inactivejobs = @order.jobs.inactive
     @active_jobs = @order.jobs.active
     @jobs = @order.jobs.active.includes(:shifts)
-    # authorize @order
+    authorize @order
   end
     
 
   # GET /orders/new
   def new
     @admin = current_admin
-    @company = @admin.company
-    @account_managers = @company.account_managers
-    @order = @company.orders.new
+    if @admin.agency?
+      @agency = @admin.agency
+      @account_managers = @agency.account_managers if @agency.present?
+     
+      @company = Company.find(params[:company_id]) if params[:company_id].present?
+
+      @order = @company.orders.new if @company.present?
+      @order = @agency.orders.new if @agency.present?
+      authorize @order
+    elsif @admin.company?
+      @company = @admin.company
+      @order = @company.orders.new
+      authorize @order
+    end
+
+    
 
   end
 
   # GET /orders/1/edit
   def edit
-      @order = Order.find(params[:id])
-      @company = @order.company
-      @account_managers = @company.account_managers
-      @order.jobs.build
-
+    @admin = current_admin
+    @order = Order.find(params[:id])
+    authorize @order
+    @company = @order.company
+    @account_managers = @company.account_managers
+    @order.jobs.build
+    
   end
 
   # POST /orders
@@ -61,14 +95,23 @@ class Admin::OrdersController < ApplicationController
   def create
 
     @admin = current_admin
-    @company = @admin.company
-    @order = @company.orders.new(order_params)
+
+      @agency = @admin.agency if @admin.agency?
+      @company = Company.find(params[:company_id])
+      @agency = @company.current_agency
+      # @account_managers = @agency.account_managers if @agency.present
+      @order = @company.orders.new(order_params)
+      @order.agency = @agency
+      
+      authorize @order
+
+
 
 
 
     respond_to do |format|
       if @order.save 
-        format.html { redirect_to admin_order_path(@order), notice: 'Order was successfully created.' }
+        format.html { redirect_to admin_company_path(@company), notice: 'Order was successfully created.' }
         format.json { render :show, status: :created, location: @order }
       else
         format.html { render :new }
@@ -80,11 +123,12 @@ class Admin::OrdersController < ApplicationController
   # PATCH/PUT /orders/1
   # PATCH/PUT /orders/1.json
   def update
+    authorize @order
     @company = @order.company
 
     respond_to do |format|
       if @order.update(order_params)
-        format.html { redirect_to company_order_path(@company, @order), notice: 'Order was successfully updated.' }
+        format.html { redirect_to admin_company_order_path(@company, @order), notice: 'Order was successfully updated.' }
         format.json { render :show, status: :ok, location: @order }
       else
         format.html { render :edit }
@@ -96,16 +140,20 @@ class Admin::OrdersController < ApplicationController
   # DELETE /orders/1
   # DELETE /orders/1.json
   def destroy
+    @company = @order.company
     authorize @order
     @order.destroy
 
     respond_to do |format|
-      format.html { redirect_to company_orders_path(@company), notice: 'Order was successfully destroyed.' }
+      format.html { redirect_to admin_company_orders_path(@company), notice: 'Order was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
+    def pundit_user
+      current_admin
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_order
 
@@ -115,6 +163,6 @@ class Admin::OrdersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.require(:order).permit(:id, :company_id, :account_manager_id, :manager_id, :title, :pay_range, :notes, :number_needed, :needed_by, :urgent, :active, jobs_attributes: [:order_id, :title, :description, :start_date, :id, :employee_id, :active])
+      params.require(:order).permit(:id, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title, :pay_range, :notes, :number_needed, :needed_by, :urgent, :active, jobs_attributes: [:order_id, :title, :description, :start_date, :id, :employee_id, :active])
     end
 end

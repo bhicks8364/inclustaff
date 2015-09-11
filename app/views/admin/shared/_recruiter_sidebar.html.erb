@@ -1,0 +1,48 @@
+<div class="col-md-2" id="nav-col">
+	<section id="col-left">
+		
+		<div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">
+				
+			<ul class="nav nav-pills nav-stacked">
+
+						<li><%= link_to current_admin do %>
+							<i class="fa fa-dashboard"></i>
+							
+								<span>Dashboard</span>
+							<% end %>
+						</li>
+						<li><%= link_to admin_jobs_path do %>
+							<i class="fa fa-briefcase"></i>
+								<span>Jobs</span>
+							<% end %>
+						</li>
+						<li><%= link_to users_path do %>
+							<i class="fa fa-star"></i>
+								<span>Candidates</span>
+							<% end %>
+						</li>
+
+						<li><%= link_to admin_orders_path do %>
+							<i class="fa fa-university"></i>
+							
+								<span> Job Orders</span>
+							<% end %>
+						</li>
+						
+
+						<li><%= link_to admin_timesheets_path do %>
+							<i class="fa fa-file-text-o"></i>
+								<span>Timesheets</span>
+							<% end %>
+						</li>
+						<li><%= link_to admin_employees_path do %>
+							<i class="fa fa-users"></i>
+								<span>Active Employees</span>
+							<% end %>
+						</li>
+						
+						
+			</ul>
+		</div>
+	</section>
+</div>

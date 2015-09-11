@@ -12,25 +12,26 @@ class TimesheetPolicy < ApplicationPolicy
         # user.present? && user.not_an_employee?
     end
     def approve?
-        user.owner? || user.account_manager?
+        user.owner? || user.payroll?
         
     end
     
     def show?
-        scope.where(:id => timesheet.id).exists?
+        user.owner? || user.payroll?
+        # scope.where(:id => timesheet.id).exists?
         
     end
     
     def create?
         # true
-        user.admin?
+        # user.admin?
     end
     
     def new?
         create?
     end
     def update?
-        user.admin?
+        user.owner? || user.payroll?
     end
     
     def edit?

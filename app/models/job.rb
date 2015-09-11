@@ -21,6 +21,7 @@
 class Job < ActiveRecord::Base
     belongs_to :employee
     belongs_to :order, counter_cache: true
+    has_one :company, :through => :order
     has_many :timesheets
     has_many :shifts
     has_one :current_shift,-> { where state: "Clocked In" }, class_name: 'Shift'
@@ -217,7 +218,7 @@ class Job < ActiveRecord::Base
     
     def last_clock_in
         if self.shifts.any?
-            self.shifts.last.time_in.strftime("%a  - %b %d, %y")
+            self.shifts.last.time_in.strftime("%m/%e %I:%M%P")
         else
             "No shifts yet."
         end
@@ -225,7 +226,7 @@ class Job < ActiveRecord::Base
     
     def last_clock_out
         if self.shifts.clocked_out.any?
-            self.shifts.clocked_out.last.time_out.strftime("%a  - %b %d, %y")
+            self.shifts.clocked_out.last.time_out.strftime("%m/%e %I:%M%P")
         else
             "No complete shifts."
         end

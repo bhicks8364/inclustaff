@@ -1,13 +1,21 @@
 class Admin::TimesheetsController < ApplicationController
   before_action :set_timesheet, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_admin!
-
+	layout 'admin_layout'
   # GET /timesheets
   # GET /timesheets.json
   def index
-      @admin = current_admin
-      @company = @admin.company
-      @timesheets = @company.timesheets.order(created_at: :desc)
+    	@admin = current_admin
+      if @admin.agency?
+        @agency = @admin.agency
+      elsif @admin.company?
+        @company = @admin.company
+      end
+      
+      @approved_timesheets = @company.timesheets.approved.order(created_at: :desc) if @company.present?
+      @pending_timesheets = @company.timesheets.pending.order(created_at: :desc) if @company.present?
+      @timesheets = @agency.timesheets.order(created_at: :desc) if @agency.present?
+      @timesheets = @company.timesheets.order(created_at: :desc) if @company.present?
       gon.timesheets = @timesheets.includes(:employee)
       authorize @timesheets
 
@@ -43,12 +51,12 @@ class Admin::TimesheetsController < ApplicationController
 
   # GET /timesheets/new
   def new
-    @admin = current_admin
-    @company = @admin.company
-    @jobs = @company.jobs.active
-    @employees = @company.employees
-    @timesheet = Timesheet.new
-    @timesheet.shifts.new
+    # @admin = current_admin
+    # @company = @admin.company
+    # @jobs = @company.jobs.active
+    # @employees = @company.employees
+    # @timesheet = Timesheet.new
+    # @timesheet.shifts.new
     
     # authorize @timesheet
   end
@@ -149,6 +157,16 @@ class Admin::TimesheetsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_timesheet
       @timesheet = Timesheet.find(params[:id])
+    end
+    
+    def set_admin
+      @admin = current_admin
+      if @admin.agency?
+        @agency = @admin.agency
+      elsif @admin.company?
+        @company = @admin.company
+      end
+        
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

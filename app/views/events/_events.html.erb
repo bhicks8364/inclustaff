@@ -1,0 +1,8 @@
+<h1><%= current_admin.name %> Events</h1>
+
+<% Event.mentions(current_admin.id).each do |event| %>
+  <div>
+    <strong> You were <%= event.action %> by <%= link_to event.eventable.name, event.eventable %></strong>
+    <small><%= time_ago_in_words(event.created_at) %></small>
+</div>
+<% end %>

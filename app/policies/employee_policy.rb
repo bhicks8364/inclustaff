@@ -1,6 +1,6 @@
 class EmployeePolicy < ApplicationPolicy
     def index?
-        return true if user.owner? || user.payroll?
+        return true if user.owner? || user.payroll? || user.recruiter?
         # scope.where(:id => employee.id).exists?
         # return true if  user.present? && user.admin? 
     end
@@ -16,7 +16,7 @@ class EmployeePolicy < ApplicationPolicy
     end
     
     def create?
-        return true if user.owner? || user.payroll?
+       return true if user.owner? || user.payroll? || user.recruiter?
         # user.not_an_employee?
     end
     
@@ -24,7 +24,7 @@ class EmployeePolicy < ApplicationPolicy
         create?
     end
     def update?
-        # user.not_an_employee?
+        return true if user.owner? || user.payroll? || user.recruiter?
     end
     
     def edit?

@@ -7,6 +7,7 @@ class Admin::ShiftsController < ApplicationController
     @jobs = @current_admin.company.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 5).order('id DESC')
     @shifts = @current_admin.shifts.paginate(:page => params[:page], :per_page => 5).order('id DESC')
     # gon.shifts = @shifts
+    authorize @shifts
   end
   
   def show
@@ -14,6 +15,7 @@ class Admin::ShiftsController < ApplicationController
     @job = @shift.job
     @timesheet = @shift.timesheet
     gon.shift = @shift
+    
   end
 
   def new
@@ -22,6 +24,7 @@ class Admin::ShiftsController < ApplicationController
     # @jobs = @company.jobs.off_shift.distinct
     # @orders = @company.orders.off_shift.distinct
     @shift = Shift.new
+    authorize @shift
   end
 
 
@@ -35,6 +38,7 @@ class Admin::ShiftsController < ApplicationController
   # POST /shifts.json
   def create
     @shift = Shift.new(shift_params)
+    authorize @shift
 
     respond_to do |format|
       if @shift.save
@@ -57,6 +61,8 @@ class Admin::ShiftsController < ApplicationController
       
       respond_to do |format|
         if @shift.save
+          
+          current_admin.events.create(action: "clocked_in", eventable: @shift.employee)
   
           
           format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
@@ -84,7 +90,7 @@ class Admin::ShiftsController < ApplicationController
                                     in_ip: @current_admin.last_name + "-admin")
         respond_to do |format|
           if @shift.save
-            
+            current_admin.events.create(action: "clocked_out", eventable: @shift.employee)
             
             format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
                         state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out,
@@ -147,9 +153,14 @@ class Admin::ShiftsController < ApplicationController
   end
 
   private
+  
+    def pundit_user
+      current_admin
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_shift
       @shift = Shift.find(params[:id])
+      authorize @shift
     end
     
     def set_admin

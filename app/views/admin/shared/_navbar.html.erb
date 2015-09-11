@@ -80,12 +80,7 @@
 			<div class="nav-no-collapse pull-right" id="header-nav">
 				<ul class="nav navbar-nav pull-center">
 			       
-			        <% if admin_signed_in? && current_admin.company.jobs.on_shift.any? %>
-							<%= render 'shared/clocked_in' %>
-							<% end %>
-						<% if admin_signed_in? && current_admin.company.employees.newly_added.any? %>
-								<%= render 'shared/newly_added' %>
-						<% end %>
+	
 			       
 			      </ul>
 				<ul class="nav navbar-nav pull-right">
@@ -98,21 +93,9 @@
 			        <li><%= link_to "Admin Login", new_admin_session_path %></li>
 			        <% end %>
 			        
-			        <% if user_signed_in? %>
+			      
 			        
-			        <li><%= link_to current_user.name, current_user %></li>
-			        <% if current_user.employee.assigned? %>
-			        	<li><%= link_to "Timeclock", current_user.employee.current_job %></li>
-			        	<li><%= link_to "Timesheets", timesheets_path %></li>
-			        	<li><%= link_to "Profile", current_user.employee %></li>
-			        	<li><%= link_to "Home", home_path %></li>
-			        <% else %>
-			        	<li><%= link_to "Home", home_path %></li>
-			        <% end %>
-			        <li><%= link_to "<i class='fa fa-power-off'></i>    Logout".html_safe, destroy_user_session_path, method: :delete %></li>
-			        
-			        
-			        <% end %>
+			       
 			        <% if admin_signed_in? %>
 			        
 			

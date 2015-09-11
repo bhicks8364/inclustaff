@@ -34,6 +34,8 @@
                   <%= f.input :ssn, required: true, maxlength: 4, label: false, placeholder: "SSN - Last 4 only" %>
                   <%= user.input :password, required: true, placeholder: "Choose a password.", label: false, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length) %>
                   <%= user.input :password_confirmation, required: true, placeholder: "Please confirm your password.", label: false  %>
+                  
+                  <%= f.attachment_field :resume %>
 
             <% end %>
             <%= f.button :submit, "Create Employee", class: "btn btn-primary" %>

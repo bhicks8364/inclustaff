@@ -11,8 +11,8 @@ class Job
     @setEvents()
 
   setEvents: ->
-    @item.find("[data-behavior='job-in-button']").on "click", @handleIn
-    @item.find("[data-behavior='job-out-button']").on "click", @handleOut
+    @item.find("[data-behavior='job-in-button_#{@id}']").on "click", @handleIn
+    @item.find("[data-behavior='job-out-button_#{@id}']").on "click", @handleOut
   
   handleIn: =>
     $.ajax(
@@ -24,9 +24,11 @@ class Job
 
   handleInSuccess: (data) =>
     if data.clocked_in
-      @item.find("[data-behavior='job-in-button']").hide()
-      @item.find("[data-behavior='job-out-button']").show()
-      @item.find("[data-behavior='time-out']").hide()
+      $("[data-behavior='job-in-button_#{@id}']").hide()
+      $("[data-behavior='job-out-button_#{@id}']").show()
+      #@item.find("[data-behavior='job-in-button_#{@id}']").hide()
+      #@item.find("[data-behavior='job-out-button_#{@id}']").show()
+      @item.find("[data-behavior='time-out']").html "<small>Last Out: #{data.last_out}</small>"
       @item.find("[data-behavior='time-in']").html "<small><strong> In:</strong> #{data.time_in}</small>"
       @item.find("[data-behavior='shift-state']").html "<strong>CLOCKED IN</strong><br>"
       console.log data.time_in
@@ -49,8 +51,9 @@ class Job
     if data.clocked_out
       
       #@item.find(".shift-item").hide()
-      @item.find("[data-behavior='job-out-button']").hide()
-      @item.find("[data-behavior='job-in-button']").show()
+      $("[data-behavior='job-out-button_#{@id}']").hide()
+      $("[data-behavior='job-in-button_#{@id}']").show()
+      #@item.find("[data-behavior='job-in-button']").show()
       @item.find("[data-behavior='time-in']").html "<small><strong> In:</strong> #{data.time_in}</small>"
       @item.find("[data-behavior='time-out']").html "<small><strong> Out:</strong> #{data.time_out}</small>"
      

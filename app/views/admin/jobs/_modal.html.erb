@@ -1,9 +1,8 @@
-<a data-toggle="modal" data-target="#mod_<%= job.id %>">
-  
-  <span class="fa-stack">
-		<i class="fa fa-square fa-stack-2x fa-inverse"></i>
-						<i class="fa fa-briefcase fa-stack-1x "></i>
-	</span>
+<a class='btn btn-default btn-sm' data-toggle="modal" data-target="#mod_<%= job.id %>">
+
+						<i class="fa fa-briefcase fa-fw"></i>
+
+	<strong><%= job.name_title %></strong>
 </a>
 
 <!-- Modal -->
@@ -32,7 +31,7 @@
         <div class="btn-toolbar" role="toolbar" aria-label="...">
           <div class="btn-group" role="group" aria-label="..."><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>
           <div class="btn-group" role="group" aria-label="...">
-            <%= link_to(admin_timesheets_path(job.current_timesheet), class: 'btn btn-primary') do %>
+            <%= link_to(admin_timesheet_path(job.current_timesheet), class: 'btn btn-primary') do %>
       					<i class="fa fa-trash-o fa-lg"></i>
       					View Timesheet
       				<% end %>

@@ -2,37 +2,37 @@
 <div="table-responsive">
   
 
-<table id="myTable" class="table table-condensed">
+<table id="myTable" class="table table-hover">
   <thead>
     <tr>
       <th></th>
       <th></th>
-       <th></th>
-      <th>Employee</th>
-      <th>Title</th>
+      <th></th>
       <th>Pay rate</th> 
       <th>Hours</th>
       <th>Total Gross</th>
-      <th>Last In</th>
+      <th>Mark Up</th>
+      <th>Recruiter</th>
+      <th>Acct Manager</th>
     </tr>
   </thead>
 
   <tbody>
     <% @jobs.each do |job| %>
     <% if job.on_shift? %>
-    <tr class="bg-danger">
+    <tr class="success">
       <% else%>
-    <tr class="bg-success">
+    <tr class="info">
       
       <% end %>
-        <td><%= render 'admin/jobs/clock', job: job %></td>
+      
+        <td><%= render 'admin/jobs/company', job: job %></td>
         <td><%= render 'admin/jobs/modal', job: job %><td>
-        <td><%= link_to job.employee.name, admin_employee_path(job.employee) %></td>
-        <td><%= link_to job.title, admin_job_path(job) %></td>
+        
         <td><%= number_to_currency(job.pay_rate) %></td>
         <td><%= job.total_hours.round(2) %></td>
         <td><%= number_to_currency(job.total_gross_pay) %></td>
-        <td><%= job.last_clock_in %></td>
+        <td><%= job.mark_up_percent %></td>
         <td><%= job.recruiter.last_name if job.recruiter.present? %></td>
         <td><%= job.account_manager.last_name if job.account_manager.present? %></td>
         

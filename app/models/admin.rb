@@ -23,10 +23,13 @@
 #  company_id             :integer
 #  role                   :string
 #  username               :string
+#  agency_id              :integer
 #
 
 class Admin < ActiveRecord::Base
   belongs_to :company
+  belongs_to :agency
+  has_many :events
   has_many :orders, :through => :company
   has_many :jobs, :through => :orders
   has_many :shifts, :through => :company
@@ -37,15 +40,44 @@ class Admin < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
          
   before_create :set_username
+  
+  validates :agency_id, presence: true, unless: ->(admin){admin.company_id.present?}
+  validates :company_id, presence: true, unless: ->(admin){admin.agency_id.present?}
+  
+    validates_numericality_of :company_id, allow_nil: true
+    validates_numericality_of :agency_id, allow_nil: true
+
+
+    validate :company_xor_agency
+    
+
+  
          
          
   scope :account_managers, -> { where(role: "Account Manager")}
+  scope :company_admins, -> { where.not(company_id: nil)}
+  scope :agency_admins, -> { where(company_id: nil)}
   scope :owners, -> { where(role: "Owner")}
   scope :payroll_admins, -> { where(role: "Payroll")}
   scope :hr, -> { where(role: "HR")}
   scope :recruiters, -> { where(role: "Recruiter")}
   scope :limited, -> { where(role: "Limited Access")}
          
+  def agency?
+    if self.agency_id != nil
+      true
+    else
+      false
+    end
+  end
+  
+  def company?
+    if self.company_id != nil
+      true
+    else
+      false
+    end
+  end
   
   def account_manager?
     if self.role == "Account Manager"
@@ -102,6 +134,10 @@ class Admin < ActiveRecord::Base
   def account_orders
     Order.by_account_manager(self.id)
   end
+  def personal_events
+    Event.admin_events(admin_id)
+  end
+  
   
   def recruiter_jobs
     Job.by_recuriter(self.id) if self.recruiter?
@@ -113,14 +149,32 @@ class Admin < ActiveRecord::Base
     elsif self.account_manager? && self.account_orders.any?
       account_orders.joins(:current_timesheets).sum(:total_bill)
     end
-  end         
+  end  
+  
+  def current_commission
+    if self.recruiter? && self.recruiter_jobs.any?
+      pay = recruiter_jobs.joins(:current_timesheet).sum(:gross_pay)
+      bill = recruiter_jobs.joins(:current_timesheet).sum(:total_bill)
+      (bill - pay) * 0.15  #FAKE COMMISSION RATE
+    elsif self.account_manager? && self.account_orders.any?
+      pay = account_orders.joins(:current_timesheets).sum(:gross_pay)
+      bill = account_orders.joins(:current_timesheets).sum(:total_bill)
+      (bill - pay) * 0.15  #FAKE COMMISSION RATE
+    end
+  end
          
     def set_username
       self.username = self.name.gsub(/\s(.)/) {|e| $1.upcase}
     end
          
          
-         
+    private
+
+    def company_xor_agency
+      if !(company_id.blank? ^ agency_id.blank?)
+        errors.add(:base, "Specify a company or an agency, not both")
+      end
+    end     
          
          
          

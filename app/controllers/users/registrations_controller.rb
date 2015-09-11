@@ -2,6 +2,26 @@ class Users::RegistrationsController < Devise::RegistrationsController
 # before_filter :configure_sign_up_params, only: [:create]
 # before_filter :configure_account_update_params, only: [:update]
   layout 'new_employee'
+  def create
+    super #Nothing special here.
+  end
+
+  protected
+
+  def sign_up(resource_name, resource)
+    true
+
+  end
+  
+  
+  # def after_sign_up_path_for(resource)
+  #   if admin_signed_in?
+  #     redirect_to admin_dashboard_path
+  #   else
+  #     redirect_to root_path
+  #   end
+    
+  # end
   # GET /resource/sign_up
   # def new
   #   super
@@ -48,15 +68,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   devise_parameter_sanitizer.for(:account_update) << :attribute
   # end
 
-  # The path used after sign up.
-  def after_sign_up_path_for(resource)
-    if admin_signed_in?
-      redirect_to dashboard_path
-    else
-      super(resource)
-    end
-    
-  end
+  # # The path used after sign up.
+  
 
   # The path used after sign up for inactive accounts.
   # def after_inactive_sign_up_path_for(resource)

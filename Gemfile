@@ -46,6 +46,12 @@ gem 'receipts'
 
 # NESTED FORMS
 gem "cocoon"
+
+# FILE UPLOADS
+gem 'refile', require: ['refile/rails', 'refile/image_processing']
+gem 'refile-mini_magick'
+
+
 # AUTOCOMPLETE & @MENTIONS
 gem 'jquery-atwho-rails'
 

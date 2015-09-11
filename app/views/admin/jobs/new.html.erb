@@ -9,7 +9,7 @@ Please add a new employee before continuing.</h3>
 
 
 <h1>New Job</h1>
-<h3><%= @company.name %> </h3>
+
 
 <%= simple_form_for [:admin, @job] do |f| %>
   <% if @job.errors.any? %>
@@ -24,16 +24,20 @@ Please add a new employee before continuing.</h3>
     </div>
 
 <% end %>
-  
+ 
 
         <h4><strong>Job Information</strong></h4>
     <%= f.association :employee, collection: Employee.unassigned.order(:last_name), prompt: "Select Employee", label: false %>
-    <%= f.association :recruiter, collection: @company.recruiters.order(:last_name), prompt: "Select Recruiter", label: false %>
-    <%= f.association :order, collection: @company.orders.active.order(:title), prompt: "Select Department", label: false %>
+    <% if current_admin.recruiter? == false %>
+    <%= f.association :recruiter, collection: @agency.recruiters.order(:last_name), prompt: "Select Recruiter", label: false %>
+    <% end %>
+    <%= f.association :order, collection: @orders.active.order(:title), prompt: "Select Department", label: false %>
 
     <%= f.input :title, placeholder: "Job Title" %>
-    <%= f.input :description, placeholder: "Job Description", data: {behavior: 'autocomplete'} %>
-    <input type="text" id="alternate" size="30" class="pull-right"><br>
+    
+    <%= f.text_area :description, placeholder: "Job Description", data: {behavior: 'autocomplete'} %>
+    
+    
     <%= f.input :start_date, as: :string, input_html: { id: "datepicker" } %> 
     
     <div class="input-group">

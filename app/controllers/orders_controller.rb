@@ -6,20 +6,20 @@ class OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
-    if admin_signed_in? 
+    if admin_signed_in? && current_admin.company? 
       @admin = current_admin
       @company = @admin.company
       @timesheets = @company.timesheets.order(updated_at: :desc)
       @orders = @company.orders
       @with_active_jobs = @orders.with_active_jobs
-    # authorize @orders
+    authorize @orders
     elsif user_signed_in? && current_user.not_an_employee?
       @current_user = current_user if current_user.present?
       @company = @current_user.company
       @orders = @company.orders
       @with_active_jobs = @orders.with_active_jobs
       @timesheets = @company.timesheets.order(updated_at: :desc)
-    # authorize @orders
+    authorize @orders
     end
     
     
@@ -144,10 +144,15 @@ class OrdersController < ApplicationController
   end
 
   private
+  
+    def pundit_user
+      current_admin
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_order
 
       @order = Order.find(params[:id])
+          authorize @order
     end
 
 

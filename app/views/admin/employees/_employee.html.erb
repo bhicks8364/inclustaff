@@ -6,7 +6,7 @@
   
   				
   					<div class="profile-user-details clearfix">
-  						<%= render employee.current_job %>
+  						<%= render employee.current_job if employee.current_job.present? %>
   					</div>
 
   					

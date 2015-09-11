@@ -15,13 +15,15 @@ class ShiftPolicy < ApplicationPolicy
     end
     
     def show?
-        scope.where(:id => shift.id).exists?
+        # scope.where(:id => shift.id).exists?
+        user.owner? || user.payroll?
         
     end
     
     def create?
-        return true if user.admin? 
-        return true if user.employee? && user.employee.id == shift.job.employee_id
+        user.owner? || user.payroll?
+        # return true if user.admin? 
+        # return true if user.employee? && user.employee.id == shift.job.employee_id
         # user.employee?
     end
     
@@ -29,7 +31,7 @@ class ShiftPolicy < ApplicationPolicy
         create?
     end
     def update?
-        user.not_an_employee?
+        user.owner? || user.payroll?
     end
     
     def edit?
@@ -37,7 +39,7 @@ class ShiftPolicy < ApplicationPolicy
     end
 
     def destroy?
-        user.not_an_employee?
+        user.owner? || user.payroll?
     end
     
     

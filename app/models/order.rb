@@ -18,9 +18,17 @@
 #  jobs_count         :integer
 #  account_manager_id :integer
 #  mark_up            :decimal(, )
+#  agency_id          :integer
+#
+# dt_req :boolean
+# bg_check :boolean
+# stwb :boolean
+# position_type :string ['full-time','part-time','temp', 'seasonal']
+# 
 #
 
 class Order < ActiveRecord::Base
+  belongs_to :agency
   belongs_to :company
   belongs_to :manager, foreign_key: 'manager_id', class_name: "Admin"
   belongs_to :account_manager, foreign_key: 'account_manager_id',  class_name: "Admin"
@@ -34,9 +42,14 @@ class Order < ActiveRecord::Base
   # VALIDATIONS
   validates_associated :company
   validates :title,  presence: true
+  validates :mark_up,  presence: true
+  validates :agency_id,  presence: true
+  validates :company_id,  presence: true
   
     # CALLBACKS
     after_initialize :defaults
+    before_validation :set_mark_up
+    
     
     # NESTED ATTRIBUTES
     accepts_nested_attributes_for :jobs
@@ -48,12 +61,36 @@ class Order < ActiveRecord::Base
     scope :with_active_jobs, -> { joins(:jobs).merge(Job.active)}
     scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.this_week)}
     scope :off_shift, -> { joins(:jobs).merge(Job.off_shift)}
-    
+    scope :needs_attention, -> { where(Order[:number_needed].gt(Order[:jobs_count])) }
+    scope :filled, -> { where(Order[:jobs_count].gteq(Order[:number_needed])) }
     
     def defaults
       self.active = true if self.active.nil?
       self.urgent = false if self.urgent.nil?
-    end  
+    end
+    # [ "$8.10 - $10.00","$10.00 - $12.00","$12.00 - $15.00", 
+      # "$15.00 - $18.00", "$18.00 - $22.00", "$18.00 - $22.00", "$22.00 +  ", "Salary", "Hourly + Commission"]
+    def set_mark_up
+      case pay_range
+      when "$8.10 - $10.00"
+        self.mark_up = 1.5
+      when "$10.00 - $12.00"
+        self.mark_up = 1.5
+      when "12.00 - $15.00"
+        self.mark_up = 1.55
+      when "12.00 - $15.00"
+        self.mark_up = 1.55
+      when "15.00 - $18.00"
+        self.mark_up = 1.6
+      when "$18.00 - $22.00"
+        self.mark_up = 1.6
+      when "$22.00 +  "
+        self.mark_up = 1.65
+      else
+        self.mark_up = 1.5
+      end
+    end
+        
     
     def company_name
       if self.company
@@ -64,8 +101,8 @@ class Order < ActiveRecord::Base
     end
     
   def needs_attention?
-    if self.jobs && self.active
-      if self.number_needed > self.jobs.count 
+    if self.jobs.any? && self.number_needed && self.active
+      if self.number_needed > self.jobs_count 
         true
       else
         false
@@ -74,7 +111,7 @@ class Order < ActiveRecord::Base
   end
   
   def filled?
-    if self.number_needed <= self.jobs.count 
+    if self.number_needed <= self.jobs_count 
         true
       else
         false
@@ -82,7 +119,9 @@ class Order < ActiveRecord::Base
   end
   
     def open_jobs
-      self.number_needed - self.jobs.active.count
+      if self.number_needed != nil && self.jobs != nil
+        self.number_needed - self.jobs.count
+      end
     end
     
 
@@ -94,6 +133,14 @@ class Order < ActiveRecord::Base
   def self.by_account_manager(admin_id)
     where(account_manager_id: admin_id)
   end 
+  
+  def title_company
+    "#{company_name} - #{title}"
+  end
+  
+  def mark_up_percent
+    (self.mark_up * 100 - 100).to_i.to_s + "%" 
+  end
   
 
 

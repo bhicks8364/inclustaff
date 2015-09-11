@@ -1,11 +1,11 @@
-<%= simple_form_for [:admin, @order] do |f| %>
+<%= simple_form_for [:admin, @company, @order] do |f| %>
 
         
   <% if @company.nil? %>
     <%= f.association :company, collection: Company.all, prompt: "Choose a Company" %>
   <% else %>
 
-    
+   
   <div id="company-contact">
     <h4><strong>Company Information</strong></h4>
     <address>
@@ -22,14 +22,20 @@
   <% end %>
 
     <h4><strong>Job Order Information</strong></h4>
-    <%= f.input :title, placeholder: "Title", label: false %>
+    <%= f.input :title, placeholder: "Type of position. Ex. Warehouse, Adminstrative, General Labor, etc...", label: false %>
     <%= f.input :number_needed, collection: 1..10, prompt: "How many people are needed?", label: false %>
+    
+    <% if @admin.agency? %>
     <%= f.input :mark_up, collection: [ 1.4, 1.5, 1.6 ], prompt: " Select Mark Up", label: false %>
     <%= f.association :account_manager, collection: @account_managers.order(:last_name), prompt: "Choose aa Account Manager", label: false %>
-    <%= f.input :pay_range, collection: [ "Hourly", "Salary", "Hourly + Commission"], prompt: " Select Pay Type", label: false %>
-    <%= f.input :notes, label: "Job Requirements", placeholder: "Please list desired skills, qualifications, etc...", label: false, row: 10 %>
+    <% end %>
+    <%= f.input :pay_range, collection: [ "$8.10 - $10.00","$10.00 - $12.00","$12.00 - $15.00", 
+      "$15.00 - $18.00", "$18.00 - $22.00", "$18.00 - $22.00", "$22.00 +  ", "Salary", "Hourly + Commission"], prompt: " Select Pay Type", label: false %>
+    <%= f.input :notes, label: "Job Requirements", placeholder: "Please list desired skills, qualifications, etc...", row: 10 %>
     <%= f.input :urgent, as: :boolean, label: "Do you need someone ASAP?" %>
+    <% if current_admin.agency? %>
     <%= f.input :active, as: :boolean %>
+    <% end %>
     <%= f.submit %>
     
 

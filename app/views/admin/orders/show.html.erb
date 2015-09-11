@@ -33,23 +33,36 @@
   <strong>Pay Type:</strong>
   <%= @order.pay_range %>
 </p>
+<p>
+  <strong>Mark Up:</strong>
+  <%= @order.mark_up_percent %>
+</p>
   <strong>Active Employees:</strong>
       <%= @order.jobs.active.count %>
 
 <br/>
 
-  <strong>Pay Frequency:</strong>
-  <%= @order.urgent ? "Bi-Weekly" : "Weekly" %>
+  <strong>Urgency:</strong>
+  <%= @order.urgent ? "URGENT" : "Regular" %>
 <br>
   <strong>Status:</strong>
   <%= @order.active ? "Active" : "Inactive" %>
 </p>
 
-<%= link_to 'Edit', edit_admin_order_path(@order) %> |
-<%= link_to 'Back', admin_orders_path %>
-<br>
-<%= link_to 'Add Job', new_admin_job_path %>
-<hr>
+
+  <div class="btn-group" role="group" aria-label="...">
+    <%= link_to 'Back', admin_company_orders_path(@company), class: "btn btn-primary" %>
+    <% if policy(@order).update? %>
+      <%= link_to 'Edit', edit_admin_order_path(@order), class: "btn btn-primary" %>
+    <% end %>
+    <% if policy(Job).create? %>
+     <%= link_to 'Add Job', new_admin_job_path, class: "btn btn-primary" %>
+    <% end %>
+  </div>
+
+
+
+
 
   </div>
   

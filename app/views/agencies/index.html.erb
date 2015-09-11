@@ -1,0 +1,9 @@
+<% @agencies.each do |agency| %>
+
+<%= link_to agency.name, agency %><br>
+<%= agency.orders.count %><br>
+<%= agency.admins.count %><br>
+<%= agency.users.count %><br>
+
+
+<% end %>

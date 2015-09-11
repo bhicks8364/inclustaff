@@ -28,7 +28,8 @@ class JobPolicy < ApplicationPolicy
     end
     
     def create?
-        return true if user.owner? || user.payroll?
+        return true if user.owner? && user.agency? || user.payroll? || user.recruiter?
+        # return true if user.owner? || user.payroll?
         # user.recruiter? && user.id == job.recruiter_id
         # user.not_an_employee?
     end

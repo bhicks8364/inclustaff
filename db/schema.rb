@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150908103840) do
+ActiveRecord::Schema.define(version: 20150909120618) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20150908103840) do
     t.integer  "company_id"
     t.string   "role"
     t.string   "username"
+    t.integer  "agency_id"
   end
 
   add_index "admins", ["company_id"], name: "index_admins_on_company_id"
@@ -41,6 +42,12 @@ ActiveRecord::Schema.define(version: 20150908103840) do
   add_index "admins", ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
   add_index "admins", ["role"], name: "index_admins_on_role"
   add_index "admins", ["unlock_token"], name: "index_admins_on_unlock_token", unique: true
+
+  create_table "agencies", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "companies", force: :cascade do |t|
     t.string   "name"
@@ -70,11 +77,21 @@ ActiveRecord::Schema.define(version: 20150908103840) do
     t.integer  "user_id"
     t.datetime "deleted_at"
     t.boolean  "assigned"
+    t.string   "resume_id"
   end
 
   add_index "employees", ["deleted_at"], name: "index_employees_on_deleted_at"
   add_index "employees", ["email"], name: "index_employees_on_email"
   add_index "employees", ["user_id"], name: "index_employees_on_user_id"
+
+  create_table "events", force: :cascade do |t|
+    t.integer  "admin_id"
+    t.string   "action"
+    t.integer  "eventable_id"
+    t.string   "eventable_type"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
 
   create_table "jobs", force: :cascade do |t|
     t.integer  "employee_id"
@@ -111,9 +128,11 @@ ActiveRecord::Schema.define(version: 20150908103840) do
     t.integer  "jobs_count"
     t.integer  "account_manager_id"
     t.decimal  "mark_up"
+    t.integer  "agency_id"
   end
 
   add_index "orders", ["account_manager_id"], name: "index_orders_on_account_manager_id"
+  add_index "orders", ["agency_id"], name: "index_orders_on_agency_id"
   add_index "orders", ["deleted_at"], name: "index_orders_on_deleted_at"
   add_index "orders", ["manager_id"], name: "index_orders_on_manager_id"
 
@@ -186,8 +205,10 @@ ActiveRecord::Schema.define(version: 20150908103840) do
     t.string   "state"
     t.string   "zipcode"
     t.integer  "employee_id"
+    t.integer  "agency_id"
   end
 
+  add_index "users", ["agency_id"], name: "index_users_on_agency_id"
   add_index "users", ["deleted_at"], name: "index_users_on_deleted_at"
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

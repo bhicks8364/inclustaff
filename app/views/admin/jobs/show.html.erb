@@ -10,18 +10,18 @@
 
     <div class='col-md-6'>
       <strong>Company:</strong>
-      <%= link_to @company.name, @company %><br>
+      <%= link_to @company.name, admin_company_path(@company) %><br>
     
-      <strong>Department:</strong>
-      <%= link_to @order.title, admin_order_path(@order) %> <br>
+      <strong>Job Order:</strong>
+      <%= link_to @order.title, admin_company_order_path(@company, @order) %> <br>
       
       <strong>Job Title:</strong>
       <%= @job.title %><br>
       <strong>Recruiter:</strong>
-      <% if @job.recruiter.present? %>
+      <% if @job.recruiter.present? && current_admin.agency? %>
       <%= link_to @job.recruiter.name, @job.recruiter %>
       <% else %>
-      No Recruiter Available.
+      <%= @job.recruiter.present? ? @job.recruiter.name : "No Recruiter Available." %>
       <% end %><br>
       <strong>Staff:</strong>
       <%= @job.staff %><br>
@@ -101,6 +101,7 @@
   
 
   
+  </div>
   </div>
 
 

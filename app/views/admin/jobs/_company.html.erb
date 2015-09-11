@@ -1,0 +1,57 @@
+<a class='btn btn-default btn-sm' data-toggle="modal" data-target="#company_mod_<%= job.id %>">
+	<strong><%= job.company.name %></strong>
+</a>
+
+<!-- Modal -->
+<div class="modal fade" id="company_mod_<%= job.id %>" tabindex="-1" role="dialog" aria-labelledby="#<%= job.company.name %>">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="#<%= job.company.name %>"></h4>
+        
+      </div>
+      <div class="modal-body">
+     <% if job.employee.clocked_in?%><i class="fa fa-cog"></i><% end %></span>
+     <address>
+          <strong><%= link_to job.company.name, job.company %></strong><br>
+          <%= job.company.address %><br>
+          <%= job.company.city %>, <%= job.company.state %> <%= job.company.zipcode %><br>
+          <abbr title="Phone">P:</abbr> (123) 456-7890
+        </address>
+        
+                  <address>
+          <strong><%= job.company.contact_name %></strong><br>
+          <a href="mailto:#"><%= job.company.contact_email %></a>
+        </address>
+     
+        
+        
+      
+        
+
+      </div>
+      <div class="modal-footer">
+        
+        <div class="btn-toolbar" role="toolbar" aria-label="...">
+          <div class="btn-group" role="group" aria-label="..."><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>
+          <div class="btn-group" role="group" aria-label="...">
+            <%= link_to(admin_company_path(job.company), class: 'btn btn-primary') do %>
+      					<i class="fa fa-trash-o fa-lg"></i>
+      					View Company
+      				<% end %>
+            <%= link_to(admin_company_orders_path(job.company), class: 'btn btn-primary') do %>
+      					<i class="fa fa-pencil-square fa-lg"></i> 
+      					Company Orders
+      				<% end %>
+          </div>
+          <div class="btn-group" role="group" aria-label="...">
+             
+          </div>
+        </div>
+        
+  				
+      </div>
+    </div>
+  </div>
+</div>

@@ -5,13 +5,13 @@
 	
 	</div>
 
-	<div class="row">
 		<div class="col-lg-12">
 			<div class="main-box clearfix">
 				<div class="table-responsive">
 					<table class="table user-list">
 						<thead>
 							<tr>
+								<th><span></span></th>
 								<th><span>Name</span></th>
 
 								<th style="width: 20%;" class="text-center"><span>Status</span></th>
@@ -22,11 +22,9 @@
 						</thead>
 						<tbody>
 							<%= content_tag_for(:tr, @employees) do |employee| %>
+								<td><%= render 'admin/jobs/company', job: employee.current_job %></td>
 								<td>
-								    <%= image_tag("User_Circle.png") %>
-									<%= link_to employee.name, admin_employee_path(employee), class: "user-link" %>
-									<span class="user-subhead"><%= employee.current_job ? employee.current_job.title : "Unassigned" %></span>
-									
+									<%= render 'admin/jobs/modal', job: employee.current_job %>
 								</td>
 
 								<td style="width: 20%;" class="text-center">
@@ -68,7 +66,5 @@
 	</div>
 </div>
 
-        
-</div>
 </div>
 

@@ -11,18 +11,21 @@ class ApplicationController < ActionController::Base
   # Returning 403 Forbidden if permission is denied
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  def after_sign_in_path_for(admin)
-        current_admin
+  def after_sign_in_path_for(resource)
+    # check for the class of the object to determine what type it is
+    case resource.class
+    when Admin
+      admin_dashboard_path  
+    when User
+      home_path
+    end
   end
-  def after_sign_in_path_for(user)
-        home_path
-  end
-  
   
   private
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:id, :first_name, :last_name, :email, :role, :company_id, :password, :password_confirmation, :can_edit, :address, :city, :state, :zipcode) }
+    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:id, :first_name, :last_name, :email, :role, :agency_id, :company_id, :password, :password_confirmation, :can_edit, :address, :city, :state, :zipcode) }
   end
+  
   
   def update_permitted_parameters
     devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:id, :first_name, :last_name, :email, :role, :can_edit, :company_id, :password, :password_confirmation, :current_password, :address, :city, :state, :zipcode) }
@@ -31,7 +34,11 @@ class ApplicationController < ActionController::Base
     flash[:alert] = "You are not authorized to perform this action."
     redirect_to(request.referrer || root_path)
   end
-  
+  after_filter :user_activity
+
+  def user_activity
+    current_user.try :touch
+  end
   
   
 end

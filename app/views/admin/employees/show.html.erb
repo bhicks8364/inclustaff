@@ -1,0 +1,15 @@
+<%= @employee.name %>
+
+<%= render 'employee/shared/events' %>
+
+
+
+
+<hr>
+<% if @employee.resume.present? %>
+
+<%= link_to "Download Resume", attachment_url(@employee, :resume), class: 'btn btn-primary' %>
+<% else %>
+No resume available.
+
+<% end %>

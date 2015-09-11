@@ -1,0 +1,12 @@
+<%= @agency.name %>
+<hr>
+<%= current_admin.name %>
+<% @agency.orders.each do |order| %>
+<br><%= order.id %>  <%= order.company.name %> - <%= link_to order.title, admin_orders_path %>
+   <small><%= order.account_manager.present? ? order.account_manager.name : "No Account Manager" %></small>
+<br>
+<% end %>
+
+<hr>
+
+<%= link_to "Edit", edit_agency_path(@agency) %>

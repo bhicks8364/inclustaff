@@ -41,7 +41,7 @@ class Timesheet < ActiveRecord::Base
     delegate :current_shift, to: :job
     
 
-    before_save :total_timesheet, if: :has_a_job?
+    before_save :total_timesheet, if: :clocked_out?
     after_initialize :defaults
     
     after_save :update_company_balance!, if: :has_a_job?
@@ -142,7 +142,11 @@ class Timesheet < ActiveRecord::Base
     end
     
     def total_hours
-        self.reg_hours + self.ot_hours
+        if self.reg_hours && self.ot_hours
+            self.reg_hours + self.ot_hours
+        elsif self.reg_hours
+            self.reg_hours
+        end
     end
     
     
@@ -239,23 +243,28 @@ class Timesheet < ActiveRecord::Base
     # end
     
     def total_timesheet
-        hours = self.shifts.sum(:time_worked)
+        if self.shifts.any?
+            hours = self.shifts.sum(:time_worked)
             if hours > 40
                 self.reg_hours = 40
                 self.ot_hours = hours - 40
-                ot_rate = self.pay_rate * 1.5
-                self.gross_pay = self.pay_rate * self.reg_hours + self.ot_hours * ot_rate
+                ot_rate = job.pay_rate * 1.5
+                self.gross_pay = job.pay_rate * self.reg_hours + self.ot_hours * ot_rate
             else
+                pay = job.pay_rate * hours
                 self.reg_hours = hours
                 self.ot_hours = 0
-                self.gross_pay = self.pay_rate * hours
-                self.total_bill = self.gross_pay * self.mark_up
+                self.gross_pay = pay
+                self.total_bill = pay * job.mark_up
                 
             end
+        end
     end
     
     def week_ending
         self.shifts.last.time_in.end_of_week.strftime("%x")
     end
-    
+    def week_begin
+        self.shifts.last.time_in.beginning_of_week.strftime("%x")
+    end
 end

@@ -1,4 +1,4 @@
-<h1><%= @company.name %>'s Dashboard</h1>
+<h1><%= @company ? @company.name : @agency.name %>'s Dashboard</h1>
 
 
 <div class="col-md-12">
@@ -7,14 +7,14 @@
 			<div class="main-box infographic-box">
 				<i class="fa fa-users red"></i>
 				<span class="headline">Employees</span>
-				<span class="value"><%= @company.employees.count %></span>
+				<span class="value"><%= @company ? @company.jobs.count : @agency.jobs.count %></span>
 			</div>
 		</div>
 		<div class="col-lg-6 col-sm-6 col-xs-12">
 			<div class="main-box infographic-box">
 				<i class="fa fa-money green"></i>
 				<span class="headline">Total Payroll</span>
-				<span class="value"><%= number_to_currency(@company.balance) %></span>
+				<span class="value"><%= number_to_currency(@timesheets.current_week.sum(:gross_pay)) %></span>
 			</div>
 		</div>
 		
@@ -22,24 +22,28 @@
 			<div class="main-box infographic-box">
 				<i class="fa fa-clock-o"></i>
 				<span class="headline">Clocked In</span>
-				<span class="value"><small><%= pluralize(@company.jobs.on_shift.count, 'Employee') %></small></span>
+				<span class="value"><small><%= pluralize(@clocked_in.count, 'Employee') %></small></span>
 			</div>
 		</div>
 		
 		<div class="col-lg-6 col-sm-6 col-xs-12">
 			<div class="main-box infographic-box">
+				<% if @orders.needs_attention.any? %>
 				<i class="fa fa-exclamation red"></i>
-				<span class="headline">URGENT</span>
-				<span class="value"><small><%= pluralize(@company.orders.urgent.count, 'Orders')  %></small></span>
+				<span class="headline">Need Attention</span>
+				<span class="value"><small><%= pluralize(@orders.needs_attention.count, 'Order')  %></small></span>
+				<% end %>
 			</div>
 		</div>
 	</div>
 	<%= render 'admin/shared/infoboxes' %>
+	
+	
+		
+			<%= render 'admin/shared/updates' %>
+		
 
-
-
-	<div class="row">
-		<div class="col-lg-8">
+	<div class="col-lg-8">
 			<div class="main-box clearfix">
 				<h2>Current Jobs</h2>
 				<div class="table-responsive">
@@ -76,19 +80,32 @@
 				</div>
 			</div>
 		</div>
+
 		<div class="col-lg-4">
 			<div class="main-box clearfix">
-				<h2>Clocked In</h2>
-				<%= render @jobs.on_shift %>
+				
 				
 			</div>
 		</div>
-	</div>
-	<div class='row'>
-		<div class='lg-6'>
-			<%= render 'admin/shared/updates' %>
+		<div class="col-lg-4">
+			<div class="main-box clearfix">
+				<h2>Events</h2>
+				<% @events.each do |event| %>
+				  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+				    <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
+				  <% end %>
+				<% end %>
+
+				
+			</div>
 		</div>
-	</div>
+		<div class="col-lg-4">
+			<div class="main-box clearfix">
+				
+				
+			</div>
+		</div>
+
 	    
 
 

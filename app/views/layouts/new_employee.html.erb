@@ -19,11 +19,21 @@
 <body>
 
 
-		<%= render 'shared/navbar' %>
+		<%= render 'admin/shared/company_navbar' %>
 	<div class="container">
 		<div class="row">
+			<% if admin_signed_in? %>
 	
-			<div class="col-md-12" id="content-wrapper">
+				<% if current_admin.company? %>
+					<%= render 'admin/shared/company_sidebar' %>
+				<% elsif current_admin.agency? %>
+					<%= render 'admin/shared/admin_sidebar' %>
+				<% end %>
+			
+				<div class="col-md-10" id="content-wrapper">
+			<% else %>
+				<div class="col-md-12" id="content-wrapper">
+			<% end %>
 
 				<% if alert %><div class="alert alert-warning"><%= flash.alert %></div> <% end %>
 	    		<% if notice %> <div class="alert alert-info"><%= flash.notice %></div> <% end %>

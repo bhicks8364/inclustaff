@@ -1,9 +1,11 @@
 Rails.application.routes.draw do
+  resources :agencies
+  resources :events
   root 'dashboard#home'
   devise_for :admins
   devise_for :users, controllers: {
         sessions: 'users/sessions',
-        # registrations: 'users/registrations'
+        registrations: 'users/registrations'
       }
   resources :companies do
     resources :orders
@@ -12,7 +14,9 @@ Rails.application.routes.draw do
   
 
   namespace :admin do
-    resources :companies
+    resources :companies do
+      resources :orders
+    end
     resources :shifts
     resources :timesheets
     resources :employees
@@ -76,8 +80,13 @@ Rails.application.routes.draw do
   resources :jobs, path: "employee/jobs", module: "employee"
     
 
-  resources :admins
-  resources :users
+  resources :admins do
+    member do
+      post :mention
+      post :follow
+    end
+  end
+  
 
   
   

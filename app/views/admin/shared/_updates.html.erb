@@ -1,4 +1,4 @@
-<div class="col-md-12">
+
 	<div class="main-box clearfix">
 		
 		<div class="tabs-wrapper">
@@ -14,9 +14,9 @@
 			<div class="tab-content">
 				<div class="tab-pane fade in active" id="tab-users">
 					<span ><%= link_to "New Shift     <i class='fa fa-sign-in'></i>".html_safe, new_admin_shift_path, class: "badge badge-success" %></span>
-				
-					<%= render 'admin/jobs/table' %>
-				
+				<% @jobs.each do |job| %>
+					<%= render 'admin/jobs/job', job: job %>
+				<% end %>
 
 			
 

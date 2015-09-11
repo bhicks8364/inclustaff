@@ -1,17 +1,17 @@
 <div class="col-lg-12">
-						
+					<%= render 'events/events' %>	
 	<div class="row">
 		<div class="col-lg-3 col-sm-6 col-xs-12">
 			<div class="main-box infographic-box">
 				<i class="fa fa-user red"></i>
 				<span class="headline"><%= link_to "Admins", admins_path %></span>
-				<span class="value"><%= @company.admins.count %></span>
+				<span class="value"><%= @agency.admins.count %></span>
 			</div>
 		</div>
 		<div class="col-lg-3 col-sm-6 col-xs-12">
 			<div class="main-box infographic-box">
 				<i class="fa fa-briefcase emerald"></i>
-				<span class="headline">Jobs</span>
+				<span class="headline"><%= link_to "Jobs", admin_jobs_path %></span>
 				<span class="value"><%= @jobs.count %></span>
 			</div>
 		</div>
@@ -19,15 +19,15 @@
 			<div class="main-box infographic-box">
 				<i class="fa fa-money green"></i>
 				<span class="headline">Total Billing</span>
-				<span class="price"><%= number_to_currency(@company.current_billing) %></span><br>
-				<span class="price text-muted"><small>Last week: <%= number_to_currency(@company.last_week_billing)%></small></span>
+				<span class="price"><%= number_to_currency(@agency.current_billing) %></span><br>
+				<span class="price text-muted"><small>Last week: <%= number_to_currency(@agency.last_week_billing)%></small></span>
 			</div>
 		</div>
 		<div class="col-lg-3 col-sm-6 col-xs-12">
 			<div class="main-box infographic-box">
 				<i class="fa fa-eye yellow"></i>
 				<span class="headline">Current Payroll</span>
-				<span class="price"><%= number_to_currency(@company.current_payroll_cost) %></span><br>
+				<span class="price"><%= number_to_currency(@agency.current_payroll) %></span><br>
 				<span class="price text-muted"><small>YTD: <%= number_to_currency(@timesheets.sum(:gross_pay)) %></small></span>
 				
 				

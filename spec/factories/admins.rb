@@ -23,6 +23,7 @@
 #  company_id             :integer
 #  role                   :string
 #  username               :string
+#  agency_id              :integer
 #
 
 FactoryGirl.define do

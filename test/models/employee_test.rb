@@ -13,6 +13,7 @@
 #  user_id      :integer
 #  deleted_at   :datetime
 #  assigned     :boolean
+#  resume_id    :string
 #
 
 require 'test_helper'

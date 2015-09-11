@@ -57,10 +57,10 @@
 																<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
 															</span>
 														<% end %>
-														<%= link_to(edit_admin_registration_path(admin), class: "table-link") do %>
+														<%= link_to(follow_admin_path(admin), method: :post, class: "table-link") do %>
 															<span class="fa-stack">
 																<i class="fa fa-square fa-stack-2x"></i>
-																<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+																<i class="fa fa-bookmark-o fa-stack-1x fa-inverse"></i>
 															</span>
 														<% end %>
 													</td>
