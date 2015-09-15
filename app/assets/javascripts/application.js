@@ -16,6 +16,7 @@
 //= require jquery-ui
 //= require jquery-ui/draggable
 //= require jquery.atwho
+//= require dataTables/jquery.dataTables
 
 
 
@@ -25,6 +26,7 @@
 //= require startshift
 //= require jobs
 //= require autocomplete
+//= require datatables
 
 //= require bootstrap-sprockets
 //= require cocoon

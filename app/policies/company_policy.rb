@@ -13,7 +13,7 @@ class CompanyPolicy < ApplicationPolicy
   
   def show?
     # true
-    return true if user.owner? || user.account_manager?
+    return true if user.owner? || user.account_manager? || user.payroll?
     # return true if user.payroll? && user.can_edit?
     # return true if user.employee? || user.company_id == company.id
   end

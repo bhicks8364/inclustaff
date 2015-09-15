@@ -1,9 +1,13 @@
+
+
 <% if Employee.unassigned.empty? %>
-<div id="no-employees-alert" class="alert alert-danger" role="alert"><br>
- <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-<h3>All of your employees are currently assigned to a job. 
-Please add a new employee before continuing.</h3>
-<%= link_to 'Back', jobs_path, class: "pull-left" %> <%= link_to "Add Employee", new_admin_employee_path, class: "pull-right" %>
+<div id="no-employees-alert" class="alert alert-danger text-center" role="alert"><br>
+<i class="fa fa-exclamation-triangle fa-3x fa-border"></i>
+<h4 class='text-center'>All of your employees are currently assigned to a job. <br>
+Please add a new employee before continuing.</h4>
+
+<%= link_to "Add Employee", new_user_registration_path, class: "btn btn-danger" %>
+
 </div>
 <% else %>
 
@@ -31,8 +35,11 @@ Please add a new employee before continuing.</h3>
     <% if current_admin.recruiter? == false %>
     <%= f.association :recruiter, collection: @agency.recruiters.order(:last_name), prompt: "Select Recruiter", label: false %>
     <% end %>
+    <% if @orders %>
     <%= f.association :order, collection: @orders.active.order(:title), prompt: "Select Department", label: false %>
-
+    <% else %>
+      <%= @order.title_company %>
+    <% end %>
     <%= f.input :title, placeholder: "Job Title" %>
     
     <%= f.text_area :description, placeholder: "Job Description", data: {behavior: 'autocomplete'} %>
@@ -57,6 +64,3 @@ Please add a new employee before continuing.</h3>
 
 
 <!--IF THE COMPANY HAS NO UNASSIGNED EMPLOYEES - - END-->
-
-
-<%= link_to 'Back', admin_orders_path %>

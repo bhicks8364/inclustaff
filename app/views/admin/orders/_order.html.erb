@@ -1,12 +1,5 @@
-<%= div_for(@company.orders.active, class: "") do |order| %>
 
-    <strong><%= link_to order.title, company_order_path(@company, order) %> - $ <%= order.pay_range %></strong>
-    <p>
-       Est. Start Date: <%= order.needed_by.present? ? order.needed_by.strftime("%B %e, %Y") : "N/A" %><br>
-      <% if order.jobs.active.any? %>
-      1st placement started on:<%= order.jobs.first.start_date.strftime("%B %e, %Y") %>
-      <% end %>
-    </p>
-<%= link_to "Edit", edit_company_order_path(@company, order), class: 'btn btn-primary' %>
 
-<% end %>
+    <strong><%= link_to order.company_name, admin_company_order_path(order.company, order) %> </strong>
+ 
+

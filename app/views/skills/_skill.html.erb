@@ -1,0 +1,17 @@
+<% if skill.new_record? %>
+
+<% else %>
+<%= div_for(skill) do %>
+
+    <%= skill.new_record? ? "".html_safe : "<i class='fa fa-star'></i>".html_safe %> <strong><%= skill.name %></strong>
+    <%= skill.skillable.try(:name) || skill.skillable.try(:title_company) %>
+    <%= link_to(skill, method: :delete, remote: true, data: { confirm: 'Are you sure?' }) do %>
+					<span class="fa-stack">
+						<i class="fa fa-square fa-stack-3x fa-inverse"></i>
+						<i class="fa fa-trash-o fa-stack-1x "></i>
+					</span>
+				<% end %>
+
+<% end %>
+
+<% end %>

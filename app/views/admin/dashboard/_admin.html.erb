@@ -1,12 +1,52 @@
-<div class="main-box">
-				<span>You are signed in as an <%= @admin.role %>.</span>
+
+				
 			<% if @admin.owner? %>
-			<%= link_to 'Owner Dashboard', admin_owner_path %>
-			<div class='main-box'>	
-			<%= render 'admin/timesheets/table' %></div>
+			
+			<div class='col-lg-6 main-box'>	
+			<span>Today is <%= time_tag(Time.current) %>.</span>
+			
+				<div class='row'>
+					<div class='col-md-3'>
+						<%= link_to 'Owner', admin_owner_path, class: "btn btn-primary"  %>
+					
+					</div>
+					<div class='col-md-3'>
+						<%= link_to "Agency Portal", agency_access_path, class: "btn btn-primary" %>
+					
+					</div>
+					
+				</div>
+				
+			</div>
+			<div class='col-lg-6 main-box'>	
+				
+			</div>
+		
+		
+		
+		
+		
+		
 				<% end %>	
 				
-				
+				<% if @admin.payroll? && @admin.agency? %>
+					<div class='col-lg-6 main-box'>	
+						<span>Today is <%= time_tag(Time.current) %>.</span>
+					
+						<div class='row'>
+							<div class='col-md-3'>
+								<%= link_to 'Payroll', admin_payroll_path, class: "btn btn-primary"  %>
+							
+							</div>
+							<div class='col-md-3'>
+								<%= link_to "Agency Portal", agency_access_path, class: "btn btn-primary" %>
+							
+							</div>
+							
+						</div>
+						
+					</div>
+				<% end %>
 				
 				
 				
@@ -15,6 +55,3 @@
 				<%= render 'manager' %>
 				<% end %>
 						
-						
-									
-</div>

@@ -4,23 +4,47 @@ class Admin::TimesheetsController < ApplicationController
 	layout 'admin_layout'
   # GET /timesheets
   # GET /timesheets.json
-  def index
-    	@admin = current_admin
+	def index
+		if params[:job_id]
+  		@job = Job.includes(:employee, :timesheets).find(params[:job_id])
+  		@timesheets = @job.timesheets
+  		@approved_timesheets = @job.timesheets.approved.order(created_at: :desc) if @job.present?
+      @pending_timesheets = @job.timesheets.pending.order(created_at: :desc) if @job.present?
+  		gon.timesheets = @timesheets.includes(:employee)
+      authorize @timesheets
+  	elsif params[:company_id]
+  	
+      @company = Company.includes(:jobs, :timesheets).find(params[:company_id])
+      
+      @approved_timesheets = @company.timesheets.approved.order(created_at: :desc) if @company.present?
+      @pending_timesheets = @company.timesheets.pending.order(created_at: :desc) if @company.present?
+      # @timesheets = @agency.timesheets.order(created_at: :desc) if @agency.present?
+      @timesheets = @company.timesheets.order(created_at: :desc) if @company.present?
+      gon.timesheets = @timesheets.includes(:employee)
+      authorize @timesheets
+     elsif current_admin.agency?
+     	@agency = current_admin.agency
+     	@timesheets = @agency.timesheets
+     	@pending_timesheets = @agency.timesheets.pending
+     	@approved_timesheets = @agency.timesheets.approved
+     	authorize @timesheets
+		end
+	end
+	
+	def past
+		@admin = current_admin
       if @admin.agency?
         @agency = @admin.agency
       elsif @admin.company?
         @company = @admin.company
       end
       
-      @approved_timesheets = @company.timesheets.approved.order(created_at: :desc) if @company.present?
-      @pending_timesheets = @company.timesheets.pending.order(created_at: :desc) if @company.present?
-      @timesheets = @agency.timesheets.order(created_at: :desc) if @agency.present?
-      @timesheets = @company.timesheets.order(created_at: :desc) if @company.present?
-      gon.timesheets = @timesheets.includes(:employee)
-      authorize @timesheets
-
-
-  end
+    @timesheets = @agency.timesheets.past.order(created_at: :desc) if @agency.present?
+    @companies = @agency.companies.includes(:timesheets).order(name: :desc) if @agency.present?
+		@timesheets = @company.timesheets.past.order(created_at: :desc) if @company.present?
+    gon.timesheets = @timesheets.includes(:employee)
+    authorize @timesheets, :index?
+	end
 
   # GET /timesheets/1
   # GET /timesheets/1.json

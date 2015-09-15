@@ -1,58 +1,122 @@
 <div class='col-md-12'>
-
+<%= render 'admins/infoboxes' %>
   <div class="row">
 	<div class="col-lg-12">
 			<div class="main-box clearfix">
 				
 				<div class="tabs-wrapper">
 					<div class="clearfix">
-						<h4 class="pull-left"><%= @admin.first_name %>'s Activity</h4>
+						<h4 class="pull-left"><%= @admin.name %>
+						<span class='text-muted'>  <small><%= @admin.role %></small></span></h4>
 						<ul class="nav nav-tabs pull-right">
 							<li class="active"><a href="#tab-users" data-toggle="tab">Candidates</a></li>
+							<li class=""><a href="#tab-orders" data-toggle="tab">Job Orders</a></li>
 							<li class=""><a href="#tab-placements" data-toggle="tab">Placements</a></li>
+							<li class=""><a href="#tab-timesheets" data-toggle="tab">Timesheets</a></li>
 							<li class=""><a href="#tab-events" data-toggle="tab">Events</a></li>
 						</ul>
 					</div>
 					
 					<div class="tab-content">
 						<div class="tab-pane fade active in" id="tab-users">
-							
-								<% @employees.each do |employee| %>
-								<%= link_to employee.name_title, admin_employee_path(employee) %><br>
+							<div class='col-md-12'>
+								<%= div_for(@employees, class: 'col-md-4') do |employee| %>
+									<%= link_to employee.name_title, admin_employee_path(employee) %><br>
 								
+									<% if employee.skills %>
+										<% employee.skills.limit(3).each do |skill| %>
+											<%= skill.name %><br>
+										<% end %>
+								    <% end %>
+							<hr>
+							
+							    <% end %>
+							    
+							    
+							</div>
 								
-							
-							
-							<% end %>
 						
 							
-							<br>
-							<%= link_to "View all jobs", admin_jobs_path, class: 'btn btn-success pull-right' %>
+							
+						</div>
+						<div class="tab-pane fade" id="tab-orders">
+							<h4>Open orders</h4>
+								<%= div_for(@orders.needs_attention, class: 'text-center well well-sm col-md-4') do |order| %>
+									<h5><%= link_to order.company.name, admin_company_order_path(order.company, order, class: "table-link") %>
+									
+									<%= order.needs_attention? ? "<i class='fa fa-exclamation-triangle'></i>".html_safe : "" %>
+									<strong><%= link_to order.title, admin_order_path(order) %></strong></h5>
+									<% if order.skills.any? %>
+										<% order.skills.limit(3).each do |skill| %>
+											<strong><%= skill.name %></strong>
+										<% end %>
+										
+										<% else %>
+										<strong>Unskilled/None Specified.</strong><br>
+								    <% end %>
+								<% end %>
+						
+							<div class='col-md-12'>
+
+							    <%= render 'admin/orders/table' %>
+							    
+							</div>
+								
+						
+							
+							
 						</div>
 						
 						<div class="tab-pane fade" id="tab-placements">
-							 <h4>Company Placements</h4>
-							<% if @jobs %>
+							<div class='center'>
+							<% if @recruiter_jobs %>
 							
-							<% @jobs.each do |job| %>
+							<% @recruiter_jobs.each do |job| %>
 									
-								<div class='list-item'>
-								<span class'text-right'><strong><%= job.current_timesheet.week_ending %></strong></span>
-							<%= job.name_title %> - <%= number_to_currency(job.current_timesheet.total_bill) %>
-							<br><small><%= job.staff %></small>
+							<div class='col-md-3'>
+									<h5><%= job.company.name %></h5>
+								<strong><%= job.created_at.strftime("%m/%d %I:%M%P") %></strong><br>
 							
-							</div>
+								<h6><%= job.name_title %></h6>
+								<strong><%= job.mark_up_percent %></strong><br>
+								
+									Current bill: <%= number_to_currency(job.current_timesheet.total_bill) %><br>
+									Current pay: <%= number_to_currency(job.current_timesheet.gross_pay) %>
+										 <br>
+									<br><small>Acct Mgr: <%= link_to job.account_manager.name, job.account_manager %></small>
+									
+									
+								</div>
 								
 							<% end %>
-							<% else %>
-							No jobs available.
+							
+							<% elsif @jobs %>
+							<h4>Company Placements</h4>
+							
+							<% @jobs.each do |job| %>
+								<ul>
+									<li>
+										<%= job.name_title %> - <%= job.staff %>
+									</li>
+								</ul>	
+								
+								
 							<% end %>
 							
-					
+							<% else %>
+							No jobs available.
+
+							<% end %>
 							
-							<br>
-							<%= link_to "View Jobs", admin_jobs_path, class: 'btn btn-success pull-right' %> &nbsp;
-							<%= link_to "View Timesheets", admin_timesheets_path, class: 'btn btn-success pull-right' %>
+							</div>	 
+
+						</div>
+						<div class="tab-pane fade" id="tab-timesheets">
+							<% if @timesheets %>
+							<%= render 'admin/timesheets/table' %>
+							<% else %>
+							Sorry, there're are currently timesheets to display.
+							<% end %>
 						</div>
 						
 						<div class="tab-pane fade" id="tab-events">
@@ -73,50 +137,19 @@
 		</div>
 			
 	</div>
-	<%= render 'admins/infoboxes' %>
+	
 	<div class="row">
-		<div class="col-lg-6">
+		<div class="col-lg-12">
 			<div class="main-box clearfix">
-				<h2>Timesheets</h2>
+				<h2>Current Timesheets</h2>
 				<strong><%= @admin.first_name %>'s billing for this week:
 				<%= number_to_currency(@admin.billing) if @admin.billing.present? %></strong>
 				
 				
-				<div class="conversation-wrapper" data-behavior="timesheet-list">
-				
-							
-			<% if @admin.recruiter? && @admin.recruiter_jobs.any? %>
-			
-                <% @recruiter_jobs.each do |job| %>
-               
-                 <%= render job %>
-               
-                 
-              
-                  
-                <% end %>
-              
-              <% end %>
-
-					</div>
+				<%= render partial: "admin/timesheets/single_table", collection: @timesheets.current_week, as: :timesheet %>
 				</div> 
 				
 			</div>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		
   </div>

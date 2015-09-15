@@ -18,7 +18,7 @@
 #
 
 class Company < ActiveRecord::Base
-    
+    default_scope { order(name: 'DESC') }
     has_many :orders
     has_many :agencies, :through => :orders
     has_many :jobs, :through => :orders
@@ -36,8 +36,17 @@ class Company < ActiveRecord::Base
     include ArelHelpers::ArelTable
     include ArelHelpers::JoinAssociation
     
+    def to_s
+        name
+    end
     
     def current_agency
+        if self.orders.any?
+            self.orders.last.agency
+        end
+    end
+    
+    def current_account_manager
         if self.orders.any?
             self.orders.last.agency
         end

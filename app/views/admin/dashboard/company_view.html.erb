@@ -30,7 +30,7 @@
 			<div class="main-box infographic-box">
 				<% if @orders.needs_attention.any? %>
 				<i class="fa fa-exclamation red"></i>
-				<span class="headline">Need Attention</span>
+				<span class="headline">Open</span>
 				<span class="value"><small><%= pluralize(@orders.needs_attention.count, 'Order')  %></small></span>
 				<% end %>
 			</div>
@@ -40,10 +40,11 @@
 	
 	
 		
-			<%= render 'admin/shared/updates' %>
+			
 		
 
-	<div class="col-lg-8">
+		<div class="col-lg-12">
+		
 			<div class="main-box clearfix">
 				<h2>Current Jobs</h2>
 				<div class="table-responsive">
@@ -51,7 +52,7 @@
 						<thead>
 							<tr>
 							  <th>Employee</th>
-						      <th>Title</th>
+						 
 						      <th>Pay rate</th> 
 						      <th>Hours</th>
 						      <th>Total Gross</th>
@@ -65,8 +66,8 @@
 							<% else%>
 								<tr class="bg-success">
 							<% end %>
-								<td><%= render 'admin/jobs/modal', job: job %> <%= link_to job.employee.name, admin_employee_path(job.employee) %></td>
-    							<td><%= link_to job.title, admin_job_path(job) %></td>	
+								<td><%= render 'admin/jobs/modal', job: job %></td>
+    							
 								<td class="text-center"><%= number_to_currency(job.pay_rate) %></td>
 								<td><%= job.total_hours.round(2) %></td>
 						        <td><%= number_to_currency(job.total_gross_pay) %></td>
@@ -81,36 +82,21 @@
 			</div>
 		</div>
 
-		<div class="col-lg-4">
+		
+</div>
+<div class='center'>
+	<div='row'>
+		<div class="col-lg-12">
+			<%= render 'admin/shared/updates' %>
+		</div>
+		
+		<div class="col-lg-12">
 			<div class="main-box clearfix">
 				
 				
 			</div>
 		</div>
-		<div class="col-lg-4">
-			<div class="main-box clearfix">
-				<h2>Events</h2>
-				<% @events.each do |event| %>
-				  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
-				    <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
-				  <% end %>
-				<% end %>
-
-				
-			</div>
-		</div>
-		<div class="col-lg-4">
-			<div class="main-box clearfix">
-				
-				
-			</div>
-		</div>
-
-	    
-
-
-			
-
+	</div>
 </div>
 
 

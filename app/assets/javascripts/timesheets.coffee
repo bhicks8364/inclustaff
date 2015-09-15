@@ -36,7 +36,7 @@ class Timesheet
   handleToggleSuccess: (data) =>
     if data.approved
       @item.removeClass('item-left').addClass('item-right')
-      @item.find("[data-behavior='approve-button']").html "<i class='fa fa-square-o fa-stack-2x hide-this'></i><i class='fa fa-times fa-stack-1x'></i>"
+      @item.find("[data-behavior='approve-button']").html "<i class='fa fa-square-o fa-stack-2x'></i><i class='fa fa-times fa-stack-1x'></i>"
       #@item.find("[data-behavior='approve-user']").html "<p>#{data.user_approved}</p>"
       #@item.find("[data-behavior='approved-circle']").html "<i class='fa fa-check-square-o fa-2x'></i>"
       
@@ -44,7 +44,7 @@ class Timesheet
       console.log data.state
     else
       @item.removeClass('item-right').addClass('item-left')
-      @item.find("[data-behavior='approve-button']").html "<i class='fa fa-square-o fa-stack-2x hide-this'></i><i class='fa fa-check fa-stack-1x'></i>"
+      @item.find("[data-behavior='approve-button']").html "<i class='fa fa-square-o fa-stack-2x'></i><i class='fa fa-check fa-stack-1x'></i>"
       #@item.find("[data-behavior='approved-circle']").html "<i class='fa fa-square-o fa-2x'></i>"
       
 

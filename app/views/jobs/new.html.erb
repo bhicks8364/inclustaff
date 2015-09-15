@@ -3,7 +3,7 @@
  <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
 <h3>All of your employees are currently assigned to a job. 
 Please add a new employee before continuing.</h3>
-<%= link_to 'Back', company_order_jobs_path(@company, @order), class: "pull-left" %> <%= link_to "Add Employee", new_employee_path, class: "pull-right" %>
+<%= link_to 'Back', company_order_jobs_path(@company, @order), class: "btn btn-danger btn-lg pull-left" %> <%= link_to "Add Employee", new_user_registration_path, class: "btn btn-danger btn-lg pull-right" %>
 </div>
 <% else %>
 

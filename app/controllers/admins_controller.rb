@@ -8,7 +8,7 @@ class AdminsController < ApplicationController
         elsif @admin.company?
           @company = @admin.company
         end
-        @admins = Admin.agency_admins
+        @admins = Admin.agency_admins.where(agency_id: @admin.agency_id).order(role: :asc)
           # @admins = @company.admins.order(last_name: :asc) if @company.present?
           # @admins = @agency.admins.order(last_name: :asc) if @agency.present?
         skip_authorization
@@ -20,10 +20,15 @@ class AdminsController < ApplicationController
     end
     
     def follow
-        @admin = Admin.find(params[:id])
+      @admin = Admin.find(params[:id])
+      @event = current_admin.events.create(action: "followed", eventable: @admin)
+      
+      if @event.save
+        redirect_to admins_path, notice: 'You are now following ' + "#{@admin.name}"
         
-        current_admin.events.create(action: "followed", eventable: @admin)
-        redirect_to events_path
+      else
+        redirect_to admins_path, notice: 'Unable to follow ' + "#{@admin.name}"
+      end
     skip_authorization
     end
     
@@ -51,12 +56,13 @@ class AdminsController < ApplicationController
             @jobs = @company.jobs.with_current_timesheets.distinct if @admin.company?
         elsif @admin.agency?
             @agency = @admin.agency
-            @employees = Employee.unassigned.order(:last_name)
+            @employees = Employee.all.limit(5).order(:last_name)
             @orders = @agency.orders
             @acct_orders = @admin.account_orders if @admin.account_manager?
             @events = @admin.events
             @recruiter_jobs = @admin.recruiter_jobs.with_current_timesheets.distinct if @admin.recruiter?
             @jobs = @agency.jobs.with_current_timesheets.distinct if @admin.agency?
+            @timesheets = @agency.timesheets
             
         end
         

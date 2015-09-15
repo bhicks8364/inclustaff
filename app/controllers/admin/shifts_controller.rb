@@ -4,7 +4,8 @@ class Admin::ShiftsController < ApplicationController
   before_action :set_admin
 
   def index
-    @jobs = @current_admin.company.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 5).order('id DESC')
+    @jobs = @company_admin.company.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 5).order('id DESC') if @company_admin.present?
+    @jobs = @agency_admin.agency.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 5).order('id DESC') if @agency_admin.present?
     @shifts = @current_admin.shifts.paginate(:page => params[:page], :per_page => 5).order('id DESC')
     # gon.shifts = @shifts
     authorize @shifts
@@ -19,7 +20,7 @@ class Admin::ShiftsController < ApplicationController
   end
 
   def new
-    @company = @current_admin.company
+    @company = @admin.company
     @jobs = @company.jobs.off_shift.distinct
     # @jobs = @company.jobs.off_shift.distinct
     # @orders = @company.orders.off_shift.distinct
@@ -111,10 +112,10 @@ class Admin::ShiftsController < ApplicationController
   
   
   def clock_out_all
-    @shifts = @current_admin.shifts.clocked_in
+    @shifts = @company_admin.shifts.clocked_in
     @shifts.each { |shift| shift.update(time_out: Time.current,
                       state: "Clocked Out",
-                      out_ip: @current_admin.last_name + "-admin")}
+                      out_ip: @company_admin.last_name + "-admin")}
     respond_to do |format|
         format.js 
     end
@@ -164,7 +165,13 @@ class Admin::ShiftsController < ApplicationController
     end
     
     def set_admin
-      @current_admin = current_admin if admin_signed_in?
+     @current_admin = current_admin
+      if @current_admin.agency?
+        @agency_admin = @current_admin
+      elsif @current_admin.company?
+        @company_admin = @current_admin
+      end
+      
       
     end
 

@@ -98,9 +98,14 @@ class OrdersController < ApplicationController
   # POST /orders
   # POST /orders.json
   def create
-
-      @company = Company.find(params[:company_id])
-      @order = @company.orders.new(order_params)
+      if params[:company_id]
+        @company = Company.find(params[:company_id])
+        @order = @company.orders.new(order_params)
+      else
+        @admin = current_admin
+        @agency = @admin.agency
+        @order = @agency.orders.new(order_params)
+      end
 
 
 

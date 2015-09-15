@@ -16,6 +16,7 @@
       <th>Orders</th>
       <th>Active Employees</th>
       <th>Balance</th>
+      <th>Last Week Bill</th>
       <th>Contact name</th>
       <th>Contact email</th>
       <th></th>
@@ -26,10 +27,16 @@
   <tbody>
     <% @companies.each do |company| %>
       <tr>
-        <td><%= link_to company.name, company %></td>
-        <td><%=  link_to company.orders.count, company_orders_path(company) %></td>
-        <td><%= company.jobs.active.count %></td>
-        <td><%= company.balance %></td>
+        <td><%= render company %></td>
+        <td>
+          <% if company.owner.present? %>
+            <%=  link_to company.owner.name, company.owner %>
+          <% else %>
+            <%= company.contact_name %>
+          <%end %></td>
+        <td><%= company.orders.filled.count %></td>
+        <td><%= number_to_currency(company.balance) %></td>
+        <td><%= number_to_currency(company.timesheets.last_week.sum(:total_bill) )%></td>
         <td><%= company.contact_name %></td>
         <td><%= company.contact_email %></td>
         <td><%= link_to 'Edit', edit_company_path(company) %></td>

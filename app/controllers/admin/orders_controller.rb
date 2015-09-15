@@ -1,6 +1,7 @@
 class Admin::OrdersController < ApplicationController
   before_action :set_order, only: [:show, :edit, :update, :destroy]
   before_filter :authenticate_admin!
+  layout 'admin_layout'
 
   
 
@@ -52,7 +53,9 @@ class Admin::OrdersController < ApplicationController
     @company = @order.company
     @inactivejobs = @order.jobs.inactive
     @active_jobs = @order.jobs.active
-    @jobs = @order.jobs.active.includes(:shifts)
+    @jobs = @order.jobs.active.includes(:timesheets, :shifts)
+    @timesheets = @order.timesheets
+    @current_timesheets = @order.current_timesheets
     authorize @order
   end
     
@@ -72,6 +75,7 @@ class Admin::OrdersController < ApplicationController
     elsif @admin.company?
       @company = @admin.company
       @order = @company.orders.new
+      @order.skills.new
       authorize @order
     end
 
@@ -85,8 +89,9 @@ class Admin::OrdersController < ApplicationController
     @order = Order.find(params[:id])
     authorize @order
     @company = @order.company
-    @account_managers = @company.account_managers
-    @order.jobs.build
+    @account_managers = @company.account_managers if @company.account_managers.any?
+    @account_managers = @admin.agency.admins.account_managers if @admin.agency?
+    @order.skills
     
   end
 
@@ -94,14 +99,14 @@ class Admin::OrdersController < ApplicationController
   # POST /orders.json
   def create
 
-    @admin = current_admin
-
-      @agency = @admin.agency if @admin.agency?
-      @company = Company.find(params[:company_id])
-      @agency = @company.current_agency
-      # @account_managers = @agency.account_managers if @agency.present
-      @order = @company.orders.new(order_params)
-      @order.agency = @agency
+      if params[:company_id]
+        @company = Company.find(params[:company_id])
+        @order = @company.orders.new(order_params)
+      else
+        @admin = current_admin
+        @agency = @admin.agency
+        @order = @agency.orders.new(order_params)
+      end
       
       authorize @order
 
@@ -111,7 +116,7 @@ class Admin::OrdersController < ApplicationController
 
     respond_to do |format|
       if @order.save 
-        format.html { redirect_to admin_company_path(@company), notice: 'Order was successfully created.' }
+        format.html { redirect_to admin_company_order_path(@order.company, @order), notice: 'Order was successfully created.' }
         format.json { render :show, status: :created, location: @order }
       else
         format.html { render :new }
@@ -163,6 +168,7 @@ class Admin::OrdersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.require(:order).permit(:id, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title, :pay_range, :notes, :number_needed, :needed_by, :urgent, :active, jobs_attributes: [:order_id, :title, :description, :start_date, :id, :employee_id, :active])
+      params.require(:order).permit(:id, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title, :pay_range, :notes, :number_needed, :needed_by, :urgent, :active, :dt_req, :bg_check, :stwb, :heavy_lifting, :shift, :est_duration, 
+      jobs_attributes: [:order_id, :title, :description, :start_date, :id, :employee_id, :active], skills_attributes: [:id, :skillable_type, :skillable_id, :name, :required, :_destroy])
     end
 end

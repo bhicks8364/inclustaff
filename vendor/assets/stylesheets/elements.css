@@ -2055,18 +2055,6 @@ label {
 	transition: color 0.1s ease-in-out 0s;
 }
 .pricing-package .package-features li.has-feature:before {
-	content: "\f00c";
-	font-family: FontAwesome;
-	font-style: normal;
-	font-weight: normal;
-	font-size: 1.3em;
-	text-decoration: inherit;
-	color: #8dc859;
-	margin-top: -2px;
-	position: absolute;
-	left: 0;
-}
-.pricing-package .package-features li.has-nofeature:before {
 	content: "\f00d";
 	font-family: FontAwesome;
 	font-style: normal;
@@ -2074,6 +2062,18 @@ label {
 	font-size: 1.3em;
 	text-decoration: inherit;
 	color: #fe635f;
+	margin-top: -2px;
+	position: absolute;
+	left: 0;
+}
+.pricing-package .package-features li.has-nofeature:before {
+	content: "\f00c";
+	font-family: FontAwesome;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 1.3em;
+	text-decoration: inherit;
+	color: #8dc859;
 	margin-top: -2px;
 	position: absolute;
 	left: 0;

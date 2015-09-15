@@ -6,53 +6,42 @@
 <div class="conversation-item item-left clearfix" data-behavior="timesheet" data-id="<%= timesheet.id %>">
 
 <% end %>
-				<div class="conversation-user">'
-				<%= link_to(admin_timesheet_path(timesheet, class: 'btn btn-primary btn-lg')) do %>
+				<div class="conversation-user">
+				<%= link_to(admin_job_path(timesheet.job, class: 'btn btn-primary btn-lg')) do %>
 								
-		  					<i class="fa fa-user fa-3x"></i>
+		  					<i class="fa fa-user fa-2x"></i>
 		  				<%= timesheet.employee.name %>
+		  				
 		  				<% end %>
-				
-					
+			
 				</div>
 			
 				
 				<div class="conversation-body">
-					<div class="name">
-						<span class="fa-stack fa-lg">
-						  <i class="fa fa-square-o fa-stack-2x"></i>
-						  <i class="fa fa-money fa-stack-1x"></i>
-						  
-						</span>
-						<span>
-						Gross pay	<%= number_to_currency(timesheet.gross_pay) %>
-						</span>
+					<div class="col-md-3 name">
+						<h6><strong><%= timesheet.week_begin %>  -  <%= timesheet.week_ending %></strong><br>
+						<%= timesheet.job.staff %> <br>
+						 <%= timesheet.company.name %>
+						</h6>
 						
 					</div>
-					<div class="name">
-						<span class="fa-stack fa-lg">
-						  <i class="fa fa-square-o fa-stack-2x"></i>
-						  <i class="fa fa-money fa-stack-1x"></i>
-						  
-						</span>
-						<span>
-						Total billings:	<%= number_to_currency(timesheet.total_bill) %>
-						</span>
-						
-					</div>
-					<div class="name">
-						<span class="fa-stack fa-lg">
-						  <i class="fa fa-square-o fa-stack-2x"></i>
-						  <i class="fa fa-clock-o fa-stack-1x"></i>
-						</span>
-						<span>
-						<%= timesheet.total_hours %>
+					<div class=" col-md-3 name">
+						<span class='text-center'>
+							<h6><strong>	Regular Hours:	<%= timesheet.reg_hours %></strong></h6>
+
+								<h6><strong>	Overtime Hours:	<%= timesheet.ot_hours %></strong></h6>
 						</span>
 					</div>
-					<div class="time">
-					<%= timesheet.week_begin %>  -  <%= timesheet.week_ending %>
+					<div class="col-md-3 name">
+						<span class='text-center'>
+							<h6><strong>	Gross Pay:	<%= number_to_currency(timesheet.gross_pay) %></strong></h6>
+
+								<h6><strong>	Total Bill:	<%= number_to_currency(timesheet.total_bill) %></strong></h6>
+						</span>
 					</div>
-					<div class="text">
+					
+					
+					
 						<div id='timesheet-tools' class="btn-toolbar" role="toolbar" aria-label="">
 							<div class='btn-group' role='group'>
 								
@@ -105,6 +94,6 @@
 							
 						</div>
 					</div>
-				</div>
+			
 </div>
 	

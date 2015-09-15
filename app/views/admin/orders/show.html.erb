@@ -1,34 +1,66 @@
 
 
-<h1>  <%= @company.name %></h1>
+<h1>  <%= @company.name %> <small> <%= @order.title %></small></h1>
 <hr>
-<div id="order-tabs">
+
+<div id="col-md-12 order-tabs">
 
   <!-- Nav tabs -->
   <ul id="order-nav" class="nav nav-tabs nav-justified" role="tablist">
     <li role="presentation" class="active"><a href="#order" aria-controls="order" role="tab" data-toggle="tab">Order Info.</a></li>
-    <li role="presentation"><a href="#activejobs" aria-controls="activejobs" role="tab" data-toggle="tab">Active Jobs</a></li>
-    <li role="presentation"><a href="#inactivejobs" aria-controls="inactivejobs" role="tab" data-toggle="tab">Inactive Jobs</a></li>
+    <li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li>
+    <li role="presentation"><a href="#active-jobs" aria-controls="active-jobs" role="tab" data-toggle="tab">Active Jobs</a></li>
+    <li role="presentation"><a href="#skills" aria-controls="skills" role="tab" data-toggle="tab">Skills</a></li>
   </ul>
   
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane fade in active" id="order">
   
 
-<h3>  <strong>Department/Order: </strong>
-  <%= @order.title %></h3>
-
-
-
-
-
-  <strong>Additional Payroll Information:</strong>
-    <div id= "order-notes" class="" >
-    <p><%= @order.notes %></p>
-  </div>
+<div class='col-md-12'>
+  <h3> 
+  <strong><%= @order.needs_attention? ? "OPEN" : "FILLED" %></strong>
   
+  Open positions: <%= @order.open_jobs %>
   
+  </h3>
+
+<div class='col-lg-3'>
+  <strong>Drug Test </strong><br>
+  <%= @order.dt_req %><br>
+  <strong>Background Check </strong><br>
+  <%= @order.bg_check %><br>
+ 
+  
+ 
+  
+
+  
+</div>
+<div class='col-lg-3'>
+
+  <strong>
+    <ul>
+      <li><%= @order.est_duration %></li>
+      <li> <%= @order.shift %></li>
+      <li><%= @order.stwb ? "STWB Required" : "" %></li>
+      <li><%= @order.heavy_lifting ? "Heave Lifting Required" : "" %></li>
+    </ul>
+    
+  
+  </strong>
+  
+</div>
+<div class='col-lg-3'>
 <p>
+  <strong>Number needed: </strong>
+  <%= @order.number_needed %>
+</p>
+<p>
+  <strong>Active Employees:</strong>
+      <%= @order.jobs.active.count %>
+</p>
+
 <p>
   <strong>Pay Type:</strong>
   <%= @order.pay_range %>
@@ -37,26 +69,39 @@
   <strong>Mark Up:</strong>
   <%= @order.mark_up_percent %>
 </p>
-  <strong>Active Employees:</strong>
-      <%= @order.jobs.active.count %>
-
-<br/>
 
   <strong>Urgency:</strong>
   <%= @order.urgent ? "URGENT" : "Regular" %>
-<br>
+<p>
   <strong>Status:</strong>
   <%= @order.active ? "Active" : "Inactive" %>
 </p>
+</div>
 
+
+<div id= "order-notes" class="" >
+      <strong>Notes:</strong>
+    <p><%= @order.notes %></p>
+  </div>
+  
+  
+  
+  
+  
+  
+</div>
+  
+
+
+  
 
   <div class="btn-group" role="group" aria-label="...">
-    <%= link_to 'Back', admin_company_orders_path(@company), class: "btn btn-primary" %>
+    <%= link_to 'All Orders', admin_company_orders_path(@company), class: "btn btn-primary" %>
     <% if policy(@order).update? %>
-      <%= link_to 'Edit', edit_admin_order_path(@order), class: "btn btn-primary" %>
+      <%= link_to 'Edit Order', edit_admin_order_path(@order), class: "btn btn-primary" %>
     <% end %>
     <% if policy(Job).create? %>
-     <%= link_to 'Add Job', new_admin_job_path, class: "btn btn-primary" %>
+     <%= link_to 'Add Job', new_admin_order_job_path(@order), class: "btn btn-primary" %>
     <% end %>
   </div>
 
@@ -67,13 +112,37 @@
   </div>
   
   
-  <div role="tabpanel" class="tab-pane fade" id="activejobs">
-<%= render @jobs %>
+  <div role="tabpanel" class="tab-pane fade" id="timesheets">
+    <hr>
+<% if @order.timesheets.current_week.any? %>
+<%= render partial: "admin/timesheets/table", collection: @timesheets.current_week, as: :timesheet %>
+<% else %>
+<h3>No timesheets for this week yet.</h3>
+<% end %>
+<hr>
+<strong>All timesheets</strong>
+<%= render partial: "admin/timesheets/table" %>
+</div>
 
+<div role="tabpanel" class="tab-pane fade" id="skills">
+<div class='center skill-list'>
+<h4>Skills</h4>
+  <div class='center text-left' id='skills'>
+    <%= render @order.skills %>
+  </div>
+    <div class='center'>
+    <%= render partial: "admin/skills/form", locals: {skillable: @order} %>
+  </div>
+    
+    
+    
+
+  
+</div>
   </div>
   
   
-  <div role="tabpanel" class="tab-pane fade" id="inactivejobs">
+  <div role="tabpanel" class="tab-pane fade" id="active-jobs">
     <table id="active-jobs" class="table table-bordered" cellspacing="0.5" width="85%%">
   <thead>
     <tr>
@@ -93,7 +162,7 @@
   </thead>
 
   <tbody>
-    <%= content_tag_for(:tr, @jobs) do |job| %>
+    <%= content_tag_for(:tr, @order.jobs) do |job| %>
         <td><% if job.active %> <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
             <% else %>
             <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>

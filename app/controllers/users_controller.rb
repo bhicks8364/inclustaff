@@ -15,6 +15,10 @@ class UsersController < ApplicationController
         # end
     end
     
+    def import
+        raise params[:file]
+    end
+    
     
     def grant_editing
         @user = User.find(params[:id])

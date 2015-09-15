@@ -19,6 +19,7 @@
   *= require fullcalendar
   *= require main
   *= require anchors
+  *= require dataTables/jquery.dataTables
 
 
  */
@@ -91,9 +92,9 @@ span.headline > a.btn:hover {
   
 }
 
-#job {
-  text-align: left;
-}
+// #job {
+//   text-align: left;
+// }
 
 
 // html, body {
@@ -403,9 +404,9 @@ div.progress-bar {
 //   }
 // }
 
-#shifts-list {
-  display: none;
-}
+// #shifts-list {
+//   display: none;
+// }
 .hide-this {
   display: none;
 }

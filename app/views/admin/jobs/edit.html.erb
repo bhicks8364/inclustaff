@@ -16,8 +16,8 @@
 
         <h4><strong>Job Information</strong></h4>
     <%= f.association :employee, prompt: "Select Employee", label: false, disabled: true %>
-    <%= f.association :order, prompt: "Select Department", label: false, disabled: true %>
-  
+    <%= f.association :order, prompt: "Select Department", label: false %>
+  <%= f.grouped_collection_select(:order_id, @companies, :orders, :name, :id, :title) %>
     <%= f.association :recruiter, collection: @agency.recruiters.order(:last_name), prompt: "Select Recruiter", label: false %>
    
 

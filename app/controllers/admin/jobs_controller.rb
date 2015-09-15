@@ -1,6 +1,7 @@
 class Admin::JobsController < ApplicationController
   before_action :set_job, only: [:show, :edit, :update, :destroy, :clock_in, :clock_out]
   before_action :authenticate_admin!
+  layout 'admin_layout'
 
 
 
@@ -41,6 +42,8 @@ class Admin::JobsController < ApplicationController
     @shift = @job.shifts.last if @job.shifts.any?
     @timesheets = @job.timesheets if @job.timesheets.any?
     @last_week_timesheets =  @job.timesheets.last_week
+    @skills = @job.employee.skills
+    # @order_skills = @job.order.skills
     
   end
 
@@ -48,12 +51,19 @@ class Admin::JobsController < ApplicationController
   def new
     
     @admin = current_admin
-    if @admin.agency?
-      @agency = @admin.agency
-      @account_managers = @agency.account_managers
-      @orders = @agency.orders
-      @job = Job.new
+    if params[:order_id]
+      @order = Order.find(params[:order_id])
+      @agency = @order.agency
+      @job = @order.jobs.new
       authorize @job
+    else
+      if @admin.agency?
+        @agency = @admin.agency
+        @account_managers = @agency.account_managers
+        @orders = @agency.orders
+        @job = Job.new
+        authorize @job
+      end
     end
 
 
@@ -71,7 +81,7 @@ class Admin::JobsController < ApplicationController
       respond_to do |format|
           format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
                     state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out, last_out: @job.last_clock_out,
-                    in_ip: @shift.in_ip } }
+                    in_ip: @shift.in_ip, first_name: @job.employee.first_name } }
 
       end
     end
@@ -88,7 +98,7 @@ class Admin::JobsController < ApplicationController
       respond_to do |format|
           format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
                     state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out.strftime("%l:%M%P"),
-                    in_ip: @shift.in_ip } }
+                    in_ip: @shift.in_ip, first_name: @job.employee.first_name } }
 
       end
     end
@@ -96,6 +106,23 @@ class Admin::JobsController < ApplicationController
 
   # GET /jobs/1/edit
   def edit
+    
+    if params[:order_id]
+      @order = Order.find(params[:order_id])
+      @job = Job.find(params[:id])
+      @employee = @job.employee
+      @agency = @order.agency
+      authorize @job
+    elsif current_admin.agency?
+      @job = Job.includes(:employee, :order).find(params[:id])
+      @company = @job.company
+      @employee = @job.employee
+      @order = @job.order
+      @agency = @order.agency
+       
+      authorize @job
+    end
+   
     
 
     
@@ -133,7 +160,7 @@ class Admin::JobsController < ApplicationController
           current_admin.events.create(action: "mentioned", eventable: mentioned_admin)
         end
         
-        format.html { redirect_to admin_job_path(@job, anchor: "job_#{@job.id}"), notice: 'Job was successfully created.' }
+        format.html { redirect_to admin_jobs_path(anchor: "mod_#{@job.id}"), notice: 'Job was successfully created.' }
         format.json { render :show, status: :created, location: @job }
       else
         format.html { render :new }
@@ -154,7 +181,7 @@ class Admin::JobsController < ApplicationController
         mentioned_admins.each do |mentioned_admin|
           current_admin.events.create(action: "mentioned", eventable: mentioned_admin)
         end
-        format.html { redirect_to admin_jobs_path(anchor: "job_#{@job.id}"), notice: 'Job was successfully created.' }
+        format.html { redirect_to admin_jobs_path(anchor: "mod_#{@job.id}"), notice: 'Job was successfully updated.' }
         format.json { render :show, status: :ok, location: @job }
       else
         format.html { render :edit }

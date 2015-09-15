@@ -1,0 +1,14 @@
+<%= simple_form_for [:admin, skillable, Skill.new], :remote => true do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.text_field :name, required: true, placeholder: "Add a skill", data: {behavior: 'skill-autocomplete'} %>
+    
+  </div>
+  <%= f.hidden_field :skillable_id, :value => skillable.id %>
+    <%= f.hidden_field :skillable_type, :value => skillable.class %>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

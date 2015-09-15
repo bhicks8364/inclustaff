@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150909120618) do
+ActiveRecord::Schema.define(version: 20150911192633) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -129,6 +129,12 @@ ActiveRecord::Schema.define(version: 20150909120618) do
     t.integer  "account_manager_id"
     t.decimal  "mark_up"
     t.integer  "agency_id"
+    t.string   "dt_req"
+    t.string   "bg_check"
+    t.boolean  "heavy_lifting"
+    t.boolean  "stwb"
+    t.string   "est_duration"
+    t.string   "shift"
   end
 
   add_index "orders", ["account_manager_id"], name: "index_orders_on_account_manager_id"
@@ -162,6 +168,15 @@ ActiveRecord::Schema.define(version: 20150909120618) do
   add_index "shifts", ["job_id"], name: "index_shifts_on_job_id"
   add_index "shifts", ["timesheet_id"], name: "index_shifts_on_timesheet_id"
   add_index "shifts", ["week"], name: "index_shifts_on_week"
+
+  create_table "skills", force: :cascade do |t|
+    t.string   "name"
+    t.boolean  "required",       default: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.string   "skillable_type"
+    t.integer  "skillable_id"
+  end
 
   create_table "timesheets", force: :cascade do |t|
     t.integer  "week"

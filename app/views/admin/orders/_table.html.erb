@@ -17,7 +17,7 @@
   <tbody>
     <% @orders.active.each do |order| %>
       <tr>
-        <td><% if order.urgent? %> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <td><% if order.needs_attention? %> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             <% else %>
         <span class="glyphicon glyphicon-check" aria-hidden="true"></span> 
             <% end %>

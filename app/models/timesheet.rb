@@ -21,6 +21,8 @@ class Timesheet < ActiveRecord::Base
     belongs_to :job, counter_cache: true
     has_many :shifts, dependent: :destroy
     has_one :employee, :through => :job
+    has_one :company, :through => :job
+    has_one :order, :through => :job
     include ArelHelpers::ArelTable
     
     
@@ -74,11 +76,10 @@ class Timesheet < ActiveRecord::Base
     scope :current_week, ->{
         where(week: Date.today.cweek)
     }
-    # scope :current_week, ->{
-    #     start = Time.current.beginning_of_week
-    #     ending = start.end_of_week
-    #     where(created_at: start..ending)
-    # }
+    scope :past, -> { where("week < ?", Date.today.cweek) }
+    
+    scope :underutilized, -> { approved.where('reg_hours < 40') }
+    scope :needing_approval, -> { last_week.pending }
     
     def receipt
         Receipts::Receipt.new(

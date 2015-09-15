@@ -1,14 +1,61 @@
-<div class='company-info'>
-    <h3>HOME</h3>
-    
-    <address class="">
-      <%= @company.address %> <%= @company.city %>, <%= @company.state %> <%= @company.zipcode %><br>
-      <abbr title="Phone">PH:</abbr> (123) 456-7890
-    </address>
-    <address class="">
-      <strong><%= @company.contact_name %></strong><br>
-      <a href="mailto:#"><%= @company.contact_email %></a>
-    </address>
+<a class='btn btn-default btn-sm' data-toggle="modal" data-target="#company_mod_<%= company.id %>">
+	<strong><%= company.name %></strong>
+</a>
 
-    <h3 class="text-center">Balance: <%= number_to_currency(@company.balance) %></h3>
+<!-- Modal -->
+<div class="modal fade" id="company_mod_<%= company.id %>" tabindex="-1" role="dialog" aria-labelledby="#<%= company.name %>">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="#<%= company.name %>"></h4>
+        
+      </div>
+      <div class="modal-body">
+    
+     <address>
+          <strong><%= link_to company.name, company %></strong><br>
+          <%= company.address %><br>
+          <%= company.city %>, <%= company.state %> <%= company.zipcode %><br>
+          <abbr title="Phone">P:</abbr> (123) 456-7890
+        </address>
+        
+                  <address>
+          <strong><%= company.contact_name %></strong><br>
+          <a href="mailto:#"><%= company.contact_email %></a>
+        </address>
+     
+        
+        
+      
+        
+
+      </div>
+      <div class="modal-footer">
+        
+        <div class="btn-toolbar" role="toolbar" aria-label="...">
+          <div class="btn-group" role="group" aria-label="..."><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>
+          <div class="btn-group" role="group" aria-label="...">
+            <%= link_to(admin_company_path(company), class: 'btn btn-primary') do %>
+      					<i class="fa fa-building-o fa-lg"></i>
+      					View Company
+      				<% end %>
+            <%= link_to(admin_company_orders_path(company), class: 'btn btn-primary') do %>
+      					<i class="fa fa-list-alt fa-lg"></i> 
+      					Company Orders
+      				<% end %>
+      				<%= link_to(edit_admin_company_path(company), class: 'btn btn-primary') do %>
+      					<i class="fa fa-pencil-square fa-lg"></i> 
+      					Edit Company
+      				<% end %>
+          </div>
+          <div class="btn-group" role="group" aria-label="...">
+             
+          </div>
+        </div>
+        
+  				
+      </div>
+    </div>
+  </div>
 </div>

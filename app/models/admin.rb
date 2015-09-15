@@ -30,9 +30,12 @@ class Admin < ActiveRecord::Base
   belongs_to :company
   belongs_to :agency
   has_many :events
+  has_many :eventables, :through => :events
   has_many :orders, :through => :company
+
   has_many :jobs, :through => :orders
   has_many :shifts, :through => :company
+  has_many :skills, :through => :orders
   
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -143,13 +146,20 @@ class Admin < ActiveRecord::Base
     Job.by_recuriter(self.id) if self.recruiter?
   end
   
-  def billing
+  def current_billing
     if self.recruiter? && self.recruiter_jobs.any?
       recruiter_jobs.joins(:current_timesheet).sum(:total_bill)
     elsif self.account_manager? && self.account_orders.any?
       account_orders.joins(:current_timesheets).sum(:total_bill)
     end
   end  
+  def billing
+    if self.recruiter? && self.recruiter_jobs.any?
+      recruiter_jobs.joins(:timesheets).sum(:total_bill)
+    elsif self.account_manager? && self.account_orders.any?
+      account_orders.joins(:timesheets).sum(:total_bill)
+    end
+  end
   
   def current_commission
     if self.recruiter? && self.recruiter_jobs.any?

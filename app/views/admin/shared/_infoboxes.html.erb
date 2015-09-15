@@ -3,7 +3,7 @@
 		<div class="main-box infographic-box">
 			
 			<%= link_to "<span class=''><i class='fa fa-user fa-2x pull-left red'></i> <strong>ADMIN USERS</strong></span>".html_safe, admins_path %>
-			<span class="value"><%= @admin.company? ? @company.admins.count : @agency.admins.count %></span>
+			<span class="value"><%= @company.present? ? @company.admins.count : @agency.admins.count %></span>
 		</div>
 	</div>
 	<div class="col-lg-3 col-sm-6 col-xs-12">

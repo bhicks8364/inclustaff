@@ -102,6 +102,24 @@ class User < ActiveRecord::Base
 
     end
   end
+
+      # EXPORT TO CSV
+  def self.assign_from_row(row)
+    user = User.where(email: row[:email]).first_or_initialize.to_hash.slice(:first_name, :last_name, :email, :profile_type, :role)
+    user
+  end
+  
+  def self.to_csv
+    attributes = %w{id last_name first_name email profile_type role}
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+      
+      all.each do |user|
+        csv << user.attributes.values_at(*attributes)
+      end
+    end
+  end
+    
   
   
 

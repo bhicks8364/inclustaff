@@ -107,7 +107,7 @@ class EmployeesController < ApplicationController
   # PATCH/PUT /employees/1.json
   def update
     @company = @employee.company
-    @employee.update(employee_params)
+    
     # authorize @employee
     respond_to do |format|
       if @employee.update(employee_params)

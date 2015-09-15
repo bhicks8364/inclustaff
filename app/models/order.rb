@@ -19,12 +19,12 @@
 #  account_manager_id :integer
 #  mark_up            :decimal(, )
 #  agency_id          :integer
-#
-# dt_req :boolean
-# bg_check :boolean
-# stwb :boolean
-# position_type :string ['full-time','part-time','temp', 'seasonal']
-# 
+#  dt_req             :string
+#  bg_check           :string
+#  heavy_lifting      :boolean
+#  stwb               :boolean
+#  est_duration       :string
+#  shift              :string
 #
 
 class Order < ActiveRecord::Base
@@ -32,6 +32,7 @@ class Order < ActiveRecord::Base
   belongs_to :company
   belongs_to :manager, foreign_key: 'manager_id', class_name: "Admin"
   belongs_to :account_manager, foreign_key: 'account_manager_id',  class_name: "Admin"
+  has_many :skills, as: :skillable
   has_many :jobs
   has_many :employees, :through => :jobs
   has_many :timesheets, :through => :jobs
@@ -53,13 +54,14 @@ class Order < ActiveRecord::Base
     
     # NESTED ATTRIBUTES
     accepts_nested_attributes_for :jobs
+    accepts_nested_attributes_for :skills, reject_if: :all_blank, allow_destroy: true
 
     # SCOPES
     scope :active, -> { where(active: true)}
     scope :inactive, -> { where(active: false)}
     scope :urgent, -> { where(urgent: true)}
     scope :with_active_jobs, -> { joins(:jobs).merge(Job.active)}
-    scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.this_week)}
+    scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.current_week)}
     scope :off_shift, -> { joins(:jobs).merge(Job.off_shift)}
     scope :needs_attention, -> { where(Order[:number_needed].gt(Order[:jobs_count])) }
     scope :filled, -> { where(Order[:jobs_count].gteq(Order[:number_needed])) }
@@ -101,8 +103,13 @@ class Order < ActiveRecord::Base
     end
     
   def needs_attention?
-    if self.jobs.any? && self.number_needed && self.active
-      if self.number_needed > self.jobs_count 
+    if self.jobs.any?
+      j = self.jobs.count
+    else
+      j = 0
+    end
+    if self.number_needed && self.active
+      if self.number_needed > j 
         true
       else
         false

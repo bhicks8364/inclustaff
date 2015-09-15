@@ -21,7 +21,8 @@
 							</tr>
 						</thead>
 						<tbody>
-							<%= content_tag_for(:tr, @employees) do |employee| %>
+							<%= content_tag_for(:tr, @employees.assigned) do |employee| %>
+							
 								<td><%= render 'admin/jobs/company', job: employee.current_job %></td>
 								<td>
 									<%= render 'admin/jobs/modal', job: employee.current_job %>
@@ -38,6 +39,41 @@
 								</td>
 								<td><%= number_to_currency(employee.current_job.current_week_pay) %></td>
 		<td><%= number_to_currency(employee.current_job.total_gross_pay) %></td>
+								<td style="width: 20%;">
+									<%= link_to admin_employee_path(employee, class: "table-link" ) do %>
+										<span class="fa-stack">
+											<i class="fa fa-square fa-stack-2x"></i>
+											<i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+										</span>
+									<% end %>
+									<%= link_to edit_admin_employee_path(employee, class: "table-link" ) do %>
+										<span class="fa-stack">
+											<i class="fa fa-square fa-stack-2x"></i>
+											<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+										</span>
+									<% end %>
+		
+									<%= link_to(admin_employee_path(employee), method: :delete) do %>
+										<span class="fa-stack">
+											<i class="fa fa-square fa-stack-2x"></i>
+											<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+										</span>
+									<% end %>
+								</td>
+							<% end %>
+							<%= content_tag_for(:tr, @employees.unassigned) do |employee| %>
+							
+								
+								<td><%= link_to "+", employee.user %></td>
+								<td><strong><%= employee.name %></strong></td>
+							
+
+								<td style="width: 20%;" class="text-center">
+								  <span class="label label-danger">Unassigned</span>
+									
+								</td>
+								<td>Unassigned</td>
+								<td>Unassigned</td>
 								<td style="width: 20%;">
 									<%= link_to admin_employee_path(employee, class: "table-link" ) do %>
 										<span class="fa-stack">

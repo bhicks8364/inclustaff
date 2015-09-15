@@ -1,11 +1,11 @@
-// .job {
+.mod {
 
   
-//   &:target {
-//       background-color: rgba(23, 230, 13, 0.28);
+  &:target {
+      background-color: rgba(23, 230, 13, 0.28);
 
-//   }
-// }
+  }
+}
 
 
 // .shift-item {
@@ -51,12 +51,13 @@
 // }
 .job-modal {
 
-  // padding: 8px;
+  padding: 8px;
   border: 2px solid rgba(54, 54, 54, 0.19);
 }
 
 .modal-body {
   padding: 5px;
+  margin: 5px;
 }
 
 
@@ -70,5 +71,12 @@
 .conversation-wrapper {
 	max-height: 500px;
 	overflow: scroll;
+	
+}
+.conversation-user {
+	max-width: 50px;
+	max-height: 50px;
+	text-align: center;
+// 	overflow: auto;
 	
 }

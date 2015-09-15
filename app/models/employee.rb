@@ -22,6 +22,7 @@ class Employee < ActiveRecord::Base
   include ArelHelpers::JoinAssociation
   
   belongs_to :user
+  has_many :skills, as: :skillable
   attachment :resume, extension: ["pdf", "doc", "docx"]
   has_many :shifts, dependent: :destroy
   has_many :jobs, dependent: :destroy
@@ -35,9 +36,10 @@ class Employee < ActiveRecord::Base
 
   accepts_nested_attributes_for :jobs
   accepts_nested_attributes_for :user
+  accepts_nested_attributes_for :skills, reject_if: :all_blank, allow_destroy: true
   
   delegate :last_clock_out, to: :current_job
-  # delegate :name_title, to: :current_job
+  delegate :title, to: :current_job
   delegate :manager, to: :current_job
   delegate :recruiter, to: :current_job
   delegate :code, to: :user
@@ -179,7 +181,28 @@ class Employee < ActiveRecord::Base
       0
     end
   end
+  
+  #     # EXPORT TO CSV
+  # def self.assign_from_row(row)
+  #   employee = Employee.where(email: row[:email]).first_or_initialize
+  #   timesheet = Timesheet.new row.to_hash.slice(:first_name, :last_name, :email, :profile_type, :role)
+  #   employee
+  # end
+  
+  # def self.to_csv
+  #   attributes = %w{id last_name first_name email profile_type role}
+  #   CSV.generate(headers: true) do |csv|
+  #     csv << attributes
+      
+  #     all.each do |user|
+  #       csv << user.attributes.values_at(*attributes)
+  #     end
+  #   end
+  # end
     
+    
+
+      
 
     
     

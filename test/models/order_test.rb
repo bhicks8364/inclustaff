@@ -19,6 +19,12 @@
 #  account_manager_id :integer
 #  mark_up            :decimal(, )
 #  agency_id          :integer
+#  dt_req             :string
+#  bg_check           :string
+#  heavy_lifting      :boolean
+#  stwb               :boolean
+#  est_duration       :string
+#  shift              :string
 #
 
 require 'test_helper'

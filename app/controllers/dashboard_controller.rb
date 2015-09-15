@@ -11,7 +11,7 @@ class DashboardController < ApplicationController
            @orders = @agency.orders if @agency.present?
            @orders = @company.orders if @company.present?
            @shifts = @agency.shifts if @agency.present?
-           @jobs = @agency.jobs.active if @agency.present?
+           @jobs = @agency.jobs.includes(:employee).order("employee.last_name DESC") if @agency.present?
            @jobs = @company.jobs.active if @company.present?
            @timesheets = @agency.timesheets if @agency.present?
            @timesheets = @company.timesheets if @company.present?

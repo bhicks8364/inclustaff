@@ -1,13 +1,19 @@
-<div class='main-box' data-behavior='timesheet-list'>
-    <h3><strong>Pending Timesheets</strong></h3>
-    <%= render @pending_timesheets %>
+
+<div class='col-lg-12' data-behavior='timesheet-list'>
+    
+    <h3 class='text-center'><strong>Pending Timesheets</strong></h3>
+    <%= render(@pending_timesheets.current_week) || "There are no pending timesheets." %>
+    
+   
 </div>
-<% if @approved_timesheets.any? %>
-<div class='main-box' data-behavior='timesheet-list'>
-    <h3 class='text-right'><strong>Approved Timesheets</strong></h3>
-    <%= render @approved_timesheets %>
+
+
+<div class='col-lg-12' data-behavior='timesheet-list'>
+    <h3 class='text-center'><strong>Approved Timesheets</strong></h3>
+    <%= render(@approved_timesheets.current_week) || "There are no approved timesheets." %>
+    
 </div>
-<% end %>
+
 
 
 

@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
+  resources :skills
   resources :agencies
   resources :events
   root 'dashboard#home'
+  get  'dashboard' => 'admin/dashboard#company_view'
+  
+  get  'agency_access' => 'admin/dashboard#agency_view'
   devise_for :admins
   devise_for :users, controllers: {
         sessions: 'users/sessions',
@@ -15,20 +19,35 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :companies do
+      resources :timesheets
       resources :orders
     end
     resources :shifts
-    resources :timesheets
-    resources :employees
-    resources :orders
+    resources :timesheets do
+      collection do
+        get 'past'
+      end
+      
+    end
+    resources :employees do
+      resources :skills
+    end
+    resources :orders do
+      resources :skills
+      resources :jobs
+    end
+    get  'payroll' => 'dashboard#payroll'
     get  'dashboard' => 'dashboard#company_view'
-    get  'owner' => 'dashboard#owner'
+    get  'owner' => 'admin/dashboard#owner'
   
     get  'agency_access' => 'dashboard#agency_view'
     
     
     resources :jobs, shallow: true do
       resources :timesheets, shallow: true do
+        collection do
+          get 'past'
+        end
         member do
           patch 'approve'
         end
@@ -67,7 +86,11 @@ Rails.application.routes.draw do
   get 'orders' => 'orders#all'
   get 'archived_jobs' => 'jobs#archived'
   
+  
   resources :users do
+    collection do
+      :import
+    end
     member do
       patch :grant_editing
     end
@@ -99,9 +122,7 @@ Rails.application.routes.draw do
   #     }
   
 
-  get  'dashboard' => 'dashboard#company_view'
   
-  get  'agency_access' => 'dashboard#agency_view'
   
   # resources :timesheets do
   #   member do

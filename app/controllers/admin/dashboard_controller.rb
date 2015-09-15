@@ -2,13 +2,13 @@ class Admin::DashboardController < ApplicationController
     before_filter :authenticate_admin!
     layout 'admin_layout'
     def owner
-       @admin = current_admin
+      @admin = current_admin
       if @admin.agency?
         @agency = @admin.agency
-        @events = @agency.events
+        @events = @agency.events.order('id DESC').limit(5)
       elsif @admin.company?
         @company = @admin.company
-        @events = @company.events
+        @events = @company.events.order('id DESC').limit(5)
       end
       
       @orders = @company.orders if @company.present?
@@ -36,17 +36,17 @@ class Admin::DashboardController < ApplicationController
       @admin = current_admin
       if @admin.agency?
         @agency = @admin.agency
-        @events = @agency.events
+        @events = @agency.events.order('id DESC').limit(5)
       elsif @admin.company?
         @company = @admin.company
-        @events = @company.events
+        @events = @company.events.order('id DESC').limit(5)
       end
       
       @timesheets = @company.timesheets.order(created_at: :desc) if @company.present?
       @timesheets = @agency.timesheets.order(created_at: :desc) if @agency.present?
       @jobs = @company.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 10).order('id DESC') if @company.present?
       # @jobs = @agency.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 10).order('id DESC') if @agency.present?
-      @jobs = @agency.jobs.includes(:employee, :company).order('id DESC') if @agency.present?
+      @jobs = @agency.jobs.includes(:employee, :company) if @agency.present?
       @clocked_in = @jobs.on_shift.order(time_in: :desc)
       # @admin_users = @company.admins
       # @shifts = @company.shifts.order(updated_at: :desc)
@@ -84,6 +84,14 @@ class Admin::DashboardController < ApplicationController
         gon.employees = @employees
         gon.company = @company
         gon.timesheets = @timesheets
+    end
+    
+    def payroll
+      @admin = current_admin
+      @agency = @admin.agency
+      @timesheets = @agency.timesheets
+      @jobs = @agency.jobs.active
+      skip_authorization
     end
     
     

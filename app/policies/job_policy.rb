@@ -12,7 +12,7 @@ class JobPolicy < ApplicationPolicy
     def index?
         
         # scope.where(:recruiter_id => user.id)
-        return true if user.recruiter? || user.owner?
+        return true if user.recruiter? || user.owner? || user.payroll?
         # return true if user.manager? && job.order.manager_id == user.id
         # return true if user.employee.id == job.employee_id && user.employee?
         

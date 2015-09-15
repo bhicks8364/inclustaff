@@ -1,0 +1,39 @@
+<div class="row">
+	<div class="col-lg-3 col-sm-6 col-xs-12">
+		<div class="main-box infographic-box">
+			
+			<%= link_to(admin_timesheets_path, class: "") do %>
+			<span class='headline'><i class='fa fa-clock-o fa-2x pull-left fa-fw'></i> <strong>Timesheets</strong><br>
+				<strong><small>Pending:</small> <%= @timesheets.pending.any? ? @timesheets.pending.count : @timesheets.pending.count %></strong>
+			</span>
+			<% end %>
+		</div>
+	</div>
+	<div class="col-lg-3 col-sm-6 col-xs-12">
+		<div class="main-box infographic-box">
+			<%= link_to(past_admin_timesheets_path, class: "") do %>
+			<span class='headline'><i class='fa fa-list-alt fa-2x pull-left fa-fw'></i> <strong>Past Timesheets</strong><br>
+			<strong><small>Pending:</small> <%= @timesheets.past.pending.any? ? @timesheets.past.pending.count : @timesheets.past.pending.count %></strong>
+				
+			</span>
+			<% end %>
+		</div>
+	</div>
+	<div class="col-lg-3 col-sm-6 col-xs-12">
+		<div class="main-box infographic-box">
+			<i class="fa fa-money green"></i>
+			<span class="headline">Current Billings</span>
+			
+			<span class="price"><%= number_to_currency(@timesheets.current_week.sum(:total_bill)) %></span><br>
+			<span class="price text-muted"><small>YTD: <%= number_to_currency(@timesheets.sum(:total_bill)) %></small></span>
+		</div>
+	</div>
+	<div class="col-lg-3 col-sm-6 col-xs-12">
+		<div class="main-box infographic-box">
+			<i class="fa fa-usd green"></i>
+			<span class="headline">Current Payroll</span>
+			<span class="price"><%= number_to_currency(@timesheets.current_week.sum(:gross_pay)) %></span><br>
+			<span class="price text-muted"><small>YTD: <%= number_to_currency(@timesheets.sum(:gross_pay)) %></small></span>
+		</div>
+	</div>
+</div>

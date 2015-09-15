@@ -6,7 +6,7 @@
 		<div class="col-lg-6">
 			<div class="main-box" style="min-height: 820px;">
 			  
-				<h2><%= @company.name %></h2>
+			
 				
 				<%= simple_form_for [:admin, @employee] do |f| %>
             <% if @employee.errors.any? %>
@@ -29,7 +29,15 @@
                   <%= f.input :email, required: true, placeholder: "Email  ex. example@email.com", label: false  %>
                   <%= f.input :phone_number, as: :tel, required: true, placeholder: "Phone Number  ex. 555-555-5555", label: false  %>
                   <%= f.input :ssn, required: true, maxlength: 4, label: false, placeholder: "SSN - Last 4 only" %>
-
+                  <div class='form-group' id='skills'>
+          			    <%= f.simple_fields_for :skills do |skill| %>
+          			      <%= render 'skill_fields', f: skill %>
+          			    <% end %>
+          			   </div>
+			    
+        			    <div class='links'>
+        			      <%= link_to_add_association 'add skill', f, :skills %>
+        			    </div>
                   
                   <%= f.attachment_field :resume %>
 

@@ -30,7 +30,7 @@ class Job
       #@item.find("[data-behavior='job-out-button_#{@id}']").show()
       @item.find("[data-behavior='time-out']").html "<small>Last Out: #{data.last_out}</small>"
       @item.find("[data-behavior='time-in']").html "<small><strong> In:</strong> #{data.time_in}</small>"
-      @item.find("[data-behavior='shift-state']").html "<strong>CLOCKED IN</strong><br>"
+      @item.find("[data-behavior='shift-state']").html "<strong>#{data.first_name} is now clocked in.</strong><br>"
       console.log data.time_in
       console.log data.time_out
       
@@ -57,7 +57,7 @@ class Job
       @item.find("[data-behavior='time-in']").html "<small><strong> In:</strong> #{data.time_in}</small>"
       @item.find("[data-behavior='time-out']").html "<small><strong> Out:</strong> #{data.time_out}</small>"
      
-      @item.find("[data-behavior='shift-state']").html "<strong>CLOCKED OUT</strong><br>"
+      @item.find("[data-behavior='shift-state']").html "<strong>#{data.first_name} is now clocked out.</strong><br>"
       console.log data.state
       console.log data.time_in
       console.log data.time_out

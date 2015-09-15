@@ -1,0 +1,7 @@
+<div class='col-md-12'>
+     <%= render partial: "admin/timesheets/list", collection: @companies.distinct, as: :company %>
+   
+    <hr>
+    <%= render partial: "admin/timesheets/table", collection: @timesheets, as: :timesheet %>
+   
+</div>

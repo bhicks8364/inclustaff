@@ -1,8 +1,7 @@
-<h3><%= @employee.first_name %>'s Events</h3>
-
-<% Event.employee_events(@employee.id).each do |event| %>
+<h3><%= @employee.first_name %>'s Recent Events</h3>
+<% Event.employee_events(@employee.id).order(created_at: :desc).limit(5).each do |event| %>
   <div>
-    <strong> <%= event.eventable.name %> was <%= event.action.humanize.downcase %> by <%= event.admin.name %></strong> - <small><%= event.admin.role %></small>
+  <%= event.created_at.strftime('%r') %> - <%= event.action.humanize.downcase %> by <%= event.admin.name %> - <small><%= event.admin.role %></small>
     <small><%= time_ago_in_words(event.created_at) %></small>
 </div>
 <% end %>

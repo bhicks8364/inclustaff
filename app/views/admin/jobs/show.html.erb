@@ -1,34 +1,24 @@
-<div class='col-md-6'>
+<div class='col-md-12'>
+ 
+
+    <div class='col-md-3'>
       <strong>Employee:</strong>
       <%= link_to @employee.name, admin_employee_path(@employee) %><br>
       <strong>Start date:</strong>
       <%= @job.start_date.strftime("%B %e, %Y ") %><br>
       <strong>Gross this week:</strong> <%= number_to_currency(@job.current_week_pay) %><br>
-      <strong>Total Hours : </strong><%= @job.total_hours %>
+      <strong>Total Hours : </strong><%= @job.total_hours %><br>
       <strong>Total Gross : </strong><%= @job.total_hours %>
     </div>
-
-    <div class='col-md-6'>
-      <strong>Company:</strong>
-      <%= link_to @company.name, admin_company_path(@company) %><br>
-    
-      <strong>Job Order:</strong>
-      <%= link_to @order.title, admin_company_order_path(@company, @order) %> <br>
+    <div class='col-md-3'>
+      <strong>Employee:</strong>
+      <%= link_to @employee.name, admin_employee_path(@employee) %><br>
+      <strong>Start date:</strong>
+      <%= @job.start_date.strftime("%B %e, %Y ") %><br>
+      <strong>Gross this week:</strong> <%= number_to_currency(@job.current_week_pay) %><br>
       
-      <strong>Job Title:</strong>
-      <%= @job.title %><br>
-      <strong>Recruiter:</strong>
-      <% if @job.recruiter.present? && current_admin.agency? %>
-      <%= link_to @job.recruiter.name, @job.recruiter %>
-      <% else %>
-      <%= @job.recruiter.present? ? @job.recruiter.name : "No Recruiter Available." %>
-      <% end %><br>
-      <strong>Staff:</strong>
-      <%= @job.staff %><br>
-      
-      <strong>Pay rate:</strong>
-      <%= number_to_currency(@job.pay_rate, :unit => "$") %><br>
-      
+    </div>
+    <div class='col-md-3'>
       <strong>Mentioned Admins</strong>
       <% if @job.mentioned_admins.any? %>
         <% @job.mentioned_admins.each do |admin|%>
@@ -40,55 +30,64 @@
       
       <% link_to "EDIT", edit_admin_job_path(@job), class: "btn btn-warning" %>
     </div>
+
+    <div class='col-md-3'>
+      <h4>Totals</h4>
+      <strong>Hours: </strong><%= @job.total_hours %><br>
+      <strong>Gross pay: </strong><%= number_to_currency(@job.total_gross_pay) %><br>
+      <strong>Total bill: </strong><%= number_to_currency(@job.total_gross_bill) %>
+      
+      
+      
+    </div>
   
 
-<%= render 'admin/employees/modal' %>
-
-<div class='company-profile-nav'>
+<div class="row">
+  <div class='col-md-10 company-profile-nav'>
 
   
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#job" aria-controls="job" role="tab" data-toggle="tab">Job Information</a></li>
     <li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li>
-    <li role="presentation"><a href="#company-info" aria-controls="company-info" role="tab" data-toggle="tab">Company Information</a></li>
+    <li role="presentation"><a href="#order-info" aria-controls="order-info" role="tab" data-toggle="tab">Order Information</a></li>
     <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Employee Information</a></li>
   </ul>
   
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="job">
-<%= link_to "Edit", edit_admin_job_path(@job), class: 'badge badge-primary' %>
+     
 
  
-  <div class='col-md-12'>
-<%= render @job %>
-      <strong>Description:</strong><br>
-  <%= @job.description %><br>
-  
-    <%= render @timesheet if @job.current_timesheet.present? %> 
+  <div class='col-md-10 well'>
+  <strong>Job Description:</strong>
+      <%= @job.description %><br>
+    
 
 
   </div>
 
-
+<%= link_to "Edit", edit_admin_job_path(@job), class: 'badge badge-primary' %>
 </div>
 
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
     <h3>Timesheets</h3>
-      <%= render 'admin/timesheets/table' if @job.timesheets.any? %>
-
+      <%= render @timesheet if @job.current_timesheet.present? %> 
+    <%= link_to "Timesheets", admin_job_timesheets_path(@job), class: "btn btn-success" %>
   </div>
   
   
   
   
-  <div role="tabpanel" class="tab-pane fade" id="company-info">
-     <h3>Company Information</h3>
-     <%= render @company %>
+  <div role="tabpanel" class="tab-pane fade" id="order-info">
+     <h3>
+     Order Information</h3>
+     <%= render @order %>
   </div>
   <div role="tabpanel" class="tab-pane fade" id="settings">
-    <h3>User Information</h3>
-     <%= render @employee %>
+    <h3><%= @employee.first_name %>'s skills</h3>
+     <%= render @skills %>
+     
     
     
     
@@ -103,7 +102,8 @@
   
   </div>
   </div>
-
+</div>
+</div>
 
 
 

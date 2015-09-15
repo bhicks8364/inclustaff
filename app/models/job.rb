@@ -117,9 +117,11 @@ class Job < ActiveRecord::Base
     
     def staff
         if account_manager.present? && recruiter.present?
-            "#{account_manager.role}: #{account_manager.name} | #{recruiter.role}: #{recruiter.name}"
-        else
+            "AM: #{account_manager.last_name} | R: #{recruiter.last_name}"
+        elsif company.owner.present?
             "#{company.owner.role}: #{company.owner.name}"
+        else
+            "unavailable"
         end
     end
     
@@ -212,6 +214,10 @@ class Job < ActiveRecord::Base
         end
     end
     
+    def total_gross_bill
+        total_gross_pay * mark_up
+    end
+    
     
     
 
@@ -242,7 +248,7 @@ class Job < ActiveRecord::Base
     end
     
     def mark_up_percent
-        (self.mark_up * 100 - 100).to_i.to_s + "%" 
+        (self.mark_up * 100 - 100).to_s + "%" 
     end
     
     # def pay_rate
