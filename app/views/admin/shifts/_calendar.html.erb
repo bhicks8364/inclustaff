@@ -1,31 +1,15 @@
 <div class="col-lg-12">
 	<h1>Calendar</h1>
+	<%= month_calendar(attribute: :time_in, events: @shifts) do |date, shifts| %>
+	
+  <div class='cal-date'><%= date %></div>
 
-	<div class="row">
-		<div class="col-md-3 hidden-xs hidden-sm">
-			<div class="main-box" id="external-events">
-				<h2>Draggable Events</h2>
-				<div class="external-event label-primary" data-eventclass="label-primary">My Event 1</div>
-				<div class="external-event label-danger" data-eventclass="label-danger">My Event 2</div>
-				<div class="external-event label-success" data-eventclass="label-success">My Event 3</div>
-				<div class="external-event label-warning" data-eventclass="label-warning">My Event 4</div>
-				<div class="external-event label-info" data-eventclass="label-info">My Event 5</div>
-				<div class="external-event label-default" data-eventclass="label-default">My Event 6</div>
-				<div class="form-group">
-					<label class="checkbox-inline">
-						<input type="checkbox" id="drop-remove" value="option1"> Remove after drop
-					</label>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-9">
-			<div class="main-box">
-				<%= content_tag "div", id: "calendar", data: {shift: Shift.limit(10)} do %>
-				  Loading shifts...
-				<% end %>
+  <% shifts.each do |shift| %>
+    <div>
+      <%= link_to shift.employee.name, admin_shift_path(shift) %>
+      <strong><%= shift.hours_worked %> </strong>
+    </div>
+  <% end %>
+<% end %>
 
-			</div>
-		</div>
-		
-	</div>
 </div>

@@ -1,4 +1,5 @@
-<div id="sign_up_page">
+<div class='col-md-12 main-box'>
+  <div class='col-md-6 form' id="sign_up_page">
   <h3>New Employee</h3>
 
 <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
@@ -13,14 +14,29 @@
       <%= f.input :state, required: true, placeholder: "State", label: false %>
       <%= f.input :email, required: true, placeholder: "Email  Address", label: false  %>
       <%= f.input :role, required: true, collection: [ "Employee", "Employee"], include_blank: false, label: false  %>
-      <%= f.input :password, required: true, placeholder: "Choose a password.", label: false, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length) %>
-      <%= f.input :password_confirmation, required: true, placeholder: "Please confirm your password.", label: false  %>
+
 
   <div class="form-actions">
-    <%= f.button :submit, "Sign up" %>
+    <%= f.button :submit, "Save" %>
   </div>
 <% end %>
   </div>
-<%= render "devise/shared/links" %>
+
+</div>
+<div class='col-md-6 pull-right'>
+  	<%= form_for @import, url: import_users_path, multipart: true do |f| %>
+									
+									<% if @import.errors.full_messages.each do |msg| %>
+									<div class='alert alert-danger'>
+									<div><%= msg %></div>
+										<% end %>
+									</div>
+								<% end %>
+								
+									<%= f.file_field :file %>
+									<%= f.submit "Upload" %>
+								<% end %>
+</div>
+
 
 </div>

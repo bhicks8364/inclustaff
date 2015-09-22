@@ -7,10 +7,10 @@
 			<span class='headline'>
 			<%= link_to "<i class='fa fa-users fa-2x'></i> <strong>Placements</strong>".html_safe, admin_jobs_path %></span>
 			<span class="value"><%= @jobs.any? ? @jobs.active.count : "No active jobs" %></span>
-			<% elsif @admin.account_manager? %>
+			<% elsif @admin.account_manager? || @admin.payroll? %>
 			<span class='headline'>
 			<%= link_to "<i class='fa fa-users fa-2x'></i> <strong>Job Orders</strong>".html_safe, admin_jobs_path %></span>
-			<span class="value"><%= @orders.active.count %></span>
+			<span class="value"><%= @jobs.active.count %></span>
 			<% elsif @admin.owner? && @admin.company? %>
 			
 			<span class='headline'>
@@ -40,7 +40,7 @@
 			<span class='headline'>
 			<%= link_to "<i class='fa fa-briefcase fa-2x pull-left'></i> <strong>#{@admin.first_name}'s Job Orders</strong>".html_safe, admin_orders_path %></span>
 			<span class="value"><%= @account_orders ? @account_orders.count : @orders.count %> </span>
-			<% elsif @admin.owner? %>
+			<% elsif @admin.owner? || @admin.payroll? %>
 			<span class='headline'>
 			<%= link_to "<i class='fa fa-briefcase fa-2x'></i> <strong>Job Orders</strong>".html_safe, admin_orders_path %></span>
 			<span class="value"><%= @orders.active.count %></span>
@@ -61,7 +61,7 @@
 			<span class="value"><%= number_to_currency(@recruiter_jobs.sum(:total_bill)) %></span>
 			<% elsif @admin.account_manager? && @admin.agency? %>
 			<span class="value"><%= number_to_currency(@jobs.sum(:total_bill)) %></span>
-			<% elsif @admin.owner? && @admin.agency? %>
+			<% elsif @admin.owner? && @admin.agency? || @admin.payroll? %>
 			<span class="value"><%= number_to_currency(@jobs.sum(:total_bill)) %></span>
 			<% elsif @admin.owner? && @admin.company? %>
 			<span class="value"><%= number_to_currency(@company.current_billing) %></span>
@@ -77,7 +77,7 @@
 			
 			<span class="value"><%= number_to_currency(@admin.current_commission) %></span>
 		
-			<% elsif @admin.owner? && @admin.agency? %>
+			<% elsif @admin.owner? && @admin.agency? || @admin.payroll? %>
 			<span class="headline"><%= link_to "<i class='fa fa-usd fa-2x green pull-left'></i> <strong>Current Revenue</strong>".html_safe, admin_timesheets_path %></span>
 			<span class="value"><%= number_to_currency(@agency.current_revenue) %></span>
 		

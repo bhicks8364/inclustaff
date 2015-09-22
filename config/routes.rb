@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     resources :companies do
       resources :timesheets
       resources :orders
+      
     end
     resources :shifts
     resources :timesheets do
@@ -30,6 +31,7 @@ Rails.application.routes.draw do
       
     end
     resources :employees do
+      resources :jobs
       resources :skills
     end
     resources :orders do
@@ -38,12 +40,13 @@ Rails.application.routes.draw do
     end
     get  'payroll' => 'dashboard#payroll'
     get  'dashboard' => 'dashboard#company_view'
-    get  'owner' => 'admin/dashboard#owner'
+    get  'owner' => 'dashboard#owner'
   
     get  'agency_access' => 'dashboard#agency_view'
     
     
     resources :jobs, shallow: true do
+
       resources :timesheets, shallow: true do
         collection do
           get 'past'
@@ -89,7 +92,7 @@ Rails.application.routes.draw do
   
   resources :users do
     collection do
-      :import
+      post :import
     end
     member do
       patch :grant_editing
@@ -107,6 +110,7 @@ Rails.application.routes.draw do
     member do
       post :mention
       post :follow
+      
     end
   end
   

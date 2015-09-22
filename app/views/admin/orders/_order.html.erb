@@ -1,5 +1,28 @@
 
+      <div class='well well-sm'>
+       
+       
+        <h5><%= link_to order.title, admin_company_order_path(order.company, order) %></h5>
+        <p>Needed by: <%= order.needed_by? ? order.needed_by.strftime("%B %e, %Y") : "n/a" %></p>
+        <p>Pay range: <%= order.pay_range %>  -  Rate: <%= order.mark_up_percent %>  - Open jobs: <%= order.open_jobs %></p>
+        
+        
+        
+        <p><% if order.account_manager.present? %>
+       
+        Account Manager: <%= link_to order.account_manager.name, order.account_manager %> 
+        <% end %></p>
+      
+          <% order.skills.each do |skill| %>
+          <%= render skill %>
+        <% end %>
+       
 
-    <strong><%= link_to order.company_name, admin_company_order_path(order.company, order) %> </strong>
+      </div>
+      
+
+
+
+
  
 

@@ -13,12 +13,14 @@
 
   *= require dataTables/bootstrap/2/jquery.dataTables.bootstrap
   
-  *= require jquery-ui
+
   *= require jquery-ui/datepicker
   *= require jquery.atwho
   *= require fullcalendar
   *= require main
   *= require anchors
+  *= require forms
+  *= require simple_calendar
   *= require dataTables/jquery.dataTables
 
 
@@ -36,10 +38,13 @@
 
 
 
+
 #logo > img {
-    max-height: 50px;
-    max-width: 200px;
+    max-height: 45px;
+    max-width: 180px;
     margin: 0px;
+    margin-top: 5px;
+    margin-right: 25px;
 }
 // a#logo.navbar-brand {
 //     padding: 5px;

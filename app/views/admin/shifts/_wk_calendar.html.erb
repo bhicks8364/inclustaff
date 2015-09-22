@@ -1,0 +1,15 @@
+<div class="col-lg-12">
+
+	<%= week_calendar(attribute: :time_in, events: @shifts) do |date, shifts| %>
+	
+<%= date %>
+
+  <% shifts.each do |shift| %>
+    <div>
+      <%= link_to shift.employee.name, admin_shift_path(shift) %>
+      <strong><%= shift.hours_worked %> </strong>
+    </div>
+  <% end %>
+<% end %>
+
+</div>

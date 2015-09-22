@@ -19,7 +19,7 @@
 
   </div>
   <div class="btn-group" role="group">
-  <%= link_to(admin_timesheets_path, class: "btn btn-default") do %>
+  <%= link_to(admin_company_timesheets_path(@company), class: "btn btn-default") do %>
 							<i class='fa fa-clock-o'></i>
 
 								<span>Timesheets</span>
@@ -75,6 +75,7 @@
     
     <%= render 'admin/orders/table' %>
     
+    
   </div>
   
   <div role="tabpanel" class="tab-pane fade" id="employees">
@@ -107,4 +108,13 @@
 </div>
 </div>
 </div>
+
+<div class='col-md-8 well'>
+      <%= render 'admin/orders/form' %>
+    </div>
+
+
+
+
+
 </div>

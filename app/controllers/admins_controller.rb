@@ -2,13 +2,9 @@ class AdminsController < ApplicationController
     before_filter :authenticate_admin!
     layout 'admin_layout'
     def index
-      @admin = current_admin
-        if @admin.agency?
-          @agency = @admin.agency
-        elsif @admin.company?
-          @company = @admin.company
-        end
-        @admins = Admin.agency_admins.where(agency_id: @admin.agency_id).order(role: :asc)
+        
+        @agency_admins = @current_agency.admins.agency_admins.order(role: :asc) if @current_agency.present?
+        # @admins = @current_agency.agency_admins.order(role: :asc)
           # @admins = @company.admins.order(last_name: :asc) if @company.present?
           # @admins = @agency.admins.order(last_name: :asc) if @agency.present?
         skip_authorization
@@ -54,6 +50,7 @@ class AdminsController < ApplicationController
             @company_orders = @company.orders if @admin.owner?
             @company_jobs = @company.jobs if @company.jobs.any?
             @jobs = @company.jobs.with_current_timesheets.distinct if @admin.company?
+            @timesheets = @company.timesheets
         elsif @admin.agency?
             @agency = @admin.agency
             @employees = Employee.all.limit(5).order(:last_name)

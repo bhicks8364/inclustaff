@@ -1,7 +1,12 @@
 <div class='col-md-12'>
+ <h1>Past Timesheets</h1>
+    <% if @companies %>
      <%= render partial: "admin/timesheets/list", collection: @companies.distinct, as: :company %>
-   
+   <% end %>
     <hr>
-    <%= render partial: "admin/timesheets/table", collection: @timesheets, as: :timesheet %>
-   
+    <%= render partial: "admin/timesheets/table" %>
+   <%= link_to(past_admin_timesheets_path(@timesheets, format: :csv), class: 'btn btn-primary') do %>
+			  					<i class="fa fa-file-excel-o fa-lg"></i> Export CSV
+			  				
+			  				<% end %>
 </div>

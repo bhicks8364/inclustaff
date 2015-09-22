@@ -1,8 +1,9 @@
-<div class="clock" data-behavior="job-list">
+<div class="content" data-behavior="job-list">
     <div class="details" data-behavior="job" data-id="<%= job.id %>">
-
+      <span class='content'><%= job.name_title %></span><br>
+          
           <% if job.on_shift? %>
-             <span data-behavior="time-in">
+             <span class= "time" data-behavior="time-in">
                   <small><strong> In:</strong> <%= job.current_shift.time_in.strftime("%l:%M%P") %></small>
               </span>
              

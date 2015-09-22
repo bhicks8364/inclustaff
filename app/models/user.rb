@@ -46,6 +46,7 @@ class User < ActiveRecord::Base
   
   
   after_create :set_employee, :set_emp_id
+  after_save :set_code
   after_initialize :set_role
   
   def set_role
@@ -61,7 +62,7 @@ class User < ActiveRecord::Base
         :recoverable, :rememberable, :trackable, :validatable
         
   # devise :database_authenticatable, :validatable, password_length: 4..6      
-  delegate :ssn, to: :employee
+  # delegate :ssn, to: :employee
   
   # def active_for_authentication?
   #   # Uncomment the below debug statement to view the properties of the returned self model values.
@@ -85,8 +86,8 @@ class User < ActiveRecord::Base
     role == "Employee"
   end
   
-  def code
-   self.first_name[0,1] + self.last_name[0,1] + self.ssn.to_s
+  def set_code
+   self.code = self.first_name[0,1] + self.last_name[0,1] + self.employee.ssn.to_s
   end
 
   
@@ -99,18 +100,28 @@ class User < ActiveRecord::Base
         employee.last_name = self.last_name
         employee.ssn = 1234
       end
+      self.employee_id = self.employee.id
 
     end
   end
 
-      # EXPORT TO CSV
+
+
+
+
+
+   # IMPORT TO CSV   
   def self.assign_from_row(row)
-    user = User.where(email: row[:email]).first_or_initialize.to_hash.slice(:first_name, :last_name, :email, :profile_type, :role)
+    user = User.where(email: row[:email]).first_or_initialize
+    user.assign_attributes row.to_hash.slice(:first_name, :last_name, :email, :code, :role, :password, :password_confirmation)
     user
   end
   
+  
+  
+   # EXPORT TO CSV
   def self.to_csv
-    attributes = %w{id last_name first_name email profile_type role}
+    attributes = %w{id last_name first_name email code role}
     CSV.generate(headers: true) do |csv|
       csv << attributes
       

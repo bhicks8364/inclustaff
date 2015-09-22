@@ -69,6 +69,7 @@ class Order < ActiveRecord::Base
     def defaults
       self.active = true if self.active.nil?
       self.urgent = false if self.urgent.nil?
+      self.jobs_count = 0 if self.jobs_count.nil?
     end
     # [ "$8.10 - $10.00","$10.00 - $12.00","$12.00 - $15.00", 
       # "$15.00 - $18.00", "$18.00 - $22.00", "$18.00 - $22.00", "$22.00 +  ", "Salary", "Hourly + Commission"]
@@ -78,8 +79,6 @@ class Order < ActiveRecord::Base
         self.mark_up = 1.5
       when "$10.00 - $12.00"
         self.mark_up = 1.5
-      when "12.00 - $15.00"
-        self.mark_up = 1.55
       when "12.00 - $15.00"
         self.mark_up = 1.55
       when "15.00 - $18.00"
@@ -143,6 +142,10 @@ class Order < ActiveRecord::Base
   
   def title_company
     "#{company_name} - #{title}"
+  end
+  
+  def title_count
+    "#{title} (#{pay_range}) #{open_jobs}"
   end
   
   def mark_up_percent

@@ -5,7 +5,7 @@ class Employee::DashboardController < ApplicationController
         @employee = current_user.employee if current_user.employee?
         @company = @employee.company if @employee.present?
         @shifts = @employee.shifts.order(time_in: :desc)
-    
+        skip_authorization
     end
     
     def home
@@ -16,13 +16,14 @@ class Employee::DashboardController < ApplicationController
         gon.clocked_in = @employee.clocked_in?
         gon.current_shift = @employee.current_shift
         gon.current_job = @employee.current_job
-
+        skip_authorization
 
     end
     
     def employee_view
         @employee = current_user.employee if current_user.employee?
         @timesheets = @employee.timesheets
+        skip_authorization
     end
     
     

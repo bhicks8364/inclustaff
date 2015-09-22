@@ -15,13 +15,12 @@
   <% end %>
 
         <h4><strong>Job Information</strong></h4>
-    <%= f.association :employee, prompt: "Select Employee", label: false, disabled: true %>
-    <%= f.association :order, prompt: "Select Department", label: false %>
-  <%= f.grouped_collection_select(:order_id, @companies, :orders, :name, :id, :title) %>
+<%= @job.employee.name %> <br> <%= @job.order.company_name %>
+ 
     <%= f.association :recruiter, collection: @agency.recruiters.order(:last_name), prompt: "Select Recruiter", label: false %>
    
 
-    <%= f.association :order, label_method: :title, value_method: :id, include_blank: false %>
+   
 
     <%= f.input :title, placeholder: "Job Title" %>
     <%= f.text_area :description, placeholder: "Job Description", data: {behavior: 'autocomplete'}, row: 10 %>

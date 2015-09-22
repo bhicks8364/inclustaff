@@ -170,23 +170,19 @@ class Timesheet < ActiveRecord::Base
             Admin.find(self.approved_by).name
         end
     end
-    #       # EXPORT TO CSV
-    #   def self.assign_from_row(row)
-    #     # user = User.where(email: row[:email]).first_or_initialize
-    #     timesheet = Timesheet.new row.to_hash.slice(:first_name, :last_name, :email, :profile_type, :role)
-    #     user
-    #   end
+    
+   # EXPORT TO CSV
+  def self.to_csv
+    attributes = %w{id week company_order time_frame employee_name job_id job_title reg_hours ot_hours pay_rate ot_rate gross_pay state approved_by shifts_count}
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
       
-    #   def self.to_csv
-    #     attributes = %w{id last_name first_name email profile_type role}
-    #     CSV.generate(headers: true) do |csv|
-    #       csv << attributes
-          
-    #       all.each do |user|
-    #         csv << user.attributes.values_at(*attributes)
-    #       end
-    #     end
-    #   end
+      all.each do |timesheet|
+        csv << attributes.map{ |attr| timesheet.send(attr) }
+      end
+    end
+  end
+  
     def current?
         if self.week == Date.today.cweek
             true
@@ -196,12 +192,16 @@ class Timesheet < ActiveRecord::Base
     end
     
     
-    
+    def company_order
+        self.order.company_name
+    end
     
     
     
 
-    
+    def job_title
+        self.job.title
+    end
     
     def employee_name
         self.employee.name
@@ -267,5 +267,8 @@ class Timesheet < ActiveRecord::Base
     end
     def week_begin
         self.shifts.last.time_in.beginning_of_week.strftime("%x")
+    end
+    def time_frame
+        "#{week_begin} - #{week_ending}"
     end
 end

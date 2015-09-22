@@ -9,6 +9,7 @@ class Employee::JobsController < ApplicationController
   def index
 
     @jobs = @employee.jobs.active.order(title: :asc) if @employee.jobs.any?
+    authorize @jobs
 
   end
   
@@ -20,6 +21,7 @@ class Employee::JobsController < ApplicationController
   # GET /jobs/1
   # GET /jobs/1.json
   def show
+    authorize @job
 
     @current_timesheet = @job.current_timesheet if @job.current_timesheet.present?
     @current_shift = @job.current_shift if @job.on_shift?

@@ -53,50 +53,47 @@
 				</div>
 				
 				<div class="table-responsive clearfix">
-					<table class="table table-hover">
+					<table class="table table-striped table-bordered" id='orders-datatable'>
 						<thead>
 							<tr>
-								<th><a href="#"><span>Order ID</span></a></th>
-								<th><a href="#" class="desc"><span>Date</span></a></th>
-								<th><a href="#" class="asc"><span>Customer</span></a></th>
-								<th class="text-center"><span>Status</span></th>
-								<th class="text-right"><span>Price</span></th>
 								<th>&nbsp;</th>
+								<th>Job Order</th>
+							
+								<th>Date</th>
+								<th>Customer</th>
+								<th>Acct Manager</th>
+								<th class="text-right"><span>Balance</span></th>
+								
 							</tr>
 						</thead>
 						<tbody>
 							<% @orders.each do |order| %>
 							<tr>
-								<td>
-									<%= link_to "#00#{order.id}", admin_order_path(order) %>
+								
+								
+								<td class="text-center" style="width: 10%;">
+									<% if order.needs_attention? %>
+									<i class="fa fa-warning fa-lg text-danger"></i>
+									<% end %>
 								</td>
-								<td>
-									<%= order.created_at.strftime('%x') %>
+								<td style="width: 15%;">
+									<%= link_to order.title, admin_order_path(order) %>
+								</td>
+								
+								<td style="width: 15%;">
+									<%= order.needed_by.present? ? order.needed_by.strftime('%x') : "No fill date" %>
 								</td>
 								<td>
 									<%= link_to order.company_name, admin_company_path(order.company) %>
 								</td>
-								<td class="text-center">
-									<% if order.urgent? %>
-									<span class="label label-danger">URGENT</span>
-									<% end %>
-									<% if order.needs_attention? %>
-									<span class="label label-warning">Attn!</span>
-									
-									<% end %>
-									
+								<td style="width: 15%;">
+									<%= order.account_manager.try(:name) %>
 								</td>
+								
 								<td class="text-right">
 									<%= number_to_currency(order.current_timesheets.sum(:total_bill)) %>
 								</td>
-								<td class="text-center" style="width: 15%;">
-									<%= link_to(admin_order_path(order), class: "table-link") do %>
-										<span class="fa-stack">
-											<i class="fa fa-square fa-stack-2x"></i>
-											<i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
-										</span>
-									<% end %>
-								</td>
+								
 							</tr>
 							<% end %>
 							

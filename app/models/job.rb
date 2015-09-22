@@ -50,12 +50,13 @@ class Job < ActiveRecord::Base
     # VALIDATIONS
     # validates_associated :employee
     validates_associated :order
-    # validates :employee_id,  presence: true
+    validates :employee_id,  presence: true
     # validates :order_id,  presence: true
     validates :title,  presence: true, length: { maximum: 50 }
     
     # CALLBACKS
     after_initialize :defaults
+    after_save :update_employee
 
     # SCOPES
     scope :active, -> { where(active: true)}
@@ -99,6 +100,9 @@ class Job < ActiveRecord::Base
         else
             true
         end
+    end
+    def update_employee
+        self.employee.mark_as_assigned!
     end
     
     # def self.off_shift

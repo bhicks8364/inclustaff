@@ -11,12 +11,26 @@
 	</div>
 	<div class="col-lg-3 col-sm-6 col-xs-12">
 		<div class="main-box infographic-box">
+	<% if @timesheets.past.pending.any? %>
 			<%= link_to(past_admin_timesheets_path, class: "") do %>
+			
 			<span class='headline'><i class='fa fa-list-alt fa-2x pull-left fa-fw'></i> <strong>Past Timesheets</strong><br>
-			<strong><small>Pending:</small> <%= @timesheets.past.pending.any? ? @timesheets.past.pending.count : @timesheets.past.pending.count %></strong>
+			
+				<strong><small>Pending: <%= @timesheets.past.pending.count %></small></strong>
+			<% end %>
+			<% else %>
+			<div class='text-center'>All of last week's timesheets have been approved.</div>
+				<%= link_to(past_admin_timesheets_path(@timesheets, format: :csv), class: 'btn btn-block btn-success') do %>
+			  					<i class="fa fa-download fa-2x pull-left"></i>Export <br> Timesheets 
+			  				
+			  				<% end %>
+		
+			
 				
 			</span>
+				
 			<% end %>
+			
 		</div>
 	</div>
 	<div class="col-lg-3 col-sm-6 col-xs-12">

@@ -1,7 +1,7 @@
 <li class="dropdown hidden-xs">
-	<a class="dropdown-toggle" data-toggle="dropdown">
+	<a class="btn nav-btn dropdown-toggle" data-toggle="dropdown">
 		<i class="fa fa-users"></i>
-		<span class="count"><%= current_admin.company.employees.newly_added.count %></span>
+		<span class="count"><%= @newly_added.count %></span>
 	</a>
 	<ul class="dropdown-menu notifications-list messages-list">
 		<li class="pointer">
@@ -10,8 +10,8 @@
 				<div class="arrow-border"></div>
 			</div>
 		</li>
-		<li class="item-header">You have <%= current_admin.company.employees.newly_added.count %> newly added employees.</li>
-		<% current_admin.company.employees.newly_added.limit(3).each do |employee| %>
+		<li class="item-header">You have <%= @newly_added.count %> newly added employees.</li>
+		<% @newly_added.limit(3).each do |employee| %>
 		<li class="item">
 		  <%= link_to(admin_employee_path(employee)) do %>
 			

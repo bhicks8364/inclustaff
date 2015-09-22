@@ -12,7 +12,7 @@ class Agency < ActiveRecord::Base
     has_many :admins
     has_many :events, :through => :admins
     has_many :users
-    has_many :employees, :through => :users
+    has_many :employees, :through => :jobs
     has_many :orders
     has_many :companies, :through => :orders
     has_many :jobs, :through => :orders

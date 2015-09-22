@@ -9,6 +9,7 @@ Please add a new employee before continuing.</h4>
 <%= link_to "Add Employee", new_user_registration_path, class: "btn btn-danger" %>
 
 </div>
+
 <% else %>
 
 
@@ -30,22 +31,30 @@ Please add a new employee before continuing.</h4>
 <% end %>
  
 
-        <h4><strong>Job Information</strong></h4>
+       
+        <% if @employee.nil? %>
     <%= f.association :employee, collection: Employee.unassigned.order(:last_name), prompt: "Select Employee", label: false %>
-    <% if current_admin.recruiter? == false %>
-    <%= f.association :recruiter, collection: @agency.recruiters.order(:last_name), prompt: "Select Recruiter", label: false %>
-    <% end %>
-    <% if @orders %>
-    <%= f.association :order, collection: @orders.active.order(:title), prompt: "Select Department", label: false %>
     <% else %>
-      <%= @order.title_company %>
+    <span class='hide-this'>
+     <%= f.hidden_field :employee_id, :value => @employee.id %>
+    </span>
+    <% end %>
+    <% if current_admin.recruiter? == false %>
+    <%= f.association :recruiter, collection: @current_agency.recruiters.order(:last_name), prompt: "Select Recruiter", label: false %>
+    <% end %>
+    <% if @order.present? %>
+     <%= @order.title_company %>
+    <%= f.hidden_field :order_id, :value => @order.id %>
+    <% else %>
+    <%= f.grouped_collection_select(:order_id, @current_agency.companies.distinct, :orders, :name, :id, :title_count, prompt: "Select a job", required: true ) %>
+
     <% end %>
     <%= f.input :title, placeholder: "Job Title" %>
     
     <%= f.text_area :description, placeholder: "Job Description", data: {behavior: 'autocomplete'} %>
     
+    <%= f.input :start_date, as: :string, placeholder: "Select start date", required: true %>
     
-    <%= f.input :start_date, as: :string, input_html: { id: "datepicker" } %> 
     
     <div class="input-group">
       <div class="input-group-addon">$</div>

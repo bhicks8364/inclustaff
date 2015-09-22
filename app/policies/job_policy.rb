@@ -10,17 +10,28 @@ class JobPolicy < ApplicationPolicy
     end
   
     def index?
-        
+        if user.role != "Employee"
+            return true if user.present?
+
+        elsif user.role == "Employee"
+            user.employee.assigned?
+        end
         # scope.where(:recruiter_id => user.id)
-        return true if user.recruiter? || user.owner? || user.payroll?
+       
         # return true if user.manager? && job.order.manager_id == user.id
         # return true if user.employee.id == job.employee_id && user.employee?
         
     end
     
     def show?
-        return true if user.owner? || user.payroll?
-        user.recruiter? && user.id == job.recruiter_id
+        if user.role != "Employee"
+            return true if user.present?
+
+        elsif user.role == "Employee"
+            user.employee.assigned?
+        end
+        
+        
         # scope.where(:id => job.id).exists?
         # return true if user.admin? || user.payroll?
         # return true if user.manager? && job.order.manager_id == user.id

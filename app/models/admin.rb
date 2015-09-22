@@ -34,6 +34,7 @@ class Admin < ActiveRecord::Base
   has_many :orders, :through => :company
 
   has_many :jobs, :through => :orders
+  has_many :employees, :through => :jobs
   has_many :shifts, :through => :company
   has_many :skills, :through => :orders
   

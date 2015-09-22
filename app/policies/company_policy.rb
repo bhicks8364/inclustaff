@@ -8,18 +8,31 @@ class CompanyPolicy < ApplicationPolicy
   end
   
   def index?
-   return true if user.agency?
+    if user.role != "Employee"
+        return true if user.present?
+
+    elsif user.role == "Employee"
+        false
+    end
+   
   end
   
   def show?
-    # true
-    return true if user.owner? || user.account_manager? || user.payroll?
-    # return true if user.payroll? && user.can_edit?
-    # return true if user.employee? || user.company_id == company.id
+    if user.role != "Employee"
+        return true if user.present?
+
+    elsif user.role == "Employee"
+        false
+    end
   end
   
   def create?
-   return true if user.owner? || user.account_manager?
+    if user.role != "Employee"
+        return true if user.present?
+
+    elsif user.role == "Employee"
+        false
+    end
   end
   
   def new?
@@ -27,7 +40,12 @@ class CompanyPolicy < ApplicationPolicy
   end
   
   def update?
-    return true if user.owner? || user.account_manager?
+    if user.role != "Employee"
+        return true if user.present?
+
+    elsif user.role == "Employee"
+        false
+    end
   end
   
   def edit?

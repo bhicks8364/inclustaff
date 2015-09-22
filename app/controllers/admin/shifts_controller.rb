@@ -2,11 +2,12 @@ class Admin::ShiftsController < ApplicationController
   before_action :set_shift, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_admin!
   before_action :set_admin
-
+  layout "admin_layout"
   def index
     @jobs = @company_admin.company.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 5).order('id DESC') if @company_admin.present?
     @jobs = @agency_admin.agency.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 5).order('id DESC') if @agency_admin.present?
-    @shifts = @current_admin.shifts.paginate(:page => params[:page], :per_page => 5).order('id DESC')
+    @shifts = @current_agency.shifts
+
     # gon.shifts = @shifts
     authorize @shifts
   end

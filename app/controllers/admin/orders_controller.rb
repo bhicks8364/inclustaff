@@ -11,7 +11,9 @@ class Admin::OrdersController < ApplicationController
     if params[:company_id]
       @company = Company.find(params[:company_id])
       @orders = @company.orders
-      
+      @account_managers = @current_agency.account_managers if @current_agency.present?
+      @order = @company.orders.new if @company.present?
+     
     else
       @admin = current_admin
       
@@ -100,12 +102,15 @@ class Admin::OrdersController < ApplicationController
   def create
 
       if params[:company_id]
+        
         @company = Company.find(params[:company_id])
         @order = @company.orders.new(order_params)
+        @order.agency = @current_agency if @current_agency.present?
       else
-        @admin = current_admin
-        @agency = @admin.agency
-        @order = @agency.orders.new(order_params)
+        
+        @account_managers = @current_agency.admins.account_managers if @current_agency.present?
+        @order = @current_agency.orders.new(order_params) if @current_agency.present?
+        @order.agency = @current_agency if @current_agency.present?
       end
       
       authorize @order

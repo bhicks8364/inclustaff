@@ -25,18 +25,34 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
+
+# //////////////////////////////////////////////////////
+# SIMPLE FORMS
 gem 'simple_form'
-gem "simple_calendar", "~> 1.1.0"
+
+# SIMPLE CALENDAR - GORAILS
+gem "simple_calendar", "~> 2.0"
+
+# AREL HELPERS - ACTIVE RECORD QUERIES IN AREL
 gem 'arel-helpers'
+
+# DATATABLES
 gem 'jquery-datatables-rails', '~> 3.3.0'
+
+# JQUERY UI FOR DATATABLES AND DATEPICKER
 gem 'jquery-ui-rails'
+
+# CLOCKPICKER - FOR EDITING SHIFT TIMES BUT IDK IF GOING TO USE IT YET
 gem 'clockpicker-rails'
+
+# FOR TESTING
 gem "factory_girl_rails", "~> 4.0"
 
+# FONT AWESOME - ENOUGH SAID
 gem "font-awesome-rails"
+
 # FOR ACTIVE RECORD DATE QUERY
 gem 'by_star', :git => "git://github.com/radar/by_star"
-
 
 # PAGINATION
 gem 'will_paginate', '~> 3.0.6'
@@ -47,36 +63,36 @@ gem 'receipts'
 # NESTED FORMS
 gem "cocoon"
 
-# FILE UPLOADS
+# SOFT DELETE
+gem 'paranoia', '~> 2.1.0'
+
+# FILE UPLOADING
 gem 'refile', require: ['refile/rails', 'refile/image_processing']
 gem 'refile-mini_magick'
-
-
-# AUTOCOMPLETE & @MENTIONS
-gem 'jquery-atwho-rails'
-
-# STATE MACHINE
-gem 'aasm'
 
 # FOR JAVASCRIPT 
 gem 'gon'
 gem 'jquery-turbolinks'
-gem 'fullcalendar-rails'
-gem 'momentjs-rails'
-gem 'angularjs-rails'
 
-gem 'active_model_serializers'
-gem 'angular-rails-templates'
-gem 'bower-rails'
+# AUTOCOMPLETE & @MENTIONS
+gem 'jquery-atwho-rails'
 
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+# STATE MACHINE - NOT SURE IF I NEED TO USE THIS {WORKING FINE FOR NOW - MAYBE WHEN THINGS GET MORE COMPLEX}
+gem 'aasm'
+# IDK WHAT SUCKER PUNCH IS - - .....I SHOULD PROLLY FIND OUT
+gem "sucker_punch"
 
-# Use Unicorn as the app server
-# gem 'unicorn'
+gem 'local_time', '~> 1.0.0'
 
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
+# DONT EXACTLYYYYY KNOW WHAT THIS STUFF IS EITHER 
+gem 'html-pipeline', '~> 1.11.0'
+gem 'github-markdown', '~> 0.6.7'
+gem 'gemoji', '~> 2.1.0'
+gem 'sanitize', '~> 3.0.3'
+
+
+
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -97,14 +113,14 @@ group :development, :test do
   gem 'spring'
 end
 
-gem "sucker_punch"
+
+
+# STUFF I PROBABLY DONT EVEN NEED {ANGULARJS TEST APP-THING & FULLCALENDAR}
+gem 'fullcalendar-rails'
+gem 'momentjs-rails'
+gem 'angularjs-rails'
+gem 'active_model_serializers'
+gem 'angular-rails-templates'
+gem 'bower-rails'
+# RANSACK SEARCH - DON'T THINK I NEED THIS EITHER SINCE IM USING DATATABLES
 gem 'ransack', github: 'activerecord-hackery/ransack', branch: 'rails-4.2'
-gem 'local_time', '~> 1.0.0'
-
-gem 'html-pipeline', '~> 1.11.0'
-gem 'github-markdown', '~> 0.6.7'
-gem 'gemoji', '~> 2.1.0'
-gem 'sanitize', '~> 3.0.3'
-
-gem 'paranoia', '~> 2.1.0'
-

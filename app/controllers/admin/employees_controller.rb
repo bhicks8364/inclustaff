@@ -26,24 +26,17 @@ class Admin::EmployeesController < ApplicationController
   # GET /employees/1
   # GET /employees/1.json
   def show
+    @user = @employee.user
     @shifts = @employee.shifts.order(time_in: :desc).limit(5) if @employee.shifts.any?
     @skills = @employee.skills
     @skill = @employee.skills.new
     gon.skills = @skills
-    @company = @employee.company
-    @job = @employee.current_job if @employee.current_job.present?
+    # @company = @employee.company
+    @job = @employee.jobs.new
+    # @job = @employee.current_job if @employee.current_job.present?
     @jobs = @employee.jobs
     @timesheets = @employee.timesheets.order(created_at: :desc).limit(2) if @employee.timesheets.any?
-    @last_week_timesheets = @timesheets.last_week.order(updated_at: :desc) if @timesheets
-    @current_timesheet = @employee.current_timesheet if @employee.current_job.present?
-    @current_job = @employee.current_job if @employee.current_job != nil
-    # @current_company = @employee.company
-    # @company = @employee.company
-    # @jobs = @employee.jobs.includes(:shifts)
-    # # @timesheets = @employee.timesheets  if @employee.timesheets.any?
-    # @all_timesheets = @employee.timesheets.order(updated_at: :desc) if @employee.timesheets.any?
-    # @timesheets = @all_timesheets.this_week.order(updated_at: :desc) if @employee.timesheets.any?
-    # @last_week_timesheets = @timesheets.last_week.order(updated_at: :desc) if @employee.timesheets.any?
+
     
     authorize @employee
   end
@@ -129,7 +122,7 @@ class Admin::EmployeesController < ApplicationController
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_employee
-      @employee = Employee.find(params[:id])
+      @employee = Employee.includes(:user).find(params[:id])
       authorize @employee
     end
 

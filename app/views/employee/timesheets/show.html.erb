@@ -1,32 +1,36 @@
 <p id="notice"><%= notice %></p>
 
-<span id='updated-at'></span>
+    
 
+<div class='col-lg-12 main-box'>
+  <h4>For the week of:<strong><br>
+        <%= @timesheet.week_begin %>
+          - 
+        <%= @timesheet.week_ending %>
+      </strong></h4>
+  <div class='col-lg-3 well well-sm'>
+    <strong>Regular hours:</strong>
+    <%= @timesheet.reg_hours %>
+  </div>
+  <div class='col-lg-3 well well-sm'>
+    <strong>Overtime hours:</strong>
+    <%= @timesheet.ot_hours %>
+  </div>
+    <div class='col-lg-3 well well-sm'>
+           <strong>Gross pay:</strong>
+        <%= number_to_currency(@timesheet.gross_pay) %>
+      </div>
 
+      
+</div>
+<div class='main-box'>
+   <%= render 'admin/shifts/wk_calendar' %>
+</div>
 
-For the week of: <%= @timesheet.week_ending  %>
-<br>
-Week: <%= @timesheet.week %>
-<br>
-  <strong>Regular hours:</strong>
-  <%= @timesheet.reg_hours %>
-<br>
-  <strong>Overtime hours:</strong>
-  <%= @timesheet.ot_hours %>
-<br>
-  <strong>Gross pay:</strong>
-  <%= number_to_currency(@timesheet.gross_pay) %><br>
-
-   <strong>Last Clock In:</strong> <%= @timesheet.last_clock_in.strftime("%B %e, %Y  at   %I:%M %p") %>
-   <br>
-<%= link_to 'View Shifts', '#', id: 'shifts-button', class: 'btn btn-primary btn-sm' %>
-<ul id="shifts-list"> 
-  <%= render @shifts %>
-</ul>
-
- 
-
-
+<%= link_to(admin_timesheet_path(@timesheet, format: :pdf), class: 'btn btn-primary') do %>
+  					<i class="fa fa-download fa-lg"></i> Download PDF
+  				
+  				<% end %>
 
 <!--<h3><strong> Week Ending: <small> <%= @timesheet.week_ending %></small></strong></h3>-->
 <!--<div class="table-responsive">-->
@@ -36,5 +40,6 @@ Week: <%= @timesheet.week %>
 
 
 <!--<%= link_to 'Edit', edit_timesheet_path(@timesheet) %> |-->
-<!--<%= link_to 'Back', timesheets_path %>-->
-<!--</div>-->
+<%= link_to 'Back', admin_timesheets_path %>
+</div>
+</div>

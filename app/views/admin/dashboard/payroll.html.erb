@@ -4,36 +4,11 @@
     <div class='row'>
         <%= render 'admin/jobs/table' %>
     </div>
-    <div class'row'>
-        <% if @timesheets.last_week.any? %>
-        <div class='col-lg-5' data-behavior="timesheet-list">
-            <h3>Pending Timesheets<small><%= @timesheets.last_week.first.week_ending %></small></h3>
-            <%= render @timesheets.pending.last_week %>
-        </div>
-        <% end %>
-        <div class='col-lg-7' data-behavior="timesheet-list">
-            <h3>This week timesheets<small><%= @timesheets.current_week.any? ? @timesheets.current_week.first.week_ending : time_tag(Time.current.end_of_week.strftime("%x")) %></small></h3>
-            <%= render @timesheets.current_week %>
-        </div>
-        
-   <% if @timesheets.last_week.any? %>
-        <div class='col-lg-10' data-behavior="timesheet-list">
-            <h3>Pending Timesheets<small><%= @timesheets.last_week.first.week_ending %></small></h3>
-            <%= render @timesheets.last_week.pending %>
-        </div>
-    <% end %>
-        <div class='col-lg-10' data-behavior="timesheet-list">
-            <h3>This week timesheets<small><%= @timesheets.current_week.any? ? @timesheets.current_week.first.week_ending : time_tag(Time.current.end_of_week.strftime("%x")) %></small></h3>
-            <%= render @timesheets.current_week %>
-        </div>
+  
         
         
         
-        
-        
-        
-        
-    </div>
+
     
     
     

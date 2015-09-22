@@ -1,64 +1,58 @@
-<div class="list-group" data-behavior="job-list">
-    <div class="details"data-behavior="job" data-id="<%= job.id %>">
-      <h4 class="list-group-item-heading"><%= link_to job.employee.name, admin_employee_path(job.employee), class: 'table-link' %></h4>
-    
-      <h4><small><%= link_to job.title, admin_job_path(job)%></small></h4>
-      
-        <br>
-        <strong>Pay rate:</strong>
-        <%= number_to_currency(job.pay_rate, :unit => "$") %>
-      <br>
-        <strong>Description:</strong>
-        <%= job.description %>
-     <br>
-        <strong>Employee:</strong>
-        <%= link_to job.employee.name, admin_employee_path(job.employee) %>
-    
-         <hr>
-        <strong>Start date:</strong>
-        <%= job.start_date.strftime("%B %e, %Y ") %>
+<div class="" data-behavior="job-list">
+    <div data-behavior="job" data-id="<%= job.id %>">
+
         
-        <div class="shift-list">
-          <%= render job.shifts.order(time_in: :desc) %>
-        </div>
-        
-        <% if job.on_shift? %>
-          <button data-behavior="job-out-button" class='badge badge-danger'>
+           <% if job.on_shift? %>
+           <span data-behavior='shift-state'>
+    <strong> <%= link_to job.employee.first_name, admin_employee_path(job.employee), class: 'table-link' %> is currently clocked in.</strong><br>
+             
+           
+           </span>
+             <span data-behavior="time-in">
+                  <small><strong> In:</strong> <%= job.current_shift.time_in.strftime("%l:%M%P") %></small>
+            </span>
+             
+               
+            <button data-behavior="job-out-button_<%= job.id %>" class='badge badge-danger'>
             <i class='fa fa-sign-out'></i> Clock Out
           </button>
-          <button class="hide-this" data-behavior="job-in-button" class='badge badge-success'>
+          <button data-behavior="job-in-button_<%= job.id %>" class='hide-this badge badge-success'>
             <i class='fa fa-sign-out'></i> Clock In
           </button>
+           <span data-behavior="time-out">
+              </span>
+
         <% else %>
-        <button class="hide-this" data-behavior="job-out-button" class='badge badge-danger'>
-            <i class='fa fa-sign-out'></i> Clock Out
-          </button>
-          <button data-behavior="job-in-button" class='badge badge-success'>
+        
+        <span data-behavior='shift-state'>
+             <strong> <%= link_to job.employee.first_name, admin_employee_path(job.employee), class: 'table-link' %>
+             is currently clocked out.</strong><br>
+             
+           
+           </span>
+        <span data-behavior="time-in">
+          
+        </span>
+          <button data-behavior="job-in-button_<%= job.id %>" class='badge badge-success'>
             <i class='fa fa-sign-in'></i> Clock In
           </button>
+          <button data-behavior="job-out-button_<%= job.id %>" class='hide-this badge badge-danger'>
+            <i class='fa fa-sign-out'></i> Clock Out
+          </button>
+        
+          
+        
+
+        <span data-behavior="time-out">
+          
+        </span>
       <% end %>
-      
-      
-      
-      
-      
-      <hr>
-      <div class="text-left">Total gross: <%= number_to_currency(job.total_gross_pay) %><br>
-       Total Hours : <%= job.total_hours %>
+
       </div>
       
-     
-
-
-
-
-        
-        <div>
-          <h3>This week</h3><i class="fa fa-clock-o"></i> <strong>Hours:</strong>  <%= job.current_week_hours %><br>
-        <i class="fa fa-money"></i> <strong>Pay:</strong>  <%= number_to_currency(job.current_week_pay) %><br></div>
 
              
-    	<% link_to "EDIT", edit_admin_job_path(job), class: "btn btn-warning" %>
     
-    </div>
-</div>
+
+     
+     </div>

@@ -1,10 +1,11 @@
 <div class='table-responsive' data-behavior="timesheet-list">
-<table id='timesheets-datatable' class="display" cellspacing="0" width="100%">
+<table id='timesheets-datatable' class=" table table-hover table-bordered display" width="100%">
 	<thead>
 		<th class='text-center'><i class="fa fa-calendar-o"></i><br>Week</th>
 		<th class='text-center'><i class="fa fa-building"></i><br>Company</th>
-		<th class='text-center'><i class="fa fa-briefcase"></i><br>Job</th>
+		
 		<th class='text-center'><i class="fa fa-user"></i><br>Employee</th>
+		<th class='text-center'><i class="fa fa-briefcase"></i><br>Job</th>
 		<th class='text-center'><i class="fa fa-money"></i><br>Gross Pay</th>
 		<th class='text-center'><i class="fa fa-clock-o"></i><br>Hours</th>
 		<th class='text-center'><i class="fa fa-certificate"></i><br>Status</th>
@@ -13,7 +14,7 @@
 	<tbody>
 	
 	
-		<% @timesheets.order(created_at: :desc).each do |timesheet| %>
+		<% @timesheets.each do |timesheet| %>
 	<tr data-behavior="timesheet" data-id="<%= timesheet.id %>">
 		<td><strong><%= timesheet.week_ending %></strong></td>
 		<td class='text-center'><%= link_to timesheet.order.company, admin_company_path(timesheet.company), class: 'table-link'  %></td>
@@ -38,7 +39,7 @@
 		          <% end %>
 			    </span>
 			</a><br>
-			<%= timesheet.state.upcase %>
+			<span data-behavior='timesheet-state'><%= timesheet.state.upcase %></span>
 		</td>
   		<td class="text-center"><%= render 'admin/timesheets/tool_buttons', timesheet: timesheet %></td>
 

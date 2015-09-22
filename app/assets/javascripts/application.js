@@ -13,12 +13,12 @@
 //= require jquery
 //= require jquery.turbolinks
 //= require jquery_ujs
-//= require jquery-ui
 //= require jquery-ui/draggable
+//= require jquery-ui/datepicker
 //= require jquery.atwho
 //= require dataTables/jquery.dataTables
-
-
+//= require bootstrap-sprockets
+//= require cocoon
 
 
 //= require timesheets
@@ -27,9 +27,13 @@
 //= require jobs
 //= require autocomplete
 //= require datatables
+//= require forms
 
-//= require bootstrap-sprockets
-//= require cocoon
+
+
+
+
+
 
 
 

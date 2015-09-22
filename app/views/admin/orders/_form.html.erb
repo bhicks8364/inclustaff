@@ -1,53 +1,40 @@
 
-<div class="col-lg-8">
+<div class="col-lg-12">
 		<div class="main-box order-form">
-			<h2>New Order</h2>
+			<h4>New Job Order</h4>
 		  <%= simple_form_for [:admin, @company, @order], html: { class: '' } do |f| %>
 			<form role="form">
 			  <% if @company.nil? %>
-    <%= f.association :company, collection: Company.all, prompt: "Choose a Company" %>
-  <% else %>
-
-   
-  <div id="company-contact col-md-2">
-    <strong>Company Information</strong>
-    <address>
-      <strong><%= link_to @company.name, @company %></strong><br>
-      <%= @company.address %><br>
-      <%= @company.city %>, <%= @company.state %> <%= @company.zipcode %><br>
-      <abbr title="Phone">P:</abbr> (123) 456-7890
-    </address>
-    <address>
-      <strong><%= @company.contact_name %></strong><br>
-      <a href="mailto:#"><%= @company.contact_email %></a>
-    </address>
-  </div>
-  <% end %>
+			    <%= f.association :company, collection: Company.all, prompt: "Choose a Company" %>
+			  <% end %>
 				<div class="form-group">
-					<strong>Job Order Information</strong>
-					<%= f.input :title, placeholder: "Type of position. Ex. Warehouse, Adminstrative, General Labor, etc...", label: false %>
+					
+					<%= f.input :title, placeholder: "Job Type (Ex. Warehouse, Adminstrative, General Labor, etc...)", label: false, input_html: { class: 'form-control' } %>
 				</div>
 				<div class="form-group">
 					<%= f.input :number_needed, collection: 1..10, prompt: "How many people are needed?", label: false %>
     
 				</div>
 				<div class="form-group">
-					<%= f.input :dt_req, collection: [ "None Required", "Yes - 5 panel screen", "Yes - 10 panel screen"], prompt: "Drug Test Required?", label: false %>
+					<%= f.input :needed_by, as: :string, label: false, placeholder: "When do you need them to start?", required: true, input_html: { class: 'form-control' } %>
     
 				</div>
-				
 				<div class="form-group">
-					<%= f.input :bg_check, collection: [ "None Required", "Yes - No Felonies", "Yes - Case by case"], prompt: "Background Check Required?", label: false %>
+					<%= f.input :dt_req, collection: [ "None Required", "Yes - 5 panel screen", "Yes - 10 panel screen"], prompt: "Drug Test Required?", label: false, input_html: { class: 'form-control' } %>
+						</div>
+				<div class="form-group">
+					<%= f.input :bg_check, collection: [ "None Required", "Yes - No Felonies", "Yes - Case by case"], prompt: "Background Check Required?", label: false, input_html: { class: 'form-control' }%>
           
 				</div>
 				
 				<div class="form-group">
 					<%= f.input :stwb, as: :boolean, label: "Do they need steel-toe workboots?" %>
+					<%= f.input :heavy_lifting, as: :boolean, label: "Does this position require heavy lifting? (50 lbs +)" %>
 					
 				</div>
 				
 				<div class="form-group">
-				  <%= f.input :heavy_lifting, as: :boolean, label: "Does this position require heavy lifting? (50 lbs +)" %>
+				  
           <%= f.input :est_duration, collection: [ "Temp-to-Hire", "Direct-Hire", "Temporary"], prompt: "Est. duration of assignment", label: false %>
           <%= f.input :shift, collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible"], prompt: "Select shift needed", label: false %>
           <%= f.input :urgent, as: :boolean, label: "Do you need someone ASAP?" %>
@@ -55,7 +42,7 @@
 				</div>
 			
 				<div class="form-group form-group-select2">
-					<% if @admin.agency? %>
+					<% if @current_admin.agency? %>
             <%= f.input :mark_up, collection: [ 1.4, 1.5, 1.6 ], prompt: " Select Mark Up", label: false %>
             <%= f.association :account_manager, collection: @account_managers.order(:last_name), prompt: "Choose aa Account Manager", label: false %>
             <%= f.input :active, as: :boolean %>
@@ -63,25 +50,26 @@
 				</div>
 				
 				<div class="form-group form-group-select2">
-					<%= f.input :pay_range, collection: [ "$8.10 - $10.00","$10.00 - $12.00","$12.00 - $15.00", 
-      "$15.00 - $18.00", "$18.00 - $22.00", "$18.00 - $22.00", "$22.00 +  ", "Salary", "Hourly + Commission"], prompt: " Select Pay Type", label: false %>
+					<%= f.input :pay_range, collection: [ "$8.10 - $10.00","$10.00 - $12.00","$12.00 - $15.00", "$15.00 - $18.00", "$18.00 - $22.00",
+					"$22.00 +  ", "Salary", "Hourly + Commission"], prompt: " Select Pay Type", label: false %>
     
 				</div>
 
 				<div class="form-group">
-					<%= f.input :notes, label: "Job Requirements", placeholder: "Please list desired skills, qualifications, etc...", row: 10 %>
+					<%= f.text_area :notes, label: "Job Requirements", placeholder: "Please list desired skills, qualifications, etc...", rows: 10  %>
 				</div>
 				<hr>
 				
 				
 				<div class='form-group' id='skills'>
+					<h5>Enter some skills that are needed for this position.</h5>
 			    <%= f.simple_fields_for :skills do |skill| %>
 			      <%= render 'skill_fields', f: skill %>
 			    <% end %>
 			   </div>
 			    
 			    <div class='links'>
-			      <%= link_to_add_association 'add skill', f, :skills %>
+			      <%= link_to_add_association 'Add A Skill', f, :skills, class: 'btn btn-success' %>
 			    </div>
 				
 

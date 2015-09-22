@@ -6,33 +6,26 @@
 <div class="conversation-item item-left clearfix" data-behavior="timesheet" data-id="<%= timesheet.id %>">
 
 <% end %>
-				<div class="conversation-user">
-				<%= link_to(admin_job_path(timesheet.job, class: 'btn btn-primary btn-lg')) do %>
-								
-		  					<i class="fa fa-user fa-2x"></i>
-		  				<%= timesheet.employee.name %>
-		  				
-		  				<% end %>
-			
-				</div>
 			
 				
 				<div class="conversation-body">
-					<div class="col-md-3 name">
+					<h5><strong><%= timesheet.employee.name %></strong> <small><span data-behavior="timesheet-state"><%= timesheet.state.upcase %></span></small></h5>
+					<h6><%= link_to timesheet.job.title, admin_job_path(timesheet.job) %></h6>
+					<div class="col-md-4">
 						<h6><strong><%= timesheet.week_begin %>  -  <%= timesheet.week_ending %></strong><br>
-						<%= timesheet.job.staff %> <br>
+						
 						 <%= timesheet.company.name %>
 						</h6>
 						
 					</div>
-					<div class=" col-md-3 name">
+					<div class=" col-md-4">
 						<span class='text-center'>
 							<h6><strong>	Regular Hours:	<%= timesheet.reg_hours %></strong></h6>
 
 								<h6><strong>	Overtime Hours:	<%= timesheet.ot_hours %></strong></h6>
 						</span>
 					</div>
-					<div class="col-md-3 name">
+					<div class="col-md-4">
 						<span class='text-center'>
 							<h6><strong>	Gross Pay:	<%= number_to_currency(timesheet.gross_pay) %></strong></h6>
 

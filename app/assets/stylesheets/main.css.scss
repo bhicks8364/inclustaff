@@ -25,8 +25,22 @@
 
 // ORDER FORM
 .order-form {
-    border: solid 3px black;
+    // border: solid 3px black;
+   
 }
+
+
+
+#order_notes {
+    width: 100%;
+}
+
+
+
+
+
+
+
 .center {
     margin: auto;
     max-width: 95%;
@@ -50,6 +64,18 @@
     color: rgb(43, 182, 163);
     font-color: rgb(43, 182, 163);
     background: transparent;
+//     -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.0);
+// 	-moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.0);
+// 	box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.0);
+}
+.btn.nav-btn {
+    // padding: 2px;
+    color: rgb(43, 182, 163);
+    font-color: rgb(43, 182, 163);
+    background: transparent;
+    -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.0);
+	-moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.0);
+	box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.0);
 }
 .btn.job-button {
     background: rgba(12, 12, 12, 0.29);

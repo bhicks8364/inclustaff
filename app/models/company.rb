@@ -19,12 +19,13 @@
 
 class Company < ActiveRecord::Base
     default_scope { order(name: 'DESC') }
-    has_many :orders
+    has_many :orders, dependent: :destroy
     has_many :agencies, :through => :orders
     has_many :jobs, :through => :orders
     has_many :employees, :through => :jobs
     has_many :shifts, :through => :jobs
     has_many :timesheets, :through => :jobs
+    has_many :current_timesheets, :through => :jobs
     has_many :account_managers, :through => :orders
     has_many :recruiters, :through => :jobs
     has_many :admins
@@ -33,6 +34,9 @@ class Company < ActiveRecord::Base
     # has_many :recruiters, -> { where role: 'Recruiter' }, class_name: "Admin"
     # has_many :payroll_admin,  -> { where role: "Payroll" }, class_name: "Admin"
     # has_many :account_managers,  -> { where role: "Account Manager" }, class_name: "Admin"
+    
+    accepts_nested_attributes_for :orders
+    
     include ArelHelpers::ArelTable
     include ArelHelpers::JoinAssociation
     

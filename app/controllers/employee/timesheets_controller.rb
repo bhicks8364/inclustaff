@@ -10,7 +10,7 @@ class Employee::TimesheetsController < ApplicationController
       @timesheets = @company.timesheets.order(updated_at: :desc)
       gon.timesheets = @timesheets
       
-      # authorize @timesheets
+      authorize @timesheets
     elsif user_signed_in? && current_user.employee?
       @current_user = current_user if current_user.present?
       @employee = @current_user.employee
@@ -18,7 +18,7 @@ class Employee::TimesheetsController < ApplicationController
       @current_job = @employee.current_job if @employee.current_job.present?
       @timesheets = @employee.timesheets.order('timesheets.created_at DESC')
       # gon.jbuilder
-      # authorize @timesheets
+      authorize @timesheets
     end
 
   end
@@ -26,7 +26,7 @@ class Employee::TimesheetsController < ApplicationController
   # GET /timesheets/1
   # GET /timesheets/1.json
   def show
-    # authorize @timesheet
+    authorize @timesheet
     @shifts = @timesheet.shifts.order(time_in: :desc)
     @employee = @timesheet.employee
     @job = @timesheet.job

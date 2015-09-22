@@ -10,16 +10,40 @@ class ApplicationController < ActionController::Base
   # Globally rescue Authorization Errors in controller.
   # Returning 403 Forbidden if permission is denied
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-
-  def after_sign_in_path_for(resource)
-    # check for the class of the object to determine what type it is
-    case resource.class
-    when Admin
-      admin_dashboard_path  
-    when User
-      home_path
+  before_action :set_agency
+  
+  
+  def set_agency
+    
+    if admin_signed_in? && current_admin.agency?
+      @current_agency = Agency.find(current_admin.agency_id)
+      @agency_jobs = @current_agency.jobs if @current_agency.present?
+    elsif admin_signed_in? && current_admin.company?
+      @current_company = Company.find(current_admin.company_id)
+      @current_agency = @current_company.agency if @current_company.present?
+      @company_jobs = @current_company.jobs if @current_company.present?
+    else
+      
     end
+    
+    @viewing = @current_company || @current_agency
+    @newly_added = @viewing.employees.newly_added.order(created_at: :desc)
+    
+    
+    
+    
+    
   end
+
+  # def after_sign_in_path_for(resource)
+  #   # check for the class of the object to determine what type it is
+  #   case resource.class
+  #   when Admin
+  #     redirect_to root_path  
+  #   when User
+  #     redirect_to root_path
+  #   end
+  # end
   
   private
   def configure_permitted_parameters

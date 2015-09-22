@@ -26,7 +26,7 @@
 
 class Shift < ActiveRecord::Base
     extend SimpleCalendar
-    has_calendar :attribute => :time_in
+    # has_calendar :attribute => :time_in
     include ArelHelpers::ArelTable
     by_star_field :time_in, :time_out
     
@@ -65,7 +65,9 @@ class Shift < ActiveRecord::Base
     before_save :set_timesheet, :reg_earnings
     before_create :set_defaults
     # after_destroy :delete_timesheet
-
+    def start_date
+        time_in
+    end
 
     def set_defaults
         self.employee = self.job.employee if self.employee.nil? 

@@ -9,16 +9,18 @@
 
 
 <div class="table-responsive">
-  <table id="myTable" class="table" cellspacing="0.5" width="85%">
+  <table id="companies-datatable" class="table table-bordered">
   <thead>
     <tr>
       <th>Name</th>
+      
       <th>Orders</th>
-      <th>Active Employees</th>
+      <th>Timesheets</th>
+      
       <th>Balance</th>
       <th>Last Week Bill</th>
-      <th>Contact name</th>
-      <th>Contact email</th>
+      <th></th>
+      <th></th>
       <th></th>
       <th></th>
     </tr>
@@ -28,17 +30,13 @@
     <% @companies.each do |company| %>
       <tr>
         <td><%= render company %></td>
-        <td>
-          <% if company.owner.present? %>
-            <%=  link_to company.owner.name, company.owner %>
-          <% else %>
-            <%= company.contact_name %>
-          <%end %></td>
-        <td><%= company.orders.filled.count %></td>
+        
+        <td><%= company.orders.filled.count %> / <%= company.orders.count %></td>
+        <td><%= company.current_timesheets.try(:count) %> / <%= company.jobs.active.try(:count) %></td>
         <td><%= number_to_currency(company.balance) %></td>
         <td><%= number_to_currency(company.timesheets.last_week.sum(:total_bill) )%></td>
-        <td><%= company.contact_name %></td>
-        <td><%= company.contact_email %></td>
+        <td><%=  %></td>
+        <td><%=  %></td>
         <td><%= link_to 'Edit', edit_company_path(company) %></td>
         <td><%= link_to 'Destroy', company, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
@@ -48,4 +46,4 @@
 </div>
 <br>
 
-<%= link_to 'New Company', new_company_path %>
+<%= link_to 'New Company', new_admin_company_path, class: 'btn btn-success' %>

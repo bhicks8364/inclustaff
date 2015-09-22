@@ -1,29 +1,60 @@
-<%= @employee.name %>
-
-<%= render 'employee/shared/events' %>
-<hr>
-
-<% if @employee.skills.any? %>
-<div class='col-md-3 text-left center'>
-  <h4>Skills</h4>
-  <div id='skills'>
-    <%= render @skills %>
-  </div>
-  <div class='col-lg-3'>
-    
-    <%= render partial: "admin/skills/form", locals: {skillable: @employee} %>
-    
-  </div>
+<div class='col-md-12'>
+  <% if @employee.current_job.present? %>
+  <%= render 'admin/jobs/modal', job: @employee.current_job %>
   
-</div>
-<% else %>
-This employee has no skills entered.
-<% end %>
-
-
-
+  
+  <div class='col-md-8 center' data-behavior='timesheet-list'>
+    <%= render @employee.current_timesheet if @employee.current_timesheet.present? %>
+  </div>
+  <div class='col-md-4 center text-center'>
+    <%= render @employee.current_job if @employee.current_job.present? %>
+  </div>
+ <div class='well well-sm center text-center'>
+  <h5> Last In: <%= @employee.current_job.last_clock_in %></h5>
+  <h5> Last Out: <%= @employee.current_job.last_clock_out %></h5>
+ 
+ </div>
+  <% else %>
+  <div class='col-md-4 well'>
+<strong><%= @employee.name %> is currently unassigned.</strong>
+<br> Click the button below to place them into an open position.
 <hr>
-<% if @employee.resume.present? %>
+    <%= link_to 'Assign To Job', new_admin_employee_job_path(@employee), class: 'btn btn-primary' %>
+  
+  </div>
+<% end %>
+<% if @shifts %>
+<div class='main-box'>
+   <%= render 'admin/shifts/calendar' %>
+</div>
+<% end %>
+<div class='row'>
+<div class='col-md-5'>
+    
+  <% if @employee.skills.any? %>
+      <div class='text-left center well'>
+        <h4>Skills</h4>
+        <div id='skills'>
+          <%= render @skills %>
+        </div>
+      
+          
+          <%= render partial: "admin/skills/form", locals: {skillable: @employee} %>
+        
+       </div>
+    <% else %>
+    This employee has no skills entered.
+    <% end %>
+  </div>
+<div class='col-md-5 panel'>
+  <%= render 'employee/shared/events' %>
+</div>
+
+ 
+
+</div>
+<div>
+   <% if @employee.resume.present? %>
 
 <%= link_to "Download Resume", attachment_url(@employee, :resume), class: 'btn btn-primary' %>
 <% else %>
@@ -31,6 +62,7 @@ No resume available.
 
 <% end %>
 
+<%= link_to "Edit", edit_admin_employee_path(@employee), class: 'btn btn-success' %><br>
+</div>
 
-
-<%= link_to "Edit", edit_admin_employee_path(@employee), class: 'btn btn-success' %>
+</div>

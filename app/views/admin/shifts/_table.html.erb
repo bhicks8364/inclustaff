@@ -1,7 +1,7 @@
-<table id="shifts" class="table">
+<table id="shifts-datatable" class="table table-bordered">
   <thead>
     <tr>
-      <th></th>
+      
       <th>Work Date</th>
       <th>Employee</th>
       <th>Time In</th>
@@ -11,9 +11,7 @@
       <th>Earnings</th>
       <th>In/Out IP</th>
       <th></th>
-      
-      <th></th>
-      <th></th>
+
     </tr>
   </thead>
 
@@ -24,8 +22,6 @@
       <% else %>
         <tr class="clocked_out">
       <% end %>
-        <td><%= link_to "<span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span>     View".html_safe, admin_shift_path(shift), class: "table-link" %></td>
-        
         <td><%= shift.time_in.strftime("%x") %></td>
         <td><%= link_to shift.employee.name, admin_employee_path(shift.employee) %></td>
         <td><%= shift.time_in.strftime("%I:%M %p") %></td>

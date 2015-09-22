@@ -3,6 +3,7 @@ jQuery ->
     sPaginationType: "full_numbers",
     "paging":   true,
     "ordering": true,
+    "order": [[ 0, "desc" ]],
     "info":     true
     
   $('#jobs-datatable').dataTable
@@ -10,5 +11,42 @@ jQuery ->
     "paging":   true,
     "order": [[ 0, "desc" ]],
     "info":     true
-    console.log("Running")
+    console.log("Jobs datatable running")
     
+  $('#orders-datatable').dataTable
+    sPaginationType: "full_numbers",
+    "paging":   true,
+    "order": [[ 1, "asc" ]],
+    "info":     true
+    console.log("Orders datatable running")
+  
+  $('#users-datatable').dataTable
+    sPaginationType: "full_numbers",
+    "paging":   true,
+    "order": [[ 1, "asc" ]],
+    "info":     true
+    console.log("Users datatable running")
+  $('#shifts-datatable').dataTable
+    sPaginationType: "full_numbers",
+    "paging":   true,
+    "order": [[ 1, "asc" ]],
+    "info":     true
+    console.log("Shifts datatable running")
+  $('#admins-datatable').dataTable
+    sPaginationType: "full_numbers",
+    "paging":   true,
+    "order": [[ 1, "asc" ]],
+    "info":     true
+    console.log("Admins datatable running")
+  $('#emp-skills-datatable').dataTable
+    sPaginationType: "full_numbers",
+    "paging":   true,
+    "order": [[ 1, "asc" ]],
+    "info":     true
+    console.log("EmpSkills datatable running") 
+  $('#skills-datatable').dataTable
+    sPaginationType: "full_numbers",
+    "paging":   true,
+    "order": [[ 1, "asc" ]],
+    "info":     true
+    console.log("Skills datatable running")

@@ -11,28 +11,23 @@
     </div>
   <% end %>
 
-        <h4><strong>Job Information</strong></h4>
-
-    <%= f.association :employee, collection: @company.employees.order(:last_name), prompt: "Select Employee", label: false %>
-    <%= f.association :order, prompt: "Select Department", label: false %>
+      <div class='form-control'>
+        <%= f.grouped_collection_select(:order_id, @current_agency.companies.distinct, :orders, :name, :id, :title_count, prompt: "Select a @job", required: true ) %>
+      </div>
+    <span class='hide-this'>
+      <%= f.input :employee_id, value: employee.id, disabled: true %>
+    </span>
     
-    <%= f.input :title, placeholder: "Job Title" %>
+    <%= f.input :title, placeholder: "Job Title", required: true %>
     <%= f.input :description, placeholder: "Job Description" %>
-    <%= f.input :start_date, html5: true, placeholder: "Select start date" %>
-    
-    <div class="input-group">
-      <div class="input-group-addon">$</div>
-                <%= f.input :pay_rate, as: :decimal, placeholder: "Pay Rate", label: false %>
-      <div class="input-group-addon">per hour</div>
-    </div>
+    <%= f.input :start_date, as: :string, placeholder: "Select start date", required: true %>
+    <%= f.association :recruiter, collection: @current_agency.admins.recruiters.order(:last_name), prompt: "Choose a Recruiter" %>
+   
+                <%= f.input :pay_rate, placeholder: "Pay Rate", label: false, required: true %>
 
 
 
 
-<div id="job-end-date">
-    <h4><%= f.input :active %></h4>
-    <%= f.input :end_date, html5: true, prompt: "Select end date" %>
-</div>
 
 
 

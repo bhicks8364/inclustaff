@@ -21,18 +21,8 @@
 									
 									<% if current_user.employee.assigned? %>
 									
-									<li><%= link_to shifts_path  do %>
-										<i class="fa fa-users"></i>
-											<span>Shifts</span>
-										<% end %>
-									</li>
-
 									
-									<li><%= link_to timesheets_path do %>
-										<i class="fa fa-file-text-o"></i>
-											<span>Timesheets</span>
-										<% end %>
-									</li>
+
 									
 									
 									<li><%= link_to current_user.current_job do %>

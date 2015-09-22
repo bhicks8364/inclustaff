@@ -17,9 +17,18 @@
 </head>
 
 <body>
-
-
-		<%= render 'admin/shared/navbar' %>
+			<% if admin_signed_in? %>
+				<% if current_admin.company? %>
+					<%= render 'admin/shared/company_navbar' %>
+				<% elsif current_admin.agency? %>
+					<%= render 'admin/shared/navbar' %>
+				<% end %>
+			<% elsif user_signed_in? %>
+			<%= render 'shared/navbar' %>
+		<% else %>
+			<%= render 'shared/navbar' %>
+	
+		<% end %>
 	<div class="container">
 		<div class="row">
 			<% if admin_signed_in? %>

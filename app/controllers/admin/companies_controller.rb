@@ -12,7 +12,8 @@ class Admin::CompaniesController < ApplicationController
   # GET /companies/1
   # GET /companies/1.json
   def show
-    @current_admin = current_admin
+    @order = @company.orders.new
+    @account_managers = @current_agency.account_managers
     @jobs = @company.jobs.active.includes(:employee)
     @clocked_in = @jobs.on_shift
     @clocked_out =  @jobs.off_shift.distinct
@@ -54,7 +55,7 @@ class Admin::CompaniesController < ApplicationController
     authorize @company
     respond_to do |format|
       if @company.save
-        format.html { redirect_to @company, notice: 'Company was successfully created.' }
+        format.html { redirect_to admin_company_path(@company), notice: 'Company was successfully created.' }
         format.json { render :show, status: :created, location: @company }
       else
         format.html { render :new }
@@ -69,7 +70,7 @@ class Admin::CompaniesController < ApplicationController
     # authorize @company
     respond_to do |format|
       if @company.update(company_params)
-        format.html { redirect_to @company, notice: 'Company was successfully updated.' }
+        format.html { redirect_to admin_company_path(@company), notice: 'Company was successfully updated.' }
         format.json { render :show, status: :ok, location: @company }
       else
         format.html { render :edit }
@@ -85,7 +86,7 @@ class Admin::CompaniesController < ApplicationController
     @company.destroy
     authorize @company
     respond_to do |format|
-      format.html { redirect_to companies_url, notice: 'Company was successfully destroyed.' }
+      format.html { redirect_to admin_companies_path, notice: 'Company was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -103,6 +104,8 @@ class Admin::CompaniesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def company_params
-      params.require(:company).permit(:name, :address, :city, :state, :zipcode, :contact_name, :contact_email)
+      params.require(:company).permit(:name, :address, :city, :state, :zipcode, :contact_name, :contact_email,
+      orders_attributes: [:id, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title, :pay_range, 
+      :notes, :number_needed, :needed_by, :urgent, :active, :dt_req, :bg_check, :stwb, :heavy_lifting, :shift, :est_duration])
     end
 end

@@ -17,17 +17,20 @@
         
       </div>
       <div class="modal-body">
-     
-     
-        <div class='job-modal'>
-          <%= render job %>
-        </div>
-        
-        
-      
-        
 
-      </div>
+            
+          <div class='col-md-6'>
+            <%= render job %>
+          </div>
+          <div class='col-md-6'>
+           <strong>Last in:</strong> <%= job.last_clock_in %><br>
+           <strong>Last out:</strong> <%= job.last_clock_out %>
+          </div>
+          
+           
+        </div>
+       
+
       <div class="modal-footer">
         
         <div class="btn-toolbar" role="toolbar" aria-label="...">

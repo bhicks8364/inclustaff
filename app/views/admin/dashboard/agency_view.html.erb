@@ -6,7 +6,7 @@
 				<h2 class="pull-left">At A Glance</h2>
 				<ul class="nav nav-tabs pull-right">
 					<li class="active"><a href="#tab-users" data-toggle="tab">Employees</a></li>
-					<li><a href="#tab-products" data-toggle="tab">Admins</a></li>
+					<li><a href="#tab-products" data-toggle="tab">Orders</a></li>
 					<li><a href="#tab-todo" data-toggle="tab">Timesheets</a></li>
 				</ul>
 			</div>
@@ -15,7 +15,7 @@
 				<div class="tab-pane fade in active" id="tab-users">
 		
 
-		<%= div_for(@current_admin.company.jobs, class: '') do |job| %>
+		<%= div_for(@jobs, class: 'well well-sm') do |job| %>
 
 			<%= render job %>
 
@@ -25,6 +25,11 @@
 					<br>
 					<%= link_to "View all users", users_path, class: "btn btn-primary pull-right" %>
 				</div>
+				<div class="tab-pane fade" id="tab-products">
+				<% @orders.needs_attention.each do |order| %>
+					<%= render order %>
+				<% end %>
+				</div>
 				
 				
 				<div class="tab-pane fade" id="tab-todo">
@@ -32,8 +37,8 @@
 					<% @timesheets.each do |timesheet| %>
 						<li class="clearfix" data-behavior="timesheet" data-id="<%= timesheet.id %>" >
 							<div class="name">
-						        <%= link_to timesheet.employee.name, timesheet.employee %>
-						        <%= link_to timesheet.job.title, timesheet.job %>
+						        <%= link_to timesheet.employee.name, admin_employee_path(timesheet.employee) %>
+						        <%= link_to timesheet.job.title, admin_job_path(timesheet.job) %>
 						        <%= timesheet.reg_hours %>    <%= timesheet.ot_hours %>
 						        <%= number_to_currency(timesheet.gross_pay) %>
 					        
@@ -183,30 +188,3 @@
 		</div>
 	</div>
 </div>
-<!--<div class="col-md-3 align-center" ng-app ng-controller="AdminEmployeesCtrl">-->
-<!--  <h1> Admin View</h1>-->
-<!--{{company.name}}-->
-
-<!--<div  ng-init="checked=false">-->
-<!--  <label class="btn btn-primary">-->
-<!--    <input type="checkbox" ng-model="checked" style="float:left; margin-right:10px;"> Show Employees-->
-<!--  </label>-->
-  
-<!--  <div class="check-element sample-show-hide" ng-show="checked" style="clear:both;">-->
-<!--  	<br>-->
-<!--  	<div class="form-group">-->
-<!--  	<input type="text" placeholder="Search" data-ng-model="nameText" />-->
-<!--  {{nameText}}-->
-<!--  </div>-->
-<!--    <ul class="list-group">-->
-<!--        <li class="list-item" ng-repeat="employee in employees | filter:nameText | orderBy: 'time_in'">-->
-<!--        	{{employee.first_name}} {{employee.last_name}}-->
-<!--			<p class="text-muted">{{employee.email}}</p>-->
-			
-
-<!--        </li>-->
-<!--      </ul>-->
-<!--  </div>-->
-<!--</div>-->
-  
-<!--</div>-->

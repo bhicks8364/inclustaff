@@ -1,5 +1,7 @@
 <div class='col-md-12'>
- 
+  <h4><strong><%= @job.name_title %></strong></h4
+  <h4><strong><%= @job.company.name %></strong></h4>
+ <h4><strong><%= number_to_currency(@job.pay_rate) %>/ hr</strong></h4>
 
     <div class='col-md-3'>
       <strong>Employee:</strong>
@@ -74,6 +76,7 @@
     <h3>Timesheets</h3>
       <%= render @timesheet if @job.current_timesheet.present? %> 
     <%= link_to "Timesheets", admin_job_timesheets_path(@job), class: "btn btn-success" %>
+    <%= link_to "Past Timesheets", past_admin_job_timesheets_path(@job), class: "btn btn-success" %>
   </div>
   
   

@@ -6,17 +6,16 @@ class Admin::JobsController < ApplicationController
 
 
   def index
-    @admin = current_admin
-      if @admin.agency?
-        @agency = @admin.agency
-      elsif @admin.company?
-        @company = @admin.company
-      end
-      
-    @jobs = @company.jobs.order(created_at: :desc) if @company.present?
-    @jobs = @agency.jobs.order(created_at: :desc) if @agency.present?
-
-    authorize @jobs
+    if params[:employee_id]
+      @employee = Employee.find(params[:employee_id])
+      @jobs = @employee.jobs
+      authorize @jobs
+    else
+      @jobs = @current_company.jobs.order(created_at: :desc) if @current_company.present?
+      @jobs = @current_agency.jobs.order(created_at: :desc) if @current_agency.present?
+      authorize @jobs
+    end
+   
 
   end
   
@@ -56,16 +55,14 @@ class Admin::JobsController < ApplicationController
       @agency = @order.agency
       @job = @order.jobs.new
       authorize @job
+    elsif params[:employee_id]
+      @employee = Employee.find(params[:employee_id])
+      @job = @employee.jobs.new
+      authorize @job
     else
-      if @admin.agency?
-        @agency = @admin.agency
-        @account_managers = @agency.account_managers
-        @orders = @agency.orders
-        @job = Job.new
-        authorize @job
-      end
+      @job = Job.new
+      authorize @job
     end
-
 
   end
 
@@ -143,7 +140,14 @@ class Admin::JobsController < ApplicationController
       
       # @job.order = @order
       # @employee = @job.create_employee(employee_params)
+    elsif params[:employee_id]
+      @employee = Employee.find(params[:employee_id])
+      @job = @employee.jobs.new(job_params)
+      # @employee.mark_as_assigned!
+      
+      authorize @job
     else
+      
       @job = Job.new(job_params)
       authorize @job
       
@@ -160,7 +164,7 @@ class Admin::JobsController < ApplicationController
           current_admin.events.create(action: "mentioned", eventable: mentioned_admin)
         end
         
-        format.html { redirect_to admin_jobs_path(anchor: "mod_#{@job.id}"), notice: 'Job was successfully created.' }
+        format.html { redirect_to admin_job_path(@job), notice: 'Job was successfully created.' }
         format.json { render :show, status: :created, location: @job }
       else
         format.html { render :new }

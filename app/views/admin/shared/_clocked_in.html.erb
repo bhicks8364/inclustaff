@@ -1,35 +1,32 @@
-<li class="dropdown hidden-xs pull-left">
-	<a class="dropdown-toggle" data-toggle="dropdown">
-		<i class="fa fa-warning"></i>
-		<span class="count"><%= current_admin.company.jobs.on_shift.count %></span>
+<li class="dropdown hidden-xs">
+	<a class="btn nav-btn dropdown-toggle" data-toggle="dropdown">
+
+  
+  		<i class="fa fa-users"></i>
+
+		
+		<span class="count" id="clocked-in-count"><%= @agency_jobs.on_shift.count %></span>
 	</a>
-	<ul class="dropdown-menu notifications-list" data-behavior="job-list">
+	<ul class="dropdown-menu notifications-list">
 		<li class="pointer">
 			<div class="pointer-inner">
 				<div class="arrow"></div>
 				<div class="arrow-border"></div>
 			</div>
 		</li>
-		<li class="item-header">
-			You have <%= current_admin.company.jobs.on_shift.count %> employees clocked in.
-			</li>
-		
-	<% current_admin.company.jobs.on_shift.order(updated_at: :desc).each do |job| %>
-				
-	<li class="shift-item" data-behavior="job" data-id="<%= job.id %>">
-
-        <% if job.on_shift? %>
-          
-          <%= render job %>
-
-      <% end %>
-
-	</li>
-
+		<li class="item-header">You have <%= pluralize(@agency_jobs.on_shift.count, 'employee') %> clocked in.</li>
+			<% @agency_jobs.on_shift.order(updated_at: :desc).each do |job| %>
+		<li class="item" >
+			
+			<%= render 'admin/jobs/clock', job: job %>
+			
+			
+		</li>
 		<% end %>
 		
+		
 		<li class="item-footer">
-			<%= link_to "View all timesheets", timesheets_path %>
+			<%= link_to "View all timesheets", admin_timesheets_path %>
 		</li>
 	</ul>
 </li>

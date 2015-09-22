@@ -14,7 +14,7 @@
 				
 
 					<div class=''>
-						<%= render 'admin/jobs/table' %>
+						<%= render 'admin/jobs/table', collection: @jobs.on_shift %>
 					</div>
 
 					<%= link_to "View all users", users_path, class: "badge badge-success pull-right" %>
@@ -32,9 +32,27 @@
 					
 				</div>
 				
-				<div class="tab-pane fade" id="tab-todo">
-					
-						<%= render 'admin/timesheets/table' %>
+				<div class="tab-pane fade" id="tab-todo" >
+					<div class='table-responsive' data-behavior="timesheet-list">
+						<table id='timesheets-datatable' class="table table-bordered">
+							<thead>
+								<th class='text-center'><i class="fa fa-calendar-o"></i><br>Week</th>
+								<th class='text-center'><i class="fa fa-building"></i><br>Company</th>
+								<th class='text-center'><i class="fa fa-briefcase"></i><br>Job</th>
+								<th class='text-center'><i class="fa fa-user"></i><br>Employee</th>
+								<th class='text-center'><i class="fa fa-money"></i><br>Gross Pay</th>
+								<th class='text-center'><i class="fa fa-clock-o"></i><br>Hours</th>
+								<th class='text-center'><i class="fa fa-certificate"></i><br>Status</th>
+								<th class='text-center'><i class="fa fa-cogs"></i><br>Actions</th>
+							</thead>
+							
+							<tbody>
+								<% @timesheets.current_week.each do |timesheet| %>
+								<%= render 'admin/timesheets/single_table', timesheet: timesheet %>
+								<% end %>
+							</tbody>
+						</table>
+					</div>
 				
 				</div>
 				

@@ -1,12 +1,6 @@
-
-<div class="job" data-behavior="job-list">
+<div class="" data-behavior="job-list">
     <div data-behavior="job" data-id="<%= job.id %>">
-        
-      <h5 class=""><%= link_to job.title, admin_job_path(job), class: 'table-link' %></h5>
-       
-   
-    
-      <div class=''>
+
         
            <% if job.on_shift? %>
            <span data-behavior='shift-state'>
@@ -53,14 +47,7 @@
           
         </span>
       <% end %>
-      
-      
-      </div>
-          <p><small><%= job.staff %></small></p>
-          
-          <br>
-          <p>Gross pay:<small><%= number_to_currency(job.total_gross_pay) %></small></p>
-          <p>Total bill:<small><%= number_to_currency(job.total_gross_bill) %></small></p>
+
       </div>
       
 
@@ -69,4 +56,3 @@
 
      
      </div>
-

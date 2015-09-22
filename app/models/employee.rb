@@ -44,8 +44,8 @@ class Employee < ActiveRecord::Base
   delegate :recruiter, to: :current_job
   delegate :code, to: :user
   delegate :current_sign_in_ip, to: :user
-
-  before_save :set_user_info
+  delegate :email, to: :user
+  # before_save :set_user_info
   before_validation :check_if_assigned
   
   def name_title
@@ -55,11 +55,6 @@ class Employee < ActiveRecord::Base
       current_job.name_title
     end
   end
-  
-  
-  
-  
-  
 
   
   # VALIDATIONS
@@ -122,13 +117,13 @@ class Employee < ActiveRecord::Base
   
   
   
-  def set_user_info
+  # def set_user_info
 
-      self.email = self.user.email if self.email.nil?
-      self.first_name = self.user.first_name if self.first_name.nil?
-      self.last_name = self.user.last_name if self.last_name.nil?
+  #     self.email = self.user.email if self.email.nil?
+  #     self.first_name = self.user.first_name if self.first_name.nil?
+  #     self.last_name = self.user.last_name if self.last_name.nil?
 
-  end
+  # end
   
     
   

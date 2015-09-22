@@ -1,70 +1,41 @@
 
-
-
-<!--<div ng-app="admin" >-->
-  
-
-<!--<div ng-controller="AdminTimesheetsCtrl">-->
-<!--  <h1> Admin Timesheets View</h1>-->
-<!--  <input type="text" placeholder="Search" data-ng-model="nameText" />-->
-<!--  {{nameText}}-->
-<!--  <table class="table table-bordered" ng-if="shifts">-->
-<!--  <tbody>-->
-<!--    <tr ng-repeat="shift in shifts | orderBy: '-id' ">-->
-<!--        <td>{{shift.id}}</td>-->
-<!--        <td>{{shift.employee_id}}</td>-->
-<!--        <td>{{shift.time_in | date:"MM/dd/yyyy"}}</td>-->
-<!--        <td>{{shift.time_out | date:"h:mma"}}</td>-->
-<!--        <td>{{shift.time_in | date:"MM/dd/yyyy '' h:mma"}}</td>-->
-<!--        <td>{{shift.break_out | date:"h:mma"}}</td>-->
-<!--        <td>{{shift.break_in | date:"h:mma"}}</td>-->
-<!--        <td>{{shift.note}}</td>-->
-<!--        <td>{{shift.earnings | currency}}</td>-->
-<!--        <td>{{shift.needs_adj}}</td>-->
-<!--      </tr>-->
-<!--  </tbody>-->
-<!--</table>-->
-  
-<!--</div>  -->
-<!--</div>-->
-
-
-
 <p id="notice"><%= notice %></p>
-<div><%= render @timesheet.job %></div>
 
-<div>  <% if @timesheet.clocked_in? %>
-  <p id="clock-status" class="text-center"><strong><%= @timesheet.employee_name %> is currently clocked in. </p>
-  <%= render @timesheet.current_shift %>
+
+    <%= render @timesheet.job %>
+    <div class='col-lg-12 well' data-behavior="timesheet-list">
+    
+  <%= render @timesheet %>
   
-  <% else %>
-  <%= @timesheet.shifts.last.state %>
-                          
-                          
-                          
-<% end %>
+  </div>
 
-<span id='updated-at'></span>
-
-<strong><%= link_to @employee.name, admin_employee_path(@employee) %></strong> <small><%= @job.title.titleize %></small>
-
-For the week of: <%= @timesheet.week_ending  %>.
-<br>
-Week: <%= @timesheet.week %>
-<br>
-  <strong>Regular hours:</strong>
-  <%= @timesheet.reg_hours %>
-<br>
-  <strong>Overtime hours:</strong>
-  <%= @timesheet.ot_hours %>
-<br>
-  <strong>Gross pay:</strong>
-  <%= number_to_currency(@timesheet.gross_pay) %><br>
-
-   <strong>Last Clock In:</strong> <%= @timesheet.last_clock_in.strftime("%B %e, %Y  at   %I:%M %p") %>
-
-  
- <%= render 'admin/shifts/table' %>
+<div class='col-lg-12 main-box'>
+  <h4>For the week of:<strong><br>
+        <%= @timesheet.week_begin %>
+          - 
+        <%= @timesheet.week_ending %>
+      </strong></h4>
+  <div class='col-lg-3 well well-sm'>
+    <strong>Regular hours:</strong>
+    <%= @timesheet.reg_hours %>
+  </div>
+  <div class='col-lg-3 well well-sm'>
+    <strong>Overtime hours:</strong>
+    <%= @timesheet.ot_hours %>
+  </div>
+    <div class='col-lg-3 well well-sm'>
+           <strong>Gross pay:</strong>
+        <%= number_to_currency(@timesheet.gross_pay) %>
+      </div>
+      <div class='col-lg-3 well well-sm'>
+           <strong>Total bill:</strong>
+        <%= number_to_currency(@timesheet.total_bill) %>
+      </div>
+      
+</div>
+<div class='main-box'>
+   <%= render 'admin/shifts/wk_calendar' %>
+</div>
 
 <%= link_to(admin_timesheet_path(@timesheet, format: :pdf), class: 'btn btn-primary') do %>
   					<i class="fa fa-download fa-lg"></i> Download PDF
@@ -80,4 +51,5 @@ Week: <%= @timesheet.week %>
 
 <!--<%= link_to 'Edit', edit_timesheet_path(@timesheet) %> |-->
 <%= link_to 'Back', admin_timesheets_path %>
+</div>
 </div>

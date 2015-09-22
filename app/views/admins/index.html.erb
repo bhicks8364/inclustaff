@@ -9,19 +9,18 @@
 							<div class="col-lg-12">
 								<div class="main-box clearfix">
 									<div class="table-responsive">
-										<table class="table admin-list">
+										<table id='admins-datatable' class="table table-bordered">
 											<thead>
 												<tr>
 													<th><span>Admin</span></th>
 													<th><span>Last Sign In</span></th>
 													<th><span>Accounts</span></th>
 													<th><span>Current Billing</span></th>
-													<th><span></span></th>
-													<th>&nbsp;</th>
+													<th></th>
 												</tr>
 											</thead>
 											<tbody>
-												<%= content_tag_for(:tr, @admins) do |admin| %>
+												<%= content_tag_for(:tr, @agency_admins) do |admin| %>
 													<td>
 													    <span class="fa-stack">
 															<i class="fa fa-square fa-stack-2x"></i>

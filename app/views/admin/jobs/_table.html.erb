@@ -2,16 +2,17 @@
 <div class="table-responsive">
   
 
-<table id='jobs-datatable' class="table table-hover display" cellspacing="0" width="95%">
+<table id='jobs-datatable' class="table table-hover table-bordered display" >
   <thead>
     <tr>
       <th></th>
       <th></th>
+      
       <th>Pay rate</th> 
-      <th>Hours</th>
+      <th>Total Hours</th>
       <th>Total Gross</th>
-      <th>Mark Up</th>
       <th>Total Bill</th>
+      <th>Mark Up</th>
       <th>Recruiter</th>
       <th>Acct Manager</th>
       
@@ -27,13 +28,13 @@
       
       <% end %>
 
-        <td><%= render 'admin/jobs/modal', job: job %><span class='hide-this'><%=job.employee.last_name %></span><td>
+        <td><%= render 'admin/jobs/modal', job: job %><td>
         
         <td><%= number_to_currency(job.pay_rate) %></td>
         <td><%= job.total_hours.round(2) %></td>
         <td><%= number_to_currency(job.total_gross_pay) %></td>
-        <td><%= job.mark_up_percent %></td>
         <td><%= number_to_currency(job.total_gross_bill) %></td>
+        <td><%= job.mark_up_percent %></td>
         <td><%= job.recruiter.present? ? job.recruiter.last_name : "Unassigned" %></td>
         <td><%= job.account_manager.present? ? job.account_manager.last_name : "Unassigned" %></td>
         
