@@ -17,7 +17,7 @@
 //= require jquery-ui/datepicker
 //= require jquery.atwho
 //= require dataTables/jquery.dataTables
-
+//= require bootstrap-sprockets
 //= require cocoon
 
 
