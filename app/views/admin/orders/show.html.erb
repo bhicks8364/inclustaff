@@ -1,9 +1,43 @@
+<div class="btn-group btn-group-justified" role="group" aria-label="...">
+  <div class="btn-group" role="group">
+  <%= link_to(admin_company_path(@company), class: "btn btn-default") do %>
+							<i class='fa fa-home'></i>
+
+								<span>Back to Company</span>
+							<% end %>
+
+  </div>
+  <div class="btn-group" role="group">
+  <%= link_to(new_admin_company_order_path(@company), class: "btn btn-default") do %>
+							<i class='fa fa-user-plus'></i>
+
+								<span>New Job Order</span>
+							<% end %>
+
+  </div>
+  <div class="btn-group" role="group">
+  <%= link_to(admin_company_orders_path(@company), class: "btn btn-default") do %>
+							<i class='fa fa-briefcase'></i>
+
+								<span>Active Orders</span>
+							<% end %>
+
+  </div>
+  <div class="btn-group" role="group">
+  <%= link_to(admin_company_timesheets_path(@company), class: "btn btn-default") do %>
+							<i class='fa fa-clock-o'></i>
+
+								<span>Timesheets</span>
+							<% end %>
+
+  </div>
+  
+</div>
+
+<h1>  <%= @company.name %> <small> <%= @order.title_company %></small></h1>
 
 
-<h1>  <%= @company.name %> <small> <%= @order.title %></small></h1>
-<hr>
-
-<div id="col-md-12 order-tabs">
+<div id="col-md-10 order-tabs">
 
   <!-- Nav tabs -->
   <ul id="order-nav" class="nav nav-tabs nav-justified" role="tablist">
@@ -15,71 +49,74 @@
   
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane fade in active" id="order">
-  
-
-<div class='col-md-12'>
   <h3> 
-  <strong><%= @order.needs_attention? ? "OPEN" : "FILLED" %></strong>
-  
-  Open positions: <%= @order.open_jobs %>
-  
-  </h3>
+  <strong><%= @order.needs_attention? ? "OPEN" : "FILLED" %></strong></h3>
 
-<div class='col-lg-3'>
-  <strong>Drug Test </strong><br>
-  <%= @order.dt_req %><br>
-  <strong>Background Check </strong><br>
-  <%= @order.bg_check %><br>
+<div class='col-md-12 center'>
+  
+  <div class='row even even-top'>
+    <h4>Open positions: <%= @order.open_jobs %></h4>
+    <strong>Active Employees:</strong>
+        <%= @order.jobs.active.count %>
+        <% if @order.urgent? && @order.needs_attention?%>
+        <div class="alert alert-danger fade in">
+										<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+										<i class="fa fa-times-circle fa-fw fa-lg"></i>
+										<strong>URGENT ORDER!!</strong> <%= @order.open_jobs %> people are needed by <strong><%= @order.needed_by.stamp("Sunday, 11/5") %></strong> or SOONER!     <%= link_to "Assign someone now.", new_admin_order_job_path(@order), class: 'alert-link' %>
+									<strong></strong></div><% end %>
+
  
+  <%= @order.active ? "" : "Inactive" %>
+  </div>
+<div class='row even'>
   
- 
   
+  <div class='col-md-2 col-md-offset-3'>
+    <strong>Drug Test </strong><br>
+    <%= @order.dt_req %><br>
+  
+  </div>
+  <div class='col-md-2'>
+    <strong>Background Check </strong><br>
+    <%= @order.bg_check %><br>
+  </div>
+  <div class='col-md-2'>
+    <strong>Assignment Type</strong><br>
+    <%= @order.est_duration %><br>
 
-  
 </div>
-<div class='col-lg-3'>
-
-  <strong>
-    <ul>
-      <li><%= @order.est_duration %></li>
-      <li> <%= @order.shift %></li>
-      <li><%= @order.stwb ? "STWB Required" : "" %></li>
-      <li><%= @order.heavy_lifting ? "Heave Lifting Required" : "" %></li>
-    </ul>
-    
-  
-  </strong>
-  
-</div>
-<div class='col-lg-3'>
-<p>
-  <strong>Number needed: </strong>
-  <%= @order.number_needed %>
-</p>
-<p>
-  <strong>Active Employees:</strong>
-      <%= @order.jobs.active.count %>
-</p>
-
-<p>
-  <strong>Pay Type:</strong>
+<div class='col-md-2'>
+  <strong>Pay Range:</strong><br>
   <%= @order.pay_range %>
-</p>
-<p>
+</div>
+
+</div>  
+
+
+<div class='row even'>
+  <div class='col-md-2 col-md-offset-3'>
+  <strong>Shift</strong><br>
+ <%= @order.shift %><br>
+</div>
+  <div class='col-md-3 '>
+  <strong><%= @order.heavy_lifting ? "Heavy Lifting Required" : "" %></strong>
+  <br><strong><%= @order.stwb ? "STWB Required" : "" %></strong><br>
+
+</div>
+<div class='col-md-1'>
   <strong>Mark Up:</strong>
   <%= @order.mark_up_percent %>
-</p>
-
-  <strong>Urgency:</strong>
-  <%= @order.urgent ? "URGENT" : "Regular" %>
-<p>
-  <strong>Status:</strong>
-  <%= @order.active ? "Active" : "Inactive" %>
-</p>
 </div>
 
 
-<div id= "order-notes" class="" >
+
+</div>
+
+
+
+
+
+<div id= "order-notes" class="well" >
       <strong>Notes:</strong>
     <p><%= @order.notes %></p>
   </div>
@@ -110,7 +147,21 @@
 
 
   </div>
-  
+  <div role="tabpanel" class="tab-pane fade" id="active-jobs">
+    <div class='col-md-12 center'>
+      <% if @jobs.any? %>
+    <%= render 'admin/jobs/table' %>
+      <% if policy(Job).create? %>
+       <%= link_to 'Add Job', new_admin_order_job_path(@order), class: "btn btn-primary" %>
+      <% end %>
+    <% else %>
+    <h3>No jobs to display yet.</h3>
+    <% if policy(Job).create? %>
+     <%= link_to 'Add Job', new_admin_order_job_path(@order), class: "btn btn-primary" %>
+    <% end %>
+    <% end %>
+    </div>
+  </div>
   
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
 
@@ -133,22 +184,12 @@
     <div class='center'>
     <%= render partial: "admin/skills/form", locals: {skillable: @order} %>
   </div>
-    
-    
-    
-
   
 </div>
   </div>
   
   
-  <div role="tabpanel" class="tab-pane fade" id="active-jobs">
-    <% if @jobs.any? %>
-    <%= render 'admin/jobs/table' %>
-    <% else %>
-    <h3>No jobs to display yet.</h3>
-    <% end %>
-  </div>
+  
 </div>
 
   </div>

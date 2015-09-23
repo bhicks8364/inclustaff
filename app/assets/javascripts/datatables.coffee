@@ -2,6 +2,7 @@ jQuery ->
   $('#timesheets-datatable').dataTable
     sPaginationType: "full_numbers",
     "paging":   true,
+    "scrollY": 400,
     "ordering": true,
     "order": [[ 0, "desc" ]],
     "info":     true
@@ -9,6 +10,7 @@ jQuery ->
   $('#jobs-datatable').dataTable
     sPaginationType: "full_numbers",
     "paging":   true,
+    "scrollY": 400,
     "order": [[ 0, "desc" ]],
     "info":     true
     console.log("Jobs datatable running")
@@ -16,9 +18,19 @@ jQuery ->
   $('#orders-datatable').dataTable
     sPaginationType: "full_numbers",
     "paging":   true,
+    "scrollY": 400,
     "order": [[ 1, "asc" ]],
     "info":     true
     console.log("Orders datatable running")
+    
+  $('#orders-datatable2').dataTable
+    sPaginationType: "full_numbers",
+    "paging":   true,
+    
+    "order": [[ 8, "asc" ]],
+    "info":     true
+
+    console.log("Orders2 datatable running")
   
   $('#users-datatable').dataTable
     sPaginationType: "full_numbers",
@@ -29,6 +41,7 @@ jQuery ->
   $('#shifts-datatable').dataTable
     sPaginationType: "full_numbers",
     "paging":   true,
+    "scrollY": 400,
     "order": [[ 1, "asc" ]],
     "info":     true
     console.log("Shifts datatable running")

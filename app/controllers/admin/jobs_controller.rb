@@ -67,7 +67,7 @@ class Admin::JobsController < ApplicationController
   end
 
   def clock_in
-    authorize @job, :clock_out?
+    authorize @job, :clock_in?
     if @job.off_shift?
       @shift = @job.shifts.create(time_in: Time.current, week: Date.today.cweek,
                                   state: "Clocked In",
@@ -217,7 +217,7 @@ class Admin::JobsController < ApplicationController
     end
     
     def pundit_user
-      current_admin
+      current_admin || current_user
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

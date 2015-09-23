@@ -5,8 +5,10 @@ class Admin::CompaniesController < ApplicationController
   # GET /companies
   # GET /companies.json
   def index
-    @companies = Company.all
-    authorize @companies
+    
+    @companies = @current_agency.companies.distinct
+    skip_authorization
+    
   end
 
   # GET /companies/1

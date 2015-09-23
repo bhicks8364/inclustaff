@@ -5,8 +5,10 @@ source 'https://rubygems.org'
 gem 'rails', '4.2.1'
 gem "devise"
 gem 'pundit', '~> 1.0.1'
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3'
+
+# POSTGRES DB CHANGED FOR HEROKU
+gem 'pg'
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -29,6 +31,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # //////////////////////////////////////////////////////
 # SIMPLE FORMS
 gem 'simple_form'
+
+# STAMP for formating time & dates
+gem 'stamp'
 
 # SIMPLE CALENDAR - GORAILS
 gem "simple_calendar", "~> 2.0"

@@ -1,4 +1,13 @@
-<div class='main-box'>
+<div class="main-box clearfix">
+	<div class="alert alert-danger fade in">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+		<i class="fa fa-exclamation-triangle fa-fw fa-lg"></i>
+		<strong>You have <%= @viewing.orders.needs_attention.count %> job orders that need attention. </strong>   </div>
+	<%= render 'open_table' %>
+		
+</div>
+<div class='main-box clearfix'>
+	<h2>All Active Job Orders</h2>
   <%= render 'table' %>
 </div>
 
@@ -14,65 +23,6 @@
 <div class="col-lg-6">
 	<div class="main-box clearfix">
 		
-		<div class="tabs-wrapper">
-			<div class="clearfix">
-				<h2 class="pull-left">At a glance</h2>
-				<ul class="nav nav-tabs pull-right">
-					<li class="active"><a href="#tab-users" data-toggle="tab">Employees</a></li>
-					<li><a href="#tab-products" data-toggle="tab">Timesheets</a></li>
-					<li><a href="#tab-todo" data-toggle="tab">Open Orders</a></li>
-				</ul>
-			</div>
-			
-			<div class="tab-content">
-				<div class="tab-pane fade in active" id="tab-users">
-					<ul class="widget-users row">
-					<% if @company.present? && @company.employees %>
-						
-						<% @company.employees.each do |employee| %>
-							<li class="col-md-12">
-								
-								<%= render employee %>
-							</li>
-						<% end %>
-							
-					
-					<% end %>
-					</ul>
-					<br>
-					<a href="#" class="btn btn-success pull-right">View all users</a>
-				</div>
-				
-				<div class="tab-pane fade" id="tab-products">
-					<ul data-behavior="timesheet-list" class="">
-						<% if @company.present? && @company.current_timesheets %>
-						
-						<% @company.current_timesheets.each do |timesheet| %>
-							<li class="col-md-12">
-								
-								<%= render timesheet %>
-							</li>
-						<% end %>
-							
-					
-					<% end %>
-						
-					</ul>
-					<br>
-					<a href="#" class="btn btn-success pull-right">View all users</a>
-				</div>
-				
-				<div class="tab-pane fade" id="tab-todo">
-					<ul class="widget-todo">
-						<li class="clearfix">
-							<%= render @orders.needs_attention %>
-						</li>
-						
-						
-					</ul>
-				</div>
-				
-			</div>
-		</div>
+		
 	</div>
 </div>

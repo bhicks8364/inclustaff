@@ -32,9 +32,13 @@
 										<% end %>
 									</div>
 								<% end %>
-								
-									<%= f.file_field :file %>
-									<%= f.submit "Upload" %>
+								<div class='form-field'>
+								  <%= f.file_field :file %>
+								</div>
+									<div class='form-actions'>
+									  <%= f.submit "Upload" %>
+									</div>
+									
 								<% end %>
 </div>
 

@@ -7,8 +7,8 @@
     <%= f.input :first_name, required: true, placeholder: "First Name", label: false, autofocus: true%>
     <%= f.input :last_name, required: true, placeholder: "Last Name", label: false %>
     <%= f.input :email, required: true %>
-    <%= f.association :company, prompt: "Company" %>
-    <%= f.association :agency, prompt: "Agency" %>
+    <%= f.association :company, prompt: "Select A Company", include_blank: true %>
+    <%= f.association :agency, prompt: "Select An Agency", include_blank: true %>
     <%= f.input :role, required: true, collection: [ "Owner", "HR", "Account Manager", "Recruiter", "Payroll", "Limited Access"], include_blank: false, label: false %>
     <%= f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length) %>
     <%= f.input :password_confirmation, required: true %>

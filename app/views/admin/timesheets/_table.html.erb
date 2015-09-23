@@ -1,11 +1,11 @@
 <div class='table-responsive' data-behavior="timesheet-list">
-<table id='timesheets-datatable' class=" table table-hover table-bordered display" width="100%">
+<table id='timesheets-datatable' class=" table table-bordered display">
 	<thead>
 		<th class='text-center'><i class="fa fa-calendar-o"></i><br>Week</th>
 		<th class='text-center'><i class="fa fa-building"></i><br>Company</th>
 		
 		<th class='text-center'><i class="fa fa-user"></i><br>Employee</th>
-		<th class='text-center'><i class="fa fa-briefcase"></i><br>Job</th>
+
 		<th class='text-center'><i class="fa fa-money"></i><br>Gross Pay</th>
 		<th class='text-center'><i class="fa fa-clock-o"></i><br>Hours</th>
 		<th class='text-center'><i class="fa fa-certificate"></i><br>Status</th>
@@ -17,10 +17,10 @@
 		<% @timesheets.each do |timesheet| %>
 	<tr data-behavior="timesheet" data-id="<%= timesheet.id %>">
 		<td><strong><%= timesheet.week_ending %></strong></td>
-		<td class='text-center'><%= link_to timesheet.order.company, admin_company_path(timesheet.company), class: 'table-link'  %></td>
-      	<td class='text-center'><%= link_to timesheet.employee.name, admin_employee_path(timesheet.employee), class: 'table-link' %></td>
+		<td class='text-left'><%= link_to timesheet.order.company, admin_company_path(timesheet.company), class: 'table-link'  %></td>
+      	<td class='text-left'><%= render 'admin/shared/modal', employee: timesheet.employee %><%= link_to timesheet.employee.name, admin_employee_path(timesheet.employee), class: 'table-link' %>
+      	</td>
 
-		<td class='text-center'><%= link_to timesheet.job.title, admin_job_path(timesheet.job), class: 'table-link'  %></td>
 			
 
 		<td class='text-center'><%= timesheet.gross_pay.present? ? number_to_currency(timesheet.gross_pay) : timesheet.current_shift.state.upcase %></td>

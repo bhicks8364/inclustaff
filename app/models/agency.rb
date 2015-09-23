@@ -16,6 +16,7 @@ class Agency < ActiveRecord::Base
     has_many :orders
     has_many :companies, :through => :orders
     has_many :jobs, :through => :orders
+    has_many :current_timesheets, :through => :jobs
     has_many :timesheets, :through => :jobs
     has_many :shifts, :through => :timesheets
     has_many :owners, -> { where(role: 'Owner', company_id: nil) }, class_name: "Admin"

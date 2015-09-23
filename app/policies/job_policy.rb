@@ -39,18 +39,38 @@ class JobPolicy < ApplicationPolicy
     end
     
     def create?
-        return true if user.owner? && user.agency? || user.payroll? || user.recruiter?
-        # return true if user.owner? || user.payroll?
-        # user.recruiter? && user.id == job.recruiter_id
-        # user.not_an_employee?
+        if user.role != "Employee"
+            
+            return true if user.owner? || user.payroll?
+            user.recruiter? && user.id == job.recruiter_id
+
+        elsif user.role == "Employee"
+            return true if user.employee?
+        end
     end
     def clock_in?
-        return true if user.owner? || user.payroll?
-        user.recruiter? && user.id == job.recruiter_id
+        if user.role != "Employee"
+            
+            return true if user.owner? || user.payroll?
+            user.recruiter? && user.id == job.recruiter_id
+
+        elsif user.role == "Employee"
+            return true if user.employee?
+        end
+        
+        
+        
+        
     end
     def clock_out?
-        return true if user.owner? || user.payroll?
-        user.recruiter? && user.id == job.recruiter_id
+        if user.role != "Employee"
+            
+            return true if user.owner? || user.payroll?
+            user.recruiter? && user.id == job.recruiter_id
+
+        elsif user.role == "Employee"
+            return true if user.employee?
+        end
     end
     
     def new?

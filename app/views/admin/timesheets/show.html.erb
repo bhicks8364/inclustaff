@@ -1,12 +1,12 @@
-
+<div class='col-lg-12'>
 <p id="notice"><%= notice %></p>
-
-
-    <%= render @timesheet.job %>
-    <div class='col-lg-12 well' data-behavior="timesheet-list">
+<div class='col-lg-8' data-behavior="timesheet-list">
     
   <%= render @timesheet %>
   
+  </div>
+  <div class='col-md-3'>
+    <%= render @timesheet.employee %>
   </div>
 
 <div class='col-lg-12 main-box'>
@@ -34,7 +34,7 @@
       
 </div>
 <div class='main-box'>
-   <%= render 'admin/shifts/wk_calendar' %>
+   <%= render 'admin/shifts/table' %>
 </div>
 
 <%= link_to(admin_timesheet_path(@timesheet, format: :pdf), class: 'btn btn-primary') do %>
@@ -42,14 +42,6 @@
   				
   				<% end %>
 
-<!--<h3><strong> Week Ending: <small> <%= @timesheet.week_ending %></small></strong></h3>-->
-<!--<div class="table-responsive">-->
-<!--  -->
-<!--</div>-->
-
-
-
-<!--<%= link_to 'Edit', edit_timesheet_path(@timesheet) %> |-->
-<%= link_to 'Back', admin_timesheets_path %>
+<%= link_to 'All Timesheets', admin_timesheets_path, class: 'btn btn-primary' %>
 </div>
-</div>
+

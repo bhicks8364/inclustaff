@@ -37,7 +37,8 @@ class Admin < ActiveRecord::Base
   has_many :employees, :through => :jobs
   has_many :shifts, :through => :company
   has_many :skills, :through => :orders
-  
+  include ArelHelpers::ArelTable
+  include ArelHelpers::JoinAssociation
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -66,6 +67,13 @@ class Admin < ActiveRecord::Base
   scope :hr, -> { where(role: "HR")}
   scope :recruiters, -> { where(role: "Recruiter")}
   scope :limited, -> { where(role: "Limited Access")}
+  
+  
+  
+  def recruiter_jobs
+    Job.by_recuriter(self.id) if self.recruiter?
+  end
+  # scope :top_recruiters, -> { recruiter_jobs.joins(:current_timesheet).
          
   def agency?
     if self.agency_id != nil

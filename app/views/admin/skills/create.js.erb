@@ -3,3 +3,4 @@ $("#created-at").html("<%= time_ago_in_words(@skill.updated_at) %>");
 $("<%= escape_javascript(render @skill) %>").appendTo("#skills");
 console.log("create.js.erb file");
 $("#skill_name").val('');
+$("#skill_required").attr('checked', false);

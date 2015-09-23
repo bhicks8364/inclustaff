@@ -17,10 +17,11 @@ class TimesheetPolicy < ApplicationPolicy
     end
     
     def show?
-        if user.class == "Admin"
-            user.owner? || user.payroll?
-        else
+        if user.role == "Employee"
             user.employee.assigned?
+        else
+            user.owner? || user.payroll?
+            
         end
         # scope.where(:id => timesheet.id).exists?
         

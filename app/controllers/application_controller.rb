@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
     end
     
     @viewing = @current_company || @current_agency
-    @newly_added = @viewing.employees.newly_added.order(created_at: :desc)
+    @newly_added = @viewing.employees.newly_added.order(created_at: :desc) if @viewing.present?
     
     
     

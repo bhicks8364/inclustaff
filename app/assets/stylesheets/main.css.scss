@@ -82,3 +82,22 @@
     width: 100%;
 }
 
+.even {
+    padding: 5px;
+    background: rgba(91, 129, 129, 0.41);
+    
+}
+.even-top {
+    border-bottom: solid 2px black;
+}
+
+// DATATABLES
+div.dataTables_scrollHead > div > table > thead {
+    background-color: rgb(26, 84, 97);
+    color: white;
+}
+
+#orders-datatable2 > thead {
+    background-color: rgba(169, 68, 66, .50);
+    color: rgb(169, 68, 66);
+}

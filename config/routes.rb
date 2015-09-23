@@ -103,7 +103,12 @@ Rails.application.routes.draw do
   get  'home', to: 'employee/dashboard#home'
   
   resources :timesheets, path: "employee/timesheets", module: "employee"
-  resources :jobs, path: "employee/jobs", module: "employee"
+  resources :jobs, path: "employee/jobs", module: "employee" do
+    member do
+      patch 'clock_in'
+      patch 'clock_out'
+    end
+  end
     
 
   resources :admins do

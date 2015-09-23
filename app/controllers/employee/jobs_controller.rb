@@ -1,72 +1,126 @@
 class Employee::JobsController < ApplicationController
+  before_action :set_job, only: [:show, :edit, :update, :destroy, :clock_in, :clock_out]
   before_action :authenticate_user!
-  before_action :set_employee
-  before_action :set_job, only: [:show, :edit, :update, :destroy]
-  before_action :check_if_assigned, only: [:show, :edit, :update, :destroy]
+  layout 'new_employee'
 
-  # GET /jobs
-  # GET /jobs.json
+
+
   def index
-
-    @jobs = @employee.jobs.active.order(title: :asc) if @employee.jobs.any?
+    @current_user = current_user
+    @current_employee = @current_user.employee if @current_user.present?
+    @jobs = @current_employee.jobs.order(created_at: :desc) if @current_employee.present?
+     
     authorize @jobs
+
+   
 
   end
   
   def archived
-    @archived_jobs = @employee.jobs.inactive.order(end_date: :desc)
-
+    @admin = current_user
+    @company = @admin.company
+    @archived_jobs = @company.jobs.inactive.with_employee
+    @active_jobs = @company.active.with_employee
+    
+    @all_jobs = Job.all
+    # authorize @active_jobs
   end
+
+
+
+
 
   # GET /jobs/1
   # GET /jobs/1.json
   def show
-    authorize @job
-
-    @current_timesheet = @job.current_timesheet if @job.current_timesheet.present?
-    @current_shift = @job.current_shift if @job.on_shift?
-    @timesheets = @job.timesheets
-
+    
+    @timesheet = @job.current_timesheet if @job.current_timesheet.present?
+    @shift = @job.shifts.last if @job.shifts.any?
+    @timesheets = @job.timesheets if @job.timesheets.any?
+    @last_week_timesheets =  @job.timesheets.last_week
+    @skills = @job.employee.skills
+    # @order_skills = @job.order.skills
     
   end
 
   # GET /jobs/new
   def new
-    # if admin_signed_in? 
-    #   @current_admin = current_admin
-    #   @company = @current_admin.company
-
-    #   @job = @order.jobs.new
-      
-    # elsif user_signed_in? && current_user.not_an_employee?
-    #   @current_user = current_user
-    #   @company = @current_user.company
-      
-
-    # end
+    
+    @admin = current_user
     if params[:order_id]
       @order = Order.find(params[:order_id])
-      @company = @order.company
+      @agency = @order.agency
       @job = @order.jobs.new
-      # @employee = @job.build_employee
-      # authorize @job
+      authorize @job
+    elsif params[:employee_id]
+      @employee = Employee.find(params[:employee_id])
+      @job = @employee.jobs.new
+      authorize @job
     else
-    
       @job = Job.new
-      # authorize @job
-      # @employee = @job.build_employee
+      authorize @job
     end
-    # @company = Company.find(params[:company_id])
 
+  end
+
+  def clock_in
+    authorize @job, :clock_in?
+    if @job.off_shift?
+      @shift = @job.shifts.create(time_in: Time.current, week: Date.today.cweek,
+                                  state: "Clocked In",
+                                  in_ip: current_user.cur)
+      current_user.events.create(action: "clocked_in", eventable: @shift.employee)
+
+    
+      respond_to do |format|
+          format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
+                    state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out, last_out: @job.last_clock_out,
+                    in_ip: @shift.in_ip, first_name: @job.employee.first_name } }
+
+      end
+    end
+  end
+  
+  def clock_out
+     authorize @job, :clock_out?
+    if @job.on_shift? && @job.current_shift.present?
+        @shift = @job.current_shift
+        @shift.update(time_out: Time.current,
+                        state: "Clocked Out",
+                        out_ip: "Admin-Clock-Out" )
+        current_user.events.create(action: "clocked_out", eventable: @shift.employee)
+      respond_to do |format|
+          format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
+                    state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out.strftime("%l:%M%P"),
+                    in_ip: @shift.in_ip, first_name: @job.employee.first_name } }
+
+      end
+    end
   end
 
   # GET /jobs/1/edit
   def edit
-    @company = @job.company
-    @employees = @company.employees.unassigned
-    @order = @job.order
-    @employee = @job.employee
-    # authorize @job
+    
+    if params[:order_id]
+      @order = Order.find(params[:order_id])
+      @job = Job.find(params[:id])
+      @employee = @job.employee
+      @agency = @order.agency
+      authorize @job
+    elsif current_user.agency?
+      @job = Job.includes(:employee, :order).find(params[:id])
+      @company = @job.company
+      @employee = @job.employee
+      @order = @job.order
+      @agency = @order.agency
+       
+      authorize @job
+    end
+   
+    
+
+    
+
   end
 
   # POST /jobs
@@ -78,18 +132,36 @@ class Employee::JobsController < ApplicationController
       @company = @order.company
       # @employee = Employee.create(employee_params)
       @job = @order.jobs.new(job_params)
-      # authorize @job
+      authorize @job
+      
+      
       # @job.order = @order
       # @employee = @job.create_employee(employee_params)
+    elsif params[:employee_id]
+      @employee = Employee.find(params[:employee_id])
+      @job = @employee.jobs.new(job_params)
+      # @employee.mark_as_assigned!
+      
+      authorize @job
     else
-      # @employee = Employee.create(employee_params)
+      
       @job = Job.new(job_params)
-      # authorize @job
+      authorize @job
+      
+      @job.recruiter = current_user if current_user.recruiter?
+
+      
     end
     
     respond_to do |format|
       if @job.save
-        format.html { redirect_to job_path(@job, anchor: "job_#{@job.id}"), notice: 'Job was successfully created.' }
+        mentioned_admins = @job.mentioned_admins if @job.mentioned_admins
+        
+        mentioned_admins.each do |mentioned_admin|
+          current_user.events.create(action: "mentioned", eventable: mentioned_admin)
+        end
+        
+        format.html { redirect_to admin_job_path(@job), notice: 'Job was successfully created.' }
         format.json { render :show, status: :created, location: @job }
       else
         format.html { render :new }
@@ -101,10 +173,16 @@ class Employee::JobsController < ApplicationController
   # PATCH/PUT /jobs/1
   # PATCH/PUT /jobs/1.json
   def update
-    # authorize @job
+    authorize @job
     respond_to do |format|
       if @job.update(job_params)
-        format.html { redirect_to @job, notice: 'Job was successfully updated.' }
+        
+        mentioned_admins = @job.mentioned_admins if @job.mentioned_admins
+        
+        mentioned_admins.each do |mentioned_admin|
+          current_user.events.create(action: "mentioned", eventable: mentioned_admin)
+        end
+        format.html { redirect_to admin_jobs_path(anchor: "mod_#{@job.id}"), notice: 'Job was successfully updated.' }
         format.json { render :show, status: :ok, location: @job }
       else
         format.html { render :edit }
@@ -116,7 +194,7 @@ class Employee::JobsController < ApplicationController
   # DELETE /jobs/1
   # DELETE /jobs/1.json
   def destroy
-    authorize @job
+
     @job.destroy
     respond_to do |format|
       format.html { redirect_to jobs_url, notice: 'Job was successfully destroyed.' }
@@ -127,22 +205,16 @@ class Employee::JobsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_job
-      @job = Job.find(params[:id])
-      @company = @job.company
+      @job = Job.includes(:employee, :order).find(params[:id])
+      authorize @job
+      @employee = @job.employee
       @order = @job.order
+      @agency = @order.agency
+      @company = @job.company
     end
     
-    def set_employee
-      @current_user = current_user if current_user.present?
-      @employee = @current_user.employee if @current_user.employee.present?
-    end
-    
-    def check_if_assigned
-      @job = Job.find(params[:id])
-      if @job.employee != @employee
-        redirect_to :root
-      end
-      
+    def pundit_user
+      current_user || current_user
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

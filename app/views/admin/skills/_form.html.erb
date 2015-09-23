@@ -3,6 +3,10 @@
 
   <div class="form-inputs">
     <%= f.text_field :name, required: true, placeholder: "Add a skill", data: {behavior: 'skill-autocomplete'} %>
+    <% if skillable.class.to_s == "Order" %>
+       <%= f.input :required, label: 'Is this a requirement?' %>
+    <% end %>
+    </div>
     
   </div>
   <%= f.hidden_field :skillable_id, :value => skillable.id %>
