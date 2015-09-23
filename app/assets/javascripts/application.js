@@ -25,7 +25,7 @@
 //= require shifts
 //= require startshift
 //= require jobs
-
+//= require emp_jobs
 //= require autocomplete
 //= require datatables
 //= require forms
