@@ -1,0 +1,66 @@
+<div class="tabs-wrapper">
+			<div class="clearfix">
+				<h2 class="pull-left">At a glance</h2>
+				<ul class="nav nav-tabs pull-right">
+					<li class="active"><a href="#tab-users" data-toggle="tab">Employees</a></li>
+					<li><a href="#tab-products" data-toggle="tab">Timesheets</a></li>
+					<li><a href="#tab-todo" data-toggle="tab">Open Orders</a></li>
+				</ul>
+			</div>
+			
+			<div class="tab-content">
+				<div class="tab-pane fade in active" id="tab-users">
+					<ul class="widget-users row">
+					<% if @company.present? && @company.employees %>
+						
+						<% @company.employees.each do |employee| %>
+							<li class="col-md-12">
+								
+								<%= render employee %>
+							</li>
+						<% end %>
+							
+					
+					<% end %>
+					</ul>
+					<br>
+					<a href="#" class="btn btn-success pull-right">View all users</a>
+				</div>
+				
+				<div class="tab-pane fade" id="tab-products">
+					<ul data-behavior="timesheet-list" class="">
+						<% if @company.present? && @company.current_timesheets %>
+						
+						<% @company.current_timesheets.each do |timesheet| %>
+							<li class="col-md-12">
+								
+								<%= render timesheet %>
+							</li>
+						<% end %>
+							
+					
+					<% end %>
+					<% @viewing.current_timesheets.each do |timesheet| %>
+							<li class="col-md-12">
+								
+								<%= render timesheet %>
+							</li>
+						<% end %>
+						
+					</ul>
+					<br>
+					<a href="#" class="btn btn-success pull-right">View all users</a>
+				</div>
+				
+				<div class="tab-pane fade" id="tab-todo">
+					<ul class="widget-todo">
+						<li class="clearfix">
+							<%= render @orders.needs_attention %>
+						</li>
+						
+						
+					</ul>
+				</div>
+				
+			</div>
+		</div>
