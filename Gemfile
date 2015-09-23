@@ -3,11 +3,15 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
+
 gem "devise"
 gem 'pundit', '~> 1.0.1'
 
 # POSTGRES DB CHANGED FOR HEROKU
 gem 'pg'
+
+# FOR HEROKU
+gem 'rails_12factor', group: :production
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
@@ -72,7 +76,7 @@ gem "cocoon"
 gem 'paranoia', '~> 2.1.0'
 
 # FILE UPLOADING
-gem 'refile', require: ['refile/rails', 'refile/image_processing']
+gem 'refile', '~> 0.5.5', require: ['refile/rails', 'refile/image_processing']
 gem 'refile-mini_magick'
 
 # FOR JAVASCRIPT 
@@ -129,3 +133,4 @@ gem 'angular-rails-templates'
 gem 'bower-rails'
 # RANSACK SEARCH - DON'T THINK I NEED THIS EITHER SINCE IM USING DATATABLES
 gem 'ransack', github: 'activerecord-hackery/ransack', branch: 'rails-4.2'
+ruby "2.2.1"
