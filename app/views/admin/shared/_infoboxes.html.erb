@@ -3,7 +3,7 @@
 		<div class="main-box infographic-box">
 			
 			<%= link_to "<span class=''><i class='fa fa-user fa-2x pull-left red'></i> <strong>ADMIN USERS</strong></span>".html_safe, admins_path %>
-			<span class="value"><%= @company.present? ? @company.admins.count : @agency.admins.count %></span>
+			<span class="value"><%= @current.admins.try(:count) %></span>
 		</div>
 	</div>
 	<div class="col-lg-3 col-sm-6 col-xs-12">
@@ -12,8 +12,7 @@
 			
 			<%= link_to "<span class='headline'><i class='fa fa-briefcase fa-2x pull-left'></i> <strong>JOBS</strong></span>".html_safe, admin_jobs_path %>
 			<span class="value">
-				<%  if @admin.company? %><%= @company.jobs.active.count %>   <% end %>
-				<%  if @admin.agency? %><%= @agency.jobs.active.count %>     <% end %>
+				<%= @jobs.try(:count) %>
 				</span>
 		</div>
 	</div>

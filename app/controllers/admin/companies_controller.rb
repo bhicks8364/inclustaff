@@ -6,7 +6,7 @@ class Admin::CompaniesController < ApplicationController
   # GET /companies.json
   def index
     
-    @companies = @current_agency.companies.distinct
+    @companies = @current.companies.distinct
     skip_authorization
     
   end
@@ -40,7 +40,8 @@ class Admin::CompaniesController < ApplicationController
 
   # GET /companies/new
   def new
-    @company = Company.new
+    
+    @company = @current_agency.companies.new
     authorize @company
   end
 
@@ -52,8 +53,8 @@ class Admin::CompaniesController < ApplicationController
   # POST /companies
   # POST /companies.json
   def create
-    
-    @company = Company.new(company_params)
+    @current = @current_agency
+    @company = @current.companies.new(company_params) if @current.present?
     authorize @company
     respond_to do |format|
       if @company.save
@@ -106,7 +107,7 @@ class Admin::CompaniesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def company_params
-      params.require(:company).permit(:name, :address, :city, :state, :zipcode, :contact_name, :contact_email,
+      params.require(:company).permit(:name, :address, :city, :state, :zipcode, :contact_name, :contact_email, :admin_id, :agency_id,
       orders_attributes: [:id, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title, :pay_range, 
       :notes, :number_needed, :needed_by, :urgent, :active, :dt_req, :bg_check, :stwb, :heavy_lifting, :shift, :est_duration])
     end

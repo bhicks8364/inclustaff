@@ -6,15 +6,19 @@
 #  name       :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  admin_id   :integer
+#  subdomain  :string
 #
 
 class Agency < ActiveRecord::Base
+    belongs_to :admin
+    has_many :companies
     has_many :admins
     has_many :events, :through => :admins
     has_many :users
     has_many :employees, :through => :jobs
     has_many :orders
-    has_many :companies, :through => :orders
+    
     has_many :jobs, :through => :orders
     has_many :current_timesheets, :through => :jobs
     has_many :timesheets, :through => :jobs
@@ -27,6 +31,10 @@ class Agency < ActiveRecord::Base
     # def agency_events
     #     Event.admin_events(self.id)
     # end
+    
+    accepts_nested_attributes_for :admin
+    
+    
     
     def current_billing
         self.timesheets.current_week.sum(:total_bill)

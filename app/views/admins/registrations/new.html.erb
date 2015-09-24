@@ -1,22 +1,36 @@
-<h2>Sign up</h2>
+<div class='col-md-12'>
+  <div class="row">
+    	<div class="col-lg-6 center">
+        <div class='main-box'>
+            <h2>Sign up</h2>
+          
+          <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+            <%= f.error_notification %>
+          
+            <div class="form-inputs">
+              <%= f.input :first_name, required: true, placeholder: "First Name", label: false, autofocus: true%>
+              <%= f.input :last_name, required: true, placeholder: "Last Name", label: false %>
+              <%= f.input :email, required: true %>
 
-<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= f.error_notification %>
-
-  <div class="form-inputs">
-    <%= f.input :first_name, required: true, placeholder: "First Name", label: false, autofocus: true%>
-    <%= f.input :last_name, required: true, placeholder: "Last Name", label: false %>
-    <%= f.input :email, required: true %>
-    <%= f.association :company, prompt: "Select A Company", include_blank: true %>
-    <%= f.association :agency, prompt: "Select An Agency", include_blank: true %>
-    <%= f.input :role, required: true, collection: [ "Owner", "HR", "Account Manager", "Recruiter", "Payroll", "Limited Access"], include_blank: false, label: false %>
-    <%= f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length) %>
-    <%= f.input :password_confirmation, required: true %>
+              <%= f.simple_fields_for :agency do |a| %>
+                <%= a.input :name %>
+                <%= a.input :subdomain %>
+              
+              <% end %>
+              <%= f.input :role, required: true, collection: [ "Owner", "HR", "Account Manager", "Recruiter", "Payroll", "Limited Access"], include_blank: false, label: false %>
+              <%= f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length) %>
+              <%= f.input :password_confirmation, required: true %>
+            </div>
+          
+            <div class="form-actions">
+              <%= f.button :submit, "Sign up" %>
+            </div>
+          <% end %>
+          
+          <%= render "admins/shared/links" %>
+        </div>
+    </div>	
   </div>
+</div>
 
-  <div class="form-actions">
-    <%= f.button :submit, "Sign up" %>
-  </div>
-<% end %>
-
-<%= render "admins/shared/links" %>
+  

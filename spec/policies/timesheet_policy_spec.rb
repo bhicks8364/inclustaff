@@ -1,28 +1,28 @@
-require 'rails_helper'
+# require 'rails_helper'
 
-describe TimesheetPolicy do
+# describe TimesheetPolicy do
 
-  let(:user) { User.new }
+#   let(:user) { User.new }
 
-  subject { described_class }
+#   subject { described_class }
 
-  permissions ".scope" do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
+#   permissions ".scope" do
+#     pending "add some examples to (or delete) #{__FILE__}"
+#   end
 
-  permissions :show? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
+#   permissions :show? do
+#     pending "add some examples to (or delete) #{__FILE__}"
+#   end
 
-  permissions :create? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
+#   permissions :create? do
+#     pending "add some examples to (or delete) #{__FILE__}"
+#   end
 
-  permissions :update? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
+#   permissions :update? do
+#     pending "add some examples to (or delete) #{__FILE__}"
+#   end
 
-  permissions :destroy? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-end
+#   permissions :destroy? do
+#     pending "add some examples to (or delete) #{__FILE__}"
+#   end
+# end

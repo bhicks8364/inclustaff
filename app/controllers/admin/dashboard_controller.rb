@@ -1,20 +1,23 @@
 class Admin::DashboardController < ApplicationController
     before_filter :authenticate_admin!
     layout 'admin_layout'
+    
     def owner
-      @admin = current_admin
-      if @admin.agency?
-        @agency = @admin.agency
-        @events = @agency.events.order('id DESC').limit(5)
-      elsif @admin.company?
-        @company = @admin.company
-        @events = @company.events.order('id DESC').limit(5)
-      end
+      # @admin = @current_admin if admin_signed_in?
+      # if @admin.agency?
+      #   @agency = @admin.agency
+      #   @events = @agency.events.order('id DESC').limit(5)
+      # elsif @admin.company?
+      #   @company = @admin.company
+      #   @events = @company.events.order('id DESC').limit(5)
+      # end
+      @current_agency = current_admin.agency
+      @jobs = @current_agency.jobs if @current_agency.present?
       
       @orders = @company.orders if @company.present?
       @orders = @agency.orders if @agency.present?
-      @jobs = @company.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 10).order('id DESC') if @company.present?
-      @jobs = @agency.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 10).order('id DESC') if @agency.present?
+      # @jobs = @company.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 10).order('id DESC') if @current_company.present?
+      # @jobs = @agency.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 10).order('id DESC') if @current_agency.present?
       @timesheets = @company.timesheets.order(created_at: :desc) if @company.present?
       @timesheets = @agency.timesheets.order(created_at: :desc) if @agency.present?
   
@@ -33,14 +36,9 @@ class Admin::DashboardController < ApplicationController
         skip_authorization
     end
     def company_view
-      @admin = current_admin
-      # if @admin.agency?
-        @agency = @current_agency
-      #   @events = @agency.events.order('id DESC').limit(5)
-      # elsif @admin.company?
-        @company = @current_company
-        @viewing = @company || @agency
-        @timesheets = @viewing.timesheets
+
+        @viewing = @current_company || @current_agency
+        @timesheets = @viewing.timesheets if @viewing.present?
         @events = @viewing.events.order('id DESC').limit(5)
       # end
       

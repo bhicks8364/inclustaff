@@ -19,8 +19,9 @@
 
 class Company < ActiveRecord::Base
     default_scope { order(name: 'DESC') }
+    belongs_to :agency
     has_many :orders, dependent: :destroy
-    has_many :agencies, :through => :orders
+    
     has_many :jobs, :through => :orders
     has_many :employees, :through => :jobs
     has_many :shifts, :through => :jobs

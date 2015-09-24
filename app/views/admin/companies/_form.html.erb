@@ -1,21 +1,30 @@
-<%= simple_form_for(@company) do |f| %>
+<%= simple_form_for [:admin, @company] do |f| %>
+    <div class='form-group'>
+        <%= f.input :name %>
+    </div>
+    <div class='form-group'>
+        <%= f.input :address %>
+    </div>
+    <div class='form-group'>
+        <%= f.input :city %>
+    </div>
+    <div class='form-group'>
+        <%= f.input :state %>
+    </div>
+    <div class='form-group'>
+        <%= f.input :zipcode %>
+    </div>
+    <div class='form-group'>
+        <%= f.input :contact_name %>
+    </div>
+    <div class='form-group'>
+        <%= f.input :contact_email %>
+    </div>
 
+    <div class='form-actions'>
+         <%= f.submit %>
+    </div>
 
-    <%= f.input :name %>
-
-    <%= f.input :address %>
-
-    <%= f.input :city %>
-
-    <%= f.input :state %>
-
-    <%= f.input :zipcode %>
-
-    <%= f.input :contact_name %>
-
-    <%= f.input :contact_email %>
-
-
-    <%= f.submit %>
+   
 
 <% end %>

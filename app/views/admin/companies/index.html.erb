@@ -1,11 +1,5 @@
-<h1>All Companies</h1>
-<%= javascript_tag do %>
-  window.companiesURL = '<%= j companies_url %>';
-  window.companies = <%= raw Company.limit(10).to_json %>
-<% end %>
-<%= content_tag "div", id: "companies", data: {url: Company.limit(10) } do %>
-  Loading companies...
-<% end %>
+<h1><%= @current_agency.try(:name) %><small>All Companies</small></h1>
+
 
 
 <div class="table-responsive">
@@ -37,8 +31,8 @@
         <td><%= number_to_currency(company.timesheets.last_week.sum(:total_bill) )%></td>
         <td><%=  %></td>
         <td><%=  %></td>
-        <td><%= link_to 'Edit', edit_company_path(company) %></td>
-        <td><%= link_to 'Destroy', company, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Edit', edit_admin_company_path(company) %></td>
+        <td><%= link_to 'Destroy', admin_company_path(company), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

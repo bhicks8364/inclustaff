@@ -54,8 +54,7 @@ gem 'jquery-ui-rails'
 # CLOCKPICKER - FOR EDITING SHIFT TIMES BUT IDK IF GOING TO USE IT YET
 gem 'clockpicker-rails'
 
-# FOR TESTING
-gem "factory_girl_rails", "~> 4.0"
+
 
 # FONT AWESOME - ENOUGH SAID
 gem "font-awesome-rails"
@@ -107,6 +106,8 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   gem 'annotate', '~> 2.6.6'
+  # FOR TESTING
+  gem "factory_girl_rails", "~> 4.0"
 
   gem 'rspec-rails', '~> 3.0'
   gem 'database_cleaner', '~> 1.4.1'

@@ -14,7 +14,7 @@
       <div class="modal-body">
     
      <div><address>
-          <strong><%= link_to company.name, company %></strong><br>
+          <strong><%= link_to company.name, admin_company_path(company) %></strong><br>
           <%= company.address %><br>
           <%= company.city %>, <%= company.state %> <%= company.zipcode %><br>
           <abbr title="Phone">P:</abbr> (123) 456-7890

@@ -1,6 +1,6 @@
 class DashboardController < ApplicationController
     # before_filter :authenticate_admin!
-    layout 'new_employee'
+    # layout 'new_employee'
     def home
         # authenticate_admin!
         if admin_signed_in? 
@@ -94,6 +94,9 @@ class DashboardController < ApplicationController
         skip_authorization
     end
     
+    def sign_in_page
+        skip_authorization
+    end
     
     
 end

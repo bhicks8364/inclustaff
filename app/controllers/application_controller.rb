@@ -3,18 +3,18 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   include Pundit
   protect_from_forgery with: :exception
-  before_action :configure_permitted_parameters, if: :devise_controller?
+  # before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :update_permitted_parameters, if: :devise_controller?
   after_action :verify_authorized, unless: :devise_controller?
   
   # Globally rescue Authorization Errors in controller.
   # Returning 403 Forbidden if permission is denied
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-  before_action :set_agency
+  
+  before_action :set_current
   
   
-  def set_agency
-    
+  def set_current
     if admin_signed_in? && current_admin.agency?
       @current_agency = Agency.find(current_admin.agency_id)
       @agency_jobs = @current_agency.jobs if @current_agency.present?
@@ -26,8 +26,8 @@ class ApplicationController < ActionController::Base
       
     end
     
-    @viewing = @current_company || @current_agency
-    @newly_added = @viewing.employees.newly_added.order(created_at: :desc) if @viewing.present?
+    @current = @current_company || @current_agency
+    @newly_added = @current.employees.newly_added.order(created_at: :desc) if @viewing.present?
     
     
     
@@ -46,9 +46,7 @@ class ApplicationController < ActionController::Base
   # end
   
   private
-  def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:id, :first_name, :last_name, :email, :role, :agency_id, :company_id, :password, :password_confirmation, :can_edit, :address, :city, :state, :zipcode) }
-  end
+  
   
   
   def update_permitted_parameters

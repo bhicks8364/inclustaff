@@ -17,19 +17,14 @@
 
 			<div class="nav-no-collapse pull-right" id="header-nav">
 				<ul class="nav navbar-nav pull-right">
-					<% if admin_signed_in? && current_admin.company.present? && current_admin.company.jobs.on_shift.any? %>
-					<%= render 'shared/clocked_in' %>
-					<% end %>
-			<% if admin_signed_in? && current_admin.company.present? && current_admin.company.employees.newly_added.any? %>
-					<%= render 'shared/newly_added' %>
-			<% end %>
+
 					
 					<% if current_user.nil? && current_admin.nil? %>
+					
+					<li><%= link_to "Sign In", sign_in_path %></li>
+
 			        <!--NOT SIGNED IN-->
-			        <li><%= link_to "Employee Sign In", new_user_session_path %></li>
 			        
-			
-			        <li><%= link_to "Admin Login", new_admin_session_path %></li>
 			        <% end %>
 			        
 			        <% if user_signed_in? %>

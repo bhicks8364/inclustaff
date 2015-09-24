@@ -46,14 +46,14 @@ class Admin < ActiveRecord::Base
          
   before_create :set_username
   
-  validates :agency_id, presence: true, unless: ->(admin){admin.company_id.present?}
-  validates :company_id, presence: true, unless: ->(admin){admin.agency_id.present?}
+  # validates :agency_id, presence: true, unless: ->(admin){admin.company_id.present?}
+  # validates :company_id, presence: true, unless: ->(admin){admin.agency_id.present?}
   
     validates_numericality_of :company_id, allow_nil: true
     validates_numericality_of :agency_id, allow_nil: true
 
 
-    validate :company_xor_agency
+    # validate :company_xor_agency
     
 
   

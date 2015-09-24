@@ -1,18 +1,22 @@
-class Users::RegistrationsController < Devise::RegistrationsController
-# before_filter :configure_sign_up_params, only: [:create]
+class Admins::RegistrationsController < Devise::RegistrationsController
+  before_filter :configure_sign_up_params, only: [:create]
 # before_filter :configure_account_update_params, only: [:update]
 
-
-  layout 'new_employee'
+  # GET /resource/sign_up
   def new
-    @import = User::Import.new
-    super
+    build_resource({})
+    self.resource.company = Agency.new
+    respond_with self.resource
+    
   end
+  
+ 
+
+  # POST /resource
   def create
    build_resource(sign_up_params)
-  # SETS DEFAULT PASSWORD FOR USERS
-   resource.password = "password"
-   resource.password_confirmation = "password"
+  
+   
 
     resource.save
     yield resource if block_given?
@@ -33,39 +37,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
-  protected
-
-  def sign_up(resource_name, resource)
-    true
-
-  end
-  
-  
-  def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:id, :first_name, :last_name, :email, :role, :agency_id, :company_id, :password, :password_confirmation, :can_edit, :address, :city, :state, :zipcode) }
-  end
-  
-  # def after_sign_up_path_for(resource)
-  #   redirect_to admin_employee_path(resource.employee)
-  # end
-    
-  # end
-  # GET /resource/sign_up
-  # def new
-  #   super
-  # end
-
-  # POST /resource
-  # def create
-  #   super
-  # end
-
   # GET /resource/edit
   # def edit
   #   super
   # end
 
-  # # PUT /resource
+  # PUT /resource
   # def update
   #   super
   # end
@@ -87,17 +64,19 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # protected
 
   # If you have extra params to permit, append them to the sanitizer.
-  # def configure_sign_up_params
-  #   devise_parameter_sanitizer.for(:sign_up) << :attribute
-  # end
-
+  def configure_sign_up_params
+    devise_parameter_sanitizer.for(:sign_up) { |a| a.permit(:id, :first_name, :last_name, :email, :role, :agency_id, :company_id, :password, :password_confirmation, :can_edit, :address, :city, :state, :zipcode, :agency_attributes => [:id, :name, :subdomain, :admin_id]) }
+  end
+  
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_account_update_params
   #   devise_parameter_sanitizer.for(:account_update) << :attribute
   # end
 
-  # # The path used after sign up.
-  
+  # The path used after sign up.
+  # def after_sign_up_path_for(resource)
+  #   super(resource)
+  # end
 
   # The path used after sign up for inactive accounts.
   # def after_inactive_sign_up_path_for(resource)

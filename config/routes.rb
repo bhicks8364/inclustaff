@@ -1,19 +1,33 @@
 Rails.application.routes.draw do
-  resources :skills
-  resources :agencies
-  resources :events
   root 'dashboard#home'
+  get  'sign_in' => 'dashboard#sign_in_page'
+  resources :agencies do
+    resources :admins
+  end
+  devise_for :admins, controllers: {
+        sessions: 'admins/sessions',
+        registrations: 'admins/registrations'
+      }
+  
+  
+  
+  
+  
+  
+  resources :skills
+  
+  resources :events
+  
   get  'dashboard' => 'admin/dashboard#company_view'
   
+  
   get  'agency_access' => 'admin/dashboard#agency_view'
-  devise_for :admins
+  
   devise_for :users, controllers: {
         sessions: 'users/sessions',
         registrations: 'users/registrations'
       }
-  resources :companies do
-    resources :orders
-  end
+
   
   
 
@@ -69,23 +83,7 @@ Rails.application.routes.draw do
       end
     end
   end
-  
-  
-  
-  
-  # resources :shifts, module: "employee" do
-  #   member do
-  #     patch 'clock_out'
-  #   end
-  # end
-  # resources :employees do
-  #   resources :shifts do
-  #     member do
-  #       patch 'clock_out'
-  #     end
-  #   end
-    
-  # end
+
   get 'orders' => 'orders#all'
   get 'archived_jobs' => 'jobs#archived'
   
@@ -118,51 +116,7 @@ Rails.application.routes.draw do
       
     end
   end
-  
 
-  
-  
-  
-  
-  
-  
-  # devise_for :users, controllers: {
-  #       sessions: 'users/sessions'
-  #     }
-  
-
-  
-  
-  # resources :timesheets do
-  #   member do
-  #     patch 'approve'
-  #   end
-  # end  
-  
-  
-  
-  # resources :orders
-  
-  # resources :jobs do
-  #   resources :shifts do
-  #     member do
-  #       patch 'clock_out'
-  #     end
-  #   end
-  # end
-
-  # resources :companies do
-  #   resources :orders do
-  #     resources :jobs
-  #   end
-  # end
-  # resources :employees do
-  #   resources :shifts do
-  #     member do
-  #       patch 'clock_out'
-  #     end
-  #   end
-  # end
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

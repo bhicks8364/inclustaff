@@ -1,4 +1,4 @@
-<h1><%= @company ? @company.name : @agency.name %>'s Dashboard</h1>
+<h1><%= @viewing.try(:name) %>'s Dashboard</h1>
 
 
 <div class="col-md-12">
@@ -55,7 +55,7 @@
 			<div class="main-box infographic-box">
 				<i class="fa fa-users red"></i>
 				<span class="headline">Employees</span>
-				<span class="value"><%= @company ? @company.jobs.count : @agency.jobs.count %></span>
+				<span class="value"><%= @jobs.try(:count) %></span>
 				
 			</div>
 		</div>
@@ -70,7 +70,7 @@
 			<div class="main-box infographic-box">
 				<i class="fa fa-users red"></i>
 				<span class="headline">Employees</span>
-				<span class="value"><%= @company ? @company.jobs.count : @agency.jobs.count %></span>
+				<span class="value"><%= @employees.try(:count) %></span>
 				
 			</div>
 		</div>

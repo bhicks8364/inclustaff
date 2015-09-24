@@ -2,7 +2,7 @@
 	<div class="alert alert-danger fade in">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 		<i class="fa fa-exclamation-triangle fa-fw fa-lg"></i>
-		<strong>You have <%= @viewing.orders.needs_attention.count %> job orders that need attention. </strong>   </div>
+		<strong>You have <%= @current.orders.needs_attention.count %> job orders that need attention. </strong>   </div>
 	<%= render 'open_table' %>
 		
 </div>

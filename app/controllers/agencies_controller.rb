@@ -1,10 +1,11 @@
 class AgenciesController < ApplicationController
   before_action :set_agency, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_admin!
-
+  # before_action :authenticate_admin!
+  
   # GET /agencies
   # GET /agencies.json
   def index
+    layout 'admin_layout'
     @agencies = Agency.all
     authorize @agencies
   end
@@ -18,7 +19,8 @@ class AgenciesController < ApplicationController
   # GET /agencies/new
   def new
     @agency = Agency.new
-    authorize @agency
+    @agency.build_admin
+    skip_authorization
   end
 
   # GET /agencies/1/edit
@@ -30,11 +32,14 @@ class AgenciesController < ApplicationController
   # POST /agencies.json
   def create
     
-    @agency = Agency.new(agency_params)
-    authorize @agency
+    @agency = Agency.create(agency_params)
+    @agency.admin.agency_id = @agency.id
+    skip_authorization
+    
     respond_to do |format|
       if @agency.save
-        format.html { redirect_to @agency, notice: 'Agency was successfully created.' }
+        sign_in(@agency.admin)
+        format.html { redirect_to admin_dashboard_path, notice: 'Welcome to IncluStaff!!' }
         format.json { render :show, status: :created, location: @agency }
       else
         format.html { render :new }
@@ -77,11 +82,12 @@ class AgenciesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_agency
       @agency = Agency.includes(:orders, :users).find(params[:id])
-      authorize @agency
+      skip_authorization
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def agency_params
-      params.require(:agency).permit(:name, :order_ids => [], :admin_ids => [], :user_ids => [])
+      params.require(:agency).permit(:name, :subdomain, :admin_id, :order_ids => [], :admin_ids => [], :user_ids => [],
+      admin_attributes: [:id, :email, :role, :password, :password_confirmation, :first_name, :last_name, :agency_id, :current_password])
     end
 end

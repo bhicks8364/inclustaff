@@ -1,28 +1,28 @@
-require 'rails_helper'
+# require 'spec_helper'
 
-describe JobPolicy do
+# describe JobPolicy do
 
-  let(:user) { User.new }
+#   let(:user) { User.new }
 
-  subject { described_class }
+#   subject { described_class }
 
-  permissions ".scope" do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
+#   permissions ".scope" do
+#     pending "add some examples to (or delete) #{__FILE__}"
+#   end
 
-  permissions :show? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
+#   permissions :show? do
+#     pending "add some examples to (or delete) #{__FILE__}"
+#   end
 
-  permissions :create? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
+#   permissions :create? do
+#     pending "add some examples to (or delete) #{__FILE__}"
+#   end
 
-  permissions :update? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
+#   permissions :update? do
+#     pending "add some examples to (or delete) #{__FILE__}"
+#   end
 
-  permissions :destroy? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-end
+#   permissions :destroy? do
+#     pending "add some examples to (or delete) #{__FILE__}"
+#   end
+# end

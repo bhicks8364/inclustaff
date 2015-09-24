@@ -28,7 +28,14 @@
 
 FactoryGirl.define do
   factory :admin do
-    
+    first_name = "Brittany"
+		last_name = "Hicks"
+		email = "bhicks@email.com"
+		agency_id = 1
+		role = "Owner"
+		encrypted_password = Admin.new(:password => password).encrypted_password
+		sign_in_count = 0
+		failed_attempts = 0
   end
 
 end
