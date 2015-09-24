@@ -3,12 +3,10 @@ class Admins::RegistrationsController < Devise::RegistrationsController
 # before_filter :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
-  def new
-    build_resource({})
-    self.resource.company = Agency.new
-    respond_with self.resource
+  # def new
     
-  end
+    
+  # end
   
  
 

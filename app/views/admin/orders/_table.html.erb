@@ -26,7 +26,7 @@
         <span class="glyphicon glyphicon-check" aria-hidden="true"></span> 
             <% end %>
         </td>
-        <td><%= link_to order.company_name, order.company %></td>
+        <td><%= link_to order.company_name, admin_company_path(order.company) %></td>
         <td><%= link_to order.title, admin_company_order_path(order.company, order) %></td>
         <td><%= order.pay_range %></td>
         <td><%= order.jobs_count %></td>

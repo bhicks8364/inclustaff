@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     resources :admins
   end
   devise_for :admins, controllers: {
-        sessions: 'admins/sessions',
+        
         registrations: 'admins/registrations'
       }
   
@@ -24,7 +24,7 @@ Rails.application.routes.draw do
   get  'agency_access' => 'admin/dashboard#agency_view'
   
   devise_for :users, controllers: {
-        sessions: 'users/sessions',
+        
         registrations: 'users/registrations'
       }
 

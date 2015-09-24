@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   # Returning 403 Forbidden if permission is denied
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   
-  before_action :set_current
+  before_action :set_current, unless: :devise_controller?
   
   
   def set_current

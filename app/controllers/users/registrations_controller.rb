@@ -1,5 +1,5 @@
 class Users::RegistrationsController < Devise::RegistrationsController
-# before_filter :configure_sign_up_params, only: [:create]
+before_filter :configure_sign_up_params, only: [:create]
 # before_filter :configure_account_update_params, only: [:update]
 
 
@@ -41,7 +41,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
   
   
-  def configure_permitted_parameters
+  def configure_sign_up_params
     devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:id, :first_name, :last_name, :email, :role, :agency_id, :company_id, :password, :password_confirmation, :can_edit, :address, :city, :state, :zipcode) }
   end
   

@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
   
   
   after_create :set_employee, :set_emp_id
-  after_save :set_code
+  
   after_initialize :set_role
   
   def set_role

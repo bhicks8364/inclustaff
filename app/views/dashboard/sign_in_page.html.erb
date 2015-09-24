@@ -1,4 +1,24 @@
-<li><%= link_to "Employee Sign In", new_user_session_path %></li>
-			        
-			
-			        <li><%= link_to "Admin Login", new_admin_session_path %></li>
+
+			        <div class="col-lg-3 col-sm-3 col-xs-6">
+			<div class="main-box infographic-box">
+				
+				<%= link_to "<span class=''><i class='fa fa-user-plus fa-2x pull-left'></i> <strong>Employee Sign Up</strong></span>".html_safe, new_user_registration_path, class: 'btn' %>
+			</div>
+		</div>
+		<div class="col-lg-3 col-sm-3 col-xs-6">
+			<div class="main-box infographic-box">
+				
+				<%= link_to "<span class=''><i class='fa fa-user-plus fa-2x pull-left'></i> <strong>Admin Registration </strong></span>".html_safe, new_admin_registration_path, class: 'btn' %>
+			</div>
+		</div>
+		<div class="main-box infographic-box">
+				
+				<%= link_to "<span class=''><i class='fa fa-users fa-2x pull-left'></i> <strong>Employee Sign In</strong></span>".html_safe, new_user_session_path, class: 'btn' %>
+			</div>
+		</div>
+		<div class="col-lg-3 col-sm-3 col-xs-6">
+			<div class="main-box infographic-box">
+				
+				<%= link_to "<span class=''><i class='fa fa-user fa-2x pull-left'></i> <strong>Admin Sign In </strong></span>".html_safe, new_admin_session_path, class: 'btn' %>
+			</div>
+		</div>

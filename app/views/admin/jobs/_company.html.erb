@@ -14,7 +14,7 @@
       <div class="modal-body">
      <% if job.employee.clocked_in?%><i class="fa fa-cog"></i><% end %></span>
      <address>
-          <strong><%= link_to job.company.name, job.company %></strong><br>
+          <strong><%= link_to job.company.name, admin_company_path(job.company) %></strong><br>
           <%= job.company.address %><br>
           <%= job.company.city %>, <%= job.company.state %> <%= job.company.zipcode %><br>
           <abbr title="Phone">P:</abbr> (123) 456-7890
