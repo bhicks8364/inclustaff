@@ -33,6 +33,7 @@ class User < ActiveRecord::Base
   has_one :employee, dependent: :destroy
   has_many :shifts, through: :employee
   has_one :current_job, through: :employee
+  attachment :resume, extension: ["pdf", "doc", "docx"]
   # belongs_to :company
 
   accepts_nested_attributes_for :employee

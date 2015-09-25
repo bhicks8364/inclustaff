@@ -1,6 +1,6 @@
 class Employee::TimesheetsController < ApplicationController
   before_action :set_timesheet, only: [:show, :edit, :update, :destroy]
-
+  layout 'new_employee'
   # GET /timesheets
   # GET /timesheets.json
   def index

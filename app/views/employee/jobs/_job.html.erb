@@ -1,49 +1,49 @@
-<div class="" data-behavior="job-list">
-    <div data-behavior="job" data-id="<%= job.id %>">
+<div class="" data-behavior="empjob-list">
+    <div data-behavior="empjob" data-id="<%= job.id %>">
 
         
            <% if job.on_shift? %>
-           <span data-behavior='shift-state'>
-    <strong> <%= link_to job.employee.first_name, admin_employee_path(job.employee), class: 'table-link' %> is currently clocked in.</strong><br>
+           <span data-behavior='empshift-state'>
+    <strong> You are currently clocked in.</strong><br>
              
            
            </span>
-             <span data-behavior="time-in">
+             <span data-behavior="emptime-in">
                   <small><strong> In:</strong> <%= job.current_shift.time_in.strftime("%l:%M%P") %></small>
             </span>
              
                
-            <button data-behavior="job-out-button_<%= job.id %>" class='badge badge-danger'>
+            <button data-behavior="empjob-out-button_<%= job.id %>" class='badge badge-danger'>
             <i class='fa fa-sign-out'></i> Clock Out
           </button>
-          <button data-behavior="job-in-button_<%= job.id %>" class='hide-this badge badge-success'>
+          <button data-behavior="empjob-in-button_<%= job.id %>" class='hide-this badge badge-success'>
             <i class='fa fa-sign-out'></i> Clock In
           </button>
-           <span data-behavior="time-out">
+           <span data-behavior="emptime-out">
               </span>
 
         <% else %>
         
-        <span data-behavior='shift-state'>
+        <span data-behavior='empshift-state'>
              <strong> <%= link_to job.employee.first_name, admin_employee_path(job.employee), class: 'table-link' %>
              is currently clocked out.</strong><br>
              
            
            </span>
-        <span data-behavior="time-in">
+        <span data-behavior="emptime-in">
           
         </span>
-          <button data-behavior="job-in-button_<%= job.id %>" class='badge badge-success'>
+          <button data-behavior="empjob-in-button_<%= job.id %>" class='badge badge-success'>
             <i class='fa fa-sign-in'></i> Clock In
           </button>
-          <button data-behavior="job-out-button_<%= job.id %>" class='hide-this badge badge-danger'>
+          <button data-behavior="empjob-out-button_<%= job.id %>" class='hide-this badge badge-danger'>
             <i class='fa fa-sign-out'></i> Clock Out
           </button>
         
           
         
 
-        <span data-behavior="time-out">
+        <span data-behavior="emptime-out">
           
         </span>
       <% end %>

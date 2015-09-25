@@ -3,34 +3,6 @@
 
 <div class="col-md-12">
 	<div class='row'>
-		<div class="col-lg-3 col-sm-3 col-xs-6">
-			<div class="main-box infographic-box">
-				<span class="headline"> <%= @current_agency.companies.count %> Current Companies</span>
-				<%= link_to "<span class=''><i class='fa fa-building-o fa-2x pull-left'></i> <strong>View Companies</strong></span>".html_safe, admin_companies_path, class: 'btn' %>
-			</div>
-		</div>
-		<div class="col-lg-3 col-sm-3 col-xs-6">
-			<div class="main-box infographic-box">
-				<span class="headline"> <%= @current_agency.orders.needs_attention.count %> Open Orders</span>
-				<%= link_to "<span class=''><i class='fa fa-users fa-2x pull-left'></i> <strong>View Orders</strong></span>".html_safe, admin_orders_path, class: 'btn' %>
-			</div>
-		</div>
-		<div class="col-lg-3 col-sm-3 col-xs-6">
-			<div class="main-box infographic-box">
-				<span class="headline"> <%= @current_agency.jobs.count %> Active Jobs</span>
-				<%= link_to "<span class=''><i class='fa fa-briefcase fa-2x pull-left'></i> <strong>View Active Jobs</strong></span>".html_safe, admin_jobs_path, class: 'btn' %>
-			</div>
-		</div>
-		
-		<div class="col-lg-3 col-sm-3 col-xs-6">
-			<div class="main-box infographic-box">
-				<span class="headline"> <%= @current_agency.employees.count %> Current Employees</span>
-				<%= link_to "<span class=''><i class='fa fa-users fa-2x pull-left'></i> <strong>View Employees</strong></span>".html_safe, admin_employees_path, class: 'btn' %>
-			</div>
-		</div>
-		
-		
-		
 		
 		<div class="col-lg-3 col-sm-3 col-xs-6">
 			<div class="main-box infographic-box">
@@ -57,41 +29,49 @@
 			</div>
 		</div>
 		
-		<div class="col-lg-3 col-sm-3 col-xs-6">
-			<div class="main-box infographic-box">
-				<i class="fa fa-users red"></i>
-				<span class="headline">Employees</span>
-				<span class="value"><%= @jobs.try(:count) %></span>
-				
-			</div>
-		</div>
-		<div class="col-lg-3 col-sm-3 col-xs-6">
-			<div class="main-box infographic-box">
-				
-				<%= link_to "<span class=''><i class='fa fa-building-o fa-2x pull-left'></i> <strong>Add Company</strong></span>".html_safe, new_admin_company_path, class: 'btn' %>
-			</div>
-		</div>
 		
 		<div class="col-lg-3 col-sm-3 col-xs-6">
 			<div class="main-box infographic-box">
-				<i class="fa fa-users red"></i>
-				<span class="headline">Employees</span>
-				<span class="value"><%= @employees.try(:count) %></span>
-				
+				<span class="headline"> <%= @current_agency.admins.try(:count) %> Admin Users</span>
+				<%= link_to "<span class=''><i class='fa fa-users fa-2x pull-left'></i> <strong>View Admins</strong></span>".html_safe, admins_path, class: 'btn' %>
 			</div>
 		</div>
 		
 		
+		<div class="col-lg-3 col-sm-3 col-xs-6">
+			<div class="main-box infographic-box">
+				<span class="headline"> <%= @current_agency.companies.count %> Current Companies</span>
+				<%= link_to "<span class=''><i class='fa fa-building-o fa-2x pull-left'></i> <strong>View Companies</strong></span>".html_safe, admin_companies_path, class: 'btn' %>
+			</div>
+		</div>
+		<div class="col-lg-3 col-sm-3 col-xs-6">
+			<div class="main-box infographic-box">
+				<span class="headline"> <%= @current_agency.orders.needs_attention.count %> Open Orders</span>
+				<%= link_to "<span class=''><i class='fa fa-users fa-2x pull-left'></i> <strong>View Orders</strong></span>".html_safe, admin_orders_path, class: 'btn' %>
+			</div>
+		</div>
+		<div class="col-lg-3 col-sm-3 col-xs-6">
+			<div class="main-box infographic-box">
+				<span class="headline"> <%= @current_agency.jobs.count %> Active Jobs</span>
+				<%= link_to "<span class=''><i class='fa fa-briefcase fa-2x pull-left'></i> <strong>View Active Jobs</strong></span>".html_safe, admin_jobs_path, class: 'btn' %>
+			</div>
+		</div>
 		
+		<div class="col-lg-3 col-sm-3 col-xs-6">
+			<div class="main-box infographic-box">
+				<span class="headline"> <%= @current_agency.employees.count %> Current Employees</span>
+				<%= link_to "<span class=''><i class='fa fa-users fa-2x pull-left'></i> <strong>View Employees</strong></span>".html_safe, admin_employees_path, class: 'btn' %>
+			</div>
+		</div>
 		
+
 		
 		
 		<div class="col-lg-3 col-sm-3 col-xs-6">
 			<div class="main-box infographic-box">
-				
-				<i class="fa fa-money green"></i>
-				<span class="headline">Total Payroll</span>
-				<%= number_to_currency(@timesheets.current_week.sum(:gross_pay)) %>
+
+				<span class="headline">Total Payroll:<%= number_to_currency(@timesheets.current_week.sum(:gross_pay)) %></span>
+				<%= link_to "<span class=''><i class='fa fa-money fa-2x pull-left'></i> <strong>View Timesheets</strong></span>".html_safe, admin_timesheets_path, class: 'btn' %>
 			</div>
 		</div>
 		

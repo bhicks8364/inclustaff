@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery.turbolinks
 //= require jquery_ujs
+//= require refile
 //= require jquery-ui/draggable
 //= require jquery-ui/datepicker
 //= require jquery.atwho

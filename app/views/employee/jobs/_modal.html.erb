@@ -1,0 +1,75 @@
+<a class='btn btn-default job-button' data-toggle="modal" data-target="#mod_<%= job.id %>">
+<span class='small text-muted pull-left'><%= job.company.name %></span><br>
+
+	<span class=''>	<strong><%= job.employee.name%></strong></span><br>
+	<span class='small'><%= job.title %></span>
+	
+</a>
+
+<!-- Modal -->
+<div class="modal fade" id="mod_<%= job.id %>" tabindex="-1" role="dialog" aria-labelledby="#<%= job.employee.name %>">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="#<%= job.employee.name %>">
+          <%= job.name_title%><small> <%= job.company.name %></small></h4>
+        
+      </div>
+      <div class="modal-body">
+
+            
+          <div class='col-md-6'>
+            <%= render 'employee/jobs/job', job: job %>
+          </div>
+          <div class='col-md-6'>
+           <strong>Last in:</strong> <%= job.last_clock_in %><br>
+           <strong>Last out:</strong> <%= job.last_clock_out %>
+          </div>
+          
+           
+        </div>
+       
+
+      <div class="modal-footer">
+        
+        <div class="btn-toolbar" role="toolbar" aria-label="...">
+          
+          <div class="btn-group" role="group" aria-label="...">
+            
+            <% if job.current_timesheet.present? %>
+            <%= link_to(timesheets_path(job.current_timesheet), class: 'btn btn-primary clear-btn', role: "group") do %>
+      					<i class="fa fa-clock-o fa-fw fa-lg"></i>
+      					Current Timesheet
+      				<% end %>
+      			<% end %>
+    				
+    				<%= link_to(jobs_path(job), class: 'btn btn-primary clear-btn', role: "group") do %>
+    					<i class="fa fa-briefcase fa-lg"></i> 
+    					Job
+    				<% end %>
+    				<%= link_to(admin_job_timesheets_path(job), class: 'btn btn-primary clear-btn', role: "group") do %>
+    					<i class="fa fa-list fa-lg"></i> 
+    					Timesheets
+    				<% end %>
+    				</div>
+    				<div class="btn-group pull-right" role="group" aria-label="...">
+    				<%= link_to(edit_admin_job_path(job), class: 'btn btn-info clear-btn', role: "group") do %>
+      					<i class="fa fa-pencil fa-lg"></i> 
+      					Edit Job
+      			<% end %>
+      			<% if job.current_shift.present? %>
+      			<%= link_to(edit_admin_shift_path(job.current_shift), class: 'btn btn-info clear-btn', role: "group") do %>
+      					<i class="fa fa-pencil fa-lg"></i> 
+      					Edit Shift
+      			<% end %>
+      			<% end %>
+          </div>
+          
+        </div>
+        
+  				
+      </div>
+    </div>
+  </div>
+</div>

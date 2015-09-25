@@ -1,6 +1,6 @@
 class Employee::DashboardController < ApplicationController
     before_filter :authenticate_user!
-
+    layout 'new_employee'
     def timeclock
         @employee = current_user.employee if current_user.employee?
         @company = @employee.company if @employee.present?

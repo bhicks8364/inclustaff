@@ -48,7 +48,7 @@
       <strong>Description:</strong><br>
   <%= @job.description %><br>
   
-  <%= render 'admin/jobs/modal', job: @job %>
+  <%= render 'employee/jobs/modal', job: @job %>
   
   </div>
 
@@ -57,7 +57,7 @@
 
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
     <h3>Timesheets</h3>
-      <%= render 'timesheets/table' %>
+      <%= render 'employee/timesheets/table' %>
 
   </div>
   

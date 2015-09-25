@@ -6,9 +6,12 @@ before_filter :configure_sign_up_params, only: [:create]
   layout 'new_employee'
   def new
     @import = User::Import.new
+    @current_agency = current_admin.agency if current_admin.agency?
+    @agency_jobs = @current_agency.jobs if @current_agency.present?
     super
   end
   def create
+    
    build_resource(sign_up_params)
   # SETS DEFAULT PASSWORD FOR USERS
    resource.password = "password"
@@ -42,7 +45,7 @@ before_filter :configure_sign_up_params, only: [:create]
   
   
   def configure_sign_up_params
-    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:id, :first_name, :last_name, :email, :role, :agency_id, :company_id, :password, :password_confirmation, :can_edit, :address, :city, :state, :zipcode) }
+    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:id, :first_name, :last_name, :email, :role, :employee_id, :resume_id, :password, :password_confirmation, :can_edit, :address, :city, :state, :zipcode) }
   end
   
   # def after_sign_up_path_for(resource)

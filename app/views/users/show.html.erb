@@ -25,10 +25,21 @@
   
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="home">
-    <% if @employee.assigned? %>
-     <%= render @job %>
-     <% else %>
-     <%= @employee.first_name %> is currently unassigned. 
+    
+     <% if user_signed_in? %>
+       <% if @employee.assigned? %>
+         <%= render 'employee/jobs/job', job: @job %>
+       <% else %>
+         You are currently unassigned. 
+       <% end %>
+    
+    
+     <% elsif admin_signed_in? %>
+        <% if @employee.assigned? %>
+           <%= render 'admin/jobs/job', job: @job %>
+       <% else %>
+           <%= @employee.first_name %> is currently unassigned. 
+       <% end %>
      <% end %>
 
      
@@ -52,7 +63,11 @@
   </div>
   
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
-
+    <% if user_signed_in? %>
+     <%= render 'employee/timesheets/table' %>
+     <% elsif admin_signed_in? %>
+     <%= render 'admin/timesheets/table' %>
+     <% end %>
 
       
      

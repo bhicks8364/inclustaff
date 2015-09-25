@@ -24,22 +24,14 @@
       
 </div>
 <div class='main-box'>
-   <%= render 'admin/shifts/wk_calendar' %>
+   <%= render 'employee/shifts/wk_calendar' %>
 </div>
 
-<%= link_to(admin_timesheet_path(@timesheet, format: :pdf), class: 'btn btn-primary') do %>
-  					<i class="fa fa-download fa-lg"></i> Download PDF
-  				
-  				<% end %>
-
-<!--<h3><strong> Week Ending: <small> <%= @timesheet.week_ending %></small></strong></h3>-->
-<!--<div class="table-responsive">-->
-<!--  -->
-<!--</div>-->
 
 
 
-<!--<%= link_to 'Edit', edit_timesheet_path(@timesheet) %> |-->
-<%= link_to 'Back', admin_timesheets_path %>
+
+
+
 </div>
 </div>

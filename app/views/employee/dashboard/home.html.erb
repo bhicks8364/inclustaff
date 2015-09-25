@@ -1,96 +1,17 @@
-<div ng-app="nameApp">
-  <div ng-controller="NameCtrl">
-    <ul>
-      <li ng-repeat="name in names">{{name}}</li>
-    </ul>
-    <form ng-submit="addName()">
-      <input type="text" ng-model="enteredName">
-      <input type="submit" value="add">
-    </form>
+<div class='col-md-12'>
+  <div class='row'>
+    <h2> Welcome back, <%= @employee.first_name %>!</h2>
+    <div class='main-box'>
+      <%= render 'employee/jobs/job', job: @employee.current_job %>
+    </div>
+    <div class='main-box'>
+      <%= render 'employee/timesheets/table' %>
+    </div>
+    <div class='main-box'>
+      <%= render 'employee/shifts/table' %>
+    </div>
+    <div class='main-box'>
+      <%= render 'employee/jobs/job', job: @employee.current_job %>
+    </div>
   </div>
 </div>
-
-
-<!--<div ng-app ng-controller="ShiftsCtrl">-->
-<!--  <h1> Employee Home</h1>-->
-<!--  <h3><%= @employee.name %></h3>-->
-<!--  <input type="text" placeholder="Search" data-ng-model="nameText" />-->
-<!--  {{nameText}}-->
-<!--  <table class="table table-bordered" ng-if="shifts">-->
-<!--    <thead>-->
-<!--      <th>ID</th>-->
-<!--      <th>EMPid</th>-->
-<!--      <th>TSid</th>-->
-<!--      <th>Time In</th>-->
-<!--      <th>Break Out</th>-->
-<!--      <th>Break In</th>-->
-<!--      <th>Time Out</th>-->
-<!--      <th>Note</th>-->
-<!--      <th>Earnings</th>-->
-<!--    </thead>-->
-<!--    <tbody>-->
-<!--      <tr ng-repeat="shift in shifts | filter:nameText | orderBy: 'time_in'">-->
-<!--        <td>{{shift.id}}</td>-->
-<!--        <td>{{shift.employee_id}}</td>-->
-<!--        <td>{{shift.timesheet_id}}</td>-->
-<!--        <td>{{shift.time_in | date:"MM/dd/yyyy 'at' h:mma"}}</td>-->
-<!--        <td>{{shift.break_out}}</td>-->
-<!--        <td>{{shift.break_in}}</td>-->
-<!--        <td>{{shift.time_out | date:"MM/dd/yyyy 'at' h:mma"}}</td>-->
-<!--        <td>{{shift.note}}</td>-->
-<!--        <td>{{shift.earnings | currency}}</td>-->
-<!--      </tr>-->
-<!--    </tbody>-->
-<!--  </table>-->
-
-    
-
-
-<!--</div>-->
-
-
-<!--Search: <input ng-model="query">-->
-<!--Sort by:-->
-<!--<select ng-model="orderProp">-->
-<!--  <option value="name">Alphabetical</option>-->
-<!--  <option value="age">Newest</option>-->
-<!--</select>-->
-
-
-<!--<ul class="phones">-->
-<!--  <li ng-repeat="phone in phones | filter:query | orderBy:orderProp">-->
-<!--    <span>{{phone.name}}</span>-->
-
-<!--    <p>{{phone.snippet}} | {{phone.age}}</p>-->
-<!--  </li>-->
-<!--</ul>-->
-
-<!--        <form ng-submit="addPhone()" class="pull-left">-->
-<!--            <input type="text" placeholder="Name" ng-model="newPhone.name"><br>-->
-<!--            <input type="text" placeholder="Snippet" ng-model="newPhone.snippet"><br>-->
-<!--            <input type="number" placeholder="Age"  ng-model="newPhone.age"><br>-->
-<!--            <input type="submit" value="Add">-->
-<!--        </form>-->
-<!--        <p>{{newPhone.name}} {{newPhone.snippet}} - {{newPhone.age}}</p>-->
-
-
-<!--<%= render 'angular/billrate' %>-->
-<!--<ul>-->
-<!--  <li ng-repeat="x in names">-->
-<!--    {{ x.Name + ', ' + x.Country }}-->
-<!--  </li>-->
-<!--</ul>-->
-
-
-
-
-
-
-
-
-
-<!--</div>-->
-
-<!--<div ng-app='app.employeeApp' ng-controller='EmployeeCtrl'>-->
-<!--{{exampleValue}}-->
-<!--</div>-->

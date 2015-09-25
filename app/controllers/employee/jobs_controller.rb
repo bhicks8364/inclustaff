@@ -68,8 +68,8 @@ class Employee::JobsController < ApplicationController
     if @job.off_shift?
       @shift = @job.shifts.create(time_in: Time.current, week: Date.today.cweek,
                                   state: "Clocked In",
-                                  in_ip: current_user.cur)
-      current_user.events.create(action: "clocked_in", eventable: @shift.employee)
+                                  in_ip: current_user.current_sign_in_ip)
+      # current_user.events.create(action: "clocked_in", eventable: @shift.employee)
 
     
       respond_to do |format|
@@ -87,8 +87,8 @@ class Employee::JobsController < ApplicationController
         @shift = @job.current_shift
         @shift.update(time_out: Time.current,
                         state: "Clocked Out",
-                        out_ip: "Admin-Clock-Out" )
-        current_user.events.create(action: "clocked_out", eventable: @shift.employee)
+                        out_ip: current_user.current_sign_in_ip )
+        # current_user.events.create(action: "clocked_out", eventable: @shift.employee)
       respond_to do |format|
           format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
                     state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out.strftime("%l:%M%P"),

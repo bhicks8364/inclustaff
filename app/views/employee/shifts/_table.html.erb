@@ -1,9 +1,9 @@
-<table id="shifts" class="table">
+<table id="shifts" class="table table-bordered">
   <thead>
     <tr>
-      <th></th>
+     
       <th>Work Date</th>
-      <th>Employee</th>
+    
       <th>Time In</th>
       <th>Time Out</th>
       <th>Hours</th>
@@ -23,10 +23,10 @@
       <% else %>
         <tr class="clocked_out">
       <% end %>
-        <td><%= link_to "<span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span>     View".html_safe, job_shift_path(shift.job, shift), class: "table-link" %></td>
+       
         
         <td><%= shift.time_in.strftime("%x") %></td>
-        <td><%= link_to shift.employee.name, shift.employee %></td>
+      
         <td><%= shift.time_in.strftime("%I:%M %p") %></td>
         
         <td><%= shift.clocked_out? ? shift.time_out.strftime("%I:%M %p") : "Clocked In" %></td>
