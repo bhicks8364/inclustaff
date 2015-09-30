@@ -29,11 +29,11 @@
       <% end %>
         <td><% if job.on_shift? %>
              <%= link_to "<span class='glyphicon glyphicon-clock' aria-hidden='true'></span>     Clock Out".html_safe, 
-                   clock_out_job_shift_path(job, job.current_shift), method: :patch, remote: true, data: { disable_with: "Clocking Out..."},
+                   clock_out_job_path(job), method: :patch, remote: true, data: { disable_with: "Clocking Out..."},
                    class: "btn btn-default btn-sm" %> <span class="glyphicon glyphicon-clock" aria-hidden="true"></span>
         
             <% else %>
-            <%= link_to "<span class='glyphicon glyphicon-time' aria-hidden='true'></span>     Clock In".html_safe, new_job_shift_path(job), class: "btn btn-default btn-sm" %> <span class="glyphicon glyphicon-clock" aria-hidden="true"></span>
+            <%= link_to "<span class='glyphicon glyphicon-time' aria-hidden='true'></span>     Clock In".html_safe, clock_in_job_path(job), class: "btn btn-default btn-sm" %> <span class="glyphicon glyphicon-clock" aria-hidden="true"></span>
        
             <% end %>
 

@@ -6,9 +6,7 @@
     </div>
 
     <% if @employee.assigned? %>
-      <div class='main-box'>
-        <%= render 'employee/jobs/table' %>
-      </div>
+      
       <div class='main-box'>
         <%= render 'employee/jobs/job', job: @employee.current_job %>
       </div>
