@@ -4,10 +4,13 @@ class SkillsController < ApplicationController
   # GET /skills
   # GET /skills.json
   def index
-    @order_skills = Skill.job_order.includes(:skillable).order(:name)
+    # query = params[:q].presence || "*"
+    # @skills = Skill.search query, suggest: true
+    # Product.search "peantu butta", suggest: true
+    # @order_skills = Skill.job_order.includes(:skillable).order(:name)
     @skills = Skill.all.order(:name)
-    gon.skills = @shifts
-    @emp_skills = Skill.employee.includes(:skillable).order(:name)
+    # gon.skills = @shifts
+    # @emp_skills = Skill.employee.includes(:skillable).order(:name)
     skip_authorization
   end
 
@@ -67,6 +70,11 @@ class SkillsController < ApplicationController
       format.html { redirect_to :back, notice: 'Skill was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+  
+  def autocomplete
+    render json: Skill.search(params[:term], fields: [{name: :text_start}])
+    skip_authorization
   end
 
   private

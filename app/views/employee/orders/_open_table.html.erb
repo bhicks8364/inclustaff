@@ -1,0 +1,51 @@
+<div class="table-responsive">
+  <table class="table table-bordered" width="100%">
+  <thead>
+    <tr>
+      
+     
+      <th>Job Title</th>
+      <th>Pay Range</th>
+      <th>Shift</th>
+      <th>Start Date</th>
+      <th>Required Skills</th>
+      <th>Notes</th>
+      <th></th>
+      
+      
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @orders.needs_attention.each do |order| %>
+      <tr>
+        
+        
+        <td><%= order.title %></td>
+        <td><%= order.pay_range %></td>
+        <td><%= order.shift %></td>
+        <td><%= order.needed_by? ? order.needed_by.strftime("%B %e, %Y") : "TBD" %></td>
+        <td><% if order.skills.any? %>
+          <% order.skills.required.limit(3).each do |skill| %>
+            <small><%= skill.name %></small><br>
+          <% end %>
+        <% end %>
+        </td>
+        <td><%=h truncate(order.notes, :length => 50) %></td>
+        
+        
+        
+        <td><%= link_to(employee_order_path(order), class: "table-link" ) do %>
+					<span class="fa-stack">
+						<i class="fa fa-square fa-stack-3x fa-inverse"></i>
+						<i class="fa fa-file fa-stack-1x "></i>
+					</span>
+					<% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+  </div>

@@ -14,7 +14,11 @@
 
 class Event < ActiveRecord::Base
     belongs_to :admin
+    belongs_to :user
     belongs_to :eventable, polymorphic: true
+    
+    scope :admin, -> { where.not(admin_id: nil)}
+    scope :employee, -> { where(admin_id: nil)}
     
     def self.mentions(admin_id)
         where(action: "mentioned", eventable_id: admin_id)

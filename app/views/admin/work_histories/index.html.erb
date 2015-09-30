@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Work Histories</h1>
+
+<div class='table-responsive'>
+  <table id='work-datatable' class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>Employee name</th>
+      <th>Employer</th>
+      <th>Title</th>
+      <th>Start date</th>
+      <th>End date</th>
+      <th>Description</th>
+      
+      <th>Pay</th>
+
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @work_histories.each do |work_history| %>
+      <tr>
+        <td><%= link_to work_history.employee.name, admin_employee_work_histories_path(work_history.employee) %></td>
+        <td><%= link_to work_history.employer_name, admin_employee_work_history_path(work_history.employee, work_history) %></td>
+        <td><%= work_history.title %></td>
+        <td><%= work_history.start_date.stamp('11/2011') %></td>
+        <td><%= work_history.end_date.stamp('11/2011') %></td>
+        <td><%= work_history.description %></td>
+        
+        <td><%= number_to_currency(work_history.pay) %></td>
+   
+        
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
+

@@ -19,6 +19,8 @@ class DashboardController < ApplicationController
         
             @current_user = current_user if user_signed_in? && current_user.employee?
             @employee = @current_user.employee if @current_user.present? && @current_user.employee.present?
+            
+            @work_histories = @employee.work_histories
             @current_shift = @employee.current_shift if @employee.current_shift.present?
             @company = @employee.company if @employee.company.present?
             @timesheets = @employee.timesheets.order(updated_at: :desc)

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :work_histories
   root 'dashboard#home'
   get  'sign_in' => 'dashboard#sign_in_page'
   resources :agencies do
@@ -14,7 +15,12 @@ Rails.application.routes.draw do
   
   
   
-  resources :skills
+  resources :skills do
+    collection do
+      get 'autocomplete'
+    end
+  end
+  
   
   resources :events
   
@@ -45,8 +51,12 @@ Rails.application.routes.draw do
       
     end
     resources :employees do
+      collection do
+        get 'autocomplete'
+      end
       resources :jobs
       resources :skills
+      resources :work_histories
     end
     resources :orders do
       resources :skills
@@ -114,6 +124,14 @@ Rails.application.routes.draw do
       post :mention
       post :follow
       
+    end
+  end
+  
+  namespace :employee do
+    resources :orders do
+      member do
+        patch :apply
+      end
     end
   end
 

@@ -11,6 +11,10 @@
 /db/*.sqlite3
 /db/*.sqlite3-journal
 
+# Ignore the ElasticSearch for now.
+/elasticsearch-1.7.1
+elasticsearch-1.7.1.tar.gz
+
 # Ignore all logfiles and tempfiles.
 /log/*
 !/log/.keep

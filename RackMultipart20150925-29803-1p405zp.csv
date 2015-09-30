@@ -1,0 +1,11 @@
+id,last_name,first_name,email,code,role,password,password_confirmation
+1,Smith,James,James@email.com,,employee,password,password
+2,Jones,John,Jones@email.com,,employee,password,password
+3,Cooper,Larry,Larry@email.com,,employee,password,password
+4,Hicks,Cole,Cole@email.com,,employee,password,password
+5,Johns,Brittany,brittany@email.com,,employee,password,password
+6,Obrein,Stuart,Stuart@email.com,,employee,password,password
+7,Booth,Seeley,Seeley@email.com,,employee,password,password
+8,Brown,Billy,Billy@email.com,,employee,password,password
+9,Snow,Chris,Chris@email.com,,employee,password,password
+10,Stinnett,Wendy,Wendy@email.com,,employee,password,password

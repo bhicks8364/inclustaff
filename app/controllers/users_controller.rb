@@ -75,6 +75,7 @@ class UsersController < ApplicationController
         @jobs = @employee.jobs.includes(:order)
         @shifts = @employee.shifts.order(time_out: :desc).limit(1)
         @timesheets = @employee.timesheets
+        @work_histories = @employee.work_histories.order(end_date: :desc)
         # @company = @user.company
         # @employee = @user.employee if @user.employee?
         # @job = @employee.current_job if @employee.present?

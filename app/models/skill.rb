@@ -14,8 +14,23 @@
 class Skill < ActiveRecord::Base
     belongs_to :skillable, polymorphic: true
     
+    # searchkick suggest: [:name]
+    # def search_data
+    #     {
+    #       name: name,
+    #       subject: subject
+    #     }
+    # end
+    scope :required, -> { where(required: true, skillable_type: "Order")}
+    def subject
+        skillable.try(:name) || skillable.try(:title)
+    end
+    
+    
+    
     scope :job_order, -> { where(skillable_type: "Order")}
     scope :employee, -> { where(skillable_type: "Employee")}
+    # scope :employee, -> { where(skillable_type: "Employee")}
     
     # def with_comments_by(usernames)
     #     self.joins(:skillable)

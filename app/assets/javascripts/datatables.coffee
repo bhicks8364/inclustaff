@@ -6,6 +6,13 @@ jQuery ->
     "ordering": true,
     "order": [[ 0, "desc" ]],
     "info":     true
+  $('#employees-datatable').dataTable
+    sPaginationType: "full_numbers",
+    "paging":   false,
+    "scrollY": 400,
+    "ordering": true,
+    "order": [[ 1, "desc" ]],
+    "info":     true
     
   $('#jobs-datatable').dataTable
     sPaginationType: "full_numbers",
@@ -63,3 +70,15 @@ jQuery ->
     "order": [[ 1, "asc" ]],
     "info":     true
     console.log("Skills datatable running")
+  $('#work-datatable').dataTable
+    sPaginationType: "full_numbers",
+    "paging":   true,
+    "order": [[ 1, "asc" ]],
+    "info":     true
+    console.log("Work History datatable running")
+  $('.datatable').dataTable
+    sPaginationType: "full_numbers",
+    "paging":   true,
+    "order": [[ 1, "asc" ]],
+    "info":     true
+    console.log("Generic datatable running")

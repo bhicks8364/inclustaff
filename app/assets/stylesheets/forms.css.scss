@@ -1,3 +1,8 @@
+.simple_form {
+  border: solid 2px black;
+  padding: 15px;
+  max-width: 1000px;
+}
 .order-form {
   background-color: red;
 }
@@ -7,6 +12,16 @@
   margin-right: auto;
   width: 100%;
 
+}
+
+.fill {
+  width: 100%;
+  horizonal-align: middle;
+}
+
+#new_work_history > div:nth-child(5) > div.col-md-6 > div {
+  width: 100%;
+  horizonal-align: middle;
 }
 
 

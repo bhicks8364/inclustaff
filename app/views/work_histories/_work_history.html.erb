@@ -1,0 +1,37 @@
+<div class='col-md-12'>
+   
+        <div class='col-md-1'>
+        <% if work_history.current? %>
+            <i class="fa fa-asterisk"></i>
+        <% end %>
+            
+            
+        <% if work_history.may_contact? %>
+            <i class="fa fa-phone-square"></i>
+        <% end %>
+        </div>
+        
+        <div class='col-md-4'>
+            <h5><%= work_history.employer_name %> - <%= work_history.title %></h5>
+            </div>
+        
+        <div class='col-md-3'>
+
+            <strong><%= work_history.start_date.stamp("December 2013") %> - <%= work_history.end_date.stamp("December 2013") %></strong>
+            
+        </div>
+        <div class='col-md-5'>
+            <%= number_to_currency(work_history.pay) %><br>
+            <p><%= work_history.description %></p>
+        </div>
+        <div class='col-md-2'>
+            
+            <%= link_to "<i class='fa fa-external-link-square'></i>".html_safe, admin_employee_work_history_path(work_history.employee, work_history) %>
+
+        
+        
+        
+        </div>
+       
+        
+</div>

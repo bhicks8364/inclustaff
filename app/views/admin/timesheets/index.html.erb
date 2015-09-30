@@ -1,21 +1,25 @@
-<h1>Timesheets</h1>
-<%= render partial: "admin/timesheets/table" %>
-
-
-<%= link_to(admin_timesheets_path(@timesheets, format: :csv), class: 'btn btn-primary') do %>
-			  					<i class="fa fa-file-excel-o fa-lg"></i> Export CSV
-			  				
-			  				<% end %>
-
-
-<hr>
-
-
+<div class='col-md-12'>
+    <% if @timesheets.any? %>
+        <h1>Timesheets</h1>
+            <%= render partial: "admin/timesheets/table" %>
+            
+            
+            <%= link_to(admin_timesheets_path(@timesheets, format: :csv), class: 'btn btn-primary') do %>
+		  					<i class="fa fa-file-excel-o fa-lg"></i> Export CSV
+  			<% end %>
 <div class='col-lg-12' data-behavior='timesheet-list'>
     <h3 class='text-center'><strong>Approved Timesheets</strong></h3>
-    <%= render(@approved_timesheets.current_week) || "There are no approved timesheets for this week yet." %>
+    <%= render(@timesheets.current_week) || "There are no approved timesheets for this week yet." %>
     
 </div>
+
+    <% else %>
+    <h4>There are no timesheets to show yet.</h4>
+    <% end %>
+
+</div>
+
+
 
 
 

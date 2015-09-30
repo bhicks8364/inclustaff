@@ -5,7 +5,7 @@
 			<div class="main-box infographic-box">
 				<i class="fa fa-user red"></i>
 				<span class="headline"><%= link_to "Admins", admins_path %></span>
-				<span class="value"><%= @viewing %></span>
+				<span class="value"><%= @current.admins.try(:count) %></span>
 			</div>
 		</div>
 		<div class="col-lg-3 col-sm-6 col-xs-12">
@@ -19,16 +19,16 @@
 			<div class="main-box infographic-box">
 				<i class="fa fa-money green"></i>
 				<span class="headline">Total Billing</span>
-				<span class="price"><%= number_to_currency(@agency.current_billing) %></span><br>
-				<span class="price text-muted"><small>Last week: <%= number_to_currency(@agency.last_week_billing)%></small></span>
+				<span class="price"><%= number_to_currency(@current.current_billing) %></span><br>
+				<span class="price text-muted"><small>Last week: <%= number_to_currency(@current.last_week_billing)%></small></span>
 			</div>
 		</div>
 		<div class="col-lg-3 col-sm-6 col-xs-12">
 			<div class="main-box infographic-box">
 				<i class="fa fa-eye yellow"></i>
 				<span class="headline">Current Payroll</span>
-				<span class="price"><%= number_to_currency(@agency.current_payroll) %></span><br>
-				<span class="price text-muted"><small>YTD: <%= number_to_currency(@timesheets.sum(:gross_pay)) %></small></span>
+				<span class="price"><%= number_to_currency(@current.current_payroll) %></span><br>
+				<span class="price text-muted"><small>YTD: <%= number_to_currency(@current.timesheets.sum(:gross_pay)) %></small></span>
 				
 				
 			</div>
@@ -67,7 +67,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<% @orders.each do |order| %>
+							<% @current.orders.each do |order| %>
 							<tr>
 								
 								

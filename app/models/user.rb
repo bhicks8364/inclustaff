@@ -27,17 +27,23 @@
 #  zipcode                :string
 #  employee_id            :integer
 #  agency_id              :integer
+#  resume_id              :integer
 #
 
 class User < ActiveRecord::Base
   has_one :employee, dependent: :destroy
   has_many :shifts, through: :employee
+  has_many :work_histories, through: :employee
+  has_many :skills, through: :employee
   has_one :current_job, through: :employee
+  has_many :events
   attachment :resume, extension: ["pdf", "doc", "docx"]
   # belongs_to :company
 
   accepts_nested_attributes_for :employee
-  
+  accepts_nested_attributes_for :work_histories, reject_if: :all_blank, allow_destroy: true
+  accepts_nested_attributes_for :skills, reject_if: :all_blank, allow_destroy: true
+
   # validates :company_id,  presence: true
   validates :role,  presence: true
 
@@ -46,7 +52,7 @@ class User < ActiveRecord::Base
   scope :unassigned, -> { joins(:employee).merge(Employee.unassigned)}
   
   
-  after_create :set_employee, :set_emp_id
+  after_create :set_employee
   
   after_initialize :set_role
   
@@ -101,7 +107,7 @@ class User < ActiveRecord::Base
         employee.last_name = self.last_name
         employee.ssn = 1234
       end
-      self.employee_id = self.employee.id
+      
 
     end
   end
@@ -132,7 +138,13 @@ class User < ActiveRecord::Base
     end
   end
     
-  
+  def applied_to(order_id)
+    if Event.where(user_id: self.id, eventable_id: order_id, action: 'applied').any?
+      true
+    else
+      false
+    end
+  end
   
 
 

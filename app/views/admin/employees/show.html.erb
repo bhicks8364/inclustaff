@@ -65,4 +65,22 @@ No resume available.
 <%= link_to "Edit", edit_admin_employee_path(@employee), class: 'btn btn-success' %><br>
 </div>
 
+
+
+
+<div class='col-md-12 center'>
+  <% if @employee.work_histories.any? %>
+     <% @employee.work_histories.each do |work_history| %>
+       <%= render work_history %>
+     <% end %>
+       <hr>
+     <%=link_to "Add Work History", new_admin_employee_work_history_path(@employee) %>
+       
+   
+    <% else %>
+      <p>No Work History Available.</p>
+      <%=link_to "Add Work History", new_admin_employee_work_history_path(@employee) %>
+    <% end %>
+</div>
+
 </div>

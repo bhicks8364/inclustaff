@@ -11,6 +11,8 @@ class Employee::DashboardController < ApplicationController
     def home
         @employee = current_user.employee if current_user.employee?
         @shifts = @employee.shifts
+        @jobs = @employee.jobs
+        @orders = Order.active
         gon.shifts = @shifts
         gon.emp_code = @employee.code
         gon.clocked_in = @employee.clocked_in?

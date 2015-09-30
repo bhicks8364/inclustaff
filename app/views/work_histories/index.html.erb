@@ -1,0 +1,47 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Work Histories</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Employer name</th>
+      <th>Start date</th>
+      <th>End date</th>
+      <th>Title</th>
+      <th>Employee</th>
+      <th>Description</th>
+      <th>Current</th>
+      <th>May contact</th>
+      <th>Supervisor</th>
+      <th>Phone number</th>
+      <th>Pay</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @work_histories.each do |work_history| %>
+      <tr>
+        <td><%= work_history.employer_name %></td>
+        <td><%= work_history.start_date %></td>
+        <td><%= work_history.end_date %></td>
+        <td><%= work_history.title %></td>
+        <td><%= work_history.employee_id %></td>
+        <td><%= work_history.description %></td>
+        <td><%= work_history.current %></td>
+        <td><%= work_history.may_contact %></td>
+        <td><%= work_history.supervisor %></td>
+        <td><%= work_history.phone_number %></td>
+        <td><%= work_history.pay %></td>
+        <td><%= link_to 'Show', work_history %></td>
+        <td><%= link_to 'Edit', edit_work_history_path(work_history) %></td>
+        <td><%= link_to 'Destroy', work_history, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Work history', new_work_history_path %>

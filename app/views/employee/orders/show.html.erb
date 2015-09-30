@@ -1,0 +1,59 @@
+
+
+<h1>  <%= @order.title %></h1>
+<hr>
+<div class='center' id="order-tabs">
+
+  <!-- Nav tabs -->
+  <ul id="order-nav" class="nav nav-tabs nav-justified" role="tablist">
+    <li role="presentation" class="active"><a href="#order" aria-controls="order" role="tab" data-toggle="tab">General Info.</a></li>
+    <li role="presentation"><a href="#skills" aria-controls="skills" role="tab" data-toggle="tab">Skills</a></li>
+    <li role="presentation"><a href="#apply" aria-controls="apply" role="tab" data-toggle="tab">Apply Now!</a></li>
+  </ul>
+  
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane fade in active" id="order">
+  
+
+<h3> <%= @order.title %></h3>
+
+  <h5><strong>Information about this position:</strong></h5>
+    <div id= "order-notes" class="" >
+      <p><%= @order.notes %></p>
+    </div>
+
+<p>
+
+  <%= @order.pay_range %> - BOE
+</p>
+
+
+
+
+  </div>
+  
+  
+    <div role="tabpanel" class="tab-pane fade" id="skills">
+      <div class='col-md-12'>
+        <div class='offset-col-md-3 col-md-6 center'>
+          <%= render @order.skills %>
+        </div>
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane fade" id="apply">
+      <div class='col-md-12'>
+        <% if @current_user.applied_to(@order.id) %>
+        <h2>Thanks for applying! We will be contacting you shortly.</h2>
+        <% else %>
+        <h2 id='interested'>Interested in the position? </h2>
+        <div id='thanks' class='hide-this'><h2>Thanks for applying! We will be contacting you shortly.</h2></div>
+        
+      <%= link_to "Apply Now!", apply_employee_order_path(@order), id: 'apply-btn', method: :patch, remote: true, class: 'btn btn-success' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  
+ 

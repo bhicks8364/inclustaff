@@ -15,6 +15,8 @@
 #  balance       :decimal(, )
 #  phone_number  :string
 #  user_id       :integer
+#  agency_id     :integer
+#  admin_id      :integer
 #
 
 require 'test_helper'

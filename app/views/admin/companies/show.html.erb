@@ -1,6 +1,7 @@
 <div class="col-lg-12">
+  <h2><%= @company.name %><small><%= @company.agency.name %></small></h2>
     <div class="row">
-            <p class='text-muted pull-right'><%= @company.agency.name %></p>
+            
 <div class="btn-group btn-group-justified" role="group" aria-label="...">
   <div class="btn-group" role="group">
   <%= link_to(new_admin_company_order_path(@company), class: "btn btn-default") do %>
@@ -28,20 +29,20 @@
   </div>
   
 </div>
+<hr>
 
-     <h1 class="page-header"><%= @company.name %></h1>
-     
      
 
-      
 
   <!-- Nav tabs -->
   <ul class="nav nav-tabs nav-justified" role="tablist">
     <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Company Information</a></li>
     <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Job Orders</a></li>
-    <li role="presentation"><a href="#employees" aria-controls="employees" role="tab" data-toggle="tab">Current Employees</a></li>
-    <li role="presentation"><a href="#company-contacts" aria-controls="company-contacts" role="tab" data-toggle="tab">Company Contacts</a></li>
+    <li role="presentation"><a href="#new-order" aria-controls="new-order" role="tab" data-toggle="tab">New Order</a></li>
+    <li role="presentation"><a href="#employees" aria-controls="employees" role="tab" data-toggle="tab">Employees</a></li>
+    <li role="presentation"><a href="#company-contacts" aria-controls="company-contacts" role="tab" data-toggle="tab">Company Admins</a></li>
     <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Timeclock</a></li>
+    <li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li>
   </ul>
   <div class='main-box'>
   <div class="tab-content">
@@ -100,6 +101,13 @@
 <% end %>
 
   </div>
+  <div role="tabpanel" class="tab-pane fade" id="new-order">
+    <h4>Add New Job Order</h4>
+    <%= render 'admin/orders/form' %>
+  </div>
+  <div role="tabpanel" class="tab-pane fade" id="timesheets">
+    <%= render 'admin/timesheets/table' %>
+  </div>
 
   
   
@@ -109,10 +117,11 @@
 </div>
 </div>
 
-<div class='col-md-8 well'>
-      <%= render 'admin/orders/form' %>
-    </div>
+<%= link_to(edit_admin_company_path(@company), class: "btn btn-default") do %>
+							<i class='fa fa-pencil'></i>
 
+								<span>Edit Company</span>
+							<% end %>
 
 
 

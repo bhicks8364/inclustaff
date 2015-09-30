@@ -1,0 +1,6 @@
+<li>
+    <strong><%= link_to event.user.name, event.user %></strong>
+    <%= event.action %> to <%= link_to event.eventable.title, admin_company_orders_path(event.eventable.company, event.eventable) %>
+    <p><%= time_ago_in_words(event.created_at) %></p>
+    
+</li>

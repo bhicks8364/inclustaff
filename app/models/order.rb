@@ -152,6 +152,10 @@ class Order < ActiveRecord::Base
     (self.mark_up * 100 - 100).to_i.to_s + "%" 
   end
   
+  
+  def applications
+      Event.where(eventable_id: self.id, eventable_type: 'Order', action: 'applied')
+  end
 
 
 

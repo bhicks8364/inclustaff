@@ -1,106 +1,57 @@
-<div class="col-lg-12">
+<div class="col-md-12">
+	<h4>Assigned Employees</h4>
+		<div class="table-responsive">
+			<table id='employees-datatable' class="table table-bordered ">
+				<thead>
+					<tr>
+						<th>Employee</th>
+						<th>Title</th>
+						<th>Status</th>
+						<th>Week Gross</th>
+						<th>YTD Gross</th>
+						<th><i class="fa fa-cogs"></i></th>
+					</tr>
+				</thead>
+				<tbody>
+					<%= content_tag_for(:tr, @employees) do |employee| %>
 					
-	<div class="clearfix">
-	<h3 class="pull-left">Employees</h3>
-	
-	</div>
-
-		<div class="col-lg-12">
-			<div class="main-box clearfix">
-				<div class="table-responsive">
-					<table class="table user-list">
-						<thead>
-							<tr>
-								<th><span></span></th>
-								<th><span>Name</span></th>
-
-								<th style="width: 20%;" class="text-center"><span>Status</span></th>
-								<th><span>Week Gross</span></th>
-								<th><span>YTD Gross</span></th>
-								<th>&nbsp;</th>
-							</tr>
-						</thead>
-						<tbody>
-							<%= content_tag_for(:tr, @employees.assigned) do |employee| %>
-							
-								<td><%= render 'admin/jobs/company', job: employee.current_job %></td>
-								<td>
-									<%= render 'admin/jobs/modal', job: employee.current_job %>
-								</td>
-
-								<td style="width: 20%;" class="text-center">
-								  <% if employee.current_job.on_shift? %>
-								    <span class="label label-success">Clocked In</span>
-								  <% else %>
-								  <span class="label label-primary">Clocked Out</span>
-								  
-								  <% end %>
-									
-								</td>
-								<td><%= number_to_currency(employee.current_job.current_week_pay) %></td>
-		<td><%= number_to_currency(employee.current_job.total_gross_pay) %></td>
-								<td style="width: 20%;">
-									<%= link_to admin_employee_path(employee, class: "table-link" ) do %>
-										<span class="fa-stack">
-											<i class="fa fa-square fa-stack-2x"></i>
-											<i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
-										</span>
-									<% end %>
-									<%= link_to edit_admin_employee_path(employee, class: "table-link" ) do %>
-										<span class="fa-stack">
-											<i class="fa fa-square fa-stack-2x"></i>
-											<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-										</span>
-									<% end %>
-		
-									<%= link_to(admin_employee_path(employee), method: :delete) do %>
-										<span class="fa-stack">
-											<i class="fa fa-square fa-stack-2x"></i>
-											<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-										</span>
-									<% end %>
-								</td>
+						<td style="width: 10%;"><%= employee.name %></td>
+						<td style="width: 10%;"><%= employee.title %></td>
+						<td style="width: 5%;"> 
+							<% if employee.on_shift? %>
+						    <span class="label label-success">Clocked In</span>
+						 	<% else %>
+						  	<span class="label label-primary">Clocked Out</span>
+			        <% end %>
+					   </td>
+						<td style="width: 10%;"><%= number_to_currency(employee.current_timesheet.try(:gross_pay) || 0) %> </td>
+						<td style="width: 10%;"><%= number_to_currency(employee.current_job.try(:total_gross_pay) || 0) %> </td>
+						<td style="width: 10%;">
+							<%= link_to admin_employee_path(employee, class: "table-link" ) do %>
+								<span class="fa-stack">
+									<i class="fa fa-square fa-stack-2x"></i>
+									<i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+								</span>
 							<% end %>
-							<%= content_tag_for(:tr, @employees.unassigned) do |employee| %>
-							
-								
-								<td><%= link_to "+", employee.user %></td>
-								<td><strong><%= employee.name %></strong></td>
-							
-
-								<td style="width: 20%;" class="text-center">
-								  <span class="label label-danger">Unassigned</span>
-									
-								</td>
-								<td>Unassigned</td>
-								<td>Unassigned</td>
-								<td style="width: 20%;">
-									<%= link_to admin_employee_path(employee, class: "table-link" ) do %>
-										<span class="fa-stack">
-											<i class="fa fa-square fa-stack-2x"></i>
-											<i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
-										</span>
-									<% end %>
-									<%= link_to edit_admin_employee_path(employee, class: "table-link" ) do %>
-										<span class="fa-stack">
-											<i class="fa fa-square fa-stack-2x"></i>
-											<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-										</span>
-									<% end %>
-		
-									<%= link_to(admin_employee_path(employee), method: :delete) do %>
-										<span class="fa-stack">
-											<i class="fa fa-square fa-stack-2x"></i>
-											<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-										</span>
-									<% end %>
-								</td>
+							<%= link_to edit_admin_employee_path(employee, class: "table-link" ) do %>
+								<span class="fa-stack">
+									<i class="fa fa-square fa-stack-2x"></i>
+									<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+								</span>
 							<% end %>
-						</tbody>
-					</table>
-				</div>
-	</div>
+
+							<%= link_to(admin_employee_path(employee), method: :delete) do %>
+								<span class="fa-stack">
+									<i class="fa fa-square fa-stack-2x"></i>
+									<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+								</span>
+							<% end %>
+						</td>
+					<% end %>
+					
+				</tbody>
+			</table>
+		</div>
 </div>
 
-</div>
 

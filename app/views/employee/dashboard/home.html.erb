@@ -1,17 +1,37 @@
-<div class='col-md-12'>
-  <div class='row'>
+<div class='col-md-12 main-box'>
+ 
     <h2> Welcome back, <%= @employee.first_name %>!</h2>
     <div class='main-box'>
-      <%= render 'employee/jobs/job', job: @employee.current_job %>
+      <%= link_to 'My Profile', @employee.user, class: 'btn' %>
     </div>
-    <div class='main-box'>
-      <%= render 'employee/timesheets/table' %>
-    </div>
-    <div class='main-box'>
-      <%= render 'employee/shifts/table' %>
-    </div>
-    <div class='main-box'>
-      <%= render 'employee/jobs/job', job: @employee.current_job %>
-    </div>
-  </div>
+
+    <% if @employee.assigned? %>
+      <div class='main-box'>
+        <%= render 'employee/jobs/table' %>
+      </div>
+      <div class='main-box'>
+        <%= render 'employee/jobs/job', job: @employee.current_job %>
+      </div>
+      <div class='main-box'>
+        <%= render 'employee/timesheets/table' %>
+      </div>
+      <div class='main-box'>
+        <%= render 'employee/shifts/table' %>
+      </div>
+      
+      <div class='main-box'>
+        <%= render 'employee/jobs/job', job: @employee.current_job %>
+      </div>
+    
+    <% else %>
+    
+      <div class='main-box'>
+        <h4>All Open Positions</h4>
+        <%= render 'employee/orders/open_table' %>
+      </div>
+    
+    
+    
+    <% end %>
+ 
 </div>

@@ -74,6 +74,9 @@ gem "cocoon"
 # SOFT DELETE
 gem 'paranoia', '~> 2.1.0'
 
+# RESUME PARSER
+gem 'presume', '~> 0.0.4'
+
 # FILE UPLOADING
 gem 'refile', '~> 0.5.5', require: ['refile/rails', 'refile/image_processing']
 gem 'refile-mini_magick'
@@ -135,3 +138,7 @@ gem 'bower-rails'
 # RANSACK SEARCH - DON'T THINK I NEED THIS EITHER SINCE IM USING DATATABLES
 gem 'ransack', github: 'activerecord-hackery/ransack', branch: 'rails-4.2'
 ruby "2.2.1"
+
+
+# # ELASTICSEARCH
+# gem 'searchkick'

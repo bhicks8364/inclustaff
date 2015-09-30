@@ -23,6 +23,8 @@ class Employee < ActiveRecord::Base
   
   belongs_to :user
   has_many :skills, as: :skillable
+  has_many :events, :through => :user
+  has_many :work_histories
   attachment :resume, extension: ["pdf", "doc", "docx"]
   has_many :shifts, dependent: :destroy
   has_many :jobs, dependent: :destroy
@@ -31,15 +33,25 @@ class Employee < ActiveRecord::Base
   has_one :current_job, -> { where active: true }, class_name: "Job"
   has_one :current_shift, -> { where state: 'Clocked In' }, class_name: "Shift"
   has_many :timesheets, :through => :jobs
-
+  # searchkick suggest: [:name], word_start: [:last_name]
+  #   def search_data
+  #       {
+  #         name: name,
+  #         title: title,
+  #         ssn: ssn,
+  #         first_name: first_name,
+  #         last_name: last_name
+  #       }
+  #   end
 
 
   accepts_nested_attributes_for :jobs
   accepts_nested_attributes_for :user
   accepts_nested_attributes_for :skills, reject_if: :all_blank, allow_destroy: true
+  accepts_nested_attributes_for :work_histories, reject_if: :all_blank, allow_destroy: true
   
   delegate :last_clock_out, to: :current_job
-  delegate :title, to: :current_job
+
   delegate :manager, to: :current_job
   delegate :recruiter, to: :current_job
   delegate :code, to: :user
@@ -53,6 +65,13 @@ class Employee < ActiveRecord::Base
       "#{first_name} #{last_name} - Unassigned"
     else
       current_job.name_title
+    end
+  end
+  def title
+    if current_job.nil?
+      "Unassigned"
+    else
+      current_job.title
     end
   end
 
@@ -124,7 +143,13 @@ class Employee < ActiveRecord::Base
   #     self.last_name = self.user.last_name if self.last_name.nil?
 
   # end
-  
+  def on_shift?
+    if self.shifts.clocked_in.any?
+      true
+    else
+      false
+    end
+  end
     
   
   

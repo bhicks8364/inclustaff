@@ -31,7 +31,7 @@ Please add a new employee before continuing.</h4>
 <% end %>
  
 
-       
+       <div class="form-group">
         <% if @employee.nil? %>
     <%= f.association :employee, collection: Employee.unassigned.order(:last_name), prompt: "Select Employee", label: false %>
     <% else %>
@@ -51,11 +51,11 @@ Please add a new employee before continuing.</h4>
     <% end %>
     <%= f.input :title, placeholder: "Job Title" %>
     
-    <%= f.text_area :description, placeholder: "Job Description", data: {behavior: 'autocomplete'} %>
+    
     
     <%= f.input :start_date, as: :string, placeholder: "Select start date", required: true %>
-    
-    
+    </div>
+    <%= f.input :description, as: :text, input_html: { class: 'form-control', rows: 10 }, label: false, placeholder: "Interview notes." %>
     <div class="input-group">
       <div class="input-group-addon">$</div>
                 <%= f.input :pay_rate, as: :decimal, placeholder: "Pay Rate", label: false %>

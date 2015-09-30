@@ -30,15 +30,15 @@
                   <%= f.input :phone_number, as: :tel, required: true, placeholder: "Phone Number  ex. 555-555-5555", label: false  %>
                   <%= f.input :ssn, required: true, maxlength: 4, label: false, placeholder: "SSN - Last 4 only" %>
                   <div class='form-group' id='skills'>
-          			    <%= f.simple_fields_for :skills do |skill| %>
-          			      <%= render 'skill_fields', f: skill %>
+          			    
+          			 <div class='form-group' id='resumes'>
+          			    <%= f.simple_fields_for :resumes do |r| %>
+          			      <%= r.input :name %>
+          			      <%= r.input :body, row: 10 %>
           			    <% end %>
-          			   </div>
+          			 </div>
 			    
-        			    <div class='links'>
-        			      <%= link_to_add_association 'add skill', f, :skills %>
-        			    </div>
-                  
+        			    <hr>
                   <%= f.attachment_field :resume, direct: true %>
 
 

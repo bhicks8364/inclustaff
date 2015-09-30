@@ -14,7 +14,7 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require refile
-//= require jquery-ui/draggable
+//= require jquery-ui
 //= require jquery-ui/datepicker
 //= require jquery.atwho
 //= require dataTables/jquery.dataTables

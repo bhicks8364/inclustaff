@@ -45,6 +45,7 @@
     <li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li>
     <li role="presentation"><a href="#active-jobs" aria-controls="active-jobs" role="tab" data-toggle="tab">Active Jobs</a></li>
     <li role="presentation"><a href="#skills-tab" aria-controls="skills-tab" role="tab" data-toggle="tab">Skills</a></li>
+    <li role="presentation"><a href="#applications" aria-controls="applications" role="tab" data-toggle="tab">Applicants</a></li>
   </ul>
   
   <div class="tab-content">
@@ -148,49 +149,67 @@
 
   </div>
   <div role="tabpanel" class="tab-pane fade" id="active-jobs">
-    <div class='col-md-12 center'>
-      <% if @jobs.any? %>
-    <%= render 'admin/jobs/table' %>
+      <div class='col-md-12 center'>
+        <% if @jobs.any? %>
+      <%= render 'admin/jobs/table' %>
+        <% if policy(Job).create? %>
+         <%= link_to 'Add Job', new_admin_order_job_path(@order), class: "btn btn-primary" %>
+        <% end %>
+      <% else %>
+      <h3>No jobs to display yet.</h3>
       <% if policy(Job).create? %>
        <%= link_to 'Add Job', new_admin_order_job_path(@order), class: "btn btn-primary" %>
       <% end %>
-    <% else %>
-    <h3>No jobs to display yet.</h3>
-    <% if policy(Job).create? %>
-     <%= link_to 'Add Job', new_admin_order_job_path(@order), class: "btn btn-primary" %>
-    <% end %>
-    <% end %>
-    </div>
+      <% end %>
+      </div>
   </div>
   
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
-
-<% if @order.timesheets.current_week.any? %>
-<%= render partial: "admin/timesheets/table", collection: @timesheets.current_week, as: :timesheet %>
-<% else %>
-<h3>No timesheets for this week yet.</h3>
-<% end %>
-<hr>
-<strong>All timesheets</strong>
-<%= render partial: "admin/timesheets/table" %>
-</div>
-
-<div role="tabpanel" class="tab-pane fade" id="skills-tab">
-<div class='center skill-list'>
-<h4>Skills</h4>
-  <div class='center text-left' id='skills'>
-    <%= render @order.skills %>
-  </div>
     <div class='center'>
-    <%= render partial: "admin/skills/form", locals: {skillable: @order} %>
+        <% if @order.timesheets.current_week.any? %>
+      <%= render partial: "admin/timesheets/table", collection: @timesheets.current_week, as: :timesheet %>
+      <% else %>
+      <h3>No timesheets for this week yet.</h3>
+      <% end %>
+      <hr>
+      <strong>All timesheets</strong>
+      <%= render partial: "admin/timesheets/table" %>
+    </div>
+    
   </div>
-  
-</div>
+
+  <div role="tabpanel" class="tab-pane fade" id="skills-tab">
+     <div class='center'>
+      <ul>
+        <% @order.skills.each do |skill| %>
+          
+            <%= render partial: "admin/skills/skill", locals: {skill: skill} %>
+          
+        <% end %>
+      </ul>
+    </div>
+  </div>
+  <div role="tabpanel" class="tab-pane fade" id="applications">
+    <div class='center'>
+      <ul>
+        <% @order.applications.each do |event| %>
+          <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+            <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+    
+      
+    
+
+      
+    </div>
   </div>
   
   
   
 </div>
 
-  </div>
+
   

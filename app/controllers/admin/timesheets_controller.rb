@@ -14,12 +14,13 @@ class Admin::TimesheetsController < ApplicationController
       authorize @timesheets
   	elsif params[:company_id]
 			@company = Company.includes(:jobs, :timesheets).find(params[:company_id])
-      @timesheets = @company.timesheets.current_week.order(updated_at: :desc) if @company.present? && @company.timesheets.present?
-      @approved_timesheets = @timesheets.approved if @company.present?
-      @pending_timesheets = @timesheets.pending if @company.present?
+      # @timesheets = @company.timesheets.current_week.order(updated_at: :desc) if @company.present? && @company.timesheets.any?
+      @timesheets = @company.timesheets
+      # @approved_timesheets = @timesheets.approved if @timesheets.any?
+      # @pending_timesheets = @timesheets.pending if @timesheets.any?
 
-      gon.timesheets = @timesheets.includes(:employee)
-      authorize @timesheets
+     
+      authorize @timesheets 
      elsif current_admin.agency?
      	@agency = current_admin.agency
      	@timesheets = @agency.timesheets.current_week.order(updated_at: :desc) if @agency.present? && @agency.timesheets.present?

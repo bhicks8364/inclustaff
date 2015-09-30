@@ -1,5 +1,5 @@
-<h1>Editing Job</h1>
-<input type="text" id="alternate" size="30" class="pull-right"><br>
+<h1>Edit Job</h1>
+
 
 <%= simple_form_for [:admin, @job] do |f| %>
   <% if @job.errors.any? %>
@@ -22,22 +22,23 @@
 
    
 
-    <%= f.input :title, placeholder: "Job Title" %>
-    <%= f.text_area :description, placeholder: "Job Description", data: {behavior: 'autocomplete'}, row: 10 %>
-    <%= f.input :start_date, as: :string, input_html: { id: "datepicker" } %> 
-    
-    <div class="input-group">
-      <div class="input-group-addon">$</div>
-                <%= f.input :pay_rate, as: :decimal, placeholder: "Pay Rate", label: false %>
-      <div class="input-group-addon">per hour</div>
-    </div>
+    <%= f.input :title, placeholder: "Job Title", required: true, label: false %>
+    <%= f.input :description, as: :text, placeholder: "Interview Notes", data: {behavior: 'autocomplete'}, input_html: { rows: 10 }, label: false %>
+
+
+        <%= f.input :start_date, as: :string, input_html: { class: 'datepicker' }, placeholder: "Start date", required: true, label: false %>
+
+        <%= f.input :pay_rate, as: :decimal, placeholder: "Pay Rate", label: false %>
+
+                
+ 
 
 
 
 
 <div id="job-end-date">
     <h4><%= f.input :active %></h4>
-    <%= f.input :end_date, html5: true, prompt: "Select end date" %>
+    <%= f.input :end_date, as: :string, input_html: { class: 'datepicker' }, placeholder: "End date", required: true, label: false %>
 </div>
 
 
@@ -47,5 +48,5 @@
 <% end %>
 
 
-<%= link_to 'Show', @job %> |
-<%= link_to 'Back', jobs_path %>
+<%= link_to 'Show', admin_job_path(@job) %> |
+<%= link_to 'Back', admin_jobs_path %>

@@ -1,0 +1,46 @@
+
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+        <th></th>
+      <th>Employer</th>
+      <th>Title</th>
+      
+      <th>Dates</th>
+      
+      
+      <th>Description</th>
+      
+      
+      <th>Pay</th>
+     <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @work_histories.each do |work_history| %>
+      <tr>
+          <td><% if work_history.current? %>
+            <span data-toggle="tooltip" data-placement="top" title="Current Employer"><i class="fa fa-asterisk"></i> </span>
+        <% end %>
+        <% if work_history.may_contact? %>
+            <i class="fa fa-phone-square" data-toggle="tooltip" data-placement="top" title="Allowed to Contact"></i>
+        <% end %></td>
+        <td><%= work_history.employer_name %></td>
+        <td><%= work_history.title %></td>
+        <% if work_history.start_date.present? %>
+        <td><%= work_history.start_date.stamp("Dec 2013") %>
+        <% end %>
+        <% if work_history.end_date.present? %>
+        - <%= work_history.end_date.stamp("Dec 2013") %></td>
+        <% end %>
+        
+        <td><%= work_history.description %></td>
+        
+        <td><%= number_to_currency(work_history.pay) %></td>
+        <td><%= link_to 'Show', work_history %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
