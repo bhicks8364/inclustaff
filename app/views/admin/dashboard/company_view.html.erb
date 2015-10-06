@@ -1,98 +1,154 @@
-<h1><%= @viewing.try(:name) %>'s Dashboard</h1>
-
-
 <div class="col-md-12">
+<h1><%= @viewing.try(:name) %>'s Dashboard</h1>
+<%= render 'admin/shared/infoboxes' %>
+<%= render 'admin/shared/payroll_boxes' %>
+
 	<div class='row'>
 		
 		<div class="col-lg-3 col-sm-3 col-xs-6">
-			<div class="main-box infographic-box">
+			<div class="main-box">
+				<div class="list-group">
+
+				    <li class="list-group-item"><div class='text-center'><i class="fa fa-cogs fa-fw"></i><strong>&nbsp; Actions</strong></div></li>
 				
-				<%= link_to "<span class=''><i class='fa fa-user-plus fa-2x pull-left'></i> <strong>Add Employee</strong></span>".html_safe, new_user_registration_path, class: 'btn' %>
+				    <%= link_to "<i class='fa fa-users fa-fw'></i>&nbsp; <strong> View Admins</strong>".html_safe, admins_path, class: 'list-group-item list-group-item-info' %>
+				    <%= link_to "<i class='fa fa-user-plus fa-fw'></i> &nbsp; <strong>  Add Admin</strong>".html_safe, new_admin_registration_path, class: 'list-group-item list-group-item-success' %>
+				    <li role="separator" class="list-group-item divider"></li>
+				    <%= link_to "<i class='fa fa-users fa-fw'></i>&nbsp; <strong>  View Employees</strong>".html_safe, admin_employees_path, class: 'list-group-item list-group-item-info' %>
+					<%= link_to "<i class='fa fa-user-plus fa-fw'></i>&nbsp; <strong>  Add Employee</strong>".html_safe, new_user_registration_path, class: 'list-group-item list-group-item-success' %>
+					<li role="separator" class="list-group-item divider"></li>
+					<%= link_to "<i class='fa fa-briefcase fa-fw'></i>&nbsp; <strong>  View Active Jobs</strong>".html_safe, admin_jobs_path, class: 'list-group-item list-group-item-info' %>
+					<%= link_to "<i class='fa fa-plus-square fa-fw'></i>&nbsp; <strong>  Add Job</strong>".html_safe, new_admin_job_path, class: 'list-group-item list-group-item-success' %>
+					<li role="separator" class="list-group-item divider"></li>
+					<%= link_to "<i class='fa fa-building fa-fw'></i>&nbsp; <strong>  View Companies</strong>".html_safe, admin_companies_path, class: 'list-group-item list-group-item-info' %>
+					<%= link_to "<i class='fa fa-plus-square fa-fw'></i>&nbsp; <strong>  Add Company</strong>".html_safe, new_admin_company_path, class: 'list-group-item list-group-item-success' %>
+				</div>
+			</div>
+			<div class="main-box">
+				<div class="list-group">
+				    <a class="list-group-item" href="#"><i class="fa fa-home fa-fw"></i>&nbsp; <strong>  Home</a>
+				    <a class="list-group-item" href="#"><i class="fa fa-book fa-fw"></i>&nbsp; <strong>  Library</a>
+				    <a class="list-group-item" href="#"><i class="fa fa-pencil fa-fw"></i>&nbsp; <strong>  Applications</a>
+				    <li role="separator" class="list-group-item divider"></li>
+				    <%= link_to "<i class='fa fa-users fa-fw'></i>&nbsp; <strong> View Admins</strong>".html_safe, admins_path, class: 'list-group-item list-group-item-info' %>
+				    <%= link_to "<i class='fa fa-user-plus fa-fw'></i> &nbsp; <strong>  Add Admin</strong>".html_safe, new_admin_registration_path, class: 'list-group-item list-group-item-success' %>
+				    <%= link_to "<i class='fa fa-users fa-fw'></i>&nbsp; <strong>  View Employees</strong>".html_safe, admin_employees_path, class: 'list-group-item list-group-item-info' %>
+					<%= link_to "<i class='fa fa-user-plus fa-fw'></i>&nbsp; <strong>  Add Employee</strong>".html_safe, new_user_registration_path, class: 'list-group-item list-group-item-success' %>
+					<%= link_to "<i class='fa fa-briefcase fa-fw'></i>&nbsp; <strong>  View Active Jobs</strong>".html_safe, admin_jobs_path, class: 'list-group-item list-group-item-info' %>
+					<%= link_to "<i class='fa fa-plus-square fa-fw'></i>&nbsp; <strong>  Add Job</strong>".html_safe, new_admin_job_path, class: 'list-group-item list-group-item-success' %>
+					<%= link_to "<i class='fa fa-building fa-fw'></i>&nbsp; <strong>  View Companies</strong>".html_safe, admin_companies_path, class: 'list-group-item list-group-item-info' %>
+					<%= link_to "<i class='fa fa-plus-square fa-fw'></i>&nbsp; <strong>  Add Company</strong>".html_safe, new_admin_company_path, class: 'list-group-item list-group-item-success' %>
+				</div>
 			</div>
 		</div>
-		<div class="col-lg-3 col-sm-3 col-xs-6">
-			<div class="main-box infographic-box">
+		<div class="col-lg-5 col-sm-8 col-xs-12">
+			<div class="main-box">
 				
-				<%= link_to "<span class=''><i class='fa fa-user-plus fa-2x pull-left'></i> <strong>Add Admin</strong></span>".html_safe, new_admin_registration_path, class: 'btn' %>
-			</div>
-		</div>
-		<div class="col-lg-3 col-sm-3 col-xs-6">
-			<div class="main-box infographic-box">
+			
+				<div class="list-group">
+					
+					<li class="list-group-item"><div class='text-center'><i class="fa fa-users fa-fw"></i><strong>&nbsp; Open Orders</strong></div></li>
+					
+					<% @current_agency.companies.with_open_orders.distinct.each do |company| %>
+						
+						<%= link_to admin_company_path(company), class: 'list-group-item list-group-item-info' do %>
+							
+						<strong>	<%=  company.name %> <span class='badge badge-primary pull-right'><%= number_to_currency(company.current_billing) %></span></strong>
+						<% end %>
+						
+								<% company.orders.needs_attention.each do |order| %>
+					
+								<%= link_to admin_order_path(order), class: 'list-group-item list-group-item-danger' do %>
+							<strong><%= order.title %></strong> <span class='badge badge-danger'><%= order.open_jobs %> needed</span>
+							
+							
+							<div class='text-left'>
+								<small><%= order.needed_by.stamp('Monday - 11/12') %></small>
+							</div>
+							
+					
+								  
+								 
+							<% end %>
+						
+						<% end %>
+					
+							
+						<li role="separator" class="list-group-item divider"></li>
+					<% end %>
+					
+				</div>
+
 				
-				<%= link_to "<span class=''><i class='fa fa-user-plus fa-2x pull-left'></i> <strong>Add Job</strong></span>".html_safe, new_admin_job_path, class: 'btn' %>
+			</div>
+		</div>
+
+		<div class="col-lg-4 col-sm-3 col-xs-6">
+			<div class="main-box">
+				<div class="list-group">
+
+				    <li class="list-group-item"><div class='text-center'><i class="fa fa-users fa-fw"></i><strong>&nbsp; Admins</strong></div></li>
+				    
+					<% @viewing.admins.order(:role, :last_name).each do |admin| %>
+						
+						<%= link_to (admin), class: 'list-group-item list-group-item-info' do %>
+							<%=  admin.name %> <span class='badge badge-primary pull-right'><%= admin.role %></span>
+						<% end %>
+						
+					<% end %>
+				    
+				    <li role="separator" class="list-group-item divider"></li>
+				    
+				</div>
 			</div>
 		</div>
 		<div class="col-lg-3 col-sm-3 col-xs-6">
-			<div class="main-box infographic-box">
+			<div class="main-box">
+				<div class="list-group">
+				    <%= link_to "<i class='fa fa-home fa-fw'></i>&nbsp; <strong> Home</strong>".html_safe, @current_agency, class: 'list-group-item list-group-item-info' %>
+
+				    <%= link_to "<i class='fa fa-users fa-fw'></i>&nbsp; <strong> View Admins</strong>".html_safe, admins_path, class: 'list-group-item list-group-item-info' %>
+				    <%= link_to "<i class='fa fa-user-plus fa-fw'></i> &nbsp; <strong>  Add Admin</strong>".html_safe, new_admin_registration_path, class: 'list-group-item list-group-item-success' %>
+				    <%= link_to "<i class='fa fa-users fa-fw'></i>&nbsp; <strong>  View Employees</strong>".html_safe, admin_employees_path, class: 'list-group-item list-group-item-info' %>
+					<%= link_to "<i class='fa fa-user-plus fa-fw'></i>&nbsp; <strong>  Add Employee</strong>".html_safe, new_user_registration_path, class: 'list-group-item list-group-item-success' %>
+					<%= link_to "<i class='fa fa-briefcase fa-fw'></i>&nbsp; <strong>  View Active Jobs</strong>".html_safe, admin_jobs_path, class: 'list-group-item list-group-item-info' %>
+					<%= link_to "<i class='fa fa-plus-square fa-fw'></i>&nbsp; <strong>  Add Job</strong>".html_safe, new_admin_job_path, class: 'list-group-item list-group-item-success' %>
+					<%= link_to "<i class='fa fa-building fa-fw'></i>&nbsp; <strong>  View Companies</strong>".html_safe, admin_companies_path, class: 'list-group-item list-group-item-info' %>
+					<%= link_to "<i class='fa fa-plus-square fa-fw'></i>&nbsp; <strong>  Add Company</strong>".html_safe, new_admin_company_path, class: 'list-group-item list-group-item-success' %>
+				</div>
+			</div>
+		</div>
+
+
+		
+		<div class="col-lg-3 col-sm-3 col-xs-6">
+			<div class="main-box">
+				<div class="list-group">
+					
+					<li class="list-group-item">	<%= @viewing.admins.count %>  Admin Users</li>
+					<li class="list-group-item"><%= @current_agency.companies.count %> Current Companies</li>
+					<li class="list-group-item"><%= @current_agency.orders.needs_attention.count %> Open Orders</li>
+					<li class="list-group-item"><%= @current_agency.jobs.count %> Active Jobs </li>
+					<li class="list-group-item"><%= @current_agency.employees.count %> Current Employees</li>
+					<li class="list-group-item">Total Payroll: <%= number_to_currency(@timesheets.current_week.sum(:gross_pay)) %></li>
+				</div>
+
 				
-				<%= link_to "<span class=''><i class='fa fa-building-o fa-2x pull-left'></i> <strong>Add Company</strong></span>".html_safe, new_admin_company_path, class: 'btn' %>
 			</div>
 		</div>
-		
-		
-		<div class="col-lg-3 col-sm-3 col-xs-6">
-			<div class="main-box infographic-box">
-				<span class="headline"> <%= @current_agency.admins.try(:count) %> Admin Users</span>
-				<%= link_to "<span class=''><i class='fa fa-users fa-2x pull-left'></i> <strong>View Admins</strong></span>".html_safe, admins_path, class: 'btn' %>
-			</div>
-		</div>
-		
-		
-		<div class="col-lg-3 col-sm-3 col-xs-6">
-			<div class="main-box infographic-box">
-				<span class="headline"> <%= @current_agency.companies.count %> Current Companies</span>
-				<%= link_to "<span class=''><i class='fa fa-building-o fa-2x pull-left'></i> <strong>View Companies</strong></span>".html_safe, admin_companies_path, class: 'btn' %>
-			</div>
-		</div>
-		<div class="col-lg-3 col-sm-3 col-xs-6">
-			<div class="main-box infographic-box">
-				<span class="headline"> <%= @current_agency.orders.needs_attention.count %> Open Orders</span>
-				<%= link_to "<span class=''><i class='fa fa-users fa-2x pull-left'></i> <strong>View Orders</strong></span>".html_safe, admin_orders_path, class: 'btn' %>
-			</div>
-		</div>
-		<div class="col-lg-3 col-sm-3 col-xs-6">
-			<div class="main-box infographic-box">
-				<span class="headline"> <%= @current_agency.jobs.count %> Active Jobs</span>
-				<%= link_to "<span class=''><i class='fa fa-briefcase fa-2x pull-left'></i> <strong>View Active Jobs</strong></span>".html_safe, admin_jobs_path, class: 'btn' %>
-			</div>
-		</div>
-		
-		<div class="col-lg-3 col-sm-3 col-xs-6">
-			<div class="main-box infographic-box">
-				<span class="headline"> <%= @current_agency.employees.count %> Current Employees</span>
-				<%= link_to "<span class=''><i class='fa fa-users fa-2x pull-left'></i> <strong>View Employees</strong></span>".html_safe, admin_employees_path, class: 'btn' %>
+		<div class="col-lg-6 col-sm-12 col-xs-12">
+			<div class="main-box">
+				<%= render 'orders_by_company' %>
+
+				
 			</div>
 		</div>
 		
 
-		
-		
-		<div class="col-lg-3 col-sm-3 col-xs-6">
-			<div class="main-box infographic-box">
 
-				<span class="headline">Total Payroll:<%= number_to_currency(@timesheets.current_week.sum(:gross_pay)) %></span>
-				<%= link_to "<span class=''><i class='fa fa-money fa-2x pull-left'></i> <strong>View Timesheets</strong></span>".html_safe, admin_timesheets_path, class: 'btn' %>
-			</div>
-		</div>
-		
-		<div class="col-lg-3 col-sm-3 col-xs-6">
-			<div class="main-box infographic-box">
-				<i class="fa fa-clock-o"></i>
-				<span class="headline">Clocked In</span>
-				<%= pluralize(@clocked_in.count, 'Employee') %>
-		</div>
-		
-		<div class="col-lg-3 col-sm-3 col-xs-6">
-			<div class="main-box infographic-box">
-				<% if @orders.needs_attention.any? %>
-				<i class="fa fa-exclamation red"></i>
-				<span class="headline">Open</span>
-				<span class="value"><small><%= pluralize(@orders.needs_attention.count, 'Order')  %></small></span>
-				<% end %>
-			</div>
-		</div>
 	</div>
-	<%= render 'admin/shared/infoboxes' %>
+	
+	
 		
 <div class='col-lg-12'>
 	<div='row'>

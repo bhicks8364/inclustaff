@@ -39,7 +39,9 @@ class Admin::DashboardController < ApplicationController
 
         @viewing = @current_company || @current_agency
         @timesheets = @viewing.timesheets if @viewing.present?
-        @events = @viewing.events.order('id DESC').limit(5)
+        @clock_ins = @viewing.admin_events.clock_ins.order('id DESC')
+        @clock_outs = @viewing.admin_events.clock_outs.order('id DESC')
+        @applications = @viewing.order_events.applications
       # end
       
       # @timesheets = @company.timesheets.order(created_at: :desc) if @company.present?

@@ -6,14 +6,25 @@
 .order-form {
   background-color: red;
 }
-#order_needed_by {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
+// .order_needed_by {
+//   display: block;
+//   margin-left: auto;
+//   margin-right: auto;
+//   // width: 100%;
 
+// }
+.half {
+  width: 50%;
 }
-
+// #order_needed_by_3i {
+//   width: 33%;
+// }
+// #order_needed_by_2i {
+//   width: 33%;
+// }
+// #order_needed_by_1i {
+//   width: 33%;
+// }
 .fill {
   width: 100%;
   horizonal-align: middle;

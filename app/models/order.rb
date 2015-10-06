@@ -30,6 +30,7 @@
 class Order < ActiveRecord::Base
   belongs_to :agency
   belongs_to :company
+  has_many :events, foreign_key: "eventable_id"
   belongs_to :manager, foreign_key: 'manager_id', class_name: "Admin"
   belongs_to :account_manager, foreign_key: 'account_manager_id',  class_name: "Admin"
   has_many :skills, as: :skillable

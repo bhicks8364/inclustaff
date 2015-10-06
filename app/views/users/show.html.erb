@@ -26,7 +26,13 @@
   
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="home">
-    
+    <div class='col-md-12'>
+						<% @applications.each do |event| %>
+						  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+						    <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
+						  <% end %>
+						<% end %>
+					</div>
      <% if user_signed_in? %>
        <% if @employee.assigned? %>
          <%= render 'employee/jobs/job', job: @job %>

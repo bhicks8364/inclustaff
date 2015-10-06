@@ -128,7 +128,7 @@ class Admin::ShiftsController < ApplicationController
   def update
     @job = @shift.job
     @employee = @shift.employee
-    @shift.update(shift_params)
+    @shift.week = @shift.time_out.to_datetime.cweek
    
 
     respond_to do |format|

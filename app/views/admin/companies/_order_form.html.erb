@@ -1,10 +1,5 @@
-<a class='' data-toggle="modal" data-target="#company_mod_<%= company.id %>">
-
-
-  <i class="fa fa-info fa-lg btn btn-sm"></i>
-
-
-
+<a class='btn btn-default btn-sm' data-toggle="modal" data-target="#company_mod_<%= company.id %>">
+<i class="fa fa-plus-square fa-fw"></i> Job Order
 </a>
 
 <!-- Modal -->
@@ -17,36 +12,8 @@
         
       </div>
       <div class="modal-body">
-    
-     <div><address>
-          <strong><%= link_to company.name, admin_company_path(company) %></strong><br>
-          <%= company.address %><br>
-          <%= company.city %>, <%= company.state %> <%= company.zipcode %><br>
-          <abbr title="Phone">P:</abbr> (123) 456-7890
-        </address>
-        
-                  <address>
-          <strong><%= company.contact_name %></strong><br>
-          <a href="mailto:#"><%= company.contact_email %></a>
-        </address></div>
-        <div> <table class='table table-bordered'>
-          <thead>
-    <tr>
-      <th>Title</th>
-      <th>Pay Range</th>
-      <th>Rate</th>
-      <th>Open</th>
-      <th>Needed By</th>
-      <th>AM</th>
-      <th></th>
-      
-    </tr>
-  </thead>
-          <tbody><%= render company.orders.needs_attention %></tbody></table></div>
-     
-        
-        
-      
+        <h5>Add New Job Order</h5>
+     <%= render 'new_order_form' %>
         
 
       </div>

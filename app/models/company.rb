@@ -23,7 +23,7 @@ class Company < ActiveRecord::Base
     default_scope { order(name: 'DESC') }
     belongs_to :agency
     has_many :orders, dependent: :destroy
-    
+    has_many :order_events, :through => :orders, :source => 'events'
     has_many :jobs, :through => :orders
     has_many :employees, :through => :jobs
     has_many :shifts, :through => :jobs
@@ -32,11 +32,12 @@ class Company < ActiveRecord::Base
     has_many :account_managers, :through => :orders
     has_many :recruiters, :through => :jobs
     has_many :admins
-    has_many :events, :through => :admins
+    has_many :admin_events, :through => :admins, :source => 'events'
     has_one :owner, -> { where role: 'Owner' }, class_name: "Admin"
     # has_many :recruiters, -> { where role: 'Recruiter' }, class_name: "Admin"
     # has_many :payroll_admin,  -> { where role: "Payroll" }, class_name: "Admin"
     # has_many :account_managers,  -> { where role: "Account Manager" }, class_name: "Admin"
+   scope :with_open_orders, -> { joins(:orders).merge(Order.needs_attention)} 
     
     accepts_nested_attributes_for :orders
     

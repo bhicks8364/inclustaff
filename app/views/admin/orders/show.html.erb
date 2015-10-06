@@ -37,7 +37,7 @@
 <h1>  <%= @company.name %> <small> <%= @order.title_company %></small></h1>
 
 
-<div id="col-md-10 order-tabs">
+<div class='main-box center' id="order-tabs">
 
   <!-- Nav tabs -->
   <ul id="order-nav" class="nav nav-tabs nav-justified" role="tablist">
@@ -53,9 +53,9 @@
   <h3> 
   <strong><%= @order.needs_attention? ? "OPEN" : "FILLED" %></strong></h3>
 
-<div class='col-md-12 center'>
+<div class='fill'>
   
-  <div class='row even even-top'>
+  <div class='center'>
     <h4>Open positions: <%= @order.open_jobs %></h4>
     <strong>Active Employees:</strong>
         <%= @order.jobs.active.count %>
@@ -68,72 +68,45 @@
 
  
   <%= @order.active ? "" : "Inactive" %>
-  </div>
-<div class='row even'>
   
   
-  <div class='col-md-2 col-md-offset-3'>
+  
+ 
     <strong>Drug Test </strong><br>
     <%= @order.dt_req %><br>
   
-  </div>
-  <div class='col-md-2'>
+
     <strong>Background Check </strong><br>
     <%= @order.bg_check %><br>
-  </div>
-  <div class='col-md-2'>
+
     <strong>Assignment Type</strong><br>
     <%= @order.est_duration %><br>
 
-</div>
-<div class='col-md-2'>
   <strong>Pay Range:</strong><br>
   <%= @order.pay_range %>
-</div>
 
-</div>  
-
-
-<div class='row even'>
-  <div class='col-md-2 col-md-offset-3'>
   <strong>Shift</strong><br>
  <%= @order.shift %><br>
-</div>
-  <div class='col-md-3 '>
+
   <strong><%= @order.heavy_lifting ? "Heavy Lifting Required" : "" %></strong>
   <br><strong><%= @order.stwb ? "STWB Required" : "" %></strong><br>
 
-</div>
-<div class='col-md-1'>
   <strong>Mark Up:</strong>
   <%= @order.mark_up_percent %>
 </div>
 
 
-
-</div>
-
-
-
-
-
-<div id= "order-notes" class="well" >
+<div id= "order-notes" class="" >
       <strong>Notes:</strong>
     <p><%= @order.notes %></p>
   </div>
   
-  
-  
-  
-  
-  
-</div>
-  
 
 
-  
 
-  <div class="btn-group" role="group" aria-label="...">
+
+
+ <div class="btn-group" role="group" aria-label="...">
     <%= link_to 'All Orders', admin_company_orders_path(@company), class: "btn btn-primary" %>
     <% if policy(@order).update? %>
       <%= link_to 'Edit Order', edit_admin_order_path(@order), class: "btn btn-primary" %>
@@ -143,13 +116,24 @@
     <% end %>
   </div>
 
-
-
-
-
   </div>
+  
+  
+  
+  
+</div>
+  
+
+
+  
+
+ 
+
+
+
+
   <div role="tabpanel" class="tab-pane fade" id="active-jobs">
-      <div class='col-md-12 center'>
+      <div class='main-box fill'>
         <% if @jobs.any? %>
       <%= render 'admin/jobs/table' %>
         <% if policy(Job).create? %>
@@ -165,7 +149,7 @@
   </div>
   
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
-    <div class='center'>
+    <div class='main-box fill'>
         <% if @order.timesheets.current_week.any? %>
       <%= render partial: "admin/timesheets/table", collection: @timesheets.current_week, as: :timesheet %>
       <% else %>
@@ -179,7 +163,7 @@
   </div>
 
   <div role="tabpanel" class="tab-pane fade" id="skills-tab">
-     <div class='center'>
+     <div class='main-box fill'>
       <ul>
         <% @order.skills.each do |skill| %>
           

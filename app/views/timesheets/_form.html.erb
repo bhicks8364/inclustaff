@@ -1,4 +1,5 @@
-<%= simple_form_for(@timesheet) do |f| %>
+<div class='col-md-10'>
+  <%= simple_form_for(@timesheet) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
@@ -9,13 +10,19 @@
     <%= f.input :gross_pay %>
     <!--<%= f.association :shifts, as: :check_boxes, label_method: :time_in %>-->
   </div>
-  <%= f.simple_fields_for(:shifts) do |s| %>
-    <%= s.input :time_worked %>
+  <div class='col-md-12'>
+    <%= f.simple_fields_for(:shifts) do |s| %>
+    <div class='col-md-4'>
+      <%= s.input :time_worked %>
      <%= s.input :id %>
+    </div>
   
   <% end %>
+  </div>
 
   <div class="form-actions">
     <%= f.button :submit %>
   </div>
 <% end %>
+
+</div>

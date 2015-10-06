@@ -17,9 +17,7 @@
   *= require jquery-ui
   *= require jquery.atwho
   *= require fullcalendar
-  *= require main
-  *= require anchors
-  *= require forms
+
   *= require simple_calendar
   *= require dataTables/jquery.dataTables
 
@@ -28,15 +26,24 @@
  
  
  
- 
+
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import "font-awesome";
+
 @import "layout";
 @import "elements";
 
+@import "table_styles";
+@import "forms";
+@import "main";
 
-
+body {
+  background-image: url('http://www.planwallpaper.com/static/images/518079-background-hd.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+}
 
 
 #logo > img {
@@ -414,4 +421,81 @@ div.progress-bar {
 // }
 .hide-this {
   display: none;
+}
+
+#content-wrapper {
+  background: transparent;
+  // background-image: url('http://www.planwallpaper.com/static/images/518079-background-hd.jpg');
+  // background-repeat: no-repeat;
+  // background-attachment: fixed;
+  // background-position: center;
+}
+
+div.transbox {
+  margin: 10px;
+  // background-color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.82);
+  // opacity:0.6;
+  // filter:alpha(opacity=60); /* For IE8 and earlier */
+  max-width: 100%;
+  padding: 2px;
+  color: white;
+}
+.trans-dark {
+    
+    color: white;
+    padding: 2px;
+    margin: 2px;
+    border: 1px solid black;
+  //   -webkit-box-shadow: 3px 3px 6px 0px rgba(0,0,0,0.9);
+	 // -moz-box-shadow: 3px 3px 6px 0px rgba(0,0,0,0.9);
+	 // box-shadow: 0px 0px 6px 5px rgba(0,0,0,0.9);
+	  position: relative;
+	  overflow: hidden;
+	  background-color: rgba(87, 105, 113, 0.92);
+	  
+	 
+	  
+}
+.light-5 {
+  background-color: rgba(87, 105, 113, 0.62);
+  color: white;
+}
+.tech-people {
+  background-image: url('tech-people.png');
+  background-repeat: no-repeat;
+  background-attachment: absolute;
+  background-size: 100% 100%;
+}
+#header-navbar {
+  background-color: rgba(87, 105, 113, 0.00);
+}
+.mynavbar {
+  background-color: rgba(87, 105, 113, 0.0);
+  margin: 0px;
+  padding-bottom: 3px;
+}
+.main-box {
+  background: rgba(21, 19, 19, 0.52);
+  -webkit-box-shadow: 1px 1px 2px 0 #CCCCCC;
+  -moz-box-shadow: 1px 1px 2px 0 #CCCCCC;
+  -o-box-shadow: 1px 1px 2px 0 #CCCCCC;
+  -ms-box-shadow: 1px 1px 2px 0 #CCCCCC;
+  box-shadow: 1px 1px 2px 0 #CCCCCC;
+  margin-bottom: 10px;
+  padding: 20px;
+  color: white;
+  height: 100%;
+}
+.main-box-short {
+  background: rgba(21, 19, 19, 0.52);
+  -webkit-box-shadow: 1px 1px 2px 0 #CCCCCC;
+  -moz-box-shadow: 1px 1px 2px 0 #CCCCCC;
+  -o-box-shadow: 1px 1px 2px 0 #CCCCCC;
+  -ms-box-shadow: 1px 1px 2px 0 #CCCCCC;
+  box-shadow: 1px 1px 2px 0 #CCCCCC;
+  margin-bottom: 10px;
+  padding: 20px;
+  color: white;
+  height: auto;
 }

@@ -1,34 +1,12 @@
+<%= link_to admin_employees_path(employee), class: 'list-group-item list-group-item-info' do %>
 
-  			<div class="row profile-user-info">
-  			     
-  			  
-  				<div class="col-sm-8">
-  
-  				
-  					<div class="profile-user-details clearfix">
-  						<%= render employee.current_job %>
-  					</div>
+	
+<span class='text-left'><%= employee.name %></span>
 
-  					
-  					
-  					<div class="profile-user-details clearfix">
-  						<div class="profile-user-details-label">
-  							Email
-  						</div>
-  						<div class="profile-user-details-value">
-  						<%= employee.email %>
-  						</div>
-  					</div>
-  					<div class="profile-user-details clearfix">
-  						<div class="profile-user-details-label">
-  							Phone number
-  						</div>
-  						<div class="profile-user-details-value">
-  							<%= employee.phone_number %>
-  						</div>
-  					</div>
-  					
-  				</div>
-  				  	
-
-  			</div>
+	
+	<span class='badge badge-success pull-right'>
+	    <%= employee.current_job.start_date.stamp('11/13') %>
+	</span>
+	
+<% end %>
+ 

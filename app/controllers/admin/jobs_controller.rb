@@ -78,7 +78,7 @@ class Admin::JobsController < ApplicationController
       respond_to do |format|
           format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
                     state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out, last_out: @job.last_clock_out,
-                    in_ip: @shift.in_ip, first_name: @job.employee.first_name } }
+                    in_ip: @shift.in_ip, first_name: @job.employee.first_name, new_count: @job.agency.jobs.on_shift.count } }
 
       end
     end
@@ -89,13 +89,13 @@ class Admin::JobsController < ApplicationController
     if @job.on_shift? && @job.current_shift.present?
         @shift = @job.current_shift
         @shift.update(time_out: Time.current,
-                        state: "Clocked Out",
+                        state: "Clocked Out", week: Date.today.cweek,
                         out_ip: "Admin-Clock-Out" )
         current_admin.events.create(action: "clocked_out", eventable: @shift.employee)
       respond_to do |format|
           format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
                     state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out.strftime("%l:%M%P"),
-                    in_ip: @shift.in_ip, first_name: @job.employee.first_name } }
+                    in_ip: @shift.in_ip, first_name: @job.employee.first_name, new_count: @job.agency.jobs.on_shift.count } }
 
       end
     end

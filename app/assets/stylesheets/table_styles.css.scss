@@ -11,42 +11,42 @@
 //   }
   
 // }
-.table {
-  background-color: rgba(34, 34, 34, 0.45);
-  color: white;
-  tbody {
-    tr {
+// .table {
+//   background-color: rgba(34, 34, 34, 0.45);
+//   color: white;
+//   tbody {
+//     tr {
       
-      td {
-        border: solid 2px rgba(34, 34, 34, 0.18);
-        padding: 3px;
-        text-align: center;
-        a:hover {
-          text-decoration: none;
-        }
-        a {
-          text-decoration: none;
-          background-color: transparent;
-          color: white;
-        }
-      }
-    }
-  }
-}
+//       td {
+//         border: solid 2px rgba(34, 34, 34, 0.18);
+//         padding: 3px;
+//         text-align: center;
+//         a:hover {
+//           text-decoration: none;
+//         }
+//         a {
+//           text-decoration: none;
+//           background-color: transparent;
+//           color: white;
+//         }
+//       }
+//     }
+//   }
+// }
   
-.table > tbody > tr > td > a {
+// .table > tbody > tr > td > a {
   
-  padding: 3px;
-  // margin: auto;
-  margin: 2px;
-  // align-self: center;
+//   padding: 3px;
+//   // margin: auto;
+//   margin: 2px;
+//   // align-self: center;
   
-  // color: #182C46;
-  text-decoration: none;
+//   // color: #182C46;
+//   text-decoration: none;
   
-  background-color: transparent;
-  // overflow: auto;
-}
+//   background-color: transparent;
+//   // overflow: auto;
+// }
 
 
 
@@ -209,4 +209,11 @@ p.approaching-ot {
   box-shadow: 4px 4px 5px 1px rgba(3, 5, 6, 0.70);
   background-color: red;
   margin-bottom: 10px;
+}
+
+
+
+th {
+  background-color: black;
+  color: white;
 }

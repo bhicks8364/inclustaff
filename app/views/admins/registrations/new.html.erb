@@ -1,10 +1,12 @@
-<div class='col-md-12'>
+<div class='main-box center'>
   <div class="row">
-    	<div class="col-lg-6 center">
+     
+    	<div class=" bg-clear center">
+    	  <h2>Agency Admin Registration</h2>
         <div class='main-box'>
-            <h2>Agency Admin Registration</h2>
+           
           
-          <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+          <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), class: 'center') do |f| %>
             <%= f.error_notification %>
           
             <div class="form-inputs">

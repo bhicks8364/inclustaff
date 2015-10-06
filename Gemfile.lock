@@ -63,7 +63,7 @@ GEM
       railties (>= 3.1)
       sprockets
       tilt
-    angularjs-rails (1.4.4)
+    angularjs-rails (1.4.7)
     annotate (2.6.10)
       activerecord (>= 3.2, <= 4.3)
       rake (~> 10.4)
@@ -142,7 +142,7 @@ GEM
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     i18n (0.7.0)
-    jbuilder (2.3.1)
+    jbuilder (2.3.2)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
     jquery-atwho-rails (1.3.2)
@@ -296,8 +296,8 @@ GEM
       rack-protection (~> 1.4)
       tilt (>= 1.3, < 3)
     spring (1.4.0)
-    sprockets (3.3.4)
-      rack (~> 1.0)
+    sprockets (3.3.5)
+      rack (> 1, < 3)
     sprockets-rails (2.3.3)
       actionpack (>= 3.0)
       activesupport (>= 3.0)

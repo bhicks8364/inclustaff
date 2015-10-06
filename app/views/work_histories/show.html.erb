@@ -1,67 +1,56 @@
 <div class='col-md-12 main-box'>
-   <h2><%= @employee.name %><small><% if @work_history.current? %>
+  
+  <div class='col-md-6'>
+    <h2><%= @employee.name %> </h2>
+      <% if @work_history.current? %>
       <i class="fa fa-asterisk fa-lg"></i> <strong>Currently Employed</strong>
-    <% end %></small></h2>
-    <%= link_to '<i class="fa fa-home"></i>  Home'.html_safe, root_path, class: 'btn' %>
-    <%= link_to '<i class="fa fa-user"></i>  View Profile'.html_safe, @current_user, class: 'btn' %>
+    <% end %>
     
         
-            <h3><%= @work_history.employer_name %> <small><%= @work_history.title %></small>
             
-            </h3>
             
-       
-        
-        <div class='col-md-6 well well-sm text-center'>
-          <div class='col-md-12 text-center'>
-            <p><i class="fa fa-clock-o fa-lg"></i><strong> Employed for <%= distance_of_time_in_words(@work_history.start_date, @work_history.end_date) %> and ended <%= time_ago_in_words(@work_history.end_date) %> ago.</p></strong>
-          </div>
-          <div class='col-md-6 text-center'>
+      
+            
+
+            <strong> Employed for <%= distance_of_time_in_words(@work_history.start_date, @work_history.end_date) %>. </strong><br>
+        Ended about <%= time_ago_in_words(@work_history.end_date) %> ago.<br>
+
             <strong>Pay Rate:</strong><br>
-          <%= number_to_currency(@work_history.pay) %>
-          </div>
-            
-          <div class='col-md-6 text-center'>
+          <%= number_to_currency(@work_history.pay) %><br>
+
             <strong>Employment Dates:</strong><br>
             <%= @work_history.start_date.stamp("December 2013") %> - <%= @work_history.end_date.stamp("December 2013") %>
-          </div>
-              
-        </div>
-        
-        <div class='col-md-6 well well-sm text-center'>
-          <div class='col-md-12 text-center'>
+<br>
             <% if @work_history.may_contact? %>
-            <p><i class="fa fa-phone-square fa-lg"></i> <strong>This employer may be contacted.</strong></p>
-            <% else %>
-            <p class='red'><i class="fa fa-exclamation-triangle fa-lg"></i> <strong>You have not authorized contacting this employer.</strong><%= link_to '<small>change</small> <i class="fa fa-pencil"></i> '.html_safe, edit_work_history_path(@work_history), class: 'table-link pull-right' %></p>
+            <i class="fa fa-phone-square fa-lg"></i> <strong>This employer may be contacted.</strong>
           <% end %>
-          </div>
-          <div class='col-md-6 text-center'>
-            <strong>Phone number:</strong><br>
+</div>
+<div class='col-md-6'>
+  <h2><%= @work_history.employer_name %> <small><%= @work_history.title %></small></h2>
+            <strong>Phone number:</strong>
             <%= @work_history.phone_number %>
-          </div>
+
             
-          <div class='col-md-6 text-center'>
-            <strong>Supervisor:</strong><br>
-            <%= @work_history.supervisor %>
-          </div>
-              
-        </div>
+<br>
+            <strong>Supervisor:</strong>
+            <%= @work_history.supervisor %><br>
+         
+
         
-        
-        <div class='col-md-12 well well-sm'>
+
             <strong>Duties / Responsibilities</strong><br>
-            <p><%= @work_history.description %></p>
-        </div>
-  <div class='col-md-12'>
-    <div class='btn-group'>
-      <%= link_to '<i class="fa fa-angle-double-left"></i>  Back'.html_safe, work_histories_path, class: 'btn' %>
+            <%= @work_history.description %>
+            <hr />
+  </div>
+       <div class='col-md-12'>
+
+      <%= link_to '<i class="fa fa-angle-double-left"></i>  Back'.html_safe, admin_employee_work_histories_path(@employee), class: 'btn' %>
       <%= link_to '<i class="fa fa-trash red"></i>  Delete'.html_safe, @work_history, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn red' %>
-      <%= link_to '<i class="fa fa-pencil"></i>  Edit'.html_safe, edit_work_history_path(@work_history), class: 'btn' %>
-    </div>
-  </div>  
+      <%= link_to '<i class="fa fa-pencil"></i>  Edit'.html_safe, edit_admin_employee_work_history_path(@employee, @work_history), class: 'btn' %>
+ 
      
-        
+         
+    </div>       
 </div>
 
 

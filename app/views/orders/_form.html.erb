@@ -1,4 +1,4 @@
-<%= simple_form_for [@company, @order] do |f| %>
+<%= simple_form_for [:admin, @company, @order] do |f| %>
 
         
   <% if @company.nil? %>

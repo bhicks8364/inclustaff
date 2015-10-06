@@ -1,6 +1,14 @@
 <% if admin_signed_in? %>
-    <div class='main-box'>
-        <%= render 'admin/dashboard/admin' %>
+    <div class='main-box center'>
+        
+        <% if @current_admin.account_manager? %>
+        <h2><%= @current_admin.role %></h2>
+        <% elsif @current_admin.payroll? %>
+        <h2><%= @current_admin.role %></h2>
+        <%= render 'admin/shared/payroll_boxes' %>
+        <% end %>
+            <%= render 'admin/shared/recruiter_boxes' %>
+       
         
     </div>
     <% end %>
@@ -45,62 +53,11 @@
 
 
 <% if current_user.nil? && current_admin.nil? %>
-<div class="col-md-12 main-box">
-
-       <strong><h1>From the first punch to the final invoice, IncluStaff does it all.</h1></strong>
-                       <%= link_to "Register Now!", new_agency_path, class: 'btn btn-success btn-lg center' %>
-
-        <h3>Simplify the process, optimize your workforce and maximize your profits.</h3>
-
-
-
-        
-        
-        <div class="col-md-4">
-            <div class="welcome-screen text-center">
-
-
-                <strong><h3>Real Time from Any Location</h3></strong>
-                
-                <h5><strong>No more paper timecards!</strong> <br>
-                    Allows employees clock in or out from any computer or mobile device. </h5>
-                
-                
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="welcome-screen text-center">
-
-
-                <strong><h3>Highlight Top Performers</h3></strong>
-                <h5>
-                    <strong>Quickly identify your All-Stars!</strong> <br>
-          
-                     Easily view bill & fill rates for your entire team with a single click.
-                </h5>
-                
-                
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="welcome-screen text-center">
-
-
-                <strong><h3>Integrate your Payroll</h3></strong>
-                
-                <h5><strong>Cut your processing time in HALF!</strong> <br>
-                    Choose to upload Excel/CSV or connect directly to your existing database. </h5>
-                
-                
-            </div>
-        </div>
-
-</div>            
-
-
-<% end %>
+        <h1>More Info....</h1>
 
     
+
+<% end %>
 
 
     

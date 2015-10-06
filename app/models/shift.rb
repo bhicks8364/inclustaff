@@ -76,9 +76,9 @@ class Shift < ActiveRecord::Base
     end
     
     def set_timesheet
-        if self.timesheet_id.nil?
-            self.timesheet = Timesheet.find_or_create_by(job_id: self.job_id, week: self.week)
-        end
+       
+        timesheet = Timesheet.find_or_create_by(job_id: self.job_id, week: self.week)
+        self.timesheet = timesheet
     end
     
     def to_s

@@ -8,17 +8,17 @@
 <% end %>
 			
 				
-				<div class="conversation-body">
+				<div class="conversation-body order">
 					<h5><strong><%= timesheet.employee.name %></strong> <small><span data-behavior="timesheet-state"><%= timesheet.state.upcase %></span></small></h5>
 					<h6><%= link_to timesheet.job.title, admin_job_path(timesheet.job) %></h6>
-					<div class="col-md-4">
+					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
 						<h6><strong><%= timesheet.week_begin %>  -  <%= timesheet.week_ending %></strong><br>
 						
 						 <%= timesheet.company.name %>
 						</h6>
 						
 					</div>
-					<div class=" col-md-4">
+					<div class=" col-md-4 col-sm-4">
 						<span class='text-center'>
 							<h6><strong>	Regular Hours:	<%= timesheet.reg_hours %></strong></h6>
 
@@ -64,12 +64,11 @@
 						<span  class="fa-stack lg" data-behavior="approve-button" >
 					        
 					          <% if timesheet.approved? %>
-					          
-								  <i class="fa fa-square-o fa-stack-2x hide-this"></i>
+					       
 								  <i class="fa fa-times fa-stack-1x"></i>
 							
 					          <% else %>
-						          <i class="fa fa-square-o fa-stack-2x hide-this"></i>
+						         
 								  <i class="fa fa-check fa-stack-1x"></i>
 					          <% end %>
 					        </span>

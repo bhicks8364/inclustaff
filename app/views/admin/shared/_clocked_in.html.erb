@@ -1,11 +1,10 @@
-<li class="dropdown hidden-xs">
+<li id='clocked-in-nav' class="dropdown hidden-xs">
 	<a class="btn nav-btn dropdown-toggle" data-toggle="dropdown">
 
-  
   		<i class="fa fa-users"></i>
-
-		
-		<span class="count" id="clocked-in-count"><%= @agency_jobs.on_shift.count %></span>
+		<span class="count" id="clocked-in-count">
+			<%= @agency_jobs.on_shift.count %>
+		</span>
 	</a>
 	<ul class="dropdown-menu notifications-list">
 		<li class="pointer">
@@ -14,9 +13,11 @@
 				<div class="arrow-border"></div>
 			</div>
 		</li>
-		<li class="item-header">You have <%= pluralize(@agency_jobs.on_shift.count, 'employee') %> clocked in.</li>
+		<li id='clocked-in-count' class="item-header">
+			You have <%= pluralize(@agency_jobs.on_shift.count, 'employee') %> clocked in.
+		</li>
 			<% @agency_jobs.on_shift.order(updated_at: :desc).each do |job| %>
-		<li class="item" >
+		<li id='in-job-<%= job.id %>'class="item" >
 			
 			<%= render 'admin/jobs/clock', job: job %>
 			

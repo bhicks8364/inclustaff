@@ -1,6 +1,6 @@
 class Admin::WorkHistoriesController < ApplicationController
   before_action :set_work_history, only: [:show, :edit, :update, :destroy]
-  layout 'admin_layout'
+  
   # GET /work_histories
   # GET /work_histories.json
   def index

@@ -19,6 +19,9 @@ class Event < ActiveRecord::Base
     
     scope :admin, -> { where.not(admin_id: nil)}
     scope :employee, -> { where(admin_id: nil)}
+    scope :applications, -> { where(action: 'applied')}
+    scope :clock_ins, -> { where(action: 'clocked_in')}
+    scope :clock_outs, -> { where(action: 'clocked_out')}
     
     def self.mentions(admin_id)
         where(action: "mentioned", eventable_id: admin_id)

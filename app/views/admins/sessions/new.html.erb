@@ -1,10 +1,11 @@
-<div class='main-box center'>
-  <h2>Log in</h2>
+<div class='col-md-12 main-box'>
+  <h2 class='text-center'>Admin Sign In</h2>
 
-<%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+<div class='center2'>
+  <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), class: '') do |f| %>
   <div class="form-inputs">
-    <%= f.input :email, required: false, autofocus: true %>
-    <%= f.input :password, required: false %>
+    <%= f.input :email, required: false, autofocus: true, wrapper_html: {class: 'center'}, label: false  %>
+    <%= f.input :password, required: false, wrapper_html: {class: 'center'}, label: false %>
     <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
   </div>
 
@@ -12,6 +13,7 @@
     <%= f.button :submit, "Log in" %>
   </div>
 <% end %>
+</div>
 
 
 

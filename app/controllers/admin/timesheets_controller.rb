@@ -7,9 +7,8 @@ class Admin::TimesheetsController < ApplicationController
 	def index
 		if params[:job_id]
   		@job = Job.includes(:employee, :timesheets).find(params[:job_id])
-  		@timesheets = @job.timesheets.current_week.order(updated_at: :desc) if @job.present?
-  		@approved_timesheets = @timesheets.approved if @timesheets.present?
-      @pending_timesheets = @timesheets.pending if @timesheets.present?
+  		@timesheets = @job.timesheets.order(updated_at: :desc) if @job.present? && @job.timesheets.any?
+  		
   		gon.timesheets = @timesheets
       authorize @timesheets
   	elsif params[:company_id]
@@ -29,7 +28,7 @@ class Admin::TimesheetsController < ApplicationController
      	authorize @timesheets
 		end
 		
-		@current_timesheets = @current_agency.timesheets.current_week.order(updated_at: :desc) if @current_agency.present?
+		@current_timesheets = @current.timesheets.current_week.order(updated_at: :desc) if @current_agency.present?
 		
 		respond_to do |format|
       format.html
@@ -164,7 +163,7 @@ class Admin::TimesheetsController < ApplicationController
     @timesheet.shifts.last
     
     
-    # authorize @timesheet
+    authorize @timesheet
 
     respond_to do |format|
       if @timesheet.save
@@ -181,10 +180,10 @@ class Admin::TimesheetsController < ApplicationController
   # PATCH/PUT /timesheets/1.json
   def update
     @timesheet.update(timesheet_params)
-    # authorize @timesheet
+    authorize @timesheet
     respond_to do |format|
       if @timesheet.update(timesheet_params)
-        format.html { redirect_to admin_timesheets_path(@timesheet), notice: 'Timesheet was successfully updated.' }
+        format.html { redirect_to admin_timesheet_path(@timesheet), notice: 'Timesheet was successfully updated.' }
         format.json { render :show, status: :ok, location: @timesheet }
       else
         format.html { render :edit }

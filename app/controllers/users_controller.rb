@@ -70,6 +70,7 @@ class UsersController < ApplicationController
         @job = @user.current_job
         @employee = @user.employee
         @company = @employee.company
+        @applications = @user.events.applications
         # @job = @employee.current_job if @employee.assigned?
         
         @jobs = @employee.jobs.includes(:order)

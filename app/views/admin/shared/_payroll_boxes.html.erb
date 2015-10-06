@@ -1,53 +1,95 @@
-<div class="row">
-	<div class="col-lg-3 col-sm-6 col-xs-12">
-		<div class="main-box infographic-box">
-			
-			<%= link_to(admin_timesheets_path, class: "") do %>
-			<span class='headline'><i class='fa fa-clock-o fa-2x pull-left fa-fw'></i> <strong>Timesheets</strong><br>
-				<strong><small>Pending:</small> <%= @timesheets.pending.any? ? @timesheets.pending.count : @timesheets.pending.count %></strong>
-			</span>
-			<% end %>
-		</div>
+<div class='row row150'>
+	<div class="col-md-12 col-sm-12 col-xs-12 main-box  text-center">
+		<h5 class="center">Timesheets</h5>	
+		
+			<div class="col-md-6 col-sm-6 col-xs-6">
+			  	<h5 class="center">Total: <%= @current.timesheets.current_week.try(:count) %> 	  	</h5>
+			<h5 class="center"><strong>This week</strong>	  	</h5>
+	
+
+			<span class="badge badge-success fill"><%= @current.timesheets.current_week.approved.try(:count) %> Approved </span>
+			<span class="badge badge-warning fill"><%= @current.timesheets.current_week.pending.try(:count) %> Pending </span>
+		<br>
+		
 	</div>
-	<div class="col-lg-3 col-sm-6 col-xs-12">
-		<div class="main-box infographic-box">
-	<% if @timesheets.past.pending.any? %>
-			<%= link_to(past_admin_timesheets_path, class: "") do %>
-			
-			<span class='headline'><i class='fa fa-list-alt fa-2x pull-left fa-fw'></i> <strong>Past Timesheets</strong><br>
-			
-				<strong><small>Pending: <%= @timesheets.past.pending.count %></small></strong>
-			<% end %>
-			<% else %>
-			<div class='text-center'>All of last week's timesheets have been approved.</div>
-				<%= link_to(past_admin_timesheets_path(@timesheets, format: :csv), class: 'btn btn-block btn-success') do %>
-			  					<i class="fa fa-download fa-2x pull-left"></i>Export <br> Timesheets 
-			  				
-			  				<% end %>
+	<div class="col-md-6 col-sm-6 col-xs-6">
+		<h5 class="center"><strong>Last week</strong>	  	</h5>
+		<span class="center">Total: <%= @current.timesheets.last_week.try(:count) %> 	  	</span>
+		<span class="badge badge-success fill"><%= @current.timesheets.last_week.approved.try(:count) %> Approved </span>
 		
 			
-				
-			</span>
+
+			
+			
+			
+			<span class="badge badge-warning fill"><%= @current.timesheets.last_week.pending.try(:count) %> Pending </span>
+				<br>
+	
+	
+	
+		</div>
+		
+		<%= link_to(admin_timesheets_path, class: "btn btn-primary fill") do %>
+			<strong>View All Timesheets</strong>
+			
+			
+			<% end %>
+	</div>
+
+
+
+
+
+
+	<div class="col-md-3 col-sm-6 col-xs-6  text-center">
+		<div class="main-box">
+	<% if @timesheets.last_week.pending.any? %>
+		Pending: <%= @timesheets.last_week.pending.count %>
+			<%= link_to(past_admin_timesheets_path, class: "btn btn-primary") do %>
+			
+		<i class='fa fa-list-alt center2 fa-fw'></i> Last Week Timesheets
+			
+			
+			<% end %>
+			<% else %>
+			
+		All of last week's timesheets have been approved.
+			
+			
+		<h5>Export to CSV</h5>
+		
+				<%= link_to(past_admin_timesheets_path(@timesheets, format: :csv), class: 'btn btn-success fill') do %>
+			  					<i class="fa fa-download fa-1x"></i>
+			  				
+			  				<% end %>
 				
 			<% end %>
 			
 		</div>
 	</div>
-	<div class="col-lg-3 col-sm-6 col-xs-12">
-		<div class="main-box infographic-box">
-			<i class="fa fa-money green"></i>
-			<span class="headline">Current Billings</span>
+	
+	<div class="col-md-3 col-sm-6 col-xs-6  text-center center">
+		<div class="main-box">
+			<% if @newly_added.any? %>
+			<i class="fa fa-users fa-2x"></i>
+			<h5>New Employees</h5>
+			<ul>
+				<% Employee.newly_added.each do |employee| %>
+			<li><%= employee.name %></li>
 			
-			<span class="price"><%= number_to_currency(@timesheets.current_week.sum(:total_bill)) %></span><br>
-			<span class="price text-muted"><small>YTD: <%= number_to_currency(@timesheets.sum(:total_bill)) %></small></span>
+			
+			<% end %>
+			</ul>	
+			<% else %>
+			<i class="fa fa-users fa-2x"></i>
+			<h5>There are no new employees at this time.</h4>
+			<% end %>
+			
+			
+			
 		</div>
+		
 	</div>
-	<div class="col-lg-3 col-sm-6 col-xs-12">
-		<div class="main-box infographic-box">
-			<i class="fa fa-usd green"></i>
-			<span class="headline">Current Payroll</span>
-			<span class="price"><%= number_to_currency(@timesheets.current_week.sum(:gross_pay)) %></span><br>
-			<span class="price text-muted"><small>YTD: <%= number_to_currency(@timesheets.sum(:gross_pay)) %></small></span>
-		</div>
-	</div>
+	
+	
 </div>

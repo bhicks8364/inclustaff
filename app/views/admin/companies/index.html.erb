@@ -23,7 +23,7 @@
   <tbody>
     <% @companies.each do |company| %>
       <tr>
-        <td><%= render company %></td>
+        <td><%= render company %><%= company.name %></td>
         
         <td><%= company.orders.filled.count %> / <%= company.orders.count %></td>
         <td><%= company.current_timesheets.try(:count) %> / <%= company.jobs.active.try(:count) %></td>

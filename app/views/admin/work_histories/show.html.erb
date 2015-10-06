@@ -1,4 +1,4 @@
-<div class='col-md-12 main-box'>
+<div class='center main-box'>
    <h2><%= @employee.name %><small><% if @work_history.current? %>
       <i class="fa fa-asterisk fa-lg"></i> <strong>Currently Employed</strong>
     <% end %></small></h2>
@@ -8,54 +8,39 @@
             
             </h3>
             
-       
-        
-        <div class='col-md-6 well well-sm text-center'>
-          <div class='col-md-12 text-center'>
-            <p><i class="fa fa-clock-o fa-lg"></i><strong> Employed for <%= distance_of_time_in_words(@work_history.start_date, @work_history.end_date) %> <%= time_ago_in_words(@work_history.end_date) %> ago.</p></strong>
-          </div>
-          <div class='col-md-6 text-center'>
+
+            <strong> Employed for <%= distance_of_time_in_words(@work_history.start_date, @work_history.end_date) %>. </strong>
+        Ended about <%= time_ago_in_words(@work_history.end_date) %> ago.
+
             <strong>Pay Rate:</strong><br>
           <%= number_to_currency(@work_history.pay) %>
-          </div>
-            
-          <div class='col-md-6 text-center'>
+
             <strong>Employment Dates:</strong><br>
             <%= @work_history.start_date.stamp("December 2013") %> - <%= @work_history.end_date.stamp("December 2013") %>
-          </div>
-              
-        </div>
-        
-        <div class='col-md-6 well well-sm text-center'>
-          <div class='col-md-12 text-center'>
+
             <% if @work_history.may_contact? %>
-            <p><i class="fa fa-phone-square fa-lg"></i> <strong>This employer may be contacted.</strong></p>
+            <i class="fa fa-phone-square fa-lg"></i> <strong>This employer may be contacted.</strong>
           <% end %>
-          </div>
-          <div class='col-md-6 text-center'>
+
             <strong>Phone number:</strong><br>
             <%= @work_history.phone_number %>
-          </div>
+
             
-          <div class='col-md-6 text-center'>
+<br>
             <strong>Supervisor:</strong><br>
             <%= @work_history.supervisor %>
-          </div>
-              
-        </div>
+         
+
         
-        
-        <div class='col-md-12 well well-sm'>
+
             <strong>Duties / Responsibilities</strong><br>
-            <p><%= @work_history.description %></p>
-        </div>
-  <div class='col-md-12'>
-    <div class='btn-group'>
+            <%= @work_history.description %>
+       <hr />
+
       <%= link_to '<i class="fa fa-angle-double-left"></i>  Back'.html_safe, admin_employee_work_histories_path(@employee), class: 'btn' %>
       <%= link_to '<i class="fa fa-trash red"></i>  Delete'.html_safe, @work_history, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn red' %>
       <%= link_to '<i class="fa fa-pencil"></i>  Edit'.html_safe, edit_admin_employee_work_history_path(@employee, @work_history), class: 'btn' %>
-    </div>
-  </div>  
+ 
      
         
 </div>

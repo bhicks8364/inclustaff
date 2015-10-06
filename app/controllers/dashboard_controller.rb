@@ -1,9 +1,12 @@
 class DashboardController < ApplicationController
     # before_filter :authenticate_admin!
-    layout 'new_employee'
+    layout :determine_layout
+
+
     def home
         # authenticate_admin!
         if admin_signed_in? 
+            
            @admin = current_admin
            @agency = @admin.agency if @admin.agency?
            @company = @admin.company if @admin.company?
@@ -16,7 +19,7 @@ class DashboardController < ApplicationController
            @timesheets = @agency.timesheets if @agency.present?
            @timesheets = @company.timesheets if @company.present?
         elsif user_signed_in? && current_user.employee?
-        
+            render 'employee_view'
             @current_user = current_user if user_signed_in? && current_user.employee?
             @employee = @current_user.employee if @current_user.present? && @current_user.employee.present?
             
@@ -28,7 +31,8 @@ class DashboardController < ApplicationController
             @job = @employee.current_job 
             @current_timesheet = @employee.timesheets.last
             @shifts = @current_timesheet.shifts if @current_timesheet.present?
-            
+        elsif signed_in? == false
+            render 'mainpage'
         
         end
         
@@ -99,6 +103,11 @@ class DashboardController < ApplicationController
     def sign_in_page
         skip_authorization
     end
+    
+    private
+      def determine_layout
+        current_admin ? "admin_layout" : "application"
+      end
     
     
 end

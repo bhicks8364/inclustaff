@@ -34,6 +34,7 @@ class Job < ActiveRecord::Base
     delegate :manager, to: :order
     delegate :mark_up, to: :order
     delegate :company, to: :order
+    delegate :agency, to: :order
     delegate :account_manager, to: :order
     
     include ArelHelpers::ArelTable

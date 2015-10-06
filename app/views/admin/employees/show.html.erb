@@ -46,10 +46,11 @@
     This employee has no skills entered.
     <% end %>
   </div>
+  <% if @employee.events.any? %>
 <div class='col-md-5 panel'>
   <%= render 'employee/shared/events' %>
 </div>
-
+  <% end %>
  
 
 </div>

@@ -13,12 +13,15 @@
 class Agency < ActiveRecord::Base
     belongs_to :admin
     has_many :companies
+    has_many :order_events, :through => :orders, :source => 'events'
+    has_many :applications, :through => :orders, :source => 'events'
+    has_many :applicants, :through => :applications, :source => 'users'
     has_many :admins
     has_many :events, :through => :admins
     has_many :users
     has_many :employees, :through => :jobs
     has_many :orders
-    
+    has_many :admin_events, :through => :admins, :source => 'events'
     has_many :jobs, :through => :orders
     has_many :current_timesheets, :through => :jobs
     has_many :timesheets, :through => :jobs

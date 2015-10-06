@@ -1,24 +1,35 @@
-<div class='col-md-12'>
-    <% if @timesheets.any? %>
-        <h1>Timesheets</h1>
-            <%= render partial: "admin/timesheets/table" %>
-            
-            
-            <%= link_to(admin_timesheets_path(@timesheets, format: :csv), class: 'btn btn-primary') do %>
-		  					<i class="fa fa-file-excel-o fa-lg"></i> Export CSV
-  			<% end %>
 <div class='col-lg-12' data-behavior='timesheet-list'>
-    <h3 class='text-center'><strong>Approved Timesheets</strong></h3>
-    <%= render(@timesheets.current_week) || "There are no approved timesheets for this week yet." %>
+    <% if @timesheets.pending.any? %>
+<div class='offset-col-lg-5 col-lg-8' data-behavior='timesheet-list'>
+    <h4 class='text-center'><strong>Pending Timesheets</strong></h4>
+    <%= render(@timesheets.pending) || "There are no approved timesheets for this week yet." %>
+    
+</div>
+    <% end %>
+    <% if @timesheets.current_week.any? %>
+            
+            
+<div class='col-lg-6 well' data-behavior='timesheet-list'>
+    <h4 class='text-center'><strong>Pending Timesheets</strong></h4>
+    <%= render(@timesheets.current_week.pending) || "There are no pending timesheets for this week yet." %>
+    
+</div>
+<div class='col-lg-6 well' data-behavior='timesheet-list'>
+    <h4 class='text-center'><strong>Approved Timesheets</strong></h4>
+    <%= render(@timesheets.current_week.approved) || "There are no approved timesheets for this week yet." %>
     
 </div>
 
     <% else %>
-    <h4>There are no timesheets to show yet.</h4>
+    <h4>There are no timesheets for this week yet.</h4>
     <% end %>
+<hr />
+
 
 </div>
-
+<%= link_to(admin_timesheets_path(@timesheets, format: :csv), class: 'btn btn-primary') do %>
+  		<i class="fa fa-file-excel-o fa-lg"></i> Export Approved
+<% end %>
 
 
 

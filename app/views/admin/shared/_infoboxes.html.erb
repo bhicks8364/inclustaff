@@ -1,36 +1,42 @@
-<div class="row">
-	<div class="col-lg-3 col-sm-6 col-xs-12">
-		<div class="main-box infographic-box">
+
+<div class='row row150'>
+	<div class="col-md-3 col-sm-6 col-xs-12 text-center">
+		<div class="main-box">
+			<span class="headline">Agency Billings</span>
 			
-			<%= link_to "<span class=''><i class='fa fa-user fa-2x pull-left red'></i> <strong>ADMIN USERS</strong></span>".html_safe, admins_path %>
-			<span class="value"><%= @current.admins.try(:count) %></span>
+			<span class="price"><%= number_to_currency(@timesheets.current_week.sum(:total_bill)) %></span>
+			<span class="price">Last week: <%= number_to_currency(@timesheets.last_week.sum(:total_bill)) %></span>
+			<span class="price text-muted">YTD: <%= number_to_currency(@timesheets.sum(:total_bill)) %></span>
 		</div>
 	</div>
-	<div class="col-lg-3 col-sm-6 col-xs-12">
-		<div class="main-box infographic-box">
+	<div class="col-md-3 col-sm-6 col-xs-12 text-center">
+		<div class="main-box">
 			
+			<span class="headline">Agency Billings</span>
 			
-			<%= link_to "<span class='headline'><i class='fa fa-briefcase fa-2x pull-left'></i> <strong>JOBS</strong></span>".html_safe, admin_jobs_path %>
-			<span class="value">
-				<%= @jobs.try(:count) %>
-				</span>
+			<span class="price">This week:<%= number_to_currency(@timesheets.current_week.sum(:total_bill)) %></span>
+			<span class="price">Last week: <%= number_to_currency(@timesheets.last_week.sum(:total_bill)) %></span>
+			<span class="price text-muted">YTD: <%= number_to_currency(@timesheets.sum(:total_bill)) %></span>
 		</div>
 	</div>
-	<div class="col-lg-3 col-sm-6 col-xs-12">
-		<div class="main-box infographic-box">
-			<i class="fa fa-money green"></i>
-			<span class="headline">Current Billings</span>
+	<div class="col-md-3 col-sm-6 col-xs-12 text-center">
+		<div class="main-box">
 			
-			<span class="price"><%= number_to_currency(@current.timesheets.current_week.sum(:total_bill)) %></span><br>
-			<span class="price text-muted"><small>YTD: <%= number_to_currency(@current.timesheets.sum(:total_bill)) %></small></span>
+			<span class="headline">Agency Billings</span>
+			
+			<span class="price"><%= number_to_currency(@timesheets.current_week.sum(:total_bill)) %></span>
+			<span class="price text-muted">Last week: <%= number_to_currency(@timesheets.last_week.sum(:total_bill)) %></span>
+			<span class="price text-muted">YTD: <%= number_to_currency(@timesheets.sum(:total_bill)) %></span>
 		</div>
 	</div>
-	<div class="col-lg-3 col-sm-6 col-xs-12">
-		<div class="main-box infographic-box">
-			<i class="fa fa-usd green"></i>
-			<span class="headline">Current Payroll</span>
-			<span class="price"><%= number_to_currency(@current.timesheets.current_week.sum(:gross_pay)) %></span><br>
-			<span class="price text-muted"><small>YTD: <%= number_to_currency(@current.timesheets.sum(:gross_pay)) %></small></span>
+	<div class="col-md-3 col-sm-6 col-xs-12 text-center">
+		<div class="main-box">
+			
+			<span class="headline">Agency Billings</span>
+			
+			<span class="price"><%= number_to_currency(@timesheets.current_week.sum(:total_bill)) %></span>
+			<span class="price text-muted">Last week: <%= number_to_currency(@timesheets.last_week.sum(:total_bill)) %></span>
+			<span class="price text-muted">YTD: <%= number_to_currency(@timesheets.sum(:total_bill)) %></span>
 		</div>
 	</div>
 </div>

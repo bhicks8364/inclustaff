@@ -1,8 +1,29 @@
-<p id="notice"><%= notice %></p>
+<% if @event.action == 'applied' %>
+<div class='col-md-12'>
+  <p>
+  <strong>
+    <%= @event.user.try(:name) %>
+  </strong>
+  
+</p>
+<%= render @event.user.employee.work_histories %>
 
 <p>
+  <strong>Eventable:</strong>
+  <%= @event.eventable_id %>
+</p>
+
+<p>
+  <strong>Eventable type:</strong>
+  <%= @event.eventable_type %>
+</p>
+</div>
+<% end %>
+<% if @event.admin.present? %>
+<div class='col-md-12'>
+  <p>
   <strong>Admin:</strong>
-  <%= @event.admin_id %>
+  <%= @event.admin.try(:name) %>
 </p>
 
 <p>
@@ -19,6 +40,10 @@
   <strong>Eventable type:</strong>
   <%= @event.eventable_type %>
 </p>
+</div>
+<% end %>
+
+
 
 <%= link_to 'Edit', edit_event_path(@event) %> |
 <%= link_to 'Back', events_path %>

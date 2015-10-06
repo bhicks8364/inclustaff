@@ -15,17 +15,17 @@ class Admin::OrdersController < ApplicationController
       @order = @company.orders.new if @company.present?
      
     else
-      @admin = current_admin
+      @current_admin = current_admin
       
-      if @admin.agency?
+      if @current_admin.agency?
       
-        @agency = @admin.agency
-      elsif @admin.company?
-        @company = @admin.company
+        @current_agency = @admin.agency
+      elsif @current_admin.company?
+        @current_company = @admin.company
       end
       
-      @orders = @company.orders.active.order(created_at: :desc) if @company.present?
-      @orders = @agency.orders.active.order(created_at: :desc) if @agency.present?
+      @orders = @current_company.orders.active.order(created_at: :desc) if @current_company.present?
+      @orders = @current_agency.orders.active.order(created_at: :desc) if @current_agency.present?
 
     end
     
@@ -64,24 +64,13 @@ class Admin::OrdersController < ApplicationController
 
   # GET /orders/new
   def new
-    @admin = current_admin
-    if @admin.agency?
-      @agency = @admin.agency
-      @account_managers = @agency.account_managers if @agency.present?
-     
-      @company = Company.find(params[:company_id]) if params[:company_id].present?
-
-      @order = @company.orders.new if @company.present?
-      @order = @agency.orders.new if @agency.present?
-      authorize @order
-    elsif @admin.company?
-      @company = @admin.company
-      @order = @company.orders.new
-      @order.skills.new
-      authorize @order
+    if params[:company_id]
+    @company = Company.find(params[:company_id])
+    @order = @company.orders.new
+    else
+      @order = Order.new
     end
-
-    
+    authorize @order
 
   end
 
@@ -100,6 +89,10 @@ class Admin::OrdersController < ApplicationController
   # POST /orders
   # POST /orders.json
   def create
+    @current_admin = current_admin
+    
+      @current_agency = @current_admin.agency if @current_admin.agency?
+      @account_managers = @current_agency.account_managers if @current_agency.present?
 
       if params[:company_id]
         

@@ -4,7 +4,7 @@
 			       <%= image_tag("incluStaff_logo.png", alt: "Inclustaff") %>
 			 <% end %>
 			 
-		<%= @current_admin.try(:name) %> |  <%= @current_admin.try(:role) %>
+	
 		
 		
 		<button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">
@@ -23,18 +23,7 @@
 				<% end %>
 				
 			
-				<li class="dropdown profile-dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-					
-						<span class="hidden-xs"><%= @current_agency.name || @current_company.try(:name) %></span> <b class="caret"></b>
-					</a>
-					<ul class="dropdown-menu">
-						<li><a href="user-profile.html"><i class="fa fa-user"></i>Profile</a></li>
-						<li><a href="#"><i class="fa fa-cog"></i>Settings</a></li>
-						<li><a href="#"><i class="fa fa-envelope-o"></i>Messages</a></li>
-						<li><a href="#"><i class="fa fa-power-off"></i>Logout</a></li>
-					</ul>
-				</li>
+				
 				<li class="hidden-xxs">
 					<li class="hidden-xxs">
 						<%= link_to "<i class='fa fa-power-off'></i>".html_safe, destroy_admin_session_path, class: "", method: :delete %>

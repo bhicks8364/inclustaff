@@ -3,31 +3,31 @@
   
   <% if @job.present? %>
     <%= @job.name_title %> 
-    <% else %>
-
-
     
     <% end %>
 
-  <div class="form-inputs">
-    <%= f.input :week, disabled: true %> %>
-    
-    <%= f.input :reg_hours, disabled: true %>
-    <%= f.input :ot_hours, disabled: true %>
-    <%= f.input :gross_pay, disabled: true %>
+  <div class="col-md-3 main-box">
+    <div class='form-group'>
+      
+      <%= f.input :week, disabled: true, label: false %> 
+      Regular Hours
+      <%= f.input :reg_hours, disabled: true, label: false  %>
+      <%= f.input :ot_hours, disabled: true, label: false  %>
+      <%= f.input :gross_pay, as: :currency, wrapper_html: { class: 'form-control'}, disabled: true, label: false  %>
+    </div>
 
   </div>
-  <div class='col-md-4' id='shifts'>
+  <div class='col-md-9 main-box' id='shifts'>
     <%= f.simple_fields_for :shifts do |shift| %>
       <%= render 'shift_fields', f: shift %>
     <% end %>
     
-    <div class='links'>
-      <%= link_to_add_association 'add shift', f, :shifts %>
-    </div>
+    
   </div>
 
-  
+  <div class='links'>
+      <%= link_to_add_association 'add shift', f, :shifts, class: 'btn' %>
+    </div>
 
 
   <div class="form-actions">

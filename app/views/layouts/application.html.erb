@@ -29,8 +29,12 @@
 		<% if admin_signed_in? && current_admin.owner? && current_admin.company? %><%= render 'admin/sidebars/company_sidebar' %><% end %>
 		<% if admin_signed_in? && current_admin.recruiter? %><%= render 'admin/sidebars/recruiter_sidebar' %><% end %>
 		<% if user_signed_in? %><%= render 'admin/sidebars/employee_sidebar' %><% end %>
-			<div class="col-md-12" id="content-wrapper">
-
+			<% if signed_in? == false %>
+				<div class="col-md-12" id="content-wrapper">
+			<% else %>
+				<div class="container" id="content-wrapper">
+			<% end %>
+				
 				<% if alert %><div class="alert alert-warning"><%= flash.alert %></div> <% end %>
 	    		<% if notice %> <div class="alert alert-info"><%= flash.notice %></div> <% end %>
 	    		<%= yield %>

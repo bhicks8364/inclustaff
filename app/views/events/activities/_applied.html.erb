@@ -1,6 +1,17 @@
-<li>
-    <strong><%= link_to event.user.name, event.user %></strong>
-    <%= event.action %> to <%= link_to event.eventable.title, admin_company_orders_path(event.eventable.company, event.eventable) %>
-    <p><%= time_ago_in_words(event.created_at) %></p>
-    
-</li>
+
+<%= link_to event, class: 'list-group-item list-group-item-success' do %>
+
+	<% if event.user == current_user %>
+		You
+	<% else %>
+<span class='pull-left'>	<%= event.user.name %></span>
+	
+	<% end %>
+<span class='headline'><strong><%= event.eventable.title %></strong>  </span>
+<span class='text-muted'><%= event.eventable.company.name %></span>
+	
+	<span class='badge badge-success pull-right'>
+	    <%= event.created_at.stamp('11/13') %>
+	</span>
+	
+<% end %>

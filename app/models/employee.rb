@@ -97,7 +97,7 @@ class Employee < ActiveRecord::Base
   scope :unassigned, -> { where(assigned: false) }
   scope :assigned, -> { where(assigned: true) }
   scope :new_start, -> { joins(:jobs).where(Job[:start_date].gteq(Date.today.beginning_of_week)) }
-  scope :newly_added, -> { where("employees.created_at >= ?", 7.days.ago) }
+  scope :newly_added, -> { where("employees.created_at >= ?", 3.days.ago) }
   scope :tardy, -> {
                      joins(:timesheets).
                      where("timesheets.submitted_at <= ?", 7.days.ago).

@@ -25,8 +25,8 @@ jQuery ->
   $('#orders-datatable').dataTable
     sPaginationType: "full_numbers",
     "paging":   true,
-    "scrollY": 400,
-    "order": [[ 1, "asc" ]],
+    #"scrollY": 400,
+    #"order": [[ 1, "asc" ]],
     "info":     true
     console.log("Orders datatable running")
     
