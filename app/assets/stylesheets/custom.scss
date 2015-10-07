@@ -1,0 +1,16 @@
+.conversation-body {
+    background: rgba(0, 0, 0, 0.5);
+    font-size: 0.875em;
+    width: auto;
+    margin-left: 60px;
+    padding: 8px 10px;
+    position: relative;
+}
+.conversation-item.item-right .conversation-body {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+// BUTTONS
+.btn-sm { 
+  padding:2px;
+}

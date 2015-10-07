@@ -15,6 +15,7 @@
 #  approved_by  :integer
 #  shifts_count :integer
 #  total_bill   :decimal(, )
+#  invoice_id   :integer
 #
 
 require 'test_helper'

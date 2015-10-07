@@ -1,0 +1,21 @@
+<%= simple_form_for [:admin, @company, @invoice] do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs main-box">
+    <%= f.association :company, collection: @current_agency.companies.order(:name), prompt: "Choose a Company" %>
+    
+
+    <%= f.input :due_by, as: :string, input_html: {class: 'datepicker'}, placeholder: "Invoice Due Date", label: false %>
+    <%= f.input :paid %>
+    <%= f.input :total, as: :currency, disabled: true %>
+    <%= f.input :amt_paid, as: :currency %>
+    <%= f.input :date_paid, as: :currency %>
+    <br>
+   
+    
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

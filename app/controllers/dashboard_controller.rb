@@ -20,8 +20,8 @@ class DashboardController < ApplicationController
            @timesheets = @company.timesheets if @company.present?
         elsif user_signed_in? && current_user.employee?
             render 'employee_view'
-            @current_user = current_user if user_signed_in? && current_user.employee?
-            @employee = @current_user.employee if @current_user.present? && @current_user.employee.present?
+            @current_user = current_user
+            @employee = @current_user.employee 
             
             @work_histories = @employee.work_histories
             @current_shift = @employee.current_shift if @employee.current_shift.present?

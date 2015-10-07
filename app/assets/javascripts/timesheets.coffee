@@ -38,6 +38,8 @@ class Timesheet
       @item.removeClass('item-left').addClass('item-right')
       
       @item.find("[data-behavior='approve-button']").html "<i class='fa fa-times fa-stack-1x'></i>"
+      @item.appendTo("#approved");
+      @item.find(".conversation-user"). html "<i class='fa fa-calendar-check-o fa-3x'></i>"
       #@item.find("[data-behavior='approve-user']").html "<p>#{data.user_approved}</p>"
       #@item.find("[data-behavior='approved-circle']").html "<i class='fa fa-check-square-o fa-2x'></i>"
       @item.find("[data-behavior='timesheet-state']").html "#{data.state}"
@@ -46,6 +48,8 @@ class Timesheet
     else
       @item.removeClass('item-right').addClass('item-left')
       @item.find("[data-behavior='approve-button']").html "<i class='fa fa-check fa-stack-1x'></i>"
+      @item.appendTo("#pending");
+      @item.find(".conversation-user"). html "<i class='fa fa-calendar-times-o fa-3x'></i>"
       #@item.find("[data-behavior='approved-circle']").html "<i class='fa fa-square-o fa-2x'></i>"
       @item.find("[data-behavior='timesheet-state']").html "#{data.state}"
 

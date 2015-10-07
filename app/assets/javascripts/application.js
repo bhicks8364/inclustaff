@@ -30,6 +30,7 @@
 //= require autocomplete
 //= require datatables
 //= require forms
+//= require invoices
 
 
 

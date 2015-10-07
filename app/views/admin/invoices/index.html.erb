@@ -1,0 +1,41 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Invoices</h1>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>Company</th>
+      <th>Agency</th>
+      <th>Week</th>
+      <th>Due by</th>
+      <th>Paid</th>
+      <th>Total</th>
+      <th>Amt paid</th>
+      <th>Date paid</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @invoices.each do |invoice| %>
+      <tr>
+        <td><%= invoice.company.name %></td>
+        <td><%= invoice.agency_id %></td>
+        <td><%= invoice.week %></td>
+        <td><%= invoice.due_by %></td>
+        <td><%= invoice.paid %></td>
+        <td><%= invoice.total %></td>
+        <td><%= invoice.amt_paid %></td>
+        <td><%= invoice.paid_on %></td>
+        <td><%= link_to 'Show', admin_company_invoice_path(@company, invoice) %></td>
+        <td><%= link_to 'Edit', edit_admin_company_invoice_path(@company, invoice) %></td>
+        <td><%= link_to 'Destroy', admin_company_invoice_path(@company, invoice), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+<%= link_to 'Back', admin_company_invoices_path(@company) %>
+<%= link_to 'New Invoice', new_admin_company_invoice_path(@company) %>

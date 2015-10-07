@@ -22,6 +22,7 @@
 class Company < ActiveRecord::Base
     default_scope { order(name: 'DESC') }
     belongs_to :agency
+    has_many :invoices
     has_many :orders, dependent: :destroy
     has_many :order_events, :through => :orders, :source => 'events'
     has_many :jobs, :through => :orders
@@ -37,8 +38,9 @@ class Company < ActiveRecord::Base
     # has_many :recruiters, -> { where role: 'Recruiter' }, class_name: "Admin"
     # has_many :payroll_admin,  -> { where role: "Payroll" }, class_name: "Admin"
     # has_many :account_managers,  -> { where role: "Account Manager" }, class_name: "Admin"
-   scope :with_open_orders, -> { joins(:orders).merge(Order.needs_attention)} 
-    
+    scope :with_open_orders, -> { joins(:orders).merge(Order.needs_attention)} 
+    scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.current_week)}
+    scope :ordered_by_current_bill, -> { includes(:current_timesheets).order('timesheets.total_bill') }
     accepts_nested_attributes_for :orders
     
     include ArelHelpers::ArelTable
@@ -96,7 +98,7 @@ class Company < ActiveRecord::Base
 
     
     def set_payroll_cost!
-        cost = self.timesheets.approved.sum(:total_bill)
+        cost = self.timesheets.current_week.sum(:total_bill)
         self.update(balance: cost)
     end
     

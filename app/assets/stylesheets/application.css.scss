@@ -36,6 +36,7 @@
 
 @import "table_styles";
 @import "forms";
+@import "custom";
 @import "main";
 
 body {
@@ -43,6 +44,8 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;
+  
+  
 }
 
 
@@ -425,6 +428,8 @@ div.progress-bar {
 
 #content-wrapper {
   background: transparent;
+  // height: 100%;
+  
   // background-image: url('http://www.planwallpaper.com/static/images/518079-background-hd.jpg');
   // background-repeat: no-repeat;
   // background-attachment: fixed;

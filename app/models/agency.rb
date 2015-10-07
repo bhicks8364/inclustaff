@@ -12,6 +12,7 @@
 
 class Agency < ActiveRecord::Base
     belongs_to :admin
+    has_many :invoices
     has_many :companies
     has_many :order_events, :through => :orders, :source => 'events'
     has_many :applications, :through => :orders, :source => 'events'

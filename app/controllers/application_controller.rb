@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
     end
     @current_admin = current_admin
     @current = @current_company || @current_agency
-    @newly_added = @current.employees.newly_added.order(created_at: :desc) if @current.present?
+    @newly_added = Employee.newly_added.order(created_at: :desc) if @current.present?
     
     
     

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  
   resources :work_histories
   root 'dashboard#home'
   get  'sign_in' => 'dashboard#sign_in_page'
@@ -38,7 +39,13 @@ Rails.application.routes.draw do
   
 
   namespace :admin do
+    resources :invoices do
+      member do
+        patch 'mark_as_paid'
+      end
+    end
     resources :companies do
+      resources :invoices
       resources :timesheets
       resources :orders
       

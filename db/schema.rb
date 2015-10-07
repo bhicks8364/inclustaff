@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150928170632) do
+ActiveRecord::Schema.define(version: 20151006212359) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -107,6 +107,22 @@ ActiveRecord::Schema.define(version: 20150928170632) do
   end
 
   add_index "events", ["user_id"], name: "index_events_on_user_id", using: :btree
+
+  create_table "invoices", force: :cascade do |t|
+    t.integer  "company_id"
+    t.integer  "agency_id"
+    t.integer  "week"
+    t.datetime "due_by"
+    t.boolean  "paid"
+    t.decimal  "total"
+    t.decimal  "amt_paid"
+    t.datetime "date_paid"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "invoices", ["agency_id"], name: "index_invoices_on_agency_id", using: :btree
+  add_index "invoices", ["company_id"], name: "index_invoices_on_company_id", using: :btree
 
   create_table "jobs", force: :cascade do |t|
     t.integer  "employee_id"
@@ -217,9 +233,11 @@ ActiveRecord::Schema.define(version: 20150928170632) do
     t.integer  "approved_by"
     t.integer  "shifts_count"
     t.decimal  "total_bill"
+    t.integer  "invoice_id"
   end
 
   add_index "timesheets", ["deleted_at"], name: "index_timesheets_on_deleted_at", using: :btree
+  add_index "timesheets", ["invoice_id"], name: "index_timesheets_on_invoice_id", using: :btree
   add_index "timesheets", ["job_id"], name: "index_timesheets_on_job_id", using: :btree
 
   create_table "users", force: :cascade do |t|

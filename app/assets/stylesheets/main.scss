@@ -256,7 +256,7 @@ h2 {
     
     h5 {
         // font-weight: bold;
-        margin: 2px;
+        // margin: 2px;
     }
     hr {
         margin: 10px;
@@ -289,9 +289,20 @@ h2 {
     height: 150px;
     div.main-box {
         padding: 10px;
+        padding-bottom: 15px;
+        padding-top: 15px;
     }
+    h5 {
+        margin: 4px;
+    }
+    a.btn.btn-success.fill {
+        
+        color:black;
+    }
+    
     a.btn.btn-primary.fill {
-        margin-top: 5px;
+        
+        padding:3px;
     }
     hr {
         margin: 10px;
@@ -299,7 +310,7 @@ h2 {
     span.badge {
         
         color: black;
-        
+        margin: 3px;
       
         -webkit-border-radius: 3px;
         -moz-border-radius: 3px;

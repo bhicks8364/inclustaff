@@ -1,0 +1,6 @@
+jQuery ->
+    console.log('mark_as_paid running');
+    $("#balance").html(" <h4><strong>Balance:</strong> <%= number_to_currency(@invoice.balance) %></h4>");
+    $('#status').html("<strong>Status:</strong> Paid ");
+    $('#date-paid').html("<strong>Status:</strong> Paid ");
+    $('#pay-button').hide();

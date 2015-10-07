@@ -1,42 +1,46 @@
 
 <div class='row row150'>
-	<div class="col-md-3 col-sm-6 col-xs-12 text-center">
-		<div class="main-box">
-			<span class="headline">Agency Billings</span>
+	<div class="col-md-6 col-sm-6 col-xs-12 text-center">
+		<div class="main-box scroll">
+			<h5 class="center">Open Invoices</h5>
+			<div class='list-group' data-behavior='invoice-list'>
+			  <% @current.invoices.unpaid.order(:week).each do |invoice| %>
 			
-			<span class="price"><%= number_to_currency(@timesheets.current_week.sum(:total_bill)) %></span>
-			<span class="price">Last week: <%= number_to_currency(@timesheets.last_week.sum(:total_bill)) %></span>
-			<span class="price text-muted">YTD: <%= number_to_currency(@timesheets.sum(:total_bill)) %></span>
+			       <li data-behavior="invoice" data-id="<%= invoice.id %>" class='list-group-item list-group-item-success'>
+			       	<span id='status' class='badge badge-danger'><%= invoice.week_ending %> </span>
+			       <strong>	<%= invoice.company.name %></strong> - <span id='balance'><%= number_to_currency(invoice.balance) %></span>
+			       <%= link_to 'Mark As Paid', mark_as_paid_admin_invoice_path(invoice), method: :patch, remote: true, id: 'pay-button', class: 'btn btn-primary' %>
+			          
+			       
+			       </li>
+			   
+			  <% end %>
+			</div>
+		
+		</div>
+	</div>
+	<div class="col-md-3 col-sm-6 col-xs-12 text-center">
+		<div class="main-box ">
+			<h5 class="center">Agency Payroll</h5>
+			
+		This week
+			<span class='badge badge-success'>
+			<%= number_to_currency(@timesheets.current_week.sum(:gross_pay)) %></span><br>
+			Last week
+			<span class='badge'>	<%= number_to_currency(@timesheets.last_week.sum(:gross_pay)) %></span><br>
+			
+			<span class='badge badge-primary fill center'>YTD Billings: <%= number_to_currency(@timesheets.sum(:gross_pay)) %></span>
 		</div>
 	</div>
 	<div class="col-md-3 col-sm-6 col-xs-12 text-center">
 		<div class="main-box">
 			
-			<span class="headline">Agency Billings</span>
+		
+			<h5><strong>Open Invoices:</strong> <%= number_to_currency( @current.invoices.unpaid.sum(:total) )%></h5>
+			<h5><strong>Paid Invoices:</strong> <%= number_to_currency( @current.invoices.paid.sum(:total) )%></h5>
 			
-			<span class="price">This week:<%= number_to_currency(@timesheets.current_week.sum(:total_bill)) %></span>
-			<span class="price">Last week: <%= number_to_currency(@timesheets.last_week.sum(:total_bill)) %></span>
-			<span class="price text-muted">YTD: <%= number_to_currency(@timesheets.sum(:total_bill)) %></span>
-		</div>
-	</div>
-	<div class="col-md-3 col-sm-6 col-xs-12 text-center">
-		<div class="main-box">
 			
-			<span class="headline">Agency Billings</span>
 			
-			<span class="price"><%= number_to_currency(@timesheets.current_week.sum(:total_bill)) %></span>
-			<span class="price text-muted">Last week: <%= number_to_currency(@timesheets.last_week.sum(:total_bill)) %></span>
-			<span class="price text-muted">YTD: <%= number_to_currency(@timesheets.sum(:total_bill)) %></span>
-		</div>
-	</div>
-	<div class="col-md-3 col-sm-6 col-xs-12 text-center">
-		<div class="main-box">
-			
-			<span class="headline">Agency Billings</span>
-			
-			<span class="price"><%= number_to_currency(@timesheets.current_week.sum(:total_bill)) %></span>
-			<span class="price text-muted">Last week: <%= number_to_currency(@timesheets.last_week.sum(:total_bill)) %></span>
-			<span class="price text-muted">YTD: <%= number_to_currency(@timesheets.sum(:total_bill)) %></span>
 		</div>
 	</div>
 </div>

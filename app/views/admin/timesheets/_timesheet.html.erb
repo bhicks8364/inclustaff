@@ -1,20 +1,26 @@
 <% if timesheet.approved? %>
 <div class="conversation-item item-right clearfix" data-behavior="timesheet" data-id="<%= timesheet.id %>">
-
+	<div class="conversation-user">
+		<i class="fa fa-calendar-check-o fa-3x"></i>
+	</div>
 <% else %>
 
 <div class="conversation-item item-left clearfix" data-behavior="timesheet" data-id="<%= timesheet.id %>">
-
+	<div class="conversation-user">
+		<i class="fa fa-calendar-times-o fa-3x"></i>
+	</div>
 <% end %>
-			
+
 				
-				<div class="conversation-body order">
-					<h5><strong><%= timesheet.employee.name %></strong> <small><span data-behavior="timesheet-state"><%= timesheet.state.upcase %></span></small></h5>
+				<div class="conversation-body">
+					
+					<h5><strong> <%= timesheet.company.name %> </strong> <small><%= timesheet.employee.name %></small></h5>
 					<h6><%= link_to timesheet.job.title, admin_job_path(timesheet.job) %></h6>
+					
 					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
 						<h6><strong><%= timesheet.week_begin %>  -  <%= timesheet.week_ending %></strong><br>
 						
-						 <%= timesheet.company.name %>
+						
 						</h6>
 						
 					</div>

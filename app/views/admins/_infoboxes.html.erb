@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row row150">
 	<div class="col-lg-3 col-sm-6 col-xs-12">
 		<div class="main-box infographic-box text-center">
 			
@@ -6,7 +6,7 @@
 			<% if @admin.recruiter? %>
 			<span class='headline'>
 			<%= link_to "<i class='fa fa-users fa-2x'></i> <strong>Placements</strong>".html_safe, admin_jobs_path %></span>
-			<span class="value"><%= @jobs.any? ? @jobs.active.count : "No active jobs" %></span>
+			<span class="value"><%= @recruiter_jobs.any? ? @recruiter_jobs.active.count : "No active jobs" %></span>
 			<% elsif @admin.account_manager? || @admin.payroll? %>
 			<span class='headline'>
 			<%= link_to "<i class='fa fa-users fa-2x'></i> <strong>Job Orders</strong>".html_safe, admin_jobs_path %></span>

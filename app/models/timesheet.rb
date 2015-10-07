@@ -15,10 +15,12 @@
 #  approved_by  :integer
 #  shifts_count :integer
 #  total_bill   :decimal(, )
+#  invoice_id   :integer
 #
 
 class Timesheet < ActiveRecord::Base
     belongs_to :job, counter_cache: true
+    belongs_to :invoice
     has_many :shifts, dependent: :destroy
     has_one :employee, :through => :job
     has_one :company, :through => :job
@@ -37,6 +39,7 @@ class Timesheet < ActiveRecord::Base
     delegate :pay_rate, to: :job
     delegate :bill_rate, to: :job
     delegate :ot_rate, to: :job
+    delegate :agency, to: :job
     delegate :company, to: :job
     delegate :manager, to: :job
     delegate :recruiter, to: :job
@@ -48,9 +51,15 @@ class Timesheet < ActiveRecord::Base
     
     after_save :update_company_balance!, if: :has_a_job?
     before_create :set_job, unless: :has_a_job?
+    before_save :set_invoice, unless: :has_invoice?
+    after_save :update_invoice!, if: :has_invoice?
+    
     
     def has_a_job?
         self.job.present?
+    end
+    def has_invoice?
+        self.invoice.present?
     end
     
     def set_job
@@ -78,8 +87,9 @@ class Timesheet < ActiveRecord::Base
     }
     scope :past, -> { where("week < ?", Date.today.cweek) }
     
-    scope :underutilized, -> { approved.where('reg_hours < 40') }
+    scope :overtime_errors, -> { where('reg_hours > 40') }
     scope :needing_approval, -> { last_week.pending }
+    
     
     def receipt
         Receipts::Receipt.new(
@@ -111,13 +121,22 @@ class Timesheet < ActiveRecord::Base
     end
        
     
-    
+    def self.by_total_bill
+        self.order(:total_bill)
+    end
     
     
     
     
     def self.without_shifts
         includes(:shifts).where( :shifts => { :timesheet_id => nil } )
+    end
+    
+    def set_invoice
+        company_id = self.company.id
+        agency_id = self.agency.id
+        invoice = Invoice.find_or_create_by(agency_id: agency_id, company_id: company_id, week: self.week)
+        self.invoice_id = invoice.id
     end
     
     
@@ -153,6 +172,10 @@ class Timesheet < ActiveRecord::Base
     
     def update_company_balance!
         self.company.set_payroll_cost!
+    end
+    
+    def update_invoice!
+        self.invoice.update_totals!
     end
     
     def last_clock_in
@@ -270,5 +293,9 @@ class Timesheet < ActiveRecord::Base
     end
     def time_frame
         "#{week_begin} - #{week_ending}"
+    end
+    def employee_bill
+        bill = total_bill || 0
+        "#{employee_name} - $#{bill.round(2)}"
     end
 end
