@@ -1,15 +1,15 @@
 class Admin::InvoicesController < ApplicationController
   before_action :set_invoice, only: [:show, :edit, :update, :destroy]
-
+  layout :determine_layout
   # GET /invoices
   # GET /invoices.json
   def index
     if params[:company_id]
       @company = Company.find(params[:company_id])
-      @invoices = @company.invoices
+      @invoices = @company.invoices.order(:due_by)
     else
       
-      @invoices = @current_agency.invoices if @current_agency.present?
+      @invoices = @current_agency.invoices.order(:due_by) if @current_agency.present?
       render 'invoices/index'
     end
     
@@ -114,6 +114,9 @@ class Admin::InvoicesController < ApplicationController
   end
 
   private
+      def determine_layout
+        current_admin.agency? ? "admin_layout" : "application"
+      end
     # Use callbacks to share common setup or constraints between actions.
     def set_invoice
       

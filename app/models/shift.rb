@@ -28,7 +28,7 @@ class Shift < ActiveRecord::Base
     extend SimpleCalendar
     # has_calendar :attribute => :time_in
     include ArelHelpers::ArelTable
-    by_star_field :time_in, :time_out
+
     
     acts_as_paranoid
 
@@ -42,7 +42,7 @@ class Shift < ActiveRecord::Base
     scope :last_week, ->{
         where(week: Date.today.cweek - 1)
     }
-    
+    scope :today, -> { where(time_in: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day) }
     scope :short_shifts, -> { where('time_worked > 4') }
     scope :over_8, -> { where('time_worked > 8') }
 

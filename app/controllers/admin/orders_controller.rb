@@ -15,16 +15,9 @@ class Admin::OrdersController < ApplicationController
       @order = @company.orders.new if @company.present?
      
     else
-      @current_admin = current_admin
       
-      if @current_admin.agency?
-      
-        @current_agency = @admin.agency
-      elsif @current_admin.company?
-        @current_company = @admin.company
-      end
-      
-      @orders = @current_company.orders.active.order(created_at: :desc) if @current_company.present?
+
+      # @orders = @current_company.orders.active.order(created_at: :desc) if @current_company.present?
       @orders = @current_agency.orders.active.order(created_at: :desc) if @current_agency.present?
 
     end

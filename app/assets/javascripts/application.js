@@ -34,7 +34,7 @@
 
 
 
-
+//= require chartkick
 
 
 

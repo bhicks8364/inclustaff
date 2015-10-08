@@ -137,6 +137,9 @@ class Admin < ActiveRecord::Base
   def name
     "#{first_name} #{last_name}"
   end
+  def to_s
+    name
+  end
   
     # def manager_timesheets
   #   if self.manager?
@@ -147,7 +150,7 @@ class Admin < ActiveRecord::Base
     Order.by_account_manager(self.id)
   end
   def personal_events
-    Event.admin_events(admin_id)
+    Event.admin_events(self.id)
   end
   
   

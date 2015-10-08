@@ -1,0 +1,24 @@
+<div class="col-md-4 well">
+   
+    <h5 class='text-center'>Total Orders: <%= @admin.account_orders.count %></h5>
+ 
+        <%= pie_chart @admin.account_orders.group(:mark_up).count, min: 1000, max: 5000 , library: {legend: {position: "bottom"}, is3D: true, title: "Orders by Mark Up"} %>
+        
+</div>
+
+<div class="col-md-4 well">
+   
+    <h5 class='text-center'><%= @current.orders.count %></h5>
+        
+        <%= column_chart @admin.account_orders.map{|order|
+              {name: order.title, data: order.jobs.group(:recruiter).count}
+          }, xtitle: "Week", ytitle: "Total Hours" %>
+</div>
+
+<div class="col-md-4 well">
+   
+    <h5 class='text-center'><%= @current.orders.count %></h5>
+ 
+        <%= column_chart @admin.account_orders.group_by_day(:needed_by, format: "%m/%d").count, stacked: true %>
+        
+</div>

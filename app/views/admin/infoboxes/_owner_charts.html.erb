@@ -1,0 +1,84 @@
+<div class="col-md-6 well">
+  <h4 class='text-center'>Account Managers</h4>
+  <h5 class='text-center'><small>Average Mark Up Rate</small></h5>
+  <%= bar_chart @current.orders.group(:account_manager).average(:mark_up) %>
+</div>
+<div class="col-md-3 well">
+  <h4 class='text-center'>New Applicants</h4>
+  <h5 class='text-center'><small>New Applications By Day</small></h5>
+  <%= column_chart Event.applications.group_by_day(:created_at).count %>
+</div>
+<div class="col-md-6 well">
+  <h4 class='text-center'>New Applicants</h4>
+  <h5 class='text-center'><small>New Applications By Day</small></h5>
+  <%= pie_chart Event.group(:action).count %>
+   <%= pie_chart @current.jobs.group(:order).count %>
+   <%= column_chart @current.orders.needs_attention.group(:company).count %>
+</div>
+  <div class="col-md-6 well">
+    <h5 class='text-center'>YTD Billings by Company</h5>
+    <h5 class='text-center'><small>Total: <%= @current.invoices.sum(:total).round(2) %></small></h5>
+    <%= pie_chart @current.invoices.group(:company).sum(:total) %>
+  </div>
+  <div class="col-md-6 well">
+    <h5 class='text-center'>YTD Billings by Company</h5>
+    <h5 class='text-center'><small>Total: <%= @current.invoices.sum(:total).round(2) %></small></h5>
+    <%= column_chart @current.invoices.group(:company).sum(:total) %>
+  </div>
+  <div class="col-md-6 well">
+    <h5 class='text-center'>Total Orders by Company</h5>
+    <h5 class='text-center'><small>Total: <%= @current.orders.count %></small></h5>
+    
+  <%= column_chart @current.orders.joins(:company).group(:name).count %>
+   
+    </div>
+    <div class="col-md-6 well">
+      <h5 class='text-center'>Total Hours Worked Per Month</h5>
+      <h5 class='text-center'><small><%= @current.orders.count %></small></h5>
+      
+     <%= column_chart @current.employees.map{|employee|
+              {name: employee.name, data: employee.shifts.group_by_month(:time_in, format: "%B").sum(:time_worked)}
+          }, xtitle: "Month", ytitle: "Total Hours" %>
+     
+    </div>
+    <div class="col-md-6 well">
+      <h5 class='text-center'>Total Hours Worked Per Week</h5>
+      <h5 class='text-center'><small><%= @current.orders.count %></small></h5>
+      
+     <%= column_chart @current.employees.map{|employee|
+              {name: employee.name, data: employee.shifts.group_by_week(:time_in, format: "%a").sum(:time_worked)}
+          }, xtitle: "Week", ytitle: "Total Hours" %>
+     
+    </div>
+    <div class="col-md-12 well">
+    <h5 class='text-center'>Shifts</h5>
+    <h5 class='text-center'><small><%= @current.shifts.count %></small></h5>
+    
+  
+   
+    </div>
+  <div class="col-md-12 well">
+      <h5 class='text-center'>Orders by Company</h5>
+    <%= pie_chart @current.orders.group(:company).count, library: {chartArea: {width:'100%'}}%>
+  </div>
+
+  <div class="col-md-12 well">
+      <h5 class='text-center'>Recruiter Activity</h5>
+  <%= column_chart @current.recruiters.pluck("id").uniq.map { |c| { name: @current.admins.where(id: c).take.name, data: @current.jobs.where(recruiter_id: c).group_by_day(:start_date, format: "%B %d, %Y").count }  } %>
+</div>
+<div class="col-md-12 well">
+    <h5 class='text-center'>Average Hours Worked Per Day</h5>
+    <h5 class='text-center'><small><%= @current.orders.count %></small></h5>
+    
+   <%= column_chart  @current.employees.map{|employee|
+            {name: employee.name, data: employee.shifts.group_by_period(:week, :time_in, format: "%m/%d").sum(:time_worked)}
+        } %>
+   
+    </div>
+    <div class="col-md-12 well">
+   <h5 class='text-center'>Total Hours Worked Per Day</h5>
+    <h5 class='text-center'><small><%= @current.orders.count %></small></h5>
+    
+   <%= column_chart @current.shifts.group_by_period(:day, :time_in, format: "%m/%d").sum(:time_worked), stacked: true %>
+   
+    </div>

@@ -59,8 +59,7 @@ gem 'clockpicker-rails'
 # FONT AWESOME - ENOUGH SAID
 gem "font-awesome-rails"
 
-# FOR ACTIVE RECORD DATE QUERY
-gem 'by_star', :git => "git://github.com/radar/by_star"
+gem 'groupdate'
 
 # PAGINATION
 gem 'will_paginate', '~> 3.0.6'
@@ -85,6 +84,7 @@ gem 'refile-mini_magick'
 gem 'gon'
 gem 'jquery-turbolinks'
 
+gem 'chartkick'
 # AUTOCOMPLETE & @MENTIONS
 gem 'jquery-atwho-rails'
 

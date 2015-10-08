@@ -144,6 +144,9 @@ class Order < ActiveRecord::Base
   def title_company
     "#{company_name} - #{title}"
   end
+  def to_s
+    self.title_company
+  end
   
   def title_count
     "#{title} (#{pay_range}) #{open_jobs}"

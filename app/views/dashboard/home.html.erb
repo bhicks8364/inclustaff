@@ -1,13 +1,14 @@
 <% if admin_signed_in? %>
     <div class='center'>
-        
+         <%= render 'admin/infoboxes/recruiter_charts' %>
+        <%= render 'admin/infoboxes/owner_charts' %>
         <% if @current_admin.account_manager? %>
         <h2><%= @current_admin.role %></h2>
         <% elsif @current_admin.payroll? %>
         <h2><%= @current_admin.role %></h2>
-        <%= render 'admin/shared/payroll_boxes' %>
+        <%= render 'admin/infoboxes/payroll_boxes' %>
         <% end %>
-            <%= render 'admin/shared/recruiter_boxes' %>
+            <%= render 'admin/infoboxes/recruiter_boxes' %>
        
         
     </div>
