@@ -1,4 +1,5 @@
-<h1><%= @current_agency.try(:name) %><small>All Companies</small></h1>
+<div class='main-box'>
+  <h1><%= @current_agency.try(:name) %><small>All Companies</small></h1>
 
 
 
@@ -8,31 +9,27 @@
     <tr>
       <th>Name</th>
       
-      <th>Orders</th>
+      <th>Open Orders</th>
       <th>Timesheets</th>
       
       <th>Balance</th>
       <th>This Week Bill</th>
       <th>Last Week Bill</th>
-      <th></th>
-      <th></th>
-      <th></th>
+      
     </tr>
   </thead>
 
   <tbody>
     <% @companies.each do |company| %>
       <tr>
-        <td><%= company.name %></td>
+        <td><%= link_to company.name, admin_company_path(company), class: 'btn fill' %></td>
         
-        <td><%= company.orders.filled.count %> / <%= company.orders.count %></td>
+        <td><%= company.orders.needs_attention.count %></td>
         <td><%= company.current_timesheets.try(:count) %> / <%= company.jobs.active.try(:count) %></td>
         <td><%= number_to_currency(company.balance) %></td>
         <td><%= number_to_currency(company.timesheets.current_week.sum(:total_bill) )%></td>
         <td><%= number_to_currency(company.timesheets.last_week.sum(:total_bill) ) %></td>
-        <td><%=  %></td>
-        <td><%= link_to 'Edit', edit_admin_company_path(company) %></td>
-        <td><%= link_to 'Destroy', admin_company_path(company), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+       
       </tr>
     <% end %>
   </tbody>
@@ -54,3 +51,4 @@
         <li class='list-group-item list-group-item-success'><%= link_to 'Destroy', admin_company_path(company), method: :delete, data: { confirm: 'Are you sure?' } %></li>
       </div>
     <% end %>
+</div>

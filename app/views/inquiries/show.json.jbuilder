@@ -1,0 +1,1 @@
+json.extract! @inquiry, :id, :name, :job_title, :agency_name, :email, :agency_size, :phone_number, :created_at, :updated_at

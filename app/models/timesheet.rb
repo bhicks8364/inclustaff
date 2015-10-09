@@ -74,6 +74,7 @@ class Timesheet < ActiveRecord::Base
     
 
     scope :with_job, -> { includes(:job)}
+    
     scope :approved, -> { where(state: "approved")}
     scope :pending, -> { where(state: "pending")}
 

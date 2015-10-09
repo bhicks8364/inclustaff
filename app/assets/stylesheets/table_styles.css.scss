@@ -1,53 +1,3 @@
-// #timesheets > thead {
-//   background-color: #222;
-//   border-bottom: solid 3px rgba(18, 19, 29, 0.84);
-//   th {
-//     color: white;
-//     // border: solid 1px rgba(18, 19, 29, 0.64);
-//     // padding: 1px;
-//     padding: 3px;
-
-//     text-align: center;
-//   }
-  
-// }
-// .table {
-//   background-color: rgba(34, 34, 34, 0.45);
-//   color: white;
-//   tbody {
-//     tr {
-      
-//       td {
-//         border: solid 2px rgba(34, 34, 34, 0.18);
-//         padding: 3px;
-//         text-align: center;
-//         a:hover {
-//           text-decoration: none;
-//         }
-//         a {
-//           text-decoration: none;
-//           background-color: transparent;
-//           color: white;
-//         }
-//       }
-//     }
-//   }
-// }
-  
-// .table > tbody > tr > td > a {
-  
-//   padding: 3px;
-//   // margin: auto;
-//   margin: 2px;
-//   // align-self: center;
-  
-//   // color: #182C46;
-//   text-decoration: none;
-  
-//   background-color: transparent;
-//   // overflow: auto;
-// }
-
 
 
 .table > thead  {
@@ -68,6 +18,9 @@
     // text-align: center;
   }
   
+}
+.table > tr {
+  background: black;
 }
 
 #dataTable {

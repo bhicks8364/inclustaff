@@ -1,0 +1,20 @@
+<div class='form-inline'>
+  <%= simple_form_for Inquiry.new do |f| %>
+  <%= f.error_notification %>
+
+
+    <%= f.input :agency_name, placeholder: "Agency Name", label: false  %>
+    <%= f.input :name, placeholder: "Your Name", label: false %>
+    
+    
+    <%= f.input :email, placeholder: "Your Email", label: false  %>
+  
+   
+  
+
+ 
+    <%= f.submit 'Get Notified!', class: 'btn btn-primary' %>
+ 
+<% end %>
+
+</div>

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   
+  resources :inquiries
   resources :work_histories
   root 'dashboard#home'
   get  'sign_in' => 'dashboard#sign_in_page'

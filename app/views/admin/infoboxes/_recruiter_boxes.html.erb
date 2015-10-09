@@ -1,6 +1,6 @@
 <div class='row row400'>
 	<div class="col-md-6 col-sm-12 col-xs-12  text-center">
-		<div class="well">
+		<div class="main-box well">
 		<h5>	Recent Applicants</h5>
                 <div class='list-group' id='applicants' >
                     <% @current.order_events.applications.order(created_at: :desc).limit(3).each do |event| %>
@@ -15,29 +15,33 @@
 
 
     <div class="col-md-6 col-sm-12 col-xs-12 text-center">
-		<div class="well">
-			<h4>	New Job Orders</h4>
+		<div class="main-box well">
+			<h3>Open Job Orders</h3>
 			
-        <div class='list-group ' >
-        
-    		<% if @current_agency.present? %>
-    	
-    			<% @current_agency.companies.includes(:orders).each do |company| %>
-    		<h5><%= company.name %></h5>
-    		<% company.orders.needs_attention.each do |order| %>
-    			<%= render order %>
-    		<% end %>
-    	<% end %>
-    		    
-    		<% end %>
+	        <div class='list-group'>
+	       
+	    		<% if @current_agency.present? %>
+	    	
+	    			<% @current_agency.companies.includes(:orders).each do |company| %>
+	    		<h5 class='headline'><%= company.name %></h5>
+	    		<% company.orders.needs_attention.order(:needed_by).each do |order| %>
+	    			<%= render order %>
+	    		<% end %>
+	    	<% end %>
+	    		    
+	    		<% end %>
+			</div>
 		</div>
 	</div>
 </div>
-</div>
+
+
+
+
 <div class='row row150'>
-	<div class="col-md-6 col-sm-12 col-xs-12  text-center">
-		<div class="main-box">
-	<h5>	Recent Applicants</h5>
+	<div class="col-md-12 col-sm-12 col-xs-12  text-center">
+		<div class="main-box well">
+	<h5>Recent Applicants</h5>
                 <div class='list-group' id='applicants' >
                     <% @current.order_events.applications.order(created_at: :desc).limit(3).each do |event| %>
 						  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
@@ -54,7 +58,7 @@
 		</div>
 	</div>
 	<div class="col-md-3 col-sm-12 col-xs-12  text-center">
-		<div class="main-box">
+		<div class="main-box well">
 				<h5>	New Starts</h5>
                 <div class='list-group list-group-sm' >
                     <% Employee.new_start.order(created_at: :desc).limit(3).each do |employee| %>
@@ -66,22 +70,6 @@
 			
 		</div>
 	</div>
-	<div class="col-md-3 col-sm-6 col-xs-6  text-center">
-		<div class="main-box">
-			
-			<span class="headline">Current Payroll</span>
-			<span class="price"><%= number_to_currency(@timesheets.current_week.sum(:gross_pay)) %></span>
-			<span class="price text-muted">YTD: <%= number_to_currency(@timesheets.sum(:gross_pay)) %></span>
-			
-			<hr>
-			<span class="headline">Current Billings</span>
-			
-			<span class="price"><%= number_to_currency(@timesheets.current_week.sum(:total_bill)) %></span>
-			<span class="price text-muted">YTD: <%= number_to_currency(@timesheets.sum(:total_bill)) %></span>
-		</div>
-	</div>
-	
-	
-	
+
 	
 </div>

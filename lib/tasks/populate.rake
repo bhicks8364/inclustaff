@@ -37,6 +37,17 @@ namespace :db do
 		end
 	  puts 'All done!!!'
   end
+  
+  desc "Create random shifts"
+  task :pop_shifts => :environment do
+	require 'populator'
+	require 'ffaker'
+	def random_hour(from, to)
+  		(Date.today + rand(from..to).hour + rand(0..60).minutes).to_datetime
+	end
+	puts random_hour(10, 15)
+		
+  end
 
   
   desc "Create 25 employees with random names and addresses"
@@ -214,3 +225,62 @@ end
 # FFaker::Time.between(2.days.ago, Time.now, :afternoon) #=> "2014-09-18 12:10:34 -0700"
 # FFaker::Time.between(2.days.ago, Time.now, :evening) #=> "2014-09-19 20:21:03 -0700"
 # FFaker::Time.between(2.days.ago, Time.now, :midnight) #=> "2014-09-20 00:40:14 -0700"
+
+
+desc "Create 25 employees with random names and addresses"
+  task :pop_emp => :environment do
+	require 'populator'
+	require 'ffaker'
+	password = "password"
+	  User.populate 50 do |user|
+		user.first_name = FFaker::Name.first_name
+		user.last_name = FFaker::Name.last_name
+		user.email = FFaker::Internet.email
+		user.city = FFaker::Address.city
+		user.state = FFaker::AddressUS.state
+		user.zipcode = FFaker::AddressUS.zip_code
+		user.address = FFaker::AddressUS.street_address
+		user.role = "Employee"
+		user.encrypted_password = User.new(:password => password).encrypted_password
+		user.sign_in_count = 0
+		Employee.populate 1 do |employee|
+			employee.user_id = user.id
+			employee.first_name = user.first_name
+			employee.last_name = user.last_name
+			employee.email = user.email
+			employee.ssn = 1234..9999
+			employee.phone_number = FFaker::PhoneNumber.short_phone_number
+
+			
+	
+	
+			
+			puts employee.first_name
+		  end
+		
+
+
+		
+		puts user.first_name
+	  end
+	  puts 'All done!!!'
+  end
+  
+ # task :shifts => :environment do
+ # 	def random_hour(from, to)
+ # 		(Date.today + rand(from..to).hour + rand(0..60).minutes).to_datetime
+	# end
+
+	# puts random_hour(10, 15)
+	
+ #   # Shift.populate 100 do |t|
+ #   #   t.time_in = 
+    
+ #   #   t.employee_id = rand(6)+1 # random group_id [1..6]
+ #   #   t.state = "clocked_out"
+ #   #   t.priority_id = rand(3)+1 # random priority_id [1..3]
+ #   #   t.contact_id = rand(NUM_CONTACTS)+1 # random contact_id [1..NUM_CONTACTS]
+ #   #   t.creator_id = rand(6)+2 # random created_by [2..7]
+ #   #   t.created_at = CREATION_PERIOD.sample
+ #   # end
+ # end

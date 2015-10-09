@@ -58,6 +58,7 @@ class Order < ActiveRecord::Base
     accepts_nested_attributes_for :skills, reject_if: :all_blank, allow_destroy: true
 
     # SCOPES
+    
     scope :active, -> { where(active: true)}
     scope :inactive, -> { where(active: false)}
     scope :urgent, -> { where(urgent: true)}
@@ -66,6 +67,8 @@ class Order < ActiveRecord::Base
     scope :off_shift, -> { joins(:jobs).merge(Job.off_shift)}
     scope :needs_attention, -> { where(Order[:number_needed].gt(Order[:jobs_count])) }
     scope :filled, -> { where(Order[:jobs_count].gteq(Order[:number_needed])) }
+    scope :priority, -> { needs_attention.where(Order[:needed_by].lteq(Time.zone.now + 3.days))}
+    scope :overdue, -> { needs_attention.where(Order[:needed_by].lteq(Time.zone.now))}
     
     def defaults
       self.active = true if self.active.nil?

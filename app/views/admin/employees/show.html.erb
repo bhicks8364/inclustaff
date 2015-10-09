@@ -24,7 +24,7 @@
   </div>
 <% end %>
 <% if @shifts %>
-<div class='main-box'>
+<div class=' center'>
    <%= render 'admin/shifts/calendar' %>
 </div>
 <% end %>
@@ -39,7 +39,9 @@
         </div>
       
           
-          <%= render partial: "admin/skills/form", locals: {skillable: @employee} %>
+         <div class='well'>
+            <%= render partial: "admin/skills/form", locals: {skillable: @employee} %>
+         </div>
         
        </div>
     <% else %>

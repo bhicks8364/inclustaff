@@ -1,44 +1,39 @@
-<div class="table-responsive">
+<div class='center'>
+  <div class="table-responsive">
   <table id="orders-datatable2" class="table table-bordered display" width="100%">
   <thead class='cell-border'>
     <tr>
-      
-      <th>Company</th>
+      <th>Needed By</th>
+     
       <th>Title</th>
       <th>Pay Range</th>
-      <th>Active</th>
-      <th>Need</th>
+     
       <th>Open </th>
-      <th>Rate</th>
-      <th>Timesheets</th>
-      <th>Needed By</th>
-      <th></th>
-      <th></th>
+     
+     
+      
+     
+      <th>Account Manager</th>
       
     </tr>
   </thead>
 
   <tbody>
-    <% @orders.needs_attention.each do |order| %>
+    <% @orders.needs_attention.order(:needed_by).each do |order| %>
       <tr>
-        
-        <td><%= link_to order.company_name, admin_company_path(order.company) %></td>
+        <td><%= order.needed_by? ? order.needed_by.stamp('11/12') : "n/a" %></td>
+       
         <td><%= link_to order.title, admin_company_order_path(order.company, order) %></td>
         <td><%= order.pay_range %></td>
-        <td><%= order.jobs_count %></td>
-        <td><%= order.number_needed %></td>
+       
+        
         <td><%= order.open_jobs %></td>
-        <td><%= order.mark_up_percent %></td>
-        <td><%= order.current_timesheets.any? ? order.current_timesheets.count : "0" %></td>
-        <td><%= order.needed_by? ? order.needed_by.strftime("%B %e, %Y") : "n/a" %></td>
+       
+        
+        
         <td><%= order.account_manager.present? ? order.account_manager.last_name : "Unassigned" %> </td>
-        <td><%= link_to(edit_admin_order_path(order), class: "table-link" ) do %>
-					<span class="fa-stack">
-						<i class="fa fa-square fa-stack-3x fa-inverse"></i>
-						<i class="fa fa-pencil fa-stack-1x "></i>
-					</span>
-					<% end %>
-        </td>
+        
+       
       </tr>
     <% end %>
   </tbody>
@@ -46,3 +41,5 @@
 
 
   </div>
+
+</div>

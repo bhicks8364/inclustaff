@@ -1,40 +1,41 @@
-<div class="btn-group btn-group-justified" role="group" aria-label="...">
-  <div class="btn-group" role="group">
-  <%= link_to(admin_company_path(@company), class: "btn btn-default") do %>
-							<i class='fa fa-home'></i>
-
-								<span>Back to Company</span>
-							<% end %>
-
-  </div>
-  <div class="btn-group" role="group">
-  <%= link_to(new_admin_company_order_path(@company), class: "btn btn-default") do %>
-							<i class='fa fa-user-plus'></i>
-
-								<span>New Job Order</span>
-							<% end %>
-
-  </div>
-  <div class="btn-group" role="group">
-  <%= link_to(admin_company_orders_path(@company), class: "btn btn-default") do %>
-							<i class='fa fa-briefcase'></i>
-
-								<span>Active Orders</span>
-							<% end %>
-
-  </div>
-  <div class="btn-group" role="group">
-  <%= link_to(admin_company_timesheets_path(@company), class: "btn btn-default") do %>
-							<i class='fa fa-clock-o'></i>
-
-								<span>Timesheets</span>
-							<% end %>
-
-  </div>
+<div class='main-box'>
+  <div class="btn-group btn-group-justified" role="group" aria-label="...">
+    <div class="btn-group" role="group">
+    <%= link_to(admin_company_path(@company), class: "btn btn-default") do %>
+  							<i class='fa fa-home'></i>
   
-</div>
+  								<span>Back to Company</span>
+  							<% end %>
+  
+    </div>
+    <div class="btn-group" role="group">
+    <%= link_to(new_admin_company_order_path(@company), class: "btn btn-default") do %>
+  							<i class='fa fa-user-plus'></i>
+  
+  								<span>New Job Order</span>
+  							<% end %>
+  
+    </div>
+    <div class="btn-group" role="group">
+    <%= link_to(admin_company_orders_path(@company), class: "btn btn-default") do %>
+  							<i class='fa fa-briefcase'></i>
+  
+  								<span>Active Orders</span>
+  							<% end %>
+  
+    </div>
+    <div class="btn-group" role="group">
+    <%= link_to(admin_company_timesheets_path(@company), class: "btn btn-default") do %>
+  							<i class='fa fa-clock-o'></i>
+  
+  								<span>Timesheets</span>
+  							<% end %>
+  
+    </div>
+    
+  </div>
 
-<h1>  <%= @company.name %> <small> <%= @order.title_company %></small></h1>
+<h1>  <%= @company.name %> <small> <%= @order.title%></small></h1>
 
 
 <div class='main-box center' id="order-tabs">
@@ -50,15 +51,12 @@
   
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane fade in active" id="order">
-  <h3> 
-  <strong><%= @order.needs_attention? ? "OPEN" : "FILLED" %></strong></h3>
+ 
 
-<div class='fill'>
   
-  <div class='center'>
+  <div class='well'>
     <h4>Open positions: <%= @order.open_jobs %></h4>
-    <strong>Active Employees:</strong>
-        <%= @order.jobs.active.count %>
+    
         <% if @order.urgent? && @order.needs_attention?%>
         <div class="alert alert-danger fade in">
 										<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -93,7 +91,7 @@
 
   <strong>Mark Up:</strong>
   <%= @order.mark_up_percent %>
-</div>
+
 
 
 <div id= "order-notes" class="" >
@@ -118,10 +116,11 @@
 
   </div>
   
+  </div>
   
   
   
-</div>
+
   
 
 
@@ -133,7 +132,7 @@
 
 
   <div role="tabpanel" class="tab-pane fade" id="active-jobs">
-      <div class='main-box fill'>
+      <div class='well'>
         <% if @jobs.any? %>
       <%= render 'admin/jobs/table' %>
         <% if policy(Job).create? %>
@@ -142,28 +141,29 @@
       <% else %>
       <h3>No jobs to display yet.</h3>
       <% if policy(Job).create? %>
-       <%= link_to 'Add Job', new_admin_order_job_path(@order), class: "btn btn-primary" %>
+       <%= link_to 'Assign Employee', new_admin_order_job_path(@order), class: "btn btn-primary" %>
       <% end %>
       <% end %>
       </div>
   </div>
   
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
-    <div class='main-box fill'>
+    <div class='well'>
         <% if @order.timesheets.current_week.any? %>
       <%= render partial: "admin/timesheets/table", collection: @timesheets.current_week, as: :timesheet %>
       <% else %>
       <h3>No timesheets for this week yet.</h3>
       <% end %>
-      <hr>
+      <% if @order.timesheets.any? %>
       <strong>All timesheets</strong>
       <%= render partial: "admin/timesheets/table" %>
+      <% end %>
     </div>
     
   </div>
 
   <div role="tabpanel" class="tab-pane fade" id="skills-tab">
-     <div class='main-box fill'>
+     <div class='well''>
       <ul>
         <% @order.skills.each do |skill| %>
           
@@ -189,11 +189,12 @@
 
       
     </div>
-  </div>
+
   
   
   
 </div>
 
 
-  
+  </div>
+  </div>

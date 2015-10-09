@@ -57,6 +57,7 @@
     background: transparent;
 }
 
+
 .skill-list {
     border: solid 3px rgb(43, 182, 163);
 }
@@ -67,10 +68,14 @@
     color: rgb(43, 182, 163);
     font-color: rgb(43, 182, 163);
     background: transparent;
+    .hover {
+    background: rgba(0, 0, 0, 0.41);
+}
 //     -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.0);
 // 	-moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.0);
 // 	box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.0);
 }
+
 .btn.nav-btn {
     // padding: 2px;
     color: rgb(43, 182, 163);
@@ -241,7 +246,7 @@ h2 {
 
 /////////// BOXES ///////////////////
 .main-boxes {
-    background: rgba(21, 19, 19, 0.52);
+    background: rgba(21, 19, 19, 0.62);
     -webkit-box-shadow: 1px 1px 2px 0 #CCCCCC;
     -moz-box-shadow: 1px 1px 2px 0 #CCCCCC;
     -o-box-shadow: 1px 1px 2px 0 #CCCCCC;
@@ -337,12 +342,37 @@ h2 {
     overflow: auto;
 }
 .list-group {
-    background-color: rgba(125, 61, 16, 0.65);
+    background-color: rgba(0, 0, 0, 0.65);
     color: white;
+    padding: 3px;
+    margin: 3px;
 }
 .list-group-item-heading {
-    margin-bottom: 3px;
+    margin: 3px;
+    
 }
 .border {
     border: solid 2px rgba(125, 61, 16, 0.65);
+}
+
+.main-box {
+    h3{
+        margin: 2px;
+        margin-bottom: 4px;
+    }
+}
+
+li.list-group-item {
+    color: black;
+}
+
+// TABS
+
+#content-wrapper > div > ul > li {
+    background: rgba(0, 0, 0, 0.65);
+    
+}
+#content-wrapper > div > ul {
+    background: rgba(0, 0, 0, 0.65);
+    
 }

@@ -3,10 +3,11 @@
   <div class='col-md-6'>
     <h2><%= @employee.name %> </h2>
       <% if @work_history.current? %>
-      <i class="fa fa-asterisk fa-lg"></i> <strong>Currently Employed</strong>
-    <% end %>
-    
-        
+            <span data-toggle="tooltip" data-placement="top" title="Current Employer"><i class="fa fa-asterisk"></i> </span>
+        <% end %>
+        <% if @work_history.may_contact? %>
+            <i class="fa fa-phone-square" data-toggle="tooltip" data-placement="top" title="Allowed to Contact"></i>
+        <% end %>
             
             
       

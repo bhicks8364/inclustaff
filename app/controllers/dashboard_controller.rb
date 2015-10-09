@@ -33,9 +33,9 @@ class DashboardController < ApplicationController
             @shifts = @current_timesheet.shifts if @current_timesheet.present?
         elsif signed_in? == false
             render 'mainpage'
-        
+            @inquiry = Inquiry.new
         end
-        
+        @inquiry = Inquiry.new
         # @current_user = current_user if current_user.present?
         # @employee = current_user.employee if current_user.employee?
         # @shifts = @employee.shifts

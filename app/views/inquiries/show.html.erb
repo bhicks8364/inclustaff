@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @inquiry.name %>
+</p>
+
+<p>
+  <strong>Job title:</strong>
+  <%= @inquiry.job_title %>
+</p>
+
+<p>
+  <strong>Agency name:</strong>
+  <%= @inquiry.agency_name %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @inquiry.email %>
+</p>
+
+<p>
+  <strong>Agency size:</strong>
+  <%= @inquiry.agency_size %>
+</p>
+
+<p>
+  <strong>Phone number:</strong>
+  <%= @inquiry.phone_number %>
+</p>
+
+<%= link_to 'Edit', edit_inquiry_path(@inquiry) %> |
+<%= link_to 'Back', inquiries_path %>

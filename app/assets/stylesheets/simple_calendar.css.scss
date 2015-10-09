@@ -1,12 +1,16 @@
 .simple-calendar {
+  
   tr {
-    height: 100px;
+    min-height: 100px;
     max-height: 100px;
     overflow: auto;
   }
     // background-color: black;
   
   .day {
+    min-width: 100px;
+    min-height: 100px;
+    max-width: 100px;
     vertical-align: text-top;
     text-align:right;
     border: solid 1px black;
@@ -30,7 +34,7 @@
     border: solid 2px black;
   }
   .past {
-      background-color: rgba(128, 128, 128, 0.59);
+      background-color: rgba(128, 128, 128, 0.79);
   }
   .future {}
 
@@ -38,11 +42,13 @@
 
   .prev-month {}
   .next-month { }
-  .current-month {}
+  .current-month {
+    min-height: 100px;
+  }
 
   .has-events {
     
-    max-height: 100px;
+    height: 100px;
     background-color: rgba(255, 255, 0, 0.59);
   }
   .cal-date {

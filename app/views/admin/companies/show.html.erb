@@ -1,7 +1,7 @@
-<div class="col-lg-12">
+<div class="main-box col-lg-12">
   <h2><%= @company.name %><small><%= @company.agency.name %></small></h2>
 
-    <div class="row">
+   
             
 <div class="btn-group btn-group-justified" role="group" aria-label="...">
   <div class="btn-group" role="group">
@@ -30,8 +30,8 @@
   </div>
   
 </div>
-<hr>
 
+<br>
      
 
 
@@ -39,17 +39,18 @@
   <ul class="nav nav-tabs nav-justified" role="tablist">
     <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Company Information</a></li>
     <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Job Orders</a></li>
-    <li role="presentation"><a href="#new-order" aria-controls="new-order" role="tab" data-toggle="tab">New Order</a></li>
+
     <li role="presentation"><a href="#employees" aria-controls="employees" role="tab" data-toggle="tab">Employees</a></li>
     <li role="presentation"><a href="#company-contacts" aria-controls="company-contacts" role="tab" data-toggle="tab">Company Admins</a></li>
-    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Timeclock</a></li>
+    
     <li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li>
   </ul>
-  <div class='main-box'>
+ 
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="home">
 
-    <h3>HOME</h3>
+    <div class='well'>
+      <h3>Company Information</h3>
     
     <address class="">
       <%= @company.address %> <%= @company.city %>, <%= @company.state %> <%= @company.zipcode %><br>
@@ -62,61 +63,64 @@
 
     <span class="text-center">Balance: <%= number_to_currency(@company.balance) %></span>
 
+    </div>
 
   </div>
     
   <div role="tabpanel" class="tab-pane fade " id="company-contacts">
-
+    <div class='well'>
+      
       <h3>Company Contacts</h3>
        <%= render 'admin/companies/company_users' %>
+    </div>
 
 
     
   </div>
   <div role="tabpanel" class="tab-pane fade" id="profile">
     
-    <%= render 'admin/orders/table' %>
+     <div class='well'>
+       <h3>Current Job Orders</h3>
+       <br>
+        <%= render 'admin/orders/table' %>
+     </div>
     
     
   </div>
   
   <div role="tabpanel" class="tab-pane fade" id="employees">
-   <h3>Current Employees</h3>
+     <div class='well'>
+       <% if @company.jobs.active.any? %>
+       <h3>Current Employees</h3>
     <%= render @jobs %>
+    <% else %>
+      <h3>No employees to display.</h3>
+      <% end %>
+     </div>
   </div>
   
   
   
-  <div role="tabpanel" class="tab-pane fade" id="settings">
-
-
-<% if @company.shifts.clocked_in.any? %>
-    
-    <% if @clocked_in.any? %>
-<%= render 'admin/companies/clocked_in_employees' %>
-<% end %>
-<% else %>
-
-  <h3 class='text-center'>There are no employees clocked in at this time.</h3>
-
-<% end %>
-
-  </div>
-  <div role="tabpanel" class="tab-pane fade" id="new-order">
-    <h4>Add New Job Order</h4>
-    
-  </div>
+ 
+  
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
-    <%= render 'admin/timesheets/table' %>
+    <div class='well'>
+      <% if @company.timesheets.any? %>
+       <h3>Timesheets</h3>
+      <%= render 'admin/timesheets/table' %>
+      <% else %>
+      <h3>No timesheets to display.</h3>
+      <% end %>
+    </div>
   </div>
-<%= link_to "Create New Invoice", new_admin_company_invoice_path(@company), class: 'btn btn-primary' %>
+
   
   
   
   
 </div>
-</div>
-</div>
+
+
 
 <%= link_to(edit_admin_company_path(@company), class: "btn btn-default") do %>
 							<i class='fa fa-pencil'></i>

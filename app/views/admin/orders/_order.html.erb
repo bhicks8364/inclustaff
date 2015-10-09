@@ -1,24 +1,21 @@
 
-      <div class='well well-sm'>
+   <%= link_to admin_order_path(order), class: 'list-group-item list-group-item-success center' do %>
        
        
-        <h5><%= link_to order.title, admin_company_order_path(order.company, order) %></h5>
-        <p>Needed by: <%= order.needed_by? ? order.needed_by.strftime("%B %e, %Y") : "n/a" %></p>
-        <p>Pay range: <%= order.pay_range %>  -  Rate: <%= order.mark_up_percent %>  - Open jobs: <%= order.open_jobs %></p>
-        
-        
-        
-        <p><% if order.account_manager.present? %>
+        <h5><%= order.title %>
+         <span class='badge badge-danger'><%= order.needed_by? ? order.needed_by.strftime("%B %e, %Y") : "n/a" %></span>
+        </h5>
        
-        Account Manager: <%= link_to order.account_manager.name, order.account_manager %> 
-        <% end %></p>
-      
-          <% order.skills.each do |skill| %>
-         <li> <%= render skill %></li>
-        <% end %>
+        <span class='badge badge-success'>Pay range: <%= order.pay_range %></span>
+        <span class='badge badge-info'>Open jobs: <%= order.open_jobs %> </span>
+        <br>
+          <span class='badge badge-info'> Account Manager: <%= order.account_manager.try(:name) %> 
+        
+        </span>
+<br>
        
 
-      </div>
+      <% end %>
       
 
 

@@ -7,7 +7,7 @@
             
             <%= column_chart  @current.companies.map{|company|
                 {name: company.name, data: company.orders.group(:account_manager).count}
-            }, library: {isStacked: 'percent', bar: { groupWidth: "50%" }, legend: { position: 'top', maxLines: 3 }, title: "Job Orders by Pay"} %>
+            }, library: {isStacked: 'percent', bar: { groupWidth: "50%" }, legend: { position: 'top', maxLines: 3 }, title: "Job Orders by Company"} %>
         </div>
         <div class='col-md-4 well'>
             <h5 class='text-center'>Current Billings by Account Manager</h5>
@@ -20,24 +20,25 @@
     <h5 class='text-center'>Recruiter Performance</h5>
     <h5 class='text-center'><small>Total Agency Billings: <%= number_to_currency(@current.timesheets.current_week.sum(:total_bill)) %></small></h5>
 
-        <div class='col-md-6 well'>
-            <h5 class='text-center'>Placements by Company</h5>
+        <div class='col-md-8 well'>
+            <h5 class='text-center'>Placements</h5>
             
             <%= column_chart  @current.companies.map{|company|
                 {name: company.name, data: company.jobs.group(:recruiter).count}
-            } %>
+            }, library: {isStacked: 'percent', bar: { width: "50%" }, legend: { position: 'bottom', maxLines: 3 }, title: "Placements by Company"} %>
         </div>
-        <div class='col-md-6 well'>
+        <div class='col-md-4 well'>
             <h5 class='text-center'>Current Billings by Recruiter</h5>
             <%= pie_chart @current.jobs.joins(:current_timesheet).group(:recruiter).sum(:total_bill), library: {legend: {position: "none"}, title: "Placements by Recruiter"} %>
         </div>
 </div>
 <hr>
+<div class='col-md-12 well'>
 <div class="col-md-3 well">
    
     <h5 class='text-center'><small><%= @current.orders.count %></small></h5>
  
-        <%= pie_chart @current.orders.group(:mark_up).count, min: 1000, max: 5000 , library: {legend: {position: "right"}, is3D: true, title: "Orders by Mark Up"} %>
+        <%= pie_chart @current.orders.group(:company).count, min: 1000, max: 5000 , library: {legend: {position: "right"}, is3D: true, title: "Orders by Mark Up"} %>
         
 </div>
 <div class="col-md-3 well">
@@ -60,6 +61,7 @@
  
         <%= pie_chart @current.orders.group(:mark_up).count, min: 1000, max: 5000 , library: {legend: {position: "right"}, is3D: true, title: "Orders by Mark Up"} %>
         
+</div>
 </div>
 <div class='col-md-12 well'>
     <div class="col-md-4 well">

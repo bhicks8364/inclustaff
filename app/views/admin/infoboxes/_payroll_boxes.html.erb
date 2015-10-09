@@ -49,7 +49,7 @@
 				<% end %>
 				
 		<% else %>
-		<i class="fa fa-check fa-2x"></i><br>
+		<i class="fa fa-check fa-1x"></i> 
 			All of last week's timesheets have been approved.
 		<hr>
 				<%= link_to(past_admin_timesheets_path(@timesheets, format: :csv), class: 'btn btn-success fill') do %>
@@ -65,17 +65,18 @@
 		<div class="main-box">
 			
 			<% if @newly_added.any? %>
-			<i class="fa fa-users fa-2x"></i>
-			<h5>New Employees</h5>
+			<i class="fa fa-users fa-1x"></i>
+			<strong>New Employees</strong>
+			<br>
 			<ul>
 				<% Employee.newly_added.limit(3).each do |employee| %>
-			<li><%= employee.name %></li>
+			<li class='list-item'><%= employee.name %></li>
 			
 			
 			<% end %>
 			</ul>	
 			<% else %>
-			<i class="fa fa-users fa-2x"></i>
+			<i class="fa fa-users fa-1x"></i>
 			<h5>There are no new employees at this time.</h4>
 			<br>
 			<% end %>

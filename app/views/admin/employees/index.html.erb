@@ -1,52 +1,35 @@
-<div class="col-md-12">
-	<h4>Assigned Employees</h4>
+<div class=" well col-md-6">
+	<h4 class='text-center'>Assigned Employees</h4>
 		<div class="table-responsive">
 			<table id='employees-datatable' class="table table-bordered ">
 				<thead>
 					<tr>
-						<th>Employee</th>
-						<th>Title</th>
-						<th>Status</th>
-						<th>Week Gross</th>
-						<th>YTD Gross</th>
-						<th><i class="fa fa-cogs"></i></th>
+						<th style="width: 10%;">Employee</th>
+						<th style="width: 10%;">Title</th>
+						
+						<th style="width: 10%;">Week Gross</th>
+						<th style="width: 10%;">YTD Gross</th>
+						
 					</tr>
 				</thead>
 				<tbody>
-					<%= content_tag_for(:tr, @employees) do |employee| %>
-					
-						<td style="width: 10%;"><%= employee.name %></td>
-						<td style="width: 10%;"><%= employee.title %></td>
-						<td style="width: 5%;"> 
-							<% if employee.on_shift? %>
-						    <span class="label label-success">Clocked In</span>
+					<%  @employees.assigned.each do |employee| %>
+					<% if employee.on_shift? %>
+						    <tr class="bg-success">
 						 	<% else %>
-						  	<span class="label label-primary">Clocked Out</span>
+						  	<tr class="bg-info">
 			        <% end %>
-					   </td>
+						<td style="width: 10%;">
+							<%= link_to admin_employee_path(employee), class: "btn btn-primary fill"  do %>
+				
+									<i class="fa fa-user fa-lg fa-fw"></i> <%= employee.name %>
+							
+							<% end %></td>
+						<td style="width: 10%;"><%= employee.title %></td>
+						
 						<td style="width: 10%;"><%= number_to_currency(employee.current_timesheet.try(:gross_pay) || 0) %> </td>
 						<td style="width: 10%;"><%= number_to_currency(employee.current_job.try(:total_gross_pay) || 0) %> </td>
-						<td style="width: 10%;">
-							<%= link_to admin_employee_path(employee, class: "table-link" ) do %>
-								<span class="fa-stack">
-									<i class="fa fa-square fa-stack-2x"></i>
-									<i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
-								</span>
-							<% end %>
-							<%= link_to edit_admin_employee_path(employee, class: "table-link" ) do %>
-								<span class="fa-stack">
-									<i class="fa fa-square fa-stack-2x"></i>
-									<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-								</span>
-							<% end %>
-
-							<%= link_to(admin_employee_path(employee), method: :delete) do %>
-								<span class="fa-stack">
-									<i class="fa fa-square fa-stack-2x"></i>
-									<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-								</span>
-							<% end %>
-						</td>
+						</tr>
 					<% end %>
 					
 				</tbody>

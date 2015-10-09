@@ -8,10 +8,10 @@
               </span>
              
                
-            <button data-behavior="job-out-button_<%= job.id %>" class='badge badge-danger'>
+            <button data-behavior="job-out-button_<%= job.id %>" class='btn btn-danger'>
             <i class='fa fa-sign-out'></i> Clock Out
           </button>
-          <button data-behavior="job-in-button_<%= job.id %>" class='hide-this badge badge-success'>
+          <button data-behavior="job-in-button_<%= job.id %>" class='hide-this btn btn-success'>
             <i class='fa fa-sign-out'></i> Clock In
           </button>
            <span data-behavior="time-out">
@@ -19,12 +19,12 @@
 
         <% else %>
         <span data-behavior="time-in">
-          
+          button-in
         </span>
-          <button data-behavior="job-in-button" class='badge badge-success'>
+          <button data-behavior="job-in-button" class='btn btn-success'>
             <i class='fa fa-sign-in'></i> Clock In
           </button>
-          <button data-behavior="job-out-button" class='hide-this badge badge-danger'>
+          <button data-behavior="job-out-button" class='hide-this btn btn-danger'>
             <i class='fa fa-sign-out'></i> Clock Out
           </button>
         

@@ -2,7 +2,11 @@
 	<div class="alert alert-danger fade in">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 		<i class="fa fa-exclamation-triangle fa-fw fa-lg"></i>
-		<strong>You have <%= @current.orders.needs_attention.count %> job orders that need attention. </strong>   </div>
+		<% if @company.nil? %>
+		<strong>You have <%= pluralize(@current.orders.needs_attention.count, 'open job order') %>. </strong>   </div>
+		<% else %>
+		<strong><%= @company.name %> has  <%= pluralize(@company.orders.needs_attention.count, 'open job order') %>. </strong>   </div>
+		<% end %>
 	<%= render 'open_table' %>
 		
 </div>

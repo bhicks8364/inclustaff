@@ -1,26 +1,36 @@
 <% if @event.action == 'applied' %>
-<div class='col-md-12'>
-  <p>
+<div class='col-md-12 main-box'>
+  <h4>
   <strong>
     <%= @event.user.try(:name) %>
   </strong>
   
-</p>
-<%= render @event.user.employee.work_histories %>
+</h4>
+<%= link_to admin_employee_path(@event), class: "btn btn-primary"  do %>
+						
+								<i class="fa fa-user fa-1x"></i>
+						
+							View Employee
+						<% end %>
+						
 
-<p>
+						
+<hr>
+<div class='offset-col-md-3 col-md-6'>
+  <%= render @event.user.employee.work_histories %>
+</div>
+  
+
+
+<div class='center'>
   <strong>Eventable:</strong>
-  <%= @event.eventable_id %>
-</p>
+  <%= @current.orders.find(@event.eventable_id) %>
 
-<p>
-  <strong>Eventable type:</strong>
-  <%= @event.eventable_type %>
-</p>
+
 </div>
 <% end %>
 <% if @event.admin.present? %>
-<div class='col-md-12'>
+<div class='center'>
   <p>
   <strong>Admin:</strong>
   <%= @event.admin.try(:name) %>
@@ -40,10 +50,12 @@
   <strong>Eventable type:</strong>
   <%= @event.eventable_type %>
 </p>
-</div>
+
 <% end %>
 
 
 
 <%= link_to 'Edit', edit_event_path(@event) %> |
 <%= link_to 'Back', events_path %>
+</div>
+</div>
