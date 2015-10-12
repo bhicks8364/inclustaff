@@ -74,7 +74,7 @@ class WorkHistoriesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_work_history
       @work_history = WorkHistory.find(params[:id])
-      @employee = current_user.employee if user_signed_in?
+      @employee = @work_history.employee if @work_history.present?
       skip_authorization
     end
 

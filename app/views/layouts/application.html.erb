@@ -20,7 +20,7 @@
 
 <body>
 <%if admin_signed_in? %>
-<%= render 'shared/admin_navbar' %>
+<%= render 'admin/shared/navbar' %>
 <% else %>
 		<%= render 'shared/navbar' %>
 	<%end %>
@@ -33,7 +33,7 @@
 			<% if signed_in? == false %>
 				<div class="col-md-12" id="content-wrapper">
 			<% else %>
-				<div class="container" id="content-wrapper">
+				<div class="col-md-10" id="content-wrapper">
 			<% end %>
 				
 				<% if alert %><div class="alert alert-warning"><%= flash.alert %></div> <% end %>

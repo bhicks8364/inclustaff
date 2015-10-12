@@ -20,14 +20,14 @@ class ApplicationController < ActionController::Base
       @agency_jobs = @current_agency.jobs if @current_agency.present?
     elsif admin_signed_in? && current_admin.company?
       @current_company = Company.find(current_admin.company_id)
-      @current_agency = @current_company.agency if @current_company.present?
+      @company_agency = @current_company.agency if @current_company.present?
       @company_jobs = @current_company.jobs if @current_company.present?
     else
       
     end
     @current_admin = current_admin
     @current = @current_company || @current_agency
-    @newly_added = Employee.newly_added.order(created_at: :desc) if @current.present?
+    @newly_added = Employee.newly_added.order(created_at: :desc) if @current_agency.present?
     
     
     

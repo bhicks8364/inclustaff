@@ -1,9 +1,10 @@
 
-<div class='row row150'>
+<div class='row row300'>
 	<div class="col-md-6 col-sm-6 col-xs-12 text-left">
 		<% if @current.invoices.unpaid.any? %>
 		<div class="main-box well scroll">
-			<h5 class="pull-center">Open Invoices</h5>
+			<h5 class="pull-center">Open Invoices <%= link_to "View All Invoices", admin_invoices_path, class: 'btn btn-primary btn-sm pull-right' %>
+			</h5> <br>
 			<div class='list-group text-left' data-behavior='invoice-list'>
 			  <% @current.invoices.unpaid.order(:week).each do |invoice| %>
 			
@@ -16,6 +17,8 @@
 			       </li>
 			   
 			  <% end %>
+			 
+			 
 			</div>
 		
 		</div>

@@ -1,8 +1,9 @@
 
 
-<h1>  <%= @order.title %></h1>
+<div class='main-box'>
+  <h1>  <%= @order.title %></h1>
 <hr>
-<div class='center' id="order-tabs">
+<div class='well center' id="order-tabs">
 
   <!-- Nav tabs -->
   <ul id="order-nav" class="nav nav-tabs nav-justified" role="tablist">
@@ -12,7 +13,7 @@
   </ul>
   
   <div class="tab-content">
-    <div role="tabpanel" class="tab-pane fade in active" id="order">
+    <div role="tabpanel" class="tab-pane fade in active well" id="order">
   
 
 <h3> <%= @order.title %></h3>
@@ -33,15 +34,25 @@
   </div>
   
   
-    <div role="tabpanel" class="tab-pane fade" id="skills">
-      <div class='col-md-12'>
-        <div class='offset-col-md-3 col-md-6 center'>
-          <%= render @order.skills %>
-        </div>
+    <div role="tabpanel" class="tab-pane fade well" id="skills">
+      <div class='center'>
+        
+        <% if @order.skills.required.any? %>
+        <h2>Required Skills</h2>
+          <%= render @order.skills.required %>
+          <% else %>
+          <h2>There are no <i>required skills</i> for this position.</h2>
+          <% end %>
+         <% if @order.skills.additional.any? %>
+         <h2>Additional Skills</h2>
+          <%= render @order.skills.additional %>
+         
+         
+          <% end %>
       </div>
     </div>
-    <div role="tabpanel" class="tab-pane fade" id="apply">
-      <div class='col-md-12'>
+    <div role="tabpanel" class="tab-pane fade well" id="apply">
+      <div class='center'>
         <% if @current_user.applied_to(@order.id) %>
         <h2>Thanks for applying! We will be contacting you shortly.</h2>
         <% else %>
@@ -57,3 +68,4 @@
   
   
  
+</div>

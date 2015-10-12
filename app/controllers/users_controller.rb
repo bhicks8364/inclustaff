@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-    layout "admin_layout"
+    layout :determine_layout
     def index
         @users = User.includes(:employee).all
         @import = User::Import.new
@@ -71,6 +71,8 @@ class UsersController < ApplicationController
         @employee = @user.employee
         @company = @employee.company
         @applications = @user.events.applications
+        @events = Event.employee_events(@user.id)
+        @orders = Order.active if @employee.unassigned?
         # @job = @employee.current_job if @employee.assigned?
         
         @jobs = @employee.jobs.includes(:order)
@@ -97,5 +99,9 @@ class UsersController < ApplicationController
     def user_params
         params.require(:user).permit(:id, :first_name, :last_name, :email, :role, :can_edit, :company_id, :password, :password_confirmation, :address, :city, :state, :zipcode)
     end
+    
+      def determine_layout
+        current_admin ? "admin_layout" : "application"
+      end
     
 end

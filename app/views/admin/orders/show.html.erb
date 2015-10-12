@@ -38,7 +38,7 @@
 <h1>  <%= @company.name %> <small> <%= @order.title%></small></h1>
 
 
-<div class='main-box center' id="order-tabs">
+<div class='main-box' id="order-tabs">
 
   <!-- Nav tabs -->
   <ul id="order-nav" class="nav nav-tabs nav-justified" role="tablist">
@@ -133,6 +133,7 @@
 
   <div role="tabpanel" class="tab-pane fade" id="active-jobs">
       <div class='well'>
+        
         <% if @jobs.any? %>
       <%= render 'admin/jobs/table' %>
         <% if policy(Job).create? %>
@@ -163,7 +164,7 @@
   </div>
 
   <div role="tabpanel" class="tab-pane fade" id="skills-tab">
-     <div class='well''>
+     <div class='well'>
       <ul>
         <% @order.skills.each do |skill| %>
           

@@ -1,11 +1,11 @@
 class AgenciesController < ApplicationController
   before_action :set_agency, only: [:show, :edit, :update, :destroy]
   # before_action :authenticate_admin!
-  
+  layout 'admin_layout'
   # GET /agencies
   # GET /agencies.json
   def index
-    layout 'admin_layout'
+    
     @agencies = Agency.all
     authorize @agencies
   end

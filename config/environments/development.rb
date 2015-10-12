@@ -6,7 +6,18 @@ Rails.application.configure do
   # since you don't have to restart the web server when you make code changes.
   config.cache_classes = false
   # Faker::Config.locale = 'en-US'
+  # MAILER
+  config.action_mailer.delivery_method = :smtp
 
+  config.action_mailer.smtp_settings = {
+  address: "smtp.gmail.com",
+  port: 587,
+  domain: "gmail.com",
+  authentication: "plain",
+  enable_starttls_auto: true,
+  user_name: "bhicks8364@gmail.com",
+  password: ENV["GMAIL_PASSWORD"]
+  }
   # Do not eager load code on boot.
   config.eager_load = false
 

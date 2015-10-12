@@ -140,33 +140,6 @@
 		</div>
 			
 	</div>
-	
-	<div class="row">
-		<div class="col-lg-12">
-			<div class="main-box clearfix">
-				<h2>Current Timesheets</h2>
-				<strong><%= @admin.first_name %>'s billing for this week:
-				<%= number_to_currency(@admin.billing) if @admin.billing.present? %></strong>
-				<% @orders.each do |order| %>
-					<%= order.title_company %>
-					<% order.jobs.each do |job| %>
-					<% if job.current_timesheet.present? %>
-					<strong><%= link_to job.title.upcase, admin_job_path(job), class: 'table-link' %></strong>
-						<%= render job.current_timesheet %>
-					<% else %>
-						<strong><%= link_to job.title.upcase, admin_job_path(job), class: 'table-link' %></strong>
-						<h6>No timesheet to display.</h6>
-					<% end %>
-					<% end %>
-				<%end %>
-				
-				
-				</div> 
-				
-			</div>
-		
-		
-  </div>
 </div>
 
 

@@ -134,6 +134,15 @@ class Employee < ActiveRecord::Base
           
   end
   
+  def unassigned?
+    if self.current_job.present?
+
+      false
+    else
+      true
+    end
+  end
+  
   
   
   # def set_user_info

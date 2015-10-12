@@ -9,7 +9,7 @@ class Admin::InvoicesController < ApplicationController
       @invoices = @company.invoices.order(:due_by)
     else
       
-      @invoices = @current_agency.invoices.order(:due_by) if @current_agency.present?
+      @invoices = @current_agency.invoices.order(:week).reverse_order if @current_agency.present?
       render 'invoices/index'
     end
     
@@ -74,15 +74,22 @@ class Admin::InvoicesController < ApplicationController
   def mark_as_paid
     @invoice = Invoice.includes(:company).find(params[:id])
       skip_authorization
-      if @invoice.unpaid?
+      if @invoice.unpaid? && @invoice.timesheets_approved?
+      
         default_amount = @invoice.total
         @invoice.update(paid: true, date_paid: Date.today, amt_paid: default_amount)
+        @company = @invoice.company
+        respond_to do |format|
+          format.js
+        end
+      else
+        flash[:notice] = "Cannot pay invoice until all timesheets are approved."
+      
       end
-      company_name = @invoice.company.name
-      balance = @invoice.balance.round(2)
-      render json: { id: @invoice.id, paid: @invoice.paid?, 
-                    paid_on: @invoice.paid_on, state: @invoice.state, company: company_name, balance: balance}
-
+      # company_name = @invoice.company.name
+      # balance = @invoice.balance.round(2)
+      
+    
   end
 
   # PATCH/PUT /invoices/1

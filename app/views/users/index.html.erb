@@ -1,4 +1,4 @@
-					<div class="col-lg-12">
+					<div class="main-box">
 					
 						<div class="clearfix">
 							<h1 class="text-left">All Employee User Accounts</h1>
@@ -21,7 +21,7 @@
 												</tr>
 											</thead>
 											<tbody>
-												<%= content_tag_for(:tr, @users) do |user| %>
+												<%= content_tag_for(:tr, @users.unassigned.reverse_order) do |user| %>
 													<td>
 														<% if user.employee.present? && user.employee.assigned? %>
 													   <%= render 'admin/jobs/modal', job: user.employee.current_job %>

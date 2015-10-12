@@ -4,7 +4,7 @@
 			       <%= image_tag("incluStaff_logo.png", alt: "Inclustaff") %>
 			 <% end %>
 			 
-	
+		
 		
 		
 		<button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">
@@ -14,95 +14,19 @@
 		
 		<div class="nav-no-collapse pull-right" id="header-nav">
 			<ul class="nav navbar-nav pull-right">
-				
-				<% if @current_agency.present? && @agency_jobs.on_shift.any? %>
+			
+				<% if @current.present? && @current.jobs.on_shift.any? %>
 					<%= render 'admin/shared/clocked_in' %>
 				<% end %>
-				<% if @current_agency.present? && @current_agency.employees.unassigned.any? %>
+				<% if @current_agency.present?  %>
 					<%= render 'admin/shared/newly_added' %>
 				<% end %>
 				
-			
+				<li><%= link_to current_admin.name, current_admin %></li>
 				
-				<li class="hidden-xxs">
-					<li class="hidden-xxs">
-						<%= link_to "<i class='fa fa-power-off'></i>".html_safe, destroy_admin_session_path, class: "", method: :delete %>
-					</li>
-				</li>
+				
 			</ul>
 		</div>
 	</div>
 </header>
 
-
-
-
-
-
-
-
-
-
-
-<!--<header class="navbar" id="header-navbar">-->
-<!--		<div class="container">-->
-			
-			<!--<%= link_to root_url, id: "logo" do %>-->
-			<!--       <%= image_tag("incluStaff_logo.png", alt: "Inclustaff") %>-->
-			<!-- <% end %>-->
-
-<!--			<button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">-->
-<!--				<span class="sr-only">Toggle navigation</span>-->
-<!--				<span class="fa fa-bars"></span>-->
-<!--			</button>-->
-<!--			<div class="dropdown">-->
-  
-			
-<!--			<%= @current_agency.name || @current_company.try(:name) %>-->
-			<!--<% if @current_agency.present? && @current_agency.jobs.on_shift.any? %>-->
-			<!--				<%= render 'admin/shared/clocked_in' %>-->
-			<!--				<% end %>-->
-			
-			
-
-<!--			<div class="nav-no-collapse" id="header-nav">-->
-<!--				<ul class="nav navbar-nav">-->
-				
-					
-					
-						<!--<% if @current_agency.present? && @current_agency.employees.newly_added.any? %>-->
-
-						<!--		<%= render 'admin/shared/newly_added' %>-->
-						<!--<% end %>-->
-			       
-	
-			       
-<!--			      </ul>-->
-<!--				<ul class="nav navbar-nav pull-right">-->
-					
-<!--					<% if current_user.nil? && current_admin.nil? %>-->
-<!--			        NOT SIGNED IN-->
-<!--			        <li><%= link_to "Employee Sign In", new_user_session_path %></li>-->
-			        
-			
-<!--			        <li><%= link_to "Admin Login", new_admin_session_path %></li>-->
-<!--			        <% end %>-->
-			        
-			      
-			        
-			       
-<!--			        <% if admin_signed_in? %>-->
-			        
-			
-
-<!--					<li class="hidden-xs"><%= link_to "<i class='fa fa-cog'></i>".html_safe, edit_admin_registration_path, class: "" %></li>-->
-					
-<!--					<li class="hidden-xxs">-->
-<!--						<%= link_to "<i class='fa fa-power-off'></i>".html_safe, destroy_admin_session_path, class: "", method: :delete %>-->
-<!--					</li>-->
-<!--				</ul>-->
-				
-<!--			</div>-->
-<!--	<% end %>-->
-<!--		</div>-->
-<!--	</header>-->

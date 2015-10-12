@@ -3,24 +3,29 @@
 					<div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">	
 						<ul class="nav nav-pills nav-stacked">
 
-									<li><%= link_to timeclock_path do %>
+									<li><%= link_to home_path do %>
 										<i class="fa fa-dashboard"></i>
 											<span>Dashboard</span>
 										<% end %>
 									</li>
-									<li><%= link_to jobs_path do %>
-										<i class="fa fa-briefcase"></i>
-											<span>All Jobs</span>
-										<% end %>
-									</li>
+									
 									<li><%= link_to current_user do %>
 										<i class="fa fa-user"></i>
 											<span>Profile</span>
 										<% end %>
 									</li>
+									<li><%= link_to destroy_user_session_path, method: :delete do %>
+										<i class='fa fa-power-off'></i> 
+											<span>Logout</span>
+										<% end %>
+									</li>
 									
 									<% if current_user.employee.assigned? %>
-									
+									<li><%= link_to timeclock_path do %>
+										<i class="fa fa-clock-o"></i>
+											<span>Timesheets</span>
+										<% end %>
+									</li>
 									
 
 									

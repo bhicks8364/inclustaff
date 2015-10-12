@@ -16,7 +16,7 @@ class ShiftPolicy < ApplicationPolicy
     
     def show?
         # scope.where(:id => shift.id).exists?
-        user.owner? || user.payroll?
+       user.owner? || user.payroll? || user.recruiter?
         
     end
     
@@ -31,7 +31,7 @@ class ShiftPolicy < ApplicationPolicy
         create?
     end
     def update?
-        user.owner? || user.payroll?
+        user.owner? || user.payroll? || user.recruiter?
     end
     
     def edit?

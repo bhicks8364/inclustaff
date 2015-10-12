@@ -1,5 +1,5 @@
 <div class="table-responsive">
-  <table class="table table-bordered" width="100%">
+  <table class="table table-bordered datatable" width="100%">
   <thead>
     <tr>
       
@@ -8,9 +8,9 @@
       <th>Pay Range</th>
       <th>Shift</th>
       <th>Start Date</th>
-      <th>Required Skills</th>
-      <th>Notes</th>
-      <th></th>
+      <th>Skills</th>
+     
+     
       
       
     </tr>
@@ -21,27 +21,28 @@
       <tr>
         
         
-        <td><%= order.title %></td>
+        <td><% if @user.applied_to(order.id) %>
+       <%= link_to order.title, employee_order_path(order), class: "btn btn-success fill" %>
+        <% else %>
+          <%= link_to order.title, employee_order_path(order), class: "btn btn-primary fill" %>
+        <% end %>
+          </td>
         <td><%= order.pay_range %></td>
         <td><%= order.shift %></td>
-        <td><%= order.needed_by? ? order.needed_by.strftime("%B %e, %Y") : "TBD" %></td>
+        <td><%= order.needed_by? ? order.needed_by.stamp("11/13/15") : "TBD" %></td>
         <td><% if order.skills.any? %>
-          <% order.skills.required.limit(3).each do |skill| %>
+          <% order.skills.order(:required).reverse_order.limit(3).each do |skill| %>
             <small><%= skill.name %></small><br>
           <% end %>
+          <% else %>
+            <small>None</small>
         <% end %>
         </td>
-        <td><%=h truncate(order.notes, :length => 50) %></td>
+       
         
         
         
-        <td><%= link_to(employee_order_path(order), class: "table-link" ) do %>
-					<span class="fa-stack">
-						<i class="fa fa-square fa-stack-3x fa-inverse"></i>
-						<i class="fa fa-file fa-stack-1x "></i>
-					</span>
-					<% end %>
-        </td>
+      
       </tr>
     <% end %>
   </tbody>

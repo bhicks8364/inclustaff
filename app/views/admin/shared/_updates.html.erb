@@ -1,4 +1,4 @@
-<div class="main-box clearfix">
+<div class="main-box">
 	<div class="tabs-wrapper">
 			<div class="clearfix">
 				<h2 class="pull-left">This week<small><%= Date.today.end_of_week.strftime("%A  %b %d, %Y") %></small></h2>
@@ -14,29 +14,34 @@
 				<div class="tab-pane fade in active" id="tab-users">
 				
 
-					<div class=''>
+					<div class='well'>
 						<%= render 'admin/jobs/table', collection: @jobs.on_shift %>
 					</div>
 
-					<%= link_to "View all users", users_path, class: "badge badge-success pull-right" %>
+					<%= link_to "View all users", users_path, class: "btn btn-success pull-right" %>
 				</div>
 				
 				<div class="tab-pane fade" id="tab-events">
-					<div class='col-md-12'>
-					<div class='col-md-6'>
-						<% @clock_ins.each do |event| %>
-						  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
-						    <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
-						  <% end %>
-						<% end %>
-					</div>
-					<div class='col-md-6'>
-						<% @clock_outs.each do |event| %>
-						  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
-						    <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
-						  <% end %>
-						<% end %>
-					</div>
+					<div class='center'>
+					<div class='col-md-6 '>
+						<div class='list-group'>
+							<% @clock_ins.limit(5).each do |event| %>
+							  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+							    <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
+							  <% end %>
+							<% end %>
+							</div>
+							
+						</div>
+						<div class='col-md-6'>
+							<div class='list-group'>
+							<% @clock_outs.limit(5).each do |event| %>
+							  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+							    <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
+							  <% end %>
+							<% end %>
+							</div>
+						</div>
 					</div>
 					
 				</div>

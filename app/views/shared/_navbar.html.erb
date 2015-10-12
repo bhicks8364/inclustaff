@@ -20,7 +20,8 @@
 
 					
 					<% if current_user.nil? && current_admin.nil? %>
-				
+					
+					<li><%= link_to "Sign In", sign_in_path %></li>
 
 			        <!--NOT SIGNED IN-->
 			        
@@ -29,15 +30,8 @@
 			        <% if user_signed_in? %>
 			        
 			        <li><%= link_to current_user.name, current_user %></li>
-			        <% if current_user.employee.assigned? %>
-			        	<li><%= link_to "Timeclock", current_user.employee.current_job %></li>
-			        	<li><%= link_to "Timesheets", timesheets_path %></li>
-			        	<li><%= link_to "Profile", current_user %></li>
-			        	<li><%= link_to "Home", home_path %></li>
-			        <% else %>
-			        	<li><%= link_to "Home", home_path %></li>
-			        <% end %>
-			        <li><%= link_to "<i class='fa fa-power-off'></i>    Logout".html_safe, destroy_user_session_path, method: :delete %></li>
+			        
+			        
 			        
 			        
 			        <% end %>

@@ -1,34 +1,62 @@
 <% if @event.action == 'applied' %>
 <div class='col-md-12 main-box'>
+<% if admin_signed_in? %>
+
+  	<div class='center well well-sm'>
   <h4>
   <strong>
     <%= @event.user.try(:name) %>
   </strong>
   
 </h4>
-<%= link_to admin_employee_path(@event), class: "btn btn-primary"  do %>
+
+	
+  <%= render @event.user.employee.work_histories %>
+  
+  <%= link_to admin_employee_path(@event.user.employee), class: "btn btn-primary"  do %>
 						
 								<i class="fa fa-user fa-1x"></i>
 						
 							View Employee
 						<% end %>
-						
+</div>				
 
 						
 <hr>
-<div class='offset-col-md-3 col-md-6'>
-  <%= render @event.user.employee.work_histories %>
-</div>
+
   
+<% end %>
 
 
-<div class='center'>
-  <strong>Eventable:</strong>
-  <%= @current.orders.find(@event.eventable_id) %>
+<div class='col-md-12 well well-sm'>
+ <h2> <%= @order %></h2>
+  <div class='col-md-8 well well-sm'>
+    <div class='center'>
+      <h4>Job Description</h4>
+    <%= @order.notes %>
+    </div>
+    <%= @order.pay_range %>
+  </div>
+  <div class='col-md-4'>
+    <h5><u>Required Skills</u></h5>
+  <% @order.skills.required.each do |skill| %>
+  <%= skill.name %><br>
+  <% end %>
+  <hr>
+  <h5><u>Additional Skills</u></h5>
+  <% @order.skills.additional.each do |skill| %>
+  <%= skill.name %><br>
+  <% end %>
+  </div>
 
-
+</div>
 </div>
 <% end %>
+
+
+
+
+
 <% if @event.admin.present? %>
 <div class='center'>
   <p>
@@ -54,8 +82,5 @@
 <% end %>
 
 
-
-<%= link_to 'Edit', edit_event_path(@event) %> |
-<%= link_to 'Back', events_path %>
 </div>
 </div>

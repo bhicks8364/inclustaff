@@ -24,6 +24,11 @@ class Admin::DashboardController < ApplicationController
   
         skip_authorization
     end
+    def recruiter
+        @current_recruiter = @current_admin if @current_admin.recruiter?
+        @jobs = @current.jobs.by_recuriter(@current_recruiter.id)
+        skip_authorization
+    end
     def home
     #   @admin = current_admin
     # #   @company = @admin.company
@@ -81,6 +86,9 @@ class Admin::DashboardController < ApplicationController
     
     def agency_view
        
+        @clock_ins = @current_agency.admin_events.clock_ins.order('id DESC')
+        @clock_outs = @current_agency.admin_events.clock_outs.order('id DESC')
+        @applications = @current_agency.order_events.applications
         
         @employees = @company.employees if @company.present?
         @timesheets = @company.timesheets if @company.present?

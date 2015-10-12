@@ -1,6 +1,74 @@
 <h1>Editing Work History</h1>
 
-<%= render 'form' %>
+<%= simple_form_for(@work_history) do |f| %>
+<%= f.error_notification %>
 
-<%= link_to 'Show', @work_history %> |
-<%= link_to 'Back', work_histories_path %>
+  <div class="form-group">
+    <div class="col-md-12">
+      <%= f.input :employer_name, label: false, placeholder: "Company Name" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-md-12">
+      <%= f.input :title, label: false, placeholder: "Job Title" %>
+    </div>
+    
+ 
+  </div>
+  
+  <div class="form-group">
+    <div class="col-md-6">
+          <%= f.input :start_date, as: :string, input_html: { class: 'datepicker' }, placeholder: "Start date", required: true, label: false %>
+    </div>
+    <div class="col-md-6">
+        <%= f.input :end_date, as: :string, input_html: { class: 'datepicker' }, placeholder: "End date", required: true, label: false %>
+    </div>
+    <div class='col-md-4'>
+	    <%= f.input :pay, label: false, placeholder: "Pay Rate" %>
+	  </div>
+    
+  </div>
+
+	<div class='form-group'>
+	  <div class='col-md-4'>
+	    <%= f.input :supervisor, label: false, placeholder: "Supervisor name" %>
+	  </div>
+	  <div class='col-md-4'>
+	    <%= f.input :phone_number, label: false, placeholder: "Phone number" %>
+	  </div>
+	  
+	  
+
+	</div>
+	<div class='form-group'>
+	  <div class='col-md-6'>
+	    
+			<%= f.input :current, label: "Is this your current position?", input_html: { type: 'checkbox' }, wrapper_html: { class: 'btn btn-primary fill' } %>
+		</div>
+	  
+	  <div class='col-md-6'>
+		  <%= f.input :may_contact, label: "May we contact this employer?", input_html: { type: 'checkbox' }, wrapper_html: { class: 'btn btn-primary fill' } %>
+	 
+	  </div>
+	</div>
+	
+    
+    
+    <div class='form-group'>
+      <%= f.input :description, as: :text , label: false, placeholder: "Job Duties / Responsiblities", input_html: { rows: 10 } %>
+    </div>
+    
+   
+    
+     
+    
+ 
+
+  <div class="form-actions">
+    <%= f.button :submit, "Save", class: 'btn btn-primary fill' %>
+  </div>
+<% end %>
+
+
+<%= link_to 'Show', @work_history, class: 'btn btn-primary' %> 
+<%= link_to 'All Work Histories', work_histories_path, class: 'btn btn-primary' %>

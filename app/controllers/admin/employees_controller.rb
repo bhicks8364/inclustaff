@@ -37,10 +37,13 @@ class Admin::EmployeesController < ApplicationController
     @shifts = @employee.shifts.order(time_in: :desc).limit(5) if @employee.shifts.any?
     @skills = @employee.skills
     @skill = @employee.skills.new
+    @applications = @user.events.applications
+    @events = Event.employee_events(@user.id)
+   
     gon.skills = @skills
     # @company = @employee.company
     @job = @employee.jobs.new
-    # @job = @employee.current_job if @employee.current_job.present?
+    @current_job = @employee.current_job if @employee.current_job.present?
     @jobs = @employee.jobs
     @timesheets = @employee.timesheets.order(created_at: :desc).limit(2) if @employee.timesheets.any?
 

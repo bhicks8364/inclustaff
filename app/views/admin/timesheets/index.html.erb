@@ -12,11 +12,12 @@
 <div id='approved' class='col-lg-6' data-behavior='timesheet-list'>
     <h4 class='text-center'><strong>Approved Timesheets</strong></h4>
     <%= render(@timesheets.current_week.approved) || "There are no approved timesheets for this week yet." %>
-    
+    <%= link_to "View Past Timesheets", past_admin_timesheets_path, class: "btn btn-primary" %>
 </div>
 
     <% else %>
     <h4>There are no timesheets for this week yet.</h4>
+    
     <% end %>
 
 

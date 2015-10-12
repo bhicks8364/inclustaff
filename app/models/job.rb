@@ -63,6 +63,7 @@ class Job < ActiveRecord::Base
     scope :active, -> { where(active: true)}
     scope :inactive, -> { where(active: false)}
     scope :with_employee, ->  { includes(:employee) }
+    scope :new_start, -> { where(Job[:start_date].gteq(Date.today.beginning_of_week)) }
     
     # THESE WORKED!!!
     scope :on_shift, -> { joins(:employee).merge(Employee.on_shift)}
@@ -73,7 +74,10 @@ class Job < ActiveRecord::Base
     scope :worked_yesterday, -> { joins(:shifts).merge(Shift.in_yesterday)}
     scope :worked_this_week, -> { joins(:timesheets).where("timesheets.week <= ?", Date.today.cweek).group("jobs.id") }
     
-    
+    # MAIL
+    def send_notifications!
+        
+    end
     
     def mentions
         @mentions ||= begin

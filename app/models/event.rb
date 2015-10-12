@@ -23,6 +23,14 @@ class Event < ActiveRecord::Base
     scope :clock_ins, -> { where(action: 'clocked_in')}
     scope :clock_outs, -> { where(action: 'clocked_out')}
     
+    def application?
+        if self.action == "applied"
+            true
+        else
+            false
+        end
+    end
+    
     def self.mentions(admin_id)
         where(action: "mentioned", eventable_id: admin_id)
     end

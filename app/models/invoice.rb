@@ -80,4 +80,11 @@ class Invoice < ActiveRecord::Base
         end
     end
         
+    def timesheets_approved?
+        if self.timesheets.pending.any?
+           false
+        else
+            true
+        end
+    end
 end

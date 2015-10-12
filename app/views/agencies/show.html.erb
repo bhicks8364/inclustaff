@@ -1,22 +1,23 @@
-<% if admin_signed_in? %>
-<%= current_admin.name %>
+<div class='main-box'>
+    <h2><%= @agency.name %></h2>
+    <% if admin_signed_in? %>
+
+
+<div class='col-md-6'>
+    <h3>Open Orders</h3>
+    <%= render @agency.orders.needs_attention %>
+</div>
+<div class='col-md-6'>
+     <h3>Filled Orders</h3>
+    <%= render @agency.orders.filled %>
+</div>
 
 
 
-<%= @agency.name %>
-<hr>
-
-<% @agency.orders.each do |order| %>
-<br><%= order.id %>  <%= order.company.name %> - <%= link_to order.title, admin_orders_path %>
-   <small><%= order.account_manager.present? ? order.account_manager.name : "No Account Manager" %></small>
-<br>
-<% end %>
-
-<hr>
-
-<%= link_to "Edit", edit_agency_path(@agency) %>
+<%= link_to "Edit", edit_agency_path(@agency), class: 'btn btn-primary' %>
 
 
 <% else %>
 You shouldn't be here. You aren't logged in.
 <% end %>
+</div>

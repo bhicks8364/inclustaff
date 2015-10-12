@@ -1,5 +1,5 @@
-<div data-behavior="timesheet-list">
-<table class="table table-products table-hover">
+<div class='well'>
+<table class="table table-hover">
 	<tbody>
 		<% @employee.timesheets.order(updated_at: :desc).each do |timesheet| %>
 	      <% if timesheet.clocked_in? %>

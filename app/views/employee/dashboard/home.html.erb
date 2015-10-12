@@ -1,13 +1,21 @@
 <div class='col-md-12 main-box'>
- 
-    <h2> Welcome back, <%= @employee.first_name %>!</h2>
-    <div class='main-box'>
-      <%= link_to 'My Profile', @employee.user, class: 'btn' %>
+   <h1> Employee Dashboard</h1>
+ <% if @user.last_sign_in_at.present? %>
+    <h2> Welcome back, <%= @user.first_name %>!</h2>
+<% else %>
+<h2> Welcome, <%= @employee.first_name %>!</h2>
+<% end %>
+        <div class='well'>
+          <h4>All Open Positions</h4>
+        
+        <%= render 'employee/orders/open_table' %>
+        </div>
+
     </div>
 
     <% if @employee.assigned? %>
       
-      <div class='main-box'>
+      <div class='well'>
         <%= render 'employee/jobs/job', job: @employee.current_job %>
       </div>
       <div class='main-box'>
@@ -23,10 +31,7 @@
     
     <% else %>
     
-      <div class='main-box'>
-        <h4>All Open Positions</h4>
-        <%= render 'employee/orders/open_table' %>
-      </div>
+      
     
     
     

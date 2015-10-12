@@ -1,6 +1,6 @@
 <div class='main-box'>
 
-<h1>All Agency Invoices</h1>
+<h1><%= @current.name %>'s Invoices</h1>
 
 <table class='table table-bordered'>
   <thead>
@@ -15,7 +15,7 @@
       <th>Amt paid</th>
       <th>Paid on</th>
       <th>Balance</th>
-      <th></th>
+    <th></th>
       <th></th>
       <th></th>
     </tr>
@@ -34,9 +34,9 @@
         <td><%= number_to_currency(invoice.amt_paid) %></td>
         <td><%= invoice.paid_on %></td>
         <td><%= invoice.balance %></td>
-        <td><%= link_to 'Show', admin_invoice_path(invoice) %></td>
-        <td><%= link_to 'Edit', edit_admin_invoice_path(invoice) %></td>
-        <td><%= link_to 'Destroy', admin_invoice_path(invoice), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <td><%= link_to '<i class="fa fa-file fa-1x "></i>'.html_safe, admin_invoice_path(invoice), class: 'btn btn-tiny' %></td>
+        <td><%= link_to '<i class="fa fa-pencil fa-1x "></i>'.html_safe, edit_admin_invoice_path(invoice), class: 'btn btn-tiny' %></td>
+        <td><%= link_to '<i class="fa fa-trash fa-1x "></i>'.html_safe, admin_invoice_path(invoice), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-tiny red' %></td>
       </tr>
     <% end %>
   </tbody>

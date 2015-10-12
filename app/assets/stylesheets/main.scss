@@ -286,8 +286,18 @@ h2 {
 
 .row200 {
     height: 200px;
+    
     div.main-box {
         padding: 10px;
+        overflow: auto;
+    }
+}
+.row300 {
+    height: 300px;
+    
+    div.main-box {
+        padding: 10px;
+        overflow: auto;
     }
 }
 .row150 {
@@ -370,6 +380,7 @@ li.list-group-item {
 
 #content-wrapper > div > ul > li {
     background: rgba(0, 0, 0, 0.65);
+    
     
 }
 #content-wrapper > div > ul {

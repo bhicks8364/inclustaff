@@ -106,7 +106,7 @@ class User < ActiveRecord::Base
         employee.first_name = self.first_name
         employee.last_name = self.last_name
         employee.ssn = 1234
-      end
+       end
       
 
     end

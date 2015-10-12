@@ -40,7 +40,7 @@ class OrderPolicy < ApplicationPolicy
         create?
     end
     def update?
-        return true if user.owner? || user.payroll? || user.account_manager?
+        return true if user.owner? || user.payroll? || user.account_manager? || user.recruiter?
         
     end
     

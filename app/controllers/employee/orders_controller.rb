@@ -1,7 +1,7 @@
 class Employee::OrdersController < ApplicationController
   before_action :set_order, only: [:show, :edit, :update, :destroy, :apply]
   before_action :authenticate_user!
-  layout 'new_employee'
+  layout 'application'
 
   # GET /orders
   # GET /orders.json
@@ -102,4 +102,5 @@ class Employee::OrdersController < ApplicationController
     def order_params
       params.require(:order).permit(:id, :company_id, :manager_id, :title, :pay_range, :notes, :number_needed, :needed_by, :urgent, :active, jobs_attributes: [:order_id, :title, :description, :start_date, :id, :employee_id, :active])
     end
+
 end

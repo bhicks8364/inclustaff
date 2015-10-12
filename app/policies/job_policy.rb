@@ -41,8 +41,8 @@ class JobPolicy < ApplicationPolicy
     def create?
         if user.role != "Employee"
             
-            return true if user.owner? || user.payroll?
-            user.recruiter? && user.id == job.recruiter_id
+            
+            return true if user.owner? || user.payroll? || user.recruiter?
 
         elsif user.role == "Employee"
             return true if user.employee?
@@ -65,8 +65,8 @@ class JobPolicy < ApplicationPolicy
     def clock_out?
         if user.role != "Employee"
             
-            return true if user.owner? || user.payroll?
-            user.recruiter? && user.id == job.recruiter_id
+            return true if user.owner? || user.payroll? || user.recruiter?
+            
 
         elsif user.role == "Employee"
             return true if user.employee?
@@ -78,7 +78,7 @@ class JobPolicy < ApplicationPolicy
     end
     def update?
         return true if user.owner? || user.payroll?
-        user.recruiter? && user.id == job.recruiter_id
+        return true if user.recruiter? || user.account_manager?
         
         # true
         # user.admin?

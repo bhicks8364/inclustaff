@@ -73,8 +73,8 @@ Rails.application.routes.draw do
     get  'payroll' => 'dashboard#payroll'
     get  'dashboard' => 'dashboard#company_view'
     get  'owner' => 'dashboard#owner'
-  
-    get  'agency_access' => 'dashboard#agency_view'
+
+    get  'recruiter' => 'dashboard#recruiter'
     
     
     resources :jobs, shallow: true do

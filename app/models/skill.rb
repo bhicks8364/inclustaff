@@ -22,6 +22,7 @@ class Skill < ActiveRecord::Base
     #     }
     # end
     scope :required, -> { where(required: true, skillable_type: "Order")}
+    scope :additional, -> { where(required: false, skillable_type: "Order")}
     def subject
         skillable.try(:name) || skillable.try(:title)
     end

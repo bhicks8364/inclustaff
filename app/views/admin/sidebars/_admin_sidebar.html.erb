@@ -12,12 +12,7 @@
 							<% end %>
 						</li>
 						
-						<li><%= link_to new_admin_company_path do %>
-							<i class="fa fa-building"></i>
-							
-								<span>New Company</span>
-							<% end %>
-						</li>
+
 						<li><%= link_to admin_companies_path do %>
 							<i class="fa fa-building-o"></i>
 							
@@ -49,20 +44,7 @@
 								<span>Invoices</span>
 							<% end %>
 						</li>
-						
-						<li><%= link_to new_admin_order_path do %>
-							<i class='fa fa-plus-square'></i>
-							
-								<span>New Order</span>
-							<% end %>
-						</li>
-						
-						<li><%= link_to new_user_registration_path do %>
-							<i class='fa fa-user-plus'></i>
-							
-								<span>New Employee</span>
-							<% end %>
-						</li>
+
 						<li><%= link_to admins_path do %>
 							<i class="fa fa-users"></i>
 								<span>Agency Users</span>
@@ -85,11 +67,12 @@
 								<span>Employee List</span>
 							<% end %>
 						</li>
-						<li><%= link_to admin_shifts_path do %>
-							<i class="fa fa-list"></i>
-								<span>All Shifts</span>
-							<% end %>
-						</li>
+						<li><%= link_to destroy_admin_session_path, method: :delete do %>
+										<i class='fa fa-power-off'></i> 
+											<span>Logout</span>
+										<% end %>
+									</li>
+				
 			</ul>
 		</div>
 	</section>

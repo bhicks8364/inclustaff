@@ -11,6 +11,7 @@ class EventsController < ApplicationController
   # GET /events/1
   # GET /events/1.json
   def show
+    @order = Order.find(@event.eventable_id) if @event.application?
   end
 
   # GET /events/new

@@ -12,7 +12,7 @@ class TimesheetPolicy < ApplicationPolicy
         # user.present? && user.not_an_employee?
     end
     def approve?
-        user.owner? || user.payroll?
+        user.owner? || user.payroll? || user.recruiter?
         
     end
     
@@ -20,7 +20,7 @@ class TimesheetPolicy < ApplicationPolicy
         if user.role == "Employee"
             user.employee.assigned?
         else
-            user.owner? || user.payroll?
+            user.owner? || user.payroll? || user.recruiter?
             
         end
         # scope.where(:id => timesheet.id).exists?
@@ -36,7 +36,7 @@ class TimesheetPolicy < ApplicationPolicy
         create?
     end
     def update?
-        user.owner? || user.payroll?
+       user.owner? || user.payroll? || user.recruiter?
     end
     
     def edit?

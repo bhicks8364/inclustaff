@@ -3,9 +3,14 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
-
+# USER AUTHENICATIN
 gem "devise"
+# USER AUTHORIZATION
 gem 'pundit', '~> 1.0.1'
+
+
+# DOCUSIGN - CAPTURING SIGNATURES
+gem 'docusign_rest'
 
 # POSTGRES DB CHANGED FOR HEROKU
 gem 'pg'

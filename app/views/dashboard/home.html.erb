@@ -1,17 +1,20 @@
 <% if admin_signed_in? %>
-    <div class='center'>
-         <%= render 'admin/infoboxes/recruiter_charts' %>
-        <%= render 'admin/infoboxes/owner_charts' %>
+    <div class='main-box center'>
+       <h1> <%= @current.name %></h1>
+        <%= render 'admin/infoboxes/infoboxes' %>
         <% if @current_admin.account_manager? %>
         <h2><%= @current_admin.role %></h2>
         <% elsif @current_admin.payroll? %>
         <h2><%= @current_admin.role %></h2>
         <%= render 'admin/infoboxes/payroll_boxes' %>
+        <% elsif @current_admin.recruiter? %>
+        <h2><%= @current_admin.role %></h2>
+         <%= link_to "Recruiter Dashboard", admin_recruiter_path, class: 'btn btn-primary' %>
         <% end %>
-            <%= render 'admin/infoboxes/recruiter_boxes' %>
+           
        
         
-    </div>
+  
     <% end %>
     
     <% if user_signed_in? %>
@@ -68,3 +71,4 @@
 
 
 
+  </div>

@@ -1,15 +1,12 @@
-<div class='well'>
+<div class='well well-sm'>
    
         
         <% if work_history.current? %>
-            <i class="fa fa-asterisk"></i>
+            <span data-toggle="tooltip" data-placement="top" title="Current Employer"><i class="fa fa-asterisk"></i> </span>
         <% end %>
-            
-            
         <% if work_history.may_contact? %>
-            <i class="fa fa-phone-square"></i>
+            <i class="fa fa-phone-square" data-toggle="tooltip" data-placement="top" title="Allowed to Contact"></i>
         <% end %>
-       
         
        
             <h5><%= work_history.employer_name %> - <%= work_history.title %></h5>
@@ -18,9 +15,9 @@
       
 
             <strong><%= work_history.start_date.stamp("December 2013") %> - <%= work_history.end_date.stamp("December 2013") %></strong>
-            
+            <%= link_to "edit", edit_work_history_path(work_history) %>
      
-            <%= number_to_currency(work_history.pay) %><br>
+            <%= number_to_currency(work_history.pay) %><hr>
             <p><%= work_history.description %></p>
        
             
