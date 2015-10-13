@@ -19,7 +19,8 @@ class Event < ActiveRecord::Base
     
     scope :admin, -> { where.not(admin_id: nil)}
     scope :employee, -> { where(admin_id: nil)}
-    scope :applications, -> { where(action: 'applied')}
+    scope :applications, -> { where(action: 'applied').joins(:user).merge(User.unassigned)}
+    # scope :unassigned_app, -> { applications.joins(:user).merge(User.unassigned)}
     scope :clock_ins, -> { where(action: 'clocked_in')}
     scope :clock_outs, -> { where(action: 'clocked_out')}
     

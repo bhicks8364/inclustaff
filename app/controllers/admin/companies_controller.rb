@@ -15,7 +15,7 @@ class Admin::CompaniesController < ApplicationController
   # GET /companies/1.json
   def show
     @order = @company.orders.new
-    @account_managers = @current_agency.account_managers
+    @account_managers = @current_agency.account_managers if @current_agency.present?
     @jobs = @company.jobs.active.includes(:employee)
     @clocked_in = @jobs.on_shift
     @clocked_out =  @jobs.off_shift.distinct

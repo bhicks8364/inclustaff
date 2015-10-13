@@ -1,0 +1,31 @@
+ <table id='' class='table table-bordered'>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Emp/Order</th>
+            <th>Company</th>
+            <th>Status</th>
+            <th>Skill</th>
+
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+      
+        <tbody>
+          <% @skills.each do |skill| %>
+            <tr>
+              <td><%= skill.required ? "<i class='fa fa-exclamation-triangle'></i>".html_safe : "" %></td>
+              <td><%= skill.subject %></td>
+              <td><%= skill.skillable.try(:company) || skill.skillable.try(:name) %></td>
+              <td><%= skill.skillable.try(:needs_attention?) || skill.skillable.try(:assigned?) %></td>
+              <td><strong><%= skill.name %></strong></td>
+              
+              
+              
+              <td><%= link_to "<i class='fa fa-pencil'></i'".html_safe, edit_skill_path(skill) %></td>
+              <td><%= link_to "<i class='fa fa-trash-o red'></i>".html_safe, skill, class: "", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>

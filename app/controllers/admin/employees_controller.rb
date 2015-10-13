@@ -18,7 +18,7 @@ class Admin::EmployeesController < ApplicationController
     query = params[:q].presence || "*"
     # @employees = Employee.search query, operator: "or", suggest: true, misspellings: {edit_distance: 2}
     
-    @employees = Employee.all
+    @employees = @current.employees
       
       
 

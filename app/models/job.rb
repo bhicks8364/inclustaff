@@ -76,7 +76,7 @@ class Job < ActiveRecord::Base
     
     # MAIL
     def send_notifications!
-        
+        NotificationMailer.job_notification(self.account_manager, self).deliver_later
     end
     
     def mentions

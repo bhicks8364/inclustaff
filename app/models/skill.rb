@@ -30,7 +30,9 @@ class Skill < ActiveRecord::Base
     
     
     scope :job_order, -> { where(skillable_type: "Order")}
+    scope :need_skills, -> { job_order.joins(:user).merge(User.unassigned)}
     scope :employee, -> { where(skillable_type: "Employee")}
+    
     # scope :employee, -> { where(skillable_type: "Employee")}
     
     # def with_comments_by(usernames)

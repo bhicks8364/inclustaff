@@ -3,6 +3,9 @@
   <table id="orders-datatable2" class="table table-bordered display" width="100%">
   <thead class='cell-border'>
     <tr>
+      <% if current_admin.agency? %>
+      <th>Company</th>
+      <% end %>
       <th>Needed By</th>
      
       <th>Title</th>
@@ -21,6 +24,9 @@
   <tbody>
     <% @orders.needs_attention.order(:needed_by).each do |order| %>
       <tr>
+        <% if current_admin.agency? %>
+     <td><%= link_to order.company_name, admin_company_path(order.company) %></td>
+      <% end %>
         <td><%= order.needed_by? ? order.needed_by.stamp('11/12') : "n/a" %></td>
        
         <td><%= link_to order.title, admin_company_order_path(order.company, order) %></td>

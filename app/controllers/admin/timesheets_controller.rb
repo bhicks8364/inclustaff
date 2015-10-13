@@ -20,9 +20,8 @@ class Admin::TimesheetsController < ApplicationController
 
      
       authorize @timesheets 
-     elsif current_admin.agency?
-     	@agency = current_admin.agency
-     	@timesheets = @agency.timesheets.current_week.order(updated_at: :desc) if @agency.present? && @agency.timesheets.present?
+     else
+     	@timesheets = @current.timesheets.current_week.order(updated_at: :desc)
      	@pending_timesheets = @timesheets.pending
      	@approved_timesheets = @timesheets.approved
      	authorize @timesheets
@@ -57,12 +56,12 @@ class Admin::TimesheetsController < ApplicationController
 			gon.timesheets = @timesheets
 			authorize @timesheets, :index?
 		else
-			@timesheets = @current_agency.timesheets.past if current_admin.agency?
+			@timesheets = @current.timesheets.past if current_admin.present?
 			gon.timesheets = @timesheets
 			authorize @timesheets, :index?
 		end
 		
-		@last_week_timesheets = @current_agency.timesheets.last_week.order(updated_at: :desc)
+		@last_week_timesheets = @current.timesheets.last_week.order(updated_at: :desc)
 		
 		respond_to do |format|
       format.html
