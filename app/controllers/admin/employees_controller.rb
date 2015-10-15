@@ -3,91 +3,58 @@ class Admin::EmployeesController < ApplicationController
   
   before_action :authenticate_admin!
   layout 'admin_layout'
-  # GET /employees
-  # GET /employees.json
-  def index
-    @admin = current_admin
-    # if @admin.agency?
-    #   @agency = @admin.agency
-    #   @employees = Employee.all if @agency.present?
-    # elsif @admin.company?
-    #   @company = @admin.company
-    #   @employees = @company.employees if @company.present?
-    # end
-    
-    query = params[:q].presence || "*"
-    # @employees = Employee.search query, operator: "or", suggest: true, misspellings: {edit_distance: 2}
-    
-    @employees = @current.employees
-      
-      
 
-      gon.employees = @employees
-      skip_authorization
+
+
+  def index
+    @admin = @current_admin
+    @employees = @current.employees
+    gon.employees = @employees
+    skip_authorization
+    # WAS TRYING TO USE ELASTICSEARCH (SERCHKICK GEM) ###############
+    # query = params[:q].presence || "*"
+    # @employees = Employee.search query, operator: "or", suggest: true, misspellings: {edit_distance: 2}
   end
 
-  # GET /employees/1
-  # GET /employees/1.json
+
   def show
     @work_histories = @employee.work_histories
-    
-    
-    
     @user = @employee.user
-    @shifts = @employee.shifts.order(time_in: :desc).limit(5) if @employee.shifts.any?
+    @shifts = @employee.shifts if @employee.shifts.any?
     @skills = @employee.skills
     @skill = @employee.skills.new
+    @timesheets = @employee.timesheets if @employee.timesheets.any?
     @applications = @user.events.applications
     @events = Event.employee_events(@user.id)
    
-    gon.skills = @skills
-    # @company = @employee.company
-    @job = @employee.jobs.new
+    
     @current_job = @employee.current_job if @employee.current_job.present?
-    @jobs = @employee.jobs
-    @timesheets = @employee.timesheets.order(created_at: :desc).limit(2) if @employee.timesheets.any?
-
+    @past_jobs = @employee.jobs.inactive if @employee.jobs.any?
+   
+    gon.skills = @skills
     
     authorize @employee
   end
 
   # GET /employees/new
   def new
-
-    @admin = current_admin
-    @company = @admin.company
-    @employees = @company.employees.order(last_name: :asc)
     @employee = Employee.new
-    
     @employee.build_user
-    # @current_user = current_user if user_signed_in?
-    # @company = @current_user.company 
-    # @employee = Employee.new
-    # # @employee.jobs.build
-    # @employee.build_user
     authorize @employee
   end
 
-  # GET /employees/1/edit
+
   def edit
     @employee.skills
     @employee.resumes.new
 
   end
 
-  # POST /employees
-  # POST /employees.json
+
   def create
     @employee = Employee.new(employee_params)
-    @employee
+    @employee.build_user(employee_params)
     authorize @employee
-    
-
-      # @admin = current_admin
-      # @company = @admin.company
-      # @employees = @company.employees.order(last_name: :asc)
-      # @employee = @company.employees.new(employee_params)
-
 
     respond_to do |format|
       if @employee.save
@@ -100,13 +67,9 @@ class Admin::EmployeesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /employees/1
-  # PATCH/PUT /employees/1.json
+
   def update
-    # @company = @employee.current_job.company
-    
-    
-    # authorize @employee
+
     respond_to do |format|
       if @employee.update(employee_params)
         format.html { redirect_to admin_employee_path(@employee), notice: 'Employee was successfully updated.' }

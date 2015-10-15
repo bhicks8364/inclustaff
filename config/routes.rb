@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
-  
+  root 'dashboard#home'
   resources :inquiries
   resources :work_histories
-  root 'dashboard#home'
+  
   get  'sign_in' => 'dashboard#sign_in_page'
   resources :agencies do
     resources :admins
@@ -98,6 +98,8 @@ Rails.application.routes.draw do
     resources :shifts do
       member do
         patch 'clock_out'
+        patch 'break_start'
+        patch 'break_end'
       end
     end
   end
@@ -139,6 +141,13 @@ Rails.application.routes.draw do
     resources :orders do
       member do
         patch :apply
+      end
+    end
+    resources :shifts do
+      member do
+        patch 'clock_out'
+        patch 'break_start'
+        patch 'break_end'
       end
     end
   end

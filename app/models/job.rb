@@ -16,6 +16,8 @@
 #  deleted_at       :datetime
 #  recruiter_id     :integer
 #  timesheets_count :integer
+#  settings         :hstore
+#  pay_types        :text             is an Array
 #
 
 class Job < ActiveRecord::Base
@@ -24,7 +26,7 @@ class Job < ActiveRecord::Base
     has_one :company, :through => :order
     has_many :timesheets
     has_many :shifts
-    has_one :current_shift,-> { where state: "Clocked In" }, class_name: 'Shift'
+    has_one :current_shift,-> { where.not(state: "Clocked Out") }, class_name: 'Shift'
     has_one :current_timesheet,-> { where week: Date.today.cweek  }, class_name: 'Timesheet'
     belongs_to :recruiter, class_name: "Admin", foreign_key: "recruiter_id"
 
@@ -48,6 +50,12 @@ class Job < ActiveRecord::Base
     #   )
     # end
     
+        # setup settings
+    store_accessor :settings
+    
+    
+
+   
     # VALIDATIONS
     # validates_associated :employee
     validates_associated :order
@@ -58,8 +66,15 @@ class Job < ActiveRecord::Base
     # CALLBACKS
     after_initialize :defaults
     after_save :update_employee
+    
+    before_save :set_main_pay
+    
 
     # SCOPES
+    scope :with_drive_pay, -> { where("settings ? :key", :key => 'drive_pay')}
+    scope :with_ride_pay, -> { where("settings ? :key", :key => 'ride_pay')}
+    scope :with_pay, -> { where("settings ? :key", :key => 'pay_rate')}
+    scope :with_drive_pay, -> { where("settings ? :key", :key => 'drive_pay')}
     scope :active, -> { where(active: true)}
     scope :inactive, -> { where(active: false)}
     scope :with_employee, ->  { includes(:employee) }
@@ -67,6 +82,7 @@ class Job < ActiveRecord::Base
     
     # THESE WORKED!!!
     scope :on_shift, -> { joins(:employee).merge(Employee.on_shift)}
+    scope :at_work, -> { joins(:employee).merge(Employee.at_work)}
     scope :off_shift, -> { joins(:employee).merge(Employee.off_shift)}
 
     scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.current_week)}
@@ -78,6 +94,8 @@ class Job < ActiveRecord::Base
     def send_notifications!
         NotificationMailer.job_notification(self.account_manager, self).deliver_later
     end
+    
+    
     
     def mentions
         @mentions ||= begin
@@ -98,6 +116,9 @@ class Job < ActiveRecord::Base
     
     def on_shift?
         self.shifts.clocked_in.any?
+    end
+    def on_break?
+        self.shifts.on_break.any?
     end
     def off_shift?
         if self.shifts.clocked_in.any?
@@ -137,6 +158,15 @@ class Job < ActiveRecord::Base
     def name_title
         "#{employee.name} -  #{title}"
     end
+    
+    def set_main_pay
+        pay = self.pay_rate
+        if self.settings.nil?
+            self.settings = {}
+        end
+        self.settings['pay_rate'] = pay
+    end
+            
     
     # def clock_in(job)
     #     if job.off_shift?
@@ -273,7 +303,11 @@ class Job < ActiveRecord::Base
             percent
         end
     end
-    
+    private
+
+      def remove_blanks
+        self.settings = self.settings.reject{ |k,v| v.blank? }
+      end
     
     
 end

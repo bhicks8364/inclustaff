@@ -31,6 +31,7 @@
 //= require datatables
 //= require forms
 //= require invoices
+//= require at_mentions
 
 
 

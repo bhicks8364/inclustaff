@@ -16,6 +16,7 @@
 #  shifts_count :integer
 #  total_bill   :decimal(, )
 #  invoice_id   :integer
+#  adjustments  :hstore
 #
 
 class Timesheet < ActiveRecord::Base

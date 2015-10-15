@@ -33,7 +33,7 @@ class OrderPolicy < ApplicationPolicy
     end
     
     def create?
-        return true if user.owner? || user.payroll? || user.account_manager?
+        return true if user.owner? || user.payroll? || user.account_manager? || user.recruiter?
     end
     
     def new?

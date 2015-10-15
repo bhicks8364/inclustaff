@@ -11,7 +11,7 @@
 #
 
 class Agency < ActiveRecord::Base
-    belongs_to :admin
+    # belongs_to :admin
     has_many :invoices
     has_many :companies
     has_many :order_events, :through => :orders, :source => 'events'
@@ -32,11 +32,17 @@ class Agency < ActiveRecord::Base
     has_many :payroll_admin,  -> { where(role: "Payroll", company_id: nil) }, class_name: "Admin"
     has_many :account_managers,  -> { where(role: "Account Manager", company_id: nil) }, class_name: "Admin"
     
+    after_create :create_tenant
+    
+    
+    
     # def agency_events
     #     Event.admin_events(self.id)
     # end
+    validates :subdomain, exclusion: { in: %w(www us ca jp),
+                        message: "%{value} is reserved." }
     
-    accepts_nested_attributes_for :admin
+    accepts_nested_attributes_for :admins
     
     
     
@@ -54,7 +60,14 @@ class Agency < ActiveRecord::Base
     def last_week_billing
         self.timesheets.last_week.sum(:total_bill)
     end
-        
+    
+  
+    private
+    def create_tenant
+        Apartment::Tenant.create(subdomain)
+    end
+    
+    
     
     
     

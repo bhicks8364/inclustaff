@@ -1,9 +1,9 @@
-<div class="form-inline">
+
 <%= simple_form_for [:admin, skillable, Skill.new], :remote => true do |f| %>
   <%= f.error_notification %>
 
   
-    <%= f.text_field :name, required: true, placeholder: "Add a skill", data: {behavior: 'skill-autocomplete'} %>
+    <%= f.input :name, label: false, autofocus: true, placeholder: "Type # for suggestions", input_html: {data: { behavior: "autocomplete_skills" }} %>
     <% if skillable.class.to_s == "Order" %>
        <%= f.input :required, label: 'Is this a requirement?' %>
     <% end %>
@@ -17,4 +17,3 @@
     <%= f.button :submit %>
  
 <% end %>
- </div>

@@ -1,0 +1,3 @@
+$('#start-break-btn').hide();
+$('#end-break-btn').show();
+$("#break-out-list").html("<li class='list-group-item'><strong> <%= @shift.break_out.last.strftime('%r') %></strong></li>");

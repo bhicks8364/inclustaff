@@ -22,6 +22,15 @@ class Invoice < ActiveRecord::Base
     # before_save :total_amount
     after_initialize :defaults
     
+    # validate :date_paid_cannot_be_in_the_future
+ 
+    #   def date_paid_cannot_be_in_the_future
+    #     if date_paid.present? && date_paid > Date.today
+    #       errors.add(:date_paid, "can't be in the future")
+    #     end
+    #   end
+ 
+  
     
     scope :unpaid, -> { where(paid: false)}
     scope :paid, -> { where(paid: true)}

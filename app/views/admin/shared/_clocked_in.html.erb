@@ -3,7 +3,7 @@
 
   		<i class="fa fa-users"></i>
 		<span class="count" id="clocked-in-count">
-			<%= @current.jobs.on_shift.count %>
+			<%= @at_work.try(:count) %>
 		</span>
 	</a>
 	<ul class="dropdown-menu notifications-list">
@@ -14,9 +14,9 @@
 			</div>
 		</li>
 		<li id='clocked-in-count' class="item-header">
-			You have <%= pluralize(@current.jobs.on_shift.count, 'employee') %> clocked in.
+			You have <%= pluralize(@at_work.try(:count), 'employee') %> clocked in.
 		</li>
-			<% @current.jobs.on_shift.order(updated_at: :desc).each do |job| %>
+			<% @at_work.order(updated_at: :desc).each do |job| %>
 		<li id='in-job-<%= job.id %>'class="item" >
 			
 			<%= render 'admin/jobs/clock', job: job %>

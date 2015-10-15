@@ -1,24 +1,11 @@
-<div class='col-md-6 main-box'>
+<div class='offset-col-md-3 col-md-6 main-box'>
 <%= simple_form_for(@agency) do |f| %>
 
 
-    <%= f.input :name %>
-    <%= f.input :subdomain %>
-    <%= f.simple_fields_for(:admin) do |a| %>
- 
-
-
-  <div class="form-inputs">
-      <%= a.input :first_name, required: true, placeholder: "First Name", label: false %>
-      <%= a.input :last_name, required: true, placeholder: "Last Name", label: false %>
-
-      <%= a.input :email, required: true, placeholder: "Email  Address", label: false  %>
-      <%= a.input :role, required: true, collection: [ "Owner", "HR", "Account Manager", "Recruiter", "Payroll", "Limited Access"], include_blank: false, label: false %>
-      <%= a.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length) %>
-      <%= a.input :password_confirmation, required: true %>
-  </div>
-
-<% end %>
+    <%= f.input :name, label: false, placeholder: "Agency Name" %>
+    <%= f.input :subdomain, label: false, placeholder: "Choose a subdomain", hint: 'Lowercase only. No special characters or spaces.'  %>
+    <hr>
+   
             <div class="form-actions">
               <%= f.button :submit, "Register Agency" %>
             </div>

@@ -31,14 +31,8 @@
     <%= f.label :time_out, "Time Out" %><br>
     <%= f.datetime_select :time_out, ampm: true, default: nil %>
   </div>
-    <div class="field">
-        <%= f.label :break_out, "Break Start" %><br>
-        <%= f.time_select :break_out, ampm: true, class: "form-control" %>
-    </div>
-    <div class="field">
-        <%= f.label :break_in, "Break End" %><br>
-        <%= f.time_select :break_in, ampm: true, class: "form-control" %>
-    </div>
+   
+   
 
 </div>
 
@@ -49,6 +43,23 @@
 
 
 
+                <div class=''>
+    <%= f.simple_fields_for :break_out do |d| %>
+    <% @shift.break_out.try(:each) do |key, value| %>
+        <div class="row">
+          <p class='span3'>
+            <%= text_field_tag key, key, :class => 'text_field dynamicAttributeName' %>
+          </p>
+          <p class='span3'>
+            <%= d.text_field key, :class => 'text_field', :value => value %>
+          </p>
+          <p class='span1'>
+            <a herf='#' class='btn removeRow'>X</a>
+          </p>
+        </div>
+    <% end %>
+  <%- end -%>
+  </div>
 
 
 

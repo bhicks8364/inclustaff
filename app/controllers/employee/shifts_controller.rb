@@ -8,14 +8,12 @@ class Employee::ShiftsController < ApplicationController
   def index
     
     @shifts = @employee.shifts
-    respond_to do |format|
-        format.json { render @shifts, include: ['employee', 'timesheet']}
-    end
+    
   end
 
 
   def show
-
+    @job = @employee.current_job
   end
 
   # GET /shifts/new
@@ -62,6 +60,30 @@ class Employee::ShiftsController < ApplicationController
                     out_ip: @current_user.current_sign_in_ip)
     
   end
+  
+  def break_start
+    @shift = Shift.find(params[:id])
+      @shift.breaks ||= []
+      @shift.break_out ||= []
+      @shift.breaks << Time.current
+      @shift.break_out << Time.current
+      @shift.state = 'On Break'
+      @shift.save
+    skip_authorization
+  end
+  def break_end
+    @shift = Shift.find(params[:id])
+    if @shift.on_break?
+      @shift.breaks ||= []
+      @shift.break_in ||= []
+      @shift.breaks << Time.current
+      @shift.break_in << Time.current
+      @shift.state = 'Clocked In'
+      @shift.save
+    end
+    skip_authorization
+  end
+    
 
 
   # PATCH/PUT /shifts/1
@@ -100,6 +122,7 @@ class Employee::ShiftsController < ApplicationController
     def set_employee
       @current_user = current_user if user_signed_in?
       @employee = @current_user.employee
+      skip_authorization
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

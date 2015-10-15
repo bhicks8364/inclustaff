@@ -11,10 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151009170901) do
+ActiveRecord::Schema.define(version: 20151014150726) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
+  enable_extension "uuid-ossp"
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -149,9 +151,12 @@ ActiveRecord::Schema.define(version: 20151009170901) do
     t.datetime "deleted_at"
     t.integer  "recruiter_id"
     t.integer  "timesheets_count"
+    t.hstore   "settings"
+    t.text     "pay_types",                     array: true
   end
 
   add_index "jobs", ["deleted_at"], name: "index_jobs_on_deleted_at", using: :btree
+  add_index "jobs", ["pay_types"], name: "index_jobs_on_pay_types", using: :btree
   add_index "jobs", ["recruiter_id"], name: "index_jobs_on_recruiter_id", using: :btree
 
   create_table "orders", force: :cascade do |t|
@@ -210,13 +215,15 @@ ActiveRecord::Schema.define(version: 20151009170901) do
     t.string   "in_ip"
     t.string   "out_ip"
     t.integer  "week"
-    t.datetime "break_in"
-    t.datetime "break_out"
     t.text     "note"
     t.boolean  "needs_adj"
     t.decimal  "break_duration"
+    t.text     "breaks",                      array: true
+    t.datetime "break_in",                    array: true
+    t.datetime "break_out",                   array: true
   end
 
+  add_index "shifts", ["breaks"], name: "index_shifts_on_breaks", using: :btree
   add_index "shifts", ["deleted_at"], name: "index_shifts_on_deleted_at", using: :btree
   add_index "shifts", ["job_id"], name: "index_shifts_on_job_id", using: :btree
   add_index "shifts", ["timesheet_id"], name: "index_shifts_on_timesheet_id", using: :btree
@@ -245,6 +252,7 @@ ActiveRecord::Schema.define(version: 20151009170901) do
     t.integer  "shifts_count"
     t.decimal  "total_bill"
     t.integer  "invoice_id"
+    t.hstore   "adjustments"
   end
 
   add_index "timesheets", ["deleted_at"], name: "index_timesheets_on_deleted_at", using: :btree

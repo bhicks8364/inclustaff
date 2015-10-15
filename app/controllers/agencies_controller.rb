@@ -7,7 +7,8 @@ class AgenciesController < ApplicationController
   def index
     
     @agencies = Agency.all
-    authorize @agencies
+    skip_authorization
+    # authorize @agencies
   end
 
   # GET /agencies/1
@@ -19,7 +20,7 @@ class AgenciesController < ApplicationController
   # GET /agencies/new
   def new
     @agency = Agency.new
-    @agency.build_admin
+    # @agency.admins.new
     skip_authorization
   end
 
@@ -32,14 +33,16 @@ class AgenciesController < ApplicationController
   # POST /agencies.json
   def create
     
-    @agency = Agency.create(agency_params)
-    @agency.admin.agency_id = @agency.id
+    @agency = Agency.new(agency_params)
+    # @agency.admin_id = @agency.admins.first
+    # @agency.admins.
     skip_authorization
     
     respond_to do |format|
       if @agency.save
-        sign_in(@agency.admin)
-        format.html { redirect_to admin_dashboard_path, notice: 'Welcome to IncluStaff!!' }
+    
+        # sign_in(@agency.admins.first)
+        format.html { redirect_to @agency, notice: 'Welcome to IncluStaff!!' }
         format.json { render :show, status: :created, location: @agency }
       else
         format.html { render :new }
@@ -81,13 +84,13 @@ class AgenciesController < ApplicationController
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_agency
-      @agency = Agency.includes(:orders, :users).find(params[:id])
+      @agency = Agency.find(params[:id])
       skip_authorization
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def agency_params
       params.require(:agency).permit(:name, :subdomain, :admin_id, :order_ids => [], :admin_ids => [], :user_ids => [],
-      admin_attributes: [:id, :email, :role, :password, :password_confirmation, :first_name, :last_name, :agency_id, :current_password])
+      admins_attributes: [:id, :email, :role, :password, :password_confirmation, :first_name, :last_name, :agency_id, :current_password])
     end
 end

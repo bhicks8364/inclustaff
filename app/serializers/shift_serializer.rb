@@ -22,6 +22,7 @@
 #  note           :text
 #  needs_adj      :boolean
 #  break_duration :decimal(, )
+#  breaks         :text             is an Array
 #
 
 class ShiftSerializer < ActiveModel::Serializer

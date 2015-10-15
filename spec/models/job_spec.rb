@@ -16,6 +16,8 @@
 #  deleted_at       :datetime
 #  recruiter_id     :integer
 #  timesheets_count :integer
+#  settings         :hstore
+#  pay_types        :text             is an Array
 #
 
 require 'rails_helper'

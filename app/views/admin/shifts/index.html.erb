@@ -2,5 +2,28 @@
     <%= render 'table' %>
 <h3>Shifts</h3>
 <%= render 'calendar' %>
+<hr>
+<div class='well'>
+         <table>
+  <% @shifts.each do |shift| %>
+    <tr>
+      <td><%= link_to shift.employee.name, admin_shift_path(shift) %> &nbsp; </td>
+      <td><%= link_to 'Edit', edit_admin_shift_path(shift) %> &nbsp; </td>
+      <td>
+
+        Breaks:
+        <span>
+          <%- shift.breaks.try(:each) do |key, value| -%>
+            <%= key.humanize %>: <%= value.to_datetime %>
+          <%- end -%>
+        </span>
+      </td>
+    </tr>
+  <%- end -%>
+</table>
+
+       </div>
+
+
 
 </div>

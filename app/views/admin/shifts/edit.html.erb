@@ -4,8 +4,8 @@
 
 <br>
 <% if @shift.took_a_break? %>
-Total break time: <%= @shift.break_time %><br>
-<%= distance_of_time_in_words(@shift.break_out, @shift.break_in)  %>
+Total break time: <%= @shift.break_duration %><br>
+
 <% end %>
 <hr>
 

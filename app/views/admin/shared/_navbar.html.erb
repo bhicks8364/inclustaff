@@ -15,7 +15,7 @@
 		<div class="nav-no-collapse pull-right" id="header-nav">
 			<ul class="nav navbar-nav pull-right">
 			
-				<% if @current.present? && @current.jobs.on_shift.any? %>
+				<% if @current.present? && @at_work.any? %>
 					<%= render 'admin/shared/clocked_in' %>
 				<% end %>
 				<% if @current_agency.present?  %>

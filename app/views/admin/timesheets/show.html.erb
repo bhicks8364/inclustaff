@@ -1,5 +1,8 @@
 <div class='col-lg-12'>
-<%= line_chart @timesheet.shifts.group_by_day(:time_in, format: "%m/%d").average(:time_worked) %>
+
+<div class='col-md-6'>
+  <%= column_chart @timesheet.shifts.group(:time_worked).sum(:time_worked) %>
+</div>
 <div class='col-lg-8' data-behavior="timesheet-list">
     
   <%= render @timesheet %>

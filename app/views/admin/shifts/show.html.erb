@@ -1,24 +1,83 @@
 
 <div class='main-box'>
-
+ <h1><%= @shift.state %></h1>
     <h3 class="page-header">
-  <strong> <%= @employee.name %>  <small> <%= @job.title %></small></strong>
-  <%= @employee.code %>
+  <strong> <%= @employee.name %>  <small> <%= @job.title %> - <%= @job.pay_rate %>/hr</small></strong>
+  
 </h3>
-<%= number_to_currency(@shift.earnings) %>
-<br>
-<% if @shift.clocked_out? %>
-<%= distance_of_time_in_words(@shift.time_in, @shift.time_out, include_seconds: true) %>
-<br>
-<%= @shift.time_in.strftime("%I:%M %p") %> - <%= @shift.time_out.strftime("%I:%M %p") %>
-<% else %>
-<%= @shift.time_in.strftime("%I:%M %p") %> - <%= @shift.time_out %>
-<% end %>
-<br>
-Hours worked: <%= @shift.hours_worked %><br>
-Break: <%= @shift.break_time %>
-<hr>
 
+  <div class='well col-md-6'>
+    <% if @shift.clocked_out? %>
+  <%= distance_of_time_in_words(@shift.time_in, @shift.time_out, include_seconds: true) %> ago
+  <br>
+  <%= @shift.time_in.strftime("%I:%M %p") %> - <%= @shift.time_out.strftime("%I:%M %p") %>
+  <% else %>
+  <%= @shift.time_in.strftime("%I:%M %p") %> - <%= @shift.state %>
+  <% end %>
+
+    Hours worked: <%= @shift.hours_worked %><br>
+    Break: <%= @shift.break_duration %><br>
+    <%= @employee.code %><br>
+
+  </div>
+
+
+  <div class='well col-md-6'>
+   
+    <div class='col-md-6'>
+      <% if @shift.break_out.present? %>
+        <h4>Break Start Times:</h4>
+         <div id='break-out-list' class='list-group'>
+        <% @shift.break_out.each do |break_began| %>
+        <li class='list-group-item'><strong> <%= break_began.strftime('%r') %></strong></li>
+        <% end %>
+        </div> 
+      <% end %>
+    </div>
+    <div class='col-md-6'>
+      <% if @shift.break_in.present? %>
+        <h4>Break End Times:</h4>
+       <div id='break-in-list' class='list-group'>
+          <% @shift.break_in.each do |break_ended| %>
+             <li class='list-group-item'><strong> <%= break_ended.strftime('%r') %></strong></li>
+          <% end %>
+       </div> 
+       
+        
+        
+      <% end %>
+    </div>
+    <hr>
+    <div class='center'>
+      
+      <% if @shift.on_break? %>
+      <%= link_to "End Break", break_end_admin_shift_path(@shift), method: :patch, remote: true, class: 'btn btn-danger', id: 'end-break-btn' %>
+       <%= link_to "Start Break", break_start_admin_shift_path(@shift), method: :patch, remote: true, class: 'btn btn-success hide-this', id: 'start-break-btn' %>
+    <% elsif @shift.clocked_in? %>
+          <%= link_to "End Break", break_end_admin_shift_path(@shift), method: :patch, remote: true, class: 'btn btn-danger hide-this', id: 'end-break-btn' %>
+      <%= link_to "Start Break", break_start_admin_shift_path(@shift), method: :patch, remote: true, class: 'btn btn-success', id: 'start-break-btn' %>
+    <% end %>
+    </div>
+    
+    
+  </div>
+
+
+<div class='well'>
+  <hr>
+Total Break Time: <%= @shift.break_duration %><br>
+Total Acual Time: <%= @shift.time_worked %><br>
+<hr>
+Total (w/ paid breaks): <%= @shift.hours_worked * @job.pay_rate %><br>
+Total (w/ unpaid break): <%= @shift.pay_time * @job.pay_rate %><br>
+Total Earnings: <%= number_to_currency(@shift.earnings) %><br>
+
+<hr>
+Breaks Started: <%= @shift.break_out.try(:count) %><br>
+Breaks Ended: <%= @shift.break_in.try(:count) %><br>
+Total: <%= @shift.breaks.try(:count) %><br>
+</div>
+<hr>
 <br>
 <%= link_to 'View Employee', admin_employee_path(@employee), class: "btn btn-info" %> 
 <%= link_to 'View Timesheet', admin_timesheet_path(@shift.timesheet), class: "btn btn-info" %>

@@ -21,6 +21,7 @@
 class WorkHistory < ActiveRecord::Base
     belongs_to :employee
     
+    before_save :set_employee_skills
     
     def current?
         self.current == true
@@ -28,6 +29,28 @@ class WorkHistory < ActiveRecord::Base
     
     def may_contact?
         self.may_contact == true
+    end
+    
+    def words
+        @words ||= begin
+                        regex = /([\w]+)/
+                        description.scan(regex).flatten
+                      end
+        
+    end
+    
+    def listed_skills
+        @listed_skills ||= Skill.where(name: words)
+    end
+    
+    def matching_orders
+        listed_skills.job_order
+    end
+    
+    def set_employee_skills
+        listed_skills.each do |skill|
+            self.employee.skills.find_or_create_by(name: skill.name)
+        end
     end
     
 end

@@ -18,12 +18,12 @@
               </span>
 
         <% else %>
-        <span data-behavior="time-in">
-          button-in
-        </span>
-          <button data-behavior="job-in-button" class='btn btn-success'>
-            <i class='fa fa-sign-in'></i> Clock In
-          </button>
+        <% if job.on_break? %>
+<%= link_to "End Break", break_end_admin_shift_path(job.current_shift), method: :patch, remote: true, class: 'btn btn-success' %>
+<% elsif job.current_shift.try(:clocked_in?) %>
+  <%= link_to "Start Break", break_start_admin_shift_path(job.current_shift), method: :patch, remote: true, class: 'btn btn-success' %>
+<% end %>
+     
           <button data-behavior="job-out-button" class='hide-this btn btn-danger'>
             <i class='fa fa-sign-out'></i> Clock Out
           </button>

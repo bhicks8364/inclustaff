@@ -35,6 +35,29 @@ class Admin::ShiftsController < ApplicationController
     @job = @shift.job
     @employee = @shift.employee
   end
+  
+  def break_start
+    @shift = Shift.find(params[:id])
+      @shift.breaks ||= []
+      @shift.break_out ||= []
+      @shift.breaks << Time.current
+      @shift.break_out << Time.current
+      @shift.state = 'On Break'
+      @shift.save
+    skip_authorization
+  end
+  def break_end
+    @shift = Shift.find(params[:id])
+    if @shift.on_break?
+      @shift.breaks ||= []
+      @shift.break_in ||= []
+      @shift.breaks << Time.current
+      @shift.break_in << Time.current
+      @shift.state = 'Clocked In'
+      @shift.save
+    end
+    skip_authorization
+  end
 
   # POST /shifts
   # POST /shifts.json
@@ -128,8 +151,8 @@ class Admin::ShiftsController < ApplicationController
   def update
     @job = @shift.job
     @employee = @shift.employee
-    @shift.week = @shift.time_out.to_datetime.cweek
-   
+    @week = @shift.time_out || @shift.time_in
+    @shift.week = @week.to_datetime.cweek
 
     respond_to do |format|
       if @shift.update(shift_params)
@@ -178,6 +201,8 @@ class Admin::ShiftsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def shift_params
-      params.require(:shift).permit(:time_in, :time_out, :employee_id, :job_id, :note, :break_in, :break_out, :needs_adj, :week, :state)
+      params.require(:shift).permit(:time_in, :time_out, :employee_id, :job_id, :note, :break_in, :break_out, :break_duration, :needs_adj, :week, :state).tap do |whitelisted|
+            whitelisted[:breaks] = params[:shift][:breaks] if params[:shift][:breaks]
+          end
     end
 end

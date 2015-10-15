@@ -2,6 +2,7 @@
 
 default: &default
   adapter: postgresql
+  schema_search_path: "public,shared_extensions"
   encoding: unicode
   pool: 5
   username: <%= ENV['USERNAME'] %>
@@ -10,6 +11,7 @@ default: &default
 
 development:
   <<: *default
+
   database: app_development
 
 test:

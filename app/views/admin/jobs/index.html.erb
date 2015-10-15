@@ -1,6 +1,28 @@
-<% if @jobs %>
+<div class='main-box'>
+    <% if @jobs %>
 <h1>All Jobs</h1>
 <%= render 'admin/jobs/table' %>
 <% else %>
 No jobs to display.
 <% end %>
+<div class='well'>
+         <table>
+  <% @jobs.each do |job| %>
+    <tr>
+      <td><%= link_to job.title, admin_job_path(job) %> &nbsp; </td>
+      <td><%= link_to 'Edit', edit_admin_job_path(job) %> &nbsp; </td>
+      <td>
+
+        Settings:
+        <span>
+          <%- job.settings.try(:each) do |key, value| -%>
+            <%= key.humanize %>: <%= number_to_currency( value.to_d) %>
+          <%- end -%>
+        </span>
+      </td>
+    </tr>
+  <%- end -%>
+</table>
+
+       </div>
+</div>

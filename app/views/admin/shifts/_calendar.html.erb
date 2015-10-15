@@ -1,11 +1,11 @@
-<div class="col-lg-12">
-	<h1>Calendar</h1>
+<div class="center">
+
 	<%= month_calendar(attribute: :time_in, events: @shifts) do |date, shifts| %>
 	
   <div class='cal-date'><%= date %></div>
 
   <% shifts.each do |shift| %>
-    <div>
+    <div class='fill'>
       <%= link_to shift.employee.name, admin_shift_path(shift) %>
       <strong><%= shift.hours_worked %> </strong>
     </div>

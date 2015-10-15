@@ -129,14 +129,14 @@
        
        <%= render 'work_histories/table' %>
        <% if admin_signed_in? %>
-         <%=link_to "Add Work History", new_admin_employee_work_history_path(@employee), class: 'btn' %>
+         <%=link_to "Add Work History", new_admin_employee_work_history_path(@employee), class: 'btn btn-primary' %>
        <% elsif user_signed_in? %>
-         <%= link_to "Add Work History", new_work_history_path, class: 'btn' %>
+         <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
        <% end %>
    
     <% else %>
       <p>No Work History Available.</p>
-
+ <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
     <% end %>
      </div>
        

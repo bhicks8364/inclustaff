@@ -12,6 +12,29 @@
     <strong>Regular hours:</strong>
     <%= @timesheet.reg_hours %>
   </div>
+  <% if @timesheet.current_shift.present? %>
+  <%= render @timesheet.current_shift %>
+  <% end %>
+  <div class='well'>
+         <table>
+  <% @timesheet.shifts.each do |shift| %>
+    <tr>
+      <td><%= link_to shift.employee.name, employee_shift_path(shift) %> &nbsp; </td>
+      <td><%= link_to 'Edit', edit_employee_shift_path(shift) %> &nbsp; </td>
+      <td>
+
+        Settings:
+        <span>
+          <%- shift.breaks.try(:each) do |key, value| -%>
+            <%= key.humanize %>
+          <%- end -%>
+        </span>
+      </td>
+    </tr>
+  <%- end -%>
+</table>
+
+       </div>
   <div class='col-lg-3 well well-sm'>
     <strong>Overtime hours:</strong>
     <%= @timesheet.ot_hours %>

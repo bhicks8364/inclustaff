@@ -14,6 +14,13 @@
           <h4><small><%= @job.start_date.strftime("%B %e, %Y ") %></small></h4>
        </div>
        
+      Pay: <%= @job.settings['pay_rate'] if @job.settings %><br>
+      Pay2: <%= @job.settings['pay2'] if @job.settings %>
+       
+       
+       
+       
+       
     <div class='col-md-12'>
       <div class="btn-group btn-group-justified" role="group" aria-label="...">
         <%= link_to "View Company", admin_company_path(@company), class: "btn" %>

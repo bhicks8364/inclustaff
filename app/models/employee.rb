@@ -90,6 +90,7 @@ class Employee < ActiveRecord::Base
   scope :with_active_jobs, -> { joins(:jobs).merge(Job.active)}
   scope :with_inactive_jobs, -> { joins(:jobs).merge(Job.inactive)}
   scope :on_shift, -> { joins(:shifts).merge(Shift.clocked_in)} 
+  scope :at_work, -> { joins(:shifts).merge(Shift.at_work)} 
   scope :off_shift, -> { joins(:shifts).merge(Shift.clocked_out)}
   scope :with_current_timesheet, -> { joins(:timesheets).merge(Timesheet.this_week)}
 
