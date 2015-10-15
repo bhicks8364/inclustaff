@@ -18,6 +18,16 @@
 
 
 <% else %>
-You shouldn't be here. You aren't logged in.
+
+<h1 class='text-center'>
+    Welcome to IncluStaff, <%= @agency.name %>!
+    
+</h1>
+<h2 class='text-center'>Please start by signing in to your account.</h2>
+<h3 class='text-center'>
+Access your agency portal at www.<%=@agency.subdomain %>.inclustaff.com
+
+</h3>
+
 <% end %>
 </div>
