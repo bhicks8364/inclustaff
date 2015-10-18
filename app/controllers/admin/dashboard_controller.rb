@@ -47,27 +47,10 @@ class Admin::DashboardController < ApplicationController
         @clock_ins = @viewing.admin_events.clock_ins.order('id DESC')
         @clock_outs = @viewing.admin_events.clock_outs.order('id DESC')
         @applications = @viewing.order_events.applications
-      # end
-      
-      # @timesheets = @company.timesheets.order(created_at: :desc) if @company.present?
-      # @timesheets = @agency.timesheets.order(created_at: :desc) if @agency.present?
-      # @jobs = @company.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 10).order('id DESC') if @company.present?
-      # # @jobs = @agency.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 10).order('id DESC') if @agency.present?
-      @jobs = @viewing.jobs.includes(:employee, :company) if @viewing.present?
-      @clocked_in = @jobs.on_shift.order(time_in: :desc)
-      @newly_added = @viewing.employees.newly_added.order(created_at: :desc)
-      # # @admin_users = @company.admins
-      # # @shifts = @company.shifts.order(updated_at: :desc)
-      # @employees = @company.employees if @company.present?
-      # @employees = @agency.employees if @agency.present?
+      @jobs = @current.jobs.includes(:employee, :company) if @current.present?
+      # @clocked_in = @jobs.on_shift.order(time_in: :desc)
+      # @newly_added = @viewing.employees.newly_added.order(created_at: :desc)
       @orders = @viewing.orders if @viewing.present?
-      # @orders = @agency.orders if @agency.present?
-        
-        # @timesheets = @company.timesheets.order(updated_at: :desc)
-        # @payroll_users = @company.payroll_users
-        # @manager_users = @company.manager_users
-        
-        # @employee_users = @company.employees.with_active_jobs
 
         skip_authorization
 
@@ -108,7 +91,8 @@ class Admin::DashboardController < ApplicationController
       @admin = @current_admin
       @agency = @current_agency
       @timesheets = @agency.timesheets
-      @jobs = @agency_jobs.active if @agency_jobs.any?
+      @jobs = @current.jobs.active if @current.jobs.any?
+      @agency_jobs = @jobs
       skip_authorization
     end
     
