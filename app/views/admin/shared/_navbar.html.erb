@@ -4,8 +4,10 @@
 			       <%= image_tag("incluStaff_logo.png", alt: "Inclustaff") %>
 			 <% end %>
 			 
-		
-		
+		    	
+		 <!--<strong>   <%=  params[:controller] %>#<%=  params[:action] %></strong>-->
+          
+              
 		
 		<button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">
 			<span class="sr-only">Toggle navigation</span>
@@ -15,10 +17,10 @@
 		<div class="nav-no-collapse pull-right" id="header-nav">
 			<ul class="nav navbar-nav pull-right">
 			
-				<% if @current.present? && @at_work.any? %>
+				<% if @current.present? && @at_work.any? && current_admin.payroll? %>
 					<%= render 'admin/shared/clocked_in' %>
 				<% end %>
-				<% if @current_agency.present?  %>
+				<% if @current_agency.present?  && @newly_added.any?  %>
 					<%= render 'admin/shared/newly_added' %>
 				<% end %>
 				

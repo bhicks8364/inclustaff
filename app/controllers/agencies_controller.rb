@@ -13,9 +13,12 @@ class AgenciesController < ApplicationController
 
   # GET /agencies/1
   # GET /agencies/1.json
+  
   def show
-   
+    
   end
+
+  
 
   # GET /agencies/new
   def new

@@ -1,97 +1,87 @@
-					<div class="main-box">
+<div class='main-box'>
+	
+		<div class="main-box clearfix">
+			<div class="table-responsive">
+				<table id='users-datatable' class="table table-bordered">
+					<thead>
+						<tr>
+							<th><span>User</span></th>
+							<th><span>Created</span></th>
+							<th><span>Email</span></th>
+							<th><span>Skills</span></th>
+							
+							<th>&nbsp;</th>
+						</tr>
+					</thead>
+					<tbody>
+						<%= content_tag_for(:tr, @users) do |user| %>
+							<td>
+								<% if user.employee.present? && user.employee.assigned? %>
+							   <%= render 'admin/jobs/modal', job: user.employee.current_job %>
+							  	<% else %>
+								<%= link_to user.name, user, class: "user-link" %>
+								<small><span class="user-subhead"><%= user.employee.current_job.try(:company_name) %></span></small><br>
+								<span class="user-subhead"><%= user.employee.current_job.try(:title) || "Unassigned" %></span>
+							
+									<% end %>
+							</td>
+							<td style="width: 20%;">
+								<%= user.created_at.strftime("%x") %>
+							</td>
+							<td class="text-center" style="width: 20%;">
+								<%= user.email %>
+							</td>
+							<td style="width: 20%;">
+								<%= user.employee.work_histories.any? ? user.employee.work_histories.last.title : "No Work History" %>
+							</td>
+							<td style="width: 20%;">
+								<%= link_to(user, class: "table-link") do %>
+								
+									<span class="fa-stack">
+										<i class="fa fa-square fa-stack-2x"></i>
+										<i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+									</span>
+								<% end %>
+								<%= link_to(edit_user_registration_path(user), class: "table-link") do %>
+									<span class="fa-stack">
+										<i class="fa fa-square fa-stack-2x"></i>
+										<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+									</span>
+								<% end %>
+								<%= link_to(edit_user_registration_path(user), class: "table-link") do %>
+									<span class="fa-stack">
+										<i class="fa fa-square fa-stack-2x"></i>
+										<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+									</span>
+								<% end %>
+							</td>
+						<% end %>
 					
-						<div class="clearfix">
-							<h1 class="text-left">All Employee User Accounts</h1>
+					
+					
+					
+					</tbody>
+				</table>
+			</div>
+		</div>
+		
+		<%= form_for @import, url: import_users_path, multipart: true do |f| %>
+			
+			<% if @import.errors.full_messages.each do |msg| %>
+			<div class='alert alert-danger'>
+			<div><%= msg %></div>
+				<% end %>
+			</div>
+		<% end %>
+		
+			<%= f.file_field :file %>
+			<%= f.submit "Upload" %>
+		<% end %>
+		
+	<%= link_to(users_path(@users, format: :csv), class: 'btn btn-primary') do %>
+  		<i class="fa fa-file-excel-o fa-lg"></i> Export CSV
+  	
+  	<% end %>
+		
 
-						</div>
-						
-						<div class="row">
-							<div class="col-lg-12">
-								<div class="main-box clearfix">
-									<div class="table-responsive">
-										<table id='users-datatable' class="table table-bordered">
-											<thead>
-												<tr>
-													<th><span>User</span></th>
-													<th><span>Created</span></th>
-													<th><span>Email</span></th>
-													<th><span>Skills</span></th>
-													
-													<th>&nbsp;</th>
-												</tr>
-											</thead>
-											<tbody>
-												<%= content_tag_for(:tr, @users.unassigned.reverse_order) do |user| %>
-													<td>
-														<% if user.employee.present? && user.employee.assigned? %>
-													   <%= render 'admin/jobs/modal', job: user.employee.current_job %>
-													  	<% else %>
-														<%= link_to user.name, user, class: "user-link" %>
-														<small><span class="user-subhead"><%= user.employee.current_job.try(:company_name) %></span></small><br>
-														<span class="user-subhead"><%= user.employee.current_job.try(:title) || "Unassigned" %></span>
-													
-															<% end %>
-													</td>
-													<td style="width: 20%;">
-														<%= user.created_at.strftime("%x") %>
-													</td>
-													<td class="text-center" style="width: 20%;">
-														<%= user.email %>
-													</td>
-													<td style="width: 20%;">
-														<%= user.employee.work_histories.any? ? user.employee.work_histories.last.title : "No Work History" %>
-													</td>
-													<td style="width: 20%;">
-														<%= link_to(user, class: "table-link") do %>
-														
-															<span class="fa-stack">
-																<i class="fa fa-square fa-stack-2x"></i>
-																<i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
-															</span>
-														<% end %>
-														<%= link_to(edit_user_registration_path(user), class: "table-link") do %>
-															<span class="fa-stack">
-																<i class="fa fa-square fa-stack-2x"></i>
-																<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-															</span>
-														<% end %>
-														<%= link_to(edit_user_registration_path(user), class: "table-link") do %>
-															<span class="fa-stack">
-																<i class="fa fa-square fa-stack-2x"></i>
-																<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-															</span>
-														<% end %>
-													</td>
-												<% end %>
-											
-											
-											
-											
-											</tbody>
-										</table>
-									</div>
-								</div>
-								
-								<%= form_for @import, url: import_users_path, multipart: true do |f| %>
-									
-									<% if @import.errors.full_messages.each do |msg| %>
-									<div class='alert alert-danger'>
-									<div><%= msg %></div>
-										<% end %>
-									</div>
-								<% end %>
-								
-									<%= f.file_field :file %>
-									<%= f.submit "Upload" %>
-								<% end %>
-								
-							<%= link_to(users_path(@users, format: :csv), class: 'btn btn-primary') do %>
-			  					<i class="fa fa-file-excel-o fa-lg"></i> Export CSV
-			  				
-			  				<% end %>
-								
-								
-								
-							</div>
-						</div>
-					</div>
+</div>

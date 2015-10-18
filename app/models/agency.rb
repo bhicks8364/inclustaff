@@ -43,7 +43,7 @@ class Agency < ActiveRecord::Base
                         message: "%{value} is reserved." }
     
     accepts_nested_attributes_for :admins
-    
+    validates :name,  presence: true, length: { maximum: 50 }
     
     
     def current_billing

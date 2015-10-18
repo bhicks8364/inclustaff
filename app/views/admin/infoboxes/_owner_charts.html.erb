@@ -6,12 +6,12 @@
 <div class="col-md-3 well">
   <h4 class='text-center'>New Applicants</h4>
   <h5 class='text-center'><small>New Applications By Day</small></h5>
-  <%= column_chart Event.applications.group_by_day(:created_at).count %>
+
 </div>
 <div class="col-md-6 well">
   <h4 class='text-center'>New Applicants</h4>
   <h5 class='text-center'><small>New Applications By Day</small></h5>
-  <%= pie_chart Event.group(:action).count %>
+  <%= pie_chart Job.group(:pay_rate).count %>
    <%= pie_chart @current.jobs.group(:order).count %>
    <%= column_chart @current.orders.needs_attention.group(:company).count %>
 </div>

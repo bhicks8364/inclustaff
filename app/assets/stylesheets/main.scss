@@ -59,7 +59,7 @@
 
 
 .skill-list {
-    border: solid 3px rgb(43, 182, 163);
+   
 }
 
 // BUTTONS
@@ -86,7 +86,7 @@
 	box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.0);
 }
 .btn.job-button {
-    background: rgba(12, 12, 12, 0.29);
+    background: rgb(62, 101, 93);
     width: 100%;
 }
 
@@ -352,8 +352,8 @@ h2 {
     overflow: auto;
 }
 .list-group {
-    background-color: rgba(0, 0, 0, 0.65);
-    color: white;
+    // background-color: rgba(0, 0, 0, 0.65);
+    // color: white;
     padding: 3px;
     margin: 3px;
 }
@@ -372,9 +372,9 @@ h2 {
     }
 }
 
-li.list-group-item {
-    color: black;
-}
+// li.list-group-item {
+//     color: black;
+// }
 
 // TABS
 

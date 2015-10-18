@@ -67,7 +67,7 @@ body {
 #shift-list-nav {
   align-content:center; 
   width: 300px;
-  border:3px solid #8AC007;
+  // border:3px solid #8AC007;
   padding: 10px;
   // margin-right: 15px;
   // margin-bottom: 15px;
@@ -486,7 +486,7 @@ div.transbox {
   padding-bottom: 3px;
 }
 .main-box {
-  background: rgba(21, 19, 19, 0.52);
+  background: rgba(21, 19, 19, 0.62);
   -webkit-box-shadow: 1px 1px 2px 0 #CCCCCC;
   -moz-box-shadow: 1px 1px 2px 0 #CCCCCC;
   -o-box-shadow: 1px 1px 2px 0 #CCCCCC;
@@ -498,7 +498,7 @@ div.transbox {
   height: 100%;
 }
 .main-box-short {
-  background: rgba(21, 19, 19, 0.52);
+  background: rgba(21, 19, 19, 0.62);
   -webkit-box-shadow: 1px 1px 2px 0 #CCCCCC;
   -moz-box-shadow: 1px 1px 2px 0 #CCCCCC;
   -o-box-shadow: 1px 1px 2px 0 #CCCCCC;
@@ -508,4 +508,16 @@ div.transbox {
   padding: 20px;
   color: white;
   height: auto;
+}
+
+#users-datatable_length > label {
+  font-weight: bold;
+}
+#users-datatable_wrapper {
+  padding: 10px;
+  background: rgba(76, 139, 128, 0.67);
+}
+
+.dark {
+  background: rgba(21, 19, 19, 0.62);
 }

@@ -1,5 +1,5 @@
 <a class='btn btn-default job-button' data-toggle="modal" data-target="#mod_<%= job.id %>">
-<span class='small text-muted pull-left'><%= job.company.name %></span><br>
+<span class='pull-left'><%= job.company.name %></span><br>
 
 	<span class=''>	<strong><%= job.employee.name%></strong></span><br>
 	<span class='small'><%= job.title %></span>
@@ -7,7 +7,7 @@
 </a>
 
 <!-- Modal -->
-<div class="modal fade" id="mod_<%= job.id %>" tabindex="-1" role="dialog" aria-labelledby="#<%= job.employee.name %>">
+<div class="modal fade dark" id="mod_<%= job.id %>" tabindex="-1" role="dialog" aria-labelledby="#<%= job.employee.name %>">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">

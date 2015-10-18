@@ -1,9 +1,13 @@
-<% @agencies.each do |agency| %>
+<div class='main-box'>
+    <div class='well center'>
+        <% @agencies.each do |agency| %>
 
-<%= link_to agency.name, agency %><br>
-<%= agency.orders.count %><br>
-<%= agency.admins.count %><br>
-<%= agency.users.count %><br>
+           <h3> <%= link_to agency.name, agency %><small> <%=  agency.subdomain %></small></h3>
+            <strong>Orders</strong> <%= agency.orders.count %><br>
+             <strong>Admins</strong> <%= agency.admins.count %><br>
+             <strong>Users</strong> <%= agency.users.count %><br>
 
 
 <% end %>
+    </div>
+</div>

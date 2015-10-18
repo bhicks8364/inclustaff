@@ -38,8 +38,8 @@ class Admin::OrdersController < ApplicationController
     
       @orders = @company.orders.order(created_at: :desc) if @company.present?
       @orders = @agency.orders.order(created_at: :desc) if @agency.present?
-      authorize @orders
-    
+      # authorize @orders
+    skip_authorization
   end
 
   # GET /orders/1
@@ -51,7 +51,8 @@ class Admin::OrdersController < ApplicationController
     @jobs = @order.jobs.active.includes(:timesheets, :shifts)
     @timesheets = @order.timesheets
     @current_timesheets = @order.current_timesheets
-    authorize @order
+    # authorize @order
+    skip_authorization
   end
     
 
@@ -100,7 +101,7 @@ class Admin::OrdersController < ApplicationController
       end
       
       authorize @order
-
+        current_admin.events.create(action: "submitted", eventable: @order)
 
 
 

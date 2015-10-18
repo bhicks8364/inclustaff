@@ -1,13 +1,20 @@
-<div class='offset-col-md-3 col-md-6 main-box'>
-<%= simple_form_for(@agency) do |f| %>
+<div class='center main-box'>
+<div class='dark middle'>
+    <%= simple_form_for(Agency.new) do |f| %>
 
-
-    <%= f.input :name, label: false, placeholder: "Agency Name" %>
-    <%= f.input :subdomain, label: false, placeholder: "Choose a subdomain", hint: 'Lowercase only. No special characters or spaces.'  %>
-    <hr>
+    <h3 class='text-center white'>Register your agency below.</h3>
+    <div class='well'>
+         <%= f.input :name, label: false, placeholder: "Agency Name" %>
+    
    
+        <div class='text-center white'> Once registered, you can access your portal at www.<u>yoursubdomain</u>.inclustaff.com </div>
+
+    <%= f.input :subdomain, label: false, placeholder: "Choose a subdomain", hint: 'Lowercase only. No special characters or spaces.'  %>
+   
+   </div>
             <div class="form-actions">
-              <%= f.button :submit, "Register Agency" %>
+              <%= f.button :submit, "Register Now", class: "btn btn-primary" %>
             </div>
+</div>
  </div>
 <% end %>

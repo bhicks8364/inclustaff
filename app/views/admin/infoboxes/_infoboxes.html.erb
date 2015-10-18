@@ -51,11 +51,11 @@
 			
 		This week
 			<span class='badge badge-success'>
-			<%= number_to_currency(@timesheets.current_week.sum(:gross_pay)) %></span><br>
+			<%= number_to_currency(@current.timesheets.current_week.sum(:gross_pay)) %></span><br>
 			Last week
-			<span class='badge'>	<%= number_to_currency(@timesheets.last_week.sum(:total_bill)) %></span><br>
+			<span class='badge'>	<%= number_to_currency(@current.timesheets.last_week.sum(:total_bill)) %></span><br>
 			<br>
-			<span class='badge badge-primary fill center'>YTD Billings: <%= number_to_currency(@timesheets.sum(:total_bill)) %></span>
+			<span class='badge badge-primary fill center'>YTD Billings: <%= number_to_currency(@current.timesheets.sum(:total_bill)) %></span>
 		</div>
 	</div>
 	<div class="col-md-3 col-sm-6 col-xs-6 text-center">

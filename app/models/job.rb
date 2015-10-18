@@ -34,6 +34,7 @@ class Job < ActiveRecord::Base
     accepts_nested_attributes_for :employee
     
     delegate :manager, to: :order
+    delegate :title, to: :order
     delegate :mark_up, to: :order
     delegate :company, to: :order
     delegate :agency, to: :order
@@ -61,13 +62,15 @@ class Job < ActiveRecord::Base
     validates_associated :order
     validates :employee_id,  presence: true
     # validates :order_id,  presence: true
-    validates :title,  presence: true, length: { maximum: 50 }
+    # validates :title,  presence: true, length: { maximum: 50 }
     
     # CALLBACKS
     after_initialize :defaults
     after_save :update_employee
     
     before_save :set_main_pay
+    
+    
     
 
     # SCOPES
@@ -166,7 +169,12 @@ class Job < ActiveRecord::Base
         end
         self.settings['pay_rate'] = pay
     end
-            
+    def set_job_title
+        if self.title.nil? && self.order_id.present?
+            job_order = Order.find(self.order_id)
+            self.title = job_order.title
+        end
+    end
     
     # def clock_in(job)
     #     if job.off_shift?

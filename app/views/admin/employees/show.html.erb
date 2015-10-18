@@ -120,7 +120,7 @@
   </div>
   <div role="tabpanel" class="tab-pane fade" id="shifts">
     
-  <% if @employee.assigned? %>
+  <% if @employee.assigned? && @employee.shifts.any? %>
   	<h1>Calendar</h1>
     <div class='well'>
       <%= render 'admin/shifts/calendar' %>

@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy]
-
+  layout :determine_layout
   # GET /events
   # GET /events.json
   def index
@@ -12,6 +12,8 @@ class EventsController < ApplicationController
   # GET /events/1.json
   def show
     @order = Order.find(@event.eventable_id) if @event.application?
+    @company = @order.company if @order.present?
+    @employee = Event.find(@event.user_id) if @event.user_id.present?
   end
 
   # GET /events/new
@@ -75,4 +77,9 @@ class EventsController < ApplicationController
     def event_params
       params.require(:event).permit(:admin_id, :action, :eventable_id, :eventable_type)
     end
+    
+    private
+      def determine_layout
+        current_admin ? "admin_layout" : "application"
+      end
 end

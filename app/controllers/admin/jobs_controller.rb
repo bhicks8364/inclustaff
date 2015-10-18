@@ -143,6 +143,7 @@ class Admin::JobsController < ApplicationController
     elsif params[:employee_id]
       @employee = Employee.find(params[:employee_id])
       @job = @employee.jobs.new(job_params)
+      
       # @employee.mark_as_assigned!
       
       authorize @job
@@ -152,7 +153,8 @@ class Admin::JobsController < ApplicationController
       authorize @job
       
       @job.recruiter = current_admin if current_admin.recruiter?
-
+      @job.set_job_title
+      
       
     end
     

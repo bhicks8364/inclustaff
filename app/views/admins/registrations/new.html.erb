@@ -3,7 +3,7 @@
      
     	<div class=" bg-clear center">
     	  <h2>Agency Admin Registration</h2>
-        <div class='main-box'>
+        <div class='well center'>
            
           
           <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), class: 'center') do |f| %>
@@ -13,9 +13,9 @@
               <%= f.input :first_name, required: true, placeholder: "First Name", label: false, autofocus: true%>
               <%= f.input :last_name, required: true, placeholder: "Last Name", label: false %>
               <%= f.input :email, required: true, placeholder: "Email", label: false %>
-               <%= f.association :agency, collection: Agency.all, prompt: "Select Recruiter", label: false %>
-              OR
-<!--<%= f.association :company, required: true, prompt: "Select A Company", label: false %>-->
+               <%= f.hidden_field :agency_id, :value => @current.id %>
+
+              
               <%= f.input :role, required: true, collection: ["Owner", "Account Manager", "Recruiter", "Payroll", "Limited Access"], include_blank: false, label: false %>
               <%= f.input :password, required: true, placeholder: "Password", label: false, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length) %>
               <%= f.input :password_confirmation, required: true, placeholder: "Confirm Password", label: false %>

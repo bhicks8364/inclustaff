@@ -1,11 +1,12 @@
-<div class="nested-fields">
+<div class="col-md-6 nested-fields">
+           <%= link_to_remove_association "<i class='fa fa-times fa-fw red'></i>".html_safe, f, class: 'btn btn-tiny red' %>
+
+       <%= f.input :name, label: false, placeholder: "Enter a skill", data: {behavior: 'skill-autocomplete'}, wrapper_html: {class: 'col-md-6'} %>
+
     
-    <div class="form-group">
-       <%= f.text_field :name, placeholder: "Enter a skill", data: {behavior: 'skill-autocomplete'}  %>
+       <%= f.input :required, inline_label: 'Is this a requirement?', wrapper_html: {class: ''} %>
 
-       <%= f.input :required, label: 'Is this a requirement?' %>
-    </div>
 
-<%= link_to_remove_association "<i class='fa fa-times-circle'></i>".html_safe, f, class: 'badge badge-danger'%>
+
 
 </div>

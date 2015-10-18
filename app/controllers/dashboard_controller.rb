@@ -4,15 +4,26 @@ class DashboardController < ApplicationController
 
 
     def home
+        
+            @agency = @current if @current.present?
+        if @current.present? && signed_in? == false
+            render 'agencies/show'
+            @inquiry = Inquiry.new
+        end
+        if @current_agency.nil?
+          render 'mainpage'
+          
+        end
         # authenticate_admin!
         if admin_signed_in? 
-            
+             render 'admin/dashboard/home'
            @admin = current_admin
-           @agency = @admin.agency if @admin.agency?
+        #   @agency = @admin.agency if @admin.agency?
            @company = @admin.company if @admin.company?
-       
+           
            @orders = @agency.orders if @agency.present?
            @orders = @company.orders if @company.present?
+            @applications = @agency.events.applications
            @shifts = @agency.shifts if @agency.present?
            @jobs = @agency.jobs.includes(:employee).order("employee.last_name DESC") if @agency.present?
            @jobs = @company.jobs.active if @company.present?
@@ -31,9 +42,9 @@ class DashboardController < ApplicationController
             @job = @employee.current_job 
             @current_timesheet = @employee.timesheets.last
             @shifts = @current_timesheet.shifts if @current_timesheet.present?
-        elsif signed_in? == false
-            render 'mainpage'
-            @inquiry = Inquiry.new
+       
+        
+             
         end
         @inquiry = Inquiry.new
         # @current_user = current_user if current_user.present?
@@ -108,6 +119,8 @@ class DashboardController < ApplicationController
       def determine_layout
         current_admin ? "admin_layout" : "application"
       end
+      
+    
     
     
 end

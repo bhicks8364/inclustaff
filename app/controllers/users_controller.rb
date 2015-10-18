@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
     layout :determine_layout
     def index
-        @users = User.includes(:employee).all
+        @users = User.includes(:employee)
         @import = User::Import.new
         skip_authorization
         

@@ -1,63 +1,78 @@
 
-<div class='well col-md-12'>
-    
+<div class='col-md-12 dark'>
+    <% if @current.present? %>
+  <%= @current.name %>
+   <%= render 'admin/infoboxes/infoboxes' %>
+  <% else %>
 
-        
-  <h1 class='text-center'>Optimize your workforce & maximize your profits.</h1>
+ 
+  <div class="col-md-12 dark">
+       <div class='col-md-8 text-center main-box-short'>
+            <h1 class='text-center'>Optimize your workforce & maximize your profits.</h1>
   <h4 class='text-center'>From the first punch to the final invoice, IncluStaff does it all</h4>
-  <div class='actions  well well-sm text-center'>
-   <h2>We are launching soon! </h2>
-   <h4>Enter your email & you'll be the first to know! </h4>
-        <div class=''>
-            <%= render 'inquiries/form' %>
-        </div>
-    </div>     
- 
- 
-    <div class="center">
-    <div class="col-md-4">
-    <div class='main-box-short'><%= image_tag("http://ldssmile.com/wp-content/uploads/2014/01/four-business-people-watching-clock-time-for-social-media.jpg", class: 'pic') %>
-        <div class='text-center'>
-            
-           <h2>Track Hours from Any Location</h2>
-                <h5> No more paper timecards! </h5>
-               
-                    <p>Allows employees clock in or out from any computer or mobile device.</p>
-        </div>
-                
-          </div>      
-                
-            </div>
+           <div class='well center'>
+            <h2>Register your subdomain now!</h4>
+            <h3>Access your portal at
+            <br>www.<u>yoursubdomain</u>.inclustaff.com</h3> 
 
-            <div class="col-md-4">
-                <div class='main-box-short'><%= image_tag("http://www.680news.com/wp-content/blogs.dir/sites/2/2013/10/business-expansion-stock.jpg", class: 'pic') %>
-                <div class='text-center'>
-                   
+             <%= link_to "Register your agency now!", new_agency_path, class: 'btn btn-primary btn-lg' %>
+             </div>
+        </div>
+        <div class='col-md-4 text-center main-box-short'>
+           
+           <div class='well center'>
+                <h2>We are launching soon!</h2><h3> Enter your email & you'll be the first to know! </h3>
+                <%= render 'inquiries/form' %>
+           </div>
+        </div>
+         <div class="col-md-4  text-center well">
+            <div class='well center'>
+                <%= image_tag("http://ldssmile.com/wp-content/uploads/2014/01/four-business-people-watching-clock-time-for-social-media.jpg", class: 'pic') %>
+               <h2>Track Hours from Any Location</h2>
+                    <h5> No more paper timecards! </h5>
+                        <p>Allows employees clock in or out from any computer or mobile device.</p>
+  
+              </div>      
+                
+        </div>
+          <div class= "col-md-4 well">
+                <div class='well center'>
+              <%= image_tag("http://cdn2.hubspot.net/hub/219533/hubfs/uscybervault/ID-100314794.jpg?t=1440774938432&width=400&height=272&t=1441042923377", class: 'pic') %>
+                
+                    <h2>Easily Integrate your Payroll System</h2>
+                    <h5 class='text-center'>Cut your processing time in HALF!</h5>
+                        <p>Choose to upload Excel/CSV or connect directly to your existing database. </p>
+                </div>
+            </div>
+            <div class="col-md-4 well">
+                <div class='center well'><%= image_tag("http://www.680news.com/wp-content/blogs.dir/sites/2/2013/10/business-expansion-stock.jpg", class: 'pic') %>
+             
                 <h2>Highlight your Top Performers</h2>
                <h5 class='text-center'>Quickly identify your All-Stars!</h5>
                     
           
                      <p>Easily view bill & fill rates for your entire team with a single click.</p>
-               </div>
-       
-            </div>
-            </div>
 
-            <div class= "col-md-4 ">
-                <div class='main-box-short'><%= image_tag("http://cdn2.hubspot.net/hub/219533/hubfs/uscybervault/ID-100314794.jpg?t=1440774938432&width=400&height=272&t=1441042923377", class: 'pic') %>
-            <div class=' text-center'>
-                
-                <h2>Easily Integrate your Payroll System</h2>
-                <h5 class='text-center'>Cut your processing time in HALF!</h5>
-              
-                    <p>Choose to upload Excel/CSV or connect directly to your existing database. </p>
-                
-                
+                </div>
             </div>
-    </div>
-    </div>
+  
+  
+  
+  
+  </div>
+  
+    
+    <% end %>
+ 
+
+
+            
+
+            
+ 
+
 </div>
-</div>
+
 
 
 

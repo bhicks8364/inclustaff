@@ -1,6 +1,6 @@
 
 				
-			<% if @admin.owner? %>
+			<% if admin_signed_in? && current_admin.owner? %>
 			
 			<div class='col-md-12 main-box'>	
 			<span>Today is <%= time_tag(Time.current) %>.</span>
@@ -13,10 +13,7 @@
 						<%= link_to 'Owner', admin_owner_path, class: "btn btn-primary"  %>
 					
 					</div>
-					<div class='col-md-3'>
-						<%= link_to "Agency Portal", admin_agency_access_path, class: "btn btn-primary" %>
 					
-					</div>
 					
 				</div>
 				
@@ -30,7 +27,7 @@
 		
 				<% end %>	
 				
-				<% if @admin.payroll? && @admin.agency? %>
+				<% if current_admin.payroll? && current_admin.agency? %>
 					<div class='col-md-12 '>	
 						<p class='text-center'>Today is <%= time_tag(Time.current) %>.</p>
 					
@@ -52,7 +49,7 @@
 				
 				
 				
-				<% if @admin.account_manager? %>
+				<% if current_admin.account_manager? %>
 				<%= render 'manager' %>
 				<% end %>
 						

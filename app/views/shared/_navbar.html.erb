@@ -5,7 +5,7 @@
 			       <%= image_tag("incluStaff_logo.png", alt: "Inclustaff") %>
 			 <% end %>
     		
-		  
+		 <!--<small> Controller Action:  <%=  params[:action] %></small>-->
               
 
 			
@@ -17,14 +17,19 @@
 
 			<div class="nav-no-collapse pull-right" id="header-nav">
 				<ul class="nav navbar-nav pull-right">
-
+				
+					<% if @current_agency.nil? && params[:action] == 'home' %>
 					
-					<% if current_user.nil? && current_admin.nil? %>
+						<li><%= link_to "Register", new_agency_path %></li>
+					<% else %>
+					
+					<% if current_user.nil? && current_admin.nil? && params[:action] == 'home'  %>
 					
 					<li><%= link_to "Sign In", sign_in_path %></li>
 
 			        <!--NOT SIGNED IN-->
 			        
+			        <% end %>
 			        <% end %>
 			        
 			        <% if user_signed_in? %>

@@ -1,11 +1,16 @@
+
 <% if admin_signed_in? %>
     <div class='main-box center'>
        <h1> <%= @current.name %></h1>
+       <h2>Welcome, <%= @current_admin.name %><small><%= @current_admin.role %></small></h2>
+       
         <%= render 'admin/infoboxes/infoboxes' %>
-        <% if @current_admin.account_manager? %>
-        <h2><%= @current_admin.role %></h2>
+        
+        <% if @current_admin.owner? %>
+       <%= render 'admin/infoboxes/owner_charts' %>
+        <% elsif @current_admin.account_manager? %>
         <% elsif @current_admin.payroll? %>
-        <h2><%= @current_admin.role %></h2>
+       
         <%= render 'admin/infoboxes/payroll_boxes' %>
         <% elsif @current_admin.recruiter? %>
         <h2><%= @current_admin.role %></h2>

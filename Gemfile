@@ -122,7 +122,8 @@ group :development, :test do
   gem 'annotate', '~> 2.6.6'
   # FOR TESTING
   gem "factory_girl_rails", "~> 4.0"
-
+  gem 'better_errors'
+  gem 'binding_of_caller'
   gem 'rspec-rails', '~> 3.0'
   gem 'database_cleaner', '~> 1.4.1'
   gem 'capybara'

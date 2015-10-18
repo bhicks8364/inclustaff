@@ -12,23 +12,20 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   
   before_action :set_current, unless: :devise_controller?
-  
+  # before_action :get_subdomain
   
   def set_current
-    if admin_signed_in? && current_admin.agency?
-      @current_agency = Agency.find(current_admin.agency_id)
-      @agency_jobs = @current_agency.jobs if @current_agency.present?
-    elsif admin_signed_in? && current_admin.company?
-      @current_company = Company.find(current_admin.company_id)
-      @company_agency = @current_company.agency if @current_company.present?
-      @company_jobs = @current_company.jobs if @current_company.present?
-    else
-      
-    end
-    @current_admin = current_admin
-    @current = @current_company || @current_agency
+    subdomains = request.subdomains
+    @current_agency = Agency.where(subdomain: subdomains).first
+    
+    @current_admin = current_admin if admin_signed_in?
+    # @current = @current_company || @current_agency
     @newly_added = Employee.newly_added.order(created_at: :desc) if @current_agency.present?
-    @at_work = @current.jobs.at_work if @current.present?
+    @current = @current_agency if @current_agency.present?
+    @at_work = @current.jobs.at_work if @current_admin.present?
+    @timesheets = @current.timesheets if @current_admin.present?
+
+    
     
     
     
@@ -47,8 +44,12 @@ class ApplicationController < ActionController::Base
   # end
   
   private
-  
-  
+  def not_found
+    # redirect_to(request.referrer || root_path)
+    # flash[:alert] = "Register your agency now!"
+    # render root_path
+    raise ActionController::RoutingError.new("Subdomain Not Found. >>  Hey now! You shouldn't be here... You must register if you want to be here :) ")
+  end
   
   def update_permitted_parameters
     devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:id, :first_name, :last_name, :email, :role, :can_edit, :company_id, :password, :password_confirmation, :current_password, :address, :city, :state, :zipcode) }
