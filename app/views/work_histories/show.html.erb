@@ -10,9 +10,7 @@
         <% end %>
             
             
-      <% @work_history.listed_skills.each do |skill| %>
-        <%= skill.name %><br>
-        <% end %>
+     
             
 
             <strong> Employed for <%= distance_of_time_in_words(@work_history.start_date, @work_history.end_date) %>. </strong><br>
@@ -36,8 +34,14 @@
             
 <br>
             <strong>Supervisor:</strong>
-            <%= @work_history.supervisor %><br>
-         
+            <%= @work_history.supervisor %>
+            <hr>
+         <div class='well'>
+           <h3>Skills matching Open Job Orders</h3>
+            <% @work_history.listed_skills.each do |skill| %>
+              <%= skill.name %> - <small><%= skill.skillable.title_company %></small>
+            <% end %>
+         </div>
 
         
 

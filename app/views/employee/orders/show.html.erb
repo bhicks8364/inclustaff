@@ -19,10 +19,10 @@
 <h3> <%= @order.title %></h3>
 
   <h5><strong>Information about this position:</strong></h5>
-    <div id= "order-notes" class="" >
+    <div id= "order-notes" class="notes" >
       <p><%= @order.notes %></p>
     </div>
-
+<%= @listed_skills %>
 <p>
 
   <%= @order.pay_range %> - BOE
@@ -53,14 +53,25 @@
     </div>
     <div role="tabpanel" class="tab-pane fade well" id="apply">
       <div class='center'>
-        <% if @current_user.applied_to(@order.id) %>
-        <h2>Thanks for applying! We will be contacting you shortly.</h2>
-        <% else %>
-        <h2 id='interested'>Interested in the position? </h2>
-        <div id='thanks' class='hide-this'><h2>Thanks for applying! We will be contacting you shortly.</h2></div>
+      <% if user_signed_in? %>
+            <% if @current_user.applied_to(@order.id) %>
+            <h2>Thanks for applying! We will be contacting you shortly.</h2>
+            <% else %>
+            <h2 id='interested'>Interested in the position? </h2>
+            <div id='thanks' class='hide-this'><h2>Thanks for applying! We will be contacting you shortly.</h2></div>
+            
+          <%= link_to "Apply Now!", apply_employee_order_path(@order), id: 'apply-btn', method: :patch, remote: true, class: 'btn btn-success' %>
+            <% end %>
+      <% else %>
+        <h2>Please sign in to apply to this position.</h2>
+        <div class='text-center'>
+          	<%= link_to "<i class='fa fa-users fa-2x fa-fw pull-left'></i> Employee Sign In".html_safe, new_user_session_path, class: 'btn btn-primary btn-lg' %>
+<p>Don't have an account? </p>
+<%= link_to "<i class='fa fa-user-plus fa-2x fa-fw pull-left'></i> Sign Up Now!".html_safe, new_user_registration_path, class: 'btn btn-primary btn-lg' %>
         
-      <%= link_to "Apply Now!", apply_employee_order_path(@order), id: 'apply-btn', method: :patch, remote: true, class: 'btn btn-success' %>
-        <% end %>
+        </div>
+        
+      <% end %>
       </div>
     </div>
   </div>

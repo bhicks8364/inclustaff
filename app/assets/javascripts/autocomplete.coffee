@@ -1,5 +1,5 @@
 jQuery ->
-    $('#q').autocomplete(
+    $('#autocomplete').autocomplete(
         source: '/skills/autocomplete'
         
         )

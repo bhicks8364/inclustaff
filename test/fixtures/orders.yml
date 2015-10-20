@@ -25,6 +25,7 @@
 #  stwb               :boolean
 #  est_duration       :string
 #  shift              :string
+#  bwc_code           :string
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

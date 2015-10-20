@@ -1,42 +1,19 @@
 
 
-<div class="nested-fields">
+<div class="col-md-12 well form-group nested-fields">
+<div class='col-md-12'>
 
 
-    
-    <%= f.input :state, disabled: true, label: false %>
-  
+    <%= f.input :state, disabled: true, label: false, wrapper_html: {class: 'col-md-10'} %>
+        <%= link_to_remove_association '<i class="fa fa-trash red fa-1x"></i>'.html_safe, f, class: 'btn btn-tiny'%>
+</div>
+    <div class='center'>
+  Time In:
+        <%= f.input :time_in, as: :datetime, label: false, ampm: true, order: [:month, :day, :hour, :minute], wrapper_html: {class: 'form-inline center'}, input_html: {class: 'form-control'} %>
 
-
-    <div class='col-md-6'>
-        <%= f.datetime_select :time_in, ampm: true, order: [:month, :day, :hour, :minute], default: Time.current %>
-    </div>
-    <div class='col-md-6'>
-       <%= f.datetime_select :time_out, ampm: true, order: [:month, :day, :hour, :minute], default: Time.current %>
-    </div>
-
-
-    <div class='col-md-6'>
-        <h5 class='text-center'><strong>Lunch Break</strong></h5>
-        <div class="col-md-6">
-           Start:<br>
-            <%= f.time_select :break_out, ampm: true, order: [:hour, :minute], default: Time.current %>
+   Time Out:
+       <%= f.input :time_out, as: :datetime, label: false, ampm: true, order: [:month, :day, :hour, :minute], wrapper_html: {class: 'form-inline center'}, input_html: {class: 'form-control '} %>
         </div>
-        <div class="col-md-6">
-            End:<br>
-            <%= f.time_select :break_in, ampm: true, ampm: true, order: [:hour, :minute], default: Time.current, class: "half" %>
-        </div>
-    </div>
 
-
-
-
-    <div class="form-group">
-        <%= f.text_area :note, label: false, placeholder: "Add a note...", rows: 3  %>
-    </div>
-    
-    <div class="form-actions">
-    <%= link_to_remove_association '<i class="fa fa-minus-circle red pull-right"></i>'.html_safe, f, class: ''%>
-    </div>
 
 </div>

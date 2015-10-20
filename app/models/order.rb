@@ -25,6 +25,7 @@
 #  stwb               :boolean
 #  est_duration       :string
 #  shift              :string
+#  bwc_code           :string
 #
 
 class Order < ActiveRecord::Base
@@ -192,8 +193,16 @@ class Order < ActiveRecord::Base
       @listed_skills ||= Skill.where(name: words)
   end
   
-  def matching_orders
-      listed_skills.job_order
+  # def matching_orders
+  #     listed_skills.job_order
+  # end
+  def requested_employees
+      @requested_employees ||= User.where(last_name: mentions)
+  end
+  def matching_employees
+     @matching_employees ||= Employee.unassigned.joins(:skills).where(name: words)
+      
+      
   end
   
   def set_employee_skills

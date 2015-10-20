@@ -16,7 +16,7 @@ class EmployeePolicy < ApplicationPolicy
     end
     
     def create?
-       return true if user.owner? || user.payroll? || user.recruiter?
+       return true if user.owner? || user.payroll? || user.recruiter? || user.account_manager?
         # user.not_an_employee?
     end
     

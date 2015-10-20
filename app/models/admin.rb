@@ -44,7 +44,7 @@ class Admin < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
          
-  # before_save :set_username
+  before_save :set_username
   
   # validates :agency_id, presence: true, unless: ->(admin){admin.company_id.present?}
   # validates :company_id, presence: true, unless: ->(admin){admin.agency_id.present?}

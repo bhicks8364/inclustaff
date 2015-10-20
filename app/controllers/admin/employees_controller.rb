@@ -8,7 +8,7 @@ class Admin::EmployeesController < ApplicationController
 
   def index
     @admin = @current_admin
-    @employees = @current.employees
+    @employees = Employee.includes(:user).all
     gon.employees = @employees
     skip_authorization
     # WAS TRYING TO USE ELASTICSEARCH (SERCHKICK GEM) ###############
@@ -53,7 +53,7 @@ class Admin::EmployeesController < ApplicationController
 
   def create
     @employee = Employee.new(employee_params)
-    @employee.build_user(employee_params)
+    @employee.build_user
     authorize @employee
 
     respond_to do |format|

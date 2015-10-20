@@ -1,0 +1,26 @@
+
+        
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+  Request more information
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content dark">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title white" id="myModalLabel">We are launching soon!</h2>
+      </div>
+      <div class="modal-body">
+        <div class='well'>
+            
+                <h3> Enter your email & you'll be the first to know! </h3>
+                <%= render 'inquiries/form' %>
+        </div>
+          
+      </div>
+    
+    </div>
+  </div>
+</div>

@@ -1,0 +1,80 @@
+
+
+   
+     
+<div class="btn-group btn-group-justified" role="group" aria-label="...">
+  <div class="btn-group" role="group">
+  <%= link_to(new_user_registration_path, class: "btn btn-success") do %>
+							<i class='fa fa-user-plus'></i>
+
+								<span>Employee Sign Up</span>
+							<% end %>
+
+  </div>
+  
+  <!--<div class="btn-group" role="group">-->
+  <!--<%= link_to(admin_timesheets_path, class: "btn btn-default") do %>-->
+		<!--					<i class='fa fa-clock-o'></i>-->
+
+		<!--						<span>Timesheets</span>-->
+		<!--					<% end %>-->
+
+  <!--</div>-->
+  
+</div>
+        <h1 class="page-header"><%= @current.name %></h1>
+      
+      
+
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs nav-justified" role="tablist">
+    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Contact Information</a></li>
+    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Current Orders</a></li>
+    <li role="presentation"><a href="#employees" aria-controls="employees" role="tab" data-toggle="tab">Active Employees</a></li>
+    <li role="presentation"><a href="#current-contacts" aria-controls="current-contacts" role="tab" data-toggle="tab">Company Admins</a></li>
+    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Timeclock</a></li>
+  </ul>
+  <div class='main-box'>
+  <div class="tab-content">
+      <div role="tabpanel" class="tab-pane fade in active" id="home">
+     
+          <%= @current.try(:address) %> <%= @current.try(:city) %> <%= @current.try(:state) %> <%= @current.try(:zipcode) %><br>
+          <%= @current.try(:phone_number) %> 
+        
+          <strong><%= @current.owners.first.try(:name) %></strong><br>
+         <%= @current.owners.first.try(:email) %>
+       
+    
+      
+    
+    
+         </div>
+    
+          <div role="tabpanel" class="tab-pane fade " id="current-contacts">
+        
+              <h3>Company Contacts</h3>
+             
+        
+        
+            
+          </div>
+          <div role="tabpanel" class="tab-pane fade" id="profile">
+            <h3>Timesheets by Dept.</h3>
+            <%= render 'employee/orders/open_orders' %>
+            
+          </div>
+          
+          <div role="tabpanel" class="tab-pane fade" id="employees">
+           <h3>Current Employees</h3>
+           
+          </div>
+          
+          
+          
+          <div role="tabpanel" class="tab-pane fade" id="settings">
+             <h3>Settings</h3>
+        
+          </div>
+    </div>
+</div>

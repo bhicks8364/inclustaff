@@ -1,5 +1,5 @@
 <div class=" well col-md-12">
-	<h4 class='text-center'>Assigned Employees</h4>
+	<h4 class='text-center'>All Employees</h4>
 		<div class="table-responsive">
 			<table id='employees-datatable' class="table table-bordered ">
 				<thead>
@@ -13,7 +13,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<%  @employees.assigned.each do |employee| %>
+					<%  @employees.each do |employee| %>
 					<% if employee.on_shift? %>
 						    <tr class="bg-success">
 						 	<% else %>
@@ -35,6 +35,7 @@
 				</tbody>
 			</table>
 		</div>
+	<%= link_to "<i class='fa fa-user-plus fa-2x fa-fw pull-left'></i> Employee Registration".html_safe, new_user_registration_path, class: 'btn btn-primary btn-lg' %>
 </div>
 
 

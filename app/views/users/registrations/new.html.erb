@@ -1,5 +1,5 @@
 <div class='col-md-12 main-box'>
-  <div class='center' id="sign_up_page">
+  <div class='col-md-6 dark' id="sign_up_page">
   <h3>New Employee</h3>
 
 <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
@@ -24,7 +24,7 @@
 
 </div>
 <% if admin_signed_in? %>
-  <div class='col-md-6 well pull-right'>
+  <div class='col-md-6'>
   	<%= form_for @import, url: import_users_path, multipart: true do |f| %>
 									
 									<% if @import.errors.full_messages.each do |msg| %>

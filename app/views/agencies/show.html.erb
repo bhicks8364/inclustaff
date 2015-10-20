@@ -38,7 +38,7 @@
     <h3>Open Orders</h3>
     <%= render @agency.orders.needs_attention %>
 </div>
-<div class='col-md-6'>
+<div class='col-md-6 text-center'>
      <h3>Filled Orders</h3>
     <%= render @agency.orders.ed %>
 </div>
@@ -50,20 +50,24 @@
 
 <% end %>
 <% if @current.nil? && @agency.present? %>
-
+<div class='col-md-3 text-center'></div>
+<div class='col-md-6 dark text-center'>
 <h1 class='text-center'>
-    Welcome to IncluStaff, <%= @agency.name %>!
+    Welcome <%= @agency.name %>'s 
     
 </h1>
 <h2 class='text-center'>Please start by signing in to your account.</h2>
-<h3 class='text-center'>
-Access your agency portal at www.<%=@agency.subdomain %>.inclustaff.com
+<h5 class='text-center'>Access your agency portal at www.<u><%= @agency.subdomain%></u>.inclustaff.com</h5>
+   <a class='btn btn-success btn-lg' href="http://www.<%=@agency.subdomain%>.inclustaff.com">
+        Go there now
+    </a>
+    
 
-</h3>
+</div>
+<div class='col-md-3 text-center'></div>
 
-<% end %>
 
-
+<%end%>
 
 
 

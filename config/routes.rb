@@ -1,47 +1,26 @@
+class SubdomainConstraint
+  def self.matches?(request)
+    subdomains = %w{ www admin public }
+    request.subdomain.present? && !subdomains.include?(request.subdomain)
+  end
+end
 Rails.application.routes.draw do
   root 'dashboard#home'
-  
-  
+  resources :agencies
   resources :inquiries
+  
   resources :work_histories
   
-  get  'sign_in' => 'dashboard#sign_in_page'
-  resources :agencies do
-    resources :admins
-  end
-  devise_for :admins, controllers: {
-        
-        registrations: 'admins/registrations'
-      }
   
-  
-  
-  
-  
-  
-  resources :skills do
-    collection do
-      get 'autocomplete'
-    end
-  end
-  
-  
-  resources :events
-  
-  get  'dashboard' => 'admin/dashboard#company_view'
-  
-  
-  get  'agency_access' => 'admin/dashboard#agency_view'
-  
-  devise_for :users, controllers: {
-        
-        registrations: 'users/registrations'
-      }
-
-  
-  
-
-  namespace :admin do
+  constraints SubdomainConstraint do
+    get  'sign_in' => 'dashboard#sign_in_page'  
+    devise_for :admins, controllers: {
+      registrations: 'admins/registrations'
+    }
+    resources :events
+    get  'dashboard' => 'admin/dashboard#home'
+    get  'company_dashboard' => 'admin/dashboard#company_view'
+      namespace :admin do
     resources :invoices do
       member do
         patch 'mark_as_paid'
@@ -105,6 +84,38 @@ Rails.application.routes.draw do
       end
     end
   end
+  end
+ 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  resources :skills do
+    collection do
+      get 'autocomplete'
+    end
+  end
+  
+  
+  
+  
+  
+  get  'agency_access' => 'admin/dashboard#agency_view'
+  
+  devise_for :users, controllers: {
+        
+        registrations: 'users/registrations'
+      }
+
+  
+  
+
+
 
   get 'orders' => 'orders#all'
   get 'archived_jobs' => 'jobs#archived'

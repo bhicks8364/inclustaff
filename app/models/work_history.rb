@@ -39,8 +39,13 @@ class WorkHistory < ActiveRecord::Base
         
     end
     
+    def employee_skills
+
+        @employee_skills ||= self.employee.skills.where(name: words)
+    end
     def listed_skills
-        @listed_skills ||= Skill.where(name: words)
+
+        @listed_skills ||= Skill.job_order.where(name: words)
     end
     
     def matching_orders

@@ -70,7 +70,8 @@ class UsersController < ApplicationController
         @user = User.includes(:employee, :shifts).find(params[:id])
         @job = @user.current_job
         @employee = @user.employee
-        @company = @employee.company
+        @skills = @employee.skills
+        # @company = @employee.company
         @applications = @user.events.applications
         @events = Event.employee_events(@user.id)
         @orders = Order.active if @employee.unassigned?

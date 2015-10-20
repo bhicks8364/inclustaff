@@ -5,7 +5,7 @@
            <% if job.on_shift? %>
            <br>
            <span data-behavior='shift-state'>
-    <strong> <%= link_to job.employee.first_name, admin_employee_path(job.employee), class: 'table-link' %> is currently clocked in.</strong><br>
+    <strong> <%= link_to job.employee.first_name, admin_job_path(job), class: 'table-link' %> is currently clocked in.</strong><br>
              
            
            </span>

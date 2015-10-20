@@ -80,13 +80,13 @@ class Timesheet < ActiveRecord::Base
     scope :pending, -> { where(state: "pending")}
 
     scope :last_week, ->{
-        where(week: Date.today.cweek - 1)
+        where(week: Date.today.beginning_of_week.cweek - 1)
     }
     scope :approaching_overtime, -> { where('reg_hours > 36') }
     scope :current_week, ->{
         where(week: Date.today.cweek)
     }
-    scope :past, -> { where("week < ?", Date.today.cweek) }
+    scope :past, -> { where("week < ?", Date.today.beginning_of_week.cweek) }
     
     scope :overtime_errors, -> { where('reg_hours > 40') }
     scope :needing_approval, -> { last_week.pending }

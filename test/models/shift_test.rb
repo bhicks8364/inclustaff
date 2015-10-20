@@ -17,12 +17,12 @@
 #  in_ip          :string
 #  out_ip         :string
 #  week           :integer
-#  break_in       :datetime
-#  break_out      :datetime
 #  note           :text
 #  needs_adj      :boolean
 #  break_duration :decimal(, )
 #  breaks         :text             is an Array
+#  break_in       :datetime         is an Array
+#  break_out      :datetime         is an Array
 #
 
 require 'test_helper'

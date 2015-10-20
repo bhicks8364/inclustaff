@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151014150726) do
+ActiveRecord::Schema.define(version: 20151019133343) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,13 +50,23 @@ ActiveRecord::Schema.define(version: 20151014150726) do
 
   create_table "agencies", force: :cascade do |t|
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
     t.integer  "admin_id"
     t.string   "subdomain"
+    t.string   "address"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zipcode"
+    t.string   "phone_number"
+    t.boolean  "free_trial"
+    t.string   "contact_name"
+    t.string   "contact_email"
+    t.integer  "contact_id"
   end
 
   add_index "agencies", ["admin_id"], name: "index_agencies_on_admin_id", using: :btree
+  add_index "agencies", ["contact_id"], name: "index_agencies_on_contact_id", using: :btree
   add_index "agencies", ["subdomain"], name: "index_agencies_on_subdomain", using: :btree
 
   create_table "companies", force: :cascade do |t|
@@ -83,8 +93,8 @@ ActiveRecord::Schema.define(version: 20151014150726) do
   create_table "employees", force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.string   "email"
     t.string   "ssn"
     t.string   "phone_number"
@@ -92,6 +102,8 @@ ActiveRecord::Schema.define(version: 20151014150726) do
     t.datetime "deleted_at"
     t.boolean  "assigned"
     t.string   "resume_id"
+    t.string   "desired_job_type"
+    t.string   "desired_shift"
   end
 
   add_index "employees", ["deleted_at"], name: "index_employees_on_deleted_at", using: :btree
@@ -182,6 +194,7 @@ ActiveRecord::Schema.define(version: 20151014150726) do
     t.boolean  "stwb"
     t.string   "est_duration"
     t.string   "shift"
+    t.string   "bwc_code"
   end
 
   add_index "orders", ["account_manager_id"], name: "index_orders_on_account_manager_id", using: :btree

@@ -6,8 +6,12 @@ before_filter :configure_sign_up_params, only: [:create]
   layout 'new_employee'
   def new
     if admin_signed_in?
+      # subdomains = request.subdomains
+      # @current_agency = Agency.where(subdomain: subdomains).first
+      # @newly_added = Employee.newly_added.order(created_at: :desc) if @current_agency.present?
+      # @at_work = @current.jobs.at_work if @current_admin.present?
       @import = User::Import.new
-      @current_agency = current_admin.agency if current_admin.agency?
+      # @current_agency = current_admin.agency if current_admin.agency?
       @agency_jobs = @current_agency.jobs if @current_agency.present?
       super
     else
@@ -15,12 +19,13 @@ before_filter :configure_sign_up_params, only: [:create]
     end
   end
   def create
-    
+    @import = User::Import.new
    build_resource(sign_up_params)
-  # SETS DEFAULT PASSWORD FOR USERS
-   resource.password = "password"
-   resource.password_confirmation = "password"
-
+  # SETS DEFAULT PASSWORD FOR USERS if left blank (for csv importing)
+    if params[:password].nil?
+      resource.password = "password"
+      resource.password_confirmation = "password"
+    end
     resource.save
     yield resource if block_given?
     if resource.persisted?
@@ -54,9 +59,13 @@ before_filter :configure_sign_up_params, only: [:create]
     resume_attributes: [:id, :name, :employee_id, :body]) }
   end
   
-  # def after_sign_up_path_for(resource)
-  #   redirect_to admin_employee_path(resource.employee)
-  # end
+  def after_sign_up_path_for(resource)
+    if admin_signed_in?
+     admin_employee_path(resource.employee)
+    elsif signed_in == false
+    
+    end
+  end
     
   # end
   # GET /resource/sign_up

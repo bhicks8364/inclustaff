@@ -4,6 +4,9 @@ class AgenciesController < ApplicationController
   layout 'admin_layout'
   # GET /agencies
   # GET /agencies.json
+  def new
+    @agency = Agecny.new
+  end
   def index
     
     @agencies = Agency.all

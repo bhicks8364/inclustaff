@@ -4,49 +4,61 @@ class DashboardController < ApplicationController
 
 
     def home
-        
-            @agency = @current if @current.present?
-        if @current.present? && signed_in? == false
-            render 'agencies/show'
-            @inquiry = Inquiry.new
-        end
-        if @current_agency.nil?
+         # ROOT LANDING PAGE - NO SUBDOMAIN && NO ONE IS SIGNED IN
+        if @current_agency.nil? && signed_in? == false
           render 'mainpage'
+          @inquiry = Inquiry.new
+        end
+        
+        # ROOT FOR WHEN A SUBDOMAIN IS PRESENT && NO ONE IS SIGNED IN
+        if @current_agency.present? && signed_in? == false
+            @orders = @current_agency.orders.active if @current_agency.present?
+
           
         end
-        # authenticate_admin!
-        if admin_signed_in? 
+       
+        if admin_signed_in? && @current_agency.present?
              render 'admin/dashboard/home'
-           @admin = current_admin
-        #   @agency = @admin.agency if @admin.agency?
-           @company = @admin.company if @admin.company?
-           
-           @orders = @agency.orders if @agency.present?
-           @orders = @company.orders if @company.present?
-            @applications = @agency.events.applications
-           @shifts = @agency.shifts if @agency.present?
-           @jobs = @agency.jobs.includes(:employee).order("employee.last_name DESC") if @agency.present?
-           @jobs = @company.jobs.active if @company.present?
-           @timesheets = @agency.timesheets if @agency.present?
-           @timesheets = @company.timesheets if @company.present?
-        elsif user_signed_in? && current_user.employee?
-            render 'employee_view'
-            @current_user = current_user
-            @employee = @current_user.employee 
+          @current_admin = current_admin
+        elsif user_signed_in? && @current_agency.present?
+            @user = current_user
+            @employee = @user.employee
+            @events = @user.events.applications
+            @applications = @events.applications
+            render "users/show"
             
-            @work_histories = @employee.work_histories
-            @current_shift = @employee.current_shift if @employee.current_shift.present?
-            @company = @employee.company if @employee.company.present?
-            @timesheets = @employee.timesheets.order(updated_at: :desc)
-            @shifts = @employee.shifts
-            @job = @employee.current_job 
-            @current_timesheet = @employee.timesheets.last
-            @shifts = @current_timesheet.shifts if @current_timesheet.present?
+            
+        end
+            
+        # #   @agency = @admin.agency if @admin.agency?
+        #   @company = @admin.company if @admin.company?
+           
+        #   @orders = @current_agency.orders if @current_agency.present?
+        #   @orders = @company.orders if @company.present?
+        #     @applications = @agency.events.applications
+        #   @shifts = @agency.shifts if @agency.present?
+        #   @jobs = @agency.jobs.includes(:employee).order("employee.last_name DESC") if @agency.present?
+        #   @jobs = @company.jobs.active if @company.present?
+        #   @timesheets = @agency.timesheets if @agency.present?
+        #   @timesheets = @company.timesheets if @company.present?
+        # elsif user_signed_in? && current_user.employee?
+        #     render 'employee_view'
+        #     @current_user = current_user
+        #     @employee = @current_user.employee 
+            
+        #     @work_histories = @employee.work_histories
+        #     @current_shift = @employee.current_shift if @employee.current_shift.present?
+        #     @company = @employee.company if @employee.company.present?
+        #     @timesheets = @employee.timesheets.order(updated_at: :desc)
+        #     @shifts = @employee.shifts
+        #     @job = @employee.current_job 
+        #     @current_timesheet = @employee.timesheets.last
+        #     @shifts = @current_timesheet.shifts if @current_timesheet.present?
        
         
              
-        end
-        @inquiry = Inquiry.new
+        
+        # @inquiry = Inquiry.new
         # @current_user = current_user if current_user.present?
         # @employee = current_user.employee if current_user.employee?
         # @shifts = @employee.shifts

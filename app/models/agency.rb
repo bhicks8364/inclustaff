@@ -1,13 +1,22 @@
 # == Schema Information
 #
-# Table name: agencies
+# Table name: public.agencies
 #
-#  id         :integer          not null, primary key
-#  name       :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  admin_id   :integer
-#  subdomain  :string
+#  id            :integer          not null, primary key
+#  name          :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  admin_id      :integer
+#  subdomain     :string
+#  address       :string
+#  city          :string
+#  state         :string
+#  zipcode       :string
+#  phone_number  :string
+#  free_trial    :boolean
+#  contact_name  :string
+#  contact_email :string
+#  contact_id    :integer
 #
 
 class Agency < ActiveRecord::Base
@@ -33,14 +42,17 @@ class Agency < ActiveRecord::Base
     has_many :account_managers,  -> { where(role: "Account Manager", company_id: nil) }, class_name: "Admin"
     
     after_create :create_tenant
-    
-    
+   
     
     # def agency_events
     #     Event.admin_events(self.id)
     # end
-    validates :subdomain, exclusion: { in: %w(www us ca jp),
+    validates :subdomain, :format => { :with => /\A[a-zA-Z]+\z/,
+    :message => "Only letters allowed" }
+
+    validates :subdomain, exclusion: { in: %w(www us ca jp public admin inclustaff),
                         message: "%{value} is reserved." }
+                        
     
     accepts_nested_attributes_for :admins
     validates :name,  presence: true, length: { maximum: 50 }

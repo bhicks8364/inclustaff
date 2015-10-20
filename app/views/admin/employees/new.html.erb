@@ -6,7 +6,7 @@
 		<div class="col-lg-6">
 			<div class="main-box" style="min-height: 820px;">
 			  
-				<h2><%= @company.name %></h2>
+				<h2><%= @current_agency.name %></h2>
 				
 				<%= simple_form_for [:admin, @employee] do |f| %>
             <% if @employee.errors.any? %>
@@ -35,7 +35,7 @@
                   <%= user.input :password, required: true, placeholder: "Choose a password.", label: false, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length) %>
                   <%= user.input :password_confirmation, required: true, placeholder: "Please confirm your password.", label: false  %>
                   
-                  <%= f.attachment_field :resume %>
+                 
 
             <% end %>
             <%= f.button :submit, "Create Employee", class: "btn btn-primary" %>

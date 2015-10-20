@@ -1,6 +1,6 @@
 class Employee::OrdersController < ApplicationController
   before_action :set_order, only: [:show, :edit, :update, :destroy, :apply]
-  before_action :authenticate_user!
+  # before_action :authenticate_user!
   layout 'application'
 
   # GET /orders
@@ -92,7 +92,7 @@ class Employee::OrdersController < ApplicationController
       @company = @order.company
       @agency = @order.agency
       @current_user = current_user if current_user.present?
-      @employee = @current_user.employee
+      @employee = @current_user.employee if user_signed_in?
       skip_authorization
           # authorize @order
     end

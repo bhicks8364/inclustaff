@@ -1,143 +1,54 @@
-<% if admin_signed_in? %>
-    <div class='center'>
-        <%= render 'admin/dashboard/admin' %>
-        
+<div class="main-box">
+ 
+	  <div class="btn-group btn-group-justified" role="group" aria-label="...">
+    <div class="btn-group" role="group">
+    <%= link_to(@current_agency, class: "btn btn-default") do %>
+  							<i class='fa fa-home'></i>
+  
+  								<span>Agency Home</span>
+  							<% end %>
+  
     </div>
-    <% end %>
+    <div class="btn-group" role="group">
+    <%= link_to(@current_admin, class: "btn btn-default") do %>
+  							<i class='fa fa-user'></i>
+  
+  								<span>Admin Home</span>
+  							<% end %>
+  
+    </div>
+    <div class="btn-group" role="group">
+    <%= link_to(admin_orders_path, class: "btn btn-default") do %>
+  							<i class='fa fa-briefcase'></i>
+  
+  								<span>Active Orders</span>
+  							<% end %>
+  
+    </div>
+    <div class="btn-group" role="group">
+    <%= link_to(admin_timesheets_path, class: "btn btn-default") do %>
+  							<i class='fa fa-clock-o'></i>
+  
+  								<span>Timesheets</span>
+  							<% end %>
+  
+    </div>
     
-    
-    
-    
-
-    
-    
-    
-    <!--EMPLOYEE HOME PAGE VIEW-->
-    
-<% if @employee.present? && @employee.assigned? %>
-<%= render 'dashboard/employee' %>
-
-
+  </div>
+	<% if @current_admin.recruiter? %>
+<%= link_to "Recruiter Dashboard", admin_recruiter_path, class: 'btn btn-primary' %>
 <% end %>
+<h1><%= @viewing.try(:name) %>'s Dashboard</h1>
+<%= render 'admin/infoboxes/infoboxes' %>
+           
 
 
+	
+	
+	
+		
+	
 
-
-
-
-
-
-
-
-
-<% if current_user.nil? && current_admin.nil? %>
-<div class="col-md-12 main-box">
-    <div class="welcome-screen">
-        <h1>Welcome to IncluStaff</h1>
-        <h2>Simplify the process, optimize your workforce and maximize your profits.</h2>
-<!--<h3>From the first punch to the final invoice, IncluStaff does it all.</h3>-->
-        
 
 </div>
-<div class="col-md-12 ">
-
-                
-        
-        
-        <div class="col-md-3">
-            <div class="welcome-screen text-center">
-
-
-                <strong><h3>Real Time from Any Location</h3></strong>
-                <h5>Allows employees clock in or out from any computer or mobile device. </h5>
-                
-                
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="welcome-screen text-center">
-
-
-                <strong><h3>Real Time from Any Location</h3></strong>
-                <h5>Allows employees clock in or out from any computer or mobile device. </h5>
-                
-                
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="welcome-screen text-center">
-
-
-                <strong><h3>Real Time from Any Location</h3></strong>
-                <h5>Allows employees clock in or out from any computer or mobile device. </h5>
-                
-                
-            </div>
-        </div>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
-        <div class="col-md-6">
-            <div class="welcome-screen">
-                <h3>MINIMAL DATA ENTRY</h1>
-                <h3>Optimize your workforce by simplifying your workflow. </h3>
-                <h4 class="pull-center">  Easily connect to your existing payroll systems or simply export to Excel.</h4>
-
-                
-            </div>
-
-            
-            
-        </div>
-        <div class="col-md-6">
-            <div class="welcome-screen">
-                <h3>MINIMAL DATA ENTRY</h1>
-                <h3>Optimize your workforce by simplifying your workflow. </h3>
-                <h4 class="pull-center">  Easily connect to your existing payroll systems or simply export to Excel.</h4>
-
-                
-            </div>
-            <div class="btn-group" role="group" aria-label="...">
-                <%= link_to "Employee Sign Up", new_user_registration_path, class: "btn btn-default" %>
-                <%= link_to "Employee Sign In", new_user_session_path, class: "btn btn-default" %>
-              
-            </div>
-            <div class="btn-group" role="group" aria-label="...">
-        <%= link_to "Admin Sign Up", new_admin_registration_path, class: "btn btn-default" %>
-        <%= link_to "Admin Sign In", new_admin_session_path, class: "btn btn-default" %>
-        </div>
-            
-        </div>
-
-            
-    </div>
-</div>            
-
-
-<% end %>
-
-    
-
-
-    
-    
-
-
-
-
 

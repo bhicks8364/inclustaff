@@ -1,0 +1,19 @@
+<%= div_for(@orders, class: 'list-group')  do |order| %>
+    <%= link_to employee_order_path(order), class: 'list-group-item list-group-item-info border' do %>
+    <p class="list-group-item-heading"><%=  order.title %> <%= order.pay_range %>
+                    <span class='badge badge-danger pull-right'><%= order.needed_by.stamp('11/13') %></span>
+        <span class='badge badge-default pull-left'><%= order.open_jobs %> </span>
+    </p>
+    <p class="list-group-item-text">
+    		
+    			<% order.skills.each do |skill| %>
+    			<%= render skill %>
+    		<% end %>
+    	
+    
+    </p>
+	
+    <% end %>
+ 
+<% end %>
+    

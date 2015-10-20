@@ -5,6 +5,7 @@
         <div class="panel-heading">
             <h3 class="panel-title"> Your Departments</h3>
         </div>
+        <% if @orders.any? %>
         <div class="panel-body">
             <% @orders.each do |order| %>
             <div class="btn-group" role="group" aria-label="Departments">
@@ -22,6 +23,7 @@
             
             </div>
             <% end %>
+        <% end %>
         </div>
     </div>
 

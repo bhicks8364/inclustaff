@@ -1,15 +1,27 @@
 <div class='center main-box'>
 <div class='dark middle'>
-    <%= simple_form_for(Agency.new) do |f| %>
-
-    <h3 class='text-center white'>Register your agency below.</h3>
-    <div class='well'>
-         <%= f.input :name, label: false, placeholder: "Agency Name" %>
+    <%= simple_form_for(@agency) do |f| %>
+        
+ 
+    <div class='col-md-12 well'>
+           <h3 class='text-center white'>Register your agency below.</h3>
+        <% if @agency.errors.any? %>
+  <div id="error_explanation">
+    <h3><%= pluralize(@agency.errors.count, "error") %> prohibited this agency from being saved:</h3>
+ 
+    <ul>
+    <% @agency.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+         <%= f.input :name, label: false, placeholder: "Agency Name", input_html: {class: "form-control"}  %>
     
    
-        <div class='text-center white'> Once registered, you can access your portal at www.<u>yoursubdomain</u>.inclustaff.com </div>
+       
 
-    <%= f.input :subdomain, label: false, placeholder: "Choose a subdomain", hint: 'Lowercase only. No special characters or spaces.'  %>
+<%= f.input :subdomain, placeholder: "Lowercase only. No special characters or spaces.", hint: 'Once registered, you can access your portal at www.<u>yoursubdomain</u>.inclustaff.com'.html_safe, input_html: {class: "form-control"}  %>
    
    </div>
             <div class="form-actions">

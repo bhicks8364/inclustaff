@@ -41,6 +41,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # SIMPLE FORMS
 gem 'simple_form'
 
+
 # APARTMENT GEN FOR MULTI TENANCY - (SUBDOMAINS)
 gem 'apartment'
 

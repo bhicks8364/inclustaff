@@ -15,6 +15,7 @@
     <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
     <li role="presentation"><a href="#payroll" aria-controls="payroll" role="tab" data-toggle="tab">Payroll Information</a></li>
     <li role="presentation"><a href="#work_history" aria-controls="work_history" role="tab" data-toggle="tab">Work History</a></li>
+    <li role="presentation"><a href="#skills" aria-controls="skills" role="tab" data-toggle="tab">Skills</a></li>
     <% if @employee.assigned? %>
     <li role="presentation"><a href="#current-job" aria-controls="current-job" role="tab" data-toggle="tab">Current Job</a></li>
     <li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li>
@@ -36,7 +37,7 @@
      <%= pie_chart @skills.group(:name).count %>
      
      </div>
-    <div class='col-md-4 main-box-short'>
+        <div class='col-md-4 main-box-short'>
            <h4 class='text-center'>Skills</h4>
           <% if @skills.count < 1 %>
            <h4 id='no-skills' class="center">This employee has no skills entered.</h4>
@@ -70,9 +71,7 @@
         
      </div>
      
-       <div class='well'>
-         <%= pie_chart @skills.group(:name).count %>
-       </div>
+       
     
   
     <% if @user.current_sign_in_at %>
@@ -107,7 +106,7 @@
   <div role="tabpanel" class="tab-pane fade" id="current-job">
     
   <% if @current_job %>
-  <h4><%= @current_job.title %><smal><%= @current_job.pay_rate %></smal></h4>
+  <h4><%= @current_job.title %><smal><%= number_to_currency(@current_job.pay_rate) %></smal></h4>
     <%= render @current_job %>
     <% else %>
     <h3><%= @employee.first_name %> is currently unassigned.</h3>
@@ -152,6 +151,21 @@
     <% end %>
      </div>
        
+  </div>
+  <div role="tabpanel" class="tab-pane fade" id="skills">
+    
+    <% if @employee.skills.any? %>
+    <div class='well'>
+         <%= pie_chart @skills.group(:name).count %>
+       </div>
+    <% if user_signed_in? %>
+     <%= link_to 'New Skill', new_skill_path %>
+     <% elsif admin_signed_in? %>
+     <%= link_to 'New Skill', new_skill_path %>
+     <% end %>
+
+      <% end %>
+
   </div>
   
   <!--SETTINGS TAD ADMIN ONLY ----> 

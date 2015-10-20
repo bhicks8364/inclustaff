@@ -25,6 +25,7 @@
 #  stwb               :boolean
 #  est_duration       :string
 #  shift              :string
+#  bwc_code           :string
 #
 
 require 'test_helper'
