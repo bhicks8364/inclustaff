@@ -20,7 +20,7 @@
 				
 					<% if @current_agency.nil? && params[:action] == 'home' %>
 					
-						<li><%= link_to "Register", new_agency_path %></li>
+					
 					<% else %>
 					
 					<% if current_user.nil? && current_admin.nil? && params[:action] == 'home'  %>
