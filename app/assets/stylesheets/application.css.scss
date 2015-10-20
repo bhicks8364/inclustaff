@@ -17,7 +17,7 @@
   *= require jquery-ui
   *= require jquery.atwho
   *= require fullcalendar
-
+  
   *= require simple_calendar
   *= require dataTables/jquery.dataTables
 
@@ -30,9 +30,8 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import "font-awesome";
-
 @import "layout";
-@import "elements";
+
 
 @import "table_styles";
 @import "forms";
@@ -44,6 +43,14 @@
 @import "main";
 
 body {
+  // padding-top: 70px;
+  background-image: url('http://www.planwallpaper.com/static/images/518079-background-hd.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+}
+#content-wrapper {
+  // padding-top: 70px;
   background-image: url('http://www.planwallpaper.com/static/images/518079-background-hd.jpg');
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -51,6 +58,13 @@ body {
   
   
 }
+// #my_navbar {
+//   background: rgba(21, 19, 19, 0.62);
+//   // background:transparent;
+//   border: none;
+//   color: white;
+//   padding: 5px;
+// }
 
 
 #logo > img {
@@ -58,21 +72,22 @@ body {
     max-width: 180px;
     margin: 0px;
     margin-top: 5px;
-    margin-right: 25px;
+    
+    margin-right: 20px;
 }
 // a#logo.navbar-brand {
 //     padding: 5px;
 // }
 
-#shift-list-nav {
-  align-content:center; 
-  width: 300px;
-  // border:3px solid #8AC007;
-  padding: 10px;
-  // margin-right: 15px;
-  // margin-bottom: 15px;
+// #shift-list-nav {
+//   align-content:center; 
+//   width: 300px;
+//   // border:3px solid #8AC007;
+//   padding: 10px;
+//   // margin-right: 15px;
+//   // margin-bottom: 15px;
   
-}
+// }
 #clock-out-nav {
   float: right;
 
@@ -431,8 +446,8 @@ div.progress-bar {
 }
 
 #content-wrapper {
-  background: transparent;
-  overflow: auto;
+  // background: transparent;
+  // overflow: auto;
   // height: 100%;
   
   // background-image: url('http://www.planwallpaper.com/static/images/518079-background-hd.jpg');
@@ -477,14 +492,14 @@ div.transbox {
   background-attachment: absolute;
   background-size: 100% 100%;
 }
-#header-navbar {
-  background-color: rgba(87, 105, 113, 0.00);
-}
-.mynavbar {
-  background-color: rgba(87, 105, 113, 0.0);
-  margin: 0px;
-  padding-bottom: 3px;
-}
+// #header-navbar {
+//   background:transparent;
+// }
+// .mynavbar {
+//   background-color: rgba(87, 105, 113, 0.9);
+//   margin: 0px;
+//   padding-bottom: 3px;
+// }
 .main-box {
   background: rgba(21, 19, 19, 0.62);
   -webkit-box-shadow: 1px 1px 2px 0 #CCCCCC;
@@ -493,7 +508,7 @@ div.transbox {
   -ms-box-shadow: 1px 1px 2px 0 #CCCCCC;
   box-shadow: 1px 1px 2px 0 #CCCCCC;
   margin-bottom: 10px;
-  padding: 20px;
+  // padding: 15px;
   color: white;
   height: 100%;
 }
@@ -505,7 +520,7 @@ div.transbox {
   -ms-box-shadow: 1px 1px 2px 0 #CCCCCC;
   box-shadow: 1px 1px 2px 0 #CCCCCC;
   margin-bottom: 10px;
-  padding: 20px;
+  // padding: 20px;
   color: white;
   height: auto;
 }
@@ -522,4 +537,7 @@ div.transbox {
   background: rgba(21, 19, 19, 0.62);
   padding: 3px;
   padding-bottom: 8px;
+}
+.maindark {
+  background: rgba(21, 19, 19, 0.62);
 }

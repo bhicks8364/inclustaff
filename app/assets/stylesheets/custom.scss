@@ -14,6 +14,25 @@
 .btn-sm { 
   padding:2px;
 }
+.btn-primary {
+  color: #fff;
+  background-color: rgba(34, 69, 63, 0.75);
+  border:none;
+  /* border-color: #357ebd; */
+}
+.btn-primary:hover {
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.87);;
+  border:none;
+  /* border-color: #357ebd; */
+}
+
+// .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .btn-primary.dropdown-toggle {
+//   color: #fff;
+//   background-color: #3071a9;
+//   border:none;
+// }
+
 
 .notes {
   height: auto;
@@ -22,4 +41,10 @@
 }
 .white {
   color: white;
+}
+.btn.fill { 
+  margin:2px;
+}
+.badge.badge-success { 
+  color:black;
 }

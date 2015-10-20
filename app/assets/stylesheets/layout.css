@@ -4,7 +4,7 @@ html, body {
 }
 body {
 	color: #344644;
-	background: #363636;
+	/*background: #363636;*/
 }
 h1, h2, h3, h4, h5, h6 {	
     font-family: 'Titillium Web', Geneva, sans-serif;
@@ -680,7 +680,7 @@ blockquote.pull-right:before {
 	height: 52px;
     line-height: 32px;
     padding-left: 30px;
-    border-bottom: 1px solid #4F4F4F;
+    /*border-bottom: 1px solid #4F4F4F;*/
     box-shadow: 0 -1px 0 #2C2C2C inset;
     -webkit-transition: border-color 0.1s ease-in-out 0s, background-color 0.1s ease-in-out 0s, box-shadow 0.1s ease-in-out 0s;
     transition: border-color 0.1s ease-in-out 0s, background-color 0.1s ease-in-out 0s, box-shadow 0.1s ease-in-out 0s;

@@ -9,161 +9,140 @@ Rails.application.routes.draw do
   resources :agencies
   resources :inquiries
   
-  resources :work_histories
-  
-  
   constraints SubdomainConstraint do
     get  'sign_in' => 'dashboard#sign_in_page'  
-    devise_for :admins, controllers: {
-      registrations: 'admins/registrations'
-    }
-    resources :events
-    get  'dashboard' => 'admin/dashboard#home'
-    get  'company_dashboard' => 'admin/dashboard#company_view'
-      namespace :admin do
-    resources :invoices do
+    
+    devise_for :admins, controllers: {registrations: 'admins/registrations'}
+    devise_for :users, controllers: {registrations: 'users/registrations'}
+    
+    resources :admins do
       member do
-        patch 'mark_as_paid'
+        post :mention
+        post :follow
+        
       end
     end
-    resources :companies do
-      resources :invoices
-      resources :timesheets
-      resources :orders
-      
-    end
-    resources :shifts
-    resources :timesheets do
+    resources :users do
       collection do
-        get 'past'
+        post :import
+      end
+      member do
+        patch :grant_editing
+      end
+    end
+    
+    # ADMIN ----> /admin
+    namespace :admin do
+      get  'agency_access' => 'dashboard#agency_view'
+      get  'payroll' => 'dashboard#payroll'
+      get  'dashboard' => 'dashboard#home'
+      get  'owner' => 'dashboard#owner'
+      get  'recruiter' => 'dashboard#recruiter'
+      resources :companies do
+        resources :invoices
+        resources :timesheets
+        resources :orders
+        
+      end
+      resources :invoices do
+        member do
+          patch 'mark_as_paid'
+        end
       end
       
-    end
-    resources :employees do
-      collection do
-        get 'autocomplete'
-      end
-      resources :jobs
-      resources :skills
-      resources :work_histories
-    end
-    resources :orders do
-      resources :skills
-      resources :jobs
-    end
-    get  'payroll' => 'dashboard#payroll'
-    get  'dashboard' => 'dashboard#company_view'
-    get  'owner' => 'dashboard#owner'
-
-    get  'recruiter' => 'dashboard#recruiter'
-    
-    
-    resources :jobs, shallow: true do
-
-      resources :timesheets, shallow: true do
+      resources :shifts
+      resources :timesheets do
         collection do
           get 'past'
         end
+        
+      end
+      resources :employees do
+        collection do
+          get 'autocomplete'
+        end
+        resources :jobs
+        resources :skills
+        resources :work_histories
+      end
+      
+      resources :orders do
+        resources :skills
+        resources :jobs
+      end
+
+      resources :jobs, shallow: true do
+  
+        resources :timesheets, shallow: true do
+          collection do
+            get 'past'
+          end
+          member do
+            patch 'approve'
+          end
+        end
+  
         member do
-          patch 'approve'
+          patch 'clock_in'
+          patch 'clock_out'
         end
       end
-
-      member do
-        patch 'clock_in'
-        patch 'clock_out'
+      
+      
+      resources :shifts do
+        member do
+          patch 'clock_out'
+          patch 'break_start'
+          patch 'break_end'
+        end
       end
-    end
-    
-    
-    resources :shifts do
-      member do
-        patch 'clock_out'
-        patch 'break_start'
-        patch 'break_end'
-      end
-    end
-  end
-  end
- 
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  resources :skills do
-    collection do
-      get 'autocomplete'
-    end
-  end
-  
-  
-  
-  
-  
-  get  'agency_access' => 'admin/dashboard#agency_view'
-  
-  devise_for :users, controllers: {
-        
-        registrations: 'users/registrations'
-      }
-
-  
-  
-
-
-
-  get 'orders' => 'orders#all'
-  get 'archived_jobs' => 'jobs#archived'
-  
-  
-  resources :users do
-    collection do
-      post :import
-    end
-    member do
-      patch :grant_editing
-    end
-  end
-
-  get  'timeclock', to: 'employee/dashboard#employee_view'
-  get  'home', to: 'employee/dashboard#home'
-  
-  resources :timesheets, path: "employee/timesheets", module: "employee"
-  resources :jobs, path: "employee/jobs", module: "employee" do
-    member do
-      patch 'clock_in'
-      patch 'clock_out'
-    end
-  end
-    
-
-  resources :admins do
-    member do
-      post :mention
-      post :follow
       
     end
+    # END ADMIN
+    # EMPLOYEE ---> /employee
+    namespace :employee do
+      get  'timeclock', to: 'dashboard#employee_view'
+      get  'home', to: 'dashboard#home'
+      resources :orders do
+        member do
+          patch :apply
+        end
+      end
+      resources :jobs do
+        member do
+          patch 'clock_in'
+          patch 'clock_out'
+        end
+      end
+      resources :timesheets
+      resources :shifts do
+        member do
+          patch 'clock_out'
+          patch 'break_start'
+          patch 'break_end'
+        end
+      end
+    end
+    resources :events
+    resources :work_histories
+    resources :skills do
+      collection do
+        get 'autocomplete'
+      end
+    end
+    
+    get 'orders' => 'orders#all'
+    get 'archived_jobs' => 'jobs#archived'
+    
+    
+    
+    
+    
+    
   end
+  # END SUBDOMAIN CONTRAINT
+
   
-  namespace :employee do
-    resources :orders do
-      member do
-        patch :apply
-      end
-    end
-    resources :shifts do
-      member do
-        patch 'clock_out'
-        patch 'break_start'
-        patch 'break_end'
-      end
-    end
-  end
 
   
   # The priority is based upon order of creation: first created -> highest priority.

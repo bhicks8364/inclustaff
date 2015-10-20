@@ -1,9 +1,7 @@
-<div class='center main-box'>
-<div class='dark middle'>
+<div class='col-md-12 main-box'>
+
     <%= simple_form_for(@agency) do |f| %>
-        
- 
-    <div class='col-md-12 well'>
+
            <h3 class='text-center white'>Register your agency below.</h3>
         <% if @agency.errors.any? %>
   <div id="error_explanation">
@@ -21,13 +19,13 @@
     
    
        
-
+<div class="form-group">
 <%= f.input :subdomain, placeholder: "Lowercase only. No special characters or spaces.", hint: 'Once registered, you can access your portal at www.<u>yoursubdomain</u>.inclustaff.com'.html_safe, input_html: {class: "form-control"}  %>
-   
-   </div>
+
+</div>
             <div class="form-actions">
               <%= f.button :submit, "Register Now", class: "btn btn-primary" %>
             </div>
-</div>
- </div>
+
 <% end %>
+</div>

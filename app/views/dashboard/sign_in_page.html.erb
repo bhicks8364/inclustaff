@@ -1,21 +1,25 @@
-<div class='main-box center'>
-	<h1 class='text-center'>Welcome to IncluStaff!</h1>
-<div class='col-md-6'>
-	
-				<%= link_to "<i class='fa fa-user-plus fa-2x fa-fw pull-left'></i> Employee Registration".html_safe, new_user_registration_path, class: 'btn btn-primary btn-lg fill' %>
-<hr />
-				<%= link_to "<i class='fa fa-user-plus fa-2x fa-fw pull-left'></i> Admin Registration ".html_safe, new_admin_registration_path, class: 'btn btn-primary btn-lg fill' %>
-
-				
-</div>
-<div class='col-md-6'>
-	<%= link_to "<i class='fa fa-users fa-2x fa-fw pull-left'></i> Employee Sign In".html_safe, new_user_session_path, class: 'btn btn-primary btn-lg fill' %>
-<hr />
-	
-				
-				<%= link_to "<i class='fa fa-user fa-2x fa-fw pull-left'></i> Admin Sign In ".html_safe, new_admin_session_path, class: 'btn btn-primary btn-lg fill' %>
+<div class='col-md-12 main-box text-center'>
+	<% if @current_agency.present? %>
+	<h1 class='text-center'>Welcome to <%= @current_agency.name %>'s portal!</h1>
+	<div class='col-md-3 col-md-offset-3'>
+		<%= link_to "<i class='fa fa-user-plus fa-fw pull-left'></i> Employee Sign Up".html_safe, new_user_registration_path, class: 'btn btn-primary  btn-lg btn-block' %>
 		
-</div>
-				
+		<%= link_to "<i class='fa fa-users fa-fw pull-left'></i> Employee Sign In".html_safe, new_user_session_path, class: 'btn btn-primary  btn-lg btn-block' %>
+	
+		
+	</div>
+
+	<div class='col-md-3'>
+		<%= link_to "<i class='fa fa-user-plus fa-fw pull-left'></i> Admin Sign Up ".html_safe, new_admin_registration_path, class: 'btn btn-primary  btn-lg btn-block' %>
+		
+		<%= link_to "<i class='fa fa-user fa-fw pull-left'></i> Admin Sign In ".html_safe, new_admin_session_path, class: 'btn btn-primary  btn-lg btn-block' %>
+	</div>
+
+	
+	<% else %>
+	
+	<h2>Please check your URL. We don't recongize that subdomain. </h2>
+	<%= link_to "Go Back", root_path, class: "btn btn-primary  btn-lg btn-block" %>
+	<% end %>		
 	
 </div>

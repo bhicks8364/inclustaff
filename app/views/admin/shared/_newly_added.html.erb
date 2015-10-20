@@ -3,7 +3,7 @@
 		<i class="fa fa-users"></i>
 		<span class="count"><%= @newly_added.try(:count) %></span>
 	</a>
-	<ul class="dropdown-menu notifications-list messages-list">
+	<ul class="dropdown-menu dropdown-menu-left">
 		<li class="pointer">
 			<div class="pointer-inner">
 				<div class="arrow"></div>
@@ -11,12 +11,12 @@
 			</div>
 		</li>
 		<% if @newly_added %>
-		<li class="item-header">You have <%= @newly_added.try(:count) %> newly added employees.</li>
+		<li class="item-header dark text-center">You have <%= pluralize(@newly_added.try(:count), 'newly added employee') %> .</li>
 		<% @newly_added.limit(3).each do |employee| %>
-		<li class="item">
+		<li class="item dark">
 		  <%= link_to(admin_employee_path(employee)) do %>
 			
-				<span class="content">
+				<span class="content light-5">
 					<span class="content-headline">
 						<%= employee.name %>
 					</span>

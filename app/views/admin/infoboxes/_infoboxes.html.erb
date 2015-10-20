@@ -1,20 +1,24 @@
 
 <div class='row row300'>
-	<div class="col-md-6 col-sm-6 col-xs-12 text-left">
-		<% if @current.invoices.unpaid.any? %>
-		<div class="main-box well scroll">
-			<h5 class="pull-center">Open Invoices <%= link_to "View All Invoices", admin_invoices_path, class: 'btn btn-primary btn-sm pull-right' %>
-			</h5> <br>
-			<div class='list-group text-left' data-behavior='invoice-list'>
-			  <% @current.invoices.unpaid.order(:week).each do |invoice| %>
-			
-			       <li data-behavior="invoice" data-id="<%= invoice.id %>" class='list-group-item list-group-item-success '>
-			       	<span id='status' class='badge badge-danger'><%= invoice.week_ending %> </span>
-			     <strong>	<%= invoice.company.name %></strong>  <span id='balance'><%= number_to_currency(invoice.balance) %></span>
-			       
-			          
-			       
-			       </li>
+	
+
+	<div class="col-md-6 col-sm-6 col-xs-12">
+<% if @current_agency.invoices.any? %>
+		<% if @current_agency.invoices.unpaid.any? %>
+		<div class="dark well scroll">
+			<h4>Open Invoices </h4>
+			<div class='list-group text-center' data-behavior='invoice-list'>
+			  <% @current_agency.invoices.unpaid.order(:week).each do |invoice| %>
+				<%= link_to(admin_invoice_path(invoice), class: "list-group-item") do %>
+			       <span data-behavior="invoice" data-id="<%= invoice.id %>" class=''>
+			       	<span class='label label-primary pull-left'><%= invoice.week_ending %> </span>
+			       	<span class='text-center'><%= invoice.company.name %></span>
+			       	
+			     	 <span class='badge badge-success'>
+			     	 	<%= invoice.balance > 0.00 ? number_to_currency(invoice.balance) : "NEW!" %>
+			     	 	</span>
+			       </span>
+			       <% end %>
 			   
 			  <% end %>
 			 
@@ -22,11 +26,12 @@
 			</div>
 		
 		</div>
+	
 		<% else %>
-		<div class="main-box well scroll">
+		<div class="dark well scroll">
 			<h5 class="center">Recently Paid Invoices</h5>
 			<div class='list-group' data-behavior='invoice-list'>
-			  <% @current.invoices.paid.order(:date_paid).each do |invoice| %>
+			  <% @current_agency.invoices.paid.order(:date_paid).each do |invoice| %>
 			
 			       <li data-behavior="invoice" data-id="<%= invoice.id %>" class='list-group-item list-group-item-success'>
 			       	<span id='status' class='badge badge-danger'><%= invoice.week_ending %> </span>
@@ -42,29 +47,29 @@
 		</div>
 		</div>
 		<% end %>
-			
+		
+	<% else %>
+	No invoices available.
+	<% end %>
+		<%= link_to "View All Invoices", admin_invoices_path, class: 'btn btn-primary' %>	
 	</div>
 
 	<div class="col-md-3 col-sm-6 col-xs-6 text-center">
-		<div class="main-box well ">
-			<h5 class="center">Agency Billing</h5>
+		<div class="dark well">
+			<h5 class="text-center">Agency Billing</h5>
 			
-		This week
-			<span class='badge badge-success'>
-			<%= number_to_currency(@current.timesheets.current_week.sum(:gross_pay)) %></span><br>
-			Last week
-			<span class='badge'>	<%= number_to_currency(@current.timesheets.last_week.sum(:total_bill)) %></span><br>
-			<br>
-			<span class='badge badge-primary fill center'>YTD Billings: <%= number_to_currency(@current.timesheets.sum(:total_bill)) %></span>
+		<strong>This week:</strong> <%= number_to_currency(@current_agency.timesheets.current_week.sum(:gross_pay)) %><br>
+			<strong>Last week:</strong> <%= number_to_currency(@current_agency.timesheets.last_week.sum(:total_bill)) %>
+		
 		</div>
 	</div>
 	<div class="col-md-3 col-sm-6 col-xs-6 text-center">
-		<div class="main-box well">
-			
+		<div class="dark well">
+		<h5 class="text-center">Invoices</h5>
+			<strong>Open Invoices:</strong> <%= number_to_currency( @current_agency.invoices.unpaid.sum(:total) )%>
+	<br>
 		
-		<h5 class="center"><strong>Open Invoices:</strong> <%= number_to_currency( @current.invoices.unpaid.sum(:total) )%></h5>
-			<hr>
-			<h5 class="center"><strong>Paid Invoices:</strong> <%= number_to_currency( @current.invoices.paid.sum(:total) )%></h5>
+			<strong>Paid Invoices:</strong> <%= number_to_currency( @current_agency.invoices.paid.sum(:total) )%>
 			
 			
 			

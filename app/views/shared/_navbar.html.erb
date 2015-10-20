@@ -1,57 +1,39 @@
-<header class="navbar mynavbar" id="header-navbar">
-		<div class="container">
-			
-			<%= link_to root_url, id: "logo" do %>
+<header class="navbar" id="header-navbar">
+	<div class="container">
+		<% if @current_agency.present? %>
+		<%= link_to root_url, id: "logo", class: "navbar-brand col-md-3 col-sm-3 col-xs-12" do %>
+			<%= @current_agency.name.titleize %>	
+			<% end %>
+		<% else %>
+			<%= link_to root_url, id: "logo", class: "" do %>
 			       <%= image_tag("incluStaff_logo.png", alt: "Inclustaff") %>
 			 <% end %>
-    		
-		 <!--<small> Controller Action:  <%=  params[:action] %></small>-->
-              
-
-			
-			<button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="fa fa-bars"></span>
-			</button>
-			
-
-			<div class="nav-no-collapse pull-right" id="header-nav">
-				<ul class="nav navbar-nav pull-right">
-				
-					<% if @current_agency.nil? && params[:action] == 'home' %>
-					
-					
-					<% else %>
-					
-					<% if current_user.nil? && current_admin.nil? && params[:action] == 'home'  %>
-					
-					<li><%= link_to "Sign In", sign_in_path %></li>
-
-			        <!--NOT SIGNED IN-->
-			        
-			        <% end %>
-			        <% end %>
-			        
-			        <% if user_signed_in? %>
-			        
-			        <li><%= link_to current_user.name, current_user %></li>
-			        
-			        
-			        
-			        
-			        <% end %>
-			        <% if admin_signed_in? %>
-			        
-			
-
-					<li class="hidden-xs"><%= link_to "<i class='fa fa-cog'></i>".html_safe, edit_admin_registration_path, class: "btn" %></li>
-					
-					<li class="hidden-xxs">
-						<%= link_to "<i class='fa fa-power-off'></i>".html_safe, destroy_admin_session_path, class: "btn", method: :delete %>
-					</li>
-				</ul>
-				
-			</div>
-	<% end %>
-		</div>
-	</header>
+		<% end %>
+		<button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="fa fa-bars"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	       <ul class="nav navbar-nav navbar-right">
+	       	<% if admin_signed_in? %>
+	      	 <p class="navbar-text"><%=@current_admin.name %></p>
+	      	 
+	        
+				<li><%= link_to destroy_admin_session_path, method: :delete do %>
+						<i class='fa fa-power-off'></i> <span>Logout</span>
+					<% end %>
+				</li>
+			<% else %>
+				<li><%= link_to sign_in_path do %>
+						<i class='fa fa-power-off'></i> <span>Logout</span>
+					<% end %>
+				</li>
+			<% end %>
+	      </ul>
+		
+      
+    </div><!-- /.navbar-collapse -->
+		
+	
+	</div>
+</header>

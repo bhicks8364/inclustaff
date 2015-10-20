@@ -1,25 +1,15 @@
-<div class='main-box'>
-  
+<div class='col-md-12'>
 
-    
-  <div class="col-md-2">
-      <%= @company.account_managers.first %>
-    <h4><strong>Company Information</strong></h4>
-    <address>
-      <strong><%= link_to @company.name, admin_company_path(@company) %></strong><br>
-      <%= @company.address %><br>
-      <%= @company.city %>, <%= @company.state %> <%= @company.zipcode %><br>
-     <%= @company.phone_number %>
+      
+    <h4><strong><%= link_to @company.name, admin_company_path(@company) %></strong></h4>
+    <%= render 'admin/companies/company_contact', company: @company %>
 
-      <strong><%= @company.contact_name %></strong>
-     
-    </address>
-  </div>
-  
-<div class='col-md-10 main-box scroll'>
-     <h3>New Job Order</h3>
-    <%= render 'form' %>
-</div>
+        
+        <div class='center'>
+             <h3 class='text-center'>New Job Order</h3>
+            <%= render 'form' %>
+        </div>
+
 </div>
 
 
