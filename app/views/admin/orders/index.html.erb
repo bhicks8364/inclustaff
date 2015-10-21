@@ -2,26 +2,26 @@
 
 		
 		<% if @orders.needs_attention.any? %>
-			<div class="alert alert-danger fade in">
+			<div class="alert alert-danger fade in text-center">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 		<i class="fa fa-exclamation-triangle fa-fw fa-lg"></i>
-			<strong><%= @company.try(:name) || @current.name %>  has  <%= pluralize(@orders.needs_attention.count, 'open job order') %>. </strong>   </div>
+			<strong><%= pluralize(@orders.needs_attention.count, 'open job order') %> </strong>   </div>
 		<% else %>
 	<div class="alert alert-success fade in">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 		<i class="fa fa-check-square-o fa-fw fa-lg"></i>
-			<strong><%= @company.try(:name) || @current.name %> has  <%= pluralize(@orders.needs_attention.count, 'open job order') %>. </strong>   </div>
+			<strong><%= pluralize(@orders.needs_attention.count, 'open job order') %>. </strong>   </div>
 		<% end %>
 		
 <% if @orders.needs_attention.any? %>
-<div class='well'>
+
 		<%= render 'open_table' %>
-</div>
+
 <%end%>
-<div class='well'>
+
 	<h2>All Active Job Orders</h2>
   <%= render 'admin/orders/table' %>
-</div>
+
 
 
 </div>

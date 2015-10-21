@@ -1,9 +1,9 @@
 class CompanyPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.present?
-        scope.where(:company_id => user.company_id)
-      end
+      # if user.present?
+      #   scope.where(:company_id => user.company_id)
+      # end
     end
   end
   

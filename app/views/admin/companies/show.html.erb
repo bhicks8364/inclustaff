@@ -1,4 +1,4 @@
-<div class="main-box col-lg-12">
+<div class="col-md-12 main-box">
   <h2><%= @company.name %><small><%= @company.agency.name %></small></h2>
 
    
@@ -84,7 +84,12 @@
        <br>
         <%= render 'admin/orders/table' %>
      </div>
-    
+    <%= link_to(edit_admin_company_path(@company), class: "btn btn-default") do %>
+				<i class='fa fa-pencil'></i>
+
+					<span>Edit Company</span>
+				<% end %>
+
     
   </div>
   
@@ -122,11 +127,6 @@
 
 
 
-<%= link_to(edit_admin_company_path(@company), class: "btn btn-default") do %>
-							<i class='fa fa-pencil'></i>
-
-								<span>Edit Company</span>
-							<% end %>
 
 
 

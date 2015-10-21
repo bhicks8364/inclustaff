@@ -1,31 +1,23 @@
-<div class='col-md-12'>
+<div class='col-md-12 dark'>
 
+  <%= render 'skills/search'%>
+  <div class='col-md-4'>
+  <h4>Job Order Skills</h4>
+  <%= div_for(@order_skills) do |skill| %>
+    <strong><%= skill.name %></strong> - <%= skill.skillable.title_count %>
+
+  <% end %>
+  </div>
   
-  <div class='center'>
-    
-  </div>
-  <div class='row'>
-    <p id="notice"><%= notice %></p>
+  <div class='col-md-4'>
+  <h4>Employee Skills</h4>
+  <%= div_for(@employee_skills) do |skill| %>
+    <strong><%= skill.name %></strong> - <%= skill.skillable.name %>
 
-    <h1>Needed Skills</h1>
-    
-    
-    <div class='col-md-6'>
-      
-     <%= render @skills.job_order %>
-      </div>
-      <div class='col-md-6'>
-      
-     <%= render @skills %>
-      </div>
-
-    
+  <% end %>
   </div>
+  
 </div>
 
-<!--<div class='col-md-6 text-left center'>-->
-<!--  <h4>Skills</h4>-->
-<!--  <div id='skills'>-->
-<!--    <%= render @skills %>-->
-<!--  </div>-->
+
   

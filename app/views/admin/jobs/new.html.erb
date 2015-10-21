@@ -1,16 +1,16 @@
-<div class='main-box'>
+<div class='dark'>
 
-<% if Employee.unassigned.empty? %>
-<div id="no-employees-alert" class="alert alert-danger text-center" role="alert"><br>
-<i class="fa fa-exclamation-triangle fa-3x fa-border"></i>
-<h4 class='text-center'>All of your employees are currently assigned to a job. <br>
-Please add a new employee before continuing.</h4>
-
-<%= link_to "Add Employee", new_user_registration_path, class: "btn btn-danger" %>
-
-</div>
-
-<% else %>
+  <% if Employee.unassigned.empty? %>
+  <div id="no-employees-alert" class="alert alert-danger text-center" role="alert"><br>
+  <i class="fa fa-exclamation-triangle fa-3x fa-border"></i>
+  <h4 class='text-center'>All of your employees are currently assigned to a job. <br>
+  Please add a new employee before continuing.</h4>
+  
+  <%= link_to "Add Employee", new_user_registration_path, class: "btn btn-danger" %>
+  
+  </div>
+  
+  <% else %>
 
 
 
@@ -31,7 +31,7 @@ Please add a new employee before continuing.</h4>
 <% end %>
   <div class='col-md-12'>
 
-       <div class="main-box-short form-group">
+       <div class="<div class="col-md-3 text-center dark"> form-group">
         <% if @employee.nil? %>
     <%= f.association :employee, collection: Employee.unassigned.order(:last_name), prompt: "Select Employee", label: false %>
     <% else %>

@@ -29,15 +29,23 @@ class AdminsController < ApplicationController
     end
     
     
-    # def grant_editing
-    #     @user = User.find(params[:id])
-    #     # authorize @user
-    #     if @user.can_edit?
-    #         @user.update(can_edit: false)
-    #     else
-    #         @user.update(can_edit: true)
-    #     end
-    # end
+    def edit
+        @admin = Admin.find(params[:id])
+      skip_authorization
+    end
+    def update
+      @admin = Admin.find(params[:id])
+      skip_authorization
+      respond_to do |format|
+        if @admin.update(admin_params)
+          format.html { redirect_to @admin, notice: 'Admin info was successfully updated.' }
+          format.json { render :show, status: :ok, location: @admin }
+        else
+          format.html { render :edit }
+          format.json { render json: @admin.errors, status: :unprocessable_entity }
+        end
+      end
+    end
     
     def show
         
@@ -71,6 +79,11 @@ class AdminsController < ApplicationController
             
         
         skip_authorization
+    end
+    
+    private
+    def admin_params
+      params.require(:admin).permit(:first_name, :last_name, :email, :username, :role)
     end
     
     

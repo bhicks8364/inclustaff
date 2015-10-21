@@ -4,8 +4,12 @@ class WorkHistoriesController < ApplicationController
   # GET /work_histories
   # GET /work_histories.json
   def index
-    @employee = current_user.employee if user_signed_in?
-    @work_histories = @employee.work_histories.all
+    if user_signed_in?
+      @employee = current_user.employee if user_signed_in?
+      @work_histories = @employee.work_histories.all
+    elsif admin_signed_in?
+      @work_histories = WorkHistory.all
+    end
     skip_authorization
   end
 

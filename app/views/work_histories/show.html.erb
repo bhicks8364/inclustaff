@@ -1,5 +1,10 @@
-<div class='col-md-12 main-box'>
-  
+<div class='col-md-12 dark'>
+  <div class='col-md-6'>
+      <% @work_history.employee.skills.each do |skill| %>
+      <%= render skill %>
+      <% end %>
+      
+  </div>
   <div class='col-md-6'>
     <h2><%= @employee.name %> </h2>
       <% if @work_history.current? %>
@@ -13,14 +18,12 @@
      
             
 
-            <strong> Employed for <%= distance_of_time_in_words(@work_history.start_date, @work_history.end_date) %>. </strong><br>
-        Ended about <%= time_ago_in_words(@work_history.end_date) %> ago.<br>
 
             <strong>Pay Rate:</strong><br>
           <%= number_to_currency(@work_history.pay) %><br>
 
             <strong>Employment Dates:</strong><br>
-            <%= @work_history.start_date.stamp("December 2013") %> - <%= @work_history.end_date.stamp("December 2013") %>
+            <%= @work_history.start_date.stamp("December 2013") %> - <%= @work_history.end_date %>
 <br>
             <% if @work_history.may_contact? %>
             <i class="fa fa-phone-square fa-lg"></i> <strong>This employer may be contacted.</strong>
@@ -39,7 +42,7 @@
          <div class='well'>
            <h3>Skills matching Open Job Orders</h3>
             <% @work_history.listed_skills.each do |skill| %>
-              <%= skill.name %> - <small><%= skill.skillable.title_company %></small>
+              <%= skill.name %> - <small><%= skill.skillable.try(:name) || skill.skillable.try(:title_count) %></small>
             <% end %>
          </div>
 
@@ -50,11 +53,12 @@
             <hr />
   </div>
        <div class='col-md-12'>
-
-      <%= link_to '<i class="fa fa-angle-double-left"></i>  Back'.html_safe, admin_employee_work_histories_path(@employee), class: 'btn' %>
-      <%= link_to '<i class="fa fa-trash red"></i>  Delete'.html_safe, @work_history, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn red' %>
-      <%= link_to '<i class="fa fa-pencil"></i>  Edit'.html_safe, edit_admin_employee_work_history_path(@employee, @work_history), class: 'btn' %>
- 
+        <% if admin_signed_in? %>
+            <%= link_to '<i class="fa fa-angle-double-left"></i> Back to list'.html_safe, admin_employee_work_histories_path(@employee), class: 'btn btn-primary' %>
+      <%= link_to '<i class="fa fa-angle-double-left"></i> Employee Work History'.html_safe, admin_employee_work_histories_path(@employee), class: 'btn btn-primary' %>
+      <%= link_to '<i class="fa fa-trash red"></i>  Delete'.html_safe, @work_history, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-primary red' %>
+      <%= link_to '<i class="fa fa-pencil"></i>  Edit'.html_safe, edit_admin_employee_work_history_path(@employee, @work_history), class: 'btn btn-primary' %>
+ <% end %>
      
          
     </div>       

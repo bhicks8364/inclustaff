@@ -9,5 +9,5 @@ jQuery ->
   )
   $('[data-behavior="autocomplete_order_notes"]').atwho(
     at: "#",
-    'data': "admin/skills.json"
+    'data': "/skills.json"
   )

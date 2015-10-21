@@ -4,17 +4,17 @@ class OrderQueryBuilder < ArelHelpers::QueryBuilder
     super(query || job_order.unscoped)
   end
 
-  def with_title_matching(title)
-    reflect(
-      query.where(job_order[:title].matches("%#{title}%"))
-    )
-  end
+  # def with_skills_matching(skills)
+  #   reflect(
+  #     query.where(job_order[:title].matches("%#{title}%"))
+  #   )
+  # end
 
-  def with_comments_by(names)
+  def with_skills_matching(skills)
     reflect(
       query
-        .joins(:comments => :company)
-        .where(company[:id].eq(names))
+        .joins(:skills)
+        .where(Skill[:name].eq(skill))
     )
   end
 
@@ -26,8 +26,8 @@ class OrderQueryBuilder < ArelHelpers::QueryBuilder
 
   private
 
-  def company
-    Company
+  def skill
+    Skill
   end
 
   def job_order

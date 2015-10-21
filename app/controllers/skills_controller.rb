@@ -4,11 +4,15 @@ class SkillsController < ApplicationController
   # GET /skills
   # GET /skills.json
   def index
+    @q = Skill.includes(:skillable).ransack(params[:q])
+    @searched_skills = @q.result(distinct: true)
+    @employee_skills = Skill.employee.includes(:skillable).order(:name)
+    @order_skills = Skill.job_order.includes(:skillable).order(:name)
     # query = params[:q].presence || "*"
     # @skills = Skill.search query, suggest: true
     # Product.search "peantu butta", suggest: true
-    # @order_skills = Skill.job_order.includes(:skillable).order(:name)
-    @skills = Skill.all.order(:name)
+    
+    @skills = Skill.select(:name).distinct
     # gon.skills = @shifts
     # @emp_skills = Skill.employee.includes(:skillable).order(:name)
     skip_authorization

@@ -26,7 +26,7 @@ class Admin::DashboardController < ApplicationController
     end
     def recruiter
         @current_recruiter = @current_admin if @current_admin.recruiter?
-        @jobs = @current.jobs.by_recuriter(@current_recruiter.id)
+        @recruiter_jobs = @current.jobs.by_recuriter(@current_recruiter.id)
         skip_authorization
     end
     def home
@@ -42,11 +42,11 @@ class Admin::DashboardController < ApplicationController
     end
     def company_view
 
-        @viewing = @current_company || @current_agency
-        @timesheets = @viewing.timesheets if @viewing.present?
-        @clock_ins = @viewing.admin_events.clock_ins.order('id DESC')
-        @clock_outs = @viewing.admin_events.clock_outs.order('id DESC')
-        @applications = @viewing.order_events.applications
+      @viewing = @current_company || @current_agency
+      @timesheets = @viewing.timesheets if @viewing.present?
+      @clock_ins = @viewing.admin_events.clock_ins.order('id DESC')
+      @clock_outs = @viewing.admin_events.clock_outs.order('id DESC')
+      @applications = @viewing.order_events.applications
       @jobs = @current.jobs.includes(:employee, :company) if @current.present?
       # @clocked_in = @jobs.on_shift.order(time_in: :desc)
       # @newly_added = @viewing.employees.newly_added.order(created_at: :desc)

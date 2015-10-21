@@ -1,21 +1,20 @@
 
-<%= div_for(skill) do %>
-	<% if skill.new_record? %>
-		New!!!!!!
-	<% else %>
-	    <strong><%= skill.name %></strong>
+<%= div_for(skill, class: 'list-group-item') do %>
+
+	    <span class='pull-left'><%= skill.name %></span>
 	     <% if admin_signed_in? %>
-	    <%= skill.skillable.try(:name) %>
+	   <span class='pull-right'>
+	   	<%= skill.skillable.try(:name) || skill.skillable.try(:title_company) %>
+	   </span> 
 	   
 	    	
-	    <%= link_to(skill, method: :delete, remote: true, data: { confirm: 'Are you sure?' }) do %>
+	    <%= link_to(skill, method: :delete, remote: true) do %>
 					<span>
 						
 							<i class="fa fa-trash-o red "></i>
 						</span>
 					<% end %>
 		<% end %>
-	
-	<% end %>
+
 
 <% end %>

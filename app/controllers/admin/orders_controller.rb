@@ -15,11 +15,8 @@ class Admin::OrdersController < ApplicationController
       @order = @company.orders.new if @company.present?
      
     else
-      
-
       # @orders = @current_company.orders.active.order(created_at: :desc) if @current_company.present?
       @orders = @current_agency.orders.active.order(created_at: :desc) if @current_agency.present?
-
     end
     
     
@@ -70,13 +67,13 @@ class Admin::OrdersController < ApplicationController
 
   # GET /orders/1/edit
   def edit
-    @admin = current_admin
+   
     @order = Order.find(params[:id])
     authorize @order
     @company = @order.company
     @account_managers = @company.account_managers if @company.account_managers.any?
-    @account_managers = @admin.agency.admins.account_managers if @admin.agency?
-    @order.skills
+    @account_managers = @current_agency.admins.account_managers if @current_agency.present?
+    # @order.skills
     
   end
 
@@ -154,7 +151,7 @@ class Admin::OrdersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_order
 
-      @order = Order.find(params[:id])
+      @order = Order.includes(:skills).find(params[:id])
     end
 
 

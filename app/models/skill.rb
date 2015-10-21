@@ -14,7 +14,7 @@
 class Skill < ActiveRecord::Base
     belongs_to :skillable, polymorphic: true
     
-    before_save :remove_hashtag
+    before_save :remove_hashtag, :titleize_name
     
     # searchkick suggest: [:name]
     # def search_data
@@ -37,11 +37,7 @@ class Skill < ActiveRecord::Base
     scope :open_orders, -> { joins(:skillable).merge(Order.need_attention) }
     # scope :employee, -> { where(skillable_type: "Employee")}
     
-    # def with_comments_by(usernames)
-    #     self.joins(:skillable)
-    #         .where(Employee[:username].in(usernames))
-        
-    # end
+    
     
     def employee
         skillable if skillable_type == "Employee"
@@ -49,13 +45,17 @@ class Skill < ActiveRecord::Base
     def job_order
         skillable if skillable_type == "Order"
     end
+    def matching(name)
+        where(name: name)
+    end
     
     def remove_hashtag
         if self.name.starts_with?("#")
             self.name.delete!("#")
         end
-                
-        
+    end
+    def titleize_name
+      self.name = self.name.titleize
     end
     
     

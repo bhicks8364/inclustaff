@@ -1,3 +1,16 @@
-<%= form_tag skills_path, method: :get do %>
-	<%= text_field_tag :q, nil, placeholder: "Search Skills" %>
-<% end %>
+<div class='col-md-4 well'>
+   <h4 class='text-center'>Search for skills</h4>
+    <div class='form-inline black'>
+      <%= search_form_for @q do |f| %>
+          
+          <%= f.search_field :name_cont, placeholder: "Search..."  %>
+          <%= f.submit %>
+        <% end %>
+        
+    </div>
+    <div class='list-group'>
+        <%= render @searched_skills %>
+    </div>
+    
+     
+</div>

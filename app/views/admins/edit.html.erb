@@ -1,0 +1,31 @@
+<div class='col-md-12 main-box'>
+
+    <%= simple_form_for(@admin) do |f| %>
+
+           <h3 class='text-center white'>Editing Admin Information</h3>
+           
+        <% if @admin.errors.any? %>
+          <div id="error_explanation">
+            <h3><%= pluralize(@admin.errors.count, "error") %> prohibited this admin from being saved:</h3>
+         
+            <ul>
+            <% @admin.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+            </ul>
+          </div>
+        <% end %>
+        <div class="form-group">
+        <%= f.input :first_name, label: false, placeholder: "First Name", input_html: {class: "form-control"}  %>
+        <%= f.input :last_name, label: false, placeholder: "Last Name", input_html: {class: "form-control"}  %>
+        <%= f.input :email, required: true, placeholder: "Email", label: false %>
+        <%= f.input :role, required: true, collection: ["Owner", "Account Manager", "Recruiter", "Payroll", "Limited Access"], include_blank: false, label: false %>
+    
+    
+    </div>
+            <div class="form-actions">
+              <%= f.button :submit, "Save", class: "btn btn-primary" %>
+            </div>
+
+<% end %>
+</div>

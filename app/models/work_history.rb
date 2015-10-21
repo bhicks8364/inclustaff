@@ -17,11 +17,21 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
-
+### TO-DO 
+# =>ADD :verified (for reference checks)
+# =>
+#
+#
 class WorkHistory < ActiveRecord::Base
     belongs_to :employee
+    include ArelHelpers::ArelTable
+    include ArelHelpers::JoinAssociation
+  
+    validates :start_date,  presence: true
+    validates :end_date,  presence: true
     
-    before_save :set_employee_skills
+    
+    after_save :set_listed_skills
     
     def current?
         self.current == true
@@ -33,29 +43,32 @@ class WorkHistory < ActiveRecord::Base
     
     def words
         @words ||= begin
-                        regex = /([\w]+)/
-                        description.scan(regex).flatten
-                      end
+            regex = /([\w]+)/
+            description.scan(regex).flatten
+        end
         
     end
     
-    def employee_skills
-
-        @employee_skills ||= self.employee.skills.where(name: words)
-    end
     def listed_skills
 
-        @listed_skills ||= Skill.job_order.where(name: words)
+        @listed_skills ||= Skill.where(name: words)
     end
+    
     
     def matching_orders
-        listed_skills.job_order
+        @matching_orders ||= Skill.job_order.where(name: words)
     end
     
-    def set_employee_skills
+    def set_listed_skills
         listed_skills.each do |skill|
             self.employee.skills.find_or_create_by(name: skill.name)
         end
     end
+    # def check_end_date
+    #     if self.end_date.nil?
+    #         self.end_date = Date.today
+    #     end
+    # end
+    
     
 end

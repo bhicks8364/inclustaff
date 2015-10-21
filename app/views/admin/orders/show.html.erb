@@ -1,7 +1,7 @@
-<div class='main-box'>
+<div class='col-md-12 main-box'>
   <div class="btn-group btn-group-justified" role="group" aria-label="...">
     <div class="btn-group" role="group">
-    <%= link_to(admin_company_path(@company), class: "btn btn-default") do %>
+    <%= link_to(admin_company_path(@company), class: "btn btn-primary") do %>
   							<i class='fa fa-home'></i>
   
   								<span>Back to Company</span>
@@ -9,7 +9,7 @@
   
     </div>
     <div class="btn-group" role="group">
-    <%= link_to(new_admin_company_order_path(@company), class: "btn btn-default") do %>
+    <%= link_to(new_admin_company_order_path(@company), class: "btn btn-primary") do %>
   							<i class='fa fa-user-plus'></i>
   
   								<span>New Job Order</span>
@@ -17,7 +17,7 @@
   
     </div>
     <div class="btn-group" role="group">
-    <%= link_to(admin_company_orders_path(@company), class: "btn btn-default") do %>
+    <%= link_to(admin_company_orders_path(@company), class: "btn btn-primary") do %>
   							<i class='fa fa-briefcase'></i>
   
   								<span>Active Orders</span>
@@ -25,7 +25,7 @@
   
     </div>
     <div class="btn-group" role="group">
-    <%= link_to(admin_company_timesheets_path(@company), class: "btn btn-default") do %>
+    <%= link_to(admin_company_timesheets_path(@company), class: "btn btn-primary") do %>
   							<i class='fa fa-clock-o'></i>
   
   								<span>Timesheets</span>
@@ -38,7 +38,7 @@
 <h1>  <%= @company.name %> <small> <%= @order.title%></small></h1>
 
 
-<div class='main-box' id="order-tabs">
+<div class='dark' id="order-tabs">
 
   <!-- Nav tabs -->
   <ul id="order-nav" class="nav nav-tabs nav-justified" role="tablist">
@@ -54,7 +54,7 @@
  
 
   
-  <div class='well'>
+  <div class='dark'>
     <h4>Open positions: <%= @order.open_jobs %></h4>
     
         <% if @order.urgent? && @order.needs_attention?%>
@@ -63,14 +63,26 @@
 										<i class="fa fa-times-circle fa-fw fa-lg"></i>
 										<strong>URGENT ORDER!!</strong> <%= @order.open_jobs %> people are needed by <strong><%= @order.needed_by.stamp("Sunday, 11/5") %></strong> or SOONER!     <%= link_to "Assign someone now.", new_admin_order_job_path(@order), class: 'alert-link' %>
 									<strong></strong></div><% end %>
-
+<h2>Skills</h2>
+ <h4><%= @order.skills.map {|p| p.name.titleize}.join(", ") %></h4>
+ <hr>
+  <h1><%= @order.active ? "" : "Inactive" %></h1>
+  Mentions
+  <p><strong><%= @order.mentions.map{|p| p.titleize}.join(", ")  %></strong></p>
  
-  <%= @order.active ? "" : "Inactive" %>
   
-  
-  <p><%= @listed_skills.inspect %></p>
-  <p><%= @matching_employees.inspect %></p>
+  <div class='well'>
+    <%= highlight(@order.notes, Skill.pluck(:name).to_a, highlighter: '<a href="search?q=\1">\1</a>') %>
+   <%=  %>
+  </div>
+  Matching Employees
+  <p><%= @order.matching_employees.map{|p| p.last_name.titleize}.join(", ")  %></p>
+  Mentioned Admins
+  <p><%= @order.mentioned_admins.inspect %></p>
+  Requested Employees
+  <p><%= @order.requested_employees.inspect %></p>
  
+   <div class='col-md-6'>
     <strong>Drug Test </strong><br>
     <%= @order.dt_req %><br>
   
@@ -81,8 +93,9 @@
     <strong>Assignment Type</strong><br>
     <%= @order.est_duration %><br>
 
-  <strong>Pay Range:</strong><br>
-  <%= @order.pay_range %>
+    <strong>Pay Range:</strong><br>
+    <%= @order.pay_range %>
+   </div>
 
   <strong>Shift</strong><br>
  <%= @order.shift %><br>
@@ -95,11 +108,16 @@
 
 
 
-<div id= "order-notes" class="" >
+<div id= "order-notes" class="notes" >
       <strong>Notes:</strong>
     <p><%= @order.notes %></p>
   </div>
-  
+   <h4>
+    Listed Skills <small> Keywords from notes matching exisiting skills.</small>
+  </h4>
+  <div class=''>
+   
+  </div>
 
 
 
@@ -118,23 +136,9 @@
   </div>
   
   </div>
-  
-  
-  
-
-  
-
-
-  
-
- 
-
-
-
-
+  <!--JOBS TAB-->
   <div role="tabpanel" class="tab-pane fade" id="active-jobs">
-      <div class='well'>
-        
+      <div class='dark'>
         <% if @jobs.any? %>
       <%= render 'admin/jobs/table' %>
         <% if policy(Job).create? %>
@@ -142,61 +146,59 @@
         <% end %>
       <% else %>
       <h3>No jobs to display yet.</h3>
-      <% if policy(Job).create? %>
-       <%= link_to 'Assign Employee', new_admin_order_job_path(@order), class: "btn btn-primary" %>
-      <% end %>
+        <% if policy(Job).create? %>
+         <%= link_to 'Assign Employee', new_admin_order_job_path(@order), class: "btn btn-primary" %>
+        <% end %>
       <% end %>
       </div>
   </div>
-  
+  <!--TIMESHEETS TAB-->
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
-    <div class='well'>
-        <% if @order.timesheets.current_week.any? %>
-      <%= render partial: "admin/timesheets/table", collection: @timesheets.current_week, as: :timesheet %>
+    <div class='dark'>
+      <% if @order.timesheets.current_week.any? %>
+        <%= render partial: "admin/timesheets/table", collection: @timesheets.current_week, as: :timesheet %>
       <% else %>
-      <h3>No timesheets for this week yet.</h3>
+        <h3>No timesheets for this week yet.</h3>
       <% end %>
+      
       <% if @order.timesheets.any? %>
-      <strong>All timesheets</strong>
+        <strong>All timesheets</strong>
       <%= render partial: "admin/timesheets/table" %>
       <% end %>
     </div>
-    
   </div>
-
+  <!--SKILLS TAB-->
   <div role="tabpanel" class="tab-pane fade" id="skills-tab">
-     <div class='well'>
-      <ul>
-        <% @order.skills.each do |skill| %>
-          
-            <%= render partial: "admin/skills/skill", locals: {skill: skill} %>
-          
-        <% end %>
-      </ul>
-    </div>
-  </div>
-  <div role="tabpanel" class="tab-pane fade" id="applications">
-    <div class='center'>
-      <ul>
-        <% @order.applications.each do |event| %>
-          <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
-            <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
+     <div class='dark'>
+      <% if @order.skills.count < 1 %>
+           <h4 id='no-skills' class="center">This employee has no skills entered.</h4>
           <% end %>
-        <% end %>
-      </ul>
+            <div  id='skills' class=''>
+              <%= render @order.skills %>
+             
+            </div>
+      <div class='form-inline center'>
+        <%= render partial: "admin/skills/form", locals: {skillable: @order} %>
+      </div>
     </div>
-    
-      
-    
-
+  </div>
+  <!--APPLICATIONS TAB-->
+    <div role="tabpanel" class="tab-pane fade" id="applications">
+        <div class='dark'>
+          <% if @order.applications.any? %>
+          <ul>
+            <% @order.applications.each do |event| %>
+              <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+                <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
+              <% end %>
+            <% end %>
+          </ul>
+          <% else %>
+          <h4>No one has applied to this position yet.</h4>
+          <% end %>
+        </div>
+      </div>
       
     </div>
-
-  
-  
-  
+  </div>
 </div>
-
-
-  </div>
-  </div>

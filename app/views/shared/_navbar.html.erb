@@ -1,6 +1,13 @@
 <header class="navbar" id="header-navbar">
 	<div class="container">
-		<% if @current_agency.present? %>
+		<div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <% if @current_agency.present? %>
 		<%= link_to root_url, id: "logo", class: "navbar-brand col-md-3 col-sm-3 col-xs-12" do %>
 			<%= @current_agency.name.titleize %>	
 			<% end %>
@@ -9,30 +16,26 @@
 			       <%= image_tag("incluStaff_logo.png", alt: "Inclustaff") %>
 			 <% end %>
 		<% end %>
+	    </div>
+		
 		<button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">
 			<span class="sr-only">Toggle navigation</span>
 			<span class="fa fa-bars"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	       <ul class="nav navbar-nav navbar-right">
-	       	<% if admin_signed_in? %>
-	      	 <p class="navbar-text"><%=@current_admin.name %></p>
-	      	 
-	        
-				<li><%= link_to destroy_admin_session_path, method: :delete do %>
-						<i class='fa fa-power-off'></i> <span>Logout</span>
+	       	
+	       
+				
+	        	
+				<li><%= link_to new_agency_path do %>
+						Register Now
 					<% end %>
 				</li>
-			<% else %>
-				<li><%= link_to sign_in_path do %>
-						<i class='fa fa-power-off'></i> <span>Logout</span>
-					<% end %>
-				</li>
-			<% end %>
 	      </ul>
 		
       
-    </div><!-- /.navbar-collapse -->
+    </div>
 		
 	
 	</div>

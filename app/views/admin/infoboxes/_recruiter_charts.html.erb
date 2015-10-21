@@ -7,20 +7,24 @@
         <div class='col-md-8'>
             <h5 class='text-center'>Placements</h5>
             
-            <%= column_chart  @current.companies.map{|company|
-                {name: company.name, data: company.jobs.group(:recruiter).count}
+            <%= column_chart  @current_agency.companies.map{|company|
+                {name: company.name, data: company.jobs.includes(:recruiter).group(:id)}
             }, library: {isStacked: 'percent', bar: { width: "50%" }, legend: { position: 'bottom', maxLines: 3 }, title: "Placements by Company"} %>
         </div>
         <div class='col-md-4'>
             <h5 class='text-center'>Current Billings by Recruiter</h5>
-            <%= pie_chart @jobs.joins(:current_timesheet).group(:recruiter).sum(:total_bill), library: {legend: {position: "none"}, title: "Placements by Recruiter"} %>
+            <%= pie_chart @current_agency.jobs.includes(:current_timesheet, :recruiter).group(:recruiter_id).sum(:total_bill), library: {legend: {position: "none"}, title: "Placements by Recruiter"} %>
         </div>
     </div>
+    <div class='col-md-4'>
+        <h5 class='text-center'>Current Billings by Recruiter</h5>
+        <%= pie_chart Skill.includes(:skillable).group(:name).count, library: {title: "Placements by Recruiter"} %>
+    </div>
     <div class="center">
-			<% if @jobs.new_start.any? %>
+			<% if @current_agency.jobs.new_start.any? %>
 				<h5>	New Starts</h5>
                 <div class='list-group list-group-sm' >
-                    <% @jobs.new_start.order(created_at: :desc).limit(3).each do |job| %>
+                    <% @current_agency.jobs.new_start.order(created_at: :desc).limit(3).each do |job| %>
 						  <%= render job %>
 						<% end %>
                 </div>

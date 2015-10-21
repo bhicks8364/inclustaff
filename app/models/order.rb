@@ -52,6 +52,8 @@ class Order < ActiveRecord::Base
     # CALLBACKS
     after_initialize :defaults
     before_validation :set_mark_up
+    after_save :create_keyword_skills
+    
     
     
     # NESTED ATTRIBUTES
@@ -76,8 +78,7 @@ class Order < ActiveRecord::Base
       self.urgent = false if self.urgent.nil?
       self.jobs_count = 0 if self.jobs_count.nil?
     end
-    # [ "$8.10 - $10.00","$10.00 - $12.00","$12.00 - $15.00", 
-      # "$15.00 - $18.00", "$18.00 - $22.00", "$18.00 - $22.00", "$22.00 +  ", "Salary", "Hourly + Commission"]
+   
     def set_mark_up
       case pay_range
       when "$8.10 - $10.00"
@@ -129,11 +130,11 @@ class Order < ActiveRecord::Base
     end
   end
   
-    def open_jobs
-      if self.number_needed != nil && self.jobs != nil
-        self.number_needed - self.jobs.count
-      end
+  def open_jobs
+    if self.number_needed != nil && self.jobs != nil
+      self.number_needed - self.jobs.count
     end
+  end
     
 
     
@@ -165,49 +166,52 @@ class Order < ActiveRecord::Base
       Event.where(eventable_id: self.id, eventable_type: 'Order', action: 'applied')
   end
 
-
   def mentions
       @mentions ||= begin
                       regex = /@([\w]+)/
                       notes.scan(regex).flatten
                     end
-      
+  end
+
+  def requested_employees
+      @requested_employees ||= Employee.where(last_name: mentions)
+  end
+  
+  def admin_mentions
+      @mentions ||= begin
+                      regex = /([\w]+)/
+                      notes.scan(regex).flatten
+                    end
   end
   
   def mentioned_admins
-      @mentioned_admins ||= Admin.where(username: mentions)
-  end
-  def requested_employees
-      @requested_employees ||= User.where(last_name: mentions)
+      @mentioned_admins ||= Admin.where(last_name: admin_mentions)
   end
   
-  def words
-      @words ||= begin
-                      regex = /([\w]+)/
+  def keywords
+      @keywords ||= begin
+                      regex = /#([\w]+)/
                       notes.scan(regex).flatten
                     end
       
   end
   
-  def listed_skills
-      @listed_skills ||= Skill.where(name: words)
+  def matching_skills
+      @listed_skills ||= Employee.joins(:skills).where(name: keywords)
   end
-  
-  # def matching_orders
-  #     listed_skills.job_order
-  # end
-  def requested_employees
-      @requested_employees ||= User.where(last_name: mentions)
-  end
+
   def matching_employees
-     @matching_employees ||= Employee.unassigned.joins(:skills).where(name: words)
-      
-      
+     @matching_employees ||= Employee.where(last_name: mentions)
   end
   
-  def set_employee_skills
-      listed_skills.each do |skill|
-          self.skills.find_or_create_by(name: skill.name)
+  # def with_skills_matching(skills)
+  #   include?(request.subdomain)
+  # end
+  
+  
+  def create_keyword_skills
+      keywords.each do |keyword|
+          self.skills.find_or_create_by(name: keyword)
       end
   end
 
