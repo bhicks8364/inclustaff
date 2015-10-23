@@ -58,7 +58,7 @@ class Admin < ActiveRecord::Base
 
   
          
-         
+  
   scope :account_managers, -> { where(role: "Account Manager")}
   scope :company_admins, -> { where.not(company_id: nil)}
   scope :agency_admins, -> { where(company_id: nil)}

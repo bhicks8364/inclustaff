@@ -1,16 +1,15 @@
-<div class="main-box">
+<div class="well">
+  <%= @job.try(:name_title) %>
 <%= simple_form_for [:admin, @shift] do |f| %>
-<div class="form-group">
+<div class="form-group black">
 
-    <% if @job.present? %>
-    <%= @job.name_title %> 
-    <% else %>
+    <% if @job.nil? %>
 
     <%= f.input :job_id, collection: @jobs, as: :select, label_method: :name_title, value_method: :id, include_blank: false, required: true  %>
     <% end %>
 
 </div>
-<div class="form-group">
+<div class="form-group black">
     <label for="TimeIn">Time In: </label>
     <%= f.datetime_select :time_in, ampm: true, default: Time.current %>
 </div>
@@ -19,14 +18,14 @@
 
 
 
-<div class="form-group">
+<div class="form-contol black">
    <div class="field">
-    <%= f.label :state %>
+  
     <%= f.select :state, ["Clocked In", "Clocked Out"], selected: @shift.state %>
   </div>
 </div>
 
-<div class="form-group clocked-out">
+<div class="form-group black clocked-out">
   <div class="field time-out-field">
     <%= f.label :time_out, "Time Out" %><br>
     <%= f.datetime_select :time_out, ampm: true, default: nil %>
@@ -38,7 +37,7 @@
 
 <div class="form-group">
     <label for="Not">Notes: </label>
-    <%= f.text_area :note, placeholder: "Add a note.", rows: 3, class: "form-control" %>
+    <%= f.text_area :note, placeholder: "Add a note.", rows: 2, class: "form-control" %>
 </div>
 
 

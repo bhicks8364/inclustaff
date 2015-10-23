@@ -19,9 +19,11 @@
 </head>
 
 <body>
-<%if admin_signed_in? %>
-<%= render 'admin/shared/navbar' %>
-<% else %>
+
+
+<%if user_signed_in? %>
+<%= render 'employee/shared/navbar' %>
+	<%else %>
 		<%= render 'shared/navbar' %>
 	<%end %>
 	<div class="container">
@@ -29,7 +31,7 @@
 		<% if admin_signed_in? && current_admin.owner? && current_admin.agency? %><%= render 'admin/sidebars/admin_sidebar' %><% end %>
 		<% if admin_signed_in? && current_admin.owner? && current_admin.company? %><%= render 'admin/sidebars/company_sidebar' %><% end %>
 		<% if admin_signed_in? && current_admin.recruiter? %><%= render 'admin/sidebars/recruiter_sidebar' %><% end %>
-		<% if user_signed_in? %><%= render 'admin/sidebars/employee_sidebar' %><% end %>
+		<% if user_signed_in? %><%= render 'employee/sidebars/employee_sidebar' %><% end %>
 			<% if signed_in? == false %>
 				<div class="col-md-12" id="content-wrapper">
 			<% else %>

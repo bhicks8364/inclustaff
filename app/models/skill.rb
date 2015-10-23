@@ -34,16 +34,16 @@ class Skill < ActiveRecord::Base
     scope :job_order, -> { where(skillable_type: "Order")}
     scope :need_skills, -> { job_order.joins(:user).merge(User.unassigned)}
     scope :employee, -> { where(skillable_type: "Employee")}
-    scope :open_orders, -> { joins(:skillable).merge(Order.need_attention) }
+    scope :open_orders, -> { joins(:skillable).merge(Order.needs_attention) }
     # scope :employee, -> { where(skillable_type: "Employee")}
     
     
     
-    def employee
-        skillable if skillable_type == "Employee"
+    def employee?
+        skillable_type == "Employee"
     end
-    def job_order
-        skillable if skillable_type == "Order"
+    def job_order?
+        skillable_type == "Order"
     end
     def matching(name)
         where(name: name)
@@ -56,6 +56,13 @@ class Skill < ActiveRecord::Base
     end
     def titleize_name
       self.name = self.name.titleize
+    end
+    
+    # IMPORT
+    def self.assign_from_row(row)
+        skill = Skill.where(name: row[:name]).first_or_initialize
+        skill.assign_attributes row.to_hash.slice(:name)
+        skill
     end
     
     

@@ -3,6 +3,7 @@ class DashboardController < ApplicationController
     layout :determine_layout
     
     def home
+        
         #ROOT LANDING PAGE - NO SUBDOMAIN && NO ONE IS SIGNED IN
         if @current_agency.nil? && signed_in? == false
           render 'mainpage'
@@ -26,7 +27,7 @@ class DashboardController < ApplicationController
             @employee = @user.employee
             @events = @user.events.applications
             @applications = @events.applications
-            render "user/show"
+            render "users/show"
         end
             
         

@@ -1,4 +1,5 @@
-
+<div class='col-md-12 dark'>
+  <div class='table-responsive'>
 
 <h1>Listing Invoices</h1>
 
@@ -38,7 +39,8 @@
     <% end %>
   </tbody>
 </table>
-
+</div>
 <br>
-<%= link_to 'Back', admin_company_invoices_path(@company) %>
-<%= link_to 'New Invoice', new_admin_company_invoice_path(@company) %>
+<%= link_to 'Back', admin_company_invoices_path(@company), class: "btn btn-primary" %>
+<%= link_to 'New Invoice', new_admin_company_invoice_path(@company), class: "btn btn-primary" %>
+</div>

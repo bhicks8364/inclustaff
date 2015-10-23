@@ -5,7 +5,7 @@ class SkillsController < ApplicationController
   # GET /skills.json
   def index
     @q = Skill.includes(:skillable).ransack(params[:q])
-    @searched_skills = @q.result(distinct: true)
+    @searched_skills = @q.result(distinct: true) if params[:q].present?
     @employee_skills = Skill.employee.includes(:skillable).order(:name)
     @order_skills = Skill.job_order.includes(:skillable).order(:name)
     # query = params[:q].presence || "*"
@@ -16,6 +16,18 @@ class SkillsController < ApplicationController
     # gon.skills = @shifts
     # @emp_skills = Skill.employee.includes(:skillable).order(:name)
     skip_authorization
+  end
+  def import
+      @import  = Skill::Import.new(skill_import_params)
+      
+      if @import.save
+          redirect_to skills_path, notice: "Imported #{@import_count} skills."
+      else
+          @skills = Skill.all
+          render action: :index, notice: "There were errors with your CSV file."
+      end
+      skip_authorization
+        
   end
 
   # GET /skills/1
@@ -82,6 +94,9 @@ class SkillsController < ApplicationController
   end
 
   private
+    def skill_import_params
+        params.require(:skill_import).permit(:file)
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_skill
       @skill = Skill.find(params[:id])

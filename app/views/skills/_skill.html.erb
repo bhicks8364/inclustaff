@@ -1,20 +1,14 @@
+<% if skill.job_order? %>
+	<%= link_to(admin_order_path(skill.skillable), class: 'list-group-item list-group-item-success') do %>
+		<span class='pull-right'><%= skill.name %></span>
+ 		   	<%= skill.skillable.try(:title_company) %>
+	<% end %>
+<% elsif skill.employee? %>
+	<%= link_to(admin_employee_path(skill.skillable), class: 'list-group-item list-group-item-danger') do %>
+		<span class='pull-right'><%= skill.name %></span>
+ 		   	<%= skill.skillable.try(:name) %>
+	<% end %>
 
-<%= div_for(skill, class: 'list-group-item') do %>
-
-	    <span class='pull-left'><%= skill.name %></span>
-	     <% if admin_signed_in? %>
-	   <span class='pull-right'>
-	   	<%= skill.skillable.try(:name) || skill.skillable.try(:title_company) %>
-	   </span> 
-	   
-	    	
-	    <%= link_to(skill, method: :delete, remote: true) do %>
-					<span>
-						
-							<i class="fa fa-trash-o red "></i>
-						</span>
-					<% end %>
-		<% end %>
 
 
 <% end %>

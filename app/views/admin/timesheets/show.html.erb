@@ -1,50 +1,52 @@
-<div class='col-lg-12'>
-
-<div class='col-md-6'>
-  <%= column_chart @timesheet.shifts.group(:time_worked).sum(:time_worked) %>
-</div>
-<div class='col-lg-8' data-behavior="timesheet-list">
-    
-  <%= render @timesheet %>
-  
+<div class='col-md-12 dark'>
+  <div class='pull-right'>
+    <%= link_to(admin_timesheet_path(@timesheet, format: :pdf), class: 'btn btn-primary') do %>
+  					<i class="fa fa-download fa-md"></i> Download PDF
+  				
+  				<% end %>
+  				<%= link_to 'All Timesheets', admin_timesheets_path, class: 'btn btn-primary' %>
   </div>
-  <div class='col-md-3'>
-    <%= render @timesheet.employee %>
-  </div>
-
-<div class='col-lg-12 main-box'>
+<div class='col-md-12'>
   <h4>For the week of:<strong><br>
         <%= @timesheet.week_begin %>
           - 
         <%= @timesheet.week_ending %>
       </strong></h4>
-  <div class='col-lg-3 well well-sm'>
+  <div class='col-md-3 well well-sm'>
     <strong>Regular hours:</strong>
     <%= @timesheet.reg_hours %>
   </div>
-  <div class='col-lg-3 well well-sm'>
+  <div class='col-md-3 well well-sm'>
     <strong>Overtime hours:</strong>
     <%= @timesheet.ot_hours %>
   </div>
-    <div class='col-lg-3 well well-sm'>
+    <div class='col-md-3 well well-sm'>
            <strong>Gross pay:</strong>
         <%= number_to_currency(@timesheet.gross_pay) %>
       </div>
-      <div class='col-lg-3 well well-sm'>
+      <div class='col-md-3 well well-sm'>
            <strong>Total bill:</strong>
         <%= number_to_currency(@timesheet.total_bill) %>
       </div>
       
 </div>
-<div class='main-box'>
+
+<div class='col-md-12' data-behavior="timesheet-list">
+    
+  <%= render @timesheet %>
+  
+  </div>
+  <div class='col-md-4 dark'>
+  <%= pie_chart @timesheet.shifts.group_by_day(:time_in, format: "%m/%d").sum(:time_worked) %>
+</div>
+ 
+
+<div class='col-md-8 dark'>
    <%= render 'admin/shifts/table' %>
 </div>
 
-<%= link_to(admin_timesheet_path(@timesheet, format: :pdf), class: 'btn btn-primary') do %>
-  					<i class="fa fa-download fa-lg"></i> Download PDF
-  				
-  				<% end %>
 
-<%= link_to 'All Timesheets', admin_timesheets_path, class: 'btn btn-primary' %>
+
+
 </div>
 

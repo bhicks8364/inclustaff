@@ -1,19 +1,50 @@
 class AdminsController < ApplicationController
-    before_filter :authenticate_admin!
-    layout 'admin_layout'
-    def index
-        
-        @agency_admins = @current_agency.admins.agency_admins.order(role: :asc) if @current_agency.present?
-        # @admins = @current_agency.agency_admins.order(role: :asc)
-          # @admins = @company.admins.order(last_name: :asc) if @company.present?
-          # @admins = @agency.admins.order(last_name: :asc) if @agency.present?
-        skip_authorization
-        respond_to do |format|
-          format.json
-          format.html
+  before_filter :authenticate_admin!
+  layout 'admin_layout'
+  def index
+      
+      @agency_admins = @current_agency.admins.agency_admins.order(role: :asc) if @current_agency.present?
+      # @admins = @current_agency.agency_admins.order(role: :asc)
+        # @admins = @company.admins.order(last_name: :asc) if @company.present?
+        # @admins = @agency.admins.order(last_name: :asc) if @agency.present?
+      skip_authorization
+      respond_to do |format|
+        format.json
+        format.html
 
-      end
     end
+  end
+    
+  def new
+    if params[:company_id].present?
+      @company = Company.find(params[:company_id])
+      @admin = @company.admins.new
+    else
+      @admin = Admin.new
+    end
+    
+  end
+  def create
+    if params[:company_id].present?
+      @company = Company.find(params[:company_id])
+      @admin = @company.admins.new(admin_params)
+    else
+      @admin = Admin.new(admin_params)
+    end
+    
+    if params[:password].blank?
+      @admin.password = "password"
+      @admin.password_confirmation = "password"
+    end
+    if @admin.save
+        redirect_to admins_path, notice: 'You are just added ' + "#{@admin.name}" 
+        
+    else
+      redirect_to admins_path, notice: 'Unable to add admin'
+    end
+    skip_authorization
+  end
+  
     
     def follow
       @admin = Admin.find(params[:id])
@@ -83,7 +114,7 @@ class AdminsController < ApplicationController
     
     private
     def admin_params
-      params.require(:admin).permit(:first_name, :last_name, :email, :username, :role)
+      params.require(:admin).permit(:first_name, :last_name, :email, :username, :role, :company_id, :agency_id, :password, :password_confirmation)
     end
     
     

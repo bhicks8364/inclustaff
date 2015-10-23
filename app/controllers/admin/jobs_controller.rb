@@ -225,11 +225,8 @@ class Admin::JobsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def job_params
-      params.require(:job).permit(:order, :recruiter_id, :title, :active, :description, :start_date, :pay_rate, :end_date, :order_id, :employee_id,
-                            employee_attributes: [:id, :first_name, :last_name, :email, :ssn, :_destroy]
-            ).tap do |whitelisted|
-            whitelisted[:settings] = params[:job][:settings] if params[:job][:settings]
-          end
+      params.require(:job).permit(:order, :recruiter_id, :title, :active, :description, 
+      :start_date, :pay_rate, :end_date, :order_id, :employee_id, :settings => [:pay_rate, :drive_pay, :ride_pay] )
     end
     def employee_params
       params.require(:employee).permit(:first_name, :last_name, :email, :ssn, :phone_number)

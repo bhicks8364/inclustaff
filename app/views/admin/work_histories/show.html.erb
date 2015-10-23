@@ -1,4 +1,4 @@
-<div class='col-md-12 main-box'>
+<div class='col-md-12 dark'>
 <div class='row well'>
        <h1><%= @employee.name %> </h1>
       <% if @work_history.current? %>
@@ -9,7 +9,7 @@
               
             
         
-<div class='col-md-6 well center'>
+<div class='col-md-6 well'>
             <strong>Pay:</strong>
            <%= number_to_currency(@work_history.pay) %>
 <h5>

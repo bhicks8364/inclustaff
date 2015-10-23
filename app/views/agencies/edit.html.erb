@@ -2,9 +2,15 @@
 
 
     <%= f.input :name %>
+    <%= f.input :address %>
+    <%= f.input :city %>
+    <%= f.input :state %>
+    <%= f.input :zipcode %>
+    <%= f.input :phone_number %>
+   
     
-    <%= f.association :orders, as: :check_boxes %>
-    <%= f.association :admins %>
+    
+    <%= f.association :contact %>
 
 
 

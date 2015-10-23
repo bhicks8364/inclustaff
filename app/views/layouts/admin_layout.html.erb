@@ -33,6 +33,8 @@
 	<% elsif current_admin.agency? %>
 		<% if current_admin.payroll? %>
 			<%= render 'admin/sidebars/payroll_sidebar' %>
+			<% elsif current_admin.recruiter? %>
+			<%= render 'admin/sidebars/recruiter_sidebar' %>
 		<% else %>
 			<%= render 'admin/sidebars/admin_sidebar' %>
 		<% end %>

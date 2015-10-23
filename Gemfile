@@ -97,6 +97,7 @@ gem 'gon'
 gem 'jquery-turbolinks'
 
 gem 'chartkick'
+gem 'hightop'
 # AUTOCOMPLETE & @MENTIONS
 gem 'jquery-atwho-rails'
 

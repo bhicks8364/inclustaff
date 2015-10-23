@@ -1,6 +1,6 @@
 class WorkHistoriesController < ApplicationController
   before_action :set_work_history, only: [:show, :edit, :update, :destroy]
-  # layout 'admin_layout'
+  layout :determine_layout
   # GET /work_histories
   # GET /work_histories.json
   def index
@@ -81,7 +81,9 @@ class WorkHistoriesController < ApplicationController
       @employee = @work_history.employee if @work_history.present?
       skip_authorization
     end
-
+    def determine_layout
+      current_admin ? "admin_layout" : "application"
+    end
     # Never trust parameters from the scary internet, only allow the white list through.
     def work_history_params
       params.require(:work_history).permit(:employer_name, :start_date, :end_date, :title, :employee_id, :description, :current, :may_contact, :supervisor, :phone_number, :pay)

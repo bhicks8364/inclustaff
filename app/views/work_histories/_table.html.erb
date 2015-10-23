@@ -1,6 +1,6 @@
 
 
-<table class='table table-bordered'>
+<table class='table table-bordered dark white'>
   <thead>
     <tr>
         <th></th>
@@ -36,7 +36,7 @@
         - <%= work_history.end_date.stamp("Dec 2013") %></td>
         <% end %>
         
-        <td><%= work_history.description %></td>
+        <td> <%= highlight(work_history.description, Skill.pluck(:name).to_a, highlighter: '<a href="search?q=\1">\1</a>') %></td>
         
         <td><%= number_to_currency(work_history.pay) %></td>
         <td><%= link_to 'View', work_history, class: 'btn btn-tiny' %></td>

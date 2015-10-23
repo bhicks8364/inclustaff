@@ -52,7 +52,7 @@ class Order < ActiveRecord::Base
     # CALLBACKS
     after_initialize :defaults
     before_validation :set_mark_up
-    after_save :create_keyword_skills
+    after_create :create_keyword_skills
     
     
     
@@ -197,7 +197,7 @@ class Order < ActiveRecord::Base
   end
   
   def matching_skills
-      @listed_skills ||= Employee.joins(:skills).where(name: keywords)
+      @matching_skills ||= Employee.joins(:skills).where(name: keywords)
   end
 
   def matching_employees

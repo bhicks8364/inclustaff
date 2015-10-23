@@ -1,4 +1,4 @@
-<div class='dark'>
+<div class='col-md-12 dark'>
 
   <% if Employee.unassigned.empty? %>
   <div id="no-employees-alert" class="alert alert-danger text-center" role="alert"><br>
@@ -29,51 +29,66 @@
     </div>
 
 <% end %>
-  <div class='col-md-12'>
-
-       <div class="<div class="col-md-3 text-center dark"> form-group">
+<h4 class='page-header'>Add A New Job</h4>
+  <div class='col-md-12 dark'>
+<h4 class=''><%=  @order.try(:title_company) %>  -  <small><%=  @order.try(:pay_range) %></small></h4>
+       <div class="col-md-12 dark form-group">
+         <div class='col-md-6'>
         <% if @employee.nil? %>
-    <%= f.association :employee, collection: Employee.unassigned.order(:last_name), prompt: "Select Employee", label: false %>
+    <%= f.association :employee, collection: Employee.unassigned.order(:last_name), prompt: "Select Employee", label: "Employee" %>
     <% else %>
     <h3 class='text-center'>Assign <%= @employee.name %> to a new position.</h3>
-    <hr>
+   
     <span class='hide-this'>
      <%= f.hidden_field :employee_id, :value => @employee.id %>
     </span>
     <% end %>
+    </div>
+     <div class='col-md-6'>
+      <%= f.input :title, label: "Job Title" %>
+    </div>
+    <div class='col-md-6'>
+      <div class="input-group">
+        <div class="input-group-addon">$</div>
+                  <%= f.input :pay_rate, as: :decimal, input_html: { class: 'form-control'}, placeholder: "Pay Rate", label: false %>
+        <div class="input-group-addon">per hour</div>
+      </div>
+    </div>
+     <div class='col-md-6'>
     <% if current_admin.recruiter? == false %>
     <%= f.association :recruiter, collection: @current_agency.recruiters.order(:last_name), prompt: "Select Recruiter", label: false %>
     <% end %>
     
     <% if @order.present? %>
-     <%= @order.title_company %>
+     
     <%= f.hidden_field :order_id, :value => @order.id %>
-    <% else %>
-
+  <% else %>
  
+      <%= f.input :order_id, collection: @current_agency.companies.distinct, as: :grouped_select, label: false, group_method: :orders, label_method: :title_count, prompt: "Select Job Order", required: true %>
+    
     <% end %>
-    <div class='col-md-6'>
-      <%= f.input :title, placeholder: "Job Title", label: false %>
+   
     </div>
-    <div class='col-md-6'>
-      <%= f.input :order_id, collection: @current.companies.distinct, as: :grouped_select, label: false, group_method: :orders, label_method: :title_count, prompt: "Select Job Order", required: true %>
+    <div class='col-md-9'>
+      <%= f.input :description, as: :text, input_html: { class: 'form-control', rows: 5 }, label: false, placeholder: "Interview notes." %>
+    </div>
+    
+    <div class='col-md-3'>
+       <%= f.input :start_date, as: :string, input_html: { class: 'form-control'}, label: "Start Date" %>
     </div>
     <div class='col-md-12'>
-      <%= f.input :description, as: :text, input_html: { class: 'form-control', rows: 10 }, label: false, placeholder: "Interview notes." %>
+    <div class='form-inline'>
+      <%= f.simple_fields_for :settings do |d| %>
+       
+      <%= d.input :pay_rate, label: false, placeholder: "Pay Rate", input_html: {class: "form-control"} %>
+      <%= d.input :drive_pay, label: false, placeholder: "Drive Pay", input_html: {class: "form-control"} %>
+      <%= d.input :ride_pay, label: false, placeholder: "Ride Pay", input_html: {class: "form-control"} %>
+      <% end %>
     </div>
-    <div class='col-md-6'>
-      <div class="input-group">
-        <div class="input-group-addon">$</div>
-                  <%= f.input :pay_rate, as: :decimal, placeholder: "Pay Rate", label: false %>
-        <div class="input-group-addon">per hour</div>
-      </div>
     </div>
-    <div class='col-md-6'>
-       <%= f.input :start_date, as: :string, input_html: { class: 'form-control'}, label: false %>
-    </div>
-
+   
     
-  <div class='center'>
+  <div class='col-md-12'>
     <%= f.button :submit, "Assign Now", class: "btn btn-success" %>
   </div>
     

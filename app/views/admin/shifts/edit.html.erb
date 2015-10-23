@@ -1,4 +1,5 @@
-<h3>Editing a shift for <%= @employee.name %></h3>
+<div class='dark white'>
+    <h3>Editing a shift for <%= @employee.name %></h3>
 <%= render 'form' %>
 
 
@@ -11,3 +12,5 @@ Total break time: <%= @shift.break_duration %><br>
 
 <%= link_to 'Back to view', admin_shift_path(@shift), class: "btn btn-info" %> 
 <%= link_to 'All Company Shifts', admin_shifts_path, class: "btn btn-info" %>
+
+</div>

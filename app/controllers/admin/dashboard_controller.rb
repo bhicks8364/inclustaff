@@ -27,6 +27,8 @@ class Admin::DashboardController < ApplicationController
     def recruiter
         @current_recruiter = @current_admin if @current_admin.recruiter?
         @recruiter_jobs = @current.jobs.by_recuriter(@current_recruiter.id)
+        @q = Skill.includes(:skillable).ransack(params[:q])
+        @searched_skills = @q.result(distinct: true)
         skip_authorization
     end
     def home

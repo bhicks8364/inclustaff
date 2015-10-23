@@ -1,6 +1,6 @@
-<div class='center main-box'>
+<div class='col-md-12 dark'>
   <h4><strong><%= @job.name_title %></strong></h4>
-  
+  <strong><%= @job.rating %></strong>
    <div class='col-md-4 text-center'>
           
           <h4><small><strong><%= @job.company.name %></strong></small></h4>
@@ -15,7 +15,8 @@
        </div>
        
       Pay: <%= @job.settings['pay_rate'] if @job.settings %><br>
-      Pay2: <%= @job.settings['pay2'] if @job.settings %>
+      Drive Pay: <%= @job.settings['drive_pay'] if @job.settings %><br>
+      Ride Pay: <%= @job.settings['ride_pay'] if @job.settings %>
        
        
        

@@ -28,10 +28,17 @@
 	       
 				
 	        	
+			<% if @current_agency.nil? %>
 				<li><%= link_to new_agency_path do %>
 						Register Now
 					<% end %>
 				</li>
+			<% else %>
+				<li><%= link_to sign_in_path do %>
+						Sign In
+					<% end %>
+				</li>
+			<% end %>
 	      </ul>
 		
       

@@ -8,12 +8,9 @@
         <% end %>
         
     </div>
-    <% if @searched_skills.present? %>
     <div class='list-group'>
-        <%= render(partial: 'skill', collection: @searched_skills) || "There's no skills to be displayed" %>
-       
+        <%= render @searched_skills %>
     </div>
-    <% end %>
     
      
 </div>

@@ -8,8 +8,8 @@
 	        <span class="icon-bar"></span>
 	      </button>
 	      <% if @current_agency.present? %>
-			<%= link_to root_url, id: "logo", class: "navbar-brand" do %>
-				<%= @current_agency.name.titleize %>	
+		<%= link_to root_url, id: "logo", class: "navbar-brand col-md-3 col-sm-3 col-xs-12" do %>
+			<%= @current_agency.name.titleize %>	
 			<% end %>
 		<% else %>
 			<%= link_to root_url, id: "logo", class: "" do %>
@@ -17,29 +17,26 @@
 			 <% end %>
 		<% end %>
 	    </div>
-
+		
 		<button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">
 			<span class="sr-only">Toggle navigation</span>
 			<span class="fa fa-bars"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	       <ul class="nav navbar-nav navbar-right">
-	       	<% if @current.present? && @at_work.any? %>
-					<%= render 'admin/shared/clocked_in' %>
-					<% end %>
-					
-				
-	      	<li> <%= link_to @current_admin.name, @current_admin %></li>
+	       	<% if user_signed_in? %>
+	       		<li> <%= link_to @current_user.name, @current_user %></li>
 	      	 
 	        	
-				<li><%= link_to destroy_admin_session_path, method: :delete do %>
+				<li><%= link_to destroy_user_session_path, method: :delete do %>
 						<i class='fa fa-power-off'></i>
 					<% end %>
 				</li>
+				<% end %>
 	      </ul>
 		
       
-    	</div>
+    </div>
 		
 	
 	</div>

@@ -20,7 +20,7 @@
 #
 
 class Agency < ActiveRecord::Base
-    # belongs_to :admin
+    belongs_to :contact, class_name: "Admin"
     has_many :invoices
     has_many :companies
     has_many :order_events, :through => :orders, :source => 'events'

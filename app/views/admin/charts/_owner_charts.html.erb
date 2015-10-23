@@ -1,0 +1,15 @@
+<div class='col-md-12'>
+  <div class='col-md-4'>
+    <%= line_chart Shift.group_by_hour(:time_in).count %>
+  </div>
+
+  <div class='col-md-4'>
+    <%= pie_chart Skill.group(:name).count %>
+  </div>
+  <div class='col-md-4'>
+    
+    <%= column_chart Admin.account_managers.map{|admin|
+      {name: admin.name, data: admin.account_orders.includes(:jobs => :current_timesheet).group(:account_manager).sum(:total_bill)}
+  } %>
+  </div>
+</div>

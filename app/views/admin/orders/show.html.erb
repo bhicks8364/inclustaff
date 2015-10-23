@@ -1,4 +1,4 @@
-<div class='col-md-12 main-box'>
+<div class='col-md-12 dark'>
   <div class="btn-group btn-group-justified" role="group" aria-label="...">
     <div class="btn-group" role="group">
     <%= link_to(admin_company_path(@company), class: "btn btn-primary") do %>
@@ -37,7 +37,14 @@
 
 <h1>  <%= @company.name %> <small> <%= @order.title%></small></h1>
 
-
+<div class="btn-group" role="group" aria-label="...">
+    <% if policy(@order).update? %>
+      <%= link_to 'Edit Order', edit_admin_order_path(@order), class: "btn btn-primary" %>
+    <% end %>
+    <% if policy(Job).create? %>
+     <%= link_to 'Add Job', new_admin_order_job_path(@order), class: "btn btn-primary" %>
+    <% end %>
+  </div>
 <div class='dark' id="order-tabs">
 
   <!-- Nav tabs -->
@@ -49,12 +56,12 @@
     <li role="presentation"><a href="#applications" aria-controls="applications" role="tab" data-toggle="tab">Applicants</a></li>
   </ul>
   
-  <div class="tab-content">
+  <div class="tab-content col-md-12">
     <div role="tabpanel" class="tab-pane fade in active" id="order">
  
 
   
-  <div class='dark'>
+  <div class='col-md-12 dark'>
     <h4>Open positions: <%= @order.open_jobs %></h4>
     
         <% if @order.urgent? && @order.needs_attention?%>
@@ -63,32 +70,38 @@
 										<i class="fa fa-times-circle fa-fw fa-lg"></i>
 										<strong>URGENT ORDER!!</strong> <%= @order.open_jobs %> people are needed by <strong><%= @order.needed_by.stamp("Sunday, 11/5") %></strong> or SOONER!     <%= link_to "Assign someone now.", new_admin_order_job_path(@order), class: 'alert-link' %>
 									<strong></strong></div><% end %>
-<h2>Skills</h2>
- <h4><%= @order.skills.map {|p| p.name.titleize}.join(", ") %></h4>
- <hr>
+
   <h1><%= @order.active ? "" : "Inactive" %></h1>
-  Mentions
+ 
   <p><strong><%= @order.mentions.map{|p| p.titleize}.join(", ")  %></strong></p>
  
   
-  <div class='well'>
+   
+  <div class='dark col-md-8'>
     <%= highlight(@order.notes, Skill.pluck(:name).to_a, highlighter: '<a href="search?q=\1">\1</a>') %>
-   <%=  %>
   </div>
-  Matching Employees
-  <p><%= @order.matching_employees.map{|p| p.last_name.titleize}.join(", ")  %></p>
-  Mentioned Admins
-  <p><%= @order.mentioned_admins.inspect %></p>
-  Requested Employees
-  <p><%= @order.requested_employees.inspect %></p>
- 
-   <div class='col-md-6'>
+  <div class='col-md-4'>
+    <strong>Shift</strong><br>
+   <%= @order.shift %><br>
+  
+    <strong><%= @order.heavy_lifting ? "Heavy Lifting Required" : "" %></strong>
+    <br><strong><%= @order.stwb ? "STWB Required" : "" %></strong><br>
+  
+    <strong>Mark Up:</strong>
+    <%= @order.mark_up_percent %>
+  
+  </div>
+
+   <div class='col-md-4'>
     <strong>Drug Test </strong><br>
     <%= @order.dt_req %><br>
   
 
     <strong>Background Check </strong><br>
     <%= @order.bg_check %><br>
+     </div>
+
+   <div class='col-md-4'>
 
     <strong>Assignment Type</strong><br>
     <%= @order.est_duration %><br>
@@ -96,42 +109,26 @@
     <strong>Pay Range:</strong><br>
     <%= @order.pay_range %>
    </div>
+  <div class='col-md-4'>
+     <strong>Matching Employees</strong>
+      <p><%= @order.matching_employees.map{|p| p.last_name.titleize}.join(", ")  %></p>
+   <strong>Mentioned Admins</strong>
+      <p><%= @order.mentioned_admins.inspect %></p>
+      <strong>Requested Employees</strong>
+      <p><%= @order.requested_employees.inspect %></p>
+   </div>
+   <div class='col-md-4'>
+     <strong>Skills</strong>
+     <p><%= @order.skills.map {|p| p.name.titleize}.join(", ") %></p>
+   </div>
 
-  <strong>Shift</strong><br>
- <%= @order.shift %><br>
-
-  <strong><%= @order.heavy_lifting ? "Heavy Lifting Required" : "" %></strong>
-  <br><strong><%= @order.stwb ? "STWB Required" : "" %></strong><br>
-
-  <strong>Mark Up:</strong>
-  <%= @order.mark_up_percent %>
-
-
-
-<div id= "order-notes" class="notes" >
-      <strong>Notes:</strong>
-    <p><%= @order.notes %></p>
-  </div>
-   <h4>
-    Listed Skills <small> Keywords from notes matching exisiting skills.</small>
-  </h4>
-  <div class=''>
-   
-  </div>
+ 
 
 
 
 
 
- <div class="btn-group" role="group" aria-label="...">
-    <%= link_to 'All Orders', admin_company_orders_path(@company), class: "btn btn-primary" %>
-    <% if policy(@order).update? %>
-      <%= link_to 'Edit Order', edit_admin_order_path(@order), class: "btn btn-primary" %>
-    <% end %>
-    <% if policy(Job).create? %>
-     <%= link_to 'Add Job', new_admin_order_job_path(@order), class: "btn btn-primary" %>
-    <% end %>
-  </div>
+ 
 
   </div>
   

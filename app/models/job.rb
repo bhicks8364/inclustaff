@@ -52,7 +52,7 @@ class Job < ActiveRecord::Base
     # end
     
         # setup settings
-    store_accessor :settings
+    store_accessor :settings, :rating
     
     
 

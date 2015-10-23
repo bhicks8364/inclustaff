@@ -62,8 +62,8 @@ before_filter :configure_sign_up_params, only: [:create]
   def after_sign_up_path_for(resource)
     if admin_signed_in?
      admin_employee_path(resource.employee)
-    elsif signed_in == false
-    
+    elsif signed_in? == false
+      sign_in(resource)
     end
   end
     

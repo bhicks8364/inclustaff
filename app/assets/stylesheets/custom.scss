@@ -47,11 +47,34 @@
   margin:2px;
 }
 .badge.badge-success { 
-  color:black;
+  color: black;
 }
 .btn.btn-danger {
   padding: 5px;
 }
 .btn {
   -webkit-border-radius: 4px;
+}
+.btn-success { 
+  color: black;
+  font-weight: bold;
+}
+a {
+  text-decoration: none;
+}
+
+// PANELS
+div.panel.panel-primary {
+  border-color: #fff;
+  // border-color: rgba(34, 69, 63, 0.95);
+    .panel-heading {
+    // color: #fff;
+    background-color: rgba(34, 69, 63, 0.75);
+    border-color: #fff;
+    // border: none;
+    
+  }
+}
+.list-group-item-success {
+  background-color: rgba(34, 69, 63, 0.75);
 }

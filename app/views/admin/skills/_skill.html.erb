@@ -1,15 +1,14 @@
 <% if skill.new_record? %>
-
 <% else %>
-<%= div_for(skill) do %>
-
-    <%= skill.required? ? "<i class='fa fa-star'></i>".html_safe : "<i class='fa fa-star-o'></i>".html_safe %> <strong><%= skill.name %></strong>
-    <%= link_to(skill, method: :delete, remote: true) do %>
-				
-						<i class="fa fa-trash-o red pull-right "></i>
-				
-				<% end %>
-
-<% end %>
-
+    <%= div_for(skill) do %>
+    
+        <%= skill.required? ? "<i class='fa fa-star'></i>".html_safe : "<i class='fa fa-star-o'></i>".html_safe %> <strong>
+            <%= skill.name %></strong>
+        <%= link_to(skill, method: :delete, remote: true) do %>
+    	
+    			<i class="fa fa-trash-o red pull-right "></i>
+    	
+    	<% end %>
+    
+    <% end %>
 <% end %>

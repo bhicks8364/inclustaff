@@ -16,7 +16,7 @@
 
         <h4><strong>Job Information</strong></h4>
 <%= @job.employee.name %> <br> <%= @job.order.company_name %>
- 
+ <div class='form-group'>
     <%= f.association :recruiter, collection: @agency.recruiters.order(:last_name), prompt: "Select Recruiter", label: false %>
    
 
@@ -29,23 +29,14 @@
         <%= f.input :start_date, as: :string, input_html: { class: 'datepicker' }, placeholder: "Start date", required: true, label: false %>
 
         <%= f.input :pay_rate, as: :decimal, placeholder: "Pay Rate", label: false %>
-
-                <div class=''>
+      </div>
+                <div class='form-inline'>
     <%= f.simple_fields_for :settings do |d| %>
-    <% @job.settings.try(:each) do |key, value| %>
-        <div class="row">
-          <p class='span3'>
-            <%= text_field_tag key, key, :class => 'text_field dynamicAttributeName' %>
-          </p>
-          <p class='span3'>
-            <%= d.text_field key, :class => 'text_field', :value => value %>
-          </p>
-          <p class='span1'>
-            <a herf='#' class='btn removeRow'>X</a>
-          </p>
-        </div>
+     
+    <%= d.input :pay_rate, label: false, placeholder: "Pay Rate", input_html: {class: "form-control"} %>
+    <%= d.input :drive_pay, label: false, placeholder: "Drive Pay", input_html: {class: "form-control"} %>
+    <%= d.input :ride_pay, label: false, placeholder: "Ride Pay", input_html: {class: "form-control"} %>
     <% end %>
-  <%- end -%>
   </div>
  
 

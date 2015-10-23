@@ -22,7 +22,7 @@
       <% else %>
         <tr class="bg-warning">
       <% end %>
-        <td><%= shift.time_in.strftime("%x") %></td>
+        <td><%= link_to shift.time_in.strftime("%x"), admin_shift_path(shift) %></td>
         <td><%= link_to shift.employee.name, admin_employee_path(shift.employee) %></td>
         <td><%= shift.time_in.strftime("%I:%M %p") %></td>
         

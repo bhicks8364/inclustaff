@@ -128,6 +128,7 @@ Rails.application.routes.draw do
     resources :skills do
       collection do
         get 'autocomplete'
+        post 'import'
       end
     end
     
