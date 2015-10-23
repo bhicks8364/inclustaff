@@ -1,18 +1,16 @@
 
 <%= link_to event, class: 'list-group-item list-group-item-success' do %>
+	<%= user_signed_in? ? "You" : event.user.name %> applied  to <strong> <%= event.eventable.title_company %></strong>  
 
-	<% if event.user == current_user %>
-		You
+	<% if event.user.assigned? %>
+		<span class='label label-danger pull-right'>
+		   Assigned
+		</span>
 	<% else %>
-<span class='pull-left'>	<%= event.user.name %></span>
-	
+		<span class='label label-success pull-right'>
+		    <%= event.created_at.stamp('11/13') %>
+		</span>
 	<% end %>
-
-<span class='headline'>	applied to <strong> to <%= event.eventable.title %></strong>  </span>
-
-	
-	<span class='badge badge-success pull-right'>
-	    <%= event.created_at.stamp('11/13') %>
-	</span>
 	
 <% end %>
+

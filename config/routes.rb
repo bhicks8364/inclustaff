@@ -50,7 +50,6 @@ Rails.application.routes.draw do
         end
       end
       
-      resources :shifts
       resources :timesheets do
         collection do
           get 'past'
@@ -72,7 +71,6 @@ Rails.application.routes.draw do
       end
 
       resources :jobs, shallow: true do
-  
         resources :timesheets, shallow: true do
           collection do
             get 'past'
@@ -81,7 +79,6 @@ Rails.application.routes.draw do
             patch 'approve'
           end
         end
-  
         member do
           patch 'clock_in'
           patch 'clock_out'
@@ -94,6 +91,7 @@ Rails.application.routes.draw do
           patch 'clock_out'
           patch 'break_start'
           patch 'break_end'
+          patch 'remove_breaks'
         end
       end
       

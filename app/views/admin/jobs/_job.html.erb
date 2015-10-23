@@ -1,22 +1,19 @@
-<div class="well well-sm" data-behavior="job-list">
+<div class="" data-behavior="job-list">
     <div data-behavior="job" data-id="<%= job.id %>">
-
+        <span data-behavior='shift-state'>
+             <strong> <%= link_to job.employee.first_name, admin_employee_path(job.employee), class: 'table-link' %>
+             is currently <%= job.current_shift.try(:state) || job.shifts.last.try(:state) %></strong>
+        </span>
         
            <% if job.on_shift? %>
-           <br>
-           <span data-behavior='shift-state'>
-    <strong> <%= link_to job.employee.first_name, admin_job_path(job), class: 'table-link' %> is currently clocked in.</strong><br>
-             
-           
-           </span>
+          
              <span data-behavior="time-in">
                   <small><strong> In:</strong> <%= job.current_shift.time_in.strftime("%l:%M%P") %></small>
             </span>
-            
-               
             <button data-behavior="job-out-button_<%= job.id %>" class='btn btn-danger'>
-            <i class='fa fa-sign-out'></i> Clock Out
-          </button>
+                <i class='fa fa-sign-out'></i> Clock Out
+            </button>
+            
           <button data-behavior="job-in-button_<%= job.id %>" class='hide-this btn btn-success'>
             <i class='fa fa-sign-out'></i> Clock In
           </button>
@@ -25,12 +22,7 @@
 
         <% else %>
         
-        <span data-behavior='shift-state'>
-             <strong> <%= link_to job.employee.first_name, admin_employee_path(job.employee), class: 'table-link' %>
-             is currently clocked out.</strong><br>
-             
-           
-           </span>
+        
         <span data-behavior="time-in">
           
         </span>

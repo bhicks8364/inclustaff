@@ -27,137 +27,65 @@
 #
 
 class Admin < ActiveRecord::Base
+  include ArelHelpers::ArelTable
+  include ArelHelpers::JoinAssociation
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
+         
   belongs_to :company
   belongs_to :agency
   has_many :events
   has_many :eventables, :through => :events
   has_many :orders, :through => :company
-
   has_many :jobs, :through => :orders
   has_many :employees, :through => :jobs
-  has_many :shifts, :through => :company
+  # has_many :shifts, :through => :company
   has_many :skills, :through => :orders
-  include ArelHelpers::ArelTable
-  include ArelHelpers::JoinAssociation
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+  has_many :recruiter_jobs, class_name: "Job", foreign_key: "recruiter_id"
+  has_many :account_orders, class_name: "Order", foreign_key: "account_manager_id"
+  
+  scope :company_admins,   -> { where.not(company_id: nil)}
+  scope :agency_admins,    -> { where(company_id: nil)}
+  scope :account_managers, -> { where(role: "Account Manager")}
+  scope :owners,           -> { where(role: "Owner")}
+  scope :payroll_admins,   -> { where(role: "Payroll")}
+  scope :hr,               -> { where(role: "HR")}
+  scope :recruiters,       -> { where(role: "Recruiter")}
+  scope :limited,          -> { where(role: "Limited Access")}
          
-  before_save :set_username
+  before_validation :set_username
   
   # validates :agency_id, presence: true, unless: ->(admin){admin.company_id.present?}
   # validates :company_id, presence: true, unless: ->(admin){admin.agency_id.present?}
   
-    validates_numericality_of :company_id, allow_nil: true
-    validates_numericality_of :agency_id, allow_nil: true
-
-
+  validates_numericality_of :company_id, allow_nil: true
+  validates_numericality_of :agency_id, allow_nil: true
     # validate :company_xor_agency
     
-
-  
+  def name;             "#{first_name} #{last_name}"; end
+  def to_s;             name; end
+    
+  def agency?;          agency_id? && company_id.nil?;  end
+  def company?;         company_id?;  end
+  def account_manager?; role == "Account Manager"; end
+  def owner?;           role == "Owner";  end
+  def payroll?;         role == "Payroll"; end
+  def recruiter?;       role == "Recruiter";  end
+  def hr?;              role == "HR"; end
+  def limited?;         role == "Limited Access"; end
          
-  
-  scope :account_managers, -> { where(role: "Account Manager")}
-  scope :company_admins, -> { where.not(company_id: nil)}
-  scope :agency_admins, -> { where(company_id: nil)}
-  scope :owners, -> { where(role: "Owner")}
-  scope :payroll_admins, -> { where(role: "Payroll")}
-  scope :hr, -> { where(role: "HR")}
-  scope :recruiters, -> { where(role: "Recruiter")}
-  scope :limited, -> { where(role: "Limited Access")}
-  
-  
-  
-  def recruiter_jobs
-    Job.by_recuriter(self.id) if self.recruiter?
-  end
-  # scope :top_recruiters, -> { recruiter_jobs.joins(:current_timesheet).
-         
-  def agency?
-    if self.agency_id != nil
-      true
+  def timesheets
+    if recruiter?
+      recruiter_jobs.includes(:timesheets)
+    elsif account_manager?
+      account_orders.includes(:jobs => :timesheets)
+    elsif company?
+      Company.find(company_id).timesheets
     else
-      false
+      Timesheet.all
     end
   end
-  
-  def company?
-    if self.company_id != nil
-      true
-    else
-      false
-    end
-  end
-  
-  def account_manager?
-    if self.role == "Account Manager"
-      true
-    else
-      false
-    end
-  end
-  def owner?
-    if self.role == "Owner"
-      true
-    else
-      false
-    end
-  end
-  def payroll?
-    if self.role == "Payroll"
-      true
-    else
-      false
-    end
-  end
-  def recruiter?
-    if self.role == "Recruiter"
-      true
-    else
-      false
-    end
-  end
-  def hr?
-    if self.role == "HR"
-      true
-    else
-      false
-    end
-  end
-  def limited?
-    if self.role == "Limited Access"
-      true
-    else
-      false
-    end
-  end
-         
-  def name
-    "#{first_name} #{last_name}"
-  end
-  def to_s
-    name
-  end
-  
-    # def manager_timesheets
-  #   if self.manager?
-  #     self.orders.collect { |a| a.book } 
-  #   end
-  # end  
-  def account_orders
-    Order.by_account_manager(self.id)
-  end
-  def personal_events
-    Event.admin_events(self.id)
-  end
-  
-  
-  def recruiter_jobs
-    Job.by_recuriter(self.id) if self.recruiter?
-  end
-  
+ 
   def current_billing
     if self.recruiter? && self.recruiter_jobs.any?
       recruiter_jobs.joins(:current_timesheet).sum(:total_bill)
@@ -186,7 +114,7 @@ class Admin < ActiveRecord::Base
   end
          
     def set_username
-      self.username = self.name.gsub(/\s(.)/) {|e| $1.upcase}
+      self.username = name.gsub(/\s(.)/) {|e| $1.upcase}
     end
          
          
@@ -197,9 +125,5 @@ class Admin < ActiveRecord::Base
         errors.add(:base, "Specify a company or an agency, not both")
       end
     end     
-         
-         
-         
-         
-         
+
 end

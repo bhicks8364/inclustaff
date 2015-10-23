@@ -8,8 +8,8 @@
 			<h5 class="center"><strong>This Week Timesheets</strong>	  	</h5>
 	
 
-			<span class="badge badge-success center fill"><%= @current.timesheets.current_week.approved.try(:count) %> Approved </span>
-			<span class="badge badge-default center fill"><%= @current.timesheets.current_week.pending.try(:count) %> Pending </span>
+			<span class="badge badge-success center fill"><%= Timesheet.current_week.approved.try(:count) %> Approved </span>
+			<span class="badge badge-default center fill"><%= Timesheet.current_week.pending.try(:count) %> Pending </span>
 		<br>
 		
 
@@ -27,8 +27,8 @@
 		<div class='main-box'>
 			<h5 class="center"><strong>Last Week Timesheets</strong>	  	</h5>
 		
-			<span class="badge badge-success center fill"><%= @current.timesheets.last_week.approved.try(:count) %> Approved </span>
-			<span class="badge badge-default center fill"><%= @current.timesheets.last_week.pending.try(:count) %> Pending </span>
+			<span class="badge badge-success center fill"><%= Timesheet.last_week.approved.try(:count) %> Approved </span>
+			<span class="badge badge-default center fill"><%= Timesheet.last_week.pending.try(:count) %> Pending </span>
 			<br>
 			<%= link_to(past_admin_timesheets_path, class: "btn btn-primary center fill") do %>
 				<strong>View Past Timesheets</strong>
@@ -41,9 +41,9 @@
 
 	<div class="col-md-3 col-sm-6 col-xs-6  text-center">
 		<div class="main-box">
-		<% if @timesheets.last_week.pending.any? %>
+		<% if Timesheet.last_week.pending.any? %>
 		
-			Pending: <%= @timesheets.last_week.pending.count %>
+			Pending: <%= Timesheet.last_week.pending.count %>
 				<%= link_to(past_admin_timesheets_path, class: "btn btn-primary") do %>
 					<i class='fa fa-list-alt center2 fa-fw'></i> Last Week Timesheets
 				<% end %>
@@ -52,7 +52,7 @@
 		<i class="fa fa-check fa-1x"></i> 
 			All of last week's timesheets have been approved.
 		<hr>
-				<%= link_to(past_admin_timesheets_path(@timesheets, format: :csv), class: 'btn btn-success fill') do %>
+				<%= link_to(past_admin_timesheets_path(Timesheet, format: :csv), class: 'btn btn-success fill') do %>
   					<i class="fa fa-download fa-1x fa-fw"></i><strong> Export to CSV</strong>
   				<% end %>
 				
@@ -69,7 +69,7 @@
 			<strong>New Employees</strong>
 			<br>
 			<ul>
-				<% Employee.newly_added.limit(3).each do |employee| %>
+				<% @newly_added.limit(3).each do |employee| %>
 			<li class='list-item'><%= employee.name %></li>
 			
 			

@@ -62,7 +62,7 @@
 <div class="col-md-6">
   <div class="panel panel-primary dark">
     <div class="panel-heading">
-      <h3 class="panel-title"><strong>Invoices</strong></h3>
+      <h3 class="panel-title"><strong>Invoices</strong><span class='label label-default pull-right black'> <%= number_to_currency(@current_agency.invoices.unpaid.sum(:total)) %></strong></h3>
     </div>
     <div class="panel-body">
       <% @current_agency.invoices.order(:week).each do |invoice| %>

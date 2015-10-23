@@ -1,21 +1,15 @@
-
-   <%= link_to admin_order_path(order), class: 'list-group-item list-group-item-success center' do %>
-       
+<div class=''>
+   <%= link_to admin_order_path(order), class: 'list-group-item list-group-item-success' do %>
+        <p class='list-group-item-heading'><%= order.company.name %></p>
        
         <h5><%= order.title %>
-         <span class='badge badge-danger'><%= order.needed_by? ? order.needed_by.strftime("%B %e, %Y") : "n/a" %></span>
+            <span class='label label-info black pull-right'>Open jobs: <%= order.open_jobs %> </span>
         </h5>
+       <span class='label label-danger pull-right'><%= order.needed_by? ? order.needed_by.strftime("%B %e, %Y") : "n/a" %></span>
+        <p class='list-group-item-text'><strong><%= order.pay_range %></strong> <small><%= order.account_manager.try(:name) || "Unavailable" %></small></p>
        
-        <span class='badge badge-success'>Pay range: <%= order.pay_range %></span>
-        <span class='badge badge-info'>Open jobs: <%= order.open_jobs %> </span>
-        <br>
-          <span class='badge badge-info'> Account Manager: <%= order.account_manager.try(:name) %> 
-        
-        </span>
-<br>
-       
-
       <% end %>
+</div>
       
 
 

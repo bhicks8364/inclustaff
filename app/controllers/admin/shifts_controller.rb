@@ -58,6 +58,18 @@ class Admin::ShiftsController < ApplicationController
     end
     skip_authorization
   end
+  def remove_all_breaks
+    @shift = Shift.find(params[:id])
+    # @shift.remove_all_breaks!
+    
+    @shift.update(
+        breaks:        [],
+        break_in:      [],
+        break_out:     [],
+        break_duration: 0
+        )
+    skip_authorization
+  end
 
   # POST /shifts
   # POST /shifts.json

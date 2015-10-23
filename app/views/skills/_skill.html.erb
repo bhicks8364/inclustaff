@@ -1,12 +1,17 @@
 <% if skill.job_order? %>
 	<%= link_to(admin_order_path(skill.skillable), class: 'list-group-item list-group-item-success') do %>
-		<span class='pull-right'><%= skill.name %></span>
- 		   	<%= skill.skillable.try(:title_company) %>
+ 		<p class="list-group-item-heading"><%= skill.name %></p>
+    	<p class="list-group-item-text">
+    		<%= skill.skillable.try(:title_company) %>
+    	</p>   	
+ 		   
 	<% end %>
 <% elsif skill.employee? %>
-	<%= link_to(admin_employee_path(skill.skillable), class: 'list-group-item list-group-item-danger') do %>
-		<span class='pull-right'><%= skill.name %></span>
- 		   	<%= skill.skillable.try(:name) %>
+	<%= link_to(admin_employee_path(skill.skillable), class: 'list-group-item list-group-item-info') do %>
+	<p class="list-group-item-heading"<%= skill.name %></p>
+    <p class="list-group-item-text"><%= skill.skillable.try(:name) %></p>
+ 		   	
+ 		 
 	<% end %>
 
 

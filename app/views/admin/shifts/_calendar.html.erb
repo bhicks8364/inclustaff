@@ -1,4 +1,4 @@
-<div class="center">
+<div class="dark wjite">
 
 	<%= month_calendar(attribute: :time_in, events: @shifts) do |date, shifts| %>
 	
@@ -7,7 +7,7 @@
   <% shifts.each do |shift| %>
     <div class='fill'>
       <%= link_to shift.employee.name, admin_shift_path(shift) %>
-      <strong><%= shift.hours_worked %> </strong>
+      <strong><%= shift %> </strong>
     </div>
   <% end %>
 <% end %>

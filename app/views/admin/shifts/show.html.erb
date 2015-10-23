@@ -1,12 +1,13 @@
 
-<div class='main-box'>
+<div class='col-md-12 main-box'>
  <h1><%= @shift.state %></h1>
     <h3 class="page-header">
   <strong> <%= @employee.name %>  <small> <%= @job.title %> - <%= @job.pay_rate %>/hr</small></strong>
   
 </h3>
-
-  <div class='well col-md-6'>
+ 
+  <div class='col-md-6'>
+    <h4><%= @shift.took_a_break? %></h4>
     <% if @shift.clocked_out? %>
   <%= distance_of_time_in_words(@shift.time_in, @shift.time_out, include_seconds: true) %> ago
   <br>
@@ -20,36 +21,34 @@
     <%= @employee.code %><br>
 
   </div>
-
-
-  <div class='well col-md-6'>
-   
+  <div class='col-md-12'>
+    <div class='dark' id='breaks'>
+   <%= link_to 'Remove All Breaks', remove_breaks_admin_shift_path(@shift), method: :patch, remote: true, class: "btn btn-danger" %>
     <div class='col-md-6'>
-      <% if @shift.break_out.present? %>
+   
         <h4>Break Start Times:</h4>
          <div id='break-out-list' class='list-group'>
         <% @shift.break_out.each do |break_began| %>
         <li class='list-group-item'><strong> <%= break_began.strftime('%r') %></strong></li>
         <% end %>
         </div> 
-      <% end %>
+   
     </div>
     <div class='col-md-6'>
-      <% if @shift.break_in.present? %>
         <h4>Break End Times:</h4>
        <div id='break-in-list' class='list-group'>
           <% @shift.break_in.each do |break_ended| %>
              <li class='list-group-item'><strong> <%= break_ended.strftime('%r') %></strong></li>
-          <% end %>
-       </div> 
        
-        
-        
+
       <% end %>
+      </div> 
     </div>
-    <hr>
-    <div class='center'>
-      
+</div>
+
+    <div class='col-md-6 dark'>
+      <span id='break-in-time'></span>
+      <span id='break-out-time'></span>
       <% if @shift.on_break? %>
       <%= link_to "End Break", break_end_admin_shift_path(@shift), method: :patch, remote: true, class: 'btn btn-danger', id: 'end-break-btn' %>
        <%= link_to "Start Break", break_start_admin_shift_path(@shift), method: :patch, remote: true, class: 'btn btn-success hide-this', id: 'start-break-btn' %>
@@ -63,32 +62,23 @@
   </div>
 
 
-<div class='well'>
-  <hr>
-Total Break Time: <%= @shift.break_duration %><br>
-Total Acual Time: <%= @shift.time_worked %><br>
-<hr>
-Total (w/ paid breaks): <%= @shift.hours_worked * @job.pay_rate %><br>
-Total (w/ unpaid break): <%= @shift.pay_time * @job.pay_rate %><br>
-Total Earnings: <%= number_to_currency(@shift.earnings) %><br>
-
-<hr>
-Breaks Started: <%= @shift.break_out.try(:count) %><br>
-Breaks Ended: <%= @shift.break_in.try(:count) %><br>
-Total: <%= @shift.breaks.try(:count) %><br>
-</div>
-<hr>
-<br>
-<%= link_to 'View Employee', admin_employee_path(@employee), class: "btn btn-info" %> 
-<%= link_to 'View Timesheet', admin_timesheet_path(@shift.timesheet), class: "btn btn-info" %>
-
-<%= link_to 'Edit', edit_admin_shift_path(@shift), class: "btn btn-primary" %>
-<%= link_to 'Delete', admin_shift_path(@shift), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
-
-  <div class='' data-behavior="timesheet-list">
-    <%= render @timesheet %> 
-  </div>
   <div class='well'>
-    <%= render @job %> 
+    Total Break Time: <%= @shift.break_duration %><br>
+    Total Acual Time: <%= @shift.time_worked %><br>
+    <hr>
+    Total (w/ paid breaks): <%= @shift.hours_worked * @job.pay_rate %><br>
+    Total (w/ unpaid break): <%= @shift.pay_time * @job.pay_rate %><br>
+    Total Earnings: <%= number_to_currency(@shift.earnings) %><br>
+    
+    Breaks Started: <%= @shift.break_out.try(:count) %><br>
+    Breaks Ended: <%= @shift.break_in.try(:count) %><br>
+    Total: <%= @shift.breaks.try(:count) %><br>
   </div>
+
+  <%= link_to 'View Employee', admin_employee_path(@employee), class: "btn btn-info" %> 
+  <%= link_to 'View Timesheet', admin_timesheet_path(@shift.timesheet), class: "btn btn-info" %>
+  
+  <%= link_to 'Edit', edit_admin_shift_path(@shift), class: "btn btn-primary" %>
+  <%= link_to 'Delete', admin_shift_path(@shift), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+
 </div>

@@ -20,7 +20,7 @@
 
   <h5><strong>Information about this position:</strong></h5>
     <div id= "order-notes" class="notes" >
-      <p><%= @order.notes %></p>
+      <p><%= highlight(@order.notes, Skill.pluck(:name).to_a, highlighter: '<strong>1</strong>') %></p>
     </div>
 <%= @listed_skills %>
 <p>

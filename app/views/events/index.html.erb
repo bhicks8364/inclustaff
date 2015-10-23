@@ -1,9 +1,24 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Listing Events</h1>
-
-<% @events.each do |event| %>
-  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
-    <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
-  <% end %>
-<% end %>
+<div class='col-md-12 main-box'>
+  <div class='col-md-6'>
+    <h1>Applications</h1>
+    <%= render 'events/applications' %>
+  </div>
+  <div class='col-md-6'>
+    <h1>Admin Events</h1>
+  
+    <% @events.admin.each do |event| %>
+      <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+        <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class='col-md-12'>
+    <h1>Employee Events</h1>
+  
+    <% @events.employee.each do |event| %>
+      <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+        <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

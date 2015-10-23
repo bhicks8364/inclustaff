@@ -58,7 +58,7 @@
 		<div class="dark well">
 			<h5 class="text-center">Agency Billing</h5>
 			
-		<strong>This week:</strong> <%= number_to_currency(@current_agency.timesheets.current_week.sum(:gross_pay)) %><br>
+		<strong>This week:</strong> <%= number_to_currency(@current_agency.timesheets.current_week.sum(:total_bill)) %><br>
 			<strong>Last week:</strong> <%= number_to_currency(@current_agency.timesheets.last_week.sum(:total_bill)) %>
 		
 		</div>

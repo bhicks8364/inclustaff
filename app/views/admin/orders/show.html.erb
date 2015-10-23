@@ -1,4 +1,11 @@
 <div class='col-md-12 dark'>
+  <% if @order.urgent? && @order.needs_attention?%>
+    <div class="alert alert-danger fade in">
+  		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+  		<i class="fa fa-times-circle fa-fw fa-lg"></i>
+  		<strong>URGENT ORDER!!</strong> <%= @order.open_jobs %> people are needed by <strong><%= @order.needed_by.stamp("Sunday, 11/5") %></strong>  &nbsp;  <%= link_to "Assign someone now.", new_admin_order_job_path(@order), class: 'alert-link pull-center' %>
+  	</div>
+  <% end %>
   <div class="btn-group btn-group-justified" role="group" aria-label="...">
     <div class="btn-group" role="group">
     <%= link_to(admin_company_path(@company), class: "btn btn-primary") do %>
@@ -35,7 +42,7 @@
     
   </div>
 
-<h1>  <%= @company.name %> <small> <%= @order.title%></small></h1>
+<h1>  <%= @order.title_company %> </h1>
 
 <div class="btn-group" role="group" aria-label="...">
     <% if policy(@order).update? %>
@@ -64,12 +71,7 @@
   <div class='col-md-12 dark'>
     <h4>Open positions: <%= @order.open_jobs %></h4>
     
-        <% if @order.urgent? && @order.needs_attention?%>
-        <div class="alert alert-danger fade in">
-										<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-										<i class="fa fa-times-circle fa-fw fa-lg"></i>
-										<strong>URGENT ORDER!!</strong> <%= @order.open_jobs %> people are needed by <strong><%= @order.needed_by.stamp("Sunday, 11/5") %></strong> or SOONER!     <%= link_to "Assign someone now.", new_admin_order_job_path(@order), class: 'alert-link' %>
-									<strong></strong></div><% end %>
+        
 
   <h1><%= @order.active ? "" : "Inactive" %></h1>
  

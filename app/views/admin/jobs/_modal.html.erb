@@ -1,4 +1,4 @@
-<a class='btn btn-default job-button' data-toggle="modal" data-target="#mod_<%= job.id %>">
+<a class='btn btn-primary btn-lg btn-block' data-toggle="modal" data-target="#mod_<%= job.id %>">
 <span class='pull-left'><%= job.company.name %></span><br>
 
 	<span class=''>	<strong><%= job.employee.name%></strong></span><br>
@@ -9,23 +9,20 @@
 <!-- Modal -->
 <div class="modal fade dark" id="mod_<%= job.id %>" tabindex="-1" role="dialog" aria-labelledby="#<%= job.employee.name %>">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div class="modal-content dark">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="#<%= job.employee.name %>">
-          <%= job.name_title%><small> <%= job.company.name %></small></h4>
+        <h4 class="modal-title" id="#<%= job.employee.name %>"><%= job.name_title%></h4>
         
       </div>
       <div class="modal-body">
 
             
-          <div class='col-md-6'>
+         
             <%= render job %>
-          </div>
-          <div class='col-md-6'>
+         
            <strong>Last in:</strong> <%= job.last_clock_in %><br>
            <strong>Last out:</strong> <%= job.last_clock_out %>
-          </div>
           
            
         </div>

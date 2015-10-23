@@ -1,4 +1,4 @@
-<div class='main-box'>
+<div class='col-md-12 main-box'>
   <h1>All Companies</h1>
 
 
@@ -9,8 +9,8 @@
     <tr>
       <th>Name</th>
       
-      <th>Open Orders</th>
-      <th>Timesheets</th>
+      <th>Contact</th>
+      <th></th>
       
       <th>Balance</th>
       <th>This Week Bill</th>
@@ -22,13 +22,13 @@
   <tbody>
     <% @companies.each do |company| %>
       <tr>
-        <td><%= link_to company.name, admin_company_path(company), class: 'btn fill' %></td>
+        <td><%= link_to company.name, admin_company_path(company), class: 'btn btn-primary fill' %></td>
         
-        <td><%= company.orders.needs_attention.count %></td>
+        <td><%= company.contact_name %></td>
         <td><%= company.current_timesheets.try(:count) %> / <%= company.jobs.active.try(:count) %></td>
         <td><%= number_to_currency(company.balance) %></td>
         <td><%= number_to_currency(company.timesheets.current_week.sum(:total_bill) )%></td>
-        <td><%= number_to_currency(company.timesheets.last_week.sum(:total_bill) ) %></td>
+        <td><%= number_to_currency(company.invoices.unpaid.sum(:total) ) %></td>
        
       </tr>
     <% end %>

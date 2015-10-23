@@ -1,11 +1,7 @@
 <div class="list-group">
-					
 	<li class="list-group-item"><div class='text-center'><i class="fa fa-file-text-o fa-fw"></i><strong>&nbsp; Applications</strong></div></li>
-	
-	<% @applications.each do |event| %>
-	  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
-	    <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
-	  <% end %>
+	<% Event.applications.each do |event| %>
+	    <%= render partial: "events/activities/applied", locals: {event: event} %>
 	<% end %>
 		<li role="separator" class="list-group-item divider"></li>
 </div>

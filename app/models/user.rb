@@ -51,6 +51,7 @@ class User < ActiveRecord::Base
   
   scope :unassigned, -> { joins(:employee).merge(Employee.unassigned)}
   
+  before_save :set_code
   
   after_create :set_employee
   
@@ -80,36 +81,36 @@ class User < ActiveRecord::Base
   #   super && employee.assigned?
   # end
   
-  def set_emp_id
-    self.employee_id = self.employee.id
-  end
+  
 
   
-  def name
-    "#{first_name} #{last_name}"
-  end
+  def name; "#{first_name} #{last_name}";end
 
   def employee?
     role == "Employee"
   end
+  def assigned?
+    employee.assigned?
+  end
   
   def set_code
-   self.code = self.first_name[0,1] + self.last_name[0,1] + self.employee.ssn.to_s
+   self.code = first_name[0,1] + last_name[0,1] + rand(1000..9999).to_s
+  end
+  def set_emp_id
+    self.employee_id = employee.id
   end
 
   
   
   def set_employee
-    if role == "Employee"
-      self.employee = Employee.find_or_create_by(email: self.email) do |employee|
+   
+      self.employee.find_or_create_by(email: self.email) do |employee|
         employee.user_id = self.id
         employee.first_name = self.first_name
         employee.last_name = self.last_name
         employee.ssn = 1234
        end
-      
 
-    end
   end
 
 
