@@ -22,14 +22,14 @@
       <% else %>
         <tr class="clocked_out">
       <% end %>
-        <td><%= link_to job.company.name, job.company  %></td>
+        <td><%= job.company.name %></td>
         <td><%= job.title %></td>
         <td><%= job.start_date.strftime("%B %e, %Y") %></td>
         <td><%= number_to_currency(job.pay_rate) %></td>
         <td><%= job.current_week_hours %></td>
         <td><%= number_to_currency(job.current_week_pay) %></td>
         <td><% if job.end_date.nil? %><%= job.active? ? "Active" : "Terminated" %><% else %><%=job.end_date.strftime("%B %e, %Y") %><% end %> </td>
-        <td><%= link_to "<span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span>     View".html_safe, job, class: "btn btn-default btn-sm" %></td>
+        <td><%= link_to "<span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span>     View".html_safe, employee_jobs_path(job), class: "btn btn-default btn-sm" %></td>
         
       </tr>
     <% end %>

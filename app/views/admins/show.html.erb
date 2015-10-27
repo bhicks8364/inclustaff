@@ -85,10 +85,10 @@
 								<h6><%= job.name_title %></h6>
 								<strong><%= job.mark_up_percent %></strong><br>
 								
-									Current bill: <%= number_to_currency(job.current_timesheet.total_bill) %><br>
-									Current pay: <%= number_to_currency(job.current_timesheet.gross_pay) %>
+									Current bill: <%= job.current_timesheet.present? ? number_to_currency(job.current_timesheet.total_bill) : "$0.00" %><br>
+									Current pay:<%= job.current_timesheet.present? ? number_to_currency(job.current_timesheet.gross_pay) : "$0.00" %>
 										 <br>
-									<br><small>Acct Mgr: <%= link_to job.account_manager.name, job.account_manager %></small>
+									<br><small>Acct Mgr: <%= link_to job.account_manager.try(:name), job.account_manager %></small>
 									
 									
 								</div>

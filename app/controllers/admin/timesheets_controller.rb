@@ -27,7 +27,7 @@ class Admin::TimesheetsController < ApplicationController
      	authorize @timesheets
 		end
 		
-		@current_timesheets = @current.timesheets.current_week.order(updated_at: :desc) if @current_agency.present?
+		@current_timesheets = Timesheet.current_week.order(updated_at: :desc) if @current_agency.present?
 		
 		respond_to do |format|
       format.html

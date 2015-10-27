@@ -77,7 +77,7 @@ class Shift < ActiveRecord::Base
           where(time_in: start..ending)}
 
   after_save :update_timesheet!
-  before_save :set_timesheet, :calculate_break, :reg_earnings
+  before_save :set_week, :set_timesheet, :calculate_break, :reg_earnings
   before_create :set_defaults
   
   def clocked_in?; state == "Clocked In"; end
@@ -164,6 +164,14 @@ class Shift < ActiveRecord::Base
       @payable_hours = self.pay_time
       self.earnings = self.job.pay_rate * @payable_hours
       self.time_worked = @payable_hours
+  end
+  def set_week
+    if time_out.nil?
+      self.week = time_in.beginning_of_week.to_datetime.cweek
+    else
+      self.week = time_out.beginning_of_week.to_datetime.cweek
+    end
+    
   end
 
   def update_timesheet!

@@ -21,16 +21,13 @@
 									</li>
 									
 									<% if current_user.employee.assigned? %>
-									<li><%= link_to timeclock_path do %>
+									<li><%= link_to employee_timesheets_path do %>
 										<i class="fa fa-clock-o"></i>
 											<span>Timesheets</span>
 										<% end %>
 									</li>
-									
 
-									
-									
-									<li><%= link_to current_user.current_job do %>
+									<li><%= link_to employee_job_path(current_user.current_job) do %>
 										<i class="fa fa-users"></i>
 											<span>Current Job</span>
 										<% end %>

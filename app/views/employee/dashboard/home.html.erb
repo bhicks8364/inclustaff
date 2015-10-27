@@ -1,4 +1,4 @@
-<div class='col-md-12 main-box'>
+<div class='col-md-12 transbox'>
    <h1> Employee Dashboard</h1>
    
    
@@ -24,14 +24,16 @@
       <div class='well'>
         <%= render 'employee/jobs/job', job: @employee.current_job %>
       </div>
-      <div class='main-box'>
+      <div class='transbox'>
         <%= render 'employee/timesheets/table' %>
       </div>
-      <div class='main-box'>
+      <% if @employee.shifts.any? %>
+      <div class='transbox'>
         <%= render 'employee/shifts/table' %>
       </div>
+      <% end %>
       
-      <div class='main-box'>
+      <div class='transbox'>
         <%= render 'employee/jobs/job', job: @employee.current_job %>
       </div>
     

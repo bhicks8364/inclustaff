@@ -25,7 +25,7 @@
         <% else %>
         
         <span data-behavior='empshift-state'>
-             <strong> <%= link_to job.employee.first_name, job, class: 'table-link' %>
+             <strong> <%= link_to job.employee.first_name, employee_jobs_path(job), class: 'table-link' %>
              is currently clocked out.</strong><br>
              
            
