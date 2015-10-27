@@ -29,17 +29,9 @@
                   <%= f.input :email, required: true, placeholder: "Email  ex. example@email.com", label: false  %>
                   <%= f.input :phone_number, as: :tel, required: true, placeholder: "Phone Number  ex. 555-555-5555", label: false  %>
                   <%= f.input :ssn, required: true, maxlength: 4, label: false, placeholder: "SSN - Last 4 only" %>
-                  <div class='form-group' id='skills'>
-          			    
-          			 <div class='form-group' id='resumes'>
-          			    <%= f.simple_fields_for :resumes do |r| %>
-          			      <%= r.input :name %>
-          			      <%= r.input :body, row: 10 %>
-          			    <% end %>
-          			 </div>
-			    
-        			    <hr>
-                  <%= f.attachment_field :resume, direct: true %>
+                  <%= f.input :tag_list, label: false, placeholder: "Tags (seperated by commas)" %>
+                  
+          			
 
 
             <%= f.button :submit, "Save", class: "btn btn-success" %>

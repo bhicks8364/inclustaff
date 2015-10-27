@@ -1,7 +1,11 @@
-<div class='main-box'>
-    <%= render 'table' %>
+<div class='col-md-12 transbox'>
+    <div class='transbox'>
+      <%= render 'calendar' %>
+      
+    </div>
 <h3>Shifts</h3>
-<%= render 'calendar' %>
+<%= render 'table' %>
+
 <hr>
 <div class='well'>
          <table>
@@ -14,7 +18,7 @@
         Breaks:
         <span>
           <%- shift.breaks.try(:each) do |key, value| -%>
-            <%= key.humanize %>: <%= value.to_datetime %>
+            <%= key.humanize %>: <%= value %>
           <%- end -%>
         </span>
       </td>

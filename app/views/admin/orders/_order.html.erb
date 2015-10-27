@@ -7,7 +7,7 @@
         </h5>
        <span class='label label-danger pull-right'><%= order.needed_by? ? order.needed_by.strftime("%B %e, %Y") : "n/a" %></span>
         <p class='list-group-item-text'><strong><%= order.pay_range %></strong> <small><%= order.account_manager.try(:name) || "Unavailable" %></small></p>
-       
+       <%= order.tags.map {|p| p.name.titleize}.join(", ") %>
       <% end %>
 </div>
       

@@ -27,7 +27,7 @@ class DashboardController < ApplicationController
             @employee = @user.employee
             @events = @user.events.applications
             @applications = @events.applications
-            render "users/show"
+            render "employee/dashboard/home"
         end
             
         
@@ -35,6 +35,9 @@ class DashboardController < ApplicationController
     end
     
     def sign_in_page
+        skip_authorization
+    end
+    def features
         skip_authorization
     end
 

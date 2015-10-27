@@ -67,11 +67,11 @@ class Shift < ActiveRecord::Base
           start = Time.current.beginning_of_week
           ending = start.end_of_week
           where(time_in: start..ending)}
-  scope :in_today, -> {
+  scope :today, -> {
           start = Date.today.beginning_of_day
           ending = Date.today.end_of_day
           where(time_in: start..ending)}
-  scope :in_yesterday, -> {
+  scope :yesterday, -> {
           start = Date.yesterday.beginning_of_day
           ending = Date.today.beginning_of_day
           where(time_in: start..ending)}
@@ -83,7 +83,7 @@ class Shift < ActiveRecord::Base
   def clocked_in?; state == "Clocked In"; end
   def clocked_out?; state == "Clocked Out"; end
   def on_break?; state == "On Break"; end
-  def to_s; "#{self.hours_worked.round(2)}     #{self.time_in.strftime('%m/%d   %r')} - #{self.time_out? ? self.time_out.strftime('%r') : self.state }"; end
+  def to_s; "#{time_in.strftime('%l:%M%P')} - #{time_out? ? time_out.strftime('%l:%M%P') : state }"; end
   def took_a_break?; breaks.any?; end
     
   def calculate_break

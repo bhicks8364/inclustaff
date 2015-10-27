@@ -58,10 +58,9 @@ class Admin::ShiftsController < ApplicationController
     end
     skip_authorization
   end
-  def remove_all_breaks
+  # THIS DOESNT WORK
+  def remove_breaks
     @shift = Shift.find(params[:id])
-    # @shift.remove_all_breaks!
-    
     @shift.update(
         breaks:        [],
         break_in:      [],
@@ -79,7 +78,7 @@ class Admin::ShiftsController < ApplicationController
 
     respond_to do |format|
       if @shift.save
-        format.html { redirect_to dashboard_path, anchor: "job_#{@shift.job_id}", notice: 'Sucessfully clocked in.' }
+        format.html { redirect_to admin_dashboard_path, anchor: "job_#{@shift.job_id}", notice: 'Sucessfully clocked in.' }
         format.json { render :show, status: :created, location: @shift }
       else
         format.html { render :new }
@@ -184,7 +183,7 @@ class Admin::ShiftsController < ApplicationController
 
     @shift.destroy
     respond_to do |format|
-      format.html { redirect_to dashboard_path, notice: 'Shift was successfully destroyed.' }
+      format.html { redirect_to admin_dashboard_path, notice: 'Shift was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

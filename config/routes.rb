@@ -6,12 +6,15 @@ class SubdomainConstraint
 end
 Rails.application.routes.draw do
   root 'dashboard#home'
+  get 'features' => 'dashboard#features'
+  
   resources :agencies
   resources :inquiries
   
   constraints SubdomainConstraint do
     get  'sign_in' => 'dashboard#sign_in_page'  
-    
+    get 'tags' => 'admin/dashboard#all_tags'
+    get 'tags/:tag', to: 'admin/dashboard#tag', as: :tag
     devise_for :admins, controllers: {registrations: 'admins/registrations'}
     devise_for :users, controllers: {registrations: 'users/registrations'}
     
@@ -127,6 +130,7 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
         post 'import'
+        post 'update_all'
       end
     end
     

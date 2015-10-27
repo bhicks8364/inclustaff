@@ -9,6 +9,7 @@
       <th>Pay Range</th>
       <th>Open </th>
       <th>Account Manager</th>
+      <th>Tags</th>
     </tr>
   </thead>
 
@@ -29,7 +30,7 @@
         
         
         <td><%= order.account_manager.present? ? order.account_manager.last_name : "Unassigned" %> </td>
-        
+        <td>Tags: <%= raw order.tag_list.map { |t| link_to t, tag_path(t) }.join(', ') %></td>
        
       </tr>
     <% end %>

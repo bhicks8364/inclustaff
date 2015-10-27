@@ -21,7 +21,7 @@ class Admin::TimesheetsController < ApplicationController
      
       authorize @timesheets 
      else
-     	@timesheets = @current.timesheets.current_week.order(updated_at: :desc)
+     	@timesheets = Timesheet.order(updated_at: :desc)
      	@pending_timesheets = @timesheets.pending
      	@approved_timesheets = @timesheets.approved
      	authorize @timesheets

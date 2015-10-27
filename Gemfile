@@ -101,6 +101,7 @@ gem 'hightop'
 # AUTOCOMPLETE & @MENTIONS
 gem 'jquery-atwho-rails'
 
+gem 'acts-as-taggable-on', '~> 3.4'
 # STATE MACHINE - NOT SURE IF I NEED TO USE THIS {WORKING FINE FOR NOW - MAYBE WHEN THINGS GET MORE COMPLEX}
 gem 'aasm'
 # IDK WHAT SUCKER PUNCH IS - - .....I SHOULD PROLLY FIND OUT

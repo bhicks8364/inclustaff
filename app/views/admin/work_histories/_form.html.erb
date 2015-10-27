@@ -19,7 +19,7 @@
           <%= f.input :start_date, as: :string, input_html: { class: 'datepicker' }, placeholder: "Start date", required: true, label: false %>
     </div>
     <div class="col-md-6">
-        <%= f.input :end_date, as: :string, input_html: { class: 'datepicker' }, placeholder: "End date", required: true, label: false %>
+        <%= f.input :end_date, as: :string, input_html: { class: 'datepicker' }, placeholder: "End date", required: false, label: false %>
     </div>
     <div class='col-md-4'>
 	    <%= f.input :pay, label: false, placeholder: "Pay Rate" %>
@@ -66,4 +66,3 @@
     <%= f.button :submit, "Save", class: 'btn btn-primary fill' %>
   </div>
 <% end %>
-</div>

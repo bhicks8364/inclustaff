@@ -36,7 +36,7 @@
         - <%= work_history.end_date.stamp("Dec 2013") %></td>
         <% end %>
         
-        <td> <%= highlight(work_history.description, Skill.pluck(:name).to_a, highlighter: '<a href="search?q=\1">\1</a>') %></td>
+        <td> <p><%= highlight(work_history.description, work_history.employee.tags.pluck(:name), highlighter: '<a href="/tags?tag=\1">\1</a>') %></p></td>
         
         <td><%= number_to_currency(work_history.pay) %></td>
         <td><%= link_to 'View', work_history, class: 'btn btn-tiny' %></td>

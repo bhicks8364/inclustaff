@@ -86,7 +86,7 @@ class AdminsController < ApplicationController
       @orders = @current_agency.orders if @admin.owner? || @admin.payroll?
       @recruiter_jobs = @admin.recruiter_jobs if @admin.recruiter?
       
-      @jobs = @current_agency.jobs.includes(:timesheets) if @admin.owner? || @admin.payroll?
+      @jobs = Job.includes(:timesheets) if @admin.owner? || @admin.payroll? || @admin.account_manager?
       @timesheets = @current_agency.timesheets if @admin.owner? || @admin.payroll?
 
         skip_authorization

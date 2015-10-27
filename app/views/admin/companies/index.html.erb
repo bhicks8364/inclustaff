@@ -38,17 +38,5 @@
 <br>
 
 <%= link_to 'New Company', new_admin_company_path, class: 'btn btn-success' %>
-<% @top_billing.each do |company| %>
-      <div class='list-group'>
-        <%= link_to company.name, admin_company_path(company) %>
-        
-      
-        <li class='list-group-item list-group-item-success'><%= number_to_currency(company.balance) %></li>
-        <li class='list-group-item list-group-item-success'><%= number_to_currency(company.timesheets.current_week.sum(:total_bill) )%></li>
-        <li class='list-group-item list-group-item-success'><%= number_to_currency(company.timesheets.last_week.sum(:total_bill) ) %></li>
-        <li class='list-group-item list-group-item-success'><%= company.timesheets.maximum(:total_bill)  %></li>
-        <li class='list-group-item list-group-item-success'><%= link_to 'Edit', edit_admin_company_path(company) %></li>
-        <li class='list-group-item list-group-item-success'><%= link_to 'Destroy', admin_company_path(company), method: :delete, data: { confirm: 'Are you sure?' } %></li>
-      </div>
-    <% end %>
+
 </div>

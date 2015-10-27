@@ -4,7 +4,7 @@
 		<h5>	Recent Applicants</h5>
 		
                 <div class='list-group' id='applicants' >
-                    <% @current.order_events.applications.order(created_at: :desc).limit(3).each do |event| %>
+                    <% @current_agency.order_events.applications.order(created_at: :desc).limit(3).each do |event| %>
 						  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
 						    <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
 						  <% end %>

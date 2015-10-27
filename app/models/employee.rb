@@ -22,7 +22,8 @@ class Employee < ActiveRecord::Base
   acts_as_paranoid
   include ArelHelpers::ArelTable
   include ArelHelpers::JoinAssociation
-  
+  acts_as_taggable
+  # acts_as_taggable_on :skills
   belongs_to :user
   has_many :skills, as: :skillable
   has_many :events, :through => :user
@@ -195,6 +196,12 @@ class Employee < ActiveRecord::Base
   def total_all_hours
       self.shifts.sum(:time_worked)
   end
+  def matching_orders
+     @matching_orders ||= Order.needs_attention.tagged_with([tag_list], :any => true)
+  end
+  # def matching_employees
+  #   @matching_employees ||= Employee.unassigned.tagged_with([tag_list], :any => true)
+  # end
   
   #     # EXPORT TO CSV
   # def self.assign_from_row(row)

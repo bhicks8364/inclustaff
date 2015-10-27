@@ -13,6 +13,7 @@
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
+        <li role="presentation"><a href="#matching_orders" aria-controls="matching_orders" role="tab" data-toggle="tab">Recommended Positions</a></li>
         <li role="presentation"><a href="#payroll" aria-controls="payroll" role="tab" data-toggle="tab">Payroll Information</a></li>
         <li role="presentation"><a href="#work_history" aria-controls="work_history" role="tab" data-toggle="tab">Work History</a></li>
         <li role="presentation"><a href="#skills-tab" aria-controls="skills-tab" role="tab" data-toggle="tab">Skills</a></li>
@@ -37,8 +38,13 @@
          
          
          </div>
-            
-            
+    	<div class="col-md-4 tag_cloud">
+    		<h1>Candidate Skills</h1>
+    	  <% tag_cloud @employee.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
+    	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
+    	  <% end %>
+    	</div>
+        
         <% if @employee.unassigned? && @applications.any? %>
         <h2>Applications</h2>
         <div class='list-group'>
@@ -50,14 +56,25 @@
 		</div>
     		<% end %>
         </div>
+    <div role="tabpanel" class="tab-pane fade" id="matching_orders">
+        
+         <h2 class="text-center">Payroll Information  </h2>
+      
+        <div class=''>
+          <% @employee.matching_orders.each do |order| %>
+              <%= render order %>
+          <% end %>
+        </div>
+       
+  
+       
+        
     
+      </div>
       <!--EMPLOYEE PROFILE TAB-->
       <div role="tabpanel" class="tab-pane fade" id="payroll">
         
          <h2 class="text-center">Payroll Information  </h2>
-      
-           
-        
       
         <% if @user.current_sign_in_at %>
          <div class='list-group'>
@@ -148,19 +165,30 @@
           <% end %>
          </div>
             <div  id='skills' class='col-md-4'>
-             
-              <%= render @skills %>
-            
+             <% @employee.skills.each do |skill| %>
+              <%= render "admin/skills/skill", skill: skill %>
+            <% end %>
              
             </div>
              <div class='form col-md-6'>
                <%= render partial: "admin/skills/form", locals: {skillable: @employee} %>
              </div>
+             <div class='col-md-4'>
              
+              <% @employee.tags.each do |tag| %>
+        	    <%= link_to tag.name, tag_path(tag.name) %>
+        	  <% end %>
+           
+             
+            </div>
              
         </div>  
       <!--SETTINGS TAD ADMIN ONLY ----> 
         <div role="tabpanel" class="tab-pane fade" id="settings">
+            <div class='col-md-4'>
+            
+             
+            </div>
            <% if @events.any? %>
           <h4>Employee Events</h4>
             <div class='list-group'>
@@ -173,7 +201,7 @@
       			<% end %>
               <h6>User Updated:<span id="updated-at"> <%= time_ago_in_words(@user.updated_at) %> ago</span></h6>
               <%= link_to "Allow to Edit", grant_editing_user_path(@user), class: "btn btn-primary", method: :patch, remote: true %> 
-              <%= link_to "Edit", edit_user_path, class: 'btn btn-default' %>  
+              <%= link_to "Edit Employee", edit_admin_employee_path, class: 'btn btn-default' %>  
               <hr>
               
                 <div class='list-group'>

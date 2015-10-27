@@ -1,25 +1,22 @@
 <h2>Edit <%= @user.name %></h2>
 
-<%= simple_form_for(@user, html: { method: :put }) do |f| %>
+<%= simple_form_for(@user) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
     <%= f.input :first_name, required: true, placeholder: "First name" %>
     <%= f.input :last_name, required: true, placeholder: "Last name" %>
     <%= f.input :email, required: true, autofocus: true %>
+    <%= f.input :address %>
+    <%= f.input :city %>
+    <%= f.input :state %>
+    <%= f.input :code %>
 
 
-    <%= f.input :current_password, hint: "We need your current password to confirm your changes", required: true %>
-  </div>
-  
-  
-    <% if admin_signed_in? %>
-      <%= f.input :password, autocomplete: "off", hint: "leave it blank if you don't want to change it", required: false %>
-      <%= f.input :password_confirmation, required: false %>
-    <% end %>
+   
 
   <div class="form-actions">
-    <%= f.button :submit, "Update" %>
+    <%= f.button :submit, "Save" %>
   </div>
   
   

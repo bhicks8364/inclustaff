@@ -6,7 +6,7 @@
         </div>
         <div class='col-md-5'>
             <strong><%= work_history.start_date.stamp("December 2013") %> - <%= work_history.end_date.stamp("December 2013") %></strong>
-            <p><%= work_history.description %></p>
+            <p><%= highlight(work_history.description, work_history.employee.tags.pluck(:name).to_a, highlighter: '<a href="/tags?tag=\1">\1</a>') %></p>
         </div>
         <div class='col-md-2'>
             

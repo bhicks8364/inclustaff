@@ -26,7 +26,7 @@
         <td><%= work_history.title %></td>
         <td><%= work_history.start_date.stamp('11/2011') %></td>
         <td><%= work_history.end_date.stamp('11/2011') %></td>
-        <td> <%= highlight(work_history.description, Skill.pluck(:name).to_a, highlighter: '<strong>\1</strong>') %></td>
+        <td> <%= highlight(work_history.description, work_history.employee.tags.pluck(:name), highlighter: '<a href="/tags?tag=\1">\1</a>') %></td>
         
         <td><%= number_to_currency(work_history.pay) %></td>
    
@@ -36,5 +36,7 @@
   </tbody>
 </table>
 </div>
-
+<% if @employee.present? %>
+<%=link_to "Add Work History", new_admin_employee_work_history_path(@employee), class: 'btn btn-primary' %>
+<% end %>
 </div>

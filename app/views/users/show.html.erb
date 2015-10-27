@@ -3,19 +3,32 @@
 
 <span id="user-role">  <strong><% if @user.can_edit? %> <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> <% end %></strong> </h3></span> 
           
-        
+<% if admin_signed_in? %>        
 <%= link_to "Employee Page", admin_employee_path(@employee), class: 'btn btn-primary btn-lg' %>
- 
-
-
+ 	<div class="col-md-4 tag_cloud">
+    		<h1><%= @employee.first_name %>'s Skills</h1>
+    	  <% tag_cloud @employee.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
+    	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
+    	  <% end %>
+    	</div>
+<% elsif user_signed_in? %>
+    <%= link_to "Employee Page", employee_home_path(@employee), class: 'btn btn-primary btn-lg' %>
+ 	<div class="col-md-4 tag_cloud">
+    		<h1><%= @employee.first_name %>'s Skills</h1>
+    	  <% tag_cloud @employee.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
+    	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
+    	  <% end %>
+    	</div>
+<% end %>
+<%= link_to "Edit Profile", edit_user_path(@user), class: "btn btn-primary" %>
 <!--NAV TABS-->
-<div id='profile-nav' class='well'>
+<div id='profile-nav' class=''>
 
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
     <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
-    <li role="presentation"><a href="#skills" aria-controls="skills" role="tab" data-toggle="tab">Skills</a></li>
+    <li role="presentation"><a href="#skills-tab" aria-controls="skills-tab" role="tab" data-toggle="tab">Skills</a></li>
     <li role="presentation"><a href="#work_history" aria-controls="work_history" role="tab" data-toggle="tab">Work History</a></li>
     <% if @employee.assigned? %>
     <li role="presentation"><a href="#current-job" aria-controls="current-job" role="tab" data-toggle="tab">Current Job</a></li>
@@ -61,26 +74,31 @@
       
     
   </div>
-  <div role="tabpanel" class="tab-pane fade" id="skills">
-    
-    <% if @employee.skills.any? && user_signed_in? %>
-     <div class='col-md-4 dark'>
+  <div role="tabpanel" class="tab-pane fade" id="skills-tab">
+       <div class='transbox'>
+        <% if @skills.any? %>
+     
            <h4 class='text-center'>Skills</h4>
-          <% if @skills.count < 1 %>
-           <h4 id='no-skills' class="center">This employee has no skills entered.</h4>
-          <% end %>
-            <div  id='skills' class='well'>
-              <%= render @skills %>
+
+            <div id='skills' class='center'>
+              <% @skills.each do |skill| %>
+                  <%= render 'admin/skills/skill', skill: skill %>
+              <% end %>
              
-            </div>
-             <div class='form-inline center'>
+             </div>
+              
+          <% else %>
+           <h4 id='no-skills' class="center"><%= @employee.first_name %> has no skills entered.</h4>
+              <div id='skills' class='center'>
+                  
+              </div>
+          <% end %>
+          <div class='form-inline'>
                <%= render partial: "admin/skills/form", locals: {skillable: @employee} %>
              </div>
-          </div>  
 
-      <% end %>
-
-  </div>
+      </div>
+  </div>  
   <div role="tabpanel" class="tab-pane fade" id="profile">
     <% if @user.current_sign_in_at %>
     <ul class="ip-log">
@@ -144,20 +162,24 @@
             
   </div>
   <div role="tabpanel" class="tab-pane fade" id="work_history">
-    
+    <div class='transbox'>
     <% if @employee.work_histories.any? %>
-     <div class='well table-responsive'>
+     <div class=' table-responsive'>
        
-       <%= render 'work_histories/table' %>
+       <%= render 'admin/work_histories/table' %>
        <% if admin_signed_in? %>
          <%=link_to "Add Work History", new_admin_employee_work_history_path(@employee), class: 'btn btn-primary' %>
        <% elsif user_signed_in? %>
          <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
        <% end %>
-   
+   </div>
     <% else %>
       <p>No Work History Available.</p>
- <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
+       <% if admin_signed_in? %>
+         <%=link_to "Add Work History", new_admin_employee_work_history_path(@employee), class: 'btn btn-primary' %>
+       <% elsif user_signed_in? %>
+         <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
+       <% end %>
     <% end %>
      </div>
        

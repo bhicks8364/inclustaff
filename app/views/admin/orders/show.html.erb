@@ -57,6 +57,7 @@
   <!-- Nav tabs -->
   <ul id="order-nav" class="nav nav-tabs nav-justified" role="tablist">
     <li role="presentation" class="active"><a href="#order" aria-controls="order" role="tab" data-toggle="tab">Order Info.</a></li>
+    <li role="presentation"><a href="#matches" aria-controls="matches" role="tab" data-toggle="tab">Matching Candidates</a></li>
     <li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li>
     <li role="presentation"><a href="#active-jobs" aria-controls="active-jobs" role="tab" data-toggle="tab">Active Jobs</a></li>
     <li role="presentation"><a href="#skills-tab" aria-controls="skills-tab" role="tab" data-toggle="tab">Skills</a></li>
@@ -65,22 +66,18 @@
   
   <div class="tab-content col-md-12">
     <div role="tabpanel" class="tab-pane fade in active" id="order">
- 
 
-  
   <div class='col-md-12 dark'>
     <h4>Open positions: <%= @order.open_jobs %></h4>
-    
-        
 
   <h1><%= @order.active ? "" : "Inactive" %></h1>
  
   <p><strong><%= @order.mentions.map{|p| p.titleize}.join(", ")  %></strong></p>
- 
+
   
    
   <div class='dark col-md-8'>
-    <%= highlight(@order.notes, Skill.pluck(:name).to_a, highlighter: '<a href="search?q=\1">\1</a>') %>
+    <%= highlight(@order.notes, @order.tags.pluck(:name).to_a, highlighter: '<a href="/tags?tag=\1">\1</a>') %>
   </div>
   <div class='col-md-4'>
     <strong>Shift</strong><br>
@@ -112,8 +109,7 @@
     <%= @order.pay_range %>
    </div>
   <div class='col-md-4'>
-     <strong>Matching Employees</strong>
-      <p><%= @order.matching_employees.map{|p| p.last_name.titleize}.join(", ")  %></p>
+     
    <strong>Mentioned Admins</strong>
       <p><%= @order.mentioned_admins.inspect %></p>
       <strong>Requested Employees</strong>
@@ -123,17 +119,23 @@
      <strong>Skills</strong>
      <p><%= @order.skills.map {|p| p.name.titleize}.join(", ") %></p>
    </div>
+   <div class='col-md-4'>
+     <strong>Tags</strong>
+     <p><%= @order.tags.map {|p| p.name.titleize}.join(", ") %></p>
+   </div>
 
- 
-
-
-
-
-
- 
 
   </div>
   
+  </div>
+  <!--MATCHING CANDIDATES TAB-->
+  <div role="tabpanel" class="tab-pane fade" id="matches">
+     <div class='transbox'>
+       
+       <strong>Matching Employees</strong>
+          <p><%= render @order.matching_employees %></p>
+           <p><strong><%= @order.matching_skills.map {|p| p.name.titleize}.join(", ")  %></strong></p>
+     </div>
   </div>
   <!--JOBS TAB-->
   <div role="tabpanel" class="tab-pane fade" id="active-jobs">
@@ -170,7 +172,7 @@
   <div role="tabpanel" class="tab-pane fade" id="skills-tab">
      <div class='dark'>
       <% if @order.skills.count < 1 %>
-           <h4 id='no-skills' class="center">This employee has no skills entered.</h4>
+           <h4 id='no-skills' class="center">This job order has no skills entered.</h4>
           <% end %>
             <div  id='skills' class=''>
               <%= render @order.skills %>
@@ -179,6 +181,7 @@
       <div class='form-inline center'>
         <%= render partial: "admin/skills/form", locals: {skillable: @order} %>
       </div>
+      
     </div>
   </div>
   <!--APPLICATIONS TAB-->

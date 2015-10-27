@@ -8,13 +8,15 @@ class Admin::EmployeesController < ApplicationController
 
   def index
     @admin = @current_admin
-    @employees = Employee.includes(:user).all
+    @employees = Employee.includes(:user).assigned
     gon.employees = @employees
     skip_authorization
     # WAS TRYING TO USE ELASTICSEARCH (SERCHKICK GEM) ###############
     # query = params[:q].presence || "*"
     # @employees = Employee.search query, operator: "or", suggest: true, misspellings: {edit_distance: 2}
   end
+  
+  
 
 
   def show
@@ -46,7 +48,7 @@ class Admin::EmployeesController < ApplicationController
 
   def edit
     @employee.skills
-    @employee.resumes.new
+    # @employee.resumes.new
 
   end
 
@@ -105,7 +107,7 @@ class Admin::EmployeesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def employee_params
-      params.require(:employee).permit(:first_name, :last_name, :email, :ssn, :phone_number, :user_id, :resume,
+      params.require(:employee).permit(:first_name, :last_name, :email, :ssn, :phone_number, :user_id, :resume, :tag_list, :skill_list,
           jobs_attributes: [:title, :pay_rate, :start_date, :order_id, :id], skills_attributes: [:id, :skillable_id, :skillable_type, :name, :required, :_destroy],
           user_attributes: [:id, :email, :role, :password, :password_confirmation, :first_name, :last_name, :company_id, :current_password, :address, :city, :state, :zipcode],
           work_histories_attributes: [:id, :name, :employee_id, :employer_name, :start_date, :end_date, :title, :description, :current, :may_contact,

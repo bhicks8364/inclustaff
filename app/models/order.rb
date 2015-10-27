@@ -41,6 +41,7 @@ class Order < ActiveRecord::Base
   has_many :current_timesheets, :through => :jobs
   include ArelHelpers::ArelTable
   include ArelHelpers::JoinAssociation
+  acts_as_taggable
   
   # VALIDATIONS
   validates_associated :company
@@ -48,11 +49,13 @@ class Order < ActiveRecord::Base
   validates :mark_up,  presence: true
   validates :agency_id,  presence: true
   validates :company_id,  presence: true
+  validates :needed_by, presence: true, if: :not_urgent?
   
     # CALLBACKS
     after_initialize :defaults
     before_validation :set_mark_up
-    after_create :create_keyword_skills
+    
+    before_save :set_needed_by, if: :urgent?
     
     
     
@@ -97,7 +100,13 @@ class Order < ActiveRecord::Base
         self.mark_up = 1.5
       end
     end
-        
+    
+    def not_urgent?
+      urgent == false
+    end
+    def set_needed_by
+      self.needed_by = Date.today
+    end
     
     def company_name
       if self.company
@@ -190,18 +199,22 @@ class Order < ActiveRecord::Base
   
   def keywords
       @keywords ||= begin
-                      regex = /#([\w]+)/
+                      regex = /([\w]+)/
                       notes.scan(regex).flatten
                     end
       
   end
   
+  def note_skills
+    @note_skills ||= Skill.where(name: keywords)
+  end
+  
   def matching_skills
-      @matching_skills ||= Employee.joins(:skills).where(name: keywords)
+      @matching_skills ||= Employee.unassigned.tagged_with([keywords], :any => true)
   end
 
   def matching_employees
-     @matching_employees ||= Employee.where(last_name: mentions)
+     @matching_employees ||= Employee.unassigned.tagged_with([tag_list], :any => true)
   end
   
   # def with_skills_matching(skills)
@@ -209,11 +222,10 @@ class Order < ActiveRecord::Base
   # end
   
   
-  def create_keyword_skills
-      keywords.each do |keyword|
-          self.skills.find_or_create_by(name: keyword)
-      end
-  end
+  # def create_note_tags
+  #     note_skills.pluck(:name).map {|p| self.tag_list.add(p)}
+  #     self.save
+  # end
 
 
 

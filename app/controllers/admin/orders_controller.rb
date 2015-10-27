@@ -16,7 +16,10 @@ class Admin::OrdersController < ApplicationController
      
     else
       # @orders = @current_company.orders.active.order(created_at: :desc) if @current_company.present?
-      @orders = @current_agency.orders.active.order(created_at: :desc) if @current_agency.present?
+      @orders = Order.active.order(created_at: :desc) if @current_agency.present?
+    end
+    if params[:tag]
+      @orders = @orders.tagged_with(params[:tag])
     end
     
     
@@ -64,6 +67,10 @@ class Admin::OrdersController < ApplicationController
     authorize @order
 
   end
+  
+  def tag_cloud
+    @tags = Order.tag_counts_on(:tags)
+  end
 
   # GET /orders/1/edit
   def edit
@@ -82,8 +89,6 @@ class Admin::OrdersController < ApplicationController
   def create
     @current_admin = current_admin
     
-      @current_agency = @current_admin.agency if @current_admin.agency?
-      @account_managers = @current_agency.account_managers if @current_agency.present?
 
       if params[:company_id]
         
@@ -95,8 +100,9 @@ class Admin::OrdersController < ApplicationController
         @account_managers = @current_agency.admins.account_managers if @current_agency.present?
         @order = @current_agency.orders.new(order_params) if @current_agency.present?
         @order.agency = @current_agency if @current_agency.present?
+        
       end
-      
+      @order.account_manager = @current_admin if @current_admin.account_manager?
       authorize @order
         current_admin.events.create(action: "submitted", eventable: @order)
 
@@ -157,7 +163,7 @@ class Admin::OrdersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.require(:order).permit(:id, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title, :pay_range, :notes, :number_needed, :needed_by, :urgent, :active, :dt_req, :bg_check, :stwb, :heavy_lifting, :shift, :est_duration, 
+      params.require(:order).permit(:id, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title, :pay_range, :notes, :number_needed, :needed_by, :urgent, :active, :dt_req, :bg_check, :stwb, :heavy_lifting, :shift, :est_duration, :tag_list, 
       jobs_attributes: [:order_id, :title, :description, :start_date, :id, :employee_id, :active], skills_attributes: [:id, :skillable_type, :skillable_id, :name, :required, :_destroy])
     end
 end

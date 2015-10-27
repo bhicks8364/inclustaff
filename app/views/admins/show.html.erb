@@ -1,4 +1,5 @@
-<div class='col-md-12'>
+<div class='col-md-12 transbox'>
+	<%= @admin.email %>
 <%= render 'admins/infoboxes' %>
 <% if @admin.account_manager? %>
 <%= render 'admin/infoboxes/account_manager_charts' %>

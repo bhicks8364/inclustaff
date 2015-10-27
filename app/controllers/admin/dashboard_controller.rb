@@ -31,6 +31,25 @@ class Admin::DashboardController < ApplicationController
         @searched_skills = @q.result(distinct: true)
         skip_authorization
     end
+    
+    def tag
+      if params[:tag]
+        @orders = Order.needs_attention.tagged_with(params[:tag])
+        @employees = Employee.unassigned.tagged_with(params[:tag])
+      else
+        @orders = Order.needs_attention
+        @employees = Employee.unassigned
+      end
+    end
+    def all_tags
+      if params[:tag]
+        @orders = Order.needs_attention.tagged_with(params[:tag])
+        @employees = Employee.unassigned.tagged_with(params[:tag])
+      else
+        @orders = Order.needs_attention
+        @employees = Employee.unassigned
+      end
+    end
     def home
     #   @admin = current_admin
     # #   @company = @admin.company

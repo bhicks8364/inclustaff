@@ -1,13 +1,17 @@
-<div class="dark wjite">
+<div class="">
 
 	<%= month_calendar(attribute: :time_in, events: @shifts) do |date, shifts| %>
 	
   <div class='cal-date'><%= date %></div>
 
   <% shifts.each do |shift| %>
-    <div class='fill'>
-      <%= link_to shift.employee.name, admin_shift_path(shift) %>
-      <strong><%= shift %> </strong>
+    <div class='center transbox'>
+      
+      <div class=''>
+        <%= render 'admin/shifts/shift', shift: shift %>
+
+      </div>
+      
     </div>
   <% end %>
 <% end %>

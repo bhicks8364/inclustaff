@@ -2,7 +2,7 @@
 <div class="row row200">
     <div class='col-md-12 well'>
         <h5 class='text-center'>Recruiter Performance</h5>
-    <h5 class='text-center'><small>Total Agency Billings: <%= number_to_currency(@current.timesheets.current_week.sum(:total_bill)) %></small></h5>
+    <h5 class='text-center'><small>Total Agency Billings: <%= number_to_currency(@current_agency.timesheets.current_week.sum(:total_bill)) %></small></h5>
 
         <div class='col-md-8'>
             <h5 class='text-center'>Placements</h5>

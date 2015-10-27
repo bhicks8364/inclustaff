@@ -11,6 +11,12 @@
 								<span>Dashboard</span>
 							<% end %>
 						</li>
+						<li><%= link_to tags_path do %>
+							<i class="fa fa-certificate"></i>
+							
+								<span>Make A Placement</span>
+							<% end %>
+						</li>
 						<li><%= link_to admin_orders_path do %>
 							<i class="fa fa-street-view"></i>
 							
@@ -29,7 +35,16 @@
 								<span>Applications</span>
 							<% end %>
 						</li>
-						
+						<li><%= link_to skills_path do %>
+							<i class="fa fa-wrench"></i>
+							
+								<span>Skills</span>
+							<% end %>
+						</li>
+						<li><%= link_to destroy_admin_session_path, method: :delete do %>
+								<i class='fa fa-power-off'></i>
+							<% end %>
+						</li>
 						
 			</ul>
 		</div>

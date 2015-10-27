@@ -1,1 +1,6 @@
-<!--<%= render @job %>-->
+<% if current_page?(controller: 'shifts', action: 'index') %>
+      <%= link_to shift.employee.last_name, admin_shift_path(shift) %>
+      <% else %>
+      <%= link_to shift.employee.name, admin_shift_path(shift) %>
+      <% end %>
+<%= shift %>

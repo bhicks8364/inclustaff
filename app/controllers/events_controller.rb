@@ -13,7 +13,7 @@ class EventsController < ApplicationController
   def show
     @order = Order.find(@event.eventable_id) if @event.application?
     @company = @order.company if @order.present?
-    @employee = Event.find(@event.user_id) if @event.user_id.present?
+    @employee = @event.user.employee if @event.application?
   end
 
   # GET /events/new

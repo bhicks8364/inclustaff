@@ -104,7 +104,7 @@ class User < ActiveRecord::Base
   
   def set_employee
    
-      self.employee.find_or_create_by(email: self.email) do |employee|
+      self.employee = Employee.find_or_create_by(email: self.email) do |employee|
         employee.user_id = self.id
         employee.first_name = self.first_name
         employee.last_name = self.last_name

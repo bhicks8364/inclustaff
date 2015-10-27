@@ -13,7 +13,7 @@ class OrderPolicy < ApplicationPolicy
   
   
     def index?
-        return true if user.owner? || user.payroll? || user.recruiter?
+        return true if user.owner? || user.payroll? || user.recruiter? || user.account_manager?
         # user.present? && user.not_an_employee?
         # return true if user.owner? || user.payroll? 
         # return true if user.manager? && order.manager_id == user.id && user.can_edit?

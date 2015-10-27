@@ -73,6 +73,7 @@ body {
     margin: 0px;
     margin-top: 5px;
     
+    
     margin-right: 20px;
 }
 // a#logo.navbar-brand {
@@ -445,16 +446,6 @@ div.progress-bar {
   display: none;
 }
 
-#content-wrapper {
-  // background: transparent;
-  // overflow: auto;
-  // height: 100%;
-  
-  // background-image: url('http://www.planwallpaper.com/static/images/518079-background-hd.jpg');
-  // background-repeat: no-repeat;
-  // background-attachment: fixed;
-  // background-position: center;
-}
 
 div.transbox {
   margin: 10px;
@@ -534,7 +525,7 @@ div.transbox {
 }
 
 .dark {
-  background: rgba(21, 19, 19, 0.62);
+  background: rgba(0, 0, 0, 0.62);
   padding: 5px;
   padding-bottom: 8px;
   color: white;
@@ -542,3 +533,12 @@ div.transbox {
 .maindark {
   background: rgba(21, 19, 19, 0.62);
 }
+
+.css1 { 
+  font-size: 1.0em; 
+  color: red;
+  
+}
+.css2 { font-size: 1.4em; color: green}
+.css3 { font-size: 1.6em; color: pink; }
+.css4 { font-size: 1.8em; color: orange; }

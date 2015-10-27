@@ -32,21 +32,7 @@
 	<div class="col-lg-3 col-sm-6 col-xs-12">
 		<div class="main-box infographic-box text-center">
 			
-			<% if @admin.recruiter? && @admin.recruiter_jobs.any? %>
-			<span class='headline'>
-			<%= link_to "<i class='fa fa-briefcase fa-2x pull-left'></i> <strong>#{@admin.first_name}'s Placements</strong>".html_safe, admin_jobs_path %></span>
-			<span class="value"><%= @recruiter_jobs.count %> </span>
-			<% elsif @admin.account_manager? %>
-			<span class='headline'>
-			<%= link_to "<i class='fa fa-briefcase fa-2x pull-left'></i> <strong>#{@admin.first_name}'s Job Orders</strong>".html_safe, admin_orders_path %></span>
-			<span class="value"><%= @account_orders ? @account_orders.count : @orders.count %> </span>
-			<% elsif @admin.owner? || @admin.payroll? %>
-			<span class='headline'>
-			<%= link_to "<i class='fa fa-briefcase fa-2x'></i> <strong>Job Orders</strong>".html_safe, admin_orders_path %></span>
-			<span class="value"><%= @orders.active.count %></span>
-			<% else %>
-			No activity.
-			<% end %>
+		
 			
 			
 			
@@ -55,16 +41,11 @@
 	<div class="col-lg-3 col-sm-6 col-xs-12">
 		<div class="main-box infographic-box text-center">
 			
-			<span class="headline"><%= link_to "<i class='fa fa-money fa-2x green'></i> <strong> Current Billing </strong>".html_safe, admin_timesheets_path %></span>
+			<%= link_to "<i class='fa fa-money fa-2x green'></i> <strong> Current Billing </strong>".html_safe, admin_timesheets_path %>
 
-			<% if @admin.recruiter? && @admin.recruiter_jobs.any? %>
-			<span class="value"><%= number_to_currency(@recruiter_jobs.sum(:total_bill)) %></span>
-			<% elsif @admin.account_manager? && @admin.agency? %>
-			<span class="value"><%= number_to_currency(@jobs.sum(:total_bill)) %></span>
-			<% elsif @admin.owner? && @admin.agency? || @admin.payroll? %>
-			<span class="value"><%= number_to_currency(@jobs.sum(:total_bill)) %></span>
-			<% elsif @admin.owner? && @admin.company? %>
-			<span class="value"><%= number_to_currency(@company.current_billing) %></span>
+			<% if @admin.recruiter? || @admin.account_manager? %>
+			<span class="value"><%= number_to_currency(@admin.current_billing) %></span>
+
 			<% end %>
 			
 		</div>

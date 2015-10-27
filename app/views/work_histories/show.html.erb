@@ -1,10 +1,5 @@
 <div class='col-md-12 dark'>
-  <div class='col-md-6'>
-      <% @work_history.employee.skills.each do |skill| %>
-      <%= render skill %>
-      <% end %>
-      
-  </div>
+  
   <div class='col-md-6'>
     <h2><%= @employee.name %> </h2>
       <% if @work_history.current? %>

@@ -15,7 +15,22 @@ class Skill < ActiveRecord::Base
     belongs_to :skillable, polymorphic: true
     
     before_save :remove_hashtag, :titleize_name
+    after_save :create_tag
+    before_destroy :delete_tag
     
+    def create_tag
+      if skillable.present?
+          skillable.tag_list.add(name)
+          skillable.save
+      end
+    end
+    
+    def delete_tag
+      if skillable.present?
+        skillable.tag_list.remove(name)
+        skillable.save
+      end
+    end
     # searchkick suggest: [:name]
     # def search_data
     #     {
@@ -23,6 +38,7 @@ class Skill < ActiveRecord::Base
     #       subject: subject
     #     }
     # end
+    scope :general, -> { where(skillable_id: nil)}
     scope :required, -> { where(required: true, skillable_type: "Order")}
     scope :additional, -> { where(required: false, skillable_type: "Order")}
     def subject
@@ -60,7 +76,7 @@ class Skill < ActiveRecord::Base
     
     # IMPORT
     def self.assign_from_row(row)
-        skill = Skill.where(name: row[:name]).first_or_initialize
+        skill = Skill.general.where(name: row[:name]).first_or_initialize
         skill.assign_attributes row.to_hash.slice(:name)
         skill
     end

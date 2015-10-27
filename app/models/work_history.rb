@@ -28,19 +28,14 @@ class WorkHistory < ActiveRecord::Base
     include ArelHelpers::JoinAssociation
   
     validates :start_date,  presence: true
-    validates :end_date,  presence: true
+    validates :end_date, presence: true, if: :not_current?
+    before_save :set_listed_skills
+    before_save :set_end_date, if: :current?
     
-    
-    after_save :set_listed_skills
-    
-    def current?
-        self.current == true
+    def title_pay
+        "#{title} - $#{pay}"
     end
-    
-    def may_contact?
-        self.may_contact == true
-    end
-    
+   
     def words
         @words ||= begin
             regex = /([\w]+)/
@@ -56,7 +51,7 @@ class WorkHistory < ActiveRecord::Base
     
     
     def matching_orders
-        @matching_orders ||= Skill.job_order.where(name: words)
+         @matching_orders ||= Order.needs_attention.tagged_with([employee.tag_list], :any => true)
     end
     
     def set_listed_skills
@@ -64,11 +59,14 @@ class WorkHistory < ActiveRecord::Base
             self.employee.skills.find_or_create_by(name: skill.name)
         end
     end
-    # def check_end_date
-    #     if self.end_date.nil?
-    #         self.end_date = Date.today
-    #     end
-    # end
     
+    private
+    def not_current?
+        !current?
+    end
+    def set_end_date
+        self.end_date = Date.today
+    end
+   
     
 end

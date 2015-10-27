@@ -12,7 +12,9 @@ class SkillsController < ApplicationController
     # @skills = Skill.search query, suggest: true
     # Product.search "peantu butta", suggest: true
     
-    @skills = Skill.select(:name).distinct
+    # @skills = Skill.select(:name).distinct
+    @skills = Skill.all
+    @import = Skill::Import.new
     # gon.skills = @shifts
     # @emp_skills = Skill.employee.includes(:skillable).order(:name)
     skip_authorization
@@ -62,7 +64,13 @@ class SkillsController < ApplicationController
       end
     end
   end
-
+  def update_all
+    Skill.job_order.each do |skill|
+      skill.touch
+    end
+        redirect_to skills_path, notice: 'Successfully updated all job order skills'
+      
+  end
   # PATCH/PUT /skills/1
   # PATCH/PUT /skills/1.json
   def update

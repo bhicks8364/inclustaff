@@ -1,6 +1,6 @@
 
 
-<div class='main-box'>
+<div class='col-md-12 transbox'>
   <h1>  <%= @order.title %></h1>
 <hr>
 <div class='well center' id="order-tabs">
@@ -20,7 +20,7 @@
 
   <h5><strong>Information about this position:</strong></h5>
     <div id= "order-notes" class="notes" >
-      <p><%= highlight(@order.notes, Skill.pluck(:name).to_a, highlighter: '<strong>1</strong>') %></p>
+      <p><%= highlight(@order.notes, Skill.pluck(:name).to_a %></p>
     </div>
 <%= @listed_skills %>
 <p>

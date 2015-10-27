@@ -15,49 +15,53 @@
   <% else %>
   <%= @shift.time_in.strftime("%I:%M %p") %> - <%= @shift.state %>
   <% end %>
-
+<hr>
     Hours worked: <%= @shift.hours_worked %><br>
     Break: <%= @shift.break_duration %><br>
     <%= @employee.code %><br>
 
   </div>
-  <div class='col-md-12'>
-    <div class='dark' id='breaks'>
-   <%= link_to 'Remove All Breaks', remove_breaks_admin_shift_path(@shift), method: :patch, remote: true, class: "btn btn-danger" %>
-    <div class='col-md-6'>
+  <div class='col-md-12 dark'>
+      <% if @shift.took_a_break? %>
+      <%= link_to 'Remove All Breaks', remove_breaks_admin_shift_path(@shift), method: :patch, remote: true, class: "btn btn-danger", id: "remove-breaks-btn" %>
+      <% else %>
+      <%= link_to 'Remove All Breaks', remove_breaks_admin_shift_path(@shift), method: :patch, remote: true, class: "btn btn-danger hide-this", id: "remove-breaks-btn" %>
+      <% end %>
+    <div class='' id='breaks'>
+   
+    <div class='col-md-6 well' id='break-start-times'>
    
         <h4>Break Start Times:</h4>
          <div id='break-out-list' class='list-group'>
-        <% @shift.break_out.each do |break_began| %>
-        <li class='list-group-item'><strong> <%= break_began.strftime('%r') %></strong></li>
+        <% @shift.break_out.each_with_index do |break_began, i | %>
+        <li data-behavior="shift" id='shift_<%= i %>' class='list-group-item'>
+            <strong> <%= break_began.strftime('%r') %></strong>
+        </li>
         <% end %>
         </div> 
    
     </div>
-    <div class='col-md-6'>
+    <div class='col-md-6 well' id='break-end-times'>
         <h4>Break End Times:</h4>
        <div id='break-in-list' class='list-group'>
-          <% @shift.break_in.each do |break_ended| %>
-             <li class='list-group-item'><strong> <%= break_ended.strftime('%r') %></strong></li>
-       
-
+          <% @shift.break_in.each_with_index do |break_ended, i | %>
+            
+            <li data-behavior="shift" id='shift_<%= i %>' class='list-group-item'>
+                <strong> <%= break_ended.strftime('%r') %></strong>
+            </li>
       <% end %>
       </div> 
     </div>
 </div>
 
-    <div class='col-md-6 dark'>
-      <span id='break-in-time'></span>
-      <span id='break-out-time'></span>
-      <% if @shift.on_break? %>
+   
+    <% if @shift.on_break? %>
       <%= link_to "End Break", break_end_admin_shift_path(@shift), method: :patch, remote: true, class: 'btn btn-danger', id: 'end-break-btn' %>
        <%= link_to "Start Break", break_start_admin_shift_path(@shift), method: :patch, remote: true, class: 'btn btn-success hide-this', id: 'start-break-btn' %>
     <% elsif @shift.clocked_in? %>
           <%= link_to "End Break", break_end_admin_shift_path(@shift), method: :patch, remote: true, class: 'btn btn-danger hide-this', id: 'end-break-btn' %>
       <%= link_to "Start Break", break_start_admin_shift_path(@shift), method: :patch, remote: true, class: 'btn btn-success', id: 'start-break-btn' %>
     <% end %>
-    </div>
-    
     
   </div>
 

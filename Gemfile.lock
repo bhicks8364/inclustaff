@@ -51,6 +51,8 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    acts-as-taggable-on (3.5.0)
+      activerecord (>= 3.2, < 5)
     addressable (2.3.8)
     angular-rails-templates (0.1.4)
       railties (>= 3.1)
@@ -351,6 +353,7 @@ PLATFORMS
 DEPENDENCIES
   aasm
   active_model_serializers
+  acts-as-taggable-on (~> 3.4)
   angular-rails-templates
   angularjs-rails
   annotate (~> 2.6.6)

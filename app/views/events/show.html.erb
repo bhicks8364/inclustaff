@@ -1,7 +1,7 @@
 <% if @event.action == 'applied' %>
-<div class='col-md-12 main-box'>
+<div class='col-md-12 transbox'>
 <% if admin_signed_in? %>
-
+<div class='col-md-12 text-center'>
   	
   <h2>
   <strong>
@@ -9,32 +9,40 @@
   </strong>
   
 </h2>
-
+<%= link_to(admin_company_path(@company), class: "btn btn-primary") do %>
+	  <i class='fa fa-home'></i>
+		<span>View Company Page</span>
+	<% end %>
+  <%= link_to admin_employee_path(@employee), class: "btn btn-primary"  do %>
+    <i class="fa fa-user fa-1x"></i>
+    View Employee
+  <% end %>
 	
-<div class='well'>
-  <%= link_to(admin_company_path(@company), class: "btn btn-primary") do %>
-  							<i class='fa fa-home'></i>
+
+   <div class='col-md-12 well'>
+     <div class="col-md-6 tag_cloud">
+  	<h1>Skills needed for <%= @order.title %></h1>
+	  <% tag_cloud @order.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
+	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
+	  <% end %>
+	  </div>
+	<div class="col-md-6 tag_cloud">
+		<h1><%= @employee.first_name %>'s Skills</h1>
+	  <% tag_cloud @employee.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
+	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
+	  <% end %>
+	</div>
+	<div class='col-md-6 well'>
+	    <%= pie_chart @order.tags.order(:name).group(:name).count  %>
+	  </div>
+	 <div class='col-md-6 well'>
+	    <%= pie_chart @employee.tags.order(:name).group(:name).count  %>
+	  </div>
+   </div>
   
-  								<span>View Company Page</span>
-  							<% end %>
-  							 <%= link_to admin_employee_path(@event.user.employee), class: "btn btn-primary"  do %>
-						
-								<i class="fa fa-user fa-1x"></i>
-						
-							View Employee
-						<% end %>
-  
-</div>
- 
-  
- 
-				
+  </div>
 
-
-
-
-    <div class=' col-md-8'>
-    <div class='col-md-12 well well-sm'>
+<div class='col-md-12'>
      <h2 class='text-center'> <%= @order %></h2>
      <!--BTN GROUP-->
     <div class="btn-group btn-group-justified" role="group" aria-label="...">
@@ -63,16 +71,23 @@
         </div>
         <div class="btn-group" role="group">
           <%= link_to(admin_company_timesheets_path(@company), class: "btn btn-default") do %>
-    				<i class='fa fa-clock-o'></i>
-    				<span>Timesheets</span>
+    				<span><i class='fa fa-clock-o'></i>
+    				Timesheets</span>
     			<% end %>
         </div>
       </div>
+      <div class="col-md-6 tag_cloud">
+		<h1><%= @order.title %>'s Skills</h1>
+	  <% tag_cloud @order.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
+	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
+	  <% end %>
+	   <%= pie_chart @order.tags.order(:name).group(:name).count  %>
+	</div>
   <!--END OF BTN GROUP-->
-      <div class='col-md-12'>
-        <div class='col-md-9'>
-          <hr>
-           <div class='notes well'>
+
+        <div class='col-md-6'>
+         
+         
           <h5>Job Description</h5>
          <%= @order.pay_range %>
             <% if @order.notes.length > 5 %>
@@ -80,37 +95,13 @@
             <% else %>
             <p class='text-center'>Specific job details unavailable.</p>
             <% end %>
-            
-            
-          </div>
-          
-        </div>
-    
       
-      <div class='col-md-3'>
-        <h5><u>Required Skills</u></h5>
-        <% @order.skills.required.each do |skill| %>
-          <%= skill.name %><br>
-        <% end %>
-        <hr>
-        <h5><u>Additional Skills</u></h5>
-        <% @order.skills.additional.each do |skill| %>
-          <%= skill.name %><br>
-        <% end %>
       </div>
-      <!--END OF SKILL BOX-->
-     </div>
-      
-   </div>
- <hr>
-    </div>
-    <!--END OF JOB INFORMATION HALF-PAGE-->
-    
-    
-  
-  
-    <!--END OF MAINBOX-->
-</div>
+      </div>
+  </div>
+
+    <!--END OF JOB INFORMATION PAGE-->
+
 
 
 
@@ -120,32 +111,3 @@
 <!--IF AN ADMIN IS SIGNED IN-->
 <% end %>
 
-
-
-<% if @event.admin.present? %>
-<div class='center'>
-  <p>
-  <strong>Admin:</strong>
-  <%= @event.admin.try(:name) %>
-</p>
-
-<p>
-  <strong>Action:</strong>
-  <%= @event.action %>
-</p>
-
-<p>
-  <strong>Eventable:</strong>
-  <%= @event.eventable_id %>
-</p>
-
-<p>
-  <strong>Eventable type:</strong>
-  <%= @event.eventable_type %>
-</p>
-
-<% end %>
-
-
-</div>
-</div>

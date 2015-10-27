@@ -38,7 +38,7 @@
     </div>    
 <div class='well row'>
             <strong>Duties / Responsibilities</strong><br>
-            <%= @work_history.description %>
+           <%= highlight(@work_history.description, Skill.job_order.map(&:name), highlighter: '<a href="/tags?tag=\1">\1</a>') %>
        </div>
 
      <div class='center'>

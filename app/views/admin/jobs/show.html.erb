@@ -58,7 +58,7 @@
     <li role="presentation"><a href="#order-info" aria-controls="order-info" role="tab" data-toggle="tab">Order Information</a></li>
     <li role="presentation"><a href="#week-totals" aria-controls="week-totals" role="tab" data-toggle="tab">Week Totals</a></li>
     <li role="presentation"><a href="#job-totals" aria-controls="job-totals" role="tab" data-toggle="tab">Job Totals</a></li>
-    <li role="presentation"><a href="#skills" aria-controls="skills" role="tab" data-toggle="tab">Skills</a></li>
+    <li role="presentation"><a href="#skills-tab" aria-controls="skills-tab" role="tab" data-toggle="tab">Skills</a></li>
     <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
     
   </ul>
@@ -126,22 +126,25 @@
     
     
   </div>
-  <div role="tabpanel" class="tab-pane fade" id="skills">
-    <div class='col-md-6'>
+  <div role="tabpanel" class="tab-pane fade" id="skills-tab">
+    <div class='dark col-md-12'>
+      <div class='col-md-5 list-group transbox'>
      <h3>Skills Needed</h3>
-     <%= render @order.skills %>
+     <% @order.skills.each do |skill| %>
+     <li class='list-group-item list-group-item-success black'>
+       <%= highlight(skill.name, @employee.skills.pluck(:name).to_a, highlighter: '<u>\1</u>') %>
+     </li>
+     <% end %>
     </div>
-    <div class='col-md-6'>
-      <h3><%= @employee.first_name %>'s skills</h3>
-     <%= render @skills %>
+    <div class='col-md-5 list-group transbox'>
+      <h3><%= @employee.first_name %>'s Skills</h3>
+      <% @employee.skills.each do |skill| %>
+     <li class='list-group-item list-group-item-success black'>
+       <%= highlight(skill.name, @order.skills.pluck(:name).to_a, highlighter: '<u>\1</u>') %>
+     </li>
+     <% end %>
     </div>
-    
-    
-    
-    
-    
-    
-    
+    </div>
     
   </div>
   <div role="tabpanel" class="tab-pane fade" id="week-totals">

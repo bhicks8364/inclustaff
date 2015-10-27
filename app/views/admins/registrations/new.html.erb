@@ -13,7 +13,7 @@
               <%= f.input :first_name, required: true, placeholder: "First Name", label: false, autofocus: true%>
               <%= f.input :last_name, required: true, placeholder: "Last Name", label: false %>
               <%= f.input :email, required: true, placeholder: "Email", label: false %>
-               <%= f.hidden_field :agency_id, :value => @current.id %>
+               <%= f.hidden_field :agency_id, :value => @current_agency.id %>
                <% if admin_signed_in? %>
               <%= f.association :company, required: true, placeholder: "Email", label: false %>
               <%= f.input :role, required: true, collection: ["Company Owner", "Manager", "HR", "Limited Access"], placeholder: "Choose a role", label: false %>

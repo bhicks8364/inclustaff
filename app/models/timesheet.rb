@@ -253,20 +253,11 @@ class Timesheet < ActiveRecord::Base
     def last_clocked_out
         self.shifts.clocked_out.last.time_out
     end
-    
-    # def total_bill
-    #     (self.gross_pay * self.mark_up).round(2)
-    # end
-    
+
     def mark_up_percent
         (self.mark_up * 100 - 100).to_i.to_s + "%" 
     end
-    
-    
-    # def defaults
-    #     self.week = Date.today.cweek
-    # end
-    
+
     def total_timesheet
         if self.shifts.any?
             hours = self.shifts.sum(:time_worked)
