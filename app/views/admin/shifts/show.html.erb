@@ -70,8 +70,8 @@
     Total Break Time: <%= @shift.break_duration %><br>
     Total Acual Time: <%= @shift.time_worked %><br>
     <hr>
-    Total (w/ paid breaks): <%= @shift.hours_worked * @job.pay_rate %><br>
-    Total (w/ unpaid break): <%= @shift.pay_time * @job.pay_rate %><br>
+    Total (w/ paid breaks): <%= @shift.with_paid_breaks %><br>
+    Total (w/ unpaid break): <%= @shift.with_unpaid_breaks %><br>
     Total Earnings: <%= number_to_currency(@shift.earnings) %><br>
     
     Breaks Started: <%= @shift.break_out.try(:count) %><br>

@@ -46,20 +46,22 @@ class Company < ActiveRecord::Base
     include ArelHelpers::ArelTable
     include ArelHelpers::JoinAssociation
     
-    def to_s
-        name
-    end
+    def to_s; name; end
     
     def current_agency
-        if self.orders.any?
-            self.orders.last.agency
-        end
+      if orders.any?
+          orders.last.agency
+      end
     end
     
     def current_account_manager
-        if self.orders.any?
-            self.orders.last.agency
-        end
+      if orders.any? && orders.last.account_manager.present?
+         orders.last.account_manager
+      elsif orders.any? && agency.account_managers.any?
+        agency.account_managers.last
+      else
+        agency.owners.first
+      end
     end
     
     
@@ -70,43 +72,46 @@ class Company < ActiveRecord::Base
 
     
     validates :name,  presence: true, length: { maximum: 50 }
-    # validates :contact_name,  presence: true, length: { maximum: 20 }
-    # VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-    # validates :contact_email, presence: true, length: { maximum: 255 },
-    #                 format: { with: VALID_EMAIL_REGEX },
-    #                 uniqueness: { case_sensitive: false }
+    validates :contact_name,  presence: true, length: { maximum: 20 }
+    VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+    validates :contact_email, presence: true, length: { maximum: 255 },
+                    format: { with: VALID_EMAIL_REGEX },
+                    uniqueness: { case_sensitive: false }
 
-    
-    # def total_hours
-    #   self.
-    # end
-
-    #   self.owner = User.find_or_create_by(email: self.contact_email, last_name: last_name, 
-    #                                 first_name: first_name, encrypted_password: generated_password,
-    #                                 company_id: self.id, role: "Admin")
-    # end
-    
+ 
     def current_payroll_cost
-        self.timesheets.current_week.sum(:gross_pay)
+       timesheets.current_week.sum(:gross_pay)
     end
     def current_billing
-        self.timesheets.current_week.sum(:total_bill)
+       timesheets.current_week.sum(:total_bill)
     end
     def last_week_billing
-        self.timesheets.last_week.sum(:total_bill)
+        timesheets.last_week.sum(:total_bill)
     end
 
     
     def set_payroll_cost!
-        cost = self.timesheets.current_week.sum(:total_bill)
-        self.update(balance: cost)
+        cost = timesheets.current_week.sum(:total_bill)
+        update(balance: cost)
     end
     
+    # IMPORT TO CSV
+    def self.assign_from_row(row)
+        company = Company.where(name: row[:name]).first_or_initialize
+        company.assign_attributes row.to_hash.slice(:name, :address, :city, :state, :zipcode, :contact_name, :contact_email, :admin_id, :agency_id, :phone_number)
+        company
+    end
     
-    
-    # c.shifts.current_week.sum(:time_worked)
-    
-    
-    
+    # EXPORT TO CSV
+    def self.to_csv
+      attributes = %w{id name address city state contact_name contact_email balance phone_number admin_id agency_id}
+      CSV.generate(headers: true) do |csv|
+        csv << attributes
+        
+        all.each do |company|
+          csv << attributes.map{ |attr| company.send(attr) }
+        end
+      end
+    end
     
 end

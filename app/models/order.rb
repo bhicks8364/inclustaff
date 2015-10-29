@@ -54,7 +54,7 @@ class Order < ActiveRecord::Base
     # CALLBACKS
     after_initialize :defaults
     before_validation :set_mark_up
-    
+    after_save :set_note_skills
     before_save :set_needed_by, if: :urgent?
     
     
@@ -222,10 +222,16 @@ class Order < ActiveRecord::Base
   # end
   
   
-  # def create_note_tags
-  #     note_skills.pluck(:name).map {|p| self.tag_list.add(p)}
-  #     self.save
-  # end
+  def set_note_skills
+    note_skills.each do |skill|
+        self.skills.find_or_create_by(name: skill.name)
+    end
+  end
+  def self.assign_from_row(row)
+    order = Order.where(title: row[:title], company_id: row[:company_id]).first_or_initialize
+    order.assign_attributes row.to_hash.slice(:name)
+    order
+  end
 
 
 

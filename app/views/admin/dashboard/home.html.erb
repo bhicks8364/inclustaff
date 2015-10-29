@@ -1,8 +1,13 @@
+
+    
 <div class="col-md-12 main-box">
   <% if @current_admin.owner? %>
   <%= render 'admin/infoboxes/owner_charts'%>
   <% elsif @current_admin.payroll? %>
   <%= render 'admin/infoboxes/payroll_boxes' %>
+  <% elsif @current_admin.payroll? %>
+  <%= render 'admin/infoboxes/recruiter_boxes' %>
+  </div>
   <% end %>
 	  <div class="btn-group btn-group-justified" role="group" aria-label="...">
       <div class="btn-group" role="group">
@@ -112,12 +117,5 @@
 
 
 
-
-
-<% if @current_admin.recruiter? %>
-<%= link_to "Recruiter Dashboard", admin_recruiter_path, class: 'btn btn-primary' %>
-<% end %>
-
-<%= render 'admin/infoboxes/taggings' %>
 
 

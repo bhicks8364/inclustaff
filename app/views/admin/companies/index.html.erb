@@ -39,4 +39,11 @@
 
 <%= link_to 'New Company', new_admin_company_path, class: 'btn btn-success' %>
 
+<%= form_for @import, url: import_admin_companies_path, multipart: true do |f| %>
+  <%= f.file_field :file %>
+  <%= f.submit "Upload" %>
+<% end %>
 </div>
+<%= link_to(admin_companies_path(@companies, format: :csv), class: 'btn btn-primary') do %>
+  		<i class="fa fa-file-excel-o fa-lg"></i> Export Company List
+<% end %>

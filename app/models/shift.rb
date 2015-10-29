@@ -84,6 +84,9 @@ class Shift < ActiveRecord::Base
   def clocked_out?; state == "Clocked Out"; end
   def on_break?; state == "On Break"; end
   def to_s; "#{time_in.strftime('%l:%M%P')} - #{time_out? ? time_out.strftime('%l:%M%P') : state }"; end
+  def shift_data
+   "[#{employee.name}, #{time_in}, #{time_out}]"
+  end
   def took_a_break?; breaks.any?; end
     
   def calculate_break
@@ -183,6 +186,15 @@ class Shift < ActiveRecord::Base
       timesheet.destroy
     end
   end
+  def with_paid_breaks
+    paid_breaks = hours_worked * pay_rate
+    paid_breaks.round(2)
+  end
+  def with_unpaid_breaks
+    unpaid_breaks = pay_time * pay_rate
+    unpaid_breaks.round(2)
+  end
+  
   
   private
   

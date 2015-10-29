@@ -6,6 +6,13 @@
   				<% end %>
   				<%= link_to 'All Timesheets', admin_timesheets_path, class: 'btn btn-primary' %>
   </div>
+  <%= timeline  @timesheet.shifts.clocked_out.map{|shift|
+      [shift.employee.name, shift.time_in, shift.time_out]},
+     
+      library: {
+        timeline: { colorByRowLabel: true },
+        colors:['red','blue'] } %>
+        
 <div class='col-md-12'>
   <h4>For the week of:<strong><br>
         <%= @timesheet.week_begin %>
@@ -37,7 +44,7 @@
   
   </div>
   <div class='col-md-4 dark'>
-  <%= pie_chart @timesheet.shifts.group_by_day(:time_in, format: "%m/%d").sum(:time_worked) %>
+
 </div>
  
 

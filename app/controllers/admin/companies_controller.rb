@@ -5,9 +5,14 @@ class Admin::CompaniesController < ApplicationController
   # GET /companies
   # GET /companies.json
   def index
-    @top_billing = @current_agency.companies.ordered_by_current_bill
-    @companies = @current_agency.companies
+    @top_billing = Company.ordered_by_current_bill
+    @companies = Company.all
+    @import = Company::Import.new
     skip_authorization
+    respond_to do |format|
+      format.html
+      format.csv { send_data @companies.to_csv, filename: "companies-export-#{Time.now}-inclustaff.csv" }
+  	end 
     
   end
 
@@ -15,13 +20,10 @@ class Admin::CompaniesController < ApplicationController
   # GET /companies/1.json
   def show
     @order = @company.orders.new
-    @account_managers = @current_agency.account_managers if @current_agency.present?
-    @jobs = @company.jobs.active.includes(:employee)
-    @clocked_in = @jobs.on_shift
-    @clocked_out =  @jobs.off_shift.distinct
     authorize @company
     @orders = @company.orders
-    # @all_timesheets = @company.timesheets.order(updated_at: :desc) if @company.timesheets.any?
+    @jobs = @company.jobs
+
     @timesheets = @company.timesheets.order(updated_at: :desc) 
     @last_week_timesheets = @timesheets.last_week.order(updated_at: :desc)
 
@@ -44,6 +46,18 @@ class Admin::CompaniesController < ApplicationController
     @company = @current_agency.companies.new
     authorize @company
   end
+  def import
+      @import  = Company::Import.new(company_import_params)
+      
+      if @import.save
+          redirect_to admin_companies_path, notice: "Imported #{@import_count} companines."
+      else
+          @companys = Company.all
+          render action: :index, notice: "There were errors with your CSV file."
+      end
+      skip_authorization
+        
+  end
 
   # GET /companies/1/edit
   def edit
@@ -58,6 +72,7 @@ class Admin::CompaniesController < ApplicationController
     authorize @company
     respond_to do |format|
       if @company.save
+        current_admin.events.create(action: "created", eventable: @company)
         format.html { redirect_to admin_company_path(@company), notice: 'Company was successfully created.' }
         format.json { render :show, status: :created, location: @company }
       else
@@ -95,6 +110,9 @@ class Admin::CompaniesController < ApplicationController
   end
 
   private
+    def company_import_params
+        params.require(:company_import).permit(:file)
+    end
   
     def pundit_user
       current_admin
@@ -107,7 +125,7 @@ class Admin::CompaniesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def company_params
-      params.require(:company).permit(:name, :address, :city, :state, :zipcode, :contact_name, :contact_email, :admin_id, :agency_id,
+      params.require(:company).permit(:name, :address, :city, :state, :zipcode, :contact_name, :contact_email, :admin_id, :agency_id, :phone_number,
       orders_attributes: [:id, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title, :pay_range, 
       :notes, :number_needed, :needed_by, :urgent, :active, :dt_req, :bg_check, :stwb, :heavy_lifting, :shift, :est_duration])
     end

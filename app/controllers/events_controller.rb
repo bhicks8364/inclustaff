@@ -14,6 +14,7 @@ class EventsController < ApplicationController
     @order = Order.find(@event.eventable_id) if @event.application?
     @company = @order.company if @order.present?
     @employee = @event.user.employee if @event.application?
+    @job = @order.jobs.new
   end
 
   # GET /events/new

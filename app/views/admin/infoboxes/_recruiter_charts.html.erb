@@ -1,26 +1,32 @@
-
+<div class=''>
+   
+</div>
 <div class="row row200">
     <div class='col-md-12 well'>
+        
         <h5 class='text-center'>Recruiter Performance</h5>
     <h5 class='text-center'><small>Total Agency Billings: <%= number_to_currency(@current_agency.timesheets.current_week.sum(:total_bill)) %></small></h5>
 
-        <div class='col-md-8'>
+        <div class='col-md-4'>
             <h5 class='text-center'>Placements</h5>
             
-            <%= column_chart  @current_agency.companies.map{|company|
-                {name: company.name, data: company.jobs.includes(:recruiter).group(:id)}
-            }, library: {isStacked: 'percent', bar: { width: "50%" }, legend: { position: 'bottom', maxLines: 3 }, title: "Placements by Company"} %>
+            <%= pie_chart  Company.all.group(:id).map{|company|
+                [company.name, company.balance]
+            } %>
+            
         </div>
         <div class='col-md-4'>
             <h5 class='text-center'>Current Billings by Recruiter</h5>
-            <%= pie_chart @current_agency.jobs.includes(:current_timesheet, :recruiter).group(:recruiter_id).sum(:total_bill), library: {legend: {position: "none"}, title: "Placements by Recruiter"} %>
+            <%= pie_chart Job.includes(:current_timesheet, :recruiter).group(:last_name).sum(:total_bill), library: {legend: {position: "right"}, title: "Current Billings by Recruiter"} %>
         </div>
-    </div>
+   
     <div class='col-md-4'>
         <h5 class='text-center'>Current Billings by Recruiter</h5>
-        <%= pie_chart Skill.includes(:skillable).group(:name).count, library: {title: "Placements by Recruiter"} %>
+        <%= pie_chart Skill.job_order.group(:name).count, library: {title: "Needed Skills"} %>
     </div>
+     </div>
     <div class="center">
+        
 			<% if @current_agency.jobs.new_start.any? %>
 				<h5>	New Starts</h5>
                 <div class='list-group list-group-sm' >

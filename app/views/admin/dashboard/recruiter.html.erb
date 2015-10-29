@@ -1,4 +1,8 @@
+ <%= timeline  Shift.today.map{|shift|
+      [shift.employee.name, shift.time_in, shift.time_out]
+  } %>
 <div class='col-md-12 dark'>
+ 
   <h2>Recruiter Dashboard</h2>
   <div class="">
    <%= render 'skills/search'%>

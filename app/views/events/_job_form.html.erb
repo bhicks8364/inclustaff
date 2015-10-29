@@ -1,0 +1,42 @@
+<%= simple_form_for [:admin, @job] do |f| %>
+<h4>Assign <%= @employee.first_name %> to this position.</h4>
+  <% if @job.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@job.errors.count, "error") %> prohibited this job from being saved:</h2>
+
+      <ul>
+      <% @job.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+   <span class='hide-this'>
+      
+       <%= f.hidden_field :order_id, value: @order.id %>
+
+   
+      <%= f.hidden_field :employee_id, value: @employee.id %>
+    </span>
+    
+    <%= f.input :title, placeholder: "Job Title", label: false %>
+    <%= f.input :description, placeholder: "Interview notes", label: false  %>
+    <%= f.input :start_date, as: :string, placeholder: "Select start date", required: true, label: false %>
+    <% if @current_admin.recruiter? %>
+        <%= f.hidden_field :recruiter_id, value: @current_admin.id %>
+    <% else %>
+        <%= f.association :recruiter, collection: @current_agency.admins.recruiters.order(:last_name), prompt: "Choose a Recruiter", label: false  %>
+    <% end %>
+    
+   
+                <%= f.input :pay_rate, placeholder: "Pay Rate", label: false, required: true %>
+
+
+
+
+
+
+
+    <%= f.submit "Save", class: 'btn btn-primary' %>
+
+<% end %>

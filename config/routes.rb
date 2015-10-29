@@ -15,6 +15,10 @@ Rails.application.routes.draw do
     get  'sign_in' => 'dashboard#sign_in_page'  
     get 'tags' => 'admin/dashboard#all_tags'
     get 'tags/:tag', to: 'admin/dashboard#tag', as: :tag
+    get 'paid_invoices', to: 'charts#paid_invoices'
+    get 'account_managers_ranking', to: 'charts#account_managers_ranking'
+    get 'recruiter_ranking', to: 'charts#recruiter_ranking'
+    get 'order_fill_time', to: 'charts#order_fill_time'
     devise_for :admins, controllers: {registrations: 'admins/registrations'}
     devise_for :users, controllers: {registrations: 'users/registrations'}
     
@@ -45,6 +49,9 @@ Rails.application.routes.draw do
         resources :invoices
         resources :timesheets
         resources :orders
+        collection do
+          post 'import'
+        end
         
       end
       resources :invoices do
@@ -105,6 +112,9 @@ Rails.application.routes.draw do
       get  'timeclock', to: 'dashboard#employee_view'
       get  'home', to: 'dashboard#home'
       resources :orders do
+        collection do
+          get 'import'
+        end
         member do
           patch :apply
         end

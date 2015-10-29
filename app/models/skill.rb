@@ -82,4 +82,6 @@ class Skill < ActiveRecord::Base
     end
     
     
+    
+    
 end

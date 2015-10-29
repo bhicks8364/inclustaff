@@ -1,5 +1,19 @@
+ <%= timeline  Shift.current_week.clocked_out.map{|shift|
+      [shift.employee.name, shift.time_in, shift.time_out]}, id: "users-chart", height: "500px" ,
+     
+      library: {
+        timeline: { colorByRowLabel: true, trigger: "none" },
+        colors:['red','blue']
+        
+        } %>
+  
+  
+  
+  
+  
 <div class='main-box'>
     <% if @jobs %>
+    
 <h1>All Jobs</h1>
 <%= render 'admin/jobs/table' %>
 <% else %>

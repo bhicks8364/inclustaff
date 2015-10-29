@@ -19,31 +19,34 @@
   <% end %>
 	
 
-   <div class='col-md-12 well'>
-     <div class="col-md-6 tag_cloud">
-  	<h1>Skills needed for <%= @order.title %></h1>
-	  <% tag_cloud @order.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
-	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
-	  <% end %>
+   <div class='col-md-12 transbox'>
+	  	<div class="col-md-5 transbox">
+    		<h1><%= @employee.first_name %>'s Skills</h1>
+    	  <% tag_cloud @employee.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
+    	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
+    	  <% end %>
+    	  <%= pie_chart @employee.tags.order(:name).group(:name).count  %>
+    	</div>
+
+
+	  <div class="col-md-5 transbox">
+    	<h1>Skills needed</h1>
+  	  <% tag_cloud @order.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
+  	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
+  	  <% end %>
+  	  <%= pie_chart @order.tags.order(:name).group(:name).count  %>
 	  </div>
-	<div class="col-md-6 tag_cloud">
-		<h1><%= @employee.first_name %>'s Skills</h1>
-	  <% tag_cloud @employee.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
-	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
-	  <% end %>
-	</div>
-	<div class='col-md-6 well'>
-	    <%= pie_chart @order.tags.order(:name).group(:name).count  %>
-	  </div>
-	 <div class='col-md-6 well'>
-	    <%= pie_chart @employee.tags.order(:name).group(:name).count  %>
-	  </div>
+	  	<div class='col-md-6 transbox'>
+	     <% if @employee.unassigned? && @order.needs_attention? %>
+       <%= render 'job_form' %>
+       <% end %>
+  	  </div>
    </div>
-  
-  </div>
+
 
 <div class='col-md-12'>
      <h2 class='text-center'> <%= @order %></h2>
+    
      <!--BTN GROUP-->
     <div class="btn-group btn-group-justified" role="group" aria-label="...">
       
@@ -56,7 +59,7 @@
       
         </div>
         <div class="btn-group" role="group">
-            <%= link_to(new_admin_employee_job_path(@employee), class: "btn btn-default") do %>
+            <%= link_to(new_admin_order_job_path(@order), class: "btn btn-default") do %>
 						  <i class='fa fa-user-plus'></i>
 							<span>New Job Order</span>
 						<% end %>

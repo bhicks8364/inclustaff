@@ -37,7 +37,7 @@
 
 //= require chartkick
 
-
+//= require charts
 
 
 

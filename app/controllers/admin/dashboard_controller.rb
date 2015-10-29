@@ -51,6 +51,7 @@ class Admin::DashboardController < ApplicationController
       end
     end
     def home
+      gon.invoices = Invoice.pluck(:total)
     #   @admin = current_admin
     # #   @company = @admin.company
     #   @agency = @admin.agency
