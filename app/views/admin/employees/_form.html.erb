@@ -1,4 +1,4 @@
-<%= simple_form_for [:admin, @employee] do |f| %>
+<%= simple_form_for([:admin, @employee], defaults: { label: false, input_html: { class: 'form-control' }, wrapper_html: { class: '' } }) do |f| %>
   <% if @employee.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@employee.errors.count, "error") %> prohibited this employee from being saved:</h2>
@@ -11,34 +11,41 @@
     </div>
   <% end %>
 
-  <div class="well">
+  <div class="col-md-4 well">
     <h3 class="text-center"><strong>Employee Information</strong></h3>
-    <%= f.input :first_name, required: true, label: false, autofocus: true, placeholder: "First Name" %>
-    <%= f.input :last_name, required: true, label: false, placeholder: "Last Name" %>
-    <%= f.input :phone_number, as: :tel, required: true, label: false, placeholder: "ex. 555-555-5555" %>
-    <%= f.input :ssn, required: true, maxlength: 4, placeholder: "SSN - Last 4 only" %>
+    <%= f.input :first_name, label: "First Name", autofocus: true, placeholder: "First Name" %>
+    <%= f.input :last_name, label: "Last Name", placeholder: "Last Name" %>
+    <%= f.input :phone_number, as: :tel, placeholder: "Phone Number", label: "Phone Number"  %>
+    <%= f.input :ssn, maxlength: 4, placeholder: "SSN - Last 4 only", label: "SSN" %>
 
-    <%= f.simple_fields_for :user do |user| %>
-      <%= user.input :email, required: true, placeholder: "ex. example@email.com" %>
-
-      <%= user.input :role, required: true, priority: [ "Employee" ], collection: [ "Employee"], include_blank: false %>
-      <%= user.input :password, required: true, placeholder: "Choose a password.", hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length) %>
-      <%= user.input :password_confirmation, required: true, placeholder: "Please confirm your password." %>
-    <% end %>
+    
   </div>
-  <hr>
-    <div class="well">
-    <%= f.simple_fields_for :jobs do |job| %>
-          <h3 class="text-center"><strong>Job Info</strong></h3>
-      <%= job.input :title, placeholder: "Job Title" %>
-      <%= job.input :start_date, as: :date, html5: true %>
-      <%= job.input :pay_rate, required: true %>
-      <%= job.association :order, collection: @companies, as: :grouped_select, group_method: :orders, include_blank: false %>
-      <%= job.text_field :description, rows: 10 %>
-    <% end %>
+ 
+ 
+    <div class="col-md-4 well">
+      <h3 class="text-center"><strong>Availablility</strong></h3>
+      <%= f.simple_fields_for :availablity do |d| %>
+
+      <%= d.input :monday, collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible", "Not Available"], include_blank: false, prompt: "Monday", input_html: {class: "form-control"}, wrapper_html: { class: 'col-md-6' } %>
+      <%= d.input :tuesday, collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible", "Not Available"], include_blank: false, prompt: "Tuesday", input_html: {class: "form-control"}, wrapper_html: { class: 'col-md-6' } %>
+      <%= d.input :wednesday, collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible", "Not Available"], include_blank: false, prompt: "Wednesday", input_html: {class: "form-control"}, wrapper_html: { class: 'col-md-6' } %>
+      <%= d.input :thursday, collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible", "Not Available"], include_blank: false, prompt: "Thursday", input_html: {class: "form-control"}, wrapper_html: { class: 'col-md-6' } %>
+      <%= d.input :friday, collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible", "Not Available"], include_blank: false, prompt: "Friday", input_html: {class: "form-control"} , wrapper_html: { class: 'col-md-6' } %>
+      <%= d.input :saturday, collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible", "Not Available"], include_blank: false, prompt: "Saturday", input_html: {class: "form-control"} , wrapper_html: { class: 'col-md-6' } %>
+      <%= d.input :sunday, collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible", "Not Available"], include_blank: false, prompt: "Sunday", input_html: {class: "form-control"}, wrapper_html: { class: 'col-md-6' } %>
+      
+      <% end %>
+   
+    </div>
+  <div class="col-md-4 well">
+    <h3 class="text-center"><strong>Additional Information</strong></h3>
+    <%= f.input :desired_job_type, label: "Desired Job Type", placeholder: "Desired Job Type" %>
+    <%= f.input :desired_shift, label: "Desired Shift", placeholder: "Desired Shift" %>
   </div>
 
+ 
+ <div class="center">
 
-    <%= f.submit %>
-
+    <%= f.submit "Save", class: 'btn btn-primary btn-lg btn-block' %>
+ </div>
 <% end %>

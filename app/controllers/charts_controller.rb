@@ -5,12 +5,12 @@ class ChartsController < ApplicationController
     [invoice.company.name, invoice.total.round(2)]}.chart_json
   end
   def account_managers_ranking
-    render json: Admin.account_managers.group(:id).map{|a|
+    render json: Admin.account_managers.limit(5).group(:id).map{|a|
       [a.name, a.current_billing.round(2)]
     }.chart_json
   end
   def recruiter_ranking
-    render json: Admin.recruiters.group(:id).map{|a|
+    render json: Admin.recruiters.limit(5).group(:id).map{|a|
       [a.name, a.current_billing.round(2)]
     }.chart_json
   end

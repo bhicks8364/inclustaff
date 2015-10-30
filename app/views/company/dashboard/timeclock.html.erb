@@ -1,0 +1,6 @@
+<div class='col-md-12 main-box'>
+    <h1><%= @company.name %>'s Timeclock</h1>
+    <% @company.jobs.each do |job| %>
+        <%= link_to job.title, company_clock_path(job) %>
+    <% end %>
+</div>

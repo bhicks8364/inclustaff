@@ -30,12 +30,14 @@
       <div class="tab-content">
         <!--HOME TAB-->
       <div role="tabpanel" class="tab-pane fade in active" id="home">
-         
+           <div class='well well-sm text-center'><span class='pull-left'><i class="fa fa-envelope-o"></i>  <%= @employee.email %></span><%= @user.address %>, <%= @user.state %> <%= @user.zipcode %><span class='pull-right'><i class="fa fa-phone-square"></i>  <%= @employee.phone_number %></span> </div>
          <h2 class="page-header text-center"><%= @user.name %>'s Profile  </h2>
-       
+     
         <div class='col-md-8 '>
-            <p class='text-center'><span class='pull-left'><i class="fa fa-envelope-o"></i>  <%= @employee.email %></span><%= @user.address %>, <%= @user.state %> <%= @user.zipcode %><span class='pull-right'><i class="fa fa-phone-square"></i>  <%= @employee.phone_number %></span> </p>
-         
+           
+          <% @employee.availablity.try(:each) do |k,v| %>
+      <li> <%= k.upcase %>: <strong><%= v %></strong></li>
+       <% end %>
          
          </div>
     	<div class="col-md-4 tag_cloud">
@@ -75,7 +77,7 @@
       <div role="tabpanel" class="tab-pane fade" id="payroll">
         
          <h2 class="text-center">Payroll Information  </h2>
-      
+      <%= @employee.ssn %>
         <% if @user.current_sign_in_at %>
          <div class='list-group'>
            <div class='list-group-item'>
@@ -186,7 +188,7 @@
       <!--SETTINGS TAD ADMIN ONLY ----> 
         <div role="tabpanel" class="tab-pane fade" id="settings">
             <div class='col-md-4'>
-            
+            <%= link_to "Edit Employee", edit_admin_employee_path(@employee), class: 'btn btn-primary' %>
              
             </div>
            <% if @events.any? %>

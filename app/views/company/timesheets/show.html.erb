@@ -1,0 +1,59 @@
+<div class='col-md-12 dark'>
+  <div class='pull-right'>
+    <%= link_to(admin_timesheet_path(@timesheet, format: :pdf), class: 'btn btn-primary') do %>
+  					<i class="fa fa-download fa-md"></i> Download PDF
+  				
+  				<% end %>
+  				<%= link_to 'All Timesheets', admin_timesheets_path, class: 'btn btn-primary' %>
+  </div>
+  <%= timeline  @timesheet.shifts.clocked_out.map{|shift|
+      [shift.employee.name, shift.time_in, shift.time_out]},
+     
+      library: {
+        timeline: { colorByRowLabel: true },
+        colors:['red','blue'] } %>
+        
+<div class='col-md-12'>
+  <h4>For the week of:<strong><br>
+        <%= @timesheet.week_begin %>
+          - 
+        <%= @timesheet.week_ending %>
+      </strong></h4>
+  <div class='col-md-3 well well-sm'>
+    <strong>Regular hours:</strong>
+    <%= @timesheet.reg_hours %>
+  </div>
+  <div class='col-md-3 well well-sm'>
+    <strong>Overtime hours:</strong>
+    <%= @timesheet.ot_hours %>
+  </div>
+    <div class='col-md-3 well well-sm'>
+           <strong>Gross pay:</strong>
+        <%= number_to_currency(@timesheet.gross_pay) %>
+      </div>
+      <div class='col-md-3 well well-sm'>
+           <strong>Total bill:</strong>
+        <%= number_to_currency(@timesheet.total_bill) %>
+      </div>
+      
+</div>
+
+<div class='col-md-12' data-behavior="timesheet-list">
+    
+  <%= render @timesheet %>
+  
+  </div>
+  <div class='col-md-4 dark'>
+
+</div>
+ 
+
+<div class='col-md-8 dark'>
+   <%= render 'admin/shifts/table' %>
+</div>
+
+
+
+
+</div>
+

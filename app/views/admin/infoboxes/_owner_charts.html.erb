@@ -1,4 +1,4 @@
-<div class="col-md-3">
+<div class="col-md-4">
   <h4 class='text-center'>Account Managers</h4>
   <h5 class='text-center'><small>Based on current billing</small></h5>
  
@@ -6,35 +6,36 @@
   
 </div>
 
-<div class="col-md-3">
+<div class="col-md-4">
   <h4 class='text-center'>Recruiters</h4>
   <h5 class='text-center'><small>Based on current billing</small></h5>
   <%= column_chart recruiter_ranking_path %>
    
   
 </div>
-  <div class="col-md-3">
+
+  <div class="col-md-4">
     <h5 class='text-center'>Invoices by Company</h5>
     <h5 class='text-center'><small>Total: <%= Invoice.sum(:total).round(2) %></small></h5>
     
     <%= column_chart paid_invoices_path %>
   </div>
-  <div class="col-md-3">
-    <h5 class='text-center'>YTD Billings by Company</h5>
+  <div class="col-md-9">
+    <h5 class='text-center'>Open orders by fill date</h5>
     <h5 class='text-center'><small>Total: <%= Invoice.sum(:total).round(2) %></small></h5>
-    <%= line_chart Order.needs_attention.group_by_day(:needed_by).count %>
+    <%= line_chart Timesheet.group_by_week(:created_at).sum(:total_bill) %>
   </div>
+  
   <div class="col-md-3">
     <h5 class='text-center'>Total Orders by Company</h5>
     <h5 class='text-center'><small>Total: <%= Order.count %></small></h5>
-    <%= line_chart User.group_by_day(:created_at).count %>
-  <%= pie_chart Order.joins(:company).group(:name).count %>
+    <%= line_chart Shift.current_week.group_by_day(:created_at).sum(:earnings) %>
    
     </div>
     <div class="col-md-12">
       <h5 class='text-center'>Total Hours Worked Per Month</h5>
       <h5 class='text-center'><small><%= Order.count %></small></h5>
-     
+      <%= line_chart Admin.group_by_day(:updated_at).count %>
         
      <%= column_chart  Admin.account_managers.map{|account_manager|
             {name: account_manager.name, data: account_manager.account_orders.group(:title).average(:mark_up)}
@@ -75,7 +76,7 @@
     <h5 class='text-center'><small><%= Order.count %></small></h5>
     
    <%= column_chart Shift.group_by_period(:day, :time_in, format: "%m/%d").sum(:earnings), stacked: true %>
-  <%= Shift.group_by_period(:day, :time_in, format: "%m/%d").sum(:earnings) %>
+
   
   <hr>
   

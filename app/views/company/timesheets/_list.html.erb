@@ -1,0 +1,70 @@
+<div class="col-lg-12 col-md-10 col-sm-12 pricing-package">
+	<div class="pricing-package-inner">
+		<div class="package-header green-bg">
+		
+			<span class="stars text-left">
+				<h5><%= company.name %>'s Timesheets</h5>
+				
+				
+			</span>
+			
+		</div>
+		<div class="package-content">
+		
+			
+			<ul class="package-features" data-behavior="timesheet-list">
+			    <% company.timesheets.past.order(updated_at: :desc).each do |timesheet| %>
+			    
+			    	
+                    <% if timesheet.approved? %>
+                        <li class="has-nofeature" data-behavior="timesheet" data-id="<%= timesheet.id %>">
+                		    <%= timesheet.state.upcase %> - <%= timesheet.employee.name %>
+                	    
+                	    </li>
+                	    <%= render timesheet %>
+                        
+                    <% else %>
+                        <li class="has-feature" data-behavior="timesheet" data-id="<%= timesheet.id %>">
+                		 <%= timesheet.state.upcase %> - <%= timesheet.employee.name %>
+                	    
+                	    </li>
+                	    <%= render timesheet %>
+                    
+                    <% end %>
+    			<% end %>
+
+			</ul>
+		<div class="package-footer">
+			<button class="btn btn-success btn-sm">
+				<span class="fa fa-download fa-lg"></span> Download
+			</button>
+			<button class="btn btn-success btn-sm">
+				<span class="fa fa-file-excel-o fa-lg"></span> Export
+			</button>
+			<%= link_to(admin_company_path(company), class: "btn btn-success btn-sm" ) do %>
+				<span class="fa fa-building fa-lg"></span> View Company
+			<% end %>
+			<%= link_to(admin_company_orders_path(company), class: "btn btn-success btn-sm" ) do %>
+				<span class="fa fa-list-alt fa-lg"></span> Job Orders
+			<% end %>
+			<%= link_to(admin_company_timesheets_path(company), class: "btn btn-success btn-sm" ) do %>
+				<span class="fa fa-clock-o fa-lg"></span> Timesheets
+			<% end %>
+			<button class="btn btn-success btn-sm">
+				<span class="fa fa-file-excel-o fa-lg"></span> Export
+			</button>
+		</div>
+				
+			
+			
+			
+			
+		</div>
+	
+		
+		
+		
+	</div>
+	
+</div>
+

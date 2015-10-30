@@ -1,0 +1,20 @@
+<div class='main-box'>
+ <h1>Past Timesheets</h1>
+   <div class='col-md-6' data-behavior="timesheet-list">
+    <h4>Approved</h4>
+    <% @last_week_timesheets.approved.each do |timesheet| %>
+   <%= render timesheet %>
+   <% end %>
+   </div>
+   <div class='col-md-6' data-behavior="timesheet-list">
+    <h4>Pending</h4>
+    <%= render(@timesheets.last_week.pending) || "There are no pending timesheets for last week yet." %>
+   
+  
+   </div>
+    
+   <%= link_to(past_admin_timesheets_path(@timesheets, format: :csv), class: 'btn btn-primary') do %>
+			  					<i class="fa fa-file-excel-o fa-lg"></i> Export CSV
+			  				
+			  				<% end %>
+</div>

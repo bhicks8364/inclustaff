@@ -1,0 +1,113 @@
+
+
+<h1>  <%= @company.name %></h1>
+<hr>
+<div id="order-tabs">
+
+  <!-- Nav tabs -->
+  <ul id="order-nav" class="nav nav-tabs nav-justified" role="tablist">
+    <li role="presentation" class="active"><a href="#order" aria-controls="order" role="tab" data-toggle="tab">Order Info.</a></li>
+    <li role="presentation"><a href="#activejobs" aria-controls="activejobs" role="tab" data-toggle="tab">Active Jobs</a></li>
+    <li role="presentation"><a href="#inactivejobs" aria-controls="inactivejobs" role="tab" data-toggle="tab">Inactive Jobs</a></li>
+  </ul>
+  
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane fade in active" id="order">
+  
+
+<h3>  <strong>Department/Order: </strong>
+  <%= @order.title %></h3>
+
+
+
+
+
+  <strong>Additional Payroll Information:</strong>
+    <div id= "order-notes" class="" >
+    <p><%= @order.notes %></p>
+  </div>
+  
+  
+<p>
+<p>
+  <strong>Pay Type:</strong>
+  <%= @order.pay_range %>
+</p>
+<p>
+  <strong>Number needed: </strong>
+  <%= @order.number_needed %>
+</p>
+  <strong>Active Employees:</strong>
+      <%= @order.jobs.active.count %>
+
+<br/>
+
+  <strong>Pay Frequency:</strong>
+  <%= @order.urgent ? "Bi-Weekly" : "Weekly" %>
+<br>
+  <strong>Status:</strong>
+  <%= @order.active ? "Active" : "Inactive" %>
+</p>
+
+<%= link_to 'Edit', edit_company_order_path(@company, @order) %> |
+<%= link_to 'Back', company_orders_path(@company) %>
+<br>
+<%= link_to 'Add Job', new_job_path %>
+<hr>
+
+  </div>
+  
+  
+  <div role="tabpanel" class="tab-pane fade" id="activejobs">
+<%= render @active_jobs %>
+
+  </div>
+  
+  
+  <div role="tabpanel" class="tab-pane fade" id="inactivejobs">
+    <table id="active-jobs" class="table table-bordered" cellspacing="0.5" width="85%%">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Order</th>
+      <th>Employee</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Start date</th>
+      <th>Pay rate</th> 
+      <th>Total Hours</th>
+      <th>End date</th>
+      <th>Total Gross Pay</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%= content_tag_for(:tr, @inactivejobs) do |job| %>
+        <td><% if job.active %> <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
+            <% else %>
+            <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+            <% end %>
+        </td>
+        <td><%= link_to job.order.title, order_path(job.order) %></td>
+        <td><%= link_to job.employee.name, job.employee %></td>
+        <td><%= link_to job.title, job %></td>
+        <td><%= job.description %></td>
+        <td><%= job.start_date.strftime("%B %e, %Y") %></td>
+        <td><%= number_to_currency(job.pay_rate) %></td>
+        <td><%= job.total_hours.round(2) %></td>
+        <td><%= job.end_date.strftime("%B %e, %Y") %></td>
+        <td><%= number_to_currency(job.total_gross_pay) %></td>
+
+        <td><%= link_to "<span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>".html_safe, edit_job_path(job), class: "btn btn-default" %></td>
+        <td><%= link_to "<span class='glyphicon glyphicon-trash' aria-hidden='true'></span>".html_safe, job_path(job), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-default" %></td>
+    <% end %>
+
+  </tbody>
+</table>
+  </div>
+</div>
+
+  </div>
+  

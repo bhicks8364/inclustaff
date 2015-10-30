@@ -10,11 +10,16 @@
 	</div>
 
 	<div class='col-md-3'>
-		<%= link_to "<i class='fa fa-user-plus fa-fw pull-left'></i> Admin Sign Up ".html_safe, new_admin_registration_path, class: 'btn btn-primary  btn-lg btn-block' %>
+		<%= link_to "<i class='fa fa-user-plus fa-fw pull-left'></i> Agency Admin Sign Up ".html_safe, new_admin_registration_path, class: 'btn btn-primary  btn-lg btn-block' %>
 		
-		<%= link_to "<i class='fa fa-user fa-fw pull-left'></i> Admin Sign In ".html_safe, new_admin_session_path, class: 'btn btn-primary  btn-lg btn-block' %>
+		<%= link_to "<i class='fa fa-user fa-fw pull-left'></i> Agency Admin Sign In ".html_safe, new_admin_session_path, class: 'btn btn-primary  btn-lg btn-block' %>
 	</div>
-
+	<div class='col-md-3'>
+		<%= link_to "<i class='fa fa-user-plus fa-fw pull-left'></i> Company Admin Sign Up ".html_safe, new_company_admin_registration_path, class: 'btn btn-primary  btn-lg btn-block' %>
+		
+		<%= link_to "<i class='fa fa-user fa-fw pull-left'></i>Company Admin Sign In ".html_safe, new_company_admin_session_path, class: 'btn btn-primary  btn-lg btn-block' %>
+	</div>
+	
 	
 	<% else %>
 	

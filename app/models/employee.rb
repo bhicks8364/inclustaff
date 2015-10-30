@@ -16,6 +16,7 @@
 #  resume_id        :string
 #  desired_job_type :string
 #  desired_shift    :string
+#  availablity      :hstore
 #
 
 class Employee < ActiveRecord::Base
@@ -43,6 +44,13 @@ class Employee < ActiveRecord::Base
   accepts_nested_attributes_for :skills, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :work_histories, reject_if: :all_blank, allow_destroy: true
   
+  store_accessor :availablity, :monday
+  store_accessor :availablity, :tuesday
+  store_accessor :availablity, :wednesday
+  store_accessor :availablity, :thursday
+  store_accessor :availablity, :friday
+  store_accessor :availablity, :saturday
+  store_accessor :availablity, :sunday
   
   delegate :last_clock_out, to: :current_job
   delegate :manager, to: :current_job
@@ -203,23 +211,23 @@ class Employee < ActiveRecord::Base
   #   @matching_employees ||= Employee.unassigned.tagged_with([tag_list], :any => true)
   # end
   
-  #     # EXPORT TO CSV
-  # def self.assign_from_row(row)
-  #   employee = Employee.where(email: row[:email]).first_or_initialize
-  #   timesheet = Timesheet.new row.to_hash.slice(:first_name, :last_name, :email, :profile_type, :role)
-  #   employee
-  # end
+      # EXPORT TO CSV
+  def self.assign_from_row(row)
+      employee = Employee.where(email: row[:email]).first_or_initialize
+      employee.assign_attributes row.to_hash.slice(:first_name, :last_name, :user_id, :ssn, :desired_shift, :desired_job_type, :email, :phone_number)
+      employee
+  end
   
-  # def self.to_csv
-  #   attributes = %w{id last_name first_name email profile_type role}
-  #   CSV.generate(headers: true) do |csv|
-  #     csv << attributes
+  def self.to_csv
+    attributes = %w{id last_name first_name email ssn phone_number desired_job_type desired_shift user_id}
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
       
-  #     all.each do |user|
-  #       csv << user.attributes.values_at(*attributes)
-  #     end
-  #   end
-  # end
+      all.each do |employee|
+        csv << employee.attributes.values_at(*attributes)
+      end
+    end
+  end
 
     
 end

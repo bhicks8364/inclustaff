@@ -11,11 +11,27 @@ class Admin::EmployeesController < ApplicationController
     @employees = Employee.includes(:user).assigned
     gon.employees = @employees
     skip_authorization
+    @import = Employee::Import.new
+    respond_to do |format|
+      format.html
+      format.csv { send_data @employees.to_csv, filename: "employees-export-#{Time.current}-inclustaff.csv" }
+  	end 
     # WAS TRYING TO USE ELASTICSEARCH (SERCHKICK GEM) ###############
     # query = params[:q].presence || "*"
     # @employees = Employee.search query, operator: "or", suggest: true, misspellings: {edit_distance: 2}
   end
-  
+  def import
+      @import  = Employee::Import.new(employee_import_params)
+      
+      if @import.save
+          redirect_to admin_employees_path, notice: "Imported #{@import_count} employees."
+      else
+          @employees = Employee.assigned
+          render action: :index, notice: "There were errors with your CSV file."
+      end
+      skip_authorization
+        
+  end
   
 
 
@@ -95,6 +111,9 @@ class Admin::EmployeesController < ApplicationController
   end
 
   private
+    def employee_import_params
+        params.require(:employee_import).permit(:file)
+    end
     def pundit_user
       current_admin
     end
@@ -108,6 +127,7 @@ class Admin::EmployeesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def employee_params
       params.require(:employee).permit(:first_name, :last_name, :email, :ssn, :phone_number, :user_id, :resume, :tag_list, :skill_list,
+          { availablity: [:tuesday, :wednesday, :thursday, :friday, :saturday, :sunday], :monday => [] },
           jobs_attributes: [:title, :pay_rate, :start_date, :order_id, :id], skills_attributes: [:id, :skillable_id, :skillable_type, :name, :required, :_destroy],
           user_attributes: [:id, :email, :role, :password, :password_confirmation, :first_name, :last_name, :company_id, :current_password, :address, :city, :state, :zipcode],
           work_histories_attributes: [:id, :name, :employee_id, :employer_name, :start_date, :end_date, :title, :description, :current, :may_contact,

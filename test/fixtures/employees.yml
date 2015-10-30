@@ -16,6 +16,7 @@
 #  resume_id        :string
 #  desired_job_type :string
 #  desired_shift    :string
+#  availablity      :hstore
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

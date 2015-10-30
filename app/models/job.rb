@@ -43,16 +43,9 @@ class Job < ActiveRecord::Base
     include ArelHelpers::ArelTable
     include ArelHelpers::JoinAssociation
 
-    # def off_shift
-    #     Job.joins(
-    #     Job.join_association(:shifts, Arel::OuterJoin) do |assoc_name, join_conditions|
-    #       join_conditions.and(Job[:author_id].eq(4))
-    #     end
-    #   )
-    # end
     
         # setup settings
-    store_accessor :settings, :rating
+    store_accessor :settings
     
     
 
@@ -61,18 +54,14 @@ class Job < ActiveRecord::Base
     # validates_associated :employee
     validates_associated :order
     validates :employee_id,  presence: true
-    # validates :order_id,  presence: true
-    # validates :title,  presence: true, length: { maximum: 50 }
+    validates :order_id,  presence: true
+    validates :title,  presence: true, length: { maximum: 50 }
     
     # CALLBACKS
     after_initialize :defaults
     after_save :update_employee
-    
     before_save :set_main_pay
     
-    
-    
-
     # SCOPES
     scope :with_drive_pay, -> { where("settings ? :key", :key => 'drive_pay')}
     scope :with_ride_pay, -> { where("settings ? :key", :key => 'ride_pay')}
@@ -93,7 +82,7 @@ class Job < ActiveRecord::Base
     scope :worked_yesterday, -> { joins(:shifts).merge(Shift.in_yesterday)}
     scope :worked_this_week, -> { joins(:timesheets).where("timesheets.week <= ?", Date.today.cweek).group("jobs.id") }
     
-    # MAIL
+    # MAIL - not setup yet
     def send_notifications!
         NotificationMailer.job_notification(self.account_manager, self).deliver_later
     end
@@ -133,17 +122,7 @@ class Job < ActiveRecord::Base
     def update_employee
         self.employee.mark_as_assigned!
     end
-    
-    # def self.off_shift
-    #     joins(:shifts).where("shifts.state != ?", "Clocked In").group("jobs.id")
 
-    # end
-    
-    # def self.by_last_shift(shift_id)
-        
-    #     where(recruiter_id: shift_id)
-    # end
-    
     def self.by_recuriter(admin_id)
         where(recruiter_id: admin_id)
     end
@@ -175,14 +154,7 @@ class Job < ActiveRecord::Base
             self.title = job_order.title
         end
     end
-    
-    # def clock_in(job)
-    #     if job.off_shift?
-    #         job.build_current_shift(time_in: Time.current, time_out: nil,
-    #                 state: "Clocked In", in_ip: self.employee.current_sign_in_ip,
-    #                 out_ip: nil)
-    #     end
-    # end
+
     def clock_in!
         if self.off_shift?
             self.current_shift.create(time_in: Time.current, time_out: nil,

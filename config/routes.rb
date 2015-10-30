@@ -5,6 +5,7 @@ class SubdomainConstraint
   end
 end
 Rails.application.routes.draw do
+  
   root 'dashboard#home'
   get 'features' => 'dashboard#features'
   
@@ -20,6 +21,7 @@ Rails.application.routes.draw do
     get 'recruiter_ranking', to: 'charts#recruiter_ranking'
     get 'order_fill_time', to: 'charts#order_fill_time'
     devise_for :admins, controllers: {registrations: 'admins/registrations'}
+    devise_for :company_admins, controllers: {registrations: 'company_admins/registrations'}
     devise_for :users, controllers: {registrations: 'users/registrations'}
     
     resources :admins do
@@ -69,6 +71,7 @@ Rails.application.routes.draw do
       resources :employees do
         collection do
           get 'autocomplete'
+          post 'import'
         end
         resources :jobs
         resources :skills
@@ -107,6 +110,23 @@ Rails.application.routes.draw do
       
     end
     # END ADMIN
+    # COMPANY_ADMIN ---> /company
+    namespace :company do
+      get  'dashboard' => 'dashboard#home'
+      get 'timeclock' => 'dashboard#timeclock'
+      get 'timeclock/:id' => 'dashboard#clock', as: :clock
+      get 'admins' => 'dashboard#admins'
+      get 'admin/:id' => 'dashboard#admin', as: :admin_profile
+      resources :orders
+      resources :jobs do
+        member do
+          patch 'clock_in'
+          patch 'clock_out'
+        end
+      end
+      resources :timesheets
+      resources :invoices
+    end
     # EMPLOYEE ---> /employee
     namespace :employee do
       get  'timeclock', to: 'dashboard#employee_view'

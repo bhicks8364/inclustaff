@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151026143605) do
+ActiveRecord::Schema.define(version: 20151029182951) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,6 +90,38 @@ ActiveRecord::Schema.define(version: 20151026143605) do
   add_index "companies", ["agency_id"], name: "index_companies_on_agency_id", using: :btree
   add_index "companies", ["user_id"], name: "index_companies_on_user_id", using: :btree
 
+  create_table "company_admins", force: :cascade do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "phone_number"
+    t.integer  "company_id"
+    t.string   "role"
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.inet     "current_sign_in_ip"
+    t.inet     "last_sign_in_ip"
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string   "unconfirmed_email"
+    t.integer  "failed_attempts",        default: 0,  null: false
+    t.string   "unlock_token"
+    t.datetime "locked_at"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+  end
+
+  add_index "company_admins", ["confirmation_token"], name: "index_company_admins_on_confirmation_token", unique: true, using: :btree
+  add_index "company_admins", ["email"], name: "index_company_admins_on_email", unique: true, using: :btree
+  add_index "company_admins", ["reset_password_token"], name: "index_company_admins_on_reset_password_token", unique: true, using: :btree
+  add_index "company_admins", ["unlock_token"], name: "index_company_admins_on_unlock_token", unique: true, using: :btree
+
   create_table "employees", force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -104,8 +136,10 @@ ActiveRecord::Schema.define(version: 20151026143605) do
     t.string   "resume_id"
     t.string   "desired_job_type"
     t.string   "desired_shift"
+    t.hstore   "availablity"
   end
 
+  add_index "employees", ["availablity"], name: "index_employees_on_availablity", using: :btree
   add_index "employees", ["deleted_at"], name: "index_employees_on_deleted_at", using: :btree
   add_index "employees", ["email"], name: "index_employees_on_email", using: :btree
   add_index "employees", ["user_id"], name: "index_employees_on_user_id", using: :btree

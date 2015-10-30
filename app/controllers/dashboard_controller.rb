@@ -20,6 +20,10 @@ class DashboardController < ApplicationController
         if admin_signed_in? && @current_agency.present?
              render 'admin/dashboard/home'
           @current_admin = current_admin
+        elsif company_admin_signed_in? && @current_agency.present?
+             render 'company/dashboard/home'
+          @current_admin = current_company_admin
+          @company = current_company_admin.company
           
         #ROOT TO USER PROFILE WHEN USER SIGNED IN
         elsif user_signed_in? && @current_agency.present?

@@ -91,6 +91,8 @@ class Admin < ActiveRecord::Base
       recruiter_jobs.joins(:current_timesheet).sum(:total_bill)
     elsif self.account_manager? && self.account_orders.any?
       account_orders.joins(:current_timesheets).sum(:total_bill)
+    else 
+      0
     end
   end  
   def billing
@@ -98,6 +100,8 @@ class Admin < ActiveRecord::Base
       recruiter_jobs.joins(:timesheets).sum(:total_bill)
     elsif self.account_manager? && self.account_orders.any?
       account_orders.joins(:timesheets).sum(:total_bill)
+    else
+      0
     end
   end
   
@@ -110,6 +114,8 @@ class Admin < ActiveRecord::Base
       pay = account_orders.joins(:current_timesheets).sum(:gross_pay)
       bill = account_orders.joins(:current_timesheets).sum(:total_bill)
       (bill - pay) * 0.15  #FAKE COMMISSION RATE
+    else 
+      0
     end
   end
          

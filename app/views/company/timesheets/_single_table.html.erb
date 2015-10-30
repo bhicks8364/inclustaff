@@ -1,0 +1,31 @@
+<tr data-behavior="timesheet" data-id="<%= timesheet.id %>">
+		<td><strong><%= timesheet.week_ending %></strong></td>
+		<td class='text-center'><%= link_to timesheet.order.company, admin_company_path(timesheet.company), class: 'table-link'  %></td>
+      	<td class='text-center'><%= link_to timesheet.employee.name, admin_employee_path(timesheet.employee), class: 'table-link' %></td>
+
+		<td class='text-center'><%= link_to timesheet.job.title, admin_job_path(timesheet.job), class: 'table-link'  %></td>
+			
+
+		<td class='text-center'><%= timesheet.gross_pay.present? ? number_to_currency(timesheet.gross_pay) : timesheet.current_shift.state.upcase %></td>
+		
+
+		<td class='text-center'><%= timesheet.total_hours.present? ? timesheet.total_hours : timesheet.current_shift.state.upcase %></td>
+		<td class='text-center'>
+			<a class='table-link' data-behavior="timesheet-toggle" >
+				<span  class="fa-stack" data-behavior="approve-button" >
+		          <% if timesheet.approved? %>
+					  <i class="fa fa-square-o fa-stack-2x"></i>
+					  <i class="fa fa-times fa-stack-1x"></i>
+		          <% else %>
+			          <i class="fa fa-square-o fa-stack-2x "></i>
+					  <i class="fa fa-check fa-stack-1x"></i>
+		          <% end %>
+			    </span>
+			</a><br>
+			<%= timesheet.state.upcase %>
+		</td>
+  		<td class="text-center"><%= render 'admin/timesheets/tool_buttons', timesheet: timesheet %></td>
+</tr>
+		
+	
+	

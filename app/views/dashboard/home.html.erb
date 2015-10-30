@@ -52,7 +52,12 @@
 <% end %>
 
 
+<% if @current_company_admin.present? %>
+	<%= link_to "<i class='fa fa-user-plus fa-fw pull-left'></i> Company Admin Sign Up ".html_safe, edit_company_admin_registration_path, class: 'btn btn-primary  btn-lg btn-block' %>
 
+
+
+<% end %>
 
 
 

@@ -1,0 +1,18 @@
+<div class='col-md-12 main-box'>
+    <%= @admin.name %> | <%= @admin.role %>
+    
+    <hr>
+    <div class='list-group'>
+        <% @company.jobs.each do |job| %>
+            <li class='list-group-item'>
+                <%= link_to job.title, company_job_path(job) %>
+            </li>
+        <% end %>
+    </div>
+    
+    
+    
+    
+    
+    
+</div>

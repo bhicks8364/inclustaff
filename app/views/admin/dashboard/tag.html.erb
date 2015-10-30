@@ -1,16 +1,16 @@
-<div class='col-md-12 transbox'>
-    <div class='col-md-12'>
+<div class='col-md-12 main-box'>
+
         <%= render 'admin/infoboxes/taggings' %>
-    </div>
+
     <div class='col-md-6'>
-    <h4>Job Order Tags</h4>
+    <h4>Open Job Order</h4>
     <%= div_for(@orders) do |order| %>
         <%= render order %>
     <% end %>
-</div>
+    </div>
 
     <div class='col-md-6'>
-        <h4>Employee Tags</h4>
+        <h4>Available Employee</h4>
         <%= div_for(@employees) do |employee| %>
             <%= render employee %>
         <% end %>

@@ -35,6 +35,14 @@
 				</tbody>
 			</table>
 		</div>
+		<%= form_for @import, url: import_admin_employees_path, multipart: true do |f| %>
+  <%= f.file_field :file %>
+  <%= f.submit "Upload", class: 'btn btn-success' %>
+<% end %>
+</div>
+<%= link_to(admin_employees_path(@employees, format: :csv), class: 'btn btn-primary') do %>
+  		<i class="fa fa-file-excel-o fa-lg"></i> Export Employee List
+<% end %>
 	<%= link_to "<i class='fa fa-user-plus fa-2x fa-fw pull-left'></i> Employee Registration".html_safe, new_user_registration_path, class: 'btn btn-primary btn-lg' %>
 </div>
 

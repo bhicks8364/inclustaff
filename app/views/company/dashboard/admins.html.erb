@@ -1,0 +1,10 @@
+<div class='col-md-12 main-box'>
+    <div class='list-group'>
+        <% @company.admins.each do |admin| %>
+            <li class='list-group-item'>
+                <%= link_to admin.name, company_admin_profile_path(admin) %>
+            </li>
+        <% end %>
+    </div>
+    
+</div>

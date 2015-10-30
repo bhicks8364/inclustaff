@@ -41,7 +41,7 @@
 
 <%= form_for @import, url: import_admin_companies_path, multipart: true do |f| %>
   <%= f.file_field :file %>
-  <%= f.submit "Upload" %>
+  <%= f.submit "Upload", class: 'btn btn-success' %>
 <% end %>
 </div>
 <%= link_to(admin_companies_path(@companies, format: :csv), class: 'btn btn-primary') do %>

@@ -1,13 +1,13 @@
 
     
-<div class="col-md-12 main-box">
+<div class="col-md-12 transbox">
   <% if @current_admin.owner? %>
   <%= render 'admin/infoboxes/owner_charts'%>
   <% elsif @current_admin.payroll? %>
   <%= render 'admin/infoboxes/payroll_boxes' %>
-  <% elsif @current_admin.payroll? %>
+  <% elsif @current_admin.recruiter? %>
   <%= render 'admin/infoboxes/recruiter_boxes' %>
-  </div>
+ 
   <% end %>
 	  <div class="btn-group btn-group-justified" role="group" aria-label="...">
       <div class="btn-group" role="group">
@@ -116,6 +116,6 @@
 </div>
 
 
-
+ </div>
 
 

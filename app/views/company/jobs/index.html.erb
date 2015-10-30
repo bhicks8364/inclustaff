@@ -1,0 +1,51 @@
+<div class='col-md-12 main-box'>
+  <% if @jobs %>
+  <h1>Active Jobs <small><%= @company.name %></small></h1>
+  <div id="dataTable" class="table-responsive">
+    <table id="myTable" class="table" cellspacing="0.5" width="85%">
+    <thead>
+      <tr>
+     
+      
+        <th>Employee</th>
+        <th>Title</th>
+        <th>Start date</th>
+        <th>Pay rate</th>
+        <th>Hours this week</th>
+        <th>Pay this week</th>
+        <th>End date</th>
+        <th></th>
+
+      </tr>
+    </thead>
+  
+    <tbody>
+      <% @jobs.each do |job| %>
+      <% if job.on_shift? %>
+          <tr class="clocked_in">
+        <% else %>
+          <tr class="clocked_out">
+        <% end %>
+          <td><%= job.employee.name %></td>
+          <td><%= link_to job.order.title, company_order_path(job.order) %></td>
+          <td><%= job.start_date.strftime("%B %e, %Y") %></td>
+          <td><%= number_to_currency(job.pay_rate) %></td>
+          <td><%= job.current_week_hours %></td>
+          <td><%= number_to_currency(job.current_week_pay) %></td>
+          <td><% if job.end_date.nil? %><%= job.active? ? "Active" : "Terminated" %><% else %><%=job.end_date.strftime("%B %e, %Y") %><% end %> </td>
+          <td><%= link_to "<span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span>     View".html_safe, company_job_path(job), class: "btn btn-default btn-sm" %></td>
+         
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  
+  </div>
+  
+  <% else %>
+  <h3>No jobs to show.</h3>
+  <% end %>
+</div>
+
+
+

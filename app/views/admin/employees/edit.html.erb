@@ -1,51 +1,10 @@
-<div class="col-lg-12">
+<div class="col-md-12 transbox">
 					
 	<h1>Edit Employee</h1>
 
-	<div class="row">
-		<div class="col-lg-6">
-			<div class="main-box" style="min-height: 820px;">
-			  
+
+	<%= render 'form' %>
 			
-				
-				<%= simple_form_for [:admin, @employee] do |f| %>
-            <% if @employee.errors.any? %>
-              <div id="error_explanation">
-                <h2><%= pluralize(@employee.errors.count, "error") %> prohibited this employee from being saved:</h2>
-                <ul>
-                <% @employee.errors.full_messages.each do |message| %>
-                  <li><%= message %></li>
-                <% end %>
-                </ul>
-              </div>
-            <% end %>
 
-
-
-                  <div class="form-group">
-                    
-                  <%= f.input :first_name, required: true, autofocus: true, placeholder: "First Name", label: false %>
-                  <%= f.input :last_name, required: true, placeholder: "Last Name", label: false  %>
-                  <%= f.input :email, required: true, placeholder: "Email  ex. example@email.com", label: false  %>
-                  <%= f.input :phone_number, as: :tel, required: true, placeholder: "Phone Number  ex. 555-555-5555", label: false  %>
-                  <%= f.input :ssn, required: true, maxlength: 4, label: false, placeholder: "SSN - Last 4 only" %>
-                  <%= f.input :tag_list, label: false, placeholder: "Tags (seperated by commas)" %>
-                  
-          			
-
-
-            <%= f.button :submit, "Save", class: "btn btn-success" %>
-        
-        <% end %>
-        
-        <%= link_to 'Back', admin_employees_path, class: 'btn' %>
-				
-				</div>
-
-			</div>
-		</div>
-	</div>
-	
-
+	<%= link_to 'Back', admin_employees_path, class: 'btn btn-default' %>
 </div>
-

@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   include Pundit
   protect_from_forgery with: :exception
   # before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :update_permitted_parameters, if: :devise_controller?
+  # before_action :update_permitted_parameters, if: :devise_controller?
   # after_action :verify_authorized, unless: :devise_controller?
   
   # Globally rescue Authorization Errors in controller.
@@ -19,12 +19,13 @@ class ApplicationController < ActionController::Base
     @current_agency = Agency.where(subdomain: subdomains).first
     @current_admin = current_admin if admin_signed_in?
     @current_user = current_user if user_signed_in?
+    @current_company = current_company_admin if company_admin_signed_in?
     @newly_added = Employee.newly_added.order(created_at: :desc) if @current_agency.present?
     @at_work = Job.at_work if @current_admin.present?
     # if @current_agency.nil?
     #   not_found
     # end
-    @current = @current_user || @current_admin
+    @current = @current_user || @current_admin || @current_company_admin
     
     @agency = @current_agency
     
