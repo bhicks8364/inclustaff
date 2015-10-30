@@ -1,5 +1,5 @@
 class Company::JobsController < ApplicationController
-  before_action :set_job, only: [:show, :edit, :update, :destroy, :clock_in, :clock_out]
+  before_action :set_job, only: [:show, :edit, :update, :destroy, :clock_in, :clock_out, :verify_code]
   before_action :authenticate_company_admin!
   # before_action :set_order
 
@@ -79,6 +79,21 @@ class Company::JobsController < ApplicationController
       end
     end
   end
+  def verify_code
+    skip_authorization
+    @code = params[:code]
+    @employee_code = @job.employee.code
+    @state = @job.on_shift? ? true : false
+    authorized = (@code === @employee_code) ? true : false
+    respond_to do |format|
+      if @code === @employee_code
+         format.json { render json: { id: @job.id, code: @employee_code, authorized: authorized, status: :ok, clocked_in: @state} }
+      else
+        format.json { render json: @job.errors, code: @employee_code, authorized: authorized, clocked_in: @state}
+      end
+    end
+  end
+  
   def clock_in
     skip_authorization
     # authorize @job, :clock_in?

@@ -110,16 +110,18 @@ Rails.application.routes.draw do
       
     end
     # END ADMIN
+    
     # COMPANY_ADMIN ---> /company
     namespace :company do
       get  'dashboard' => 'dashboard#home'
       get 'timeclock' => 'dashboard#timeclock'
-      get 'timeclock/:id' => 'dashboard#clock', as: :clock
+
       get 'admins' => 'dashboard#admins'
       get 'admin/:id' => 'dashboard#admin', as: :admin_profile
       resources :orders
       resources :jobs do
         member do
+          post 'verify_code'
           patch 'clock_in'
           patch 'clock_out'
         end
@@ -127,6 +129,8 @@ Rails.application.routes.draw do
       resources :timesheets
       resources :invoices
     end
+    # END COMPANY_ADMIN
+    
     # EMPLOYEE ---> /employee
     namespace :employee do
       get  'timeclock', to: 'dashboard#employee_view'

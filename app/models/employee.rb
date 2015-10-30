@@ -92,7 +92,7 @@ class Employee < ActiveRecord::Base
   scope :with_inactive_jobs, -> { joins(:jobs).merge(Job.inactive)}
   scope :on_shift, -> { joins(:shifts).merge(Shift.clocked_in)} 
   scope :at_work, -> { joins(:shifts).merge(Shift.at_work)} 
-  scope :off_shift, -> { joins(:shifts).merge(Shift.clocked_out)}
+  # scope :off_shift, -> { joins(:current_shift).merge(Shift.clocked_out)}
   scope :with_current_timesheet, -> { joins(:timesheets).merge(Timesheet.this_week)}
 
     
@@ -116,6 +116,7 @@ class Employee < ActiveRecord::Base
     end
   end
   
+ 
   def mark_as_assigned!
     if self.jobs.active.empty?
       self.update(assigned: false)

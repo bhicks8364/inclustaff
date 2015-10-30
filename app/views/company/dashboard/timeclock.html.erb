@@ -1,6 +1,18 @@
-<div class='col-md-12 main-box'>
+<div class='col-md-12 main-box' data-behavior="company-job-list">
     <h1><%= @company.name %>'s Timeclock</h1>
-    <% @company.jobs.each do |job| %>
-        <%= link_to job.title, company_clock_path(job) %>
-    <% end %>
+ <h3>Current Employees</h3>
+    <div class='transbox'>
+         
+        <%= div_for(@company.jobs.each, class: 'well') do |job| %>
+        <div data-behavior="job" data-id="<%= job.id %>">
+        <%= job.employee.code %>
+        
+        <h4><%= job.title %></h4>
+        <span id='verified'></span>
+            <%= render 'clock', job: job %>
+           
+              </div>
+        <% end %>
+    </div>
+   
 </div>

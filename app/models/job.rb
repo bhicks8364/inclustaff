@@ -76,6 +76,7 @@ class Job < ActiveRecord::Base
     scope :on_shift, -> { joins(:employee).merge(Employee.on_shift)}
     scope :at_work, -> { joins(:employee).merge(Employee.at_work)}
     scope :off_shift, -> { joins(:employee).merge(Employee.off_shift)}
+    
 
     scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.current_week)}
     scope :worked_today, -> { joins(:shifts).merge(Shift.in_today)}

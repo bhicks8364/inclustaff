@@ -12,7 +12,7 @@
 <%= f.association :company, required: true, include_blank: false  %>
       <%= f.input :phone_number, required: true, placeholder: "Phone Number", label: false %>
       <%= f.input :email, required: true, placeholder: "Email  Address", label: false  %>
-      <%= f.input :role, required: true, collection: [ "Owner", "Manager", "HR", "Limited Access"], include_blank: false, label: false  %>
+      <%= f.input :role, required: true, collection: [ "Owner", "Manager", "HR", "Limited Access", "Timeclock"], include_blank: false, label: false  %>
       <%= f.input :password, required: true, placeholder: "Password", label: false, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length) %>
       <%= f.input :password_confirmation, required: true, placeholder: "Confirm Password", label: false %>
 

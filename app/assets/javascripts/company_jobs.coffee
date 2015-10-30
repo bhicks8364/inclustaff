@@ -11,9 +11,30 @@ class Job
     @setEvents()
 
   setEvents: ->
+    @item.find("[data-behavior='code-button_#{@id}']").on "click", @getCode
     @item.find("[data-behavior='job-in-button_#{@id}']").on "click", @handleIn
     @item.find("[data-behavior='job-out-button_#{@id}']").on "click", @handleOut
-  
+    
+  getCode: =>
+    @code = prompt("Please enter your employee code. (Case sensitive)", "Example: BH1234");
+    $.ajax(
+      url: "/company/jobs/#{@id}/verify_code",
+      data: { code: @code },
+      method: "POST"
+      dataType: "JSON"
+      success: @authorizeClockIn
+    )
+  authorizeClockIn: (data) =>
+    if data.authorized
+      @item.find("[data-behavior='code-button_#{@id}']").hide()
+      @item.find("[data-behavior='job-in-button_#{@id}']").show()
+      @item.find("#verified").html "VERIFIED! You can now clock in."
+     
+      console.log data.authorized
+      console.log data.code
+    else
+      alert("Uh-Oh! Something went wrong! #{data.authorized} - #{data.code}")
+
   handleIn: =>
     $.ajax(
       url: "/company/jobs/#{@id}/clock_in",
@@ -24,11 +45,9 @@ class Job
 
   handleInSuccess: (data) =>
     if data.clocked_in
+      
       $("[data-behavior='job-in-button_#{@id}']").hide()
-      $("[data-behavior='job-out-button_#{@id}']").show()
-      $("#clocked-in-count").text "#{data.new_count}"
-      #@item.find("[data-behavior='job-in-button_#{@id}']").hide()
-      #@item.find("[data-behavior='job-out-button_#{@id}']").show()
+      
       @item.find("[data-behavior='time-out']").html "<small>Last Out: #{data.last_out}</small>"
       @item.find("[data-behavior='time-in']").html "<small><strong> In:</strong> #{data.time_in}</small>"
       @item.find("[data-behavior='shift-state']").html "<strong>#{data.first_name} is now clocked in.</strong><br>"
@@ -57,7 +76,7 @@ class Job
       #@item.find(".shift-item").hide()
       $("[data-behavior='job-out-button_#{@id}']").hide()
       $("#in-job-#{@id}").hide()
-      $("[data-behavior='job-in-button_#{@id}']").show()
+      $("[data-behavior='code-button_#{@id}']").show()
       $("#clocked-in-count").text "#{data.new_count}"
       #@item.find("[data-behavior='job-in-button']").show()
       @item.find("[data-behavior='time-in']").html "<small><strong> In:</strong> #{data.time_in}</small>"
