@@ -12,7 +12,7 @@
 <div id='approved' class='col-lg-6' data-behavior='timesheet-list'>
     <h4 class='text-center'><strong>Approved Timesheets</strong></h4>
     <%= render(@timesheets.current_week.approved) || "There are no approved timesheets for this week yet." %>
-    <%= link_to "View Past Timesheets", past_admin_timesheets_path, class: "btn btn-primary" %>
+   
 </div>
 
     <% else %>
@@ -29,11 +29,12 @@
 </div>
 
 
-
-<%= link_to(admin_timesheets_path(@timesheets, format: :csv), class: 'btn btn-primary') do %>
-  		<i class="fa fa-file-excel-o fa-lg"></i> Export Approved
+ <hr>
+<%= link_to(company_timesheets_path(@timesheets, format: :csv), class: 'btn btn-primary') do %>
+  		<i class="fa fa-file-excel-o fa-lg"></i> Export
 <% end %>
 
+    
 
 
 

@@ -13,3 +13,26 @@
   } %>
   </div>
 </div>
+
+<div class="col-md-12 ">
+    <h5 class='text-center'> Billings by Hour</h5>
+    <h5 class='text-center'><small><%= Timesheet.current_week.sum(:total_bill) %></small></h5>
+  
+       <%= line_chart Admin.account_managers.map{|am|
+        {name: am.name, data: am.account_orders.includes(:timesheets).group_by_hour('timesheets.updated_at').sum(:total_bill)}
+    } %>
+    </div>
+    <div class="col-md-6 ">
+      <h5 class='text-center'>Recruiter Activity</h5>
+  <%= column_chart Admin.recruiters.pluck("id").uniq.map { |c| { name: Admin.where(id: c).take.name, data: Job.where(recruiter_id: c).group_by_day(:created_at, format: "%B %d, %Y").count }  } %>
+</div>
+    <div class="col-md-6 ">
+      <h5 class='text-center'>Shifts</h5>
+      <h5 class='text-center'><small><%= Shift.count %></small></h5>
+      <%= column_chart Employee.assigned.map{|employee|
+                {name: employee.name, data: employee.shifts.group_by_week(:time_in, format: "%a").sum(:time_worked)}
+            }, xtitle: "Week", ytitle: "Total Hours" %>
+      
+    
+   
+    </div>

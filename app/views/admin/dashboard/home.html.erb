@@ -1,20 +1,14 @@
 
     
 <div class="col-md-12 transbox">
-  <% if @current_admin.owner? %>
-  <%= render 'admin/infoboxes/owner_charts'%>
-  <% elsif @current_admin.payroll? %>
-  <%= render 'admin/infoboxes/payroll_boxes' %>
-  <% elsif @current_admin.recruiter? %>
-  <%= render 'admin/infoboxes/recruiter_boxes' %>
- 
-  <% end %>
+	<h1 class='page-header'><%= @current_agency.name.titleize %>'s Dashboard <small>Signed in as: <%= @current_admin.role %></small></h1>
+  
 	  <div class="btn-group btn-group-justified" role="group" aria-label="...">
       <div class="btn-group" role="group">
       <%= link_to(@current_agency, class: "btn btn-primary") do %>
     							<i class='fa fa-user'></i>
     
-    								<span>My Profile</span>
+    								<span>Agency Page</span>
     							<% end %>
     
       </div>
@@ -47,7 +41,7 @@
     </div>
   </div>
   
-	<h1 class='page-header'><%= @current_agency.name.titleize %>'s Dashboard <small>Signed in as: <%= @current_admin.role %></small></h1>
+<hr>
 	<% if @current_agency.companies.blank? %>
 
 <div class="center">
@@ -71,10 +65,10 @@
 <div class="col-md-6">
   <div class="panel panel-primary dark">
     <div class="panel-heading">
-      <h3 class="panel-title"><strong>Invoices</strong><span class='label label-default pull-right black'> <%= number_to_currency(@current_agency.invoices.unpaid.sum(:total)) %></strong></h3>
+      <h3 class="panel-title"><strong>Open Invoices</strong><span class='label label-default pull-right black'> <%= number_to_currency(@current_agency.invoices.unpaid.sum(:total)) %></strong></h3>
     </div>
     <div class="panel-body">
-      <% @current_agency.invoices.order(:week).each do |invoice| %>
+      <% @current_agency.invoices.unpaid.order(:week).each do |invoice| %>
 				<%= link_to(admin_invoice_path(invoice), class: "list-group-item list-group-item-success") do %>
 			       <div data-behavior="invoice" data-id="<%= invoice.id %>" class=''>
 			       
@@ -114,7 +108,14 @@
     </div>
   </div>
 </div>
-
+<% if @current_admin.owner? %>
+  <%= render 'admin/infoboxes/owner_charts'%>
+  <% elsif @current_admin.payroll? %>
+  <%= render 'admin/infoboxes/payroll_boxes' %>
+  <% elsif @current_admin.recruiter? %>
+  <%= render 'admin/infoboxes/recruiter_boxes' %>
+ 
+  <% end %>
 
  </div>
 

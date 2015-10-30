@@ -1,8 +1,12 @@
 class ChartsController < ApplicationController
-  def paid_invoices
+  def current_weeks_billing
+    render json: Timesheet.current_week.order(week: :desc).map{|timesheet|
+    [timesheet.company.name, timesheet.total_bill]}.chart_json
+  end
+  def companies_balance
     gon.invoices = Invoice.pluck(:total)
-    render json: Invoice.all.map{|invoice|
-    [invoice.company.name, invoice.total.round(2)]}.chart_json
+    render json: Company.with_balance.order(balance: :desc).map{|company|
+    [company.name, company.balance]}.chart_json
   end
   def account_managers_ranking
     render json: Admin.account_managers.limit(5).group(:id).map{|a|

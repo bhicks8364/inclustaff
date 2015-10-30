@@ -5,5 +5,5 @@
 
 <%= link_to 'Show', admin_company_order_path(@company, @order) %> |
 <%= link_to 'Back', admin_company_orders_path(@company) %>
-
+<%= link_to 'Delete', admin_company_order_path(@company, @order), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
 </div>

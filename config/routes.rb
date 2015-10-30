@@ -14,12 +14,16 @@ Rails.application.routes.draw do
   
   constraints SubdomainConstraint do
     get  'sign_in' => 'dashboard#sign_in_page'  
+    # TAGS
     get 'tags' => 'admin/dashboard#all_tags'
     get 'tags/:tag', to: 'admin/dashboard#tag', as: :tag
+    # CHARTS
     get 'paid_invoices', to: 'charts#paid_invoices'
+    get 'companies_balance', to: 'charts#companies_balance'
     get 'account_managers_ranking', to: 'charts#account_managers_ranking'
     get 'recruiter_ranking', to: 'charts#recruiter_ranking'
     get 'order_fill_time', to: 'charts#order_fill_time'
+    get 'current_weeks_billing', to: 'charts#current_weeks_billing'
     devise_for :admins, controllers: {registrations: 'admins/registrations'}
     devise_for :company_admins, controllers: {registrations: 'company_admins/registrations'}
     devise_for :users, controllers: {registrations: 'users/registrations'}

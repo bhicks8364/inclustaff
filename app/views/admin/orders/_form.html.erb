@@ -9,7 +9,7 @@
 		<% end %>
 	  
 		<%= f.input :title, placeholder: "Job Type (Ex. Warehouse, Adminstrative, General Labor, etc...)", label: false, wrapper_html: {class: 'col-md-9'}  %>
-		<%= f.input :urgent, as: :boolean, inline_label: 'Do you need someone asap? ' , label: false, wrapper_html: {class: 'white col-md-3'}  %>
+		<%= f.input :urgent, as: :boolean, inline_label: 'Do you need someone asap? ' , label: false, input_html: { class: 'boolean' }, wrapper_html: {class: 'white col-md-3'}  %>
 		<%= f.input :number_needed, collection: 1..10, prompt: "How many people are needed?", label: false, wrapper_html: {class: 'col-md-4'}  %>
 		<%= f.input :needed_by, as: :string, input_html: {class: 'datepicker'}, placeholder: "When would you like them to start?", label: false, wrapper_html: {class: 'col-md-4'}  %>
 		<%= f.input :est_duration, collection: [ "Temp-to-Hire", "Direct-Hire", "Temporary"], prompt: "Est. duration of assignment", label: false, wrapper_html: {class: 'col-md-4'}   %>

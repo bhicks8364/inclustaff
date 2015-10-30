@@ -49,6 +49,7 @@ class OrderPolicy < ApplicationPolicy
     end
 
     def destroy?
+        return true if user.owner?
         # user.not_an_employee?
     end
 

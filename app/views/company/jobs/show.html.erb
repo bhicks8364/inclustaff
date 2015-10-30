@@ -10,8 +10,8 @@
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#job" aria-controls="job" role="tab" data-toggle="tab">Job Information</a></li>
     <li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li>
-    <li role="presentation"><a href="#company-info" aria-controls="company-info" role="tab" data-toggle="tab">Company Information</a></li>
-    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Departments</a></li>
+    <li role="presentation"><a href="#editing" aria-controls="editing" role="tab" data-toggle="tab">Settings</a></li>
+   
   </ul>
   
   <div class="tab-content">
@@ -64,23 +64,14 @@
   
   
   
-  <div role="tabpanel" class="tab-pane fade" id="company-info">
+      <div role="tabpanel" class="tab-pane fade" id="editing">
   
-      <%= link_to 'Edit', edit_company_job_path(@job) %> |
-      <%= link_to 'Back', company_jobs_path %>
+        <%= link_to 'Edit', edit_company_job_path(@job), class: 'btn btn-primary btn-lg' %> 
 
-     </div>
-  </div>
-  <div role="tabpanel" class="tab-pane fade" id="settings">
-    <h3>Settings</h3>
-  </div>
-
-  
-
-  
+       </div>
+    </div>
   </div>
 </div>
-
 
 
 

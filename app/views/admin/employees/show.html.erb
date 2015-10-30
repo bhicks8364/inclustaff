@@ -33,20 +33,16 @@
            <div class='well well-sm text-center'><span class='pull-left'><i class="fa fa-envelope-o"></i>  <%= @employee.email %></span><%= @user.address %>, <%= @user.state %> <%= @user.zipcode %><span class='pull-right'><i class="fa fa-phone-square"></i>  <%= @employee.phone_number %></span> </div>
          <h2 class="page-header text-center"><%= @user.name %>'s Profile  </h2>
      
-        <div class='col-md-8 '>
-           
-          <% @employee.availablity.try(:each) do |k,v| %>
-      <li> <%= k.upcase %>: <strong><%= v %></strong></li>
-       <% end %>
+        <div class='col-md-3'>
+           <h3 class='text-center'>Availablility</h3>
+           <div class='list-group'>
+           <% @employee.availablity.try(:each) do |k,v| %>
+               <li class='list-group-item'> <span class='pull-left'><%= k.upcase %></span> <p class='text-right'><strong><%= v %></strong></p></li>
+          <% end %>
+        </div>
+       
          
          </div>
-    	<div class="col-md-4 tag_cloud">
-    		<h1>Candidate Skills</h1>
-    	  <% tag_cloud @employee.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
-    	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
-    	  <% end %>
-    	</div>
-        
         <% if @employee.unassigned? && @applications.any? %>
         <h2>Applications</h2>
         <div class='list-group'>
@@ -57,7 +53,7 @@
 			<% end %>
 		</div>
     		<% end %>
-        </div>
+    </div>
     <div role="tabpanel" class="tab-pane fade" id="matching_orders">
         
          <h2 class="text-center">Payroll Information  </h2>
@@ -72,9 +68,9 @@
        
         
     
-      </div>
+    </div>
       <!--EMPLOYEE PROFILE TAB-->
-      <div role="tabpanel" class="tab-pane fade" id="payroll">
+    <div role="tabpanel" class="tab-pane fade" id="payroll">
         
          <h2 class="text-center">Payroll Information  </h2>
       <%= @employee.ssn %>
@@ -125,7 +121,7 @@
         
       <% if @employee.assigned? && @employee.shifts.any? %>
       	<h1>Calendar</h1>
-        <div class='well'>
+        <div class='well white'>
           <%= render 'admin/shifts/calendar' %>
         </div>
         <% else %>
@@ -172,17 +168,16 @@
             <% end %>
              
             </div>
-             <div class='form col-md-6'>
+            <div class="col-md-4 tag_cloud">
+        		<h1>Candidate Skills</h1>
+        	  <% tag_cloud @employee.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
+        	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
+        	  <% end %>
+        	</div>
+             <div class='form col-md-8'>
                <%= render partial: "admin/skills/form", locals: {skillable: @employee} %>
              </div>
-             <div class='col-md-4'>
              
-              <% @employee.tags.each do |tag| %>
-        	    <%= link_to tag.name, tag_path(tag.name) %>
-        	  <% end %>
-           
-             
-            </div>
              
         </div>  
       <!--SETTINGS TAD ADMIN ONLY ----> 
