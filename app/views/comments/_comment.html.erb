@@ -1,0 +1,9 @@
+<%= div_for(comment) do %>
+    <p><%= comment.body %></p>
+    <div class='text-right'>
+        
+    <small><%= comment.admin.name %> </small>
+    <%= link_to "<i class='fa fa-trash-o fa-red'></i>".html_safe, admin_job_comment_path(comment.commentable, comment), method: :delete, 
+                                                    data: { confirm: 'Are you sure?' }, rempte: true %>
+    </div>
+<% end %>

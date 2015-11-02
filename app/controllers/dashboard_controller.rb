@@ -20,6 +20,7 @@ class DashboardController < ApplicationController
         if admin_signed_in? && @current_agency.present?
              render 'admin/dashboard/home'
           @current_admin = current_admin
+          
         elsif company_admin_signed_in? && @current_agency.present?
              render 'company/dashboard/home'
           @current_admin = current_company_admin
@@ -33,6 +34,7 @@ class DashboardController < ApplicationController
             @applications = @events.applications
             render "employee/dashboard/home"
         end
+        
             
         
         skip_authorization

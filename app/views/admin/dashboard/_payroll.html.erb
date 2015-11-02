@@ -1,9 +1,17 @@
 <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-  View Employees
+  Recent Job Comments
 </button>
 <div class="collapse" id="collapseExample">
-  <div class="well">
-    <%= render @employees %>
+  <br>
+
+  <%= div_for(Job.includes(:employee, :comments).with_recent_comments.order(:created_at), class: "payroll") do |job| %>
+    <%= link_to job.employee.name, admin_job_path(job) %><br>
     
-  </div>
+    <small><%= job.title %> </small>
+    <% job.comments.today.limit(5).try(:each) do |comment| %>
+    <%= render 'comments/comment', comment: comment %>
+    <% end %>
+  <% end %>
+    
+  
 </div>

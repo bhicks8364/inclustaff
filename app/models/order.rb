@@ -40,6 +40,7 @@ class Order < ActiveRecord::Base
   has_many :employees, :through => :jobs
   has_many :timesheets, :through => :jobs
   has_many :current_timesheets, :through => :jobs
+  has_many :comments, as: :commentable
   include ArelHelpers::ArelTable
   include ArelHelpers::JoinAssociation
   acts_as_taggable

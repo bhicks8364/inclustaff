@@ -8,7 +8,8 @@ class Admin::EmployeesController < ApplicationController
 
   def index
     @admin = @current_admin
-    @employees = Employee.includes(:user).assigned
+    @employees = Employee.all
+    # @employees = Employee.includes(:user).assigned
     gon.employees = @employees
     skip_authorization
     @import = Employee::Import.new

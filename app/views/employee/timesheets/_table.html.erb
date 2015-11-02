@@ -52,7 +52,7 @@
 					<i class="fa fa-certificate"></i> <%= timesheet.total_hours %>
 				</span>
 			</td>
-			<td><%= link_to "<i class='fa fa-folder-open'></i>     View".html_safe, timesheet, class: "badge" %></td>
+			<td><%= link_to "<i class='fa fa-folder-open'></i>     View".html_safe, employee_timesheet_path(timesheet), class: "badge" %></td>
 			</tr>
 		<% end %>
 	</tbody>

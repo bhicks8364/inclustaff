@@ -51,9 +51,12 @@ class User < ActiveRecord::Base
   
   scope :unassigned, -> { joins(:employee).merge(Employee.unassigned)}
   
-  before_save :set_code
+  # before_save :set_code
   
-  after_create :set_employee
+  after_create :set_employee, if: :has_no_employee?
+  def has_no_employee?
+    employee.nil?
+  end
   
   after_initialize :set_role
   
@@ -93,8 +96,12 @@ class User < ActiveRecord::Base
     employee.assigned?
   end
   
-  def set_code
-   self.code = first_name[0,1] + last_name[0,1] + rand(1000..9999).to_s
+  def reset_code!
+    new_code = last_name.upcase[0,4] + rand(1000..9999).to_s
+    self.update(code: new_code)
+  end
+  def reset_password!
+    self.update(password: code, password_confirmation: code)
   end
   def set_emp_id
     self.employee_id = employee.id

@@ -67,6 +67,7 @@ Rails.application.routes.draw do
       end
       
       resources :timesheets do
+        resources :comments
         collection do
           get 'past'
         end
@@ -87,7 +88,8 @@ Rails.application.routes.draw do
         resources :jobs
       end
 
-      resources :jobs, shallow: true do
+      resources :jobs do
+        resources :comments
         resources :timesheets, shallow: true do
           collection do
             get 'past'
@@ -130,7 +132,9 @@ Rails.application.routes.draw do
           patch 'clock_out'
         end
       end
-      resources :timesheets
+      resources :timesheets do
+        resources :comments
+      end
       resources :invoices
     end
     # END COMPANY_ADMIN
@@ -162,6 +166,7 @@ Rails.application.routes.draw do
         end
       end
     end
+    resources :comments
     resources :events
     resources :work_histories
     resources :skills do

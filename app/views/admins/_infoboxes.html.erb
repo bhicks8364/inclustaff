@@ -4,18 +4,18 @@
 			
 			
 			<% if @admin.recruiter? %>
-			<span class='headline'>
-			<%= link_to "<i class='fa fa-users fa-2x'></i> <strong>Placements</strong>".html_safe, admin_jobs_path %></span>
-			<span class="value"><%= @recruiter_jobs.any? ? @recruiter_jobs.active.count : "No active jobs" %></span>
+			
+			<%= link_to "<i class='fa fa-users fa-2x'></i> <strong>Placements</strong>".html_safe, admin_jobs_path %>
+			<%= @recruiter_jobs.any? ? @recruiter_jobs.active.count : "No active jobs" %>
 			<% elsif @admin.account_manager? || @admin.payroll? %>
-			<span class='headline'>
-			<%= link_to "<i class='fa fa-users fa-2x'></i> <strong>Job Orders</strong>".html_safe, admin_jobs_path %></span>
-			<span class="value"><%= @jobs.active.count %></span>
+			
+			<%= link_to "<i class='fa fa-users fa-2x'></i> <strong>Job Orders</strong>".html_safe, admin_jobs_path %>
+			<%= @jobs.active.count %>
 			<% elsif @admin.owner? && @admin.company? %>
 			
-			<span class='headline'>
-			<%= link_to "<i class='fa fa-users fa-2x'></i> <strong>Placements</strong>".html_safe, admin_jobs_path %></span>
-			<span class="value"><%= @company_jobs.any? ? @company_jobs.active.count : "No active jobs" %></span>
+			
+			<%= link_to "<i class='fa fa-users fa-2x'></i> <strong>Placements</strong>".html_safe, admin_jobs_path %>
+			<%= @company_jobs.any? ? @company_jobs.active.count : "No active jobs" %>
 			
 			<% else %>
 			No activity.
@@ -44,7 +44,7 @@
 			<%= link_to "<i class='fa fa-money fa-2x green'></i> <strong> Current Billing </strong>".html_safe, admin_timesheets_path %>
 
 			<% if @admin.recruiter? || @admin.account_manager? %>
-			<span class="value"><%= number_to_currency(@admin.current_billing) %></span>
+			<%= number_to_currency(@admin.current_billing) %>
 
 			<% end %>
 			
@@ -53,14 +53,14 @@
 	<div class="col-lg-3 col-sm-6 col-xs-12">
 		<div class="main-box infographic-box text-center">
 			<% if @admin.recruiter? || @admin.account_manager? %>
-			<span class="headline"><%= link_to "<i class='fa fa-usd fa-2x green pull-left'></i> <strong>Current Commission</strong>".html_safe, admin_timesheets_path %></span>
+			<span class="headline"><%= link_to "<i class='fa fa-usd fa-2x green pull-left'></i> <strong>Current Commission</strong>".html_safe, admin_timesheets_path %>
 			
 			
-			<span class="value"><%= number_to_currency(@admin.current_commission) %></span>
+			<%= number_to_currency(@admin.current_commission) %>
 		
 			<% elsif @admin.owner? && @admin.agency? || @admin.payroll? %>
-			<span class="headline"><%= link_to "<i class='fa fa-usd fa-2x green pull-left'></i> <strong>Current Revenue</strong>".html_safe, admin_timesheets_path %></span>
-			<span class="value"><%= number_to_currency(@agency.current_revenue) %></span>
+			<span class="headline"><%= link_to "<i class='fa fa-usd fa-2x green pull-left'></i> <strong>Current Revenue</strong>".html_safe, admin_timesheets_path %>
+			<%= number_to_currency(@agency.current_revenue) %>
 		
 			<% end %>
 		</div>

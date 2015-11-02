@@ -34,7 +34,7 @@ class Company < ActiveRecord::Base
     has_many :recruiters, :through => :jobs
     has_many :admins, class_name: "CompanyAdmin", foreign_key: "company_id"
     has_many :admin_events, :through => :admins, :source => 'events'
-    # has_one :owner, -> { where role: 'Owner' }, class_name: "Admin"
+    # has_one :main_contact, -> { where role: 'Owner' }, class_name: "CompanyAdmin"
     # has_many :recruiters, -> { where role: 'Recruiter' }, class_name: "Admin"
     # has_many :payroll_admin,  -> { where role: "Payroll" }, class_name: "Admin"
     # has_many :account_managers,  -> { where role: "Account Manager" }, class_name: "Admin"
@@ -47,7 +47,32 @@ class Company < ActiveRecord::Base
     
     include ArelHelpers::ArelTable
     include ArelHelpers::JoinAssociation
+    # after_create :send_notification_email
+    after_create :create_company_admin
     
+    validates :name,  presence: true, length: { maximum: 50 }
+    validates :contact_name,  presence: true, length: { maximum: 20 }
+    VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+    validates :contact_email, presence: true, length: { maximum: 255 },
+                    format: { with: VALID_EMAIL_REGEX },
+                    uniqueness: { case_sensitive: false }
+                    
+                    
+    def create_company_admin
+      new_name = contact_name.split()
+      self.admins.find_or_create_by(email: contact_email) do |admin|
+        admin.company_id = id
+        admin.first_name = new_name[0]
+        admin.last_name = new_name[1]
+        admin.role = "Owner"
+        admin.password = "password"
+        admin.password_confirmation = "password"
+      end
+    end
+     def send_notification_email
+       NotificationMailer.new_company(self).deliver_later
+     end
+     
     def to_s; name; end
     
     def current_agency
@@ -73,12 +98,7 @@ class Company < ActiveRecord::Base
 
 
     
-    validates :name,  presence: true, length: { maximum: 50 }
-    validates :contact_name,  presence: true, length: { maximum: 20 }
-    VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-    validates :contact_email, presence: true, length: { maximum: 255 },
-                    format: { with: VALID_EMAIL_REGEX },
-                    uniqueness: { case_sensitive: false }
+    
 
  
     def current_payroll_cost

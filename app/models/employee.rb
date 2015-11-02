@@ -57,10 +57,12 @@ class Employee < ActiveRecord::Base
   delegate :recruiter, to: :current_job
   delegate :code, to: :user
   delegate :current_sign_in_ip, to: :user
-  delegate :email, to: :user
-  # before_save :set_user_info
+  # delegate :email, to: :user
+  after_save :create_user, if: :has_no_user?
   before_validation :check_if_assigned
-  
+  def has_no_user?
+    user_id.nil?
+  end
   def name_title
     if current_job.nil?
       "#{first_name} #{last_name} - Unassigned"
@@ -184,7 +186,15 @@ class Employee < ActiveRecord::Base
   def name
     "#{first_name} #{last_name}"
   end
-
+  
+  def create_user
+    new_code = first_name[0,1] + last_name[0,1] + ssn + rand(1000..9999).to_s
+    self.user = User.create(employee_id: id, first_name: first_name,
+                      last_name: last_name, email: email, 
+                      password: new_code, password_confirmation: new_code, code: new_code)
+                      
+  end
+  
     
   def ytd_gross_pay
     if self.timesheets.any?

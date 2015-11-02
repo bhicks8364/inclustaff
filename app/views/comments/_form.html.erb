@@ -1,0 +1,9 @@
+<%= form_for [Comment.new], remote: true do |f| %>
+  <div class="form-group">
+    <%= f.text_area :body, class: "form-control", placeholder: "Add a comment" %>
+    <%= f.hidden_field :commentable_id, value: commentable.id %>
+    <%= f.hidden_field :commentable_type, value: commentable.class %>
+    <%= f.hidden_field :admin_id, value: current_admin.id %>
+  </div>
+  <%= f.submit class: "btn btn-primary" %>
+<% end %>

@@ -41,7 +41,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # SIMPLE FORMS
 gem 'simple_form'
 
-
+# MAIL
+gem 'mandrill-api', '~> 1.0', '>= 1.0.53', require: 'mandrill'
 # APARTMENT GEN FOR MULTI TENANCY - (SUBDOMAINS)
 gem 'apartment'
 

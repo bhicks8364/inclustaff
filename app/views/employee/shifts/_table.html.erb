@@ -1,3 +1,4 @@
+<% if @shifts.present? %>
 <table id="shifts" class="table table-bordered">
   <thead>
     <tr>
@@ -41,3 +42,6 @@
     <% end %>
   </tbody>
 </table>
+<% else %>
+No shifts available.
+<% end %>

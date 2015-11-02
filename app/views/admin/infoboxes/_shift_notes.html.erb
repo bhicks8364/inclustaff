@@ -1,0 +1,14 @@
+<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseShiftNotes" aria-expanded="false" aria-controls="collapseShiftNotes">
+  Recent Shift Notes
+</button>
+<div class="collapse" id="collapseShiftNotes">
+  <br>
+  <div class="col-md-3 well well-sm">
+   <% Shift.includes(:employee).with_notes.order(:created_at).each do |shift| %>
+<%= link_to shift.employee.name, edit_admin_shift_path(shift) %><br>
+
+<small><%= shift.note.humanize %> </small>
+<% end %>
+    
+  </div>
+</div>

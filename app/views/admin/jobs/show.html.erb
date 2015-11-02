@@ -22,13 +22,13 @@
        
        
        
-    <div class='col-md-12'>
+   
       <div class="btn-group btn-group-justified" role="group" aria-label="...">
-        <%= link_to "View Company", admin_company_path(@company), class: "btn" %>
-        <%= link_to "View Job Order", admin_order_path(@order), class: 'btn' %>
-        <%= link_to "View Employee", admin_employee_path(@employee), class: 'btn' %>
-        <%= link_to "View User Profile", @employee.user, class: 'btn' %>
-        <%= link_to "Edit Job", edit_admin_job_path(@job), class: "btn" %>
+        <%= link_to "View Company", admin_company_path(@company), class: "btn btn-primary" %>
+        <%= link_to "View Job Order", admin_order_path(@order), class: 'btn btn-primary' %>
+        <%= link_to "View Employee", admin_employee_path(@employee), class: 'btn btn-primary' %>
+        <%= link_to "View User Profile", @employee.user, class: 'btn btn-primary' %>
+        <%= link_to "Edit Job", edit_admin_job_path(@job), class: "btn btn-primary" %>
       </div>
       <hr>
         
@@ -37,7 +37,7 @@
       
       
       
-    </div>
+   
        
   
     
@@ -60,6 +60,7 @@
     <li role="presentation"><a href="#job-totals" aria-controls="job-totals" role="tab" data-toggle="tab">Job Totals</a></li>
     <li role="presentation"><a href="#skills-tab" aria-controls="skills-tab" role="tab" data-toggle="tab">Skills</a></li>
     <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+    <li role="presentation"><a href="#comments-tab" aria-controls="comments-tab" role="tab" data-toggle="tab">Comments</a></li>
     
   </ul>
   
@@ -68,23 +69,21 @@
      
     
  
-  <div class='col-md-12 well'>
-    
+  <div class='col-md-6 dark'>
+    <div class='well'>
   <h4><strong>Interview Notes:</strong></h4>
-      <div class='well well-sm'>
+      
         <%= @job.description %>
-      </div>
+     
       
       <% if @job.recruiter.present? %>
         <h5>Recruiter: <small><%= link_to @job.recruiter.name, @job.recruiter %></small></h5>
       <% end %>
-      
-    <div class='col-md-3'>
+ 
       <%= render 'modal', job: @job %>
     </div>
-
-
-  </div>
+     </div>
+ 
 
 
 </div>
@@ -104,9 +103,21 @@
      Order Information</h3>
      <%= render @order %>
   </div>
-  <div role="tabpanel" class="tab-pane fade" id="settings">
+  <div role="tabpanel" class="tab-pane fade" id="comments-tab">
+     <div class='col-md-12 dark'>
+         <div id='comments' class="well well-sm">
+           <%= render partial: "comments/comments", locals: {commentable: @job} %>
+         </div>
+       
+        <div class='well well-sm'>
+          
+          <%= render partial: "comments/form", locals: {commentable: @job} %>
+          
+        </div>
     
-     
+      </div>
+  </div>
+     <div role="tabpanel" class="tab-pane fade" id="settings">
      
      <div class='col-md-6'>
       

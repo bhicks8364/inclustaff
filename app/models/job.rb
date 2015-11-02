@@ -29,7 +29,7 @@ class Job < ActiveRecord::Base
     has_one :current_shift,-> { where.not(state: "Clocked Out") }, class_name: 'Shift'
     has_one :current_timesheet,-> { where week: Date.today.cweek  }, class_name: 'Timesheet'
     belongs_to :recruiter, class_name: "Admin", foreign_key: "recruiter_id"
-
+    has_many :comments, as: :commentable
     
     accepts_nested_attributes_for :employee
     
@@ -63,6 +63,7 @@ class Job < ActiveRecord::Base
     before_save :set_main_pay
     
     # SCOPES
+    scope :with_recent_comments,    -> { joins(:comments).merge(Comment.today)}
     scope :with_drive_pay, -> { where("settings ? :key", :key => 'drive_pay')}
     scope :with_ride_pay, -> { where("settings ? :key", :key => 'ride_pay')}
     scope :with_pay, -> { where("settings ? :key", :key => 'pay_rate')}

@@ -1,0 +1,18 @@
+<h3>Comments</h3>
+<% commentable.comments.each do |comment| %>
+  <div class="well well-sm">
+   <p>
+         <%= comment.body %>
+    </p>
+    <div class='text-right'>
+        
+    <small>
+        <%= comment.admin.name %>
+    </small>
+    <%= link_to "<i class='fa fa-trash-o fa-red'></i>".html_safe, admin_job_comment_path(commentable, comment), method: :delete, 
+                                                    data: { confirm: 'Are you sure?' }, class: 'red' %>
+    
+    </div>
+    
+  </div>
+<% end %>

@@ -1,6 +1,10 @@
 
     
 <div class="col-md-12 transbox">
+
+   
+   
+   
 	<h1 class='page-header'><%= @current_agency.name.titleize %>'s Dashboard <small>Signed in as: <%= @current_admin.role %></small></h1>
   
 	  <div class="btn-group btn-group-justified" role="group" aria-label="...">
@@ -91,6 +95,9 @@
       <h3 class="panel-title"><strong>Admins</strong></h3>
     </div>
     <div class="panel-body">
+      
+    
+    
       <% @current_agency.admins.order(:last_name).each do |admin| %>
 				<%= link_to(admin_path(admin), class: "list-group-item list-group-item-success") do %>
 			       <div data-behavior="admin" data-id="<%= admin.id %>" class=''>
@@ -110,6 +117,8 @@
 </div>
 <% if @current_admin.owner? %>
   <%= render 'admin/infoboxes/owner_charts'%>
+   <%= render 'admin/infoboxes/payroll_boxes' %>
+    <%= render 'admin/dashboard/payroll' %>
   <% elsif @current_admin.payroll? %>
   <%= render 'admin/infoboxes/payroll_boxes' %>
   <% elsif @current_admin.recruiter? %>

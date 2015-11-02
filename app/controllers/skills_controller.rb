@@ -66,7 +66,7 @@ class SkillsController < ApplicationController
   end
   def update_all
     Skill.job_order.each do |skill|
-      skill.touch
+      skill.save
     end
         redirect_to skills_path, notice: 'Successfully updated all job order skills'
       

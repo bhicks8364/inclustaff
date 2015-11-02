@@ -29,6 +29,7 @@ class Shift < ActiveRecord::Base
   extend SimpleCalendar
   # has_calendar :attribute => :time_in
   include ArelHelpers::ArelTable
+  include Arel::Nodes
   acts_as_paranoid
 
   belongs_to :employee
@@ -53,7 +54,7 @@ class Shift < ActiveRecord::Base
   scope :at_work,       -> { where.not(state: "Clocked Out")}
   scope :clocked_out,   -> { where(state: ["Clocked Out", nil])}
   scope :on_break,      -> { where(state: "On Break")}
-  
+  scope :with_notes,    -> { where(NamedFunction.new("LENGTH", [Shift[:note]]).gt(2))}
   scope :short_shifts,  -> { where('time_worked > 4') }
   scope :over_8,        -> { where('time_worked > 8') }
   
@@ -186,6 +187,7 @@ class Shift < ActiveRecord::Base
       timesheet.destroy
     end
   end
+  
   def with_paid_breaks
     paid_breaks = hours_worked * pay_rate
     paid_breaks.round(2)
