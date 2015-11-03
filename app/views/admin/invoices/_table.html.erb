@@ -24,7 +24,7 @@
         <td><%= invoice.week %></td>
         <td><%= invoice.due_by %></td>
         <td><%= invoice.state %></td>
-        <td><%= invoice.total %></td>
+        <td><%= number_to_currency(invoice.total) %></td>
         <td><%= number_to_currency(invoice.amt_paid) %></td>
         <td><%= invoice.paid_on %></td>
         <td><%= link_to 'Show', admin_company_invoice_path(@company, invoice) %></td>

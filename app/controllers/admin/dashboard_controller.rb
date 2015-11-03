@@ -3,23 +3,13 @@ class Admin::DashboardController < ApplicationController
     layout 'admin_layout'
     
     def owner
-      # @admin = @current_admin if admin_signed_in?
-      # if @admin.agency?
-      #   @agency = @admin.agency
-      #   @events = @agency.events.order('id DESC').limit(5)
-      # elsif @admin.company?
-      #   @company = @admin.company
-      #   @events = @company.events.order('id DESC').limit(5)
-      # end
+
       @current_agency = current_admin.agency
       @jobs = @current_agency.jobs if @current_agency.present?
       
-      @orders = @company.orders if @company.present?
-      @orders = @agency.orders if @agency.present?
-      # @jobs = @company.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 10).order('id DESC') if @current_company.present?
-      # @jobs = @agency.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 10).order('id DESC') if @current_agency.present?
-      @timesheets = @company.timesheets.order(created_at: :desc) if @company.present?
-      @timesheets = @agency.timesheets.order(created_at: :desc) if @agency.present?
+      @orders = Order.all
+    
+      @timesheets = Timesheet.order(updated_at: :desc) 
   
   
         skip_authorization

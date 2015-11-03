@@ -74,7 +74,9 @@ class Company < ActiveRecord::Base
      end
      
     def to_s; name; end
-    
+    def owner
+      admins.where(role: "Owner").first || admins.first
+    end
     def current_agency
       if orders.any?
           orders.last.agency

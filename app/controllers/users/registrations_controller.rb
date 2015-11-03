@@ -26,6 +26,7 @@ before_filter :configure_sign_up_params, only: [:create]
       resource.password = "password"
       resource.password_confirmation = "password"
     end
+     resource.set_code
     resource.save
     yield resource if block_given?
     if resource.persisted?

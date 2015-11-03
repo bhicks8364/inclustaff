@@ -50,6 +50,7 @@ Rails.application.routes.draw do
       get  'payroll' => 'dashboard#payroll'
       get  'dashboard' => 'dashboard#home'
       get  'owner' => 'dashboard#owner'
+      get  'account_manager' => 'dashboard#account_manager'
       get  'recruiter' => 'dashboard#recruiter'
       resources :companies do
         resources :invoices

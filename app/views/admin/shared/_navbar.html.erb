@@ -11,19 +11,17 @@
 			       <%= image_tag("incluStaff_logo.png", alt: "Inclustaff") %>
 			 <% end %>
 		<% end %>
+			 </div>
 	   
 
 		<button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">
 			<span class="sr-only">Toggle navigation</span>
 			<span class="fa fa-bars"></span>
 		</button>
-		
-		 </div>
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	       <ul class="nav navbar-nav navbar-right">
-	       	<% if @current.present? && @at_work.any? %>
-					<%= render 'admin/shared/clocked_in' %>
-					<% end %>
+	       	<% if @current_admin.present? %>
+					
 					
 				
 	      	<li> <%= link_to @current_admin.name, @current_admin %></li>
@@ -33,9 +31,12 @@
 						<i class='fa fa-power-off'></i>
 					<% end %>
 				</li>
+				<% end %>
 	      </ul>
 		
       
     	</div>
+	
+	
 	</div>
 </header>

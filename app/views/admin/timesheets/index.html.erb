@@ -1,38 +1,14 @@
 
-    <div class='col-lg-12 scroll main-box' data-behavior='timesheet-list'>
-   <div class='row'>
-    <% if @timesheets.current_week.any? %>
-            
-            
-<div id='pending' class='col-lg-6' data-behavior='timesheet-list'>
-    <h4 class='text-center'><strong>Pending Timesheets</strong></h4>
-    <%= render(@timesheets.current_week.pending) || "There are no pending timesheets for this week yet." %>
-    
-</div>
-<div id='approved' class='col-lg-6' data-behavior='timesheet-list'>
-    <h4 class='text-center'><strong>Approved Timesheets</strong></h4>
-    <%= render(@timesheets.current_week.approved) || "There are no approved timesheets for this week yet." %>
-    <%= link_to "View Past Timesheets", past_admin_timesheets_path, class: "btn btn-primary" %>
-</div>
-
-    <% else %>
-    <h4>There are no timesheets for this week yet.</h4>
-    
-    <% end %>
-
-
-
-
-
-    
-
-</div>
-
-
+    <div class='col-lg-12 main-box'>
+        <h2 class='text-center'>Timesheets</h2>
+<div class='well'>
+    <%= render 'admin/timesheets/table' %>
 
 <%= link_to(admin_timesheets_path(@timesheets, format: :csv), class: 'btn btn-primary') do %>
-  		<i class="fa fa-file-excel-o fa-lg"></i> Export Approved
+  		<i class="fa fa-file-excel-o fa-lg"></i> Export
 <% end %>
+</div>
+
 
 
 

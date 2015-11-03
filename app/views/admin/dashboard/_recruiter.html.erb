@@ -3,12 +3,9 @@
 				
 				<div class="tabs-wrapper">
 					<div class="clearfix">
-						<h4 class="pull-left"><%= @current_admin.name %>
-						<span class='text-muted'>  <small><%= @current_admin.role %></small></span></h4>
-						<ul class="nav nav-tabs pull-right">
-							<li class="active"><a href="#open-orders" data-toggle="tab">Open Orders</a></li>
-							<li class=""><a href="#companies" data-toggle="tab">Companies</a></li>
-							<li class=""><a href="#filled-orders" data-toggle="tab">Filled Orders</a></li>
+					
+						<ul class="nav nav-tabs">
+						  <li class="active"><a href="#tab-home" data-toggle="tab"><%= admin.name %></a></li>
 							<li class=""><a href="#tab-placements" data-toggle="tab">Current Placements</a></li>
 							<li class=""><a href="#tab-timesheets" data-toggle="tab">Timesheets</a></li>
 							<li class=""><a href="#tab-events" data-toggle="tab">Events</a></li>
@@ -16,45 +13,22 @@
 					</div>
 					
 					<div class="tab-content">
-						<div class="tab-pane fade active in" id="open-orders">
-						
-							<div class='col-md-10'>
-								<h3>Open jobs orders</h3>
-									<%= render partial: "admin/orders/order", collection: @current_admin.account_orders.needs_attention %>
-							</div>
+						<div class="tab-pane fade" id="tab-home">
+								<h3> <%= admin.name %></h3>
 						</div>
-						<div class="tab-pane fade" id="filled-orders">
-							<div class='col-md-12 list-group dark white'>
+					  
 						
-							<div class='col-md-10'>
-									<h3>Filled jobs orders</h3>
-								
-										<%= render partial: "admin/orders/order", collection: @current_admin.account_orders.filled %>
-								</div>
-
-							</div>
-						
-							
-						</div>
-						<div class="tab-pane fade" id="companies">
-						    <div class='col-md-12'>
-						       <%= render partial: "admin/companies/company", collection: @current_admin.account_orders.collect { |a| a.company } %>
-						    </div>
-						
-			
-						</div>
 						
 						<div class="tab-pane fade" id="tab-placements">
 						
-							<% if @current_admin.jobs %>
+							<% if admin.jobs %>
 							<div class='col-md-12'>
-							<% @current_admin.jobs.each do |job| %>
+							<%= div_for(admin.jobs, class: 'well') do |job| %>
 									
 					
 
-   <h4><%= link_to job.employee.name, admin_employee_path(job.employee) %><small><%= link_to job.title, admin_job_path(job) %></small> </h4>
-  
-    Hours: <%= job.current_week_hours %>  | Pay:  <%= job.current_week_pay ? number_to_currency(job.current_week_pay) : "$0.00" %> 
+   <%= link_to job.employee.name, admin_employee_path(job.employee), class: 'btn btn-primary btn-lg' %>
+   <%= link_to job.title, admin_job_path(job), class: 'btn btn-primary btn-lg' %>
   <% if job.on_shift? %>
     <span class="label label-success label-large pull-right"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> Clocked In</span>
     <% elsif job.on_break? %>
@@ -62,9 +36,14 @@
     <% elsif job.off_shift? %>
     <span class="label label-danger label-large pull-right"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Clocked Out</span>
     <% end %>
-
-
-  <%= job.pay_rate %> <%= link_to job.recruiter.name, job.recruiter %>
+    <h4>
+    	<strong>Total Hours: </strong> <%= job.total_hours.round(2) %> |
+    	<strong>Total Billing: </strong> <%= number_to_currency(job.total_gross_bill) %> 
+    </h4>
+   	
+	<strong> Pay rate: </strong><%= number_to_currency(job.pay_rate) %>
+<span class='pull-right'> Account Manager: <%= job.account_manager.name %></span>
+  
 
 
 
@@ -84,7 +63,7 @@
 					
 						<div class="tab-pane fade" id="tab-timesheets">
 						    <div class='transbox'>
-						        <% @current_admin.timesheets.each do |timesheet| %>
+						        <% admin.timesheets.each do |timesheet| %>
 						    	<%= render 'admin/timesheets/timesheet', timesheet: timesheet %>
 						<% end %>
 						    </div>
@@ -94,8 +73,8 @@
 						
 						<div class="tab-pane fade" id="tab-events">
 						   
-							<% if @events %>
-							<% @events.each do |event| %>
+							<% if admin.events %>
+							<% admin.events.each do |event| %>
 							  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
 							    <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
 							  <% end %>

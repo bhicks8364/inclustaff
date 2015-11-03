@@ -70,6 +70,8 @@ class Agency < ActiveRecord::Base
         timesheets.last_week.sum(:total_bill)
     end
     
+   
+    
   
     private
     def create_tenant

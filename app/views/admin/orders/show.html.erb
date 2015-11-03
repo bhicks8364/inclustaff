@@ -72,7 +72,7 @@
 
   <h1><%= @order.active ? "" : "Inactive" %></h1>
  
-  <p><strong><%= @order.mentions.map{|p| p.titleize}.join(", ")  %></strong></p>
+  
 
   
    
@@ -109,11 +109,10 @@
     <%= @order.pay_range %>
    </div>
   <div class='col-md-4'>
-     
-   <strong>Mentioned Admins</strong>
-      <p><%= @order.mentioned_admins.inspect %></p>
+     <strong>Mentioned Admins:</strong>
+  <p> <%= @order.mentions.map{|p| p.titleize}.join(", ")  %></p>
       <strong>Requested Employees</strong>
-      <p><%= @order.requested_employees.inspect %></p>
+      <p><%= @order.requested_employees.map {|p| p.name.titleize}.join(", ") %></p>
    </div>
    <div class='col-md-4'>
      <strong>Skills</strong>

@@ -1,9 +1,9 @@
-<div class="col-md-12">
-    <div class="col-md-4">
+<div class="col-md-12 transbox">
+    <div class="col-md-6">
       <h5 class='text-center'><strong>Open Job Orders: <%= Order.needs_attention.count %></strong></h5>
       <%= pie_chart Order.needs_attention.group(:company).count, library: {is3D: true, height: 300, chartArea: {width:'85%'}}%>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-6">
      <h5 class='text-center'><strong>Current Billing: <%= number_to_currency(Timesheet.current_week.sum(:total_bill)) %></strong></h5>
       <%= column_chart current_weeks_billing_path, library: {is3D: true, height: 300, chartArea: {width:'75%', height:'70%'}}, ytitle: "Current Balance" %>
     </div>
@@ -12,6 +12,7 @@
   <h4 class='text-center'>Account Managers</h4>
   <h5 class='text-center'><small>Based on current billing</small></h5>
   <%= column_chart account_managers_ranking_path, ytitle: "Current Billing", xtitle: "Account Managers" %>
+  
 </div>
 
 <div class="col-md-6">

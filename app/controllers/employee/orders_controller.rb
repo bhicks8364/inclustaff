@@ -25,7 +25,7 @@ class Employee::OrdersController < ApplicationController
   # GET /orders/1
   # GET /orders/1.json
   def show
-    skip_authorization
+    
   end
   
   def apply
@@ -33,30 +33,6 @@ class Employee::OrdersController < ApplicationController
       @current_user.events.create(action: "applied", eventable: @order)
       @order.update(updated_at: Time.current)
 
-
-  end
-  
-  
-    
-
-  # GET /orders/new
-  def new
-    if admin_signed_in? 
-      @admin = current_admin
-      @company = @admin.company
-      @order = @company.orders.new
-    end
-    
-    # if params[:company_id]
-    #   @company = Company.find(params[:company_id])
-    #   @order = @company.orders.new
-    #   # authorize @order
-
-    # else
-    #   @order = Order.new
-    #   @order.jobs.build
-    #   # authorize @order
-    # end
 
   end
 
@@ -82,9 +58,7 @@ class Employee::OrdersController < ApplicationController
   
   private
   
-    def pundit_user
-      current_user
-    end
+    
     # Use callbacks to share common setup or constraints between actions.
     def set_order
 

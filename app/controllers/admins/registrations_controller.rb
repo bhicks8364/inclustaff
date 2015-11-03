@@ -1,7 +1,7 @@
 class Admins::RegistrationsController < Devise::RegistrationsController
   before_filter :configure_sign_up_params, only: [:create]
 # before_filter :configure_account_update_params, only: [:update]
-  layout 'admin_layout'
+  # layout 'admin_layout'
   # GET /resource/sign_up
   def new
    
@@ -17,7 +17,7 @@ class Admins::RegistrationsController < Devise::RegistrationsController
   def create
    build_resource(sign_up_params)
   
-   
+  
 
     resource.save
     yield resource if block_given?

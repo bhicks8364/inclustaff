@@ -1,45 +1,21 @@
-<div class=''>
-   
-</div>
-<div class="row row200">
-    <div class='col-md-12 well'>
+<div class='col-md-12 well'>
         
         <h5 class='text-center'>Recruiter Performance</h5>
-    <h5 class='text-center'><small>Total Agency Billings: <%= number_to_currency(@current_agency.timesheets.current_week.sum(:total_bill)) %></small></h5>
+    
 
         <div class='col-md-4'>
             <h5 class='text-center'>Placements</h5>
             
-            <%= pie_chart  Company.all.group(:id).map{|company|
-                [company.name, company.balance]
-            } %>
-            
+            <%= pie_chart @current_admin.jobs.includes(:current_timesheet, :employee).group(:last_name).sum(:total_bill), library: {legend: {position: "right"}, title: "Current Billings by Recruiter"} %>
         </div>
         <div class='col-md-4'>
             <h5 class='text-center'>Current Billings by Recruiter</h5>
-            <%= pie_chart Job.includes(:current_timesheet, :recruiter).group(:last_name).sum(:total_bill), library: {legend: {position: "right"}, title: "Current Billings by Recruiter"} %>
+            <%= pie_chart @current_admin.jobs.includes(:current_timesheet, :employee).group(:last_name).sum(:total_bill), library: {legend: {position: "right"}, title: "Current Billings by Recruiter"} %>
         </div>
    
-    <div class='col-md-4'>
+    <div class='col-md-10'>
         <h5 class='text-center'>Current Billings by Recruiter</h5>
-        <%= pie_chart Skill.job_order.group(:name).count, library: {title: "Needed Skills"} %>
+        <%= pie_chart Skill.job_order.limit(8).group(:name).count, library: {title: "Needed Skills"} %>
+         
     </div>
-     </div>
-    <div class="center">
-        
-			<% if @current_agency.jobs.new_start.any? %>
-				<h5>	New Starts</h5>
-                <div class='list-group list-group-sm' >
-                    <% @current_agency.jobs.new_start.order(created_at: :desc).limit(3).each do |job| %>
-						  <%= render job %>
-						<% end %>
-                </div>
-               <% else %>
-               No new starts. 
-               <% end %>
-               
-			
-			
-			
-		</div>
 </div>

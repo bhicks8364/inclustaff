@@ -1,78 +1,44 @@
-
-<div class='row row300'>
-	
-
-	<div class="col-md-6 col-sm-6 col-xs-12">
-<% if @current_agency.invoices.any? %>
-		<% if @current_agency.invoices.unpaid.any? %>
-		<div class="dark well scroll">
-			<h4>Open Invoices </h4>
-			<div class='list-group text-center' data-behavior='invoice-list'>
-			  <% @current_agency.invoices.unpaid.order(:week).each do |invoice| %>
-				<%= link_to(admin_invoice_path(invoice), class: "list-group-item") do %>
-			       <span data-behavior="invoice" data-id="<%= invoice.id %>" class=''>
-			       	<span class='label label-primary pull-left'><%= invoice.week_ending %> </span>
-			       	<span class='text-center'><%= invoice.company.name %></span>
-			       	
-			     	 <span class='badge badge-success'>
-			     	 	<%= invoice.balance > 0.00 ? number_to_currency(invoice.balance) : "NEW!" %>
-			     	 	</span>
-			       </span>
-			       <% end %>
-			   
-			  <% end %>
-			 
-			 
-			</div>
-		
-		</div>
-	
-		<% else %>
-		<div class="dark well scroll">
-			<h5 class="center">Recently Paid Invoices</h5>
-			<div class='list-group' data-behavior='invoice-list'>
-			  <% @current_agency.invoices.paid.order(:date_paid).each do |invoice| %>
+	<div class="col-md-4 col-sm-6 col-xs-6">
+	<h5 class="text-center">Total Agency Billing</h5>
+		<div class='well well-sm'>
 			
-			       <li data-behavior="invoice" data-id="<%= invoice.id %>" class='list-group-item list-group-item-success'>
-			       	<span id='status' class='badge badge-danger'><%= invoice.week_ending %> </span>
-			       <strong>	<%= invoice.company.name %></strong> <%= number_to_currency(invoice.amt_paid) %>
-			       
-			          
-			       
-			       </li>
-			   
-			  <% end %>
-		
-		
+			
+		<strong>This week:</strong> <%= number_to_currency(Timesheet.current_week.sum(:total_bill)) %><br>
+			<strong>Last week:</strong> <%= number_to_currency(Timesheet.last_week.sum(:total_bill)) %>
 		</div>
+	</div>
+
+	<div class="col-md-4 col-sm-6 col-xs-6 ">
+	
+			<h5 class="text-center">Top Account Managers</h5>
+		<div class='well well-sm'>
+			<h4>This Week</h4>
+			<% Admin.account_managers.sorted_by_current_billing.each do |admin| %>
+			<%= link_to admin.name, admin %> - <%= number_to_currency(admin.current_billing)%><br>
+			<% end %>
+			<hr>
+			<h4>Leader Board</h4>
+			<% Admin.account_managers.sorted_by_last_week_billing!!!.each do |admin| %>
+			<%= link_to admin.name, admin %> - <%= number_to_currency(admin.current_billing)%><br>
+			<% end %>
 		</div>
+	
+	</div>
+	<div class="col-md-3 col-sm-6 col-xs-6">
+	
+			<h5 class="text-center">Top Recruiters</h5>
+			
+		<div class='well well-sm'>
+		<h5>	This week</h5>
+		<% Admin.recruiters.sorted_by_current_billing.each do |admin| %>
+		<%= admin.name %> - <%= number_to_currency(admin.current_billing)%><br>
 		<% end %>
-		
-	<% else %>
-	No invoices available.
-	<% end %>
-		<%= link_to "View All Invoices", admin_invoices_path, class: 'btn btn-primary' %>	
-	</div>
-
-	<div class="col-md-3 col-sm-6 col-xs-6 text-center">
-		<div class="dark well">
-			<h5 class="text-center">Agency Billing</h5>
-			
-		<strong>This week:</strong> <%= number_to_currency(@current_agency.timesheets.current_week.sum(:total_bill)) %><br>
-			<strong>Last week:</strong> <%= number_to_currency(@current_agency.timesheets.last_week.sum(:total_bill)) %>
-		
 		</div>
-	</div>
-	<div class="col-md-3 col-sm-6 col-xs-6 text-center">
-		<div class="dark well">
-		<h5 class="text-center">Invoices</h5>
-			<strong>Open Invoices:</strong> <%= number_to_currency( @current_agency.invoices.unpaid.sum(:total) )%>
-	<br>
-		
-			<strong>Paid Invoices:</strong> <%= number_to_currency( @current_agency.invoices.paid.sum(:total) )%>
-			
-			
-			
+		<div class='well well-sm'>
+		<h5>	Total</h5>
+		<% Admin.recruiters.sorted_by_total_billing.each do |admin| %>
+		<%= admin.name %> - <%= number_to_currency(admin.billing)%><br>
+		<% end %>
 		</div>
+	
 	</div>
-</div>

@@ -1,640 +1,134 @@
-<div class="col-lg-12">
-					<%= render 'events/events' %>	
-	<div class="row">
-		<div class="col-lg-3 col-sm-6 col-xs-12">
-			<div class="main-box infographic-box">
-				<i class="fa fa-user red"></i>
-				<span class="headline"><%= link_to "Admins", admins_path %></span>
-				<span class="value"><%= @current.admins.try(:count) %></span>
-			</div>
-		</div>
-		<div class="col-lg-3 col-sm-6 col-xs-12">
-			<div class="main-box infographic-box">
-				<i class="fa fa-briefcase emerald"></i>
-				<span class="headline"><%= link_to "Jobs", admin_jobs_path %></span>
-				<span class="value"><%= @jobs.count %></span>
-			</div>
-		</div>
-		<div class="col-lg-3 col-sm-6 col-xs-12">
-			<div class="main-box infographic-box">
-				<i class="fa fa-money green"></i>
-				<span class="headline">Total Billing</span>
-				<span class="price"><%= number_to_currency(@current.current_billing) %></span><br>
-				<span class="price text-muted"><small>Last week: <%= number_to_currency(@current.last_week_billing)%></small></span>
-			</div>
-		</div>
-		<div class="col-lg-3 col-sm-6 col-xs-12">
-			<div class="main-box infographic-box">
-				<i class="fa fa-eye yellow"></i>
-				<span class="headline">Current Payroll</span>
-				<span class="price"><%= number_to_currency(@current.current_payroll) %></span><br>
-				<span class="price text-muted"><small>YTD: <%= number_to_currency(@current.timesheets.sum(:gross_pay)) %></small></span>
-				
-				
-			</div>
-		</div>
+
+
+				<div class="col-md-12 transbox">
+
+   
+   
+   
+	<h1 class='page-header'><%= @current_agency.name.titleize %>'s Dashboard <small>Signed in as: <%= @current_admin.role %></small></h1>
+  
+	  <div class="btn-group btn-group-justified" role="group" aria-label="...">
+      <div class="btn-group" role="group">
+      <%= link_to(@current_agency, class: "btn btn-primary") do %>
+    							<i class='fa fa-user'></i>
+    
+    								<span>Agency Page</span>
+    							<% end %>
+    
+      </div>
+      <div class="btn-group" role="group">
+      <%= link_to(@current_admin, class: "btn btn-primary") do %>
+    							<i class='fa fa-user'></i>
+    
+    								<span>Admin Home</span>
+    							<% end %>
+    
+      </div>
+      <div class="btn-group" role="group">
+      <%= link_to(admin_orders_path, class: "btn btn-primary") do %>
+    							<i class='fa fa-briefcase'></i>
+    
+    								<span>Active Orders</span>
+    							<% end %>
+    
+      </div>
+      <div class="btn-group" role="group">
+      <%= link_to(admin_timesheets_path, class: "btn btn-primary") do %>
+    							<i class='fa fa-clock-o'></i>
+    
+    								<span>Timesheets</span>
+    							<% end %>
+  
+      </div>
+      <div class="btn-group" role="group">
+      <%= link_to "Edit Agency", edit_agency_path(@current_agency), class: 'btn btn-primary' %>
+    </div>
+  </div>
+  <%= render 'admin/infoboxes/infoboxes' %>
+  
+<hr>
+	<% if @current_agency.companies.blank? %>
+
+<div class="center">
+
+    <div class='dark'>
+       <h4>Getting Started</h4>
+  <div id="no-companies-alert" class="alert alert-danger" role="alert">
+  
+  <h5 class='text-center'> <i class="fa fa-exclamation-triangle fa-fw fa-border"></i> You currently don't have any companies entered. <br>
+  Please add a new company below.</h5>
+  	<%= link_to "Add A Company", new_admin_company_path, class: 'btn btn-primary' %>
+  </div>
+
+   
+  </div>	
+</div>
+
+ <% end %>
+<div class="row row300">
+	<div class="col-md-4">
+	  <div class="panel panel-primary dark">
+	    <div class="panel-heading">
+	      <h3 class="panel-title"><strong>Open Invoices</strong><span class='label label-default pull-right black'> <%= number_to_currency(@current_agency.invoices.unpaid.sum(:total)) %></strong></h3>
+	    </div>
+	    <div class="panel-body">
+	      <% @current_agency.invoices.unpaid.order(:week).each do |invoice| %>
+					<%= link_to(admin_invoice_path(invoice), class: "list-group-item list-group-item-success") do %>
+				       <div data-behavior="invoice" data-id="<%= invoice.id %>" class=''>
+				       
+				      <strong> <%= invoice.company.name %></strong>
+				       	
+				     	 <span class='label label-success pull-right black'>
+				     	 	<%= invoice.balance > 0.00 ? number_to_currency(invoice.balance) : "NEW!" %>
+				     	 	</span>
+				       </div>
+				       <% end %>
+				   
+				  <% end %>
+				 
+	    </div>
+	  </div>
 	</div>
-<%= render 'admin/infoboxes/infoboxes' %>
-	<div class="row">
-		<div class="col-lg-12">
-			<div class="main-box clearfix">
-				<div class="clearfix">
-					<h2 class="pull-left">Last orders</h2>
-					
-					<div class="filter-block pull-right">
-						<div class="form-group pull-left">
-							<input type="text" class="form-control" placeholder="Search...">
-							<i class="fa fa-search search-icon"></i>
-						</div>
-						
-						<%= link_to "<i class='fa fa-eye fa-lg'></i> View all orders".html_safe, admin_orders_path, class: "btn btn-primary pull-right" %>
-					
-					</div>
-				</div>
-				
-				<div class="table-responsive clearfix">
-					<table class="table table-striped table-bordered" id='orders-datatable'>
-						<thead>
-							<tr>
-								<th>&nbsp;</th>
-								<th>Job Order</th>
-							
-								<th>Date</th>
-								<th>Customer</th>
-								<th>Acct Manager</th>
-								<th class="text-right"><span>Balance</span></th>
-								
-							</tr>
-						</thead>
-						<tbody>
-							<% @current.orders.each do |order| %>
-							<tr>
-								
-								
-								<td class="text-center" style="width: 10%;">
-									<% if order.needs_attention? %>
-									<i class="fa fa-warning fa-lg text-danger"></i>
-									<% end %>
-								</td>
-								<td style="width: 15%;">
-									<%= link_to order.title, admin_order_path(order) %>
-								</td>
-								
-								<td style="width: 15%;">
-									<%= order.needed_by.present? ? order.needed_by.strftime('%x') : "No fill date" %>
-								</td>
-								<td>
-									<%= link_to order.company_name, admin_company_path(order.company) %>
-								</td>
-								<td style="width: 15%;">
-									<%= order.account_manager.try(:name) %>
-								</td>
-								
-								<td class="text-right">
-									<%= number_to_currency(order.current_timesheets.sum(:total_bill)) %>
-								</td>
-								
-							</tr>
-							<% end %>
-							
-						</tbody>
-					</table>
-				</div>
-				
-			</div>
-		</div>
+	<div class="col-md-4">
+	  <div class="panel panel-primary dark">
+	    <div class="panel-heading">
+	      <h3 class="panel-title"><strong>Open Job Order</strong></h3>
+	    </div>
+	    <div class="panel-body">
+	      
+	    
+	    
+	      <%= render 'admin/dashboard/orders_by_company' %>
+				 
+	    </div>
+	  </div>
 	</div>
-	
-	<div class="row">
-		<div class="col-lg-6">
-			<div class="main-box clearfix">
-				<h2>Conversation</h2>
+	<div class="col-md-4">
+	  <div class="panel panel-primary dark">
+	    <div class="panel-heading">
+	      <h3 class="panel-title"><strong>Admins</strong></h3>
+	    </div>
+	    <div class="panel-body">
+	      
+	    
+	    
+	      <% @current_agency.admins.order(:last_name).each do |admin| %>
+					<%= link_to(admin_path(admin), class: "list-group-item list-group-item-success") do %>
 				
-				<div class="conversation-wrapper">
-					<div class="conversation-content">
-						<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 340px;"><div class="conversation-inner" style="overflow: hidden; width: auto; height: 340px;">
-						
-							<div class="conversation-item item-left clearfix">
-								<div class="conversation-user">
-									<img src="img/samples/ryan.png" alt="">
-								</div>
-								<div class="conversation-body">
-									<div class="name">
-										Ryan Gossling
-									</div>
-									<div class="time hidden-xs">
-										September 21, 2013 18:28
-									</div>
-									<div class="text">
-										I don't think they tried to market it to the billionaire, spelunking, 
-										base-jumping crowd.
-									</div>
-								</div>
-							</div>
-							<div class="conversation-item item-right clearfix">
-								<div class="conversation-user">
-									<img src="img/samples/kunis.png" alt="">
-								</div>
-								<div class="conversation-body">
-									<div class="name">
-										Mila Kunis
-									</div>
-									<div class="time hidden-xs">
-										September 21, 2013 12:45
-									</div>
-									<div class="text">
-										The path of the righteous man is beset on all sides by the iniquities of the 
-										selfish and the tyranny of evil men. Blessed is he who, in the name of charity and 
-										good will.
-									</div>
-								</div>
-							</div>
-							<div class="conversation-item item-right clearfix">
-								<div class="conversation-user">
-									<img src="img/samples/kunis.png" alt="">
-								</div>
-								<div class="conversation-body">
-									<div class="name">
-										Mila Kunis
-									</div>
-									<div class="time hidden-xs">
-										September 21, 2013 12:45
-									</div>
-									<div class="text">
-										The path of the righteous man is beset on all sides by the iniquities of the 
-										selfish and the tyranny of evil men. Blessed is he who, in the name of charity and 
-										good will.
-									</div>
-								</div>
-							</div>
-							<div class="conversation-item item-left clearfix">
-								<div class="conversation-user">
-									<img src="img/samples/ryan.png" alt="">
-								</div>
-								<div class="conversation-body">
-									<div class="name">
-										Ryan Gossling
-									</div>
-									<div class="time hidden-xs">
-										September 21, 2013 18:28
-									</div>
-									<div class="text">
-										I don't think they tried to market it to the billionaire, spelunking, 
-										base-jumping crowd.
-									</div>
-								</div>
-							</div>
-							<div class="conversation-item item-right clearfix">
-								<div class="conversation-user">
-									<img src="img/samples/kunis.png" alt="">
-								</div>
-								<div class="conversation-body">
-									<div class="name">
-										Mila Kunis
-									</div>
-									<div class="time hidden-xs">
-										September 21, 2013 12:45
-									</div>
-									<div class="text">
-										The path of the righteous man is beset on all sides by the iniquities of the 
-										selfish and the tyranny of evil men. Blessed is he who, in the name of charity and 
-										good will.
-									</div>
-								</div>
-							</div>
-							<div class="conversation-item item-right clearfix">
-								<div class="conversation-user">
-									<img src="img/samples/kunis.png" alt="">
-								</div>
-								<div class="conversation-body">
-									<div class="name">
-										Mila Kunis
-									</div>
-									<div class="time hidden-xs">
-										September 21, 2013 12:45
-									</div>
-									<div class="text">
-										The path of the righteous man is beset on all sides by the iniquities of the 
-										selfish and the tyranny of evil men. Blessed is he who, in the name of charity and 
-										good will.
-									</div>
-								</div>
-							</div>
-							<div class="conversation-item item-left clearfix">
-								<div class="conversation-user">
-									<img src="img/samples/ryan.png" alt="">
-								</div>
-								<div class="conversation-body">
-									<div class="name">
-										Ryan Gossling
-									</div>
-									<div class="time hidden-xs">
-										September 21, 2013 18:28
-									</div>
-									<div class="text">
-										I don't think they tried to market it to the billionaire, spelunking, 
-										base-jumping crowd.
-									</div>
-								</div>
-							</div>
-							<div class="conversation-item item-right clearfix">
-								<div class="conversation-user">
-									<img src="img/samples/kunis.png" alt="">
-								</div>
-								<div class="conversation-body">
-									<div class="name">
-										Mila Kunis
-									</div>
-									<div class="time hidden-xs">
-										September 21, 2013 12:45
-									</div>
-									<div class="text">
-										The path of the righteous man is beset on all sides by the iniquities of the 
-										selfish and the tyranny of evil men. Blessed is he who, in the name of charity and 
-										good will.
-									</div>
-								</div>
-							</div>
-							
-						</div><div class="slimScrollBar" style="width: 7px; position: absolute; top: 191px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 148.586px; background: rgb(0, 0, 0);"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; border-radius: 7px; opacity: 0.2; z-index: 90; right: 1px; display: none; background: rgb(51, 51, 51);"></div></div>
-					</div>
-					<div class="conversation-new-message">
-						<form>
-							<div class="form-group">
-								<textarea class="form-control" rows="2" placeholder="Enter your message..."></textarea>
-							</div>
-							
-							<div class="clearfix">
-								<button type="submit" class="btn btn-success pull-right">Send message</button>
-							</div>
-						</form>
-					</div>
-				</div> 
-			</div>
-		</div>
-		
-		<div class="col-lg-6">
-			<div class="main-box clearfix">
-				
-				<div class="tabs-wrapper">
-					<div class="clearfix">
-						<h2 class="pull-left">Recent updates</h2>
-						<ul class="nav nav-tabs pull-right">
-							<li class="active"><a href="#tab-users" data-toggle="tab">Users</a></li>
-							<li><a href="#tab-products" data-toggle="tab">Products</a></li>
-							<li><a href="#tab-todo" data-toggle="tab">Todo</a></li>
-						</ul>
-					</div>
-					
-					<div class="tab-content">
-						<div class="tab-pane fade in active" id="tab-users">
-							<ul class="widget-users row">
-								<li class="col-md-6">
-									<div class="img">
-										<img src="img/samples/scarlet.png" alt="">
-									</div>
-									<div class="details">
-										<div class="name">
-											<a href="#">Scarlett Johansson</a>
-										</div>
-										<div class="time">
-											<i class="fa fa-clock-o"></i> Last online: 5 minutes ago
-										</div>
-										<div class="type">
-											<span class="label label-danger">Admin</span>
-										</div>
-									</div>
-								</li>
-								<li class="col-md-6">
-									<div class="img">
-										<img src="img/samples/kunis.png" alt="">
-									</div>
-									<div class="details">
-										<div class="name">
-											<a href="#">Mila Kunis</a>
-										</div>
-										<div class="time online">
-											<i class="fa fa-check-circle"></i> Online
-										</div>
-										<div class="type">
-											<span class="label label-warning">Pending</span>
-										</div>
-									</div>
-								</li>
-								<li class="col-md-6">
-									<div class="img">
-										<img src="img/samples/ryan.png" alt="">
-									</div>
-									<div class="details">
-										<div class="name">
-											<a href="#">Ryan Gossling</a>
-										</div>
-										<div class="time online">
-											<i class="fa fa-check-circle"></i> Online
-										</div>
-									</div>
-								</li>
-								<li class="col-md-6">
-									<div class="img">
-										<img src="img/samples/robert.png" alt="">
-									</div>
-									<div class="details">
-										<div class="name">
-											<a href="#">Robert Downey Jr.</a>
-										</div>
-										<div class="time">
-											<i class="fa fa-clock-o"></i> Last online: Thursday
-										</div>
-									</div>
-								</li>
-								<li class="col-md-6">
-									<div class="img">
-										<img src="img/samples/emma.png" alt="">
-									</div>
-									<div class="details">
-										<div class="name">
-											<a href="#">Emma Watson</a>
-										</div>
-										<div class="time">
-											<i class="fa fa-clock-o"></i> Last online: 1 week ago
-										</div>
-									</div>
-								</li>
-								<li class="col-md-6">
-									<div class="img">
-										<img src="img/samples/george.png" alt="">
-									</div>
-									<div class="details">
-										<div class="name">
-											<a href="#">George Clooney</a>
-										</div>
-										<div class="time">
-											<i class="fa fa-clock-o"></i> Last online: 1 month ago
-										</div>
-									</div>
-								</li>
-								<li class="col-md-6">
-									<div class="img">
-										<img src="img/samples/kunis.png" alt="">
-									</div>
-									<div class="details">
-										<div class="name">
-											<a href="#">Mila Kunis</a>
-										</div>
-										<div class="time online">
-											<i class="fa fa-check-circle"></i> Online
-										</div>
-										<div class="type">
-											<span class="label label-warning">Pending</span>
-										</div>
-									</div>
-								</li>
-								<li class="col-md-6">
-									<div class="img">
-										<img src="img/samples/ryan.png" alt="">
-									</div>
-									<div class="details">
-										<div class="name">
-											<a href="#">Ryan Gossling</a>
-										</div>
-										<div class="time online">
-											<i class="fa fa-check-circle"></i> Online
-										</div>
-									</div>
-								</li>
-							</ul>
-							<br>
-							<a href="#" class="btn btn-success pull-right">View all users</a>
-						</div>
-						
-						<div class="tab-pane fade" id="tab-products">
-							<ul class="widget-products">
-								<li>
-									<a href="#">
-										<span class="img">
-											<img src="img/samples/ipad.png" alt="">
-										</span>
-										
-										<span class="product clearfix">
-											<span class="name">
-												iPad mini 32GB WiFi Black&amp;Slate
-											</span>
-											<span class="price">
-												<i class="fa fa-money"></i> $320,00
-											</span>
-											<span class="warranty">
-												<i class="fa fa-certificate"></i> Warranty: 2 years
-											</span>
-										</span>
-									</a>
-								</li>
-								<li>
-									<a href="#">
-										<span class="img">
-											<img src="img/samples/ipad.png" alt="">
-										</span>
-										
-										<span class="product clearfix">
-											<span class="name">
-												iPad mini 16GB WiFi Black&amp;Slate
-											</span>
-											<span class="price">
-												<i class="fa fa-money"></i> $273,68
-											</span>
-											<span class="warranty">
-												<i class="fa fa-certificate"></i> Warranty: 2 years
-											</span>
-										</span>
-									</a>
-								</li>
-								<li>
-									<a href="#">
-										<span class="img">
-											<img src="img/samples/ipad.png" alt="">
-										</span>
-										
-										<span class="product clearfix">
-											<span class="name">
-												iPad mini 32GB WiFi Cellular Black&amp;Slate
-											</span>
-											<span class="price">
-												<i class="fa fa-money"></i> $447,29
-											</span>
-											<span class="warranty">
-												<i class="fa fa-certificate"></i> Warranty: 4 years
-											</span>
-										</span>
-									</a>
-								</li>
-								<li>
-									<a href="#">
-										<span class="img">
-											<img src="img/samples/ipad.png" alt="">
-										</span>
-										
-										<span class="product clearfix">
-											<span class="name">
-												iPad mini 32GB WiFi Cellular Black&amp;Slate
-											</span>
-											<span class="price">
-												<i class="fa fa-money"></i> $447,29
-											</span>
-											<span class="warranty">
-												<i class="fa fa-certificate"></i> Warranty: 4 years
-											</span>
-										</span>
-									</a>
-								</li>
-							</ul>
-							<br>
-							<a href="#" class="btn btn-success pull-right">View all users</a>
-						</div>
-						
-						<div class="tab-pane fade" id="tab-todo">
-							<ul class="widget-todo">
-								<li class="clearfix">
-									<div class="name">
-										<div class="checkbox-nice">
-											<input type="checkbox" id="todo-1">
-											<label for="todo-1">
-												New products introduction <span class="label label-danger">High Priority</span>
-											</label>
-										</div>
-									</div>
-								</li>
-								<li class="clearfix">
-									<div class="name">
-										<div class="checkbox-nice">
-											<input type="checkbox" id="todo-2">
-											<label for="todo-2">
-												Checking the stock <span class="label label-success">Low Priority</span>
-											</label>
-										</div>
-									</div>
-									<div class="actions">
-										<a href="#" class="table-link">
-											<i class="fa fa-pencil"></i>
-										</a>
-										<a href="#" class="table-link danger">
-											<i class="fa fa-trash-o"></i>
-										</a>
-									</div>
-								</li>
-								<li class="clearfix">
-									<div class="name">
-										<div class="checkbox-nice">
-											<input type="checkbox" id="todo-3" checked="checked">
-											<label for="todo-3">
-												Buying coffee <span class="label label-warning">Medium Priority</span>
-											</label>
-										</div>
-									</div>
-									<div class="actions">
-										<a href="#" class="table-link">
-											<i class="fa fa-pencil"></i>
-										</a>
-										<a href="#" class="table-link danger">
-											<i class="fa fa-trash-o"></i>
-										</a>
-									</div>
-								</li>
-								<li class="clearfix">
-									<div class="name">
-										<div class="checkbox-nice">
-											<input type="checkbox" id="todo-4">
-											<label for="todo-4">
-												New marketing campaign <span class="label label-success">Low Priority</span>
-											</label>
-										</div>
-									</div>
-								</li>
-								<li class="clearfix">
-									<div class="name">
-										<div class="checkbox-nice">
-											<input type="checkbox" id="todo-5">
-											<label for="todo-5">
-												Calling Mom <span class="label label-warning">Medium Priority</span>
-											</label>
-										</div>
-									</div>
-									<div class="actions">
-										<a href="#" class="table-link badge">
-											<i class="fa fa-cog"></i>
-										</a>
-									</div>
-								</li>
-								<li class="clearfix">
-									<div class="name">
-										<div class="checkbox-nice">
-											<input type="checkbox" id="todo-6">
-											<label for="todo-6">
-												Ryan's birthday <span class="label label-danger">High Priority</span>
-											</label>
-										</div>
-									</div>
-								</li>
-								<li class="clearfix">
-									<div class="name">
-										<div class="checkbox-nice">
-											<input type="checkbox" id="todo-7">
-											<label for="todo-7">
-												Printing new flyer <span class="label label-success">Low Priority</span>
-											</label>
-										</div>
-									</div>
-								</li>
-								<li class="clearfix">
-									<div class="name">
-										<div class="checkbox-nice">
-											<input type="checkbox" id="todo-8">
-											<label for="todo-8">
-												Mila and Ryan wedding <span class="label label-danger">High Priority</span>
-											</label>
-										</div>
-									</div>
-								</li>
-								<li class="clearfix">
-									<div class="name">
-										<div class="checkbox-nice">
-											<input type="checkbox" id="todo-9">
-											<label for="todo-9">
-												Checking the stock <span class="label label-success">Low Priority</span>
-											</label>
-										</div>
-									</div>
-								</li>
-							</ul>
-						</div>
-						
-					</div>
-				</div>
-			</div>
-		</div>
+				       <div data-behavior="admin" data-id="<%= admin.id %>" class=''>
+				       
+				      <strong> <%= admin.name %></strong><br>
+				       	<small>	<%= admin.role %></small>
+				     	 <span class='label label-success pull-right black'>
+				     	 	<%= admin.current_billing.present? ? number_to_currency(admin.current_billing) : admin.role %>
+				     	 	</span>
+				       </div>
+				       <% end %>
+				   
+				  <% end %>
+				 
+	    </div>
+	  </div>
 	</div>
-	
-	<div class="row">
-		<div class="col-md-6">
-			<div class="main-box">
-				<div id="calendar" class="fc fc-ltr"><table class="fc-header" style="width:100%"><tbody><tr><td class="fc-header-left"></td><td class="fc-header-center"><span class="fc-header-title"><h2>September 2015</h2></span></td><td class="fc-header-right"><span class="fc-button fc-button-prev fc-state-default fc-corner-left" unselectable="on"><i class="fa fa-chevron-left"></i></span><span class="fc-button fc-button-next fc-state-default fc-corner-right" unselectable="on"><i class="fa fa-chevron-right"></i></span></td></tr></tbody></table><div class="fc-content" style="position: relative;"><div class="fc-view fc-view-month fc-grid" style="position:relative" unselectable="on"><div class="fc-event-container" style="position:absolute;z-index:8;top:0;left:0"><div class="fc-event fc-event-hori fc-event-draggable fc-event-start fc-event-end label-success" style="position: absolute; left: 145px; width: 66px; top: 72px;"><div class="fc-event-inner"><span class="fc-event-title">All Day Event</span></div><div class="ui-resizable-handle ui-resizable-e">&nbsp;&nbsp;&nbsp;</div></div><div class="fc-event fc-event-hori fc-event-draggable fc-event-start fc-event-end" style="position: absolute; left: 74px; width: 279px; top: 48px;"><div class="fc-event-inner"><span class="fc-event-title">Long Event</span></div><div class="ui-resizable-handle ui-resizable-e">&nbsp;&nbsp;&nbsp;</div></div><div class="fc-event fc-event-hori fc-event-draggable fc-event-start fc-event-end label-danger" style="position: absolute; left: 216px; width: 66px; top: 72px;"><div class="fc-event-inner"><span class="fc-event-time">4p</span><span class="fc-event-title">Repeating Event</span></div><div class="ui-resizable-handle ui-resizable-e">&nbsp;&nbsp;&nbsp;</div></div><div class="fc-event fc-event-hori fc-event-draggable fc-event-start fc-event-end" style="position: absolute; left: 216px; width: 66px; top: 140px;"><div class="fc-event-inner"><span class="fc-event-time">4p</span><span class="fc-event-title">Repeating Event</span></div><div class="ui-resizable-handle ui-resizable-e">&nbsp;&nbsp;&nbsp;</div></div><div class="fc-event fc-event-hori fc-event-draggable fc-event-start fc-event-end label-info" style="position: absolute; left: 429px; width: 67px; top: 48px;"><div class="fc-event-inner"><span class="fc-event-time">10:30a</span><span class="fc-event-title">Meeting</span></div><div class="ui-resizable-handle ui-resizable-e">&nbsp;&nbsp;&nbsp;</div></div><div class="fc-event fc-event-hori fc-event-draggable fc-event-start fc-event-end label-success ui-draggable" style="position: absolute; left: 429px; width: 67px; top: 72px;" unselectable="on"><div class="fc-event-inner"><span class="fc-event-time">12p</span><span class="fc-event-title">Lunch</span></div><div class="ui-resizable-handle ui-resizable-e">&nbsp;&nbsp;&nbsp;</div></div><div class="fc-event fc-event-hori fc-event-draggable fc-event-start fc-event-end label-info" style="position: absolute; left: 3px; width: 66px; top: 140px;"><div class="fc-event-inner"><span class="fc-event-time">7p</span><span class="fc-event-title">Birthday Party</span></div><div class="ui-resizable-handle ui-resizable-e">&nbsp;&nbsp;&nbsp;</div></div><a href="http://google.com/" class="fc-event fc-event-hori fc-event-draggable fc-event-start fc-event-end label-danger" style="position: absolute; left: 74px; width: 137px; top: 322px;"><div class="fc-event-inner"><span class="fc-event-title">Click for Google</span></div><div class="ui-resizable-handle ui-resizable-e">&nbsp;&nbsp;&nbsp;</div></a></div><table class="fc-border-separate" style="width:100%" cellspacing="0"><thead><tr class="fc-first fc-last"><th class="fc-day-header fc-sun fc-widget-header fc-first" style="width: 71px;">Sun</th><th class="fc-day-header fc-mon fc-widget-header" style="width: 71px;">Mon</th><th class="fc-day-header fc-tue fc-widget-header" style="width: 71px;">Tue</th><th class="fc-day-header fc-wed fc-widget-header" style="width: 71px;">Wed</th><th class="fc-day-header fc-thu fc-widget-header" style="width: 71px;">Thu</th><th class="fc-day-header fc-fri fc-widget-header" style="width: 71px;">Fri</th><th class="fc-day-header fc-sat fc-widget-header fc-last">Sat</th></tr></thead><tbody><tr class="fc-week fc-first"><td class="fc-day fc-sun fc-widget-content fc-other-month fc-past fc-first" data-date="2015-08-30"><div style="min-height: 57px;"><div class="fc-day-number">30</div><div class="fc-day-content"><div style="position: relative; height: 65px;">&nbsp;</div></div></div></td><td class="fc-day fc-mon fc-widget-content fc-other-month fc-past" data-date="2015-08-31"><div><div class="fc-day-number">31</div><div class="fc-day-content"><div style="position: relative; height: 65px;">&nbsp;</div></div></div></td><td class="fc-day fc-tue fc-widget-content fc-past" data-date="2015-09-01"><div><div class="fc-day-number">1</div><div class="fc-day-content"><div style="position: relative; height: 65px;">&nbsp;</div></div></div></td><td class="fc-day fc-wed fc-widget-content fc-past" data-date="2015-09-02"><div><div class="fc-day-number">2</div><div class="fc-day-content"><div style="position: relative; height: 65px;">&nbsp;</div></div></div></td><td class="fc-day fc-thu fc-widget-content fc-past" data-date="2015-09-03"><div><div class="fc-day-number">3</div><div class="fc-day-content"><div style="position: relative; height: 65px;">&nbsp;</div></div></div></td><td class="fc-day fc-fri fc-widget-content fc-past" data-date="2015-09-04"><div><div class="fc-day-number">4</div><div class="fc-day-content"><div style="position: relative; height: 65px;">&nbsp;</div></div></div></td><td class="fc-day fc-sat fc-widget-content fc-today fc-state-highlight fc-last" data-date="2015-09-05"><div><div class="fc-day-number">5</div><div class="fc-day-content"><div style="position: relative; height: 65px;">&nbsp;</div></div></div></td></tr><tr class="fc-week"><td class="fc-day fc-sun fc-widget-content fc-future fc-first" data-date="2015-09-06"><div style="min-height: 56px;"><div class="fc-day-number">6</div><div class="fc-day-content"><div style="position: relative; height: 41px;">&nbsp;</div></div></div></td><td class="fc-day fc-mon fc-widget-content fc-future" data-date="2015-09-07"><div><div class="fc-day-number">7</div><div class="fc-day-content"><div style="position: relative; height: 41px;">&nbsp;</div></div></div></td><td class="fc-day fc-tue fc-widget-content fc-future" data-date="2015-09-08"><div><div class="fc-day-number">8</div><div class="fc-day-content"><div style="position: relative; height: 41px;">&nbsp;</div></div></div></td><td class="fc-day fc-wed fc-widget-content fc-future" data-date="2015-09-09"><div><div class="fc-day-number">9</div><div class="fc-day-content"><div style="position: relative; height: 41px;">&nbsp;</div></div></div></td><td class="fc-day fc-thu fc-widget-content fc-future" data-date="2015-09-10"><div><div class="fc-day-number">10</div><div class="fc-day-content"><div style="position: relative; height: 41px;">&nbsp;</div></div></div></td><td class="fc-day fc-fri fc-widget-content fc-future" data-date="2015-09-11"><div><div class="fc-day-number">11</div><div class="fc-day-content"><div style="position: relative; height: 41px;">&nbsp;</div></div></div></td><td class="fc-day fc-sat fc-widget-content fc-future fc-last" data-date="2015-09-12"><div><div class="fc-day-number">12</div><div class="fc-day-content"><div style="position: relative; height: 41px;">&nbsp;</div></div></div></td></tr><tr class="fc-week"><td class="fc-day fc-sun fc-widget-content fc-future fc-first" data-date="2015-09-13"><div style="min-height: 56px;"><div class="fc-day-number">13</div><div class="fc-day-content"><div style="position: relative; height: 0px;">&nbsp;</div></div></div></td><td class="fc-day fc-mon fc-widget-content fc-future" data-date="2015-09-14"><div><div class="fc-day-number">14</div><div class="fc-day-content"><div style="position: relative; height: 0px;">&nbsp;</div></div></div></td><td class="fc-day fc-tue fc-widget-content fc-future" data-date="2015-09-15"><div><div class="fc-day-number">15</div><div class="fc-day-content"><div style="position: relative; height: 0px;">&nbsp;</div></div></div></td><td class="fc-day fc-wed fc-widget-content fc-future" data-date="2015-09-16"><div><div class="fc-day-number">16</div><div class="fc-day-content"><div style="position: relative; height: 0px;">&nbsp;</div></div></div></td><td class="fc-day fc-thu fc-widget-content fc-future" data-date="2015-09-17"><div><div class="fc-day-number">17</div><div class="fc-day-content"><div style="position: relative; height: 0px;">&nbsp;</div></div></div></td><td class="fc-day fc-fri fc-widget-content fc-future" data-date="2015-09-18"><div><div class="fc-day-number">18</div><div class="fc-day-content"><div style="position: relative; height: 0px;">&nbsp;</div></div></div></td><td class="fc-day fc-sat fc-widget-content fc-future fc-last" data-date="2015-09-19"><div><div class="fc-day-number">19</div><div class="fc-day-content"><div style="position: relative; height: 0px;">&nbsp;</div></div></div></td></tr><tr class="fc-week"><td class="fc-day fc-sun fc-widget-content fc-future fc-first" data-date="2015-09-20"><div style="min-height: 56px;"><div class="fc-day-number">20</div><div class="fc-day-content"><div style="position: relative; height: 0px;">&nbsp;</div></div></div></td><td class="fc-day fc-mon fc-widget-content fc-future" data-date="2015-09-21"><div><div class="fc-day-number">21</div><div class="fc-day-content"><div style="position: relative; height: 0px;">&nbsp;</div></div></div></td><td class="fc-day fc-tue fc-widget-content fc-future" data-date="2015-09-22"><div><div class="fc-day-number">22</div><div class="fc-day-content"><div style="position: relative; height: 0px;">&nbsp;</div></div></div></td><td class="fc-day fc-wed fc-widget-content fc-future" data-date="2015-09-23"><div><div class="fc-day-number">23</div><div class="fc-day-content"><div style="position: relative; height: 0px;">&nbsp;</div></div></div></td><td class="fc-day fc-thu fc-widget-content fc-future" data-date="2015-09-24"><div><div class="fc-day-number">24</div><div class="fc-day-content"><div style="position: relative; height: 0px;">&nbsp;</div></div></div></td><td class="fc-day fc-fri fc-widget-content fc-future" data-date="2015-09-25"><div><div class="fc-day-number">25</div><div class="fc-day-content"><div style="position: relative; height: 0px;">&nbsp;</div></div></div></td><td class="fc-day fc-sat fc-widget-content fc-future fc-last" data-date="2015-09-26"><div><div class="fc-day-number">26</div><div class="fc-day-content"><div style="position: relative; height: 0px;">&nbsp;</div></div></div></td></tr><tr class="fc-week"><td class="fc-day fc-sun fc-widget-content fc-future fc-first" data-date="2015-09-27"><div style="min-height: 56px;"><div class="fc-day-number">27</div><div class="fc-day-content"><div style="position: relative; height: 24px;">&nbsp;</div></div></div></td><td class="fc-day fc-mon fc-widget-content fc-future" data-date="2015-09-28"><div><div class="fc-day-number">28</div><div class="fc-day-content"><div style="position: relative; height: 24px;">&nbsp;</div></div></div></td><td class="fc-day fc-tue fc-widget-content fc-future" data-date="2015-09-29"><div><div class="fc-day-number">29</div><div class="fc-day-content"><div style="position: relative; height: 24px;">&nbsp;</div></div></div></td><td class="fc-day fc-wed fc-widget-content fc-future" data-date="2015-09-30"><div><div class="fc-day-number">30</div><div class="fc-day-content"><div style="position: relative; height: 24px;">&nbsp;</div></div></div></td><td class="fc-day fc-thu fc-widget-content fc-other-month fc-future" data-date="2015-10-01"><div><div class="fc-day-number">1</div><div class="fc-day-content"><div style="position: relative; height: 24px;">&nbsp;</div></div></div></td><td class="fc-day fc-fri fc-widget-content fc-other-month fc-future" data-date="2015-10-02"><div><div class="fc-day-number">2</div><div class="fc-day-content"><div style="position: relative; height: 24px;">&nbsp;</div></div></div></td><td class="fc-day fc-sat fc-widget-content fc-other-month fc-future fc-last" data-date="2015-10-03"><div><div class="fc-day-number">3</div><div class="fc-day-content"><div style="position: relative; height: 24px;">&nbsp;</div></div></div></td></tr><tr class="fc-week fc-last"><td class="fc-day fc-sun fc-widget-content fc-other-month fc-future fc-first" data-date="2015-10-04"><div style="min-height: 60px;"><div class="fc-day-number">4</div><div class="fc-day-content"><div style="position: relative; height: 0px;">&nbsp;</div></div></div></td><td class="fc-day fc-mon fc-widget-content fc-other-month fc-future" data-date="2015-10-05"><div><div class="fc-day-number">5</div><div class="fc-day-content"><div style="position: relative; height: 0px;">&nbsp;</div></div></div></td><td class="fc-day fc-tue fc-widget-content fc-other-month fc-future" data-date="2015-10-06"><div><div class="fc-day-number">6</div><div class="fc-day-content"><div style="position: relative; height: 0px;">&nbsp;</div></div></div></td><td class="fc-day fc-wed fc-widget-content fc-other-month fc-future" data-date="2015-10-07"><div><div class="fc-day-number">7</div><div class="fc-day-content"><div style="position: relative; height: 0px;">&nbsp;</div></div></div></td><td class="fc-day fc-thu fc-widget-content fc-other-month fc-future" data-date="2015-10-08"><div><div class="fc-day-number">8</div><div class="fc-day-content"><div style="position: relative; height: 0px;">&nbsp;</div></div></div></td><td class="fc-day fc-fri fc-widget-content fc-other-month fc-future" data-date="2015-10-09"><div><div class="fc-day-number">9</div><div class="fc-day-content"><div style="position: relative; height: 0px;">&nbsp;</div></div></div></td><td class="fc-day fc-sat fc-widget-content fc-other-month fc-future fc-last" data-date="2015-10-10"><div><div class="fc-day-number">10</div><div class="fc-day-content"><div style="position: relative; height: 0px;">&nbsp;</div></div></div></td></tr></tbody></table></div></div></div>
-			</div>
-		</div>
-		
-		<div class="col-md-6">
-				<div class="main-box">
-					<div class="clearfix">
-						<h2 class="pull-left">Visitors location</h2>
-						
-						<div class="icon-box pull-right">
-							<a href="#" class="btn pull-left">
-								<i class="fa fa-refresh"></i>
-							</a>
-							<a href="#" class="btn pull-left">
-								<i class="fa fa-cog"></i>
-							</a>
-						</div>
-					</div>
-						
-						
-			</div>
-			
-		</div>
+</div>
+</div>

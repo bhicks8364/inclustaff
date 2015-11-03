@@ -7,31 +7,20 @@ class Admin::TimesheetsController < ApplicationController
 	def index
 		if params[:job_id]
   		@job = Job.includes(:employee, :timesheets).find(params[:job_id])
-  		@timesheets = @job.timesheets.order(updated_at: :desc) if @job.present? && @job.timesheets.any?
-  		
-  		gon.timesheets = @timesheets
-      authorize @timesheets
+  		@timesheets = @job.timesheets.order(updated_at: :desc) if @job.timesheets.any?
   	elsif params[:company_id]
 			@company = Company.includes(:jobs, :timesheets).find(params[:company_id])
-      # @timesheets = @company.timesheets.current_week.order(updated_at: :desc) if @company.present? && @company.timesheets.any?
-      @timesheets = @company.timesheets
-      # @approved_timesheets = @timesheets.approved if @timesheets.any?
-      # @pending_timesheets = @timesheets.pending if @timesheets.any?
-
-     
+      @timesheets = @company.timesheets if @company.timesheets.any?
       authorize @timesheets 
-     else
+    else
      	@timesheets = Timesheet.order(updated_at: :desc)
-     	@pending_timesheets = @timesheets.pending
-     	@approved_timesheets = @timesheets.approved
-     	authorize @timesheets
 		end
-		
-		@current_timesheets = Timesheet.current_week.order(updated_at: :desc) if @current_agency.present?
-		
+		gon.timesheets = @timesheets
+    authorize @timesheets
+    @current_timesheets = @timesheets.current_week
 		respond_to do |format|
       format.html
-      format.csv { send_data @current_timesheets.to_csv, filename: "timesheets-export-#{Time.now}-inclustaff.csv" }
+      format.csv { send_data @current_timesheets.to_csv, filename: "current_timesheets-export-#{Time.now}-inclustaff.csv" }
   	end 
 		
 		
@@ -43,29 +32,22 @@ class Admin::TimesheetsController < ApplicationController
 		if params[:job_id]
 			@job = Job.includes(:employee, :timesheets).find(params[:job_id])
 			@timesheets = @job.timesheets.past
-			@approved_timesheets = @job.timesheets.past.approved.order(created_at: :desc) if @job.present?
-			@pending_timesheets = @job.timesheets.past.pending.order(created_at: :desc) if @job.present?
-			gon.timesheets = @timesheets
-			authorize @timesheets, :index?
+			
+			
+			
 		elsif params[:company_id]
 			@company = Company.includes(:jobs, :timesheets).find(params[:company_id])
-			@approved_timesheets = @company.timesheets.past.approved.order(created_at: :desc) if @company.present?
-			@pending_timesheets = @company.timesheets.past.pending.order(created_at: :desc) if @company.present?
-			# @timesheets = @agency.timesheets.order(created_at: :desc) if @agency.present?
 			@timesheets = @company.timesheets.past.order(created_at: :desc) if @company.present?
-			gon.timesheets = @timesheets
-			authorize @timesheets, :index?
+		
 		else
-			@timesheets = @current.timesheets.past if current_admin.present?
-			gon.timesheets = @timesheets
-			authorize @timesheets, :index?
+			@timesheets = Timesheet.past if current_admin.present?
+		
 		end
-		
-		@last_week_timesheets = @current.timesheets.last_week.order(updated_at: :desc)
-		
+		gon.timesheets = @timesheets
+		authorize @timesheets, :index?
 		respond_to do |format|
       format.html
-      format.csv { send_data @last_week_timesheets.to_csv, filename: "timesheets-export-#{Time.now}-inclustaff.csv" }
+      format.csv { send_data @timesheets.to_csv, filename: "past-timesheets-export-#{Time.now}-inclustaff.csv" }
   	end 
 		
 		

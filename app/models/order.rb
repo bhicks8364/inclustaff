@@ -196,7 +196,7 @@ class Order < ActiveRecord::Base
   end
   
   def mentioned_admins
-      @mentioned_admins ||= Admin.where(last_name: admin_mentions)
+      @mentioned_admins ||= Admin.where(username: admin_mentions)
   end
   
   def keywords

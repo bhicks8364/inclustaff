@@ -7,7 +7,8 @@ jQuery ->
     at: "#",
     'data': "/skills.json"
   )
+
   $('[data-behavior="autocomplete_order_notes"]').atwho(
-    at: "#",
-    'data': "/skills.json"
+    at: "@",
+    'data': "/admins.json"
   )

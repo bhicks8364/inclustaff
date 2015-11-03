@@ -1,8 +1,8 @@
-<div class='col-md-12 main-box'>
+<div class='col-md-12 transbox'>
   <h1>All Companies</h1>
 
-
-
+<%= link_to 'New Company', new_admin_company_path, class: 'btn btn-success pull-right' %>
+<hr>
 <div class="table-responsive">
   <table id="" class="table table-bordered datatable">
   <thead>
@@ -37,13 +37,18 @@
 </div>
 <br>
 
-<%= link_to 'New Company', new_admin_company_path, class: 'btn btn-success' %>
 
-<%= form_for @import, url: import_admin_companies_path, multipart: true do |f| %>
-  <%= f.file_field :file %>
-  <%= f.submit "Upload", class: 'btn btn-success' %>
+
+<div class='well'>
+  <%= form_for @import, url: import_admin_companies_path, multipart: true do |f| %>
+  <%= f.file_field :file, class: '' %>
+  <br>
+  <%= f.submit "Upload", class: 'btn btn-success btn-sm' %>
 <% end %>
 </div>
+<hr>
 <%= link_to(admin_companies_path(@companies, format: :csv), class: 'btn btn-primary') do %>
   		<i class="fa fa-file-excel-o fa-lg"></i> Export Company List
 <% end %>
+
+</div>

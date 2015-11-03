@@ -1,17 +1,4 @@
 <div class='main-box'>
- <%= timeline  Shift.current_week.clocked_out.map{|shift|
-      [shift.employee.name, shift.time_in, shift.time_out]}, id: "users-chart", height: "500px" ,
-     
-      library: {
-        timeline: { colorByRowLabel: true, trigger: "none" },
-        colors:['red','blue']
-        
-        } %>
-  
-  
-  
-  
-  
 
     <% if @jobs %>
     
@@ -20,24 +7,5 @@
 <% else %>
 No jobs to display.
 <% end %>
-<div class='well'>
-         <table>
-  <% @jobs.each do |job| %>
-    <tr>
-      <td><%= link_to job.title, admin_job_path(job) %> &nbsp; </td>
-      <td><%= link_to 'Edit', edit_admin_job_path(job) %> &nbsp; </td>
-      <td>
 
-        Settings:
-        <span>
-          <%- job.settings.try(:each) do |key, value| -%>
-            <%= key.humanize %>: <%= number_to_currency( value.to_d) %>
-          <%- end -%>
-        </span>
-      </td>
-    </tr>
-  <%- end -%>
-</table>
-
-       </div>
 </div>

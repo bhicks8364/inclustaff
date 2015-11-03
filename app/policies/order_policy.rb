@@ -40,8 +40,12 @@ class OrderPolicy < ApplicationPolicy
         create?
     end
     def update?
+        if user.class == "User"
+            true
+        elsif user.class == "Admin"
+            
         return true if user.owner? || user.payroll? || user.account_manager? || user.recruiter?
-        
+        end
     end
     
     def edit?

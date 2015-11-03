@@ -13,6 +13,7 @@
 
 				
 				<div class="conversation-body">
+					<h2 class='page-header' data-behavior='timesheet-state'><%= timesheet.state.upcase %></h2>
 					
 					<h5><strong> <%= timesheet.company.name %> </strong> <small><%= timesheet.employee.name %></small></h5>
 					<h6><%= link_to timesheet.job.title, admin_job_path(timesheet.job) %></h6>

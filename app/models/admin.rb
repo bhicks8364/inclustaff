@@ -36,9 +36,9 @@ class Admin < ActiveRecord::Base
   belongs_to :agency
   has_many :events
   has_many :eventables, :through => :events
-  has_many :orders, :through => :company
-  has_many :jobs, :through => :orders
-  has_many :employees, :through => :jobs
+  # has_many :orders, :through => :company
+  # has_many :jobs, :through => :orders
+  # has_many :employees, :through => :jobs
   # has_many :shifts, :through => :company
   has_many :skills, :through => :orders
   has_many :recruiter_jobs, class_name: "Job", foreign_key: "recruiter_id"
@@ -55,12 +55,8 @@ class Admin < ActiveRecord::Base
          
   before_validation :set_username
   
-  # validates :agency_id, presence: true, unless: ->(admin){admin.company_id.present?}
-  # validates :company_id, presence: true, unless: ->(admin){admin.agency_id.present?}
-  
   validates_numericality_of :company_id, allow_nil: true
   validates_numericality_of :agency_id, allow_nil: true
-    # validate :company_xor_agency
     
   def name;             "#{first_name} #{last_name}"; end
   def to_s;             name; end
@@ -76,17 +72,37 @@ class Admin < ActiveRecord::Base
          
   def timesheets
     if recruiter?
-      recruiter_jobs.includes(:timesheets)
+      recruiter_jobs.flat_map { |c| c.timesheets }
     elsif account_manager?
-      account_orders.includes(:jobs => :timesheets)
+      account_orders.flat_map { |c| c.timesheets }
     elsif company?
       Company.find(company_id).timesheets
     else
       Timesheet.all
     end
   end
+  def jobs
+    if recruiter?
+      recruiter_jobs
+    elsif account_manager?
+    account_orders.flat_map { |c| c.jobs }
+    else
+      Job.all
+    end
+  end
  
   def current_billing
+    if self.recruiter? && self.recruiter_jobs.any?
+      recruiter_jobs.joins(:timesheets).map{ |t| t.timesheets
+      .last_week.sum(:total_bill).to_s}
+    elsif self.account_manager? && self.account_orders.any?
+      account_orders.joins(:timesheets).map{ |t| t.timesheets
+      .last_week.sum(:total_bill).to_s;}
+    else
+      0
+    end
+  end  
+  def last_week_billing
     if self.recruiter? && self.recruiter_jobs.any?
       recruiter_jobs.joins(:current_timesheet).sum(:total_bill)
     elsif self.account_manager? && self.account_orders.any?
@@ -94,7 +110,7 @@ class Admin < ActiveRecord::Base
     else 
       0
     end
-  end  
+  end
   def billing
     if self.recruiter? && self.recruiter_jobs.any?
       recruiter_jobs.joins(:timesheets).sum(:total_bill)
@@ -119,17 +135,20 @@ class Admin < ActiveRecord::Base
     end
   end
          
-    def set_username
-      self.username = name.gsub(/\s(.)/) {|e| $1.upcase}
-    end
+  def set_username
+    self.username = name.gsub(/\s(.)/) {|e| $1.upcase}
+  end
+  
+  def self.sorted_by_current_billing
+    Admin.all.sort_by(&:current_billing).reverse!
+  end
+  def self.sorted_by_total_billing
+    Admin.all.sort_by(&:billing).reverse!
+  end
+  def self.sorted_by_last_week_billing
+    Admin.all.sort_by(&:last_week_billing).reverse!
+  end    
          
-         
-    private
-
-    def company_xor_agency
-      if !(company_id.blank? ^ agency_id.blank?)
-        errors.add(:base, "Specify a company or an agency, not both")
-      end
-    end     
+   
 
 end

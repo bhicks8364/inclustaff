@@ -1,0 +1,10 @@
+<%= div_for(Employee.unassigned, class: 'list-group-item list-group-item-success') do |employee| %>
+	<%= link_to(admin_employee_path(employee), class: 'list-group-item list-group-item-success') do %>
+    	<h4 class="list-group-item-heading"><%= employee.name %>  
+    	<span class="label label-success pull-right"><%= employee.work_histories.order(:end_date).first.try(:title)  %></span></h4>
+        <%= employee.skills.any? ? employee.skills.limit(5).map{|p| p.try(:name)}.join(", ") : "No Skills Available" %></p>
+	
+    <% end %>
+
+
+<% end %>

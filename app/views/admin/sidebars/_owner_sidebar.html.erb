@@ -2,38 +2,56 @@
 	<section id="col-left">
 		
 		<div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">
-			
+				
 			<ul class="nav nav-pills nav-stacked">
+
+						<li><%= link_to admin_owner_path do %>
+							<i class="fa fa-dashboard"></i>
+							
+								<span>Dashboard</span>
+							<% end %>
+						</li>
 						<li><%= link_to admin_companies_path do %>
-							<i class="fa fa-building-o"></i>
+							<i class='fa fa-building'></i>
+							
 								<span>All Companies</span>
 							<% end %>
 						</li>
-						<li><%= link_to admin_orders_path do %>
-							<i class="fa fa-university"></i>
-							
-								<span>Orders</span>
-							<% end %>
-						</li>
-						<% if current_admin.owner? %>
 						<li><%= link_to admin_invoices_path do %>
-							<i class="fa fa-money"></i>
+							<i class='fa fa-money'></i>
 							
-								<span>Invoices</span>
+								<span>All Invoices</span>
 							<% end %>
 						</li>
-						<% end %>
-
-						<li><%= link_to admins_path do %>
-							<i class="fa fa-users"></i>
-								<span>Agency Users</span>
-							<% end %>
-						</li>
+						
 						<li><%= link_to admin_employees_path do %>
 							<i class="fa fa-users"></i>
 								<span>Employees</span>
 							<% end %>
 						</li>
+						
+					
+						<li><%= link_to admin_orders_path do %>
+							<i class="fa fa-university"></i>
+							
+								<span>Job Orders</span>
+							<% end %>
+						</li>
+						
+						<li><%= link_to new_admin_company_path do %>
+							<i class='fa fa-plus-square'></i>
+							
+								<span>Add Company</span>
+							<% end %>
+						</li>
+						
+						<li><%= link_to admins_path do %>
+							<i class="fa fa-users"></i>
+								<span>Agency Users</span>
+							<% end %>
+						</li>
+
+						
 						<li><%= link_to admin_timesheets_path do %>
 							<i class="fa fa-file-text-o"></i>
 								<span>Timesheets</span>
@@ -44,19 +62,18 @@
 								<span>Jobs</span>
 							<% end %>
 						</li>
-						<li><%= link_to users_path do %>
-							<i class="fa fa-users"></i>
-								<span>Users List</span>
-							<% end %>
-						</li>
 						<li><%= link_to destroy_admin_session_path, method: :delete do %>
-								<i class='fa fa-power-off'></i>
+							<i class='fa fa-power-off'></i> 
+								<span>Logout</span>
 							<% end %>
 						</li>
-						
-					
-	
 			</ul>
 		</div>
 	</section>
 </div>
+
+
+
+
+
+          

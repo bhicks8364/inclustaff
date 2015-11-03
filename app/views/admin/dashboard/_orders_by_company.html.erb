@@ -2,7 +2,7 @@
 					
 	<li class="list-group-item"><div class='text-center'><i class="fa fa-users fa-fw"></i><strong>&nbsp; Open Orders</strong></div></li>
 	
-	<% @current_agency.companies.with_open_orders.distinct.each do |company| %>
+	<% Company.with_open_orders.order(:name).distinct.each do |company| %>
 		
 		<%= link_to admin_company_path(company), class: 'list-group-item list-group-item-info' do %>
 			

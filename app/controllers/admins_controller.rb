@@ -3,16 +3,12 @@ class AdminsController < ApplicationController
   layout 'admin_layout'
   def index
       
-      @agency_admins = @current_agency.agency_admins.order(role: :asc) if @current_agency.present?
+      @admins = Admin.all.order(last_name: :asc)
       # @admins = @current_agency.agency_admins.order(role: :asc)
         # @admins = @company.admins.order(last_name: :asc) if @company.present?
         # @admins = @agency.admins.order(last_name: :asc) if @agency.present?
       skip_authorization
-      respond_to do |format|
-        format.json
-        format.html
-
-    end
+     
   end
     
   # def new

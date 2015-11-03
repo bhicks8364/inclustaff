@@ -1,19 +1,12 @@
- <%= timeline  Shift.today.map{|shift|
-      [shift.employee.name, shift.time_in, shift.time_out]
-  } %>
+
 <div class='col-md-12 dark'>
  
-  <h2>Recruiter Dashboard</h2>
-  <div class="">
-   <%= render 'skills/search'%>
-  </div>
-  	<div class="col-md-8">
-    <%= render 'admin/infoboxes/recruiter_boxes' %>
+  
+  
+   <div class='col-md-12'>
+      <%= render 'admin/dashboard/recruiter', admin: @current_admin %>
     </div>
 
-    <div class='col-md-12'>
-      <%= render 'admin/infoboxes/recruiter_charts' %>
-    </div>
 
 
 </div>

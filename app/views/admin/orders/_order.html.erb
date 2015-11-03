@@ -9,6 +9,9 @@
         <p class='list-group-item-text'><strong><%= order.pay_range %></strong> <small><%= order.account_manager.try(:name) || "Unavailable" %></small></p>
        <%= order.tags.map {|p| p.name.titleize}.join(", ") %>
       <% end %>
+     
+      
+      
 </div>
       
 

@@ -1,82 +1,101 @@
+<div class='col-md-12 dark'>
+ 
 
+<h1>  <%= @order.title%> </h1>
 
-<div class='col-md-12 transbox'>
-  <h1>  <%= @order.title %></h1>
-<hr>
-<div class='well center' id="order-tabs">
+<div class='dark' id="order-tabs">
 
   <!-- Nav tabs -->
   <ul id="order-nav" class="nav nav-tabs nav-justified" role="tablist">
-    <li role="presentation" class="active"><a href="#order" aria-controls="order" role="tab" data-toggle="tab">General Info.</a></li>
-    <li role="presentation"><a href="#skills" aria-controls="skills" role="tab" data-toggle="tab">Skills</a></li>
-    <li role="presentation"><a href="#apply" aria-controls="apply" role="tab" data-toggle="tab">Apply Now!</a></li>
+    <li role="presentation" class="active"><a href="#order" aria-controls="order" role="tab" data-toggle="tab">Order Info.</a></li>
+    <li role="presentation"><a href="#skills-tab" aria-controls="skills-tab" role="tab" data-toggle="tab">Skills</a></li>
+    <li role="presentation"><a href="#applications" aria-controls="applications" role="tab" data-toggle="tab">Apply Now!</a></li>
   </ul>
   
-  <div class="tab-content">
-    <div role="tabpanel" class="tab-pane fade in active well" id="order">
-  
+  <div class="tab-content col-md-12">
+    <div role="tabpanel" class="tab-pane fade in active" id="order">
 
-<h3> <%= @order.title %></h3>
+  <div class='col-md-12 dark'>
+    <h4>Open positions: <%= @order.open_jobs %></h4>
 
-  <h5><strong>Information about this position:</strong></h5>
-    <div id= "order-notes" class="notes" >
-      <p><%= highlight(@order.notes, Skill.pluck(:name).to_a %></p>
-    </div>
-<%= @listed_skills %>
-<p>
-
-  <%= @order.pay_range %> - BOE
-</p>
-
-
-
-
-  </div>
-  
-  
-    <div role="tabpanel" class="tab-pane fade well" id="skills">
-      <div class='center'>
-        
-        <% if @order.skills.required.any? %>
-        <h2>Required Skills</h2>
-          <%= render @order.skills.required %>
-          <% else %>
-          <h2>There are no <i>required skills</i> for this position.</h2>
-          <% end %>
-         <% if @order.skills.additional.any? %>
-         <h2>Additional Skills</h2>
-          <%= render @order.skills.additional %>
-         
-         
-          <% end %>
-      </div>
-    </div>
-    <div role="tabpanel" class="tab-pane fade well" id="apply">
-      <div class='center'>
-      <% if user_signed_in? %>
-            <% if @current_user.applied_to(@order.id) %>
-            <h2>Thanks for applying! We will be contacting you shortly.</h2>
-            <% else %>
-            <h2 id='interested'>Interested in the position? </h2>
-            <div id='thanks' class='hide-this'><h2>Thanks for applying! We will be contacting you shortly.</h2></div>
-            
-          <%= link_to "Apply Now!", apply_employee_order_path(@order), id: 'apply-btn', method: :patch, remote: true, class: 'btn btn-success' %>
-            <% end %>
-      <% else %>
-        <h2>Please sign in to apply to this position.</h2>
-        <div class='text-center'>
-          	<%= link_to "<i class='fa fa-users fa-2x fa-fw pull-left'></i> Employee Sign In".html_safe, new_user_session_path, class: 'btn btn-primary btn-lg' %>
-<p>Don't have an account? </p>
-<%= link_to "<i class='fa fa-user-plus fa-2x fa-fw pull-left'></i> Sign Up Now!".html_safe, new_user_registration_path, class: 'btn btn-primary btn-lg' %>
-        
-        </div>
-        
-      <% end %>
-      </div>
-    </div>
-  </div>
-</div>
-  
-  
+  <h1><%= @order.active ? "" : "Inactive" %></h1>
  
+  
+
+  
+   
+  <div class='dark col-md-8'>
+    <%= highlight(@order.notes, @order.tags.pluck(:name).to_a, highlighter: '<u>\1</u>') %>
+  </div>
+  <div class='col-md-4'>
+    <strong>Shift</strong><br>
+   <%= @order.shift %><br>
+  
+    <strong><%= @order.heavy_lifting ? "Heavy Lifting Required" : "" %></strong>
+    <br><strong><%= @order.stwb ? "STWB Required" : "" %></strong><br>
+
+  
+  </div>
+
+   <div class='col-md-4'>
+    <strong>Drug Test </strong><br>
+    <%= @order.dt_req %><br>
+  
+
+    <strong>Background Check </strong><br>
+    <%= @order.bg_check %><br>
+     </div>
+
+   <div class='col-md-4'>
+
+    <h3><strong>Assignment Type</strong><br>
+    <%= @order.est_duration %><br>
+</h3>
+    <strong>Pay Range:</strong><br>
+    <%= @order.pay_range %>
+   </div>
+
+   <div class='col-md-4'>
+     <strong>Skills</strong>
+     <p><%= @order.skills.map {|p| p.name.titleize}.join(", ") %></p>
+   </div>
+   <div class='col-md-4'>
+     <strong>Tags</strong>
+     <p><%= @order.tags.map {|p| p.name.titleize}.join(", ") %></p>
+   </div>
+
+
+  </div>
+  
+  </div>
+ 
+  <!--SKILLS TAB-->
+  <div role="tabpanel" class="tab-pane fade" id="skills-tab">
+     <div class='dark'>
+      <% if @order.skills.count < 1 %>
+           <h4 id='no-skills' class="center">This job order has no skills entered.</h4>
+          <% end %>
+            <div  id='skills' class=''>
+              <%= render @order.skills %>
+             
+            </div>
+     
+      
+    </div>
+  </div>
+  <!--APPLICATIONS TAB-->
+    <div role="tabpanel" class="tab-pane fade" id="applications">
+        <div class='dark'>
+          <% if @order.applications.where(user_id: @current_user.id, action: 'applied').any?%>
+          <h4>You've already applied to this position.</h4>
+          <% else %>
+          <%= link_to "Apply Now!", apply_employee_order_path(@order.id), remote: true, method: :patch, class: 'btn btn-success btn-lg', id: 'apply-btn' %>
+          
+          <% end %>
+          <div class='hide-this' id='thanks'><h2>Thanks for applying! We will be contacting you shortly.</h2></div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
 </div>

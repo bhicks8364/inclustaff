@@ -100,6 +100,10 @@ class User < ActiveRecord::Base
     new_code = last_name.upcase[0,4] + rand(1000..9999).to_s
     self.update(code: new_code)
   end
+  def set_code
+    new_code = last_name.upcase[0,4] + rand(1000..9999).to_s
+    self.code = new_code
+  end
   def reset_password!
     self.update(password: code, password_confirmation: code)
   end
