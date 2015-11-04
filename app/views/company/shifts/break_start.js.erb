@@ -1,0 +1,6 @@
+$('#start-break-btn').hide();
+$('#end-break-btn').show();
+$("<li class='list-group-item'><strong> <%= @shift.break_out.last.strftime('%r') %></strong></li>").appendTo("#break-out-list");
+<% if @shift.breaks.count == 1 %>
+$('#remove-breaks-btn').show();
+<% end %>

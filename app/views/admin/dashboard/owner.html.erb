@@ -31,11 +31,30 @@
 			<span>Edit Agency</span>
 		<% end %>
 	  </div>
+	  
 	</div>
-	<div class="col-md-8">
-		<h1 class='page-header'><%= @current_agency.name.titleize %>'s Dashboard</h1>
+	<div class="col-md-8  text-center">
+		<h1 class='page-header'><%= @current_agency.name.titleize %>'s Owner Dashboard</h1>
+		<div class="btn-group" role="group" aria-label="...">
+     	<%= link_to(admin_account_manager_path, class: "btn btn-primary") do %>
+		<i class='fa fa-money fa-fw'></i>
+			<span>Sales Dashboard</span>
+		<% end %>
+        <%= link_to(admin_payroll_path, class: "btn btn-primary") do %>
+		<i class='fa fa-usd fa-fw'></i>
+			<span>Payroll Dashboard</span>
+		<% end %>
+     
+      	<%= link_to(admin_recruiter_path, class: "btn btn-primary") do %>
+		<i class='fa fa-users fa-fw'></i>
+			<span>Recruiting Dashboard</span>
+		<% end %>
+		
+
+	  </div>
+	   <hr>
 	</div>
- 
+
   <h3 class='text-center'><strong>Current Billing:</strong> <%= number_to_currency(@current_agency.current_billing) %></h3>
   <h3 class='text-center'>
  		<small><strong>Last Week:</strong> <%= number_to_currency(@current_agency.last_week_billing) %></small></h3>

@@ -1,0 +1,45 @@
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      
+      <th>Work Date</th>
+    
+      <th>Time In</th>
+      <th>Time Out</th>
+      <th>Hours</th>
+      <th>Pay Rate</th>
+      <th>Earnings</th>
+    
+      <th></th>
+
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @shifts.order(:time_in).each do |shift| %>
+      <% if shift.clocked_in? %>
+        <tr class="bg-success">
+      <% else %>
+        <tr class="bg-warning">
+      <% end %>
+        <td><%= link_to shift.time_in.strftime("%x"), company_shift_path(shift), class: 'btn btn-primary btn-block' %></td>
+        
+        <td><%= shift.time_in.strftime("%I:%M %p") %></td>
+        
+        <td><%= shift.clocked_out? ? shift.time_out.strftime("%I:%M %p") : "Clocked In" %></td>
+        
+        <td><%= shift.time_worked %></td>
+        <td><%= number_to_currency(shift.pay_rate) %></td>
+        <td><%= number_to_currency(shift.earnings) %></td>
+        
+        <td><%= link_to(edit_company_shift_path(shift), class: "table-link" ) do %>
+					<span class="fa-stack">
+						<i class="fa fa-square fa-stack-3x fa-inverse"></i>
+						<i class="fa fa-pencil fa-stack-1x "></i>
+					</span>
+				<% end %></td>
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>

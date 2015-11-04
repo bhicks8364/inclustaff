@@ -1,0 +1,34 @@
+<ul>
+<%= content_tag_for(:li, @shifts) do |shift| %>
+
+<div class="details">
+	<div class="name">
+		<%= link_to shift.employee.name, shift.employee %>
+	</div>
+	<div class="time">
+		<i class="fa fa-clock-o"></i> <strong>Time In:</strong> <br <%= shift.time_in.strftime("%b %e at %l:%M%P") %>
+	</div>
+	
+<% if shift.clocked_in? %>
+	<div class="type" data-behavior="shift" data-id="<%= shift.id %>">
+		
+		<a data-behavior="shift-out" class="table-link"><span class="fa fa-sign-out red"></span></a>
+		<span data-behavior="shift-state" class="label label-success"><%= shift.state %> </span>
+	</div>
+
+    <% else %>
+	<div class="type" >
+				<span class="label label-default"><%= shift.state%></span>
+			
+	</div>
+	<div class="time">
+		<i class="fa fa-clock-o"></i> <strong>Time Out:</strong> <%= shift.time_out.strftime("%b %e at %l:%M%P") %>
+	</div>
+
+
+    
+    <% end %>
+						
+
+					<% end %>
+</ul>

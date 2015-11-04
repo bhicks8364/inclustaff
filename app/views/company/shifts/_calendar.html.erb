@@ -1,0 +1,19 @@
+<div class="">
+
+	<%= month_calendar(attribute: :time_in, events: @shifts) do |date, shifts| %>
+	
+  <div class='cal-date'><%= date %></div>
+
+  <% shifts.each do |shift| %>
+    <div class='center transbox'>
+      
+      <div class=''>
+        <%= render 'admin/shifts/shift', shift: shift %>
+
+      </div>
+      
+    </div>
+  <% end %>
+<% end %>
+
+</div>

@@ -1,11 +1,11 @@
 <% if timesheet.approved? %>
-<div class="conversation-item item-right " data-behavior="company-timesheet" data-id="<%= timesheet.id %>">
+<div class="col-md-12 conversation-item item-right " data-behavior="timesheet" data-id="<%= timesheet.id %>">
 	<div class="conversation-user">
 	<h5>	<i class="fa fa-calendar-check-o fa-3x"></i> <%= timesheet.employee.name %> <small><%= timesheet.job.title %></small></h5>
 	</div>
 <% else %>
 
-<div class="conversation-item item-left " data-behavior="company-timesheet" data-id="<%= timesheet.id %>">
+<div class="col-md-12 conversation-item item-left " data-behavior="timesheet" data-id="<%= timesheet.id %>">
 	<div class="conversation-user">
 		<h5>	<i class="fa fa-calendar-times-o fa-3x"></i> <%= timesheet.employee.name %> <small><%= timesheet.job.title %></small></h5>
 	</div>
@@ -17,21 +17,21 @@
 					
 				
 					
-					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+					<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 						<h6><strong><%= timesheet.week_begin %>  -  <%= timesheet.week_ending %></strong><br>
 						
 						
 						</h6>
 						
 					</div>
-					<div class=" col-md-4 col-sm-4">
+					<div class=" col-md-6 col-sm-12">
 						<span class='text-center'>
 							<h6><strong>	Regular Hours:	<%= timesheet.reg_hours %></strong></h6>
 
 								<h6><strong>	Overtime Hours:	<%= timesheet.ot_hours %></strong></h6>
 						</span>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-6">
 						<span class='text-center'>
 							<h6><strong>	Gross Pay:	<%= number_to_currency(timesheet.gross_pay) %></strong></h6>
 
@@ -66,7 +66,7 @@
 								</span>
 		
 						<% end %>
-					<button class='' data-behavior="timesheet-toggle" >
+					<button class='' data-behavior="company-timesheet-toggle" >
 						<span  class="fa-stack lg" data-behavior="approve-button" >
 					        
 					          <% if timesheet.approved? %>

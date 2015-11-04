@@ -21,6 +21,9 @@ class DashboardController < ApplicationController
         elsif current_admin.account_manager?
           render 'admin/dashboard/account_manager'
         elsif current_admin.recruiter?
+        @jobs = current_admin.jobs.active.paginate(page: params[:page], per_page: 5)
+         @timesheets = Timesheet.by_recuriter(current_admin.id)
+         @orders = Order.needs_attention.order(:needed_by).paginate(page: params[:page], per_page: 5)
           render 'admin/dashboard/recruiter'
         elsif current_admin.payroll?
           render 'admin/dashboard/payroll'
@@ -32,6 +35,7 @@ class DashboardController < ApplicationController
     elsif company_admin_signed_in? && @current_agency.present?
     @current_company_admin = current_company_admin
       @company = current_company_admin.company
+      @at_work = @company.jobs.at_work 
          render 'company/dashboard/home'
       
       

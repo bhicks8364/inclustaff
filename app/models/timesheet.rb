@@ -27,6 +27,9 @@ class Timesheet < ActiveRecord::Base
     has_one :company, :through => :job
     has_one :order, :through => :job
     has_many :comments, as: :commentable
+    # has_many :recruiter_timesheets, :through => :recruiter, :source => ""
+    # has_one :recruiter, class_name: "Admin", foreign_key: "recruiter_id"
+    has_one :recruiter, through: :job, class_name: "Admin"
     include ArelHelpers::ArelTable
     
     
@@ -67,9 +70,9 @@ class Timesheet < ActiveRecord::Base
         self.job = self.shifts.first.job
     end
     
-    # def pay_rate
-    #     self.job.pay_rate
-    # end
+    def self.by_recuriter(admin_id)
+        joins(:job).where(jobs: { recruiter_id: admin_id })
+    end
     
 
         

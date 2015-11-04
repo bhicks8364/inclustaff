@@ -1,0 +1,33 @@
+<li id='clocked-in-nav' class="dropdown hidden-xs">
+	<a class="btn nav-btn dropdown-toggle" data-toggle="dropdown">
+
+  		<i class="fa fa-clock-o"></i> Clocked In
+		<span class="count" id="clocked-in-count">
+			<%= @at_work.try(:count) %>
+		</span>
+	</a>
+	<ul class="dropdown-menu dropdown-menu-left">
+		<li class="pointer">
+			<div class="pointer-inner">
+				<div class="arrow"></div>
+				<div class="arrow-border"></div>
+			</div>
+		</li>
+		<li id='clocked-in-count' class="item-header dark">
+			You have <%= pluralize(@at_work.try(:count), 'employee') %> clocked in.
+		</li>
+			<% @at_work.order(updated_at: :desc).each do |job| %>
+		<li id='in-job-<%= job.id %>'class="item dark" >
+			
+			<%= render 'company/jobs/job', job: job %>
+			
+			
+		</li>
+		<% end %>
+		
+		
+		<li class="item-footer">
+			<%= link_to "View all timesheets", company_timesheets_path %>
+		</li>
+	</ul>
+</li>

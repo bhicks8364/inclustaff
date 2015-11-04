@@ -19,9 +19,9 @@ class ApplicationController < ActionController::Base
     @current_agency = Agency.where(subdomain: subdomains).first
     @current_admin = current_admin if admin_signed_in?
     @current_user = current_user if user_signed_in?
-    @current_company = current_company_admin if company_admin_signed_in?
+    @current_company = current_company_admin.company if company_admin_signed_in?
     @newly_added = Employee.newly_added.order(created_at: :desc) if @current_agency.present?
-    @at_work = Job.at_work if @current_admin.present?
+    
     # if @current_agency.nil?
     #   not_found
     # end

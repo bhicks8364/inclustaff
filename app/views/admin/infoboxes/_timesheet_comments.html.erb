@@ -1,0 +1,23 @@
+<div class='col-md-6 col-sm-12 col-xs-12 well'>
+	<div class='list-group scroll300'>
+			<h5 class="white text-center">Recent Timesheet Comments</h5>
+			<% Timesheet.with_recent_comments.order(updated_at: :desc).distinct.each do |timesheet| %>
+				<%= timesheet.id %><%= link_to(admin_timesheet_path(timesheet), class: 'list-group-item list-group-item-success') do %>
+				<h5>	<strong><%= timesheet.job.name_title %> </strong></h5>
+				<ul class="fa-ul">
+					<% timesheet.comments.order(created_at: :desc).each do |comment| %>
+					<li><i class="fa-li fa fa-commenting"></i><strong>
+						<%= comment.admin.try(:name) || comment.company_admin.try(:name) %> - 
+						<%= comment.admin.try(:role) || comment.company_admin.try(:role) %>
+						</strong><br>
+					<p><%= comment.body %></p>
+					
+					<small><%= comment.created_at.stamp('Mon 11/30 at 11:30am') %>	</small>
+					</li>
+					<% end %></ul>
+					
+				<% end %>
+			<% end %>
+		</div>
+
+</div>

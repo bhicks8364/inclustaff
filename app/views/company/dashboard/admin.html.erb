@@ -5,11 +5,54 @@
     <div class='list-group'>
         <% @company.jobs.each do |job| %>
             <li class='list-group-item'>
-                <%= link_to job.title, company_job_path(job) %>
+                <%= link_to job.name_title, company_job_path(job) %>
             </li>
         <% end %>
     </div>
     
+    <div class='col-md-12 dark'>
+<div class='table-responsive'>
+<h1><%= @company.name %>'s Invoices</h1>
+
+<table class='table table-bordered white'>
+  <thead>
+    <tr>
+      <th></th>
+     
+      
+      <th>Week</th>
+      <th>Due by</th>
+      
+      <th>Total</th>
+      <th>Amt paid</th>
+      <th>Paid on</th>
+      <th>Balance</th>
+   
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @company.invoices.order(week: :desc).each do |invoice| %>
+      <tr>
+        <td><%= invoice.paid? ? "<i class='fa fa-check-square-o fa-lg'></i>".html_safe : "<i class='fa fa-square-o fa-lg'></i>".html_safe %></td>
+   
+        <td><%= invoice.week %></td>
+        <td><%= invoice.due_by.stamp('11/12/2013') %></td>
+        
+        <td><%= number_to_currency(invoice.total) %></td>
+        <td><%= number_to_currency(invoice.amt_paid) %></td>
+        <td><%= invoice.paid_on %></td>
+        <td><%= number_to_currency(invoice.balance) %></td>
+     
+    <% end %>
+  </tbody>
+</table>
+</div>
+<br>
+
+</div>
+
+
     
     
     

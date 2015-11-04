@@ -24,10 +24,18 @@ class Timesheet
 
   setEvents: ->
     @item.find("[data-behavior='timesheet-toggle']").on "click", @handleToggle
+    @item.find("[data-behavior='company-timesheet-toggle']").on "click", @handleCompanyToggle
 
   handleToggle: =>
     $.ajax(
       url: "/admin/timesheets/#{@id}/approve",
+      method: "PATCH"
+      dataType: "JSON"
+      success: @handleToggleSuccess
+    )
+  handleCompanyToggle: =>
+    $.ajax(
+      url: "/company/timesheets/#{@id}/approve",
       method: "PATCH"
       dataType: "JSON"
       success: @handleToggleSuccess

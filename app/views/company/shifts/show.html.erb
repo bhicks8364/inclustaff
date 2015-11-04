@@ -1,0 +1,99 @@
+
+<div class='col-md-12 main-box'>
+ <h1><%= @shift.state %></h1>
+    <h3 class="page-header">
+  <strong> <%= @employee.name %>  <small> <%= @job.title %> - <%= @job.pay_rate %>/hr</small></strong>
+  
+</h3>
+ 
+  <div class='col-md-6'>
+    <h4><%= @shift.took_a_break? %></h4>
+    <% if @shift.clocked_out? %>
+  <%= distance_of_time_in_words(@shift.time_in, @shift.time_out, include_seconds: true) %> ago
+  <br>
+  <%= @shift.time_in.strftime("%I:%M %p") %> - <%= @shift.time_out.strftime("%I:%M %p") %>
+  <% else %>
+  <%= @shift.time_in.strftime("%I:%M %p") %> - <%= @shift.state %>
+  <% end %>
+<hr>
+    Hours worked: <%= @shift.hours_worked %><br>
+    Break: <%= @shift.break_duration %><br>
+    <%= @employee.code %><br>
+
+  </div>
+  <div class='col-md-12 dark'>
+      <% if @shift.took_a_break? %>
+      <%= link_to 'Remove All Breaks', remove_breaks_company_shift_path(@shift), method: :patch, remote: true, class: "btn btn-danger", id: "remove-breaks-btn" %>
+      <% else %>
+      <%= link_to 'Remove All Breaks', remove_breaks_company_shift_path(@shift), method: :patch, remote: true, class: "btn btn-danger hide-this", id: "remove-breaks-btn" %>
+      <% end %>
+    <div class='' id='breaks'>
+   
+    <div class='col-md-6 well' id='break-start-times'>
+   
+        <h4>Break Start Times:</h4>
+         <div id='break-out-list' class='list-group'>
+        <% @shift.break_out.each_with_index do |break_began, i | %>
+        <li data-behavior="shift" id='shift_<%= i %>' class='list-group-item'>
+            <strong> <%= break_began.strftime('%r') %></strong>
+        </li>
+        <% end %>
+        </div> 
+   
+    </div>
+    <div class='col-md-6 well' id='break-end-times'>
+        <h4>Break End Times:</h4>
+       <div id='break-in-list' class='list-group'>
+          <% @shift.break_in.each_with_index do |break_ended, i | %>
+            
+            <li data-behavior="shift" id='shift_<%= i %>' class='list-group-item'>
+                <strong> <%= break_ended.strftime('%r') %></strong>
+            </li>
+      <% end %>
+      </div> 
+    </div>
+</div>
+
+   
+    <% if @shift.on_break? %>
+      <%= link_to "End Break", break_end_company_shift_path(@shift), method: :patch, remote: true, class: 'btn btn-danger', id: 'end-break-btn' %>
+       <%= link_to "Start Break", break_start_company_shift_path(@shift), method: :patch, remote: true, class: 'btn btn-success hide-this', id: 'start-break-btn' %>
+    <% elsif @shift.clocked_in? %>
+          <%= link_to "End Break", break_end_company_shift_path(@shift), method: :patch, remote: true, class: 'btn btn-danger hide-this', id: 'end-break-btn' %>
+      <%= link_to "Start Break", break_start_company_shift_path(@shift), method: :patch, remote: true, class: 'btn btn-success', id: 'start-break-btn' %>
+    <% end %>
+    
+  </div>
+
+
+  <div class='well'>
+    Total Break Time: <%= @shift.break_duration %><br>
+    Total Acual Time: <%= @shift.time_worked %><br>
+    <hr>
+    Total (w/ paid breaks): <%= @shift.with_paid_breaks %><br>
+    Total (w/ unpaid break): <%= @shift.with_unpaid_breaks %><br>
+    Total Earnings: <%= number_to_currency(@shift.earnings) %><br>
+    
+    Breaks Started: <%= @shift.break_out.try(:count) %><br>
+    Breaks Ended: <%= @shift.break_in.try(:count) %><br>
+    Total: <%= @shift.breaks.try(:count) %><br>
+  </div>
+
+  <%= link_to 'View Employee', company_job_path(@job), class: "btn btn-info" %> 
+  <%= link_to 'View Timesheet', company_timesheet_path(@shift.timesheet), class: "btn btn-info" %>
+  
+  <%= link_to 'Edit', edit_company_shift_path(@shift), class: "btn btn-primary" %>
+  <%= link_to 'Delete', company_shift_path(@shift), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+<div class='col-md-12 dark'>
+        <div id='comments_<%= @shift.class %>_<%= @shift.id %>'>
+           <%= render partial: "comments/comments", locals: {commentable: @shift} %>
+         </div>
+       
+        <div class='well well-sm'>
+          
+          <%= render partial: "comments/form", locals: {commentable: @shift} %>
+          
+        </div>
+    
+      </div>
+</div>

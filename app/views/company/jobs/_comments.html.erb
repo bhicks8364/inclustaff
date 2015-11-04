@@ -1,0 +1,13 @@
+<div class='center commemts'>
+    <h2 class='text-center'>Job Comments </h2>
+         <div id='comments_<%= @job.class %>_<%= @job.id %>'>
+            <% @job.comments.each do |comment| %>
+            
+                <%= render 'comments/comment', comment: comment %>
+            <% end %>
+      </div>
+        
+          <%= render partial: "comments/form", locals: {commentable: @job} %>
+         
+<small> Job ID: <%= @job.id %></small>
+      </div>

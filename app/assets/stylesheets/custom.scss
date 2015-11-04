@@ -85,3 +85,18 @@ div.panel.panel-primary {
   // height: 400px;
   opacity: 0.5;
 }
+
+div.comment {
+  margin: 5px;
+  padding: 5px;
+  max-width: 600px;
+  border: solid 2px white;
+}
+#new_comment {
+  max-width: 600px;
+}
+div.comments {
+  
+  max-width: 600px;
+  border: solid 2px black;
+}

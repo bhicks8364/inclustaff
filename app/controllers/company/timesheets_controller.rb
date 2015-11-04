@@ -28,7 +28,16 @@ class Company::TimesheetsController < ApplicationController
     gon.timesheet = @timesheet
     gon.pay = @timesheet.gross_pay
     gon.status = @timesheet.shifts.last.state.titleize
-    
+    respond_to do |format|
+      format.html
+      format.json
+      format.pdf {
+        send_data @timesheet.receipt.render,
+          filename: "#{@timesheet.week_ending}-#{@employee.name}-timesheet.pdf",
+          type: "application/pdf",
+          disposition: :inline
+      }
+    end
   end
 
   # GET /timesheets/new

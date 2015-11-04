@@ -2,7 +2,16 @@ class CommentsController < ApplicationController
   # before_action :authenticate_admin!
   layout :determine_layout
   def index
-    @comments = Comment.all
+    @q = Comment.includes(:commentable).ransack(params[:q]) 
+    if params[:q].present?
+       @comments = @q.result(distinct: true).paginate(page: params[:page], per_page: 5)
+    else
+     @comments = Comment.none
+    end
+    
+  end
+  def search
+    
   end
   def new
     @comment = Comment.new

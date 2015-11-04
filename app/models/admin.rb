@@ -42,6 +42,7 @@ class Admin < ActiveRecord::Base
   # has_many :shifts, :through => :company
   has_many :skills, :through => :orders
   has_many :recruiter_jobs, class_name: "Job", foreign_key: "recruiter_id"
+  has_many :recruiter_timesheets, through: :recruiter_jobs, source: "Timesheet"
   has_many :account_orders, class_name: "Order", foreign_key: "account_manager_id"
   
   scope :company_admins,   -> { where.not(company_id: nil)}

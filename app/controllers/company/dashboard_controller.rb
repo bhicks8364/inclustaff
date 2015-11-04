@@ -2,11 +2,11 @@ class Company::DashboardController < ApplicationController
   
   before_filter :authenticate_company_admin!
   before_action :set_company
-  layout 'application'
+  layout 'company_layout'
   
   def home
     @company = current_company_admin.company
-      
+    @at_work = @company.jobs.at_work 
   end
   def admins
       

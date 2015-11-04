@@ -1,0 +1,13 @@
+<div class='col-md-6 commemts'>
+    <h2 class='text-center'>Timesheet Comments </h2>
+         <div id='comments_<%= @timesheet.class %>_<%= @timesheet.id %>'>
+            <% @timesheet.comments.each do |comment| %>
+            
+                <%= render 'comments/comment', comment: comment %>
+            <% end %>
+      </div>
+        
+          <%= render partial: "comments/form", locals: {commentable: @timesheet} %>
+         
+<small> Timesheet ID: <%= @timesheet.id %></small>
+      </div>

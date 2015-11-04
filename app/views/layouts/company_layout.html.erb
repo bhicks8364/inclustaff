@@ -19,26 +19,14 @@
 
 <body>
 
-<% if admin_signed_in? || company_admin_signed_in? %>
-		<%= render 'admin/shared/navbar' %>
-<% else %>
-<%= render 'shared/navbar' %>
-<% end %>
+		<%= render 'company/shared/navbar' %>
+
 	<div class="container">
 		<div class="row">
 
-	<% if company_admin_signed_in? %>
 
-	<% elsif admin_signed_in?%>
-		<% if current_admin.payroll? %>
-			<%= render 'admin/sidebars/payroll_sidebar' %>
-			<% elsif current_admin.recruiter? %>
-			<%= render 'admin/sidebars/recruiter_sidebar' %>
-		<% else %>
-			<%= render 'admin/sidebars/admin_sidebar' %>
-		<% end %>
-	
-	<% end %>
+	<%= render 'company/sidebars/company_sidebar' %>
+
 	
 	
 			<div class="col-md-10" id="content-wrapper">

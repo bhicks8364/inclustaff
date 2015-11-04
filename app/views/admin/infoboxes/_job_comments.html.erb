@@ -1,0 +1,26 @@
+<div class="col-md-6 col-sm-12 col-xs-12 well">
+	
+		<div class='list-group scroll300'>
+			<h5 class="white text-center">Recent Job Comments</h5>
+			
+			<% Job.with_recent_comments.distinct.each do |job| %>
+				<%= link_to(admin_job_path(job), class: 'list-group-item list-group-item-success') do %>
+				<h5>	<strong><%= job.name_title %> </strong></h5>
+				<div class="fa-ul">
+					<% job.comments.order(created_at: :desc).each do |comment| %>
+					<li><i class="fa-li fa fa-commenting"></i><strong>
+						<%= comment.admin.try(:name) || comment.company_admin.try(:name) %> - 
+						<%= comment.admin.try(:role) || comment.company_admin.try(:role) %>
+						</strong><br>
+					<p><%= comment.body %></p>
+					
+					<small><%= comment.created_at.stamp('Mon 11/30 at 11:30am') %>	</small>
+					</li>
+					<% end %></div>
+					
+					
+				<% end %>
+			<% end %>
+		</div>
+		<%= link_to "All Comments", comments_path, class: 'btn btn-success' %>
+</div>

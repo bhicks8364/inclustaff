@@ -75,7 +75,7 @@ class Admin::TimesheetsController < ApplicationController
       format.json
       format.pdf {
         send_data @timesheet.receipt.render,
-          filename: "#{@timesheet.week_ending}-#{@employee.name}-invoice.pdf",
+          filename: "#{@timesheet.week_ending}-#{@employee.name}-timesheet.pdf",
           type: "application/pdf",
           disposition: :inline
       }

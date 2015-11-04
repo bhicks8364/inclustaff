@@ -1,4 +1,17 @@
 <div class="col-md-12 transbox">
-<h1>Account Manager Dashboard</h1>
-			<%= render 'admin/dashboard/manager' %>
+<h1 class='page-header'><%= @current_agency.name.titleize %>'s Sales Dashboard</h1>
+	<div class='col-md-6 well'>
+		<h3 class='text-center'>Open Job Orders</h3>
+		<%= render @orders.needs_attention %>
+	<%= will_paginate @orders %>
 	</div>
+	<div class='col-md-6 well'>
+		<h3 class='text-center'>Filled Job Orders</h3>
+		<% if @orders.filled.any? %>
+		<%= render @orders.filled %>
+	<%= will_paginate @orders  %>
+	<% else %>
+	<h4>No filled job orders</h4>
+	<% end %>
+	</div>
+</div>

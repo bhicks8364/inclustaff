@@ -139,9 +139,20 @@ Rails.application.routes.draw do
         end
       end
       resources :timesheets do
+        member do
+          patch 'approve'
+        end
         resources :comments
       end
       resources :invoices
+      resources :shifts do 
+        member do
+          patch 'clock_out'
+          patch 'break_start'
+          patch 'break_end'
+          patch 'remove_breaks'
+        end
+      end
     end
     # END COMPANY_ADMIN
     
@@ -172,7 +183,8 @@ Rails.application.routes.draw do
         end
       end
     end
-    resources :comments
+    resources :comments 
+    
     resources :events
     resources :work_histories
     resources :skills do
@@ -182,7 +194,7 @@ Rails.application.routes.draw do
         post 'update_all'
       end
     end
-    
+    get 'comment_search' => 'comments#search'
     get 'orders' => 'orders#all'
     get 'archived_jobs' => 'jobs#archived'
     

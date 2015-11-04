@@ -1,4 +1,4 @@
-<div class="col-md-12">
+<div class="col-md-12 main-box">
 		
 				
 				<div class="tabs-wrapper">
@@ -36,6 +36,7 @@
     <% elsif job.off_shift? %>
     <span class="label label-danger label-large pull-right"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Clocked Out</span>
     <% end %>
+    <span class='pull-right'> Recruiter: <%= job.recruiter.name %></span>
     <h4>
     	<strong>Total Hours: </strong> <%= job.total_hours.round(2) %> |
     	<strong>Total Billing: </strong> <%= number_to_currency(job.total_gross_bill) %> 
@@ -43,6 +44,7 @@
    	
 	<strong> Pay rate: </strong><%= number_to_currency(job.pay_rate) %>
 <span class='pull-right'> Account Manager: <%= job.account_manager.name %></span>
+
   
 
 

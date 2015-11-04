@@ -1,23 +1,25 @@
 <header class="navbar" id="header-navbar">
 	<div class="container">
 		<div class="navbar-header">
-	      
-	      <% if @current_agency.present? %>
+	    
+		<% if @current_agency.present?  && company_admin_signed_in?%>
 			<%= link_to root_url, id: "logo", class: "navbar-brand" do %>
-				<%= @current_agency.name.titleize %>	
+			<%= @current_company.name.titleize %>
+				<small class='text-muted'><%= @current_agency.name.titleize %>	</small>
 			<% end %>
+		
 		<% else %>
 			<%= link_to root_url, id: "logo", class: "" do %>
 			       <%= image_tag("incluStaff_logo.png", alt: "Inclustaff") %>
 			 <% end %>
 		<% end %>
 	   
-			<%= @current_company_admin.name.titleize %>
+			
 		<button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">
 			<span class="sr-only">Toggle navigation</span>
 			<span class="fa fa-bars"></span>
 		</button>
-		
+			
 		 </div>
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	       <ul class="nav navbar-nav navbar-right">
