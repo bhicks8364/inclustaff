@@ -11,6 +11,10 @@
 #  body             :text
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  action           :string
+#  recipient_id     :integer
+#  recipient_type   :string
+#  alert            :boolean
 #
 
 require 'rails_helper'

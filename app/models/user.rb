@@ -78,7 +78,9 @@ class User < ActiveRecord::Base
   # def active_for_authentication?
   #   # Uncomment the below debug statement to view the properties of the returned self model values.
   #   # logger.debug self.to_yaml
+  scope :dns, -> { joins(:employee).merge(Employee.dns)}
   scope :unassigned, -> { joins(:employee).merge(Employee.unassigned)}
+  scope :available, -> { joins(:employee).merge(Employee.available)}
   scope :assigned, -> { joins(:employee).merge(Employee.with_active_jobs)}
   scope :online, -> { where("updated_at > ?", 10.minutes.ago) }
   #   super && employee.assigned?

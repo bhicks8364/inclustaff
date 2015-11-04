@@ -1,6 +1,6 @@
 <div class=" well col-md-12">
 
-	<h4 class='text-center'>	<%= @employees.count %> Total Employees</h4>
+	<h4 class='text-center'>	<%= @employees.assigned.count %> Active Employees</h4>
 		<div class="table-responsive">
 			<table id='employees-datatable' class="table table-bordered ">
 				<thead>
@@ -14,7 +14,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<%  @employees.unassigned.each do |employee| %>
+					<%  @employees.assigned.each do |employee| %>
 					<% if employee.on_shift? %>
 						    <tr class="bg-success">
 						 	<% else %>

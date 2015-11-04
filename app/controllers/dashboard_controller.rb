@@ -30,9 +30,10 @@ class DashboardController < ApplicationController
       @current_admin = current_admin
       #ROOT FOR COMPANY_ADMINS DASHBOARDS IF SIGNED IN
     elsif company_admin_signed_in? && @current_agency.present?
-         render 'company/dashboard/home'
-      @current_admin = current_company_admin
+    @current_company_admin = current_company_admin
       @company = current_company_admin.company
+         render 'company/dashboard/home'
+      
       
     #ROOT TO USER PROFILE WHEN USER SIGNED IN
     elsif user_signed_in? && @current_agency.present?
@@ -94,7 +95,13 @@ class DashboardController < ApplicationController
   
   private
     def determine_layout
-      current_admin ? "admin_layout" : "application"
+      if admin_signed_in?
+        "admin_layout"
+      elsif company_admin_signed_in?
+        "company_layout"
+      else
+          "application"
+      end
     end
     
   

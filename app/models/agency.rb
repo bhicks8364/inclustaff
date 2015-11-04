@@ -34,9 +34,9 @@ class Agency < ActiveRecord::Base
     
     has_many :admin_events, :through => :admins, :source => 'events'
     has_many :jobs, :through => :orders
-    has_many :current_timesheets, :through => :jobs
-    has_many :timesheets, :through => :jobs
-    has_many :shifts, :through => :timesheets
+    # has_many :current_timesheets, :through => :jobs
+    # has_many :timesheets, :through => :jobs
+    # has_many :shifts, :through => :timesheets
     has_many :agency_admins, -> { where(company_id: nil) }, class_name: "Admin"
     has_many :owners, -> { where(role: 'Owner', company_id: nil) }, class_name: "Admin"
     has_many :recruiters, -> { where(role: 'Recruiter', company_id: nil) }, class_name: "Admin"
@@ -52,7 +52,15 @@ class Agency < ActiveRecord::Base
     validates :name,  presence: true, length: { maximum: 50 }
     
     
-    
+    def shifts
+        Shift.order(updated_at: :desc)
+    end
+    def timesheets
+        Timesheet.order(week: :desc)
+    end
+    def current_timesheets
+        Timesheet.current_week.order(week: :desc)
+    end
     
     
     def current_billing
@@ -77,6 +85,9 @@ class Agency < ActiveRecord::Base
     def create_tenant
         Apartment::Tenant.create(subdomain)
     end
+  
+        # Apartment::Tenant.switch!('ontimestaffing')
+   
     
     
     

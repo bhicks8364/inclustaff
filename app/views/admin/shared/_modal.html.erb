@@ -12,8 +12,11 @@
         
       </div>
       <div class="modal-body">
-     <% if employee.clocked_in?%><i class="fa fa-cog"></i><% end %></span>
+     <% if employee.assigned?%>
         <%= render employee.current_job %>
+        <% else %>
+        <%= employee.name%> is currently unassigned.
+        <% end %>
         
         
       

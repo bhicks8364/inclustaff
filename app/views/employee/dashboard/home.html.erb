@@ -3,22 +3,13 @@
    
    
    <% if @employee.on_shift? %>
-   <%= link_to "All Shifts", employee_shifts_path %>
+  
+   <%= link_to "You're Currently Clocked In", employee_shift_path(@employee.current_shift), class: 'btn btn-primary' %>
    <% end %>
- <% if @user.last_sign_in_at.present? %>
  
-    <h2> Welcome back, <%= @user.first_name %>!</h2>
-<% else %>
-<h2> Welcome, <%= @employee.first_name %>!</h2>
-<% end %>
-        <div class='well'>
-          <h4>All Open Positions</h4>
         
-        <%= render 'employee/orders/open_table' %>
-        </div>
  <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
-    </div>
-
+   
     <% if @employee.assigned? %>
       
       <div class='well'>
@@ -40,7 +31,11 @@
     <% else %>
     
       
-    
+    <div class='well'>
+          <h4>All Open Positions</h4>
+        
+        <%= render 'employee/orders/open_table' %>
+        </div>
     
     
     <% end %>

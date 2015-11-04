@@ -127,7 +127,7 @@ class Admin::EmployeesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def employee_params
-      params.require(:employee).permit(:first_name, :last_name, :email, :ssn, :phone_number, :user_id, :resume, :tag_list, :skill_list,
+      params.require(:employee).permit(:first_name, :last_name, :email, :ssn, :phone_number, :user_id, :resume, :dns, :tag_list, :skill_list,
           { availablity: [:tuesday, :wednesday, :thursday, :friday, :saturday, :sunday], :monday => [] },
           jobs_attributes: [:title, :pay_rate, :start_date, :order_id, :id], skills_attributes: [:id, :skillable_id, :skillable_type, :name, :required, :_destroy],
           user_attributes: [:id, :email, :role, :password, :password_confirmation, :first_name, :last_name, :company_id, :current_password, :address, :city, :state, :zipcode],

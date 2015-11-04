@@ -1,7 +1,8 @@
 class UsersController < ApplicationController
     layout :determine_layout
+    
     def index
-        @users = User.includes(:employee).unassigned
+        @users = User.includes(:employee).available
         @import = User::Import.new
         skip_authorization
         
@@ -10,16 +11,11 @@ class UsersController < ApplicationController
             format.json
             format.csv { send_data @users.to_csv, filename: "users-export-#{Time.now}-inclustaff.csv" }
         end 
-        
-        # if admin_signed_in? 
-        #   @admin = current_admin
-        #   @company = @admin.company
-        #   @users = @company.users.order(last_name: :asc)
-        # elsif user_signed_in? && current_user.not_an_employee?
-        #   @current_user = current_user if current_user.present?
-        #   @company = @current_user.company
-        #   @users = @company.users.order(last_name: :asc)
-        # end
+
+    end
+    
+    def dns_list
+        @users = User.includes(:employee).dns
     end
     
     def edit
@@ -73,7 +69,7 @@ class UsersController < ApplicationController
         @skills = @employee.skills
         # @company = @employee.company
         @applications = @user.events.applications
-        @events = Event.employee_events(@user.id)
+        @events = Event.employee_events(@employee.id)
         @orders = Order.active if @employee.unassigned?
         # @job = @employee.current_job if @employee.assigned?
         
@@ -81,14 +77,7 @@ class UsersController < ApplicationController
         @shifts = @employee.shifts.order(time_out: :desc).limit(1)
         @timesheets = @employee.timesheets
         @work_histories = @employee.work_histories.order(end_date: :desc)
-        # @company = @user.company
-        # @employee = @user.employee if @user.employee?
-        # @job = @employee.current_job if @employee.present?
-        # @jobs = @employee.jobs if @employee.jobs.any?
-        # @timesheets = @employee.timesheets if @employee.present?
 
-            
-        
         skip_authorization
     end
     

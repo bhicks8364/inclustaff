@@ -1,15 +1,9 @@
-<%= link_to admin_company_order_path(order.company, order), class: 'list-group-item list-group-item-info border' do %>
+<%= link_to company_order_path(order), class: 'list-group-item list-group-item-info border' do %>
 <p class="list-group-item-heading text-center"><%=  order.title %> <%= order.pay_range %>
 <span class='badge badge-danger pull-left'><%= order.needed_by.stamp('11/13') %></span>
 </span></p>
-<span class='badge badge-default pull-right'><%= pluralize(order.open_jobs, 'open position') %></span>
-    <p class="list-group-item-text">
-		<small>
-			<%= order.skills.map{|p| p.name.titleize}.join(", ") %>
-			
-		</small>
-	
-	</p>
+
+ 
 <% end %>
  
 

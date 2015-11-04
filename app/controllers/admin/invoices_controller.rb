@@ -9,7 +9,7 @@ class Admin::InvoicesController < ApplicationController
       @invoices = @company.invoices.order(:due_by)
     else
       
-      @invoices = @current_agency.invoices.order(:week).reverse_order if @current_agency.present?
+      @invoices = Invoice.includes(:company).order(:week).reverse_order if @current_agency.present?
       render 'invoices/index'
     end
     

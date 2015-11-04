@@ -63,11 +63,11 @@ class Job < ActiveRecord::Base
     before_save :set_main_pay
     
     # SCOPES
-    scope :with_recent_comments,    -> { joins(:comments).merge(Comment.today)}
-    scope :with_drive_pay, -> { where("settings ? :key", :key => 'drive_pay')}
-    scope :with_ride_pay, -> { where("settings ? :key", :key => 'ride_pay')}
-    scope :with_pay, -> { where("settings ? :key", :key => 'pay_rate')}
-    scope :with_drive_pay, -> { where("settings ? :key", :key => 'drive_pay')}
+    scope :with_recent_comments,    -> { joins(:comments).merge(Comment.payroll_week)}
+    # scope :with_drive_pay, -> { where("settings ? :key", :key => 'drive_pay')}
+    # scope :with_ride_pay, -> { where("settings ? :key", :key => 'ride_pay')}
+    # scope :with_pay, -> { where("settings ? :key", :key => 'pay_rate')}
+    # scope :with_drive_pay, -> { where("settings ? :key", :key => 'drive_pay')}
     scope :active, -> { where(active: true)}
     scope :inactive, -> { where(active: false)}
     scope :with_employee, ->  { includes(:employee) }
@@ -139,6 +139,7 @@ class Job < ActiveRecord::Base
         end
     end
     
+  
     def name_title
         "#{employee.name} -  #{title}"
     end
@@ -271,11 +272,6 @@ class Job < ActiveRecord::Base
     def mark_up_percent
         (self.mark_up * 100 - 100).to_s + "%" 
     end
-    
-    # def pay_rate
-    #     pay_rate.round(2)
-    # end
-    
 
     def current_percent
         percent = (self.current_week_hours / 40) * 100

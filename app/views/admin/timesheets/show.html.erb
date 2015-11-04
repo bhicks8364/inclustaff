@@ -38,7 +38,18 @@
   
   </div>
 
- 
+ <div class='col-md-12 dark'>
+         <div id='comments_<%= @timesheet.class %>_<%= @timesheet.id %>'>
+            <% @timesheet.comments.each do |comment| %>
+            
+                <%= render 'comments/comment', comment: comment %>
+            <% end %>
+        </div>
+        
+          <%= render partial: "comments/form", locals: {commentable: @timesheet} %>
+          <hr>
+    
+      </div>
 
 <div class='col-md-12'>
   <h3> Shifts</h3>

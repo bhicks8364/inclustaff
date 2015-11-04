@@ -1,11 +1,13 @@
-<div class='main-box'>
+<div class='col-md-12 main-box'>
 
     <% if @jobs %>
     
-<h1>All Jobs</h1>
+<h1>All Active Jobs</h1>
 <%= render 'admin/jobs/table' %>
 <% else %>
 No jobs to display.
 <% end %>
 
+
+<%= link_to 'View Inactive', inactive_admin_jobs_path %>
 </div>

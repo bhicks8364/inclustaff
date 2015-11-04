@@ -1,9 +1,23 @@
 <div class='col-md-12 main-box' data-behavior="company-job-list">
     <h1><%= @company.name %>'s Timeclock</h1>
- <h3>Current Employees</h3>
-    <div class='transbox'>
-         
-        <%= div_for(@company.jobs.each, class: 'well') do |job| %>
+ <h2>Current Employees</h2>
+    <div class='col-md-6 well'>
+          <h4>Clocked Out Employees</h4>
+        <%= div_for(@company.jobs.off_shift.each, class: 'clocked-in well well-sm') do |job| %>
+        <div data-behavior="job" data-id="<%= job.id %>">
+        <%= job.employee.code %>
+        
+        <h4><%= job.title %></h4>
+        
+        <span id='verified'></span>
+            <%= render 'clock', job: job %>
+           
+              </div>
+        <% end %>
+    </div>
+    <div class='col-md-6 well'>
+          <h4>Clocked In Employees</h4>
+        <%= div_for(@company.jobs.on_shift.each, class: 'clocked-in well well-sm') do |job| %>
         <div data-behavior="job" data-id="<%= job.id %>">
         <%= job.employee.code %>
         

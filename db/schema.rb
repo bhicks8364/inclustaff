@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151031135843) do
+ActiveRecord::Schema.define(version: 20151104114253) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,12 +78,19 @@ ActiveRecord::Schema.define(version: 20151031135843) do
     t.text     "body"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
+    t.string   "action"
+    t.integer  "recipient_id"
+    t.string   "recipient_type"
+    t.boolean  "alert"
   end
 
+  add_index "comments", ["action"], name: "index_comments_on_action", using: :btree
   add_index "comments", ["admin_id"], name: "index_comments_on_admin_id", using: :btree
   add_index "comments", ["commentable_id"], name: "index_comments_on_commentable_id", using: :btree
   add_index "comments", ["commentable_type"], name: "index_comments_on_commentable_type", using: :btree
   add_index "comments", ["company_admin_id"], name: "index_comments_on_company_admin_id", using: :btree
+  add_index "comments", ["recipient_id"], name: "index_comments_on_recipient_id", using: :btree
+  add_index "comments", ["recipient_type"], name: "index_comments_on_recipient_type", using: :btree
   add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
 
   create_table "companies", force: :cascade do |t|
@@ -142,8 +149,8 @@ ActiveRecord::Schema.define(version: 20151031135843) do
   create_table "employees", force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.string   "email"
     t.string   "ssn"
     t.string   "phone_number"
@@ -154,6 +161,7 @@ ActiveRecord::Schema.define(version: 20151031135843) do
     t.string   "desired_job_type"
     t.string   "desired_shift"
     t.hstore   "availablity"
+    t.boolean  "dns",              default: false
   end
 
   add_index "employees", ["availablity"], name: "index_employees_on_availablity", using: :btree

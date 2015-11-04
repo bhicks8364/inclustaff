@@ -36,7 +36,7 @@ class Shift < ActiveRecord::Base
   belongs_to :job
   belongs_to :timesheet, counter_cache: true
   belongs_to :company, class_name: "Company", foreign_key: "company_id"
-  
+  has_many :comments, as: :commentable
   accepts_nested_attributes_for :job
   
   delegate :pay_rate, to: :job
@@ -47,7 +47,8 @@ class Shift < ActiveRecord::Base
   
   validates :job_id, presence: true
   validates :time_in, presence: true
-
+  
+  scope :with_recent_comments,    -> { joins(:comments).merge(Comment.payroll_week)}
   scope :with_break,    -> { where.not(breaks: nil)}
   scope :with_no_break, -> { where(breaks: nil)}
   scope :clocked_in,    -> { where(state: "Clocked In")}
@@ -58,7 +59,7 @@ class Shift < ActiveRecord::Base
   scope :short_shifts,  -> { where('time_worked > 4') }
   scope :over_8,        -> { where('time_worked > 8') }
   
-  scope :today,         -> {where(time_in: Time.current.beginning_of_day..Time.current.end_of_day) }
+  
   scope :last_week,     -> { where(week: Date.today.cweek - 1)}
   scope :payroll_week,  -> {
           start = Time.current.beginning_of_week

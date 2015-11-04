@@ -1,0 +1,55 @@
+<div class="col-md-6 col-sm-12 col-xs-12 well well-sm">
+		<h4 class="white text-center">Current Stats</h4>
+		<div class='list-group col-md-6'>
+			<h5 class="white text-center">Top Account Managers</h5>
+			<% Admin.account_managers.sorted_by_current_billing.each do |admin| %>
+				<%= link_to(admin, class: 'list-group-item list-group-item-success') do %>
+					<strong><%= admin.name %> </strong><br>
+					<%= number_to_currency(admin.current_billing) %>
+					<% if admin.billing_difference > 0 %>
+						<span class='label label-success pull-right black'><%= number_to_currency(admin.billing_difference) %></span>
+					<% else %>
+						<span class='label label-danger pull-right black'><%= number_to_currency(admin.billing_difference) %></span>
+					<% end %>
+				<% end %>
+			<% end %>
+		</div>
+		<div class='list-group col-md-6'>
+		<h5 class="white text-center">Top Recruiters</h5>
+			<% Admin.recruiters.sorted_by_current_billing.each do |admin| %>
+				<%= link_to(admin, class: 'list-group-item list-group-item-success') do %>
+					<strong><%= admin.name %> </strong><br>
+					<%= number_to_currency(admin.current_billing) %>
+					<% if admin.billing_difference > 0 %>
+						<span class='label label-success pull-right black'><%= number_to_currency(admin.billing_difference) %></span>
+					<% else %>
+						<span class='label label-danger pull-right black'><%= number_to_currency(admin.billing_difference) %></span>
+					<% end %>
+				<% end %>
+			<% end %>
+		</div>
+</div>
+<div class='col-md-6 col-sm-12 col-xs-12 well well-sm'>
+		<h4 class="white text-center">Leader Board</h4>
+	<div class='list-group col-md-6'>
+		<h5 class="white text-center">Account Managers</h5>
+		<% Admin.account_managers.sorted_by_total_billing.each do |admin| %>
+			<%= link_to(admin, class: 'list-group-item list-group-item-success') do %>
+				<strong><%= admin.name %> </strong><br>
+				<%= number_to_currency(admin.billing) %>
+			<% end %>
+		<% end %>
+	</div>
+	<div class='list-group col-md-6'>
+	<h5 class="white text-center">Recruiters</h5>
+		<% Admin.recruiters.sorted_by_total_billing.each do |admin| %>
+			<%= link_to(admin, class: 'list-group-item list-group-item-success') do %>
+				<strong><%= admin.name %> </strong><br>
+				<%= number_to_currency(admin.billing) %>
+			<% end %>
+		<% end %>
+	</div>
+	
+</div>
+	
+	

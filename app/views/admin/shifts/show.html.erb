@@ -84,5 +84,16 @@
   
   <%= link_to 'Edit', edit_admin_shift_path(@shift), class: "btn btn-primary" %>
   <%= link_to 'Delete', admin_shift_path(@shift), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
-
+<div class='col-md-12 dark'>
+        <div id='comments_<%= @shift.class %>_<%= @shift.id %>'>
+           <%= render partial: "comments/comments", locals: {commentable: @shift} %>
+         </div>
+       
+        <div class='well well-sm'>
+          
+          <%= render partial: "comments/form", locals: {commentable: @shift} %>
+          
+        </div>
+    
+      </div>
 </div>

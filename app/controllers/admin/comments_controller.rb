@@ -20,8 +20,8 @@ class Admin::CommentsController < ApplicationController
     @comment.destroy
     
       respond_to do |format|
-        format.js
-        # format.html { redirect_to root_url, notice: 'Comment was successfully destroyed.' }
+        # format.js
+        format.html { redirect_to :back, notice: 'Comment was successfully destroyed.' }
         format.json { head :no_content }
       end
     

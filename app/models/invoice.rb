@@ -41,7 +41,7 @@ class Invoice < ActiveRecord::Base
         
         self.paid = false if self.paid.nil?
         self.amt_paid = 0 if self.amt_paid.nil?
-        self.due_by = due + 15.days if self.due_by.nil?
+        self.due_by = due + 15.days if due_by.nil?
     end
     def update_totals!
         amount = self.timesheets.sum(:total_bill)

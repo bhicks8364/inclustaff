@@ -1,5 +1,5 @@
 
-
+<div class="col-md-12 main-box">
 <h1>  <%= @company.name %></h1>
 <hr>
 <div id="order-tabs">
@@ -42,17 +42,15 @@
 
 <br/>
 
-  <strong>Pay Frequency:</strong>
-  <%= @order.urgent ? "Bi-Weekly" : "Weekly" %>
+  <%= @order.urgent ? "Urgent" : "" %>
 <br>
   <strong>Status:</strong>
   <%= @order.active ? "Active" : "Inactive" %>
 </p>
 
-<%= link_to 'Edit', edit_company_order_path(@company, @order) %> |
-<%= link_to 'Back', company_orders_path(@company) %>
-<br>
-<%= link_to 'Add Job', new_job_path %>
+<%= link_to 'Edit', edit_company_order_path(@order) %> |
+<%= link_to 'Back', company_orders_path %>
+
 <hr>
 
   </div>

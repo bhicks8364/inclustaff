@@ -49,7 +49,7 @@ class Order < ActiveRecord::Base
   validates_associated :company
   validates :title,  presence: true
   validates :mark_up,  presence: true
-  validates :agency_id,  presence: true
+
   validates :company_id,  presence: true
   validates :needed_by, presence: true, if: :not_urgent?
   

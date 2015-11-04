@@ -8,25 +8,20 @@ class Admin::JobsController < ApplicationController
   def index
     if params[:employee_id]
       @employee = Employee.find(params[:employee_id])
-      @jobs = @employee.jobs
+      @jobs = @employee.jobs.active
       authorize @jobs
     else
-      @jobs = @current_company.jobs.order(created_at: :desc) if @current_company.present?
-      @jobs = @current_agency.jobs.order(created_at: :desc) if @current_agency.present?
+     
+      @jobs = Job.active.order(created_at: :desc) if @current_agency.present?
       authorize @jobs
     end
    
 
   end
   
-  def archived
-    @admin = current_admin
-    @company = @admin.company
-    @archived_jobs = @company.jobs.inactive.with_employee
-    @active_jobs = @company.active.with_employee
-    
-    @all_jobs = Job.all
-    # authorize @active_jobs
+  def inactive
+    @jobs = Job.inactive
+    authorize @jobs, :index?
   end
 
 

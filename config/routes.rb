@@ -27,7 +27,7 @@ Rails.application.routes.draw do
     devise_for :admins, controllers: {registrations: 'admins/registrations'}
     devise_for :company_admins, controllers: {registrations: 'company_admins/registrations'}
     devise_for :users, controllers: {registrations: 'users/registrations'}
-    
+    resources :comments
     resources :admins do
       member do
         post :mention
@@ -38,6 +38,8 @@ Rails.application.routes.draw do
     resources :users do
       collection do
         post :import
+        get :dns_list
+        
       end
       member do
         patch :grant_editing
@@ -90,6 +92,9 @@ Rails.application.routes.draw do
       end
 
       resources :jobs do
+        collection do
+            get 'inactive'
+          end
         resources :comments
         resources :timesheets, shallow: true do
           collection do

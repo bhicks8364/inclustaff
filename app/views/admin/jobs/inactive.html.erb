@@ -1,0 +1,30 @@
+<div class='col-md-12 main-box'>
+  <%= div_for(@jobs, class: 'col-md-12 dark') do |job| %>
+    
+ 
+   <div class='col-md-6 well'>
+     <h3><%= job.employee.name %> - <%= job.company_name %></h3>
+     <strong>Job Title: </strong><%= job.title %><br>
+    <strong>Total Hours: </strong><%= job.total_hours %><br>
+    <strong>Start Date: </strong><%= job.start_date.stamp('11/12/2013') %><br>
+   <strong>End Date: </strong><%= job.end_date.present? ? job.end_date.stamp('11/12/2013') : "No End Date" %>
+   <hr>
+  
+  
+  <div class='col-md-12 well' id='comments_<%= job.class %>_<%= job.id %>'>
+      <h3>Comments</h3>
+            <% job.comments.each do |comment| %>
+                <%= render 'comments/comment', comment: comment %>
+            <% end %>
+        </div>
+        <%= link_to "Edit", edit_admin_job_path(job), class: 'btn btn-primary' %>
+        <%= link_to "View", admin_job_path(job), class: 'btn btn-primary' %>
+        <%= link_to "View Employee", admin_employee_path(job.employee), class: 'btn btn-primary' %>
+         </div> 
+         
+<% end %>  
+</div>
+
+
+
+

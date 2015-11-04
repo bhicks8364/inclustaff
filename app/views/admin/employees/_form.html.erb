@@ -39,10 +39,15 @@
     </div>
   <div class="col-md-4 well">
     <h3 class="text-center"><strong>Additional Information</strong></h3>
+    
     <%= f.input :desired_job_type, label: "Desired Job Type", collection: ["Full-time", "Part-time", "Any"], include_blank: false %>
     <%= f.input :desired_shift, label: "Desired Shift", collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible"], include_blank: false %>
   </div>
-
+  <div class="col-md-4 well">
+    <h3 class="text-center"><strong>Admin Use Only</strong></h3>
+    <%= f.input :dns, as: :boolean, inline_label: "Mark as DNS", input_html: { class: 'boolean' } %>
+  </div>
+  
  
  <div class="center">
 

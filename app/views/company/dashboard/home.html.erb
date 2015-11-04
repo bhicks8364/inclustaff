@@ -1,9 +1,63 @@
 <div class='col-md-12 main-box'>
-    <h2 class='page-header'></h2>
-    Welcome, <%= current_company_admin.role %>!
-    <hr>
-     <%= link_to "Timeclock", company_timeclock_path, class: 'btn btn-primary'%>
-    <%= link_to "Jobs", company_jobs_path, class: 'btn btn-primary'%>
-    <%= link_to "Edit Company Admin", edit_company_admin_registration_path, class: 'btn btn-primary'%>
+    <h2 class='page-header'> Welcome, <%= current_company_admin.name %>!</h2>
+   
+   
+    <div class='btn-group'>
+        <%= link_to "Timeclock", company_timeclock_path, class: 'btn btn-primary'%>
+        <%= link_to "Jobs", company_jobs_path, class: 'btn btn-primary'%>
+        <%= link_to "Edit Company Admin", edit_company_admin_registration_path, class: 'btn btn-primary'%>
+    </div>
+     <hr>
+<div class='col-md-6 well'>
+   <h2> Invoices <small><%= pluralize( @current_company_admin.company.invoices.unpaid.count, 'unpaid invoice') %></small></h2>
+    <div class='fa-ul list-group'>
+       <% @current_company_admin.company.invoices.each do |invoice| %>
+       <% if invoice.paid %>
+           <li class='list-group-item list-group-item-success'><i class="fa-li fa fa-check-square"></i>
+           <%= invoice.paid_on %><%= number_to_currency(invoice.total) %>
+           </li>
+       <%else %>
+           <li class='list-group-item list-group-item-danger'><i class="fa-li fa fa-square-o"></i>
+          
+          <i><small><%= distance_of_time_in_words(Time.current, invoice.due_by) %> from now</small></i>
+          
+           <%= invoice.due_by.stamp('11/2/2015') %>
+           <ul class='fa-ul'>
+                <% invoice.timesheets.each do |timesheet| %>
+          <%= link_to company_timesheet_path(timesheet) do %>
+             <li><i class="fa-li fa fa-square-o"></i><%= timesheet.week_ending %> - <%= timesheet.employee_bill %> - <small><%= timesheet.state %></small></li>
+            <% end %>
+        <% end %>
+           </ul>
+          
+           <p class='text-right'><%= number_to_currency(invoice.total) %></p>
+           </li>
+       <% end %>
+      
+   <% end %>
+   </div>
+</div>
+   <div class='col-md-6 col-sm-12 col-xs-12 well'>
+	    <div class='list-group scroll300'>
+			<h5 class="white text-center">Recent Timesheet Comments</h5>
+			<% @company.timesheets.with_recent_comments.order(updated_at: :desc).distinct.each do |timesheet| %>
+				<%= timesheet.id %><%= link_to(company_timesheet_path(timesheet), class: 'list-group-item list-group-item-success') do %>
+				<h5>	<strong><%= timesheet.job.name_title %> </strong></h5>
+				<ul class="fa-ul">
+					<% timesheet.comments.order(created_at: :desc).each do |comment| %>
+					<li><i class="fa-li fa fa-commenting"></i><strong>
+						<%= comment.admin.try(:name) || comment.company_admin.try(:name) %> - 
+						<%= comment.admin.try(:role) || comment.company_admin.try(:role) %>
+						</strong><br>
+					<p><%= comment.body %></p>
+					
+					<small><%= comment.created_at.stamp('Mon 11/30 at 11:30am') %>	</small>
+					</li>
+					<% end %></ul>
+					
+				<% end %>
+			<% end %>
+		</div>
+    </div>
    
 </div>

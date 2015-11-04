@@ -17,6 +17,7 @@
 #  desired_job_type :string
 #  desired_shift    :string
 #  availablity      :hstore
+#  dns              :boolean          default(FALSE)
 #
 
 class Employee < ActiveRecord::Base
@@ -94,11 +95,12 @@ class Employee < ActiveRecord::Base
   scope :with_inactive_jobs, -> { joins(:jobs).merge(Job.inactive)}
   scope :on_shift, -> { joins(:shifts).merge(Shift.clocked_in)} 
   scope :at_work, -> { joins(:shifts).merge(Shift.at_work)} 
-  # scope :off_shift, -> { joins(:current_shift).merge(Shift.clocked_out)}
+  scope :off_shift, -> { joins(:current_shift).merge(Shift.clocked_out)}
   scope :with_current_timesheet, -> { joins(:timesheets).merge(Timesheet.this_week)}
 
-    
+  scope :dns, -> { where(dns: true) }
   scope :unassigned, -> { where(assigned: false) }
+  scope :available, -> { unassigned.where(dns: false) }
   scope :assigned, -> { where(assigned: true) }
   scope :new_start, -> { joins(:jobs).where(Job[:start_date].gteq(Date.today.beginning_of_week)) }
   scope :newly_added, -> { where("employees.created_at >= ?", 3.days.ago) }

@@ -1,7 +1,7 @@
 class Employee::JobsController < ApplicationController
   before_action :set_job, only: [:show, :edit, :update, :destroy, :clock_in, :clock_out]
   before_action :authenticate_user!
-  layout 'new_employee'
+  layout 'application'
 
 
 

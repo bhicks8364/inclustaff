@@ -2,11 +2,17 @@
     <div data-behavior="empjob" data-id="<%= job.id %>">
 
         
-           <% if job.on_shift? %>
+           <% if job.current_shift.present? %>
            <span data-behavior='empshift-state'>
     <strong> You are currently clocked in.</strong><br>
              
-           
+            <% if job.current_shift.on_break? %>
+      <%= link_to "End Break", break_end_employee_shift_path(job.current_shift), method: :patch, remote: true, class: 'btn btn-danger', id: 'end-break-btn' %>
+       <%= link_to "Start Break", break_start_employee_shift_path(job.current_shift), method: :patch, remote: true, class: 'btn btn-success hide-this', id: 'start-break-btn' %>
+    <% elsif job.current_shift.clocked_in? %>
+          <%= link_to "End Break", break_end_employee_shift_path(job.current_shift), method: :patch, remote: true, class: 'btn btn-danger hide-this', id: 'end-break-btn' %>
+      <%= link_to "Start Break", break_start_employee_shift_path(job.current_shift), method: :patch, remote: true, class: 'btn btn-success', id: 'start-break-btn' %>
+    <% end %>
            </span>
              <span data-behavior="emptime-in">
                   <small><strong> In:</strong> <%= job.current_shift.time_in.strftime("%l:%M%P") %></small>

@@ -1,11 +1,12 @@
 <div class='col-md-12 transbox'>
-	<div class="col-md-12 tag_cloud">
-		<h1>Candidate Skills</h1>
-	  <% tag_cloud Employee.unassigned.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
-	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
-	  <% end %>
+	<div class="col-md-12">
+		 <div class="alert alert-danger fade in text-center">
+    		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    		<i class="fa fa-exclamation-triangle fa-fw fa-lg"></i>
+    			<h2><strong>DNS List</strong>  </h2> 
+	    </div>
 	</div>
-	<%= link_to "<i class='fa fa-user-plus fa-1x fa-fw pull-left'></i> Add Employee".html_safe, new_user_registration_path, class: 'btn btn-primary pull-right' %>
+	
 		<div class="main-box clearfix">
 			<div class="table-responsive">
 				<table id='users-datatable' class="table table-bordered">
@@ -69,21 +70,9 @@
 					</tbody>
 				</table>
 			</div>
-			<%= link_to 'DNS List', dns_list_users_path, class: 'btn btn-danger' %>
-		</div>
-		
-		<%= form_for @import, url: import_users_path, multipart: true do |f| %>
 			
-			<% if @import.errors.full_messages.each do |msg| %>
-			<div class='alert alert-danger'>
-			<div><%= msg %></div>
-				<% end %>
-			</div>
-		<% end %>
-		
-			<%= f.file_field :file %>
-			<%= f.submit "Upload" %>
-		<% end %>
+			<%= link_to 'Available Users List', users_path, class: 'btn btn-success' %>
+		</div>
 		
 	<%= link_to(users_path(@users, format: :csv), class: 'btn btn-primary') do %>
   		<i class="fa fa-file-excel-o fa-lg"></i> Export CSV

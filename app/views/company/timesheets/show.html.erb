@@ -6,12 +6,18 @@
   				<% end %>
   				<%= link_to 'All Timesheets', admin_timesheets_path, class: 'btn btn-primary' %>
   </div>
-  <%= timeline  @timesheet.shifts.clocked_out.map{|shift|
-      [shift.employee.name, shift.time_in, shift.time_out]},
-     
-      library: {
-        timeline: { colorByRowLabel: true },
-        colors:['red','blue'] } %>
+  <div class='col-md-12 dark'>
+         <div id='comments_<%= @timesheet.class %>_<%= @timesheet.id %>'>
+            <% @timesheet.comments.each do |comment| %>
+            
+                <%= render 'comments/comment', comment: comment %>
+            <% end %>
+        </div>
+        
+          <%= render partial: "comments/form", locals: {commentable: @timesheet} %>
+          <hr>
+    
+      </div>
         
 <div class='col-md-12'>
   <h4>For the week of:<strong><br>

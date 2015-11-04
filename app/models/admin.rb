@@ -60,7 +60,7 @@ class Admin < ActiveRecord::Base
     
   def name;             "#{first_name} #{last_name}"; end
   def to_s;             name; end
-    
+  def name_role;             "#{name} #{role}"; end
   def agency?;          agency_id? && company_id.nil?;  end
   def company?;         company_id?;  end
   def account_manager?; role == "Account Manager"; end
@@ -93,13 +93,13 @@ class Admin < ActiveRecord::Base
  
   def current_billing
     if self.recruiter? && self.recruiter_jobs.any?
-      recruiter_jobs.joins(:timesheets).map{ |t| t.timesheets
-      .last_week.sum(:total_bill).to_s}
-    elsif self.account_manager? && self.account_orders.any?
-      account_orders.joins(:timesheets).map{ |t| t.timesheets
-      .last_week.sum(:total_bill).to_s;}
+      recruiter_jobs.joins(:timesheets).distinct.map{ |t| t.timesheets
+      .last_week.sum(:total_bill).to_d}.inject{|sum,x| sum + x }
+    elsif self.account_manager? && self.timesheets.any?
+      account_orders.joins(:timesheets).distinct.map{ |t| t.timesheets
+      .last_week.sum(:total_bill).to_d}.inject{|sum,x| sum + x }
     else
-      0
+      0.00
     end
   end  
   def last_week_billing
@@ -108,7 +108,7 @@ class Admin < ActiveRecord::Base
     elsif self.account_manager? && self.account_orders.any?
       account_orders.joins(:current_timesheets).sum(:total_bill)
     else 
-      0
+      0.00
     end
   end
   def billing
@@ -119,6 +119,9 @@ class Admin < ActiveRecord::Base
     else
       0
     end
+  end
+  def billing_difference
+    current_billing - last_week_billing
   end
   
   def current_commission

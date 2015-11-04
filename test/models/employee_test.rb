@@ -17,6 +17,7 @@
 #  desired_job_type :string
 #  desired_shift    :string
 #  availablity      :hstore
+#  dns              :boolean          default(FALSE)
 #
 
 require 'test_helper'

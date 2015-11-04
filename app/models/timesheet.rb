@@ -26,6 +26,7 @@ class Timesheet < ActiveRecord::Base
     has_one :employee, :through => :job
     has_one :company, :through => :job
     has_one :order, :through => :job
+    has_many :comments, as: :commentable
     include ArelHelpers::ArelTable
     
     
@@ -73,9 +74,9 @@ class Timesheet < ActiveRecord::Base
 
         
     
-
+    scope :with_recent_comments,    -> { joins(:comments).merge(Comment.timesheet_comments.payroll_week)}
     scope :with_job, -> { includes(:job)}
-    
+    scope :with_shift_notes,    -> { joins(:shifts).merge(Shift.with_notes)}
     scope :approved, -> { where(state: "approved")}
     scope :pending, -> { where(state: "pending")}
 
