@@ -11,13 +11,13 @@ class Admin::TimesheetsController < ApplicationController
   	elsif params[:company_id]
 			@company = Company.includes(:jobs, :timesheets).find(params[:company_id])
       @timesheets = @company.timesheets if @company.timesheets.any?
-      authorize @timesheets 
+       
     else
      	@timesheets = Timesheet.order(updated_at: :desc)
 		end
 		gon.timesheets = @timesheets
-    authorize @timesheets
-    @current_timesheets = @timesheets.current_week
+    
+    @current_timesheets = @timesheets.current_week if @timesheets.present?
 		respond_to do |format|
       format.html
       format.csv { send_data @current_timesheets.to_csv, filename: "current_timesheets-export-#{Time.now}-inclustaff.csv" }
@@ -44,7 +44,7 @@ class Admin::TimesheetsController < ApplicationController
 		
 		end
 		gon.timesheets = @timesheets
-		authorize @timesheets, :index?
+	
 		respond_to do |format|
       format.html
       format.csv { send_data @timesheets.to_csv, filename: "past-timesheets-export-#{Time.now}-inclustaff.csv" }
@@ -191,6 +191,7 @@ class Admin::TimesheetsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_timesheet
       @timesheet = Timesheet.find(params[:id])
+      skip_authorization
     end
     
     def set_admin

@@ -96,31 +96,13 @@ class Admin::DashboardController < ApplicationController
         skip_authorization
     end
     
-    def agency_view
-       
-        @clock_ins = @current_agency.admin_events.clock_ins.order('id DESC')
-        @clock_outs = @current_agency.admin_events.clock_outs.order('id DESC')
-        @applications = @current_agency.order_events.applications
-        
-        @employees = @company.employees if @company.present?
-        @timesheets = @company.timesheets if @company.present?
-        @jobs = @company.jobs.active if @company.present?
-        @jobs = @current_agency.jobs.active if @current_agency.present?
-        @orders = @company.orders if @company.present?
-        @orders = @current_agency.orders if @current_agency.present?
-        @employees = @current_agency.employees if @current_agency.present?
-        @timesheets = @current_agency.timesheets if @current_agency.present?
-        gon.employees = @employees
-        gon.company = @company
-        gon.timesheets = @timesheets
-        skip_authorization
-    end
+   
     
     def payroll
       @admin = @current_admin
-      @agency = @current_agency
-      @timesheets = @agency.timesheets
-      @jobs = @current.jobs.active if @current.jobs.any?
+      
+      @timesheets = Timesheet.all
+      @jobs = Job.all
       @agency_jobs = @jobs
       skip_authorization
     end

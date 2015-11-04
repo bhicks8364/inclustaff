@@ -1,5 +1,5 @@
-<div class='col-md-12 main-box'>
-
+<div class='col-md-12 transbox'>
+<div class='well'>
     <% if @jobs %>
     
 <h1>All Active Jobs</h1>
@@ -9,5 +9,6 @@ No jobs to display.
 <% end %>
 
 
-<%= link_to 'View Inactive', inactive_admin_jobs_path %>
+<%= link_to 'View Inactive', inactive_admin_jobs_path, class: 'btn btn-primary' %>
+</div>
 </div>

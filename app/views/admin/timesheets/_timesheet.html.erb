@@ -1,11 +1,11 @@
 <% if timesheet.approved? %>
-<div class="conversation-item item-right " data-behavior="timesheet" data-id="<%= timesheet.id %>">
+<div class="timesheet" data-behavior="timesheet" data-id="<%= timesheet.id %>">
 	<div class="conversation-user">
 		<i class="fa fa-calendar-check-o fa-3x"></i>
 	</div>
 <% else %>
 
-<div class="conversation-item item-left " data-behavior="timesheet" data-id="<%= timesheet.id %>">
+<div class="timesheet" data-behavior="timesheet" data-id="<%= timesheet.id %>">
 	<div class="conversation-user">
 		<i class="fa fa-calendar-times-o fa-3x"></i>
 	</div>
@@ -13,7 +13,7 @@
 
 				
 				<div class="conversation-body">
-					<h2 class='page-header' data-behavior='timesheet-state'><%= timesheet.state.upcase %></h2>
+					<h2 class='text-center' data-behavior='timesheet-state'><%= timesheet.state.upcase %></h2>
 					
 					<h5><strong> <%= timesheet.company.name %> </strong> <small><%= timesheet.employee.name %></small></h5>
 					<h6><%= link_to timesheet.job.title, admin_job_path(timesheet.job) %></h6>
@@ -27,9 +27,9 @@
 					</div>
 					<div class=" col-md-4 col-sm-4">
 						<span class='text-center'>
-							<h6><strong>	Regular Hours:	<%= timesheet.reg_hours %></strong></h6>
+							<h6><strong>	Regular Hours:	<%= timesheet.reg_hours.round(2) %></strong></h6>
 
-								<h6><strong>	Overtime Hours:	<%= timesheet.ot_hours %></strong></h6>
+								<h6><strong>	Overtime Hours:	<%= timesheet.ot_hours.round(2) %></strong></h6>
 						</span>
 					</div>
 					<div class="col-md-4">

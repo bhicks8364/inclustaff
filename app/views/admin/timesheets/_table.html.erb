@@ -26,7 +26,7 @@
 		<td class='text-center'><%= timesheet.gross_pay.present? ? number_to_currency(timesheet.gross_pay) : timesheet.shifts.last.state.upcase %></td>
 		
 
-		<td class='text-center'><%= timesheet.total_hours.present? ? timesheet.total_hours : timesheet.shifts.last.state.upcase %></td>
+		<td class='text-center'><%= timesheet.total_hours.present? ? timesheet.total_hours.round(2) : timesheet.shifts.last.state.upcase %></td>
 		<td class='text-center'>
 			<a class='btn btn-tiny' data-behavior="timesheet-toggle" >
 				<span  class="fa-stack" data-behavior="approve-button" >

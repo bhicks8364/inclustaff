@@ -1,14 +1,14 @@
-.conversation-body {
-    background: rgba(0, 0, 0, 0.5);
-    font-size: 0.875em;
-    width: auto;
-    margin-left: 60px;
-    padding: 8px 10px;
-    position: relative;
-}
-.conversation-item.item-right .conversation-body {
-  background: rgba(0, 0, 0, 0.5);
-}
+// .conversation-body {
+//     background: rgba(0, 0, 0, 0.5);
+//     font-size: 0.875em;
+//     width: auto;
+//     margin-left: 60px;
+//     // padding: 8px 10px;
+//     position: relative;
+// }
+// .conversation-item.item-right .conversation-body {
+//   background: rgba(0, 0, 0, 0.5);
+// }
 
 // BUTTONS
 
@@ -99,4 +99,12 @@ div.comments {
   
   max-width: 600px;
   border: solid 2px black;
+}
+
+.timesheet {
+  border: solid 2px white;
+  padding: 8px;
+}
+#tab-timesheets > div > div:nth-child(1) > div.conversation-user > i {
+  margin: 3px;
 }

@@ -4,22 +4,22 @@
   					<i class="fa fa-download fa-md"></i> Download PDF
   				
   				<% end %>
-  				<%= link_to 'All Timesheets', admin_timesheets_path, class: 'btn btn-primary' %>
+  		
           <%= link_to 'All Timesheets', admin_job_timesheets_path(@job), class: 'btn btn-primary' %>
   
 <div class='col-md-12'>
-  <h4>For the week of:<strong><br>
+  <h3>For the week of:<strong><br>
         <%= @timesheet.week_begin %>
           - 
         <%= @timesheet.week_ending %>
-      </strong></h4>
+      </strong></h3>
   <div class='col-md-3 well well-sm'>
     <strong>Regular hours:</strong>
-    <%= @timesheet.reg_hours %>
+    <%= @timesheet.reg_hours.round(2) %>
   </div>
   <div class='col-md-3 well well-sm'>
     <strong>Overtime hours:</strong>
-    <%= @timesheet.ot_hours %>
+    <%= @timesheet.ot_hours.round(2) %>
   </div>
     <div class='col-md-3 well well-sm'>
            <strong>Gross pay:</strong>
@@ -31,14 +31,14 @@
       </div>
       
 </div>
-
-<div class='col-md-12' data-behavior="timesheet-list">
+ <div class='col-md-12 dark'>
+<div class='well' data-behavior="timesheet-list">
     
   <%= render @timesheet %>
   
   </div>
 
- <div class='col-md-12 dark'>
+
          <div id='comments_<%= @timesheet.class %>_<%= @timesheet.id %>'>
             <% @timesheet.comments.each do |comment| %>
             
