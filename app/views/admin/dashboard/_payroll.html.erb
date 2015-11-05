@@ -3,7 +3,17 @@
 </button>
 <div class="collapse" id="collapseExample">
   <br>
-
+<li><%= link_to admin_shifts_path do %>
+							<i class="fa fa-list"></i>
+								<span>All Shifts</span>
+							<% end %>
+						</li>
+						<li><%= link_to new_user_registration_path do %>
+							<i class='fa fa-user-plus'></i>
+							
+								<span>Add Employee</span>
+							<% end %>
+						</li>
   <%= div_for(Job.includes(:employee, :comments).with_recent_comments.order(:created_at), class: "payroll") do |job| %>
     <%= link_to job.employee.name, admin_job_path(job) %><br>
     

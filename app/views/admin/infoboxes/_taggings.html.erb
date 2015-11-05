@@ -1,7 +1,16 @@
-
-  <div class="col-md-6 tag_cloud">
-  	<h1>Needed Skills</h1>
-	  <%= ActsAsTaggableOn::Tag.most_used(100) do |tag, css_class| %>
-	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
+<h4 class='text-center'>Needed Skills</h4>
+  <div class="well well-sm">
+  	 <%= link_to 'Clear Search', tags_path, class: 'btn btn-primary btn-tiny' %>
+  	<div class="scroll600">
+	  <% Order.needs_attention.tags_on(:tags).order(name: :asc).each do |tag, css_class| %>
+	  	<%= link_to(tag_path(tag.name), class: "list-group-item list-group-item-info") do  %>
+	   <% if Employee.available.tagged_with([tag], :any => true).any? %>
+		 <span><i class="fa fa-user-plus fa-fw"></i>  <%= tag.name %></span>
+	   <%else %>
+	    <span><i class="fa fa-square-o fa-fw"></i>  <%= tag.name %></span>
+	    <% end %>
+	   <% end %>
 	  <% end %>
+		</div>
+		
 	</div>

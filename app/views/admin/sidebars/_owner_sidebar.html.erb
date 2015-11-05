@@ -14,13 +14,13 @@
 						<li><%= link_to admin_companies_path do %>
 							<i class='fa fa-building'></i>
 							
-								<span>All Companies</span>
+								<span>Companies</span>
 							<% end %>
 						</li>
 						<li><%= link_to admin_invoices_path do %>
 							<i class='fa fa-money'></i>
 							
-								<span>All Invoices</span>
+								<span>Invoices</span>
 							<% end %>
 						</li>
 						
@@ -50,6 +50,12 @@
 								<span>Agency Users</span>
 							<% end %>
 						</li>
+						<li><%= link_to comments_path do %>
+							<i class="fa fa-commenting"></i>
+							
+								<span>Messages</span>
+							<% end %>
+						</li>
 
 						
 						<li><%= link_to admin_timesheets_path do %>
@@ -60,6 +66,12 @@
 						<li><%= link_to admin_jobs_path do %>
 							<i class="fa fa-briefcase"></i>
 								<span>Jobs</span>
+							<% end %>
+						</li>
+						<li><%= link_to users_path do %>
+							<i class="fa fa-certificate"></i>
+							
+								<span>Candidate List</span>
 							<% end %>
 						</li>
 						<li><%= link_to destroy_admin_session_path, method: :delete do %>

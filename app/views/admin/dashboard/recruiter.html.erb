@@ -3,7 +3,7 @@
  
   <h1 class='page-header'><%= @current_agency.name.titleize %>'s Recruiting Dashboard</h1>
   
-  <div class="col-md-12">
+  <div class="col-md-12 ">
 		
 				
 				<div class="tabs-wrapper">
@@ -21,7 +21,7 @@
 						<div class="tab-pane fade in active" id="tab-home">
 								<h3 class='text-center'>Open Job Orders</h3>
 									<div class='well'>
-										<%= render 'orders_by_company' %>
+										<%= render 'admin/dashboard/orders_by_company' %>
 									</div>
 							
 						</div>
@@ -31,13 +31,13 @@
 						<div class="tab-pane fade" id="tab-placements">
 						
 							<% if @current_admin.jobs %>
-							<div class='col-md-12'>
-							<%= div_for(@current_admin.jobs, class: 'well') do |job| %>
+							<div class='well list group'>
+							<%= div_for(@current_admin.jobs, class: 'list-group-item dark') do |job| %>
 									
 					
 
-   <%= link_to job.employee.name, admin_employee_path(job.employee), class: 'btn btn-primary btn-lg' %>
-   <%= link_to job.title, admin_job_path(job), class: 'btn btn-primary btn-lg' %>
+   <%= link_to job.employee.name, admin_employee_path(job.employee), class: 'btn btn-primary ' %>
+   <%= link_to job.title, admin_job_path(job), class: 'btn btn-primary ' %>
   <% if job.on_shift? %>
     <span class="label label-success label-large pull-right"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> Clocked In</span>
     <% elsif job.on_break? %>

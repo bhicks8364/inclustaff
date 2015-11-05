@@ -1,27 +1,30 @@
 <div class='col-md-12 transbox'>
-    <div class='col-md-12'>
+  <h1 class='text-center'> <%= Order.needs_attention.count %> open job orders &
+   <%= Employee.available.count %> available employees.
+   </h1>
+    <div class='col-md-4'>
         <%= render 'admin/infoboxes/taggings' %>
     </div>
-    <div class='col-md-6'>
-    <h4>Job Order Tags</h4>
-    <%= div_for(@orders) do |order| %>
+     <div class='col-md-8'>
+        <h4 class='text-center'>Job Orders by Fill Date</h4>
+       <%= line_chart Order.needs_attention.group_by_day(:needed_by).count %>
+    </div>
+    <div class='col-md-4'>
+    <h4>Open Job Orders</h4>
+    <%= div_for(@orders.needs_attention) do |order| %>
     <%= render order %>
     <% end %>
 </div>
 
-    <div class='col-md-6'>
-        <h4>Employee Tags</h4>
-        <%= div_for(@employees) do |employee| %>
+    <div class='col-md-4'>
+        <h4>Available Employees</h4>
+        <%= div_for(@employees.available) do |employee| %>
         <%= render employee %>
            
             
         <% end %>
     </div>
-    <div class='col-md-6'>
-        <h4>All Tags</h4>
-      
-           
-    </div>
+  
 
 
 

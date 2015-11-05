@@ -78,7 +78,7 @@ class Company::ShiftsController < ApplicationController
 
     respond_to do |format|
       if @shift.save
-        format.html { redirect_to admin_dashboard_path, anchor: "job_#{@shift.job_id}", notice: 'Sucessfully clocked in.' }
+        format.html { redirect_to company_dashboard_path, anchor: "job_#{@shift.job_id}", notice: 'Sucessfully clocked in.' }
         format.json { render :show, status: :created, location: @shift }
       else
         format.html { render :new }
@@ -93,12 +93,12 @@ class Company::ShiftsController < ApplicationController
       
       @shift.update(time_out: Time.current,
                           state: "Clocked Out",
-                          out_ip: "Admin-Clock-Out", week: Date.today.cweek )
+                          out_ip: "#{@current_company_admin.name}", week: Date.today.cweek )
       
       respond_to do |format|
         if @shift.save
           
-          current_admin.events.create(action: "clocked_in", eventable: @shift.employee)
+          @current_company_admin.events.create(action: "clocked_in", eventable: @shift.employee)
   
           
           format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
@@ -123,10 +123,10 @@ class Company::ShiftsController < ApplicationController
       if @shift.clocked_out?
         @shift = @job.shifts.create(time_in: Time.current, week: Date.today.cweek,
                                     state: "Clocked In",
-                                    in_ip: @current_admin.last_name + "-admin")
+                                    in_ip: @current_company_admin.last_name + "-company")
         respond_to do |format|
           if @shift.save
-            current_admin.events.create(action: "clocked_out", eventable: @shift.employee)
+            @current_company_admin.events.create(action: "clocked_out", eventable: @shift.employee)
             
             format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
                         state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out,

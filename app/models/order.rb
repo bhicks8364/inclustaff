@@ -212,11 +212,11 @@ class Order < ActiveRecord::Base
   end
   
   def matching_skills
-      @matching_skills ||= Employee.unassigned.tagged_with([keywords], :any => true)
+      @matching_skills ||= Employee.available.tagged_with([keywords], :any => true)
   end
 
   def matching_employees
-     @matching_employees ||= Employee.unassigned.tagged_with([tag_list], :any => true)
+     @matching_employees ||= Employee.available.tagged_with([tag_list], :any => true)
   end
   
   # def with_skills_matching(skills)

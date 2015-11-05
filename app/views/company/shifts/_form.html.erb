@@ -1,6 +1,6 @@
 <div class="well">
   <%= @job.try(:name_title) %>
-<%= simple_form_for [:admin, @shift] do |f| %>
+<%= simple_form_for [:company, @shift] do |f| %>
 <div class="form-group black">
 
     <% if @job.nil? %>

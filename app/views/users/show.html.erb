@@ -105,9 +105,9 @@
       <strong>Last sign in:</strong> <%= @user.current_sign_in_at.strftime("%A   %x   - %I:%M %p") %> -
       <%= @user.current_sign_in_ip %>
     </ul>
-    <% if @events.any? %>
+    <% if @user.events.any? %>
       <div class='list-group'>
-						<% @events.each do |event| %>
+						<% @user.events.each do |event| %>
 						  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
 						    <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
 						  <% end %>
@@ -188,13 +188,7 @@
     <h6>User Updated:<span id="updated-at"> <%= time_ago_in_words(@user.updated_at) %> ago</span></h6>
     <%= link_to "Allow to Edit", grant_editing_user_path(@user), class: "btn btn-primary", method: :patch, remote: true %> 
     <%= link_to "Edit", edit_user_registration_path(current_user), class: 'btn btn-default' %>  
-    <div class='list-group'>
-						<% @events.each do |event| %>
-						  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
-						    <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
-						  <% end %>
-						<% end %>
-					</div>
+   
     
   </div>
 </div>

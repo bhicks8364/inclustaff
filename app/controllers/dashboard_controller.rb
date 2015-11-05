@@ -26,6 +26,7 @@ class DashboardController < ApplicationController
          @orders = Order.needs_attention.order(:needed_by).paginate(page: params[:page], per_page: 5)
           render 'admin/dashboard/recruiter'
         elsif current_admin.payroll?
+        @timesheets = Timesheet.all
           render 'admin/dashboard/payroll'
         else
           render 'admin/dashboard/home'

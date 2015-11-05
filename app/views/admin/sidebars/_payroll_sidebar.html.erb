@@ -47,12 +47,7 @@
 								<span>Job Orders</span>
 							<% end %>
 						</li>
-						<li><%= link_to new_user_registration_path do %>
-							<i class='fa fa-user-plus'></i>
-							
-								<span>Add Employee</span>
-							<% end %>
-						</li>
+						
 						<li><%= link_to admins_path do %>
 							<i class="fa fa-users"></i>
 								<span>Agency Users</span>
@@ -62,6 +57,12 @@
 							<i class="fa fa-money"></i>
 							
 								<span>Invoices</span>
+							<% end %>
+						</li>
+						<li><%= link_to comments_path do %>
+							<i class="fa fa-commenting"></i>
+							
+								<span>Messages</span>
 							<% end %>
 						</li>
 
@@ -77,11 +78,7 @@
 								<span>Employee List</span>
 							<% end %>
 						</li>
-						<li><%= link_to admin_shifts_path do %>
-							<i class="fa fa-list"></i>
-								<span>All Shifts</span>
-							<% end %>
-						</li>
+						
 						<li><%= link_to destroy_admin_session_path, method: :delete do %>
 							<i class='fa fa-power-off'></i> 
 								<span>Logout</span>
