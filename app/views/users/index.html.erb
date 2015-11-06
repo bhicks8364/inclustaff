@@ -22,14 +22,11 @@
 					<tbody>
 						<%= content_tag_for(:tr, @users) do |user| %>
 							<td>
-								<% if user.employee.present? && user.employee.assigned? %>
-							   <%= render 'admin/jobs/modal', job: user.employee.current_job %>
-							  	<% else %>
+						
 								<%= link_to user.name, user, class: "user-link" %>
-								<span class="user-subhead"><%= user.employee.current_job.try(:company_name) %></span><br>
+							
 								<small><span class="user-subhead"><%= user.employee.work_histories.last.try(:title) || "Unavailable" %></span></small>
 							
-									<% end %>
 							</td>
 							<td style="width: 20%;">
 								<%= user.created_at.strftime("%x") %>

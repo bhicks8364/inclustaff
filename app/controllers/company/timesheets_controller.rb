@@ -51,9 +51,11 @@ class Company::TimesheetsController < ApplicationController
     @timesheet = Timesheet.find(params[:id])
     if @timesheet.clocked_out?
       approved_by = @timesheet.approved? ? nil : current_company_admin.id
+      approved_by_type = @timesheet.approved? ? nil : "CompanyAdmin"
       state = @timesheet.approved? ? 'pending' : 'approved'
-      @timesheet.update(approved_by: approved_by, state: state)
-      user_approved = @timesheet.approved? ? CompanyAdmin.find(@timesheet.approved_by).name : @timesheet.state
+      @timesheet.update(approved_by: approved_by, approved_by_type: approved_by_type, state: state)
+      
+      user_approved = @timesheet.approved? ? @timesheet.user_approved : @timesheet.state
       
       render json: { id: @timesheet.id, approved: @timesheet.approved?, 
                     state: @timesheet.state.titleize, user_approved: user_approved }

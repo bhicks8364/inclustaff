@@ -47,4 +47,16 @@ class Comment < ActiveRecord::Base
           ending = Date.today.beginning_of_day
           where(created_at: start..ending)}
     
+    def admin_mentions
+      @mentions ||= begin
+                      regex = /@([\w]+)/
+                      body.scan(regex).flatten
+                    end
+    end
+    def mentioned_admins
+      @mentioned_admins ||= Admin.where(username: admin_mentions)
+    end
+    
+    
+    
 end

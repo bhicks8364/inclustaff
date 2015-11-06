@@ -67,8 +67,8 @@ class Admin::CompaniesController < ApplicationController
   # POST /companies
   # POST /companies.json
   def create
-    @current = @current_agency
-    @company = @current.companies.new(company_params) if @current.present?
+   
+    @company = @current_agency.companies.new(company_params) if @current_agency.present?
     authorize @company
     respond_to do |format|
       if @company.save

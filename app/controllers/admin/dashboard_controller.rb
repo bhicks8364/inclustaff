@@ -50,15 +50,15 @@ class Admin::DashboardController < ApplicationController
     end
     def all_tags
       if params[:tag]
-        @orders = Order.needs_attention.tagged_with(params[:tag])
-        @employees = Employee.unassigned.tagged_with(params[:tag])
+        @orders = @current_agency.orders.needs_attention.tagged_with(params[:tag])
+        @employees = @current_agency.employees.available.tagged_with(params[:tag])
       else
-        @orders = Order.needs_attention
-        @employees = Employee.unassigned
+        @orders = @current_agency.orders.needs_attention
+        @employees = @current_agency.employees.available
       end
     end
     def home
-      gon.invoices = Invoice.pluck(:total)
+      gon.invoices = @current_agency.invoices.pluck(:total)
     #   @admin = current_admin
     # #   @company = @admin.company
     #   @agency = @admin.agency
@@ -101,9 +101,9 @@ class Admin::DashboardController < ApplicationController
     def payroll
       @admin = @current_admin
       
-      @timesheets = Timesheet.all
-      @jobs = Job.all
-      @agency_jobs = @jobs
+      @timesheets = @current_agency.timesheets.all
+      @jobs = @current_agency.jobs.all
+      
       skip_authorization
     end
     

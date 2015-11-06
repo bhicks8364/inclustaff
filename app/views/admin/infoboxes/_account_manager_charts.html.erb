@@ -9,14 +9,23 @@
 
 <div class="col-md-6 well">
    
-    <h5 class='text-center'>By Recruiter</h5>
-       <%= pie_chart @admin.account_orders.group(:company).count, min: 1000, max: 5000 , library: {legend: {position: "bottom"}, is3D: true, title: "Orders by Company"} %>
+    <h5 class='text-center'>Billing by Day</h5>
+       <%= line_chart @admin.account_orders.map{|order|
+    {name: order.title, data: order.timesheets.group_by_day('timesheets.created_at').sum(:total_bill)}
+} %>
 </div>
 
-<div class="col-md-12 well">
+<div class="col-md-8 well">
    
     <h5 class='text-center'>Orders by Fill Date</h5>
  
         <%= line_chart @admin.account_orders.group_by_day(:needed_by).count %>
+        
+</div>
+<div class="col-md-4 well">
+   
+    <h5 class='text-center'>New Companies by Day</h5>
+ 
+        <%= line_chart Company.by_account_manager(@admin.id).group_by_day('companies.created_at').count %>
         
 </div>

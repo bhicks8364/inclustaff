@@ -13,7 +13,9 @@
 
 				
 				<div class="conversation-body">
-					<h2 class='text-center' data-behavior='timesheet-state'><%= timesheet.state.upcase %></h2>
+					<h2 class='text-center' data-behavior='timesheet-state'><%= timesheet.state.upcase %>
+					</h2>
+				
 					
 					<h5><strong> <%= timesheet.company.name %> </strong> <small><%= timesheet.employee.name %></small></h5>
 					<h6><%= link_to timesheet.job.title, admin_job_path(timesheet.job) %></h6>
@@ -92,6 +94,7 @@
 							
 							
 						</div>
+							<p class='text-right' data-behavior='user-approved'><small><%= timesheet.approved? ? "Approved by: #{timesheet.user_approved}" : "" %></small></p>
 					</div>
 			
 </div>

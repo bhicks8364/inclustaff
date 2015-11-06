@@ -10,10 +10,10 @@
 					<div class="clearfix">
 					
 						<ul class="nav nav-tabs">
-						  <li class="active"><a href="#tab-home" data-toggle="tab"><%= @current_admin.name %></a></li>
+						  <li class="active"><a href="#tab-home" data-toggle="tab">Open Job Orders</a></li>
 							<li class=""><a href="#tab-placements" data-toggle="tab">Current Placements</a></li>
 							<li class=""><a href="#tab-timesheets" data-toggle="tab">Timesheets</a></li>
-							<li class=""><a href="#tab-events" data-toggle="tab">Events</a></li>
+							<li class=""><a href="#tab-events" data-toggle="tab">Applications</a></li>
 						</ul>
 					</div>
 					
@@ -32,18 +32,18 @@
 						
 							<% if @current_admin.jobs %>
 							<div class='well list group'>
-							<%= div_for(@current_admin.jobs, class: 'list-group-item dark') do |job| %>
+			<%= div_for(@current_admin.jobs, class: 'list-group-item dark') do |job| %>
 									
 					
 
    <%= link_to job.employee.name, admin_employee_path(job.employee), class: 'btn btn-primary ' %>
    <%= link_to job.title, admin_job_path(job), class: 'btn btn-primary ' %>
   <% if job.on_shift? %>
-    <span class="label label-success label-large pull-right"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> Clocked In</span>
+    <span class="label label-success label-large black pull-right"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> Clocked In</span>
     <% elsif job.on_break? %>
-    <span class="label label-warning label-large pull-right"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> On Break</span>
+    <span class="label label-warning label-large black pull-right"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> On Break</span>
     <% elsif job.off_shift? %>
-    <span class="label label-danger label-large pull-right"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Clocked Out</span>
+    <span class="label label-danger label-large black pull-right"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Clocked Out</span>
     <% end %>
     <span class='pull-right'> Recruiter: <%= job.recruiter.name %></span>
     <h4>

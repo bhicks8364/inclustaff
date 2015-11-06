@@ -38,13 +38,13 @@ class User < ActiveRecord::Base
   has_one :current_job, through: :employee
   has_many :events
   attachment :resume, extension: ["pdf", "doc", "docx"]
-  # belongs_to :company
+  belongs_to :agency
 
   accepts_nested_attributes_for :employee
   accepts_nested_attributes_for :work_histories, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :skills, reject_if: :all_blank, allow_destroy: true
 
-  # validates :company_id,  presence: true
+  validates :agency_id,  presence: true
   validates :role,  presence: true
 
   
@@ -54,6 +54,7 @@ class User < ActiveRecord::Base
   # before_save :set_code
   
   after_create :set_employee, if: :has_no_employee?
+  
   def has_no_employee?
     employee.nil?
   end
@@ -74,19 +75,12 @@ class User < ActiveRecord::Base
         
   # devise :database_authenticatable, :validatable, password_length: 4..6      
   # delegate :ssn, to: :employee
-  
-  # def active_for_authentication?
-  #   # Uncomment the below debug statement to view the properties of the returned self model values.
-  #   # logger.debug self.to_yaml
+
   scope :dns, -> { joins(:employee).merge(Employee.dns)}
   scope :unassigned, -> { joins(:employee).merge(Employee.unassigned)}
   scope :available, -> { joins(:employee).merge(Employee.available)}
   scope :assigned, -> { joins(:employee).merge(Employee.with_active_jobs)}
   scope :online, -> { where("updated_at > ?", 10.minutes.ago) }
-  #   super && employee.assigned?
-  # end
-  
-  
 
   
   def name; "#{first_name} #{last_name}";end
@@ -116,14 +110,12 @@ class User < ActiveRecord::Base
   
   
   def set_employee
-   
-      self.employee = Employee.find_or_create_by(email: self.email) do |employee|
-        employee.user_id = self.id
-        employee.first_name = self.first_name
-        employee.last_name = self.last_name
-        employee.ssn = 1234
-       end
-
+    self.employee = Employee.find_or_create_by(email: self.email) do |employee|
+      employee.user_id = self.id
+      employee.first_name = self.first_name
+      employee.last_name = self.last_name
+      employee.ssn = 1234
+     end
   end
 
 

@@ -51,6 +51,7 @@ class Company < ActiveRecord::Base
     after_create :create_company_admin
     
     validates :name,  presence: true, length: { maximum: 50 }
+    validates :agency_id,  presence: true
     validates :contact_name,  presence: true, length: { maximum: 20 }
     VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
     validates :contact_email, presence: true, length: { maximum: 255 },
@@ -91,6 +92,12 @@ class Company < ActiveRecord::Base
       else
         agency.owners.first
       end
+    end
+    def self.by_account_manager(admin_id)
+        joins(:orders).where(orders: { account_manager_id: admin_id })
+    end
+    def self.by_recruiter(admin_id)
+        joins(:orders => :jobs).where(jobs: { recruiter_id: admin_id })
     end
     
     

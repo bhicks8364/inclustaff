@@ -25,7 +25,7 @@
   
    
   <div class='dark col-md-8'>
-    <%= highlight(@order.notes, @order.tags.pluck(:name).to_a, highlighter: '<u>\1</u>') %>
+    <%= highlight(@order.notes, @employee.tags.pluck(:name).to_a, highlighter: '<u>\1</u>') %>
   </div>
   <div class='col-md-4'>
     <strong>Shift</strong><br>

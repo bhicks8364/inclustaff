@@ -1,13 +1,13 @@
 <div class='col-md-12 transbox'>
-  <h1 class='text-center'> <%= Order.needs_attention.count %> open job orders &
-   <%= Employee.available.count %> available employees.
+  <h1 class='text-center'> <%= @orders.needs_attention.count %> open job orders &
+   <%= @employees.available.count %> available employees.
    </h1>
     <div class='col-md-4'>
         <%= render 'admin/infoboxes/taggings' %>
     </div>
      <div class='col-md-8'>
         <h4 class='text-center'>Job Orders by Fill Date</h4>
-       <%= line_chart Order.needs_attention.group_by_day(:needed_by).count %>
+       <%= line_chart @orders.needs_attention.group_by_day(:needed_by).count %>
     </div>
     <div class='col-md-4'>
     <h4>Open Job Orders</h4>

@@ -31,18 +31,12 @@ class Admin < ActiveRecord::Base
   include ArelHelpers::JoinAssociation
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-         
-  belongs_to :company
+
   belongs_to :agency
   has_many :events
   has_many :eventables, :through => :events
-  # has_many :orders, :through => :company
-  # has_many :jobs, :through => :orders
-  # has_many :employees, :through => :jobs
-  # has_many :shifts, :through => :company
-  has_many :skills, :through => :orders
+  
   has_many :recruiter_jobs, class_name: "Job", foreign_key: "recruiter_id"
-  has_many :recruiter_timesheets, through: :recruiter_jobs, source: "Timesheet"
   has_many :account_orders, class_name: "Order", foreign_key: "account_manager_id"
   
   scope :company_admins,   -> { where.not(company_id: nil)}
@@ -55,8 +49,7 @@ class Admin < ActiveRecord::Base
   scope :limited,          -> { where(role: "Limited Access")}
          
   before_validation :set_username
-  
-  validates_numericality_of :company_id, allow_nil: true
+  validates :agency_id,  presence: true
   validates_numericality_of :agency_id, allow_nil: true
     
   def name;             "#{first_name} #{last_name}"; end
@@ -73,71 +66,80 @@ class Admin < ActiveRecord::Base
          
   def timesheets
     if recruiter?
-      recruiter_jobs.flat_map { |c| c.timesheets }
+      Timesheet.by_recuriter(id)
     elsif account_manager?
-      account_orders.flat_map { |c| c.timesheets }
-    elsif company?
-      Company.find(company_id).timesheets
+      Timesheet.by_account_manager(id)
     else
       Timesheet.all
     end
   end
+  
   def jobs
     if recruiter?
       recruiter_jobs
     elsif account_manager?
-    account_orders.flat_map { |c| c.jobs }
+      Job.by_account_manager(id)
     else
       Job.all
     end
   end
- 
+  def job_orders
+    if recruiter?
+      Order.by_recuriter(id)
+    elsif account_manager?
+      account_orders
+    else
+      Order.all
+    end
+  end
+  def companies
+    if recruiter?
+      Company.by_recuriter(id)
+    elsif account_manager?
+      Company.by_account_manager(id)
+    else
+      Company.all
+    end
+  end
+  
   def current_billing
-    if self.recruiter? && self.recruiter_jobs.any?
-      recruiter_jobs.joins(:timesheets).distinct.map{ |t| t.timesheets
-      .last_week.sum(:total_bill).to_d}.inject{|sum,x| sum + x }
-    elsif self.account_manager? && self.timesheets.any?
-      account_orders.joins(:timesheets).distinct.map{ |t| t.timesheets
-      .last_week.sum(:total_bill).to_d}.inject{|sum,x| sum + x }
+    if timesheets.any?
+      timesheets.current_week.sum(:total_bill)
     else
       0.00
     end
-  end  
+  end
+  
   def last_week_billing
-    if self.recruiter? && self.recruiter_jobs.any?
-      recruiter_jobs.joins(:current_timesheet).sum(:total_bill)
-    elsif self.account_manager? && self.account_orders.any?
-      account_orders.joins(:current_timesheets).sum(:total_bill)
-    else 
+    if timesheets.any?
+      timesheets.last_week.sum(:total_bill)
+    else
       0.00
     end
   end
+  
   def billing
-    if self.recruiter? && self.recruiter_jobs.any?
-      recruiter_jobs.joins(:timesheets).sum(:total_bill)
-    elsif self.account_manager? && self.account_orders.any?
-      account_orders.joins(:timesheets).sum(:total_bill)
+    if timesheets.any?
+      timesheets.sum(:total_bill)
     else
-      0
+      0.00
     end
   end
+
   def billing_difference
     current_billing - last_week_billing
   end
   
   def current_commission
-    if self.recruiter? && self.recruiter_jobs.any?
-      pay = recruiter_jobs.joins(:current_timesheet).sum(:gross_pay)
-      bill = recruiter_jobs.joins(:current_timesheet).sum(:total_bill)
+    if timesheets.current_week.any?
+      pay = timesheets.current_week.sum(:gross_pay)
+      bill = timesheets.current_week.sum(:total_bill)
       (bill - pay) * 0.15  #FAKE COMMISSION RATE
-    elsif self.account_manager? && self.account_orders.any?
-      pay = account_orders.joins(:current_timesheets).sum(:gross_pay)
-      bill = account_orders.joins(:current_timesheets).sum(:total_bill)
-      (bill - pay) * 0.15  #FAKE COMMISSION RATE
-    else 
-      0
+    else
+      0.00
     end
   end
+  
          
   def set_username
     self.username = name.gsub(/\s(.)/) {|e| $1.upcase}
@@ -152,7 +154,5 @@ class Admin < ActiveRecord::Base
   def self.sorted_by_last_week_billing
     Admin.all.sort_by(&:last_week_billing).reverse!
   end    
-         
-   
 
 end

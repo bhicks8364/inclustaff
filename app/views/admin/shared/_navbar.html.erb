@@ -21,8 +21,8 @@
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	       <ul class="nav navbar-nav navbar-right">
 	       	<% if @current_admin.present? %>
-					 <%= render 'admin/shared/clocked_in' if Job.on_shift.any? %>
-					
+					 <%= render 'admin/shared/clocked_in' if @current_agency.jobs.on_shift.any? %>
+					<%= render 'admin/shared/on_break' if @current_agency.jobs.on_break.any? %>
 				
 	      	<li> <%= link_to @current_admin.name, @current_admin %></li>
 	      	 

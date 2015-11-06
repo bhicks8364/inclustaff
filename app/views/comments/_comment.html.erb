@@ -3,6 +3,7 @@
     <p><%= comment.body %></p>
     <div class='text-right'>
         
+       
     <% if comment.admin.present? %>
     <small><%= link_to comment.admin.name, comment.admin %> </small>
     <% end %>
@@ -12,10 +13,12 @@
     <% if comment.user.present? %>
     <small><%= link_to comment.user.name, comment.user %> </small>
     <% end %>
+   
     
     
     <%= link_to "<i class='fa fa-commenting'></i>".html_safe, comment %>
     
     </div>
     <%= comment.created_at.stamp('10/12/2013 at 12:34am') %>
+     <small><i><%= comment.mentioned_admins.map{|p| p.name.titleize}.join(", ") %></i></small>
 <% end %>

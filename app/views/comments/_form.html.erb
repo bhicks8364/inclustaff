@@ -7,7 +7,7 @@
     
  
     <div class="form-group">
-      <%= f.input :body, label: false, input_html: {class: "form-control body"}, placeholder: "Add a comment" %>
+      <%= f.input :body, label: false, input_html: {data: { behavior: "autocomplete_order_notes" }, class: "form-control body"}, placeholder: "Add a comment" %>
       
          <%= f.submit "Send", class: "btn btn-primary btn-block" %>
      

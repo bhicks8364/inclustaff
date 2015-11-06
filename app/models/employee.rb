@@ -97,7 +97,7 @@ class Employee < ActiveRecord::Base
   scope :at_work, -> { joins(:shifts).merge(Shift.at_work)} 
   scope :off_shift, -> { joins(:current_shift).merge(Shift.clocked_out)}
   scope :with_current_timesheet, -> { joins(:timesheets).merge(Timesheet.this_week)}
-
+  scope :on_break, -> { joins(:shifts).merge(Shift.on_break)}
   scope :dns, -> { where(dns: true) }
   scope :unassigned, -> { where(assigned: false) }
   scope :available, -> { unassigned.where(dns: false) }

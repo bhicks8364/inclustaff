@@ -24,13 +24,15 @@ class Agency < ActiveRecord::Base
     has_many :invoices
     has_many :companies
     has_many :orders
+    has_many :jobs, :through => :orders
     has_many :order_events, :through => :orders, :source => 'events'
     has_many :applications, :through => :orders, :source => 'events'
     has_many :applicants, :through => :applications, :source => 'users'
     has_many :admins
     has_many :events, :through => :admins
     has_many :users
-    # has_many :employees, :through => :users
+    has_many :employees, :through => :users
+    
     
     has_many :admin_events, :through => :admins, :source => 'events'
     has_many :jobs, :through => :orders
@@ -50,7 +52,7 @@ class Agency < ActiveRecord::Base
     validates :subdomain, :format => { :with => /\A[a-zA-Z]+\z/, :message => "Only letters allowed" }
     validates :subdomain, exclusion: { in: %w(www us ca jp public admin inclustaff), message: "%{value} is reserved." }
     validates :name,  presence: true, length: { maximum: 50 }
-    
+    validates :subdomain, uniqueness: true
     
     def shifts
         Shift.order(updated_at: :desc)
@@ -88,9 +90,5 @@ class Agency < ActiveRecord::Base
   
         # Apartment::Tenant.switch!('ontimestaffing')
    
-    
-    
-    
-    
-    
+
 end

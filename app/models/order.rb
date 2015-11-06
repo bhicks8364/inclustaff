@@ -103,6 +103,10 @@ class Order < ActiveRecord::Base
       end
     end
     
+    def self.by_recuriter(admin_id)
+        joins(:jobs).where( :jobs => { :recruiter_id => admin_id } )
+    end
+    
     def not_urgent?
       urgent == false
     end

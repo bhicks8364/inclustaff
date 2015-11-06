@@ -38,13 +38,13 @@ class Invoice < ActiveRecord::Base
     def defaults
        
         due = Date.today.beginning_of_week if self.new_record?
-        
+        self.total = 0 if total.nil?
         self.paid = false if self.paid.nil?
         self.amt_paid = 0 if self.amt_paid.nil?
         self.due_by = due + 15.days if due_by.nil?
     end
     def update_totals!
-        amount = self.timesheets.sum(:total_bill)
+        amount = timesheets.sum(:total_bill)
         self.update(total: amount)
     end
     def total_amount
@@ -95,5 +95,8 @@ class Invoice < ActiveRecord::Base
         else
             true
         end
+    end
+    def self.by_account_manager(admin_id)
+        joins(:company => :orders).where(orders: { account_manager_id: admin_id })
     end
 end

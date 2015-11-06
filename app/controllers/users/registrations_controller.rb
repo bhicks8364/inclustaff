@@ -26,7 +26,8 @@ before_filter :configure_sign_up_params, only: [:create]
       resource.password = "password"
       resource.password_confirmation = "password"
     end
-     resource.set_code
+    resource.agency = @current_agency
+    resource.set_code
     resource.save
     yield resource if block_given?
     if resource.persisted?
@@ -56,7 +57,7 @@ before_filter :configure_sign_up_params, only: [:create]
   
   def configure_sign_up_params
     devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:id, :first_name, :last_name, :email, :role, :employee_id, :resume_id, 
-    :password, :password_confirmation, :can_edit, :address, :city, :state, :zipcode,
+    :password, :password_confirmation, :can_edit, :address, :city, :state, :zipcode, :agency_id,
     resume_attributes: [:id, :name, :employee_id, :body]) }
   end
   
@@ -65,8 +66,13 @@ before_filter :configure_sign_up_params, only: [:create]
      admin_employee_path(resource.employee)
     elsif signed_in? == false
       sign_in(resource)
+      root_path
     end
   end
+  
+  # def after_sign_up_path_for(resource)
+  #   super(resource)
+  # end
     
   # end
   # GET /resource/sign_up

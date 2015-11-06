@@ -43,7 +43,10 @@
      <div class='list-group col-md-6 well'>
               <h5 class='text-center'>Past Job Assignments</h5>
         <% @employee.jobs.inactive.each do |job| %>
+       
           <h4><%= job.company %> <small> <%= job.title %></small></h4>
+          <small> Assignment duration: <%= distance_of_time_in_words(job.start_date, job.end_date, include_seconds: true) %></small>
+          <p><%= job.start_date.stamp('11/12') %> - <%= job.end_date.stamp('11/12') %></p>
            <div class='list-group-item black'>
           <strong>Comments</strong>
            <% job.comments.each do |comment| %>
@@ -57,7 +60,7 @@
      <div class='list-group col-md-6 well'>
               <h5 class='text-center'>Current Job Assignment</h5>
         <% @employee.jobs.active.each do |job| %>
-          <h4><%= job.company %> <small> <%= job.title %></small></h4>
+          <h4><%= job.company %> <small> <%= link_to job.title, admin_job_path(job) %></small></h4>
            <div class='list-group-item black'>
           <strong>Comments</strong>
            <% job.comments.each do |comment| %>

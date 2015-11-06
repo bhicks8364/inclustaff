@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151104114253) do
+ActiveRecord::Schema.define(version: 20151106190411) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -174,11 +174,15 @@ ActiveRecord::Schema.define(version: 20151104114253) do
     t.string   "action"
     t.integer  "eventable_id"
     t.string   "eventable_type"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.integer  "user_id"
+    t.integer  "agency_id"
+    t.integer  "company_admin_id"
   end
 
+  add_index "events", ["agency_id"], name: "index_events_on_agency_id", using: :btree
+  add_index "events", ["company_admin_id"], name: "index_events_on_company_admin_id", using: :btree
   add_index "events", ["user_id"], name: "index_events_on_user_id", using: :btree
 
   create_table "inquiries", force: :cascade do |t|
@@ -336,8 +340,8 @@ ActiveRecord::Schema.define(version: 20151104114253) do
     t.decimal  "reg_hours"
     t.decimal  "ot_hours"
     t.decimal  "gross_pay"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.datetime "deleted_at"
     t.string   "state"
     t.integer  "approved_by"
@@ -345,8 +349,10 @@ ActiveRecord::Schema.define(version: 20151104114253) do
     t.decimal  "total_bill"
     t.integer  "invoice_id"
     t.hstore   "adjustments"
+    t.string   "approved_by_type"
   end
 
+  add_index "timesheets", ["approved_by_type"], name: "index_timesheets_on_approved_by_type", using: :btree
   add_index "timesheets", ["deleted_at"], name: "index_timesheets_on_deleted_at", using: :btree
   add_index "timesheets", ["invoice_id"], name: "index_timesheets_on_invoice_id", using: :btree
   add_index "timesheets", ["job_id"], name: "index_timesheets_on_job_id", using: :btree

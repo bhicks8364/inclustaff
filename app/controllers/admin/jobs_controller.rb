@@ -73,7 +73,7 @@ class Admin::JobsController < ApplicationController
       respond_to do |format|
           format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
                     state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out, last_out: @job.last_clock_out,
-                    in_ip: @shift.in_ip, first_name: @job.employee.first_name, new_count: @job.agency.jobs.on_shift.count } }
+                    in_ip: @shift.in_ip, first_name: @job.employee.first_name, new_count: @job.order.agency.jobs.on_shift.count } }
 
       end
     end
@@ -155,6 +155,7 @@ class Admin::JobsController < ApplicationController
     
     respond_to do |format|
       if @job.save
+        @job.employee.save
         mentioned_admins = @job.mentioned_admins if @job.mentioned_admins
         
         mentioned_admins.each do |mentioned_admin|

@@ -2,21 +2,22 @@
 #
 # Table name: timesheets
 #
-#  id           :integer          not null, primary key
-#  week         :integer
-#  job_id       :integer
-#  reg_hours    :decimal(, )
-#  ot_hours     :decimal(, )
-#  gross_pay    :decimal(, )
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  deleted_at   :datetime
-#  state        :string
-#  approved_by  :integer
-#  shifts_count :integer
-#  total_bill   :decimal(, )
-#  invoice_id   :integer
-#  adjustments  :hstore
+#  id               :integer          not null, primary key
+#  week             :integer
+#  job_id           :integer
+#  reg_hours        :decimal(, )
+#  ot_hours         :decimal(, )
+#  gross_pay        :decimal(, )
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  deleted_at       :datetime
+#  state            :string
+#  approved_by      :integer
+#  shifts_count     :integer
+#  total_bill       :decimal(, )
+#  invoice_id       :integer
+#  adjustments      :hstore
+#  approved_by_type :string
 #
 
 class Timesheet < ActiveRecord::Base
@@ -27,8 +28,7 @@ class Timesheet < ActiveRecord::Base
     has_one :company, :through => :job
     has_one :order, :through => :job
     has_many :comments, as: :commentable
-    # has_many :recruiter_timesheets, :through => :recruiter, :source => ""
-    # has_one :recruiter, class_name: "Admin", foreign_key: "recruiter_id"
+
     has_one :recruiter, through: :job, class_name: "Admin"
     include ArelHelpers::ArelTable
     
@@ -60,14 +60,14 @@ class Timesheet < ActiveRecord::Base
     
     
     def has_a_job?
-        self.job.present?
+        job.present?
     end
     def has_invoice?
-        self.invoice.present?
+        invoice.present?
     end
     
     def set_job
-        self.job = self.shifts.first.job
+        self.job = shifts.first.job
     end
     
     def self.by_recuriter(admin_id)
@@ -87,9 +87,7 @@ class Timesheet < ActiveRecord::Base
         where(week: Date.today.beginning_of_week.cweek - 1)
     }
     scope :approaching_overtime, -> { where('reg_hours > 36') }
-    scope :current_week, ->{
-        where(week: Date.today.cweek)
-    }
+    scope :current_week, ->{ where(week: Date.today.cweek) }
     scope :past, -> { where("week < ?", Date.today.beginning_of_week.cweek) }
     
     scope :overtime_errors, -> { where('reg_hours > 40') }
@@ -99,9 +97,9 @@ class Timesheet < ActiveRecord::Base
     def receipt
         Receipts::Receipt.new(
           id: id,
-          message: "Staffing Invoice",
+          message: "Timesheet Summary",
           company: {
-            name: "IncluStaff LLC",
+            name: "#{company.agency.name}",
             address: "8364 Oberlin Rd\nElyria, OH 44035",
             email: "contact@inclustaff.com",
             logo: Rails.root.join("app/assets/images/incluStaff_logo.png")
@@ -127,81 +125,72 @@ class Timesheet < ActiveRecord::Base
        
     
     def self.by_total_bill
-        self.order(:total_bill)
+        order(:total_bill)
     end
-    
-    
-    
-    
+
     def self.without_shifts
         includes(:shifts).where( :shifts => { :timesheet_id => nil } )
     end
+    def self.by_account_manager(admin_id)
+        joins(:job => :order).where( :orders => { :account_manager_id => admin_id } )
+    end
     
     def set_invoice
-        company_id = self.company.id
-        agency_id = self.agency.id
-        invoice = Invoice.find_or_create_by(agency_id: agency_id, company_id: company_id, week: self.week)
+        company_id = company.id
+        agency_id = company.agency.id
+        invoice = Invoice.find_or_create_by(agency_id: agency_id, company_id: company_id, week: week)
         self.invoice_id = invoice.id
     end
     
+    def approved?; state == "approved"; end
+    def pending?; state == "pending"; end
     
-    
-    def approved?
-        if self.state == "approved"
-            true
-        else
-            false
-        end
-    end
-    def pending?
-        if self.state == "pending"
-            true
-        else
-            false
-        end
-    end
 
     def defaults
-        self.state = "pending" if self.state.nil?
-        self.week = Date.today.cweek if self.week.nil?
+        self.state = "pending" if state.nil?
+        self.week = Date.today.cweek if week.nil?
+        self.reg_hours = 0 if reg_hours.nil?
+        self.ot_hours = 0 if ot_hours.nil?
     end
     
     def total_hours
-        if self.reg_hours && self.ot_hours
-            self.reg_hours + self.ot_hours
-        elsif self.reg_hours
-            self.reg_hours
+        if reg_hours && ot_hours
+            reg_hours + ot_hours
+        elsif reg_hours
+            reg_hours
         end
     end
     
     
     def update_company_balance!
-        self.company.set_payroll_cost!
+        company.set_payroll_cost!
     end
     
     def update_invoice!
-        self.invoice.update_totals!
+        invoice.update_totals!
     end
     
     def last_clock_in
-        self.shifts.last.time_in
+        shifts.last.time_in
     end
     
     def last_clock_out
-        if self.shifts.any?
-            self.shifts.last.time_out
+        if shifts.any?
+            shifts.last.time_out
         end
     end
     
     def user_approved
-        if self.approved?
-            Admin.find(self.approved_by).name
+        if approved? && approved_by_type == "Admin"
+            Admin.find(approved_by).name
+        elsif approved? && approved_by_type == "Company"
+            CompanyAdmin.find(approved_by).name
         end
     end
     
    # EXPORT TO CSV
   def self.to_csv
-    attributes = %w{id week company_order time_frame employee_name job_id job_title reg_hours ot_hours pay_rate ot_rate gross_pay state approved_by shifts_count}
+    attributes = %w{id week company_order time_frame employee_name job_id job_title reg_hours ot_hours pay_rate ot_rate gross_pay state approved_by approved_by_type shifts_count}
     CSV.generate(headers: true) do |csv|
       csv << attributes
       
@@ -212,7 +201,7 @@ class Timesheet < ActiveRecord::Base
   end
   
     def current?
-        if self.week == Date.today.cweek
+        if week == Date.today.cweek
             true
         else 
             false
@@ -221,29 +210,29 @@ class Timesheet < ActiveRecord::Base
     
     
     def company_order
-        self.order.company_name
+        order.company_name
     end
     
     
     
 
     def job_title
-        self.job.title
+        job.title
     end
     
     def employee_name
-        self.employee.name
+        employee.name
     end
     
     def clocked_in?
-        if self.shifts.clocked_in.any?
+        if shifts.clocked_in.any?
             true
         else
             false
         end
     end
     def clocked_out?
-        if self.shifts.clocked_in.any?
+        if shifts.clocked_in.any?
             false
         else
             true
@@ -251,20 +240,20 @@ class Timesheet < ActiveRecord::Base
     end
     
     def last_clocked_in
-        self.shifts.last.time_in
+        shifts.last.time_in
     end
     
     def last_clocked_out
-        self.shifts.clocked_out.last.time_out
+        shifts.clocked_out.last.time_out
     end
 
     def mark_up_percent
-        (self.mark_up * 100 - 100).to_i.to_s + "%" 
+        (mark_up * 100 - 100).to_i.to_s + "%" 
     end
 
     def total_timesheet
-        if self.shifts.any?
-            hours = self.shifts.sum(:time_worked)
+        if shifts.any?
+            hours = shifts.sum(:time_worked)
             if hours > 40
                 self.reg_hours = 40
                 self.ot_hours = hours - 40
@@ -282,10 +271,10 @@ class Timesheet < ActiveRecord::Base
     end
     
     def week_ending
-        self.shifts.last.time_in.end_of_week.strftime("%x")
+        shifts.last.time_in.end_of_week.strftime("%x")
     end
     def week_begin
-        self.shifts.last.time_in.beginning_of_week.strftime("%x")
+        shifts.last.time_in.beginning_of_week.strftime("%x")
     end
     def time_frame
         "#{week_begin} - #{week_ending}"

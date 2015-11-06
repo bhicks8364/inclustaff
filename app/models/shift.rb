@@ -92,8 +92,8 @@ class Shift < ActiveRecord::Base
   def took_a_break?; breaks.any?; end
     
   def calculate_break
-    if self.breaks.present? && self.breaks.count.even? 
-      @breaks = self.breaks 
+    if breaks.present? && breaks.count.even?
+      @breaks = breaks 
       @break_times = @breaks.map { |b| b.to_datetime }
       @new_array = []
       @break_times.in_groups_of(2) do |group| 
@@ -119,8 +119,8 @@ class Shift < ActiveRecord::Base
   end
 
   def set_defaults
-      self.employee = self.job.employee if employee.nil? 
-      self.in_ip = self.employee.current_sign_in_ip if in_ip.nil?
+      self.employee = job.employee if employee.nil? 
+      self.in_ip = employee.current_sign_in_ip if in_ip.nil?
       self.break_out = [] if break_out.nil?
       self.break_in = [] if break_in.nil?
       self.breaks = [] if breaks.nil?
@@ -157,16 +157,16 @@ class Shift < ActiveRecord::Base
   end
   
   def pay_time
-      if self.break_duration.present? && self.break_duration > 0.01
-          self.hours_worked - self.break_duration
+      if break_duration.present? && break_duration > 0.01
+          hours_worked - break_duration
       else
-          self.hours_worked
+          hours_worked
           
       end
   end
   
   def reg_earnings
-      @payable_hours = self.pay_time
+      @payable_hours = pay_time
       self.earnings = self.job.pay_rate * @payable_hours
       self.time_worked = @payable_hours
   end

@@ -2,9 +2,9 @@
   <div class="well well-sm">
   	 <%= link_to 'Clear Search', tags_path, class: 'btn btn-primary btn-tiny' %>
   	<div class="scroll600">
-	  <% Order.needs_attention.tags_on(:tags).order(name: :asc).each do |tag, css_class| %>
+	  <% @current_agency.orders.needs_attention.tags_on(:tags).order(name: :asc).each do |tag, css_class| %>
 	  	<%= link_to(tag_path(tag.name), class: "list-group-item list-group-item-info") do  %>
-	   <% if Employee.available.tagged_with([tag], :any => true).any? %>
+	   <% if @current_agency.employees.available.tagged_with([tag], :any => true).any? %>
 		 <span><i class="fa fa-user-plus fa-fw"></i>  <%= tag.name %></span>
 	   <%else %>
 	    <span><i class="fa fa-square-o fa-fw"></i>  <%= tag.name %></span>
@@ -12,5 +12,7 @@
 	   <% end %>
 	  <% end %>
 		</div>
+		
+		
 		
 	</div>
