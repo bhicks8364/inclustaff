@@ -1,5 +1,13 @@
 <div class="col-md-12 transbox">
 <h1 class='page-header'><%= @current_agency.name.titleize %>'s Sales Dashboard</h1>
+<div class='col-md-4 well well-sm scroll400'>
+	<h4 class='text-center'>Priority Job Orders<br><small>Needed in the next 3 days</small></h4>
+	<%= render @current_agency.orders.priority %>
+</div>
+<div class='col-md-4 well well-sm scroll400'>
+	<h4>New Job Orders</h4>
+	<%= render @current_agency.orders.newly_added %>
+</div>
 <div class="btn-group">
   <button class="btn btn-primary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     Large button <span class="caret"></span>

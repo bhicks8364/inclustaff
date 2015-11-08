@@ -76,6 +76,7 @@ class Order < ActiveRecord::Base
     scope :needs_attention, -> { where(Order[:number_needed].gt(Order[:jobs_count])) }
     scope :filled, -> { where(Order[:jobs_count].gteq(Order[:number_needed])) }
     scope :priority, -> { needs_attention.where(Order[:needed_by].lteq(Time.zone.now + 3.days))}
+    scope :newly_added, -> { needs_attention.where(Order[:created_at].gteq(Time.zone.now - 1.day))}
     scope :overdue, -> { needs_attention.where(Order[:needed_by].lteq(Time.zone.now))}
     
     def defaults
@@ -238,9 +239,25 @@ class Order < ActiveRecord::Base
     order.assign_attributes row.to_hash.slice(:name)
     order
   end
-
-
-
+  
+  def with_employee_skills
+      tag_list = Order.needs_attention.tag_counts.pluck(:name)
+	    Employee.available.tagged_with(tag_list, :any => true)
+  end
+  def self.skills_needed
+    a = Order.needs_attention.tag_counts_on(:tags).pluck(:name, :taggings_count)
+    b = Employee.available.tag_counts_on(:tags).pluck(:name, :taggings_count)
+    c = a + b
+    # a.delete_if { |x| b.include?(x.first) }
+    c.to_h
+  end
+  def matching_all_requirments 
+    skill_list = skills.required.pluck(:name)
+    Employee.tagged_with(skill_list, :match_all => true)
+  end
+  def matching_any 
+    Employee.tagged_with(tag_list, :any => true, :wild => true)
+  end
 
 
 end

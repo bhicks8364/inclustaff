@@ -5,8 +5,9 @@ class Admin::CompaniesController < ApplicationController
   # GET /companies
   # GET /companies.json
   def index
+    @companies = @current_agency.companies
     @top_billing = Company.ordered_by_current_bill
-    @companies = Company.all
+    
     @import = Company::Import.new
     skip_authorization
     respond_to do |format|

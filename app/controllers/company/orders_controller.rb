@@ -73,6 +73,7 @@ class Company::OrdersController < ApplicationController
     @admin = current_company_admin
     @company = @admin.company
     @order = @company.orders.new(order_params)
+    @order.agency = @current_agency if @current_agency.present?
     skip_authorization
     respond_to do |format|
       if @order.save 
