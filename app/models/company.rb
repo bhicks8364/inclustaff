@@ -47,7 +47,7 @@ class Company < ActiveRecord::Base
     
     include ArelHelpers::ArelTable
     include ArelHelpers::JoinAssociation
-    # after_create :send_notification_email
+    after_create :send_notification_email
     after_create :create_company_admin
     
     validates :name,  presence: true, length: { maximum: 50 }
