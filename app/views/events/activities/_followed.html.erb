@@ -1,6 +1,13 @@
-<div>
-    <strong><%= link_to event.admin.name, event.admin %></strong>
-    <%= event.action %> ->
-    <%= link_to event.eventable.name, event.eventable %>
-    <small><%= event.eventable.role %></small>
-</div>
+
+<%= link_to event.admin, class: 'list-group-item list-group-item-info' do %>
+	 <%= event.company_admin.try(:name) || event.admin.try(:name) %>
+    	 <strong>	<%= event.action.humanize.downcase %></strong> <%= event.eventable.name %> 
+    	 <small><%= event.eventable.role %></small>
+    
+    	 
+
+		<span class='label label-info black pull-right'>
+		 <small>  <%= event.created_at.stamp('11/13 at 8:30am') %></small>
+		</span>
+
+<% end %>

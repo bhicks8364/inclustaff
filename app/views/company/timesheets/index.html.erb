@@ -1,22 +1,22 @@
 
     <div class='col-lg-12 scroll main-box' data-behavior='timesheet-list'>
    <div class='row'>
-    <% if @timesheets.current_week.any? %>
+    <% if @timesheets.any? %>
             
             
 <div id='pending' class='col-lg-6' data-behavior='timesheet-list'>
     <h4 class='text-center'><strong>Pending Timesheets</strong></h4>
-    <%= render(@timesheets.current_week.pending) || "There are no pending timesheets for this week yet." %>
+    <%= render(@timesheets.pending) || "There are no pending timesheets for this week yet." %>
     
 </div>
 <div id='approved' class='col-lg-6' data-behavior='timesheet-list'>
     <h4 class='text-center'><strong>Approved Timesheets</strong></h4>
-    <%= render(@timesheets.current_week.approved) || "There are no approved timesheets for this week yet." %>
+    <%= render(@timesheets.approved) || "There are no approved timesheets for this week yet." %>
    
 </div>
 
     <% else %>
-    <h4>There are no timesheets for this week yet.</h4>
+    <h4>There are no timesheets yet.</h4>
     
     <% end %>
 

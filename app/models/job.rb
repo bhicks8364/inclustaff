@@ -59,7 +59,8 @@ class Job < ActiveRecord::Base
     # CALLBACKS
     before_validation :defaults, :set_main_pay
     after_save :update_employee
-    # before_save :set_main_pay
+    after_create :send_notifications!
+    
     
     # SCOPES
     scope :with_recent_comments,    -> { joins(:comments).merge(Comment.payroll_week)}

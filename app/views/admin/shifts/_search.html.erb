@@ -1,0 +1,31 @@
+ <% if @start_time.present? && @end_time.present?  %>
+<p>
+    You are searching for shifts starting after :
+    <strong><%=  @start_time.stamp('11/12/2013')%></strong>
+
+    and before :
+    <strong><%= @end_time.present? ? @end_time.stamp('11/12/2013') : @end_time %></strong>
+
+<% elsif @start_time.present? && @end_time.nil? %>
+
+    You are searching for shifts starting after:
+    <strong><%=  @start_time.stamp('11/12/2013')%></strong>
+<% elsif @end_time.present? && @start_time.nil? %>
+
+
+You are searching for shifts starting before:
+    <strong><%= @end_time.present? ? @end_time.stamp('11/12/2013') : @end_time %></strong>
+<% end %>
+</p>
+<%= form_tag("/admin/shifts", :method => "get", :class => "form_control black") do %>
+
+ <span class='white'> <%= label_tag(:date1, "Starting between:") %></span>
+  <%= text_field_tag(:date1) %>
+  <span class='white'>
+      <%= label_tag(:date2, "and") %>
+  </span>
+   
+  <%= text_field_tag(:date2) %>
+  <%= submit_tag("Search") %>
+  <%= link_to "Clear", admin_shifts_path %>
+<% end %>

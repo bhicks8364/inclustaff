@@ -48,7 +48,7 @@ gem 'apartment'
 
 # STAMP for formating time & dates
 gem 'stamp'
-
+gem 'chronic'
 # Time difference
 gem 'time_difference'
 

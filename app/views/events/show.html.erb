@@ -1,5 +1,10 @@
-<% if @event.action == 'applied' %>
+
 <div class='col-md-12 transbox'>
+    <% if @event.timesheet? %>
+<h1> Timesheet!</h1>
+<%= render @timesheet %>
+<% end %>
+<% if @event.action == 'applied' %>
 <% if admin_signed_in? %>
 <div class='col-md-12 text-center'>
   	
@@ -111,6 +116,8 @@
 
   <!--IF IS AN APPLICATION-->
 <% end %>
+
 <!--IF AN ADMIN IS SIGNED IN-->
 <% end %>
 
+ </div>

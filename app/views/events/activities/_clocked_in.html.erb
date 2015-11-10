@@ -1,6 +1,11 @@
-<div class='list-group-item list-group-item-primary'>
-    <strong><%= link_to event.admin.name, event.admin %></strong>
-    <%= event.action.humanize.downcase %> 
-    <%= link_to event.eventable.name_title, admin_employees_path(event.eventable) %>
-    <small><%= event.created_at.strftime('%r') %></small>
-</div>
+<%= link_to admin_employee_path(event.eventable), class: 'list-group-item list-group-item-success' do %>
+	 <%= event.company_admin.try(:name) || event.admin.try(:name) %>
+   <strong>	<%= event.action.humanize.downcase %></strong> <%= event.eventable.name %> 
+    	 
+
+		<span class='label label-success black pull-right' data-toggle="tooltip" title="Current Status">
+		     <small> <%= event.created_at.stamp('11/13 at 8:30am') %></small>
+		  
+		</span>
+
+<% end %>

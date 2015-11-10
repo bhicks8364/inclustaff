@@ -89,6 +89,7 @@ GEM
     celluloid (0.16.0)
       timers (~> 4.0.0)
     chartkick (1.4.1)
+    chronic (0.10.2)
     clockpicker-rails (0.0.2)
       railties (>= 3.1)
     cocoon (1.2.6)
@@ -370,6 +371,7 @@ DEPENDENCIES
   byebug
   capybara
   chartkick
+  chronic
   clockpicker-rails
   cocoon
   coffee-rails (~> 4.1.0)

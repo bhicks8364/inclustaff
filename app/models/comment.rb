@@ -23,6 +23,11 @@ class Comment < ActiveRecord::Base
     belongs_to :user
     belongs_to :admin
     belongs_to :company_admin
+    include ArelHelpers::ArelTable
+    include Arel::Nodes
+    
+    after_create :create_event
+    
     scope :job_comments, -> { where(commentable_type: "Job")}
     scope :timesheet_comments, -> { where(commentable_type: "Timesheet")}
     scope :order_comments, -> { where(commentable_type: "Order")}
@@ -30,6 +35,7 @@ class Comment < ActiveRecord::Base
     scope :by_company_admins, -> { where.not(company_admin_id: nil)}
     scope :by_agency_admins, -> { where.not(admin_id: nil)}
     scope :by_employees, -> { where.not(user_id: nil)}
+    
     scope :payroll_week,  -> {
           start = Time.current.beginning_of_week
           ending = start.end_of_week + 7.days
@@ -46,7 +52,23 @@ class Comment < ActiveRecord::Base
           start = Date.yesterday.beginning_of_day
           ending = Date.today.beginning_of_day
           where(created_at: start..ending)}
+          
+    def self.happened_before(date)
+      where(Event[:created_at].lteq(date))
+    end
     
+    def self.happened_after(date)
+      where(Event[:created_at].gteq(date))
+    end
+    
+    def self.occurring_between(date1, date2)
+      where(Event[:created_at].gteq(date1)
+      .and(Event[:created_at].lteq(date2)))
+    end
+    def create_event
+      Event.create(eventable_id: commentable_id, eventable_type: commentable_type, action: "commented", user_id: user_id, 
+      company_admin_id: company_admin_id, admin_id: admin_id)
+    end
     def admin_mentions
       @mentions ||= begin
                       regex = /@([\w]+)/

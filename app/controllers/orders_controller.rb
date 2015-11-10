@@ -1,6 +1,6 @@
 class OrdersController < ApplicationController
   before_action :set_order, only: [:show, :edit, :update, :destroy]
-
+  layout :determine_layout
   
 
   # GET /orders
@@ -29,23 +29,9 @@ class OrdersController < ApplicationController
   end
   
   def all
-    if admin_signed_in? 
-      @admin = current_admin
-      @company = @admin.company
-      @timesheets = @company.timesheets.order(updated_at: :desc)
-      @orders = @company.orders
-      @with_active_jobs = @orders.with_active_jobs
-    # authorize @orders
-    elsif user_signed_in? && current_user.not_an_employee?
-      @current_user = current_user if current_user.present?
-      @company = @current_user.company
-      @orders = @company.orders
-      @with_active_jobs = @orders.with_active_jobs
-      @timesheets = @company.timesheets.order(updated_at: :desc)
-    # authorize @orders
-    end
-    # @orders = Order.all
-    # authorize @orders
+   @q = Order.all.ransack(params[:q]) 
+  
+          @orders = @q.result(distinct: true).paginate(page: params[:page], per_page: 20)
   end
 
   # GET /orders/1
@@ -149,6 +135,15 @@ class OrdersController < ApplicationController
   end
 
   private
+    def determine_layout
+      if admin_signed_in?
+        "admin_layout"
+      elsif company_admin_signed_in?
+        "company_layout"
+      else
+          "application"
+      end
+    end
   
     def pundit_user
       current_admin

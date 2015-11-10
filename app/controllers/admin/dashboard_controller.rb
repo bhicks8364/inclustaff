@@ -16,6 +16,8 @@ class Admin::DashboardController < ApplicationController
     end
     def recruiter
       if current_admin.recruiter?
+       
+     
         @jobs = current_admin.jobs.active.paginate(page: params[:page], per_page: 5)
        
         @timesheets = Timesheet.by_recuriter(current_admin.id)
@@ -26,8 +28,7 @@ class Admin::DashboardController < ApplicationController
       @orders = Order.needs_attention.order(:needed_by).paginate(page: params[:page], per_page: 5)
         @current_recruiter = @current_admin if @current_admin.recruiter?
         @recruiter_jobs = @current_recruiter.jobs.by_recuriter(@current_recruiter.id) if @current_admin.recruiter?
-        @q = Skill.includes(:skillable).ransack(params[:q])
-        @searched_skills = @q.result(distinct: true)
+        
         skip_authorization
     end
     def account_manager

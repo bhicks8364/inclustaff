@@ -114,6 +114,14 @@ class Employee < ActiveRecord::Base
     current_job.company if current_job.present?
   end
   
+  def current_status
+    if shifts.any?
+      shifts.last.state
+    else
+      "No Shifts"
+    end
+  end
+  
   def current_timesheet
     if self.timesheets.current_week.any?
       self.timesheets.current_week.last

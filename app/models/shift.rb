@@ -31,15 +31,16 @@ class Shift < ActiveRecord::Base
   include ArelHelpers::ArelTable
   include Arel::Nodes
   acts_as_paranoid
-
-  belongs_to :employee
+  
   belongs_to :job
   belongs_to :timesheet, counter_cache: true
   belongs_to :company, class_name: "Company", foreign_key: "company_id"
   has_many :comments, as: :commentable
+  has_many :events, as: :eventable
   accepts_nested_attributes_for :job
   
   delegate :pay_rate, to: :job
+  delegate :employee, to: :job
   delegate :order, to: :job
   delegate :manager, to: :job
   delegate :code, to: :employee
@@ -58,6 +59,17 @@ class Shift < ActiveRecord::Base
   scope :with_notes,    -> { where(NamedFunction.new("LENGTH", [Shift[:note]]).gt(2))}
   scope :short_shifts,  -> { where('time_worked > 4') }
   scope :over_8,        -> { where('time_worked > 8') }
+  
+  def self.worked_before(date)
+    where(Shift[:time_in].lteq(date))
+  end
+  def self.worked_after(date)
+    where(Shift[:time_in].gteq(date))
+  end
+  def self.occurring_between(date1, date2)
+    where(Shift[:time_in].gteq(date1)
+    .and(Shift[:time_in].lteq(date2)))
+  end
   
   
   scope :last_week,     -> { where(week: Date.today.cweek - 1)}

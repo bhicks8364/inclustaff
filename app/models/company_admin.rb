@@ -31,7 +31,8 @@
 
 class CompanyAdmin < ActiveRecord::Base
   belongs_to :company
-  has_many :events, as: :eventable
+  has_many :events
+  has_many :eventables, :through => :events
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, 

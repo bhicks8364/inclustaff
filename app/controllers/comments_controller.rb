@@ -26,7 +26,7 @@ class CommentsController < ApplicationController
     @comment.admin = current_admin if admin_signed_in?
     @comment.company_admin = current_company_admin if company_admin_signed_in?
     @comment.save
-    current_admin.events.create(action: "submitted", eventable: @order)
+    
     respond_to do |format|
       format.js 
       format.html { redirect_to :back, notice: 'Comment was successfully createed.' }

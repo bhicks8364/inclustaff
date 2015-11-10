@@ -8,6 +8,9 @@ class Admin::OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
+     @q = Order.all.ransack(params[:q]) 
+  
+          @orders = @q.result(distinct: true).paginate(page: params[:page], per_page: 5)
     if params[:company_id]
       @company = Company.find(params[:company_id])
       @orders = @company.orders
@@ -29,15 +32,9 @@ class Admin::OrdersController < ApplicationController
   
   def all
 
-    @admin = current_admin
-    if @admin.agency?
-      @agency = @admin.agency
-    elsif @admin.company?
-      @company = @admin.company
-    end
     
-      @orders = @company.orders.order(created_at: :desc) if @company.present?
-      @orders = @agency.orders.order(created_at: :desc) if @agency.present?
+    
+    
       # authorize @orders
     skip_authorization
   end

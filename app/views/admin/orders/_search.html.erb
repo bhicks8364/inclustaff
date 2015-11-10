@@ -1,16 +1,7 @@
-<div class='col-md-4 well'>
-   <h4 class='text-center'>Search for skills</h4>
-    <div class='form-inline black'>
-      <%= search_form_for @q do |f| %>
-          
-          <%= f.search_field :name_cont, placeholder: "Search..."  %>
-          <%= f.submit %>
-        <% end %>
-        
-    </div>
-    <div class='list-group'>
-        <%= render @searched_skills %>
-    </div>
-    
-     
-</div>
+<%= search_form_for(@q, class: 'form-inline') do |f| %>
+
+  <%= f.search_field :notes_cont, class: 'form-control', placeholder: "Search..." %>
+    <%= f.search_field :created_at_lteq, class: 'form-control', placeholder: "Search..." %>
+
+  <%= f.submit "GO!", class:'btn btn-success' %>
+<% end %>

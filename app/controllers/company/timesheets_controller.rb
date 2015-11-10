@@ -1,6 +1,6 @@
 class Company::TimesheetsController < ApplicationController
   before_action :set_timesheet, only: [:show, :edit, :update, :destroy]
-
+  before_action :authenticate_company_admin!
   # GET /timesheets
   # GET /timesheets.json
   def index
@@ -54,7 +54,7 @@ class Company::TimesheetsController < ApplicationController
       approved_by_type = @timesheet.approved? ? nil : "CompanyAdmin"
       state = @timesheet.approved? ? 'pending' : 'approved'
       @timesheet.update(approved_by: approved_by, approved_by_type: approved_by_type, state: state)
-      
+      current_company_admin.events.create(action: state, eventable: @timesheet)
       user_approved = @timesheet.approved? ? @timesheet.user_approved : @timesheet.state
       
       render json: { id: @timesheet.id, approved: @timesheet.approved?, 

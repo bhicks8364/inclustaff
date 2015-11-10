@@ -1,6 +1,12 @@
-<table id="active-jobs" class="table table-bordered" cellspacing="0" width="85%%">
+<div class='col-md-12 transbox'>
+  <div class='col-md-3'>
+  <%= render 'admin/orders/search' %>
+  </div>
+ <div class='col-md-9 table-responsive'>
+  <table class="table table-bordered">
   <thead>
     <tr>
+    <th><%= sort_link(@q, :created_at, 'Created', default_order: :desc) %></th>
       <th>Company</th>
       <th>Title</th>
       <th>Dept. Manager</th>
@@ -8,22 +14,22 @@
       <th>Employees </th>
       <th>Bi-Weekly</th>
       <th></th>
-      <th></th>
+     
     </tr>
   </thead>
 
   <tbody>
     <% @orders.active.each do |order| %>
       <tr>
-        <td><%= link_to order.company_name, order.company %></td>
-        <td><%= link_to order.title, company_order_path(order.company, order) %></td>
+        <td><%= order.created_at %></td>
+        <td><%= order.company_name %></td>
+        <td><%= link_to order.title, admin_company_order_path(order.company, order) %></td>
         <td><%= order.manager.present? ? order.manager.name : "N/A" %></td>
         <td><%= order.pay_range %></td>
         <td><%= order.jobs.active.count %></td>
         <td><%= order.urgent %></td>
-        <td><%= link_to 'Add New Department', new_company_order_path(order.company), class: "table-link" %></td>
-        <td><%= link_to "<span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>".html_safe, edit_company_order_path(order.company, order), class: "btn btn-default" %></td>
-        <td><%= link_to "<span class='glyphicon glyphicon-trash' aria-hidden='true'></span>".html_safe, company_order_path(order.company, order), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-default" %></td>
+        <td><%= link_to 'Add New Order', new_admin_company_order_path(order.company), class: "table-link" %></td>
+       
       </tr>
     <% end %>
   </tbody>
@@ -32,3 +38,5 @@
 <br>
 
 
+
+</div>

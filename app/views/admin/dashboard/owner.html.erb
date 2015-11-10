@@ -25,6 +25,10 @@
 			<i class='fa fa-clock-o fa-fw'></i>
 			<span>Timesheets</span>
 		<% end %>
+		<%= link_to(admin_shifts_path, class: "btn btn-primary") do %>
+			<i class='fa fa-clock-o fa-fw'></i>
+			<span>Shifts</span>
+		<% end %>
       
 	    <%= link_to(edit_agency_path(@current_agency), class: 'btn btn-primary') do %>
 	      <i class='fa fa-pencil fa-fw'></i>
@@ -48,6 +52,10 @@
       	<%= link_to(admin_recruiter_path, class: "btn btn-primary") do %>
 		<i class='fa fa-users fa-fw'></i>
 			<span>Recruiting Dashboard</span>
+		<% end %>
+		<%= link_to(events_path, class: "btn btn-primary") do %>
+		<i class='fa fa-calendar fa-fw'></i>
+			<span>Events</span>
 		<% end %>
 		
 

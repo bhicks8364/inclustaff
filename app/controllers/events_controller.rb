@@ -4,7 +4,26 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
   def index
-    @events = Event.all
+    Chronic.time_class = Time.zone
+    @start_time = Chronic.parse(params[:date1])
+    @end_time = Chronic.parse(params[:date2])
+    if @start_time.present? && @end_time.present?
+      @events = Event.occurring_between(@start_time, @end_time).order(created_at: :desc).distinct
+    elsif @start_time.present?
+      @events = Event.happened_after(@start_time).order(created_at: :desc).distinct
+    elsif @end_time.present?
+      @events = Event.happened_before(@end_time).order(created_at: :desc).distinct
+    else
+      @events = Event.order(created_at: :desc)
+    end
+    # @q = Event.includes(:eventable).ransack(params[:q]) 
+    # if params[:q].present?
+    #   @events = @q.result(distinct: true).paginate(page: params[:page], per_page: 5)
+    # else
+    # @events = Event.none
+    # end
+    
+   
     skip_authorization
   end
 
@@ -12,9 +31,10 @@ class EventsController < ApplicationController
   # GET /events/1.json
   def show
     @order = Order.find(@event.eventable_id) if @event.application?
+    @timesheet = Timesheet.find(@event.eventable_id) if @event.timesheet?
     @company = @order.company if @order.present?
     @employee = @event.user.employee if @event.application?
-    @job = @order.jobs.new
+    @job = @order.jobs.new if @order.present?
   end
 
   # GET /events/new

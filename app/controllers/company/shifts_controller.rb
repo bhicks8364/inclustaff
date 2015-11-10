@@ -98,7 +98,7 @@ class Company::ShiftsController < ApplicationController
       respond_to do |format|
         if @shift.save
           
-          @current_company_admin.events.create(action: "clocked_in", eventable: @shift.employee)
+           @current_company_admin.events.create(action: "clocked_out", eventable: @shift, user_id: @shift.employee.user_id)
   
           
           format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
@@ -126,7 +126,7 @@ class Company::ShiftsController < ApplicationController
                                     in_ip: @current_company_admin.last_name + "-company")
         respond_to do |format|
           if @shift.save
-            @current_company_admin.events.create(action: "clocked_out", eventable: @shift.employee)
+            @current_company_admin.events.create(action: "clocked_in", eventable: @shift, user_id: @shift.employee.user_id)
             
             format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
                         state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out,

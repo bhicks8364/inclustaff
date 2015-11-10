@@ -4,9 +4,18 @@ class Admin::ShiftsController < ApplicationController
   before_action :set_admin
   layout "admin_layout"
   def index
-    @jobs = @company_admin.company.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 5).order('id DESC') if @company_admin.present?
-    @jobs = @agency_admin.agency.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 5).order('id DESC') if @agency_admin.present?
-    @shifts = @current_agency.shifts
+    Chronic.time_class = Time.zone
+    @start_time = Chronic.parse(params[:date1])
+    @end_time = Chronic.parse(params[:date2])
+    if @start_time.present? && @end_time.present?
+      @shifts = Shift.occurring_between(@start_time, @end_time).distinct
+    elsif @start_time.present?
+      @shifts = Shift.worked_after(@start_time).distinct
+    elsif @end_time.present?
+      @shifts = Shift.worked_before(@end_time).distinct
+    else
+      @shifts = Shift.all
+    end
 
     # gon.shifts = @shifts
     authorize @shifts
@@ -98,7 +107,7 @@ class Admin::ShiftsController < ApplicationController
       respond_to do |format|
         if @shift.save
           
-          current_admin.events.create(action: "clocked_in", eventable: @shift.employee)
+          current_admin.events.create(action: "clocked_in", eventable: @shift, user_id: @shift.employee.user_id)
   
           
           format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
@@ -126,7 +135,7 @@ class Admin::ShiftsController < ApplicationController
                                     in_ip: @current_admin.last_name + "-admin")
         respond_to do |format|
           if @shift.save
-            current_admin.events.create(action: "clocked_out", eventable: @shift.employee)
+            current_admin.events.create(action: "clocked_out", eventable: @shift, user_id: @shift.employee.user_id)
             
             format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
                         state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out,

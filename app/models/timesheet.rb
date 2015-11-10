@@ -28,6 +28,7 @@ class Timesheet < ActiveRecord::Base
     has_one :company, :through => :job
     has_one :order, :through => :job
     has_many :comments, as: :commentable
+    has_many :events, as: :eventable
 
     has_one :recruiter, through: :job, class_name: "Admin"
     include ArelHelpers::ArelTable
