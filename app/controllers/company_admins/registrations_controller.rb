@@ -58,8 +58,11 @@ class CompanyAdmins::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # protected
+  protected
+  def sign_up(resource_name, resource)
+    true
 
+  end
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
     devise_parameter_sanitizer.for(:sign_up) { |a| a.permit(:id, :first_name, :last_name, :email, :role, :company_id, :phone_number, :password, :password_confirmation)}

@@ -1,13 +1,26 @@
+<% if event.timesheet? %>
 <%= link_to admin_timesheet_path(event.eventable), class: 'list-group-item list-group-item-info' do %>
-	 <%= event.company_admin.try(:name) || event.admin.try(:name) %>
+	<p>	 <%= event.company_admin.try(:name) || event.admin.try(:name) %>
     <strong>	<%= event.action.humanize.downcase %></strong> on <%= event.eventable.employee_name %>'s <%= event.eventable.class.to_s.downcase %> 
     	
     
     	 
-
-		<span class='label label-info black pull-right'>
+	<span class='label label-info black pull-right'>
 		  <small> <%= event.created_at.stamp('11/13 at 8:30am') %></small>
-		</span>
+		</span></p>
 	
 <% end %>
+<% elsif event.job? %>
+<%= link_to admin_job_path(event.eventable), class: 'list-group-item list-group-item-info' do %>
+	<p>	 <%= event.company_admin.try(:name) || event.admin.try(:name) %>
+    <strong>	<%= event.action.humanize.downcase %></strong> on <%= event.eventable.name_title %>'s <%= event.eventable.class.to_s.downcase %> 
+    	
+    
+    	 
 
+	<span class='label label-info black pull-right'>
+		  <small> <%= event.created_at.stamp('11/13 at 8:30am') %></small>
+		</span></p>
+
+<% end %>
+<% end %>

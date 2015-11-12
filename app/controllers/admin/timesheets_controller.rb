@@ -5,6 +5,7 @@ class Admin::TimesheetsController < ApplicationController
   # GET /timesheets
   # GET /timesheets.json
 	def index
+		@test_timesheet = TimesheetQueryBuilder.new.with_admin_comments_by(@current_admin.id)
 		if params[:job_id]
   		@job = Job.includes(:employee, :timesheets).find(params[:job_id])
   		@timesheets = @job.timesheets.order(updated_at: :desc) if @job.timesheets.any?
@@ -13,6 +14,7 @@ class Admin::TimesheetsController < ApplicationController
       @timesheets = @company.timesheets if @company.timesheets.any?
        
     else
+    	
      	@timesheets = Timesheet.order(updated_at: :desc)
 		end
 		gon.timesheets = @timesheets

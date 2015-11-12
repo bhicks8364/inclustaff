@@ -38,9 +38,7 @@ class Admin < ActiveRecord::Base
   
   has_many :recruiter_jobs, class_name: "Job", foreign_key: "recruiter_id"
   has_many :account_orders, class_name: "Order", foreign_key: "account_manager_id"
-  
-  scope :company_admins,   -> { where.not(company_id: nil)}
-  scope :agency_admins,    -> { where(company_id: nil)}
+
   scope :account_managers, -> { where(role: "Account Manager")}
   scope :owners,           -> { where(role: "Owner")}
   scope :payroll_admins,   -> { where(role: "Payroll")}
@@ -53,6 +51,7 @@ class Admin < ActiveRecord::Base
   validates_numericality_of :agency_id, allow_nil: true
     
   def name;             "#{first_name} #{last_name}"; end
+  def phone_number;             agency.phone_number; end
   def to_s;             name; end
   def name_role;             "#{name} #{role}"; end
   def agency?;          agency_id? && company_id.nil?;  end

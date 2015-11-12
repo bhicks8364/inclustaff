@@ -1,6 +1,11 @@
 
 <div class='col-md-12 transbox'>
- 
+	<%= t = Time.current %>
+	<hr>
+<%	x = t + 8.hours %>
+	<% 5.times do |n|   %>
+ <%= t + n.days %> -  <%= x + n.days %><br>
+ <% end %>
   <h1 class='page-header'><%= @current_agency.name.titleize %>'s Recruiting Dashboard</h1>
   
   <div class="col-md-12 ">
@@ -88,7 +93,7 @@
 						<div class="tab-pane fade" id="tab-events">
 						   
 							<% if Event.applications.any? %>
-							<% Event.applications.each do |event| %>
+							<% Event.applications.order(created_at: :desc).each do |event| %>
 							  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
 							    <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
 							  <% end %>

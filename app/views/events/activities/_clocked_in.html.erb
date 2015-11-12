@@ -1,4 +1,4 @@
-<%= link_to admin_employee_path(event.eventable), class: 'list-group-item list-group-item-success' do %>
+<%= link_to admin_shift_path(event.eventable), class: 'list-group-item list-group-item-success' do %>
 	 <%= event.company_admin.try(:name) || event.admin.try(:name) %>
    <strong>	<%= event.action.humanize.downcase %></strong> <%= event.eventable.name %> 
     	 

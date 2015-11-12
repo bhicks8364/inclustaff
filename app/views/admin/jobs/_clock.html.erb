@@ -1,12 +1,9 @@
 <div class="content" data-behavior="job-list">
     <div class="details" data-behavior="job" data-id="<%= job.id %>">
-      <span class='content'><%= job.name_title %></span><br>
+     
           
           <% if job.on_shift? %>
-             <span class= "time" data-behavior="time-in">
-                  <small><strong> In:</strong> <%= job.current_shift.time_in.strftime("%l:%M%P") %></small>
-              </span>
-             
+            
                
             <button data-behavior="job-out-button_<%= job.id %>" class='btn btn-danger'>
             <i class='fa fa-sign-out'></i> Clock Out
@@ -14,8 +11,7 @@
           <button data-behavior="job-in-button_<%= job.id %>" class='hide-this btn btn-success'>
             <i class='fa fa-sign-out'></i> Clock In
           </button>
-           <span data-behavior="time-out">
-              </span>
+          
 
         <% else %>
         <% if job.on_break? %>
@@ -31,9 +27,6 @@
           
         
 
-        <span data-behavior="time-out">
-          
-        </span>
       <% end %>
     
     </div>

@@ -24,9 +24,12 @@ class Event < ActiveRecord::Base
     scope :admin, -> { where.not(admin_id: nil)}
     scope :employee, -> { where.not(user_id: nil)}
     scope :company_admin, -> { where.not(company_admin_id: nil)}
+  
     scope :applications, -> { where(action: 'applied').joins(:user).merge(User.available)}
     scope :clock_ins, -> { where(action: 'clocked_in')}
     scope :timesheets, -> { where(eventable_type: 'Timesheet')}
+    scope :jobs, -> { where(eventable_type: 'Job')}
+    scope :comments, -> { where(action: 'commented')}
     scope :approvals, -> { where(action: 'approved')}
     scope :clock_outs, -> { where(action: 'clocked_out')}
     def self.happened_before(date)
@@ -48,6 +51,13 @@ class Event < ActiveRecord::Base
     end
     def timesheet?
         if eventable_type == "Timesheet"
+            true
+        else
+            false
+        end
+    end
+    def job?
+        if eventable_type == "Job"
             true
         else
             false

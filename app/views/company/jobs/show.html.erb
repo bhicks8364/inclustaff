@@ -1,7 +1,7 @@
-<div class='col-md-12 main-box'>
+<div class='col-md-12 transbox'>
   
 
-
+<h2> <strong><%= @employee.name %></strong> <small> <%= @job.title %></small></h2>
 
 
 <div class='company-profile-nav'>
@@ -10,86 +10,81 @@
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#job-tab" aria-controls="job-tab" role="tab" data-toggle="tab">Job Information</a></li>
     <li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li>
-    <li role="presentation"><a href="#editing" aria-controls="editing" role="tab" data-toggle="tab">Settings</a></li>
+    <li role="presentation"><a href="#editing" aria-controls="editing" role="tab" data-toggle="tab">Setting</a></li>
+    <li role="presentation"><a href="#comments" aria-controls="comments" role="tab" data-toggle="tab">Comments</a></li>
    
   </ul>
   
   <div class="tab-content">
-  <div role="tabpanel" class="tab-pane fade in active" id="job-tab">
-
-    <div class='col-md-6' data-behavior="company-job-list">
-      
-      <div data-behavior="job" data-id="<%= @job.id %>">
-        <%= @job.employee.code %>
+      <div role="tabpanel" class="tab-pane fade in active" id="job-tab">
+        <div class='col-md-12'>
+          <div class='col-md-5'>
+            <h4>Total Hours: <%= @job.total_hours %></h4>
+            <h4>Total Gross Pay: <%= number_to_currency(@job.timesheets.sum(:gross_pay)) %></h4>
+            
+            <hr>
+            <strong>Gross this week:</strong> <%= number_to_currency(@job.current_week_pay) %><br>
+            
+            <strong>Hours this week : </strong><%= @job.current_week_hours %>
+          </div>
         
-        <h4><%= @job.title %></h4>
+          
+          <div class='col-md-5 text-center'>
+            <strong>First day:</strong> <%= @job.first_day %><br>
+          <strong>Pay rate:</strong>  <%= number_to_currency(@job.pay_rate, :unit => "$") %><br>
+            <strong>Description:</strong> <%= @job.description %><br>
+          </div>
+          <div class='col-md-2 well well-sm text-center'>
+            <h4 class='text-center'><%= @current_agency.name %><br> <small>Contact List</small></h4>
+            <h5 class='text-left'>Account Manager:</h5>
+            <%= @job.account_manager.name %><br>
+            <small><%= @job.recruiter.try(:phone_number) %> <br> <%= @job.account_manager.email %></small><br>
+          <h5 class='text-left'>Recruiter:</h5>
+          <%= @job.recruiter.name %><br>
+           <small><%= @job.recruiter.try(:phone_number) %> <br> <%= @job.recruiter.email %></small><br>
+           <h5 class='text-left'>Payroll:</h5><%= @company.payroll_admins.first.try(:name) %><br>
+           <small><%= @job.recruiter.try(:phone_number) %> <br> <%= @job.recruiter.try(:email) %></small>
+          </div>
+        </div>
+      </div>
+      <div role="tabpanel" class="tab-pane fade" id="timesheets">
+        <h2 class='page-header text-center'>Timesheets</h2>
         
-        <span id='verified'></span>
-           <%= render 'company/dashboard/clock', job: @job %>
-           
-              </div>
-       
-    </div>
-    
-  
-    <div class='col-md-6'>
-      <strong>Employee:</strong>
-      <%= @employee.name %><br>
-      <strong>Start date:</strong>
-      <%= @job.start_date.strftime("%B %e, %Y ") %><br>
-      <strong>Gross this week:</strong> <%= number_to_currency(@job.current_week_pay) %><br>
-      <strong>Total Hours : </strong><%= @job.total_hours %><br>
-      <strong>Total Gross : </strong><%= @job.current_timesheet.gross_pay %>
-    </div>
-    <div class='col-md-6'>
-    
-      <strong>Order:</strong>
-      <%= link_to @job.order.title, company_order_path(@job.order) %> <br>
-      
-      <strong>Job Title:</strong><br>
-      <%= @job.title %><br>
-      <strong>Recruiter:</strong><br>
-      <%= @job.recruiter.present? ? @job.recruiter.name : "Recruiter unavailable" %><br>
-      <strong>Account Manager:</strong><br>
-      <%= @job.account_manager.name %><br>
-      <strong>Recruiter:</strong><br>
-      <%= @job.recruiter.name %><br>
-      
-      <strong>Pay rate:</strong><br>
-      <%= number_to_currency(@job.pay_rate, :unit => "$") %><br>
-    </div>
-
-
-  <div class='col-md-12'>
-      <strong>Description:</strong><br>
-      <%= @job.description %><br>
-  </div>
-
-
-</div>
-
-  <div role="tabpanel" class="tab-pane fade" id="timesheets">
-    <h3>Timesheets</h3>
-    <div class='col-md-6 well' data-behavior='company-timesheet-list'>
-      <%= render @job.timesheets %>
-
-    </div>
-  </div>
-  
-  
-  
-  
+        <div id="pending" class='col-md-6 dark' data-behavior='company-timesheet-list'>
+          <h5 class='text-center'>Pending</h5>
+          <%= render @job.timesheets.pending %>
+        </div>
+        <div id="approved" class='col-md-6 dark' data-behavior='company-timesheet-list'>
+          <h5 class='text-center'>Approved</h5>
+          <%= render @job.timesheets.approved %>
+        </div>
+      </div>
       <div role="tabpanel" class="tab-pane fade" id="editing">
         <div class='col-md-12 dark'>
-          <%= render 'comments' %>
+          <h2 class='page-header text-center'>Admin Console</h2>
+          <div class='' data-behavior="company-job-list">
+            <div data-behavior="job" data-id="<%= @job.id %>">
+              <%= @employee.code %>
+              <h4><%= @job.title %></h4>
+              <span id='verified'></span>
+              <%= render 'company/dashboard/clock', job: @job %>
+            </div>
+          </div>
           <div class='col-md-12 dark'>
           <%= link_to 'Edit', edit_company_job_path(@job), class: 'btn btn-primary btn-lg' %> 
           </div>
-          </div>
-  
-        
-
-       </div>
+        </div>
+      </div>
+      <div role="tabpanel" class="tab-pane fade" id="comments">
+        <div class='col-md-12'>
+         <div class='well'>
+           <%= render 'comments' %>
+         </div>
+          
+          
+        </div>
+      </div>
+      
     </div>
   </div>
 </div>

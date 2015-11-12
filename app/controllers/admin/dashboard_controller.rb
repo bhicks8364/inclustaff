@@ -67,7 +67,7 @@ class Admin::DashboardController < ApplicationController
     #   @orders = @agency.orders
     #   @shifts = @agency.shifts
     #   @jobs = @agency.jobs.active.joins(:shifts).group("jobs.title").order("shifts.updated_at DESC, jobs.title ASC") if @company.jobs.any?
-    #   @timesheets = @agency.timesheets
+      @timesheets = @current_agency.timesheets
         skip_authorization
     end
     def company_view

@@ -30,9 +30,6 @@ require 'rails_helper'
 
 RSpec.describe Admin, type: :model do
   
-  it "works a little bit" do
-    admin = build(:admin, first_name: "Joe")
-    admin.first_name.should == "Joe"
-  end
+
   
 end

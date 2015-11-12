@@ -1,9 +1,9 @@
 <li id='event-nav' class="dropdown hidden-xs">
 	<a class="btn nav-btn dropdown-toggle" data-toggle="dropdown">
 
-  		<i class="fa fa-envelope-o"></i> New
+  		<i class="fa fa-envelope-o"></i> New Messages
 		<span class="count" id="event-count">
-			<%= @current_admin.events.occurring_between(Date.yesterday, Time.current).try(:count) %>
+			<%= @current_admin.events.comments.occurring_between(Date.yesterday, Time.current).try(:count) %>
 		</span>
 	</a>
 	<ul class="dropdown-menu dropdown-menu-left">
@@ -14,13 +14,15 @@
 			</div>
 		</li>
 		<li id='event-count' class="item-header dark">
-			You have <%= pluralize(@current_admin.events.order(created_at: :desc).limit(10).try(:count), 'event') %>.
+			You have <%= pluralize(@current_admin.events.comments.occurring_between(Date.yesterday, Time.current).order(created_at: :desc).limit(10).try(:count), 'event') %>.
 		</li>
-			<% @current_admin.events.order(created_at: :desc).each do |event| %>
-			<% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+			<% @current_admin.events.comments.occurring_between(Date.yesterday, Time.current).order(created_at: :desc).each do |event| %>
+			<div>
+				<% if lookup_context.template_exists?(event.action, "events/activities", true) %>
                 <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
               <% end %>
             <% end %>
+			</div>
 		
 		
 		<li class="item-footer">

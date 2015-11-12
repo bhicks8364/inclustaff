@@ -3,7 +3,7 @@
 
   		<i class="fa fa-clock-o"></i> Clocked In
 		<span class="count" id="clocked-in-count">
-			<%= @current_agency.jobs.on_shift.try(:count) %>
+			<%= @current.jobs.on_shift.try(:count) %>
 		</span>
 	</a>
 	<ul class="dropdown-menu dropdown-menu-left">
@@ -14,15 +14,17 @@
 			</div>
 		</li>
 		<li id='clocked-in-count' class="item-header dark">
-			You have <%= pluralize(@current_agency.jobs.on_shift.try(:count), 'employee') %> clocked in.
+			You have <%= pluralize(@current.jobs.on_shift.try(:count), 'employee') %> clocked in.
 		</li>
-			<% @current_agency.jobs.on_shift.order(updated_at: :desc).each do |job| %>
-		<li id='in-job-<%= job.id %>'class="list-item" >
+			<% @current.jobs.on_shift.order(updated_at: :desc).each do |job| %>
+		<div id='in-job-<%= job.id %>'>
 			
-			<%= link_to job.name_title, admin_job_path(job) %>
+			<%= link_to(admin_shift_path(job.current_shift), class: "list-group-item list-group-item-info") do %>
+			<%= job.name_title %>
+			<% end %>
 			
 			
-		</li>
+		</div>
 		<% end %>
 		
 		

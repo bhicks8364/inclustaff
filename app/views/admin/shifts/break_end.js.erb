@@ -1,3 +1,4 @@
 $('#start-break-btn').show();
 $('#end-break-btn').hide();
-$("<li class='list-group-item'><strong> <%= @shift.break_in.last.strftime('%r') %></strong></li>").appendTo("#break-in-list");
+
+$("<li class='list-group-item'><h6> <%= @shift.breaks.count.even? ? "Out:" : "In:" %> <strong> <%= break_ended.to_datetime.stamp("1:30am") %></strong></h5></li>").appendTo("#break-list");

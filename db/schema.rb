@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151106190411) do
+ActiveRecord::Schema.define(version: 20151112184643) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -280,8 +280,8 @@ ActiveRecord::Schema.define(version: 20151106190411) do
     t.datetime "time_in"
     t.datetime "time_out"
     t.integer  "employee_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.decimal  "time_worked"
     t.integer  "job_id"
     t.string   "state"
@@ -294,9 +294,11 @@ ActiveRecord::Schema.define(version: 20151106190411) do
     t.text     "note"
     t.boolean  "needs_adj"
     t.decimal  "break_duration"
-    t.text     "breaks",                      array: true
-    t.datetime "break_in",                    array: true
-    t.datetime "break_out",                   array: true
+    t.text     "breaks",                                      array: true
+    t.datetime "break_in",                                    array: true
+    t.datetime "break_out",                                   array: true
+    t.boolean  "paid_breaks",    default: false
+    t.decimal  "pay_rate"
   end
 
   add_index "shifts", ["breaks"], name: "index_shifts_on_breaks", using: :btree

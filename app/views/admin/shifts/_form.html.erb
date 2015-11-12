@@ -10,8 +10,9 @@
 
 </div>
 <div class="form-group black">
-    <label for="TimeIn">Time In: </label>
+    <label class='white' for="TimeIn">Time In: </label>
     <%= f.datetime_select :time_in, ampm: true, default: Time.current %>
+    
 </div>
 
 
@@ -38,27 +39,19 @@
 <div class="form-group">
     <label for="Not">Notes: </label>
     <%= f.text_area :note, placeholder: "Add a note.", rows: 2, class: "form-control" %>
+    <%= f.input :paid_breaks %>
+    <%= f.input :pay_rate %>
 </div>
 
 
 
                 <div class=''>
-    <%= f.simple_fields_for :break_out do |d| %>
-    <% @shift.break_out.try(:each) do |key, value| %>
-        <div class="row">
-          <p class='span3'>
-            <%= text_field_tag key, key, :class => 'text_field dynamicAttributeName' %>
-          </p>
-          <p class='span3'>
-            <%= d.text_field key, :class => 'text_field', :value => value %>
-          </p>
-          <p class='span1'>
-            <a herf='#' class='btn removeRow'>X</a>
-          </p>
-        </div>
-    <% end %>
-  <%- end -%>
+   <%= f.input :breaks, as: :array, input_html: {class: "form-control black"} %>
+  
+   <%= f.input :break_duration %>
+  
   </div>
+ 
 
 
 

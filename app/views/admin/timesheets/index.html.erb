@@ -1,5 +1,9 @@
 
     <div class='col-md-12 main-box'>
+        <%  @test_timesheet.each do |timesheet| %>
+        <li><%= timesheet.job.name_title%>
+        <%= timesheet.week_ending %></li>
+        <%end %>
         <h2 class='text-center'>Timesheets</h2>
 <div class='col-md-12 well'>
     <% if @timesheets.present? %>

@@ -23,6 +23,8 @@
 #  breaks         :text             is an Array
 #  break_in       :datetime         is an Array
 #  break_out      :datetime         is an Array
+#  paid_breaks    :boolean          default(FALSE)
+#  pay_rate       :decimal(, )
 #
 
 class ShiftSerializer < ActiveModel::Serializer

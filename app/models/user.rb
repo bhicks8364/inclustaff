@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
   
   
   scope :unassigned, -> { joins(:employee).merge(Employee.unassigned)}
-  
+  scope :ordered_by_last_name, -> { order(last_name: :asc) }
   # before_save :set_code
   
   after_create :set_employee, if: :has_no_employee?

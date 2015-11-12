@@ -4,22 +4,22 @@ class EmployeeQueryBuilder < ArelHelpers::QueryBuilder
     super(query || employee.unscoped)
   end
 
-  def with_title_matching(title)
+  def with_last_name_matching(last_name)
     reflect(
-      query.where(post[:title].matches("%#{title}%"))
+      query.where(employee[:last_name].matches("%#{last_name}%"))
     )
   end
-
-  def unassigned
+  def with_first_name_matching(first_name)
     reflect(
-      query
-        .joins(:jobs)
-        .where(Job[:employee_id].not_eq(employee[:id]))
+      query.where(employee[:first_name].matches("%#{first_name}%"))
+    )
+  end
+  def with_ssn_matching(ssn)
+    reflect(
+      query.where(employee[:ssn].matches("%#{ssn}%"))
     )
   end
   
-  
-
   def since_yesterday
     reflect(
       query.where(employee[:created_at].gteq(Date.yesterday))

@@ -23,14 +23,17 @@
 #  breaks         :text             is an Array
 #  break_in       :datetime         is an Array
 #  break_out      :datetime         is an Array
+#  paid_breaks    :boolean          default(FALSE)
+#  pay_rate       :decimal(, )
 #
 
 FactoryGirl.define do
+   
  	factory :shift do
- 	    job
+ 	    job_id 1
  	    time_in { 2.hours.ago }
  	    time_out { nil }
- 	    employee
+ 	    employee_id 1
  	    
  	    factory :off_shift do
  	        time_in { 2.hours.ago }

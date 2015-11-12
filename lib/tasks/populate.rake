@@ -43,7 +43,7 @@ namespace :db do
 	require 'populator'
 	require 'ffaker'
 	def random_hour(from, to)
-  		(Date.today + rand(from..to).hour + rand(0..60).minutes).to_datetime
+  		(Date.today + 1.hour + rand(0..60).minutes).to_datetime
 	end
 	puts random_hour(10, 15)
 		
@@ -55,6 +55,7 @@ namespace :db do
 	require 'populator'
 	require 'ffaker'
 	password = "password"
+	Apartment::Tenant.switch!('ontimestaffing')
 	  User.populate 50 do |user|
 		user.first_name = FFaker::Name.first_name
 		user.last_name = FFaker::Name.last_name

@@ -29,6 +29,7 @@ class Job < ActiveRecord::Base
     has_one :current_timesheet,-> { where week: Date.today.cweek  }, class_name: 'Timesheet'
     belongs_to :recruiter, class_name: "Admin", foreign_key: "recruiter_id"
     has_many :comments, as: :commentable
+    has_many :events, as: :eventable
     
     accepts_nested_attributes_for :employee
     
@@ -74,10 +75,10 @@ class Job < ActiveRecord::Base
     scope :new_start, -> { where(Job[:start_date].gteq(Date.today.beginning_of_week)) }
     
     # THESE WORKED!!!
-    scope :on_shift, -> { joins(:employee).merge(Employee.on_shift)}
-    scope :at_work, -> { joins(:employee).merge(Employee.at_work)}
-    scope :off_shift, -> { joins(:employee).merge(Employee.off_shift)}
-    scope :on_break, -> { joins(:employee).merge(Employee.on_break)}
+    scope :on_shift, -> { joins(:shifts).merge(Shift.clocked_in)}
+    scope :at_work, -> { joins(:shifts).merge(Shift.at_work)}
+    scope :off_shift, -> { joins(:shifts).merge(Shift.clocked_out)}
+    scope :on_break, -> { joins(:shifts).merge(Shift.on_break)}
     
 
     scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.current_week)}
@@ -107,27 +108,19 @@ class Job < ActiveRecord::Base
     end
     
     def status
-        if shifts.any?
-            shifts.last.state
-        else
-            "No shifts yet"
-        end
+        shifts.any? ? shifts.last.state : "No shifts yet"
     end
-    
-    
+
     
     def on_shift?
+        # status == "Clocked In"
         shifts.clocked_in.any?
     end
     def on_break?
         shifts.on_break.any?
     end
     def off_shift?
-        if shifts.clocked_in.any?
-            false
-        else
-            true
-        end
+       !shifts.clocked_in.any?
     end
     def update_employee
         employee.mark_as_assigned!
@@ -147,7 +140,6 @@ class Job < ActiveRecord::Base
             "Unavailable"
         end
     end
-    
   
     def name_title
         "#{employee.name} -  #{title}"
@@ -162,6 +154,7 @@ class Job < ActiveRecord::Base
     end
     
     # SETS JOB TITLE TO ORDER TITLE IF THEY DIDNT CHOOSE TO CHANGE IT
+    # pretty sure theres a better way to do this to. In the controller mayber?
     def set_job_title
         if title.nil? && order_id.present?
             job_order = Order.find(order_id)
@@ -171,7 +164,7 @@ class Job < ActiveRecord::Base
 
     def clock_in!
         if off_shift?
-            self.current_shift.create(time_in: Time.current, time_out: nil,
+            self.shifts.create(time_in: Time.current, time_out: nil,
                     state: "Clocked In",
                     out_ip: "Admin-Clock-In")
         end
@@ -179,12 +172,21 @@ class Job < ActiveRecord::Base
     end
     
     def clock_out!
-        if off_shift? && current_shift.present?
-            
-            self.current_shift.update(time_out: Time.current,
+        if on_shift? 
+            current_shift.update(time_out: Time.current,
                         state: "Clocked Out",
                         out_ip: "Admin-Clock-Out" )
         end
+    end
+    
+    def straight_8
+        t = Time.current.beginning_of_week - 1.week + 8.hours
+        x = t + 8.hours 
+        5.times do |n|   
+         self.shifts.create(time_in: t + n.days, time_out: x + n.days, state: "Clocked Out", out_ip: "Admin-Clock-Out") 
+        
+        end 
+    
     end
     
     
@@ -233,6 +235,13 @@ class Job < ActiveRecord::Base
     
     def total_hours
         shifts.sum(:time_worked)
+    end
+    def first_day
+        if shifts.any?
+            shifts.first.time_in.stamp('11/12/2015')
+        else
+            "TBD"
+        end
     end
     
     def total_gross_pay

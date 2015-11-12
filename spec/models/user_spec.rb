@@ -33,5 +33,20 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:user) { User.new(agency_id: 1, role: "Employee", first_name: "Andy", last_name: "Lindeman",
+    email: 'andy@email.com', password: generated_password, password_confirmation: generated_password) }
+  # it "orders by last name" do
+  #   generated_password = Devise.friendly_token.first(8)
+    
+  #   chelimsky = User.create(agency_id: 1, role: "Employee", first_name: "David", last_name: "Chelimsky",
+  #   email: 'david@email.com', password: generated_password, password_confirmation: generated_password)
+
+  #   expect(User.ordered_by_last_name.pluck(:last_name)).to eq(["Chelimsky", "Lindeman"])
+  # end
+  it 'creates an employee if it doesnt have one' do
+    
+    user.set_employee
+      expect(user.assigned?).to eq(false)
+  end
+  
 end

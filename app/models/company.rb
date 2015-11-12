@@ -20,33 +20,39 @@
 #
 
 class Company < ActiveRecord::Base
-    
+    include ArelHelpers::ArelTable
+    include ArelHelpers::JoinAssociation
     belongs_to :agency
+    has_many :admins, class_name: "CompanyAdmin", foreign_key: "company_id"
+    has_many :events, through: :admins
+    has_many :payroll_admins, -> { where role: "Payroll" }, through: :agency, class_name: "Admin"
     has_many :invoices
     has_many :orders, dependent: :destroy
-    has_many :order_events, :through => :orders, :source => 'events'
-    has_many :jobs, :through => :orders
-    has_many :employees, :through => :jobs
-    has_many :shifts, :through => :jobs
-    has_many :timesheets, :through => :jobs
-    has_many :current_timesheets, :through => :jobs
-    has_many :account_managers, :through => :orders
-    has_many :recruiters, :through => :jobs
-    has_many :admins, class_name: "CompanyAdmin", foreign_key: "company_id"
-    has_many :admin_events, :through => :admins, :source => 'events'
-    # has_one :main_contact, -> { where role: 'Owner' }, class_name: "CompanyAdmin"
-    # has_many :recruiters, -> { where role: 'Recruiter' }, class_name: "Admin"
-    # has_many :payroll_admin,  -> { where role: "Payroll" }, class_name: "Admin"
-    # has_many :account_managers,  -> { where role: "Account Manager" }, class_name: "Admin"
+    has_many :jobs, through: :orders
+    has_many :employees, through: :jobs
+    has_many :shifts, through: :jobs
+    has_many :timesheets, through: :jobs
+    has_many :current_timesheets, through: :jobs
+    has_many :account_managers, through: :orders
+    has_many :recruiters, through: :jobs
+    has_many :timesheet_events, through: :timesheets, source: 'events'
+    has_many :job_events, through: :jobs, source: 'events'
+    has_many :admin_events, through: :admins, source: 'events'
+    has_many :order_events, through: :orders, source: 'events'
+    has_many :job_comments, through: :jobs, source: 'comments'
+    has_many :timesheet_comments, through: :timesheets, source: 'comments'
+    has_many :shift_comments, through: :shifts, source: 'comments'
+
     scope :with_open_orders, -> { joins(:orders).merge(Order.needs_attention)} 
     scope :with_balance, -> { where(Company[:balance].gt(0).and(Company[:balance].not_eq(nil))) }
     scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.current_week)}
     scope :ordered_by_current_bill, -> { includes(:current_timesheets).order('timesheets.total_bill') }
     
     accepts_nested_attributes_for :orders
+    def comments
+      timesheet_comments + job_comments + shift_comments
+    end
     
-    include ArelHelpers::ArelTable
-    include ArelHelpers::JoinAssociation
     after_create :send_notification_email
     after_create :create_company_admin
     
@@ -99,16 +105,6 @@ class Company < ActiveRecord::Base
     def self.by_recruiter(admin_id)
         joins(:orders => :jobs).where(jobs: { recruiter_id: admin_id })
     end
-    
-    
-    
-   
-    
-
-
-    
-    
-
  
     def current_payroll_cost
        timesheets.current_week.sum(:gross_pay)
@@ -120,7 +116,6 @@ class Company < ActiveRecord::Base
         timesheets.last_week.sum(:total_bill)
     end
 
-    
     def set_payroll_cost!
         cost = timesheets.current_week.sum(:total_bill)
         update(balance: cost)
