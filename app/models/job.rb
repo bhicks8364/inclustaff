@@ -54,13 +54,16 @@ class Job < ActiveRecord::Base
     # validates_associated :employee
     validates_associated :order
     validates :employee_id,  presence: true
+    validates :pay_rate,  presence: true
     validates :order_id,  presence: true
     validates :title,  presence: true, length: { maximum: 50 }
     
     # CALLBACKS
     before_validation :defaults, :set_main_pay
     after_save :update_employee
-    # after_create :send_notifications!
+    after_initialize :ensure_pay
+    def ensure_pay
+        self.pay_rate = 9.00 if pay_rate.nil?
     
     
     # SCOPES
