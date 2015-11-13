@@ -60,7 +60,7 @@ class Job < ActiveRecord::Base
     # CALLBACKS
     before_validation :defaults, :set_main_pay
     after_save :update_employee
-    after_create :send_notifications!
+    # after_create :send_notifications!
     
     
     # SCOPES

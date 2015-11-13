@@ -37,7 +37,7 @@ class Admin::EmployeesController < ApplicationController
 
 
   def show
-    @work_histories = @employee.work_histories
+    @work_histories = @employee.work_histories if @employee.work_histories.any?
     @user = @employee.user
     @shifts = @employee.shifts if @employee.shifts.any?
     @skills = @employee.skills

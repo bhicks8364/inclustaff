@@ -41,7 +41,7 @@ class User < ActiveRecord::Base
   belongs_to :agency
 
   accepts_nested_attributes_for :employee
-  accepts_nested_attributes_for :work_histories, reject_if: :all_blank, allow_destroy: true
+  # accepts_nested_attributes_for :work_histories, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :skills, reject_if: :all_blank, allow_destroy: true
 
   validates :agency_id,  presence: true
@@ -126,7 +126,7 @@ class User < ActiveRecord::Base
    # IMPORT TO CSV   
   def self.assign_from_row(row)
     user = User.where(email: row[:email]).first_or_initialize
-    user.assign_attributes row.to_hash.slice(:first_name, :last_name, :email, :code, :role, :password, :password_confirmation)
+    user.assign_attributes row.to_hash.slice(:first_name, :last_name, :agency_id, :email, :code, :role, :password, :password_confirmation)
     user
   end
   
