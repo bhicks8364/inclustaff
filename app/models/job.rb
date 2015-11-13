@@ -64,6 +64,7 @@ class Job < ActiveRecord::Base
     after_initialize :ensure_pay
     def ensure_pay
         self.pay_rate = 9.00 if pay_rate.nil?
+    end
     
     
     # SCOPES
