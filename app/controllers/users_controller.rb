@@ -88,7 +88,7 @@ class UsersController < ApplicationController
     end
 
     def user_params
-        params.require(:user).permit(:id, :first_name, :last_name, :email, :role, :can_edit, :company_id, :password, :password_confirmation, :address, :city, :state, :zipcode)
+        params.require(:user).permit(:id, :first_name, :last_name, :email, :role, :can_edit, :agency_id, :password, :password_confirmation, :address, :city, :state, :zipcode)
     end
     
       def determine_layout

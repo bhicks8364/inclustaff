@@ -30,7 +30,7 @@ class Employee < ActiveRecord::Base
   has_many :skills, as: :skillable
   has_many :events, :through => :user
   has_many :work_histories
-  
+  has_one :agency, through: :user
   has_many :shifts, :through => :jobs, dependent: :destroy
   has_many :jobs, dependent: :destroy
   has_many :orders, :through => :jobs
@@ -121,6 +121,7 @@ class Employee < ActiveRecord::Base
   end 
   def set_defaults
     self.dns = false if dns.nil?
+    self.assigned = false if assigned.nil?
   end
   # I know theres a way better way to do this..
   def check_if_assigned

@@ -55,9 +55,9 @@ namespace :db do
 	require 'populator'
 	require 'ffaker'
 	password = "password"
-	Apartment::Tenant.switch!('gtrjobs')
+	Apartment::Tenant.switch!('daystaff')
 	  User.populate 50 do |user|
-	  	user.agency_id = 1
+	  	user.agency_id = 20
 		user.first_name = FFaker::Name.first_name
 		user.last_name = FFaker::Name.last_name
 		user.email = FFaker::Internet.email
