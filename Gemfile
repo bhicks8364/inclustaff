@@ -133,6 +133,7 @@ group :development, :test do
   gem 'capybara'
   gem 'launchy'
   gem 'ffaker'
+  gem 'faker'
   gem 'populator'
 
   # Access an IRB console on exception pages or by using <%= console %> in views

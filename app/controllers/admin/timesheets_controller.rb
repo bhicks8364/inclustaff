@@ -15,7 +15,7 @@ class Admin::TimesheetsController < ApplicationController
        
     else
     	
-     	@timesheets = Timesheet.order(updated_at: :desc)
+     	@timesheets = Timesheet.order(week: :desc)
 		end
 		gon.timesheets = @timesheets
     

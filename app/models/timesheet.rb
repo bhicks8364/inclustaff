@@ -272,10 +272,11 @@ class Timesheet < ActiveRecord::Base
     end
     
     def week_ending
-        shifts.last.time_in.end_of_week.strftime("%x")
+        shifts.any? ? shifts.last.time_in.end_of_week.strftime("%x") : Date.today.end_of_week.strftime("%x")
     end
     def week_begin
-        shifts.last.time_in.beginning_of_week.strftime("%x")
+        shifts.any? ? shifts.last.time_in.beginning_of_week.strftime("%x") : Date.today.beginning_of_week.strftime("%x")
+        
     end
     def time_frame
         "#{week_begin} - #{week_ending}"

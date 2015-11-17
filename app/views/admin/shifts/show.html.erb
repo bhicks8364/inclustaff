@@ -37,7 +37,11 @@
     <% end %>
     
         <h4>Break Times:</h4>
-       <div id='break-list' class='list-group'>
+      
+  
+
+    <% end %>
+    <div id='break-list' class='list-group'>
           <% @shift.breaks.each_with_index do |break_ended, i | %>
             
             <li data-behavior="shift" id='break_<%= i %>' class='col-md-6 list-group-item'>
@@ -46,10 +50,7 @@
       <% end %>
       
       </div> 
-  
-
-    <% end %>
-
+     
 
    
     <% if @shift.on_break? %>

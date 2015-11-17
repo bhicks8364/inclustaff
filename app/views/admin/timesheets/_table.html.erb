@@ -14,7 +14,7 @@
 	<tbody>
 	
 	
-		<% @timesheets.each do |timesheet| %>
+		<% @timesheets.order(week: :desc).each do |timesheet| %>
 	<tr data-behavior="timesheet" data-id="<%= timesheet.id %>">
 		<td><strong><%= timesheet.week_ending %></strong></td>
 		<td class='text-left'><%= link_to timesheet.order.company, admin_company_path(timesheet.company), class: 'table-link'  %></td>

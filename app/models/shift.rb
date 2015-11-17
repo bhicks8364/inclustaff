@@ -133,7 +133,7 @@ class Shift < ActiveRecord::Base
   end
   
   def remove_all_breaks!
-    state = (time_out > time_in) ? "Clocked In" : "Clocked In"
+    state = (time_out > time_in) ? "Clocked Out" : "Clocked In"
     update(
       breaks:        [],
       break_in:      [],
@@ -197,7 +197,7 @@ class Shift < ActiveRecord::Base
   
   def reg_earnings
       @payable_hours = pay_time
-      self.earnings = job.pay_rate * @payable_hours
+      self.earnings = pay_rate * @payable_hours
       self.time_worked = @payable_hours
   end
   def set_week

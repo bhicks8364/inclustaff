@@ -4,10 +4,11 @@ namespace :db do
   task :populate => :environment do
 	require 'populator'
 	require 'ffaker'
+	require 'faker'
 		def range (min, max)
 	    	rand * (max-min) + min
 		end
-	
+		Apartment::Tenant.switch!('vector')
 		Company.populate 5 do |company|
 			company.name = FFaker::Company.name
 			company.city = FFaker::Address.city
@@ -15,23 +16,25 @@ namespace :db do
 			company.zipcode = FFaker::AddressUS.zip_code
 			company.address = FFaker::AddressUS.street_address
 			company.phone_number = FFaker::PhoneNumber.phone_number
+			company.agency_id = 21
+			company.contact_name = Faker::Name.name
+			company.contact_email = Faker::Internet.safe_email
 			Order.populate(1..5) do |order|
 				order.company_id = company.id
-				order.agency_id = 1..2
-				order.title = FFaker::Skill.specialty 
+				order.agency_id = 21
+				order.needed_by = Faker::Date.forward(10)
+				order.title = FFaker::Company.position
 				order.notes = FFaker::BaconIpsum.sentences
 				order.number_needed = 1..4
+				order.pay_range = [ "$8.10 - $10.00","$10.00 - $12.00","$12.00 - $15.00", "$15.00 - $18.00", "$18.00 - $22.00", "$22.00 +  "]
+				order.est_duration = [ "Temp-to-Hire", "Direct-Hire", "Temporary"]
+				order.dt_req = [ "None Required", "Yes - 5 panel screen", "Yes - 10 panel screen"]
+				order.bg_check = [ "None Required", "Yes - No Felonies", "Yes - Case by case"]
+				order.shift = [ "1st shift", "2nd shift", "3rd shift", "Flexible"]
+				order.stwb = [true, false]
+				order.heavy_lifting = [true, false]
 				order.active = true
-				orber.urgrnt = false
-				# Job.populate(1..2) do |job|
-				# 	job.order_id = order.id
-				# 	job.title = FFaker::Job.title
-				# 	job.employee_id = job.id
-				# 	job.pay_rate = range(8.10, 27.57)
-				# 	job.description = FFaker::BaconIpsum.sentences
-				# 	job.active = true
-				# 	puts job.employee_id
-			 # 	end
+				order.urgent =  [true, false]
 			end
 			
 		end
@@ -42,10 +45,23 @@ namespace :db do
   task :pop_shifts => :environment do
 	require 'populator'
 	require 'ffaker'
-	def random_hour(from, to)
-  		(Date.today + 1.hour + rand(0..60).minutes).to_datetime
+	require 'faker'
+	# require "as-duration"
+	# def random_hour(from, to)
+ # 		(Date.today + 1.hour + rand(0..60).minutes).to_datetime
+	# end
+	Apartment::Tenant.switch!('ontimestaffing')
+	Shift.populate 30 do |shift|
+		shift.time_in = Faker::Time.between(6.months.ago, 3.weeks.ago, :morning)
+		shift.time_out = shift.time_in + rand(6...10).hours
+		shift.job_id = rand(1...15)
+		shift.state = "Clocked Out"
+		shift.breaks = []
+		
+		puts shift.time_in
+		puts shift.time_out
 	end
-	puts random_hour(10, 15)
+	
 		
   end
 
@@ -55,7 +71,7 @@ namespace :db do
 	require 'populator'
 	require 'ffaker'
 	password = "password"
-	Apartment::Tenant.switch!('daystaff')
+	Apartment::Tenant.switch!('vector')
 	  User.populate 50 do |user|
 	  	user.agency_id = 20
 		user.first_name = FFaker::Name.first_name
@@ -95,21 +111,23 @@ namespace :db do
   task :pop_admin => :environment do
 	require 'populator'
 	require 'ffaker'
+	require "as-duration"
 	password = "password"
 	  
-	  Agency.populate 1 do |agency|
-		agency.name = "Global Technical Recruiters"
-		puts agency.name
-	  end
-	  Agency.populate 2 do |agency|
-		agency.name = FFaker::Company.name
-		puts agency.name
-	  end
+	 # Agency.populate 1 do |agency|
+		# agency.name = "Global Technical Recruiters"
+		# puts agency.name
+	 # end
+	 # Agency.populate 2 do |agency|
+		# agency.name = FFaker::Company.name
+		# puts agency.name
+	 # end
+	 Apartment::Tenant.switch!('ontimestaffing')
 	  Admin.populate 1 do |admin|
 		admin.first_name = "Brittany"
 		admin.last_name = "Hicks"
 		admin.email = "bhicks@email.com"
-		admin.agency_id = 1
+		admin.agency_id = 21
 		admin.role = "Owner"
 		admin.encrypted_password = Admin.new(:password => password).encrypted_password
 		admin.sign_in_count = 0
@@ -182,18 +200,6 @@ namespace :db do
 		admin.failed_attempts = 0
 		puts admin.first_name
 	  end
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
 	  
 	  
 	  

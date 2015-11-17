@@ -45,17 +45,21 @@
 @import "mainpage";
 body {
   // padding-top: 70px;
-  background-image: url('http://www.planwallpaper.com/static/images/518079-background-hd.jpg');
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center;
+background: url(colorful-triangles-background.jpg) no-repeat center center fixed; 
+  
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 #content-wrapper {
   // padding-top: 70px;
-  background-image: url('http://www.planwallpaper.com/static/images/518079-background-hd.jpg');
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center;
+    background: rgba(21, 19, 19, 0.62);
+  // background-image: url(image-path('blur-background-preview.jpg')) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
   
   
 }
