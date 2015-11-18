@@ -50,6 +50,7 @@ class User < ActiveRecord::Base
   
   
   scope :unassigned, -> { joins(:employee).merge(Employee.unassigned)}
+  scope :available, -> { joins(:employee).merge(Employee.available)}
   scope :ordered_by_last_name, -> { order(last_name: :asc) }
   # before_save :set_code
   

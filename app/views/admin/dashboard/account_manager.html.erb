@@ -10,7 +10,7 @@
 </div>
 <div class="btn-group">
   <button class="btn btn-primary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Large button <span class="caret"></span>
+    Jump to... <span class="caret"></span>
   </button>
   <ul class="list-group dropdown-menu">
     <%= link_to admin_companies_path, class: 'list-group-item list-group-item-info' do %>
@@ -52,14 +52,18 @@
 </div>
 	<div class='col-md-6 well'>
 		<h3 class='text-center'>Open Job Orders</h3>
-		<%= render @orders.needs_attention %>
-	<%= will_paginate @orders %>
+			<% if @current_admin.account_orders.filled.any? %>
+		<%= render @current_admin.account_orders.filled %>
+
+	<% else %>
+	<h4>No filled job orders</h4>
+	<% end %>
 	</div>
 	<div class='col-md-6 well'>
 		<h3 class='text-center'>Filled Job Orders</h3>
-		<% if @orders.filled.any? %>
-		<%= render @orders.filled %>
-	<%= will_paginate @orders  %>
+		<% if @current_admin.account_orders.filled.any? %>
+		<%= render @current_admin.account_orders.filled %>
+
 	<% else %>
 	<h4>No filled job orders</h4>
 	<% end %>

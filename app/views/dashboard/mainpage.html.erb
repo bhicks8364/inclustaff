@@ -1,48 +1,27 @@
 <div class='col-md-12'>
+    
     <div id='front-headline' class='text-center'>
        
          <h1 class='text-center'>Optimize your workforce & maximize your profits.</h1>
-         <h4 class='text-center'>From the first punch to the final invoice, IncluStaff does it all</h4>
+         <h4 class='text-center white'>From the first punch to the final invoice, IncluStaff does it all</h4>
             
 
-            <%= link_to "Features", features_path, class: 'btn btn-primary' %>
-   
-    </div>
-    
-   
+          
   
+    </div>
+     
     
-    
-   <div class='row'>
-        <div class="col-md-4">
-        <div class='dark'>
-            <%= image_tag("http://ldssmile.com/wp-content/uploads/2014/01/four-business-people-watching-clock-time-for-social-media.jpg", class: 'feature-pic') %>
-           <h2 class='text-center'>Track Hours from Any Location</h2>
-                <h5 class='text-center'> No more paper timecards! </h5>
-                    <p>Allows employees clock in or out from any computer or mobile device.</p>
-            </div>
-        </div>
-      <div class="col-md-4">
-            <div class=''>
-          <%= image_tag("http://cdn2.hubspot.net/hub/219533/hubfs/uscybervault/ID-100314794.jpg?t=1440774938432&width=400&height=272&t=1441042923377", class: 'feature-pic') %>
-            
-                <h2 class='text-center'>Easily Integrate your Payroll System</h2>
-                <h5 class='text-center'>Cut your processing time in HALF!</h5>
-                    <p>Choose to upload Excel/CSV or connect directly to your existing database. </p>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class=''><%= image_tag("http://www.680news.com/wp-content/blogs.dir/sites/2/2013/10/business-expansion-stock.jpg", class: 'feature-pic') %>
-         
-             <h2 class='text-center'>Highlight your Top Performers</h2>
-             <h5 class='text-center'>Quickly identify your All-Stars!</h5>
-                
-      
-            <p>Easily view bill & fill rates for your entire team with a single click.</p>
+    <%= image_tag("flow_white.png", class: 'col-md-9 dark') %>
+ 
+     <div class='col-md-3'>
+  
+ 
+         <h2 class='text-center white'>One solution with benefits for everyone!</h2>
+        <%= render 'main_features' %>
+        <%= render 'inquiries/form' %>
+    </div>
+   
 
-            </div>
-        </div>
-   </div>
 </div>
 
 

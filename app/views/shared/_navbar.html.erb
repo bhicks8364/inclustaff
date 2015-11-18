@@ -8,28 +8,28 @@
 	        <span class="icon-bar"></span>
 	      </button>
 	      <% if @current_agency.present? %>
-		<%= link_to root_url, id: "logo", class: "navbar-brand col-md-3 col-sm-3 col-xs-12" do %>
-			<%= @current_agency.name.titleize %>	
+		<%= link_to root_url, id: "logo", class: "navbar-brand" do %>
+			<%= @current_agency.name.titleize %>
+			
 			<% end %>
 		<% else %>
 			<%= link_to root_url, id: "logo", class: "" do %>
 			       <%= image_tag("incluStaff_logo.png", alt: "Inclustaff") %>
 			 <% end %>
 		<% end %>
+	
+	
 	    </div>
 		
 
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	       <ul class="nav navbar-nav navbar-right">
-	       	
 	       
 				
 	        	
 			<% if @current_agency.nil? %>
-				<li><%= link_to new_agency_path do %>
-						Register Now
-					<% end %>
-				</li>
+			
+				
 			<% else %>
 				<li><%= link_to sign_in_path do %>
 						Sign In
