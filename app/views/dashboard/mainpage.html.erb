@@ -3,23 +3,24 @@
     <div id='front-headline' class='text-center'>
        
          <h1 class='text-center'>Optimize your workforce & maximize your profits.</h1>
-         <h4 class='text-center white'>From the first punch to the final invoice, IncluStaff does it all</h4>
-            
+         <h2 class='text-center white'>From the first punch to the final invoice, IncluStaff does it all</h2>
+  
+    </div>
 
-          
-  
-    </div>
-     
+     <%= render 'front_info' %>
     
-    <%= image_tag("flow_white.png", class: 'col-md-9 dark') %>
- 
-     <div class='col-md-3'>
-  
- 
-         <h2 class='text-center white'>One solution with benefits for everyone!</h2>
+
+     <div class='col-md-12 dark'>
+         <div class='col-md-3'>
+     <h2 class='text-center white'>One solution with benefits for everyone!</h2>
         <%= render 'main_features' %>
-        <%= render 'inquiries/form' %>
     </div>
+   
+        
+         <%= image_tag("flow_white.png", class: 'col-md-9') %>
+     </div>
+     
+   
    
 
 </div>

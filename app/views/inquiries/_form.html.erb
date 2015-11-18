@@ -1,21 +1,20 @@
-<div class='form-group'>
-  <h2 class='white'> Request more info</h2>
-  <%= simple_form_for Inquiry.new do |f| %>
+
+
+  <%= simple_form_for Inquiry.new, wrapper_html: {class: 'form-inline'} do |f| %>
   <%= f.error_notification %>
+  
 
-
-    <%= f.input :agency_name, placeholder: "Agency Name", label: false, input_html: {class: 'form-control'}   %>
-    <%= f.input :name, placeholder: "Your Name", label: false, input_html: {class: 'form-control'}   %>
+   
+    <%= f.input :name, placeholder: "Name", label: false, input_html: {class: ''}   %>
     
     
-    <%= f.input :email, placeholder: "Your Email", label: false, input_html: {class: 'form-control'}  %>
+    <%= f.input :email, placeholder: "Email", label: false, input_html: {class: ''}  %>
   
    
   
 
  
-    <%= f.submit 'Get Notified!', class: 'btn btn-primary' %>
+    <%= f.submit 'Request Info', class: 'btn btn-primary btn-sm' %>
  
 <% end %>
 
-</div>
