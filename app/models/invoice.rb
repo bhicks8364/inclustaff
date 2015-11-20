@@ -34,6 +34,8 @@ class Invoice < ActiveRecord::Base
     
     scope :unpaid, -> { where(paid: false)}
     scope :paid, -> { where(paid: true)}
+    scope :past, -> { where("week < ?", Date.today.beginning_of_week.cweek) }
+    scope :past_due, -> { unpaid.where("due_by < ?", Date.today) }
     
     def defaults
        
@@ -49,6 +51,9 @@ class Invoice < ActiveRecord::Base
     def update_totals!
         amount = timesheets.sum(:total_bill)
         self.update(total: amount)
+    end
+    def mark_as_paid!
+        self.update(paid: true, date_paid: Date.today, amt_paid: total)
     end
     def total_amount
         self.timesheets.sum(:total_bill) if self.timesheets.any?

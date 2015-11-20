@@ -110,7 +110,7 @@ gem "sucker_punch"
 
 gem 'local_time', '~> 1.0.0'
 
-# DONT EXACTLYYYYY KNOW WHAT THIS STUFF IS EITHER 
+
 gem 'html-pipeline', '~> 1.11.0'
 gem 'github-markdown', '~> 0.6.7'
 gem 'gemoji', '~> 2.1.0'

@@ -1,0 +1,21 @@
+<%= div_for invoice do %>
+<% if current_page?(action: "show", controller: "admin/companies") %>
+<%= link_to "View", admin_invoice_path(invoice) %><br>
+<% else %>
+<%= invoice.company.name %><br>
+<% end %>
+ 
+      
+     <strong> Week:</strong>  <%= invoice.week_ending %><br>
+       
+  
+       <strong>Total: </strong> <%= number_to_currency(invoice.balance) %><br>
+     <% if invoice.paid? %>
+      <strong>Amount paid</strong>  <%= number_to_currency(invoice.amt_paid) %><br>
+       <strong>Paid on: </strong> <%= invoice.paid_on %><br>
+       <% else %>
+       <strong>Due by: </strong> <%= invoice.due_by.stamp('11/13') %><br>
+       <small><%= distance_of_time_in_words(invoice.due_by, Date.today) %></small>
+       <% end %>
+
+<% end %>

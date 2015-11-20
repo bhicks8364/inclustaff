@@ -1,11 +1,6 @@
 
 <div class='col-md-12 transbox'>
-	<%= t = Time.current %>
-	<hr>
-<%	x = t + 8.hours %>
-	<% 5.times do |n|   %>
- <%= t + n.days %> -  <%= x + n.days %><br>
- <% end %>
+
   <h1 class='page-header'><%= @current_agency.name.titleize %>'s Recruiting Dashboard</h1>
   
   <div class="col-md-12 ">
@@ -25,9 +20,7 @@
 					<div class="tab-content">
 						<div class="tab-pane fade in active" id="tab-home">
 								<h3 class='text-center'>Open Job Orders</h3>
-								<div class='well'>
-						
-									</div>
+								
 									<div class='well'>
 										<%= render 'admin/dashboard/orders_by_company' %>
 									</div>

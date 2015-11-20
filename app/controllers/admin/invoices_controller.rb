@@ -75,9 +75,10 @@ class Admin::InvoicesController < ApplicationController
     @invoice = Invoice.includes(:company).find(params[:id])
       skip_authorization
       if @invoice.unpaid? && @invoice.timesheets_approved?
-      
-        default_amount = @invoice.total
-        @invoice.update(paid: true, date_paid: Date.today, amt_paid: default_amount)
+        @invoice.mark_as_paid!
+        
+        # default_amount = @invoice.total
+        # @invoice.update(paid: true, date_paid: Date.today, amt_paid: default_amount)
         @company = @invoice.company
         respond_to do |format|
           format.js

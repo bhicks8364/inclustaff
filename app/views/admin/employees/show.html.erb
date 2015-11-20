@@ -20,14 +20,18 @@
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
-        <li role="presentation"><a href="#matching_orders" aria-controls="matching_orders" role="tab" data-toggle="tab">Recommended Positions</a></li>
-        <li role="presentation"><a href="#payroll" aria-controls="payroll" role="tab" data-toggle="tab">Payroll Information</a></li>
+        
+        
         <li role="presentation"><a href="#work_history" aria-controls="work_history" role="tab" data-toggle="tab">Work History</a></li>
         <li role="presentation"><a href="#skills-tab" aria-controls="skills-tab" role="tab" data-toggle="tab">Skills</a></li>
         <% if @employee.assigned? %>
-        <li role="presentation"><a href="#current-job" aria-controls="current-job" role="tab" data-toggle="tab">Current Job</a></li>
+        <li role="presentation"><a href="#payroll" aria-controls="payroll" role="tab" data-toggle="tab">Payroll Information</a></li>
+        <li role="presentation"><a href="#aca" aria-controls="aca" role="tab" data-toggle="tab">ACA Information</a></li>
+        <li role="presentation"><a href="#current-job" aria-controls="current-job" role="tab" data-toggle="tab">Time Clock</a></li>
         <li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li>
         <li role="presentation"><a href="#shifts" aria-controls="shifts" role="tab" data-toggle="tab">Shifts</a></li>
+        <% else %>
+        <li role="presentation"><a href="#matching_orders" aria-controls="matching_orders" role="tab" data-toggle="tab">Recommended Positions</a></li>
         <% end %>
         <% if @current_admin.present? %>
         <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
@@ -39,6 +43,33 @@
       <div role="tabpanel" class="tab-pane fade in active" id="home">
            <div class='well well-sm text-center'><span class='pull-left'><i class="fa fa-envelope-o"></i>  <%= @employee.email %></span><%= @user.address %>, <%= @user.state %> <%= @user.zipcode %><span class='pull-right'><i class="fa fa-phone-square"></i>  <%= @employee.phone_number %></span> </div>
         
+            <div class='col-md-4'>
+            <h3>Availablility</h3>
+                <div class='list-group'>
+                     <li class='list-group-item list-group-item-info'>
+                         <strong>Monday</strong> - <%= @employee.monday %>
+                     </li>
+                     <li class='list-group-item list-group-item-info'>
+                         <strong>Tuesday</strong> - <%= @employee.tuesday %>
+                     </li>
+                     <li class='list-group-item list-group-item-info'>
+                         <strong>Wednesday</strong> - <%= @employee.wednesday %>
+                     </li>
+                     <li class='list-group-item list-group-item-info'>
+                         <strong>Thursday</strong> - <%= @employee.thursday %>
+                     </li>
+                     <li class='list-group-item list-group-item-info'>
+                         <strong>Friday</strong> - <%= @employee.friday %>
+                     </li>
+                     <li class='list-group-item list-group-item-info'>
+                         <strong>Saturday</strong> - <%= @employee.saturday %>
+                     </li>
+                     <li class='list-group-item list-group-item-info'>
+                         <strong>Sunday</strong> - <%= @employee.sunday %>
+                     </li>
+                 
+                </div>
+            </div>
      <% if @employee.jobs.inactive.any? %>
      <div class='list-group col-md-6 well'>
               <h5 class='text-center'>Past Job Assignments</h5>
@@ -99,10 +130,27 @@
     </div>
       <!--EMPLOYEE PROFILE TAB-->
     <div role="tabpanel" class="tab-pane fade" id="payroll">
+         <h2 class="text-center">ACA Information  </h2>
+         
+        <div class='col-md-4 well'>
+            <%= @employee.ssn %><br>
+          CODE:  <%= @employee.code %><br>
+           <strong>Last sign in:</strong> <%= @user.current_sign_in_at %> -
+              <%= @user.current_sign_in_ip %>
+        </div>
+      
+    
+          
+          
+        
+    
+      </div>
+      <!--ACA TAB-->
+         <div role="tabpanel" class="tab-pane fade" id="aca">
          <h2 class="text-center">Payroll Information  </h2>
          <div class='col-md-4'>
             <h3>By Week <small>over 30 hours</small></h3>
-            <div class='list-group'><% @employee.shifts.report_by_week.each do |k, v| %>
+            <div class='list-group scroll300'><% @employee.shifts.report_by_week.each do |k, v| %>
                  <li class='list-group-item list-group-item-info'><strong><%=  k.stamp("Oct 2, 2015") %> </strong> -  Total Hours: <%= v.round(2) %>
                      <span class='label label-info black pull-right'><% if v > 30 %>Eligible<% else %> Not Eligible <% end %></span>
                  
@@ -113,7 +161,7 @@
         
         <div class='col-md-4'>
         <h3>By Month <small>over 120 hours</small></h3>
-        <div class=' list-group'><% @employee.shifts.report_by_month.each do |k, v| %>
+        <div class=' list-group scroll300'><% @employee.shifts.report_by_month.each do |k, v| %>
              <li class='list-group-item list-group-item-info'><strong><%=  k.stamp("October 2015") %> </strong> -  Total Hours: <%= v.round(2) %>
                  <span class='label label-info black pull-right'><% if v > 120 %>Eligible<% else %> Not Eligible <% end %></span>
              </li>
@@ -123,7 +171,7 @@
         
         <div class='col-md-4'>
             <h3>By Year <small>over 1560 hours</small></h3>
-            <div class='list-group'><% @employee.shifts.report_by_year.each do |k, v| %>
+            <div class='list-group scroll300'><% @employee.shifts.report_by_year.each do |k, v| %>
                  <li class='list-group-item list-group-item-info'><strong><%=  k.stamp("2015") %> </strong> -  Total Hours: <%= v.round(2) %>
                      <span class='label label-info black pull-right'><% if v > 1560 %>Eligible<% else %> Not Eligible <% end %></span>
                  
@@ -131,12 +179,7 @@
                  <% end %>
             </div>
         </div>
-        <div class='col-md-4 well'>
-            <%= @employee.ssn %><br>
-          CODE:  <%= @employee.code %><br>
-           <strong>Last sign in:</strong> <%= @user.current_sign_in_at %> -
-              <%= @user.current_sign_in_ip %>
-        </div>
+       
       
     
           
