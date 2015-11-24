@@ -3,25 +3,41 @@
 
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-  Launch demo modal
-</button>
+
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
-    <div class="modal-content dark">
+    <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        <h4 class="modal-title black" id="myModalLabel">Request Demo</h4>
       </div>
-      <div class="modal-body">
-        <%= render 'inquiries/form' %>
-      </div>
-      <div class="modal-footer">
+     
+         <%= simple_form_for Inquiry.new, wrapper_html: {class: 'form-inline'} do |f| %>
+          <div class="modal-body">
+  <%= f.error_notification %>
+  
+
+   
+    <%= f.input :name, placeholder: "Name", label: false, input_html: {class: ''}   %>
+    
+    
+    <%= f.input :email, placeholder: "Email", label: false, input_html: {class: ''}  %>
+  
+    </div>
+  
+<div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <%= f.submit 'Send', class: 'btn btn-primary' %>
       </div>
+ 
+    
+ 
+<% end %>
+
+     
+      
     </div>
   </div>
 </div>

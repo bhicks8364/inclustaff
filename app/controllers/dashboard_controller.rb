@@ -1,5 +1,5 @@
 class DashboardController < ApplicationController
-  # before_filter :authenticate_admin!
+
   layout :determine_layout
   
   def home
@@ -58,6 +58,12 @@ class DashboardController < ApplicationController
       skip_authorization
   end
   def features
+      skip_authorization
+  end
+  def contact
+      skip_authorization
+  end
+  def about
       skip_authorization
   end
 

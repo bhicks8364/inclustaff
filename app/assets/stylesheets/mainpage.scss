@@ -2,6 +2,10 @@
     margin:auto;
     // border: solid 8px green;
     padding: 5px;
+    min-height: 200px;
+    // background-image:
+    //     linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+    //     url(InclusStaff-twitter-cover.png);
     
 }
 img.feature-pic {
@@ -22,4 +26,32 @@ img.feature-pic {
 }
 .box250 {
     max-height: 250px;
+}
+#main-wrapper {
+    min-height: 600px;
+  // padding-top: 70px;
+    background: white;
+  background: url(street.png) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+#about-wrapper {
+  min-height: 300px;
+  background: url(InclusStaff-twitter-cover.png) no-repeat center center fixed; 
+}
+#macbook {
+
+  background: url(macbook.jpg) no-repeat center center fixed; 
+  background-size: contain;
+  background-origin: content-box;
+}
+#main-title {
+    
+    // background-image:
+    //     linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+    //     url(colorful-triangles-background.jpg);
+    // background: url(street.png)  
+    // background: rgba(21, 19, 19, 0.62);
 }

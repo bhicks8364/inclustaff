@@ -32,7 +32,7 @@ class InquiriesController < ApplicationController
   skip_authorization
     respond_to do |format|
       if @inquiry.save
-        format.html { redirect_to root_path, notice: 'Thank you! Your inquiry was successfully submitted.' }
+        format.html { redirect_to root_path, notice: 'Thanks for your interest!' }
         format.json { render :show, status: :created, location: @inquiry }
       else
         format.html { render :new }

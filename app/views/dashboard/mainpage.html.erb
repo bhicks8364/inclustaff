@@ -1,24 +1,32 @@
 <div class='col-md-12'>
-  <%= render 'shared/mainpage_bar' %>
-    <div id='front-headline' class='text-center'>
+ <div id='front-headline' class='text-center'>
        
-         <h1 class='text-center'>Optimize your workforce & maximize your profits.</h1>
-         <h2 class='text-center white'>From the first punch to the final invoice, IncluStaff does it all</h2>
+         <h1 id='main-title' class='text-center black'>Optimize your workforce & maximize your profits.</h1>
+         
   
     </div>
-
-     <%= render 'front_info' %>
     
 
+  
+    
+    
+<%= render 'quick_nav' %>
      <div class='col-md-12 dark'>
+        
          <%= render 'prelaunch' %>
-         <div class='col-md-3'>
+         <div class='col-md-4'>
      <h2 class='text-center white'>One solution with benefits for everyone!</h2>
         <%= render 'main_features' %>
     </div>
+    <div class='col-md-8'>
+        <h2 class='text-center white'>From the first punch to the final invoice, IncluStaff does it all</h2>
+        <br>
+     <%= render 'front_info' %>
+    </div>
+     
    
         
-         <%= image_tag("flow_white.png", class: 'col-md-9') %>
+        
      </div>
      
    

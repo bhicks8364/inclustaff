@@ -45,8 +45,11 @@
 @import "mainpage";
 body {
   // padding-top: 70px;
-background: url(colorful-triangles-background.jpg) no-repeat center center fixed; 
-  
+// background: url(colorful-triangles-background.jpg) no-repeat center center fixed; 
+  background-color: transparent;
+  background-image:
+        linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+        url(colorful-triangles-background.jpg);
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -54,8 +57,8 @@ background: url(colorful-triangles-background.jpg) no-repeat center center fixed
 }
 #content-wrapper {
   // padding-top: 70px;
-    background: rgba(21, 19, 19, 0.62);
-  // background-image: url(image-path('blur-background-preview.jpg')) no-repeat center center fixed;
+    // background: rgba(21, 19, 19, 0.62);
+  background: url(colorful-triangles-background.jpg) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -63,6 +66,7 @@ background: url(colorful-triangles-background.jpg) no-repeat center center fixed
   
   
 }
+
 // #my_navbar {
 //   background: rgba(21, 19, 19, 0.62);
 //   // background:transparent;
@@ -482,8 +486,8 @@ div.transbox {
   background-color: rgba(87, 105, 113, 0.62);
   color: white;
 }
-.tech-people {
-  background-image: url('tech-people.png');
+.street {
+  background-image: url('street.png');
   background-repeat: no-repeat;
   background-attachment: absolute;
   background-size: 100% 100%;

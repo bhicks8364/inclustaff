@@ -26,16 +26,19 @@
 	<% elsif company_admin_signed_in? %>
 		<%= render 'company/shared/navbar' %>
 		<% else %>
+		<div id='main-container' class="container">
 		<%= render 'shared/navbar' %>
+		
 	<%end %>
-	<div class="container">
+	
+		
 		<div class="row">
 	
 		<% if company_admin_signed_in? %><%= render 'company/sidebars/company_sidebar' %><% end %>
 		<% if user_signed_in? %><%= render 'employee/sidebars/employee_sidebar' %><% end %>
 			<% if signed_in? == false %>
 			
-				<div class="col-md-12" id="content-wrapper">
+				<div class="col-md-12" id="main-wrapper">
 					
 			<% else %>
 				<div class="col-md-10" id="content-wrapper">

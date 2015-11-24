@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   root 'dashboard#home'
   get 'features' => 'dashboard#features'
   get 'contact' => 'dashboard#contact'
+  get 'about' => 'dashboard#about'
   
   resources :agencies
   resources :inquiries
