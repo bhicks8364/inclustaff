@@ -8,7 +8,7 @@
  
   <div class='col-md-6'>
    
-        <h4><%= @shift.state.humanize %> <%= shift_times_in_words(@shift) %> ago</h4>
+        <h4> Clocked in <%= shift_times_in_words(@shift) %> ago</h4>
 
    <%= render 'admin/jobs/clock', job: @job %>
      <h3>  Hours worked: <%= @shift.hours_worked %></h3>

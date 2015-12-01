@@ -3,6 +3,7 @@ class Admin::DashboardController < ApplicationController
     layout 'admin_layout'
     
     def owner
+       @activities = PublicActivity::Activity.all
 
       @current_agency = current_admin.agency
       @jobs = @current_agency.jobs if @current_agency.present?

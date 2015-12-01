@@ -52,11 +52,12 @@ namespace :db do
 	# end
 	Apartment::Tenant.switch!('ontimestaffing')
 	Shift.populate 30 do |shift|
-		shift.time_in = Faker::Time.between(6.months.ago, 3.weeks.ago, :morning)
+		shift.time_in = Faker::Time.between(Date.today.beginning_of_week, Date.today, :morning)
 		shift.time_out = shift.time_in + rand(6...10).hours
-		shift.job_id = rand(1...15)
+		shift.job_id = 1...18
 		shift.state = "Clocked Out"
 		shift.breaks = []
+
 		
 		puts shift.time_in
 		puts shift.time_out

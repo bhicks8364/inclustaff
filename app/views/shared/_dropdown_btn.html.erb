@@ -1,0 +1,42 @@
+<div class="btn-group">
+  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Jump to... <span class="caret"></span>
+  </button>
+  <ul class="list-group dropdown-menu">
+    <%= link_to admin_companies_path, class: 'list-group-item list-group-item-info' do %>
+		<i class="fa fa-building-o"></i>
+			<span>All Companies</span>
+		<% end %>
+	
+	<%= link_to admin_orders_path, class: 'list-group-item list-group-item-info' do %>
+		<i class="fa fa-university"></i>
+		
+			<span>Orders</span>
+		<% end %>
+	
+
+	<%= link_to admin_invoices_path, class: 'list-group-item list-group-item-info' do %>
+		<i class="fa fa-money"></i>
+		
+			<span>Invoices</span>
+		<% end %>
+	
+
+
+	<%= link_to admins_path, class: 'list-group-item list-group-item-info' do %>
+		<i class="fa fa-users"></i>
+			<span>Agency Users</span>
+		<% end %>
+	
+	<%= link_to admin_employees_path, class: 'list-group-item list-group-item-info' do %>
+		<i class="fa fa-users"></i>
+			<span>Employees</span>
+		<% end %>
+	
+	<%= link_to admin_timesheets_path, class: 'list-group-item list-group-item-info' do %>
+		<i class="fa fa-file-text-o"></i>
+			<span>Timesheets</span>
+		<% end %>
+	
+  </ul>
+</div>

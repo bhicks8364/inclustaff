@@ -68,7 +68,11 @@
       
         <div class='list-group'>
           <% @employee.matching_orders.each do |order| %>
+          <% if user_signed_in? %>
               <%= render 'employee/orders/order', order: order %>
+              <% elsif admin_signed_in? %>
+              <%= render 'admin/orders/order', order: order %>
+              <% end %>
           <% end %>
         </div>
     </div>

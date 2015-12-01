@@ -73,13 +73,18 @@ class AdminsController < ApplicationController
     
     def show
       @admin = Admin.find(params[:id])
+      @orders = @admin.job_orders
+      @activities = PublicActivity::Activity.all
+      if @admin.account_manager?
+        render 'account_manager'
+      end
       @events = @admin.events
             
       # @employees = @current_agency.employees.assigned
       @candidates = Employee.unassigned
       @open_agency_orders = @current_agency.orders.needs_attention
-      @orders = @admin.account_orders if @admin.account_manager?
-      @orders = @current_agency.orders if @admin.owner? || @admin.payroll?
+      # @orders = @admin.account_orders if @admin.account_manager?
+      # @orders = @current_agency.orders if @admin.owner? || @admin.payroll?
       @recruiter_jobs = @admin.recruiter_jobs if @admin.recruiter?
       
       @jobs = Job.includes(:timesheets) if @admin.owner? || @admin.payroll? || @admin.account_manager?

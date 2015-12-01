@@ -98,9 +98,9 @@ class Admin::TimesheetsController < ApplicationController
       approved_by_type = @timesheet.approved? ? nil : "Admin"
       state = @timesheet.approved? ? 'pending' : 'approved'
       @timesheet.update(approved_by: approved_by, approved_by_type: approved_by_type, state: state)
-      
+      @timesheet.create_activity key: "timesheet.#{state}", owner: current_admin
       user_approved = @timesheet.approved? ? @timesheet.user_approved : @timesheet.state
-      current_admin.events.create(action: state, eventable: @timesheet)
+      # current_admin.events.create(action: state, eventable: @timesheet)
       render json: { id: @timesheet.id, approved: @timesheet.approved?, 
                     state: @timesheet.state.upcase, user_approved: user_approved, clocked_in: @timesheet.clocked_in? }
     else
@@ -191,7 +191,7 @@ class Admin::TimesheetsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def timesheet_params
       params.require(:timesheet).permit(:week, :job_id, :reg_hours, :ot_hours, :gross_pay, 
-        :shifts_attributes => [:id, :state, :job_id, :needs_adj, :employee_id, :note, 
+        :shifts_attributes => [:id, :state, :job_id, :needs_adj, :employee_id, :note, :paid_breaks, :pay_rate,
         :time_in, :time_out, :break_out, :break_in, :break_duration, :in_ip, :out_ip, :_destroy])
     end
 end

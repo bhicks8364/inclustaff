@@ -93,9 +93,9 @@ class Admin < ActiveRecord::Base
   end
   def companies
     if recruiter?
-      Company.by_recuriter(id)
+      Company.by_recuriter(id).distinct
     elsif account_manager?
-      Company.by_account_manager(id)
+      Company.by_account_manager(id).distinct
     else
       Company.all
     end

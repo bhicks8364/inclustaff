@@ -6,6 +6,10 @@ class SubdomainConstraint
 end
 Rails.application.routes.draw do
   
+  get 'activities' => 'activities#index'
+
+  get 'activities/:id', to: 'activities#show', as: :activity
+
   root 'dashboard#home'
   get 'features' => 'dashboard#features'
   get 'contact' => 'dashboard#contact'

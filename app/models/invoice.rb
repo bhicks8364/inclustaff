@@ -16,6 +16,7 @@
 #
 
 class Invoice < ActiveRecord::Base
+    include PublicActivity::Common
     belongs_to :company
     belongs_to :agency
     has_many :timesheets

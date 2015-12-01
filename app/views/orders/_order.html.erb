@@ -1,19 +1,21 @@
-<%= link_to admin_company_order_path(order.company, order), class: 'list-group-item list-group-item-info border' do %>
-<p class="list-group-item-heading text-center"><%=  order.title %> <%= order.pay_range %>
-<span class='badge badge-danger pull-left'><%= order.needed_by.stamp('11/13') %></span>
-</span></p>
-<span class='badge badge-default pull-right'><%= pluralize(order.open_jobs, 'open position') %></span>
-    <p class="list-group-item-text">
-		<small>
-			<%= order.skills.map{|p| p.name.titleize}.join(", ") %>
-			
-		</small>
-	
-	</p>
-<% end %>
- 
+<div class=''>
+   <%= link_to admin_order_path(order), class: 'list-group-item list-group-item-success' do %>
+        <p class='list-group-item-heading'><%= order.company.name %></p>
+       
+        <h5><%= order.title %>
+            <span class='label label-info black pull-right'>Open jobs: <%= order.open_jobs %> </span>
+        </h5>
+       <span class='label label-danger black pull-right'><%= order.needed_by? ? order.needed_by.stamp("Monday 11/12") : "n/a" %></span>
+        <p class='list-group-item-text'><strong><%= order.pay_range %></strong> <small><%= order.account_manager.try(:name) || "Unavailable" %></small></p>
+       
+       <%= order.tag_list%>
+      <% end %>
+     
+      
+      
+</div>
+      
 
-    
  
 
 	

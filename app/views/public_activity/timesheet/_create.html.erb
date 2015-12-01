@@ -1,0 +1,10 @@
+<% if activity.trackable %>
+<%= link_to admin_timesheet_path(activity.trackable_id), class: 'list-group-item list-group-item-success' do %>
+ A timesheet was <strong> created </strong> for  <%= activity.trackable.job.name_title %>
+		<span class='label label-success pull-right'>
+		    <%= date_and_time activity.created_at %>
+		</span>
+<% end %>
+<% else %>
+RECORD DELETED
+<% end %>

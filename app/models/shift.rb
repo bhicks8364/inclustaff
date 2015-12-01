@@ -28,6 +28,7 @@
 #
 
 class Shift < ActiveRecord::Base
+  include PublicActivity::Common
   extend SimpleCalendar
   # has_calendar :attribute => :time_in
   include ArelHelpers::ArelTable
@@ -43,7 +44,7 @@ class Shift < ActiveRecord::Base
   accepts_nested_attributes_for :job
   
 
-  delegate :employee, to: :job
+  # delegate :employee, to: :job
   delegate :order, to: :job
   delegate :manager, to: :job
   delegate :code, to: :employee
@@ -93,10 +94,9 @@ class Shift < ActiveRecord::Base
           ending = Date.today.beginning_of_day
           where(time_in: start..ending)}
 
-  after_save :update_timesheet!
+  # after_save :update_timesheet!, if: :clocked_out?
   before_save :set_week, :set_timesheet, :calculate_break, :reg_earnings
-  after_initialize :set_defaults, if: :new_record?
-  after_initialize :set_pay
+  before_validation :set_defaults, :set_pay
   
   def clocked_in?; state == "Clocked In"; end
   def clocked_out?; state == "Clocked Out"; end
@@ -147,8 +147,8 @@ class Shift < ActiveRecord::Base
     self.break_duration = 0 if break_duration.nil?
   end
   def set_defaults
-      self.employee = job.employee if employee.nil? 
-      self.in_ip = employee.current_sign_in_ip if in_ip.nil?
+      # self.employee = timesheet.employee if employee.nil? 
+      # self.in_ip = employee.current_sign_in_ip if in_ip.nil?
       self.break_out = [] if break_out.nil?
       self.break_in = [] if break_in.nil?
       self.breaks = [] if breaks.nil?

@@ -21,6 +21,7 @@
 #
 
 class Job < ActiveRecord::Base
+    include PublicActivity::Common
     belongs_to :employee
     belongs_to :order, counter_cache: true
     has_many :timesheets

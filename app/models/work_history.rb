@@ -23,6 +23,8 @@
 #
 #
 class WorkHistory < ActiveRecord::Base
+    include PublicActivity::Model
+    tracked
     belongs_to :employee
     include ArelHelpers::ArelTable
     include ArelHelpers::JoinAssociation

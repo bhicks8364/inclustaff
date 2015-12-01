@@ -1,19 +1,43 @@
 
 
 <div class="col-md-12 well form-group nested-fields">
-<div class='col-md-12'>
 
 
-    <%= f.input :state, disabled: true, label: false, wrapper_html: {class: 'col-md-10'} %>
-        <%= link_to_remove_association '<i class="fa fa-trash red fa-1x"></i>'.html_safe, f, class: 'btn btn-tiny'%>
+
+
+
+<div class="form-contol black">
+   <div class="field">
+  
+    <%= f.select :state, ["Clocked In", "Clocked Out"], priority: "Clocked Out" %>
+     <%= link_to_remove_association '<i class="fa fa-trash red fa-1x"></i>'.html_safe, f, class: 'btn btn-tiny'%>
+  </div>
 </div>
-    <div class='center'>
-  Time In:
-        <%= f.input :time_in, as: :datetime, label: false, ampm: true, order: [:month, :day, :hour, :minute], wrapper_html: {class: 'form-inline center'}, input_html: {class: 'form-control'} %>
+<div class="form-inline black clocked-in">
+  <div class="field time-in-field">
+    <%= f.label :time_in, "Time In", class: "white" %>
+    <%= f.datetime_select :time_in, ampm: true %>
+     <%= f.label :time_out, "Time Out", class: "white" %>
+    <%= f.datetime_select :time_out, ampm: true, default: nil %>
+  </div>
+</div>
 
-   Time Out:
-       <%= f.input :time_out, as: :datetime, label: false, ampm: true, order: [:month, :day, :hour, :minute], wrapper_html: {class: 'form-inline center'}, input_html: {class: 'form-control '} %>
-        </div>
+
+<div class="form-group">
+    <label for="Notes">Notes: </label>
+    <%= f.text_area :note, placeholder: "Add a note.", rows: 2, class: "form-control" %>
+</div>
+<div class='form-group'><%= f.input :breaks, as: :array, input_html: {class: "form-control black"} %></div>
+
+
+                <div class='form-inline'>
+                     <%= f.input :paid_breaks %>
+    <%= f.input :pay_rate %>
+  
+   <%= f.input :break_duration %>
+  
+  </div>
+ 
 
 
 </div>

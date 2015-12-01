@@ -1,0 +1,50 @@
+<%= params %>
+<%= current_page?(controller: 'admins', action: 'show') %>
+<%= render 'shared/btn_bar' %>
+<div class="col-md-12">
+<h1 class='page-header'><%= @admin.name.titleize %> <small> <%= @admin.role %></small></h1>
+
+
+	<div class='col-md-6 well'>
+		<h3 class='text-center'>Open Job Orders</h3>
+			<% if @admin.account_orders.needs_attention.any? %>
+		<%= render @admin.account_orders.needs_attention %>
+
+	<% else %>
+	<h4>No filled job orders</h4>
+	<% end %>
+	</div>
+	<div class='col-md-6 well'>
+		<h3 class='text-center'>Filled Job Orders</h3>
+		<% if @admin.job_orders.filled.any? %>
+		<%= render @admin.job_orders.filled %>
+
+	<% else %>
+	<h4>No filled job orders</h4>
+	<% end %>
+	</div>
+    <div class='col-md-4 well well-sm scroll400'>
+    	<h4 class='text-center'>Priority Job Orders<br><small>Needed in the next 3 days</small></h4>
+    	<%= render @admin.job_orders.priority %>
+    </div>
+    
+    <div class='col-md-4 well'>
+    	<h3 class='text-center'>Companies</h3>
+    		<% if @admin.companies.any? %>
+    	<%= render @admin.companies %>
+    
+        <% else %>
+        <h4>No companies to display yet.</h4>
+        <% end %>
+    </div>
+    <div class='col-md-4 well'>
+    	<h3 class='text-center'>Events</h3>
+    		<% if @admin.events.any? %>
+    	<%= render @admin.events %>
+    
+        <% else %>
+        <h4>No events to display yet.</h4>
+        <% end %>
+    </div>
+</div>
+

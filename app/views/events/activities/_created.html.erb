@@ -1,0 +1,11 @@
+<%= link_to admin_shift_path(event.eventable), class: 'list-group-item list-group-item-success' do %>
+	 <%= event.company_admin.try(:name) || event.admin.try(:name) %>
+   <strong>	<%= event.action.humanize.downcase %></strong> <%= event.eventable.name %> 
+    	 
+
+		<span class='label label-success black pull-right' data-toggle="tooltip" title="Current Status">
+		      <small> <%= short_date event.created_at %></small>
+		  
+		</span>
+
+<% end %>

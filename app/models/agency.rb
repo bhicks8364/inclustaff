@@ -64,7 +64,6 @@ class Agency < ActiveRecord::Base
         Timesheet.current_week.order(week: :desc)
     end
     
-    
     def current_billing
         timesheets.current_week.sum(:total_bill)
     end
@@ -79,16 +78,13 @@ class Agency < ActiveRecord::Base
     def last_week_billing
         timesheets.last_week.sum(:total_bill)
     end
-    
-   
-    
-  
+
     private
     def create_tenant
         Apartment::Tenant.create(subdomain)
     end
   
-        # Apartment::Tenant.switch!('ontimestaffing')
+    # Apartment::Tenant.switch!('ontimestaffing')
     # Apartment::Tenant.switch!('gtrjobs')
 
 end

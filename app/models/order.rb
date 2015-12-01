@@ -75,14 +75,15 @@ class Order < ActiveRecord::Base
     scope :off_shift, -> { joins(:jobs).merge(Job.off_shift)}
     scope :needs_attention, -> { where(Order[:number_needed].gt(Order[:jobs_count])) }
     scope :filled, -> { where(Order[:jobs_count].gteq(Order[:number_needed])) }
-    scope :priority, -> { needs_attention.where(Order[:needed_by].lteq(Time.zone.now + 3.days))}
-    scope :newly_added, -> { needs_attention.where(Order[:created_at].gteq(Time.zone.now - 1.day))}
-    scope :overdue, -> { needs_attention.where(Order[:needed_by].lteq(Time.zone.now))}
+    scope :priority, -> { needs_attention.where(Order[:needed_by].lteq(Time.current + 3.days))}
+    scope :newly_added, -> { needs_attention.where(Order[:created_at].gteq(Time.current - 1.day))}
+    scope :overdue, -> { needs_attention.where(Order[:needed_by].lteq(Time.current))}
     
     def defaults
-      self.active = true if self.active.nil?
-      self.urgent = false if self.urgent.nil?
-      self.jobs_count = 0 if self.jobs_count.nil?
+      self.active = true if active.nil?
+      self.urgent = false if urgent.nil?
+      self.jobs_count = 0 if jobs_count.nil?
+      self.number_needed = 0 if number_needed.nil?
     end
    
     def set_mark_up
@@ -116,21 +117,21 @@ class Order < ActiveRecord::Base
     end
     
     def company_name
-      if self.company
-        self.company.name
+      if company
+        company.name
       else
         "Company Unavailable"
       end
     end
     
   def needs_attention?
-    if self.jobs.any?
-      j = self.jobs.count
+    if jobs.any?
+      j = jobs.count
     else
       j = 0
     end
-    if self.number_needed && self.active
-      if self.number_needed > j 
+    if number_needed && active
+      if number_needed > j 
         true
       else
         false
@@ -139,7 +140,7 @@ class Order < ActiveRecord::Base
   end
   
   def filled?
-    if self.number_needed <= self.jobs_count 
+    if number_needed <= jobs_count 
         true
       else
         false
@@ -147,9 +148,7 @@ class Order < ActiveRecord::Base
   end
   
   def open_jobs
-    if self.number_needed != nil && self.jobs != nil
-      self.number_needed - self.jobs.count
-    end
+    number_needed - jobs_count
   end
     
 
@@ -223,12 +222,7 @@ class Order < ActiveRecord::Base
   def matching_employees
      @matching_employees ||= Employee.available.tagged_with([tag_list], :any => true)
   end
-  
-  # def with_skills_matching(skills)
-  #   include?(request.subdomain)
-  # end
-  
-  
+
   def set_note_skills
     note_skills.each do |skill|
         self.skills.find_or_create_by(name: skill.name)
@@ -253,10 +247,10 @@ class Order < ActiveRecord::Base
   end
   def matching_all_requirments 
     skill_list = skills.required.pluck(:name)
-    Employee.tagged_with(skill_list, :match_all => true)
+    Employee.available.tagged_with(skill_list, :match_all => true)
   end
   def matching_any 
-    Employee.tagged_with(tag_list, :any => true, :wild => true)
+    Employee.available.tagged_with(tag_list, :any => true, :wild => true)
   end
 
 

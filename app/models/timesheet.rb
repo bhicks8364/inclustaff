@@ -21,6 +21,7 @@
 #
 
 class Timesheet < ActiveRecord::Base
+    include PublicActivity::Common
     belongs_to :job, counter_cache: true
     belongs_to :invoice
     has_many :shifts, -> { order('time_in DESC') }, dependent: :destroy
@@ -74,9 +75,6 @@ class Timesheet < ActiveRecord::Base
     def self.by_recuriter(admin_id)
         joins(:job).where(jobs: { recruiter_id: admin_id })
     end
-    
-
-        
     
     scope :with_recent_comments,    -> { joins(:comments).merge(Comment.timesheet_comments.payroll_week)}
     scope :with_job, -> { includes(:job)}

@@ -67,8 +67,8 @@ class Admin::JobsController < ApplicationController
       @shift = @job.shifts.create(time_in: Time.current, week: Date.today.beginning_of_week.cweek,
                                   state: "Clocked In",
                                   in_ip: "Admin-Clock-In")
-      current_admin.events.create(action: "clocked_in", eventable: @shift, user_id: @shift.employee.user_id)
-
+      # current_admin.events.create(action: "clocked_in", eventable: @shift, user_id: @shift.employee.user_id)
+      @job.create_activity key: 'job.clocked_in', owner: current_admin
     
       respond_to do |format|
           format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
@@ -86,7 +86,8 @@ class Admin::JobsController < ApplicationController
         @shift.update(time_out: Time.current,
                         state: "Clocked Out", week: Date.today.beginning_of_week.cweek,
                         out_ip: "Admin-Clock-Out" )
-        current_admin.events.create(action: "clocked_out", eventable: @shift.employee, user_id: @shift.employee.user_id)
+        # current_admin.events.create(action: "clocked_out", eventable: @shift.employee, user_id: @shift.employee.user_id)
+        @job.create_activity key: 'job.clocked_out', owner: current_admin
       respond_to do |format|
           format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
                     state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out.strftime("%l:%M%P"),

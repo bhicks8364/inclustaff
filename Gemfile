@@ -54,7 +54,8 @@ gem 'time_difference'
 
 # SIMPLE CALENDAR - GORAILS
 gem "simple_calendar", "~> 2.0"
-
+# PUBLIC ACTIVITY
+gem 'public_activity'
 # AREL HELPERS - ACTIVE RECORD QUERIES IN AREL
 gem 'arel-helpers'
 
