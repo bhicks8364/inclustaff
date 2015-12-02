@@ -1,7 +1,7 @@
 class Employee::OrdersController < ApplicationController
   before_action :set_order, only: [:show, :edit, :update, :destroy, :apply]
-  # before_action :authenticate_user!
-  layout 'application'
+  before_action :authenticate_user!
+  layout 'employee'
 
   # GET /orders
   # GET /orders.json

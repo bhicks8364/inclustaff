@@ -1,16 +1,17 @@
 class Employee::DashboardController < ApplicationController
     before_filter :authenticate_user!
-    layout 'application'
+    before_action :set_employee
+    
+    layout 'employee'
     def timeclock
-        @employee = current_user.employee if current_user.employee?
+        
         @company = @employee.company if @employee.present?
         @shifts = @employee.shifts.order(time_in: :desc)
-        skip_authorization
+        
     end
     
     def home
-        @user = current_user if user_signed_in?
-        @employee = current_user.employee if current_user.employee?
+        
         @shifts = @employee.shifts
         @jobs = @employee.jobs
         @orders = Order.active
@@ -19,13 +20,29 @@ class Employee::DashboardController < ApplicationController
         gon.clocked_in = @employee.clocked_in?
         gon.current_shift = @employee.current_shift
         gon.current_job = @employee.current_job
-        skip_authorization
+       
 
     end
     
     def employee_view
-        @employee = current_user.employee if current_user.employee?
+        
         @timesheets = @employee.timesheets
+        
+    end
+    def jobs
+       @orders = @current_agency.orders.needs_attention
+    end
+    def profile
+       @skill = @employee.skills.new
+       @work_histories = @employee.work_histories
+       
+    end
+    
+    private
+    
+    def set_employee
+        @user = current_user
+        @employee = @user.employee
         skip_authorization
     end
     

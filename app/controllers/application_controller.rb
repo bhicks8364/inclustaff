@@ -5,10 +5,11 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   # before_action :configure_permitted_parameters, if: :devise_controller?
   # before_action :update_permitted_parameters, if: :devise_controller?
-  # after_action :verify_authorized, unless: :devise_controller?
+  after_action :verify_authorized, unless: :devise_controller?
   
   # Globally rescue Authorization Errors in controller.
   # Returning 403 Forbidden if permission is denied
+  
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   
   before_action :set_current
@@ -20,21 +21,12 @@ class ApplicationController < ActionController::Base
     @current_admin = current_admin if admin_signed_in?
     @current_user = current_user if user_signed_in?
     @current_company = current_company_admin.company if company_admin_signed_in?
-    @newly_added = Employee.newly_added.order(created_at: :desc) if @current_agency.present?
-    
-    # if @current_agency.nil?
-    #   not_found
-    # end
+    @newly_added = @current_agency.employees.newly_added.order(created_at: :desc) if @current_agency.present?
+    @newly_added = @current_company.employees.newly_added.order(created_at: :desc) if @current_company.present?
+
     @current = @current_user || @current_admin || @current_company_admin
     
     @agency = @current_agency
-    
-    # @timesheets = @current.timesheets if @current_admin.present?
-
-    
-    
-    
-    
     
     
   end

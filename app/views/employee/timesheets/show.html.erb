@@ -1,60 +1,63 @@
-<p id="notice"><%= notice %></p>
+<div class='col-md-12 transbox'>
 
-    
-
-<div class='col-lg-12 main-box'>
-  <h4>For the week of:<strong><br>
+    <%= link_to(employee_timesheet_path(@timesheet, format: :pdf), class: 'btn btn-primary') do %>
+  					<i class="fa fa-download fa-md"></i> Download PDF
+  				
+  				<% end %>
+  		
+          <%= link_to 'All Timesheets', employee_timesheets_path(@job), class: 'btn btn-primary' %>
+  
+<div class='col-md-12'>
+  <h3>For the week of:<strong><br>
         <%= @timesheet.week_begin %>
           - 
         <%= @timesheet.week_ending %>
-      </strong></h4>
-  <div class='col-lg-3 well well-sm'>
+      </strong></h3>
+  <div class='col-md-3 well well-sm'>
     <strong>Regular hours:</strong>
-    <%= @timesheet.reg_hours %>
+    <%= @timesheet.reg_hours.round(2) %>
   </div>
-  <% if @timesheet.current_shift.present? %>
-  <%= render @timesheet.current_shift %>
-  <% end %>
-  <div class='well'>
-         <table>
-  <% @timesheet.shifts.each do |shift| %>
-    <tr>
-      <td><%= link_to shift.employee.name, employee_shift_path(shift) %> &nbsp; </td>
-      <td><%= link_to 'Edit', edit_employee_shift_path(shift) %> &nbsp; </td>
-      <td>
-
-        Settings:
-        <span>
-          <%- shift.breaks.try(:each) do |key, value| -%>
-            <%= key.humanize %>
-          <%- end -%>
-        </span>
-      </td>
-    </tr>
-  <%- end -%>
-</table>
-
-       </div>
-  <div class='col-lg-3 well well-sm'>
+  <div class='col-md-3 well well-sm'>
     <strong>Overtime hours:</strong>
-    <%= @timesheet.ot_hours %>
+    <%= @timesheet.ot_hours.round(2) %>
   </div>
-    <div class='col-lg-3 well well-sm'>
+    <div class='col-md-3 well well-sm'>
            <strong>Gross pay:</strong>
         <%= number_to_currency(@timesheet.gross_pay) %>
       </div>
-
+      <div class='col-md-3 well well-sm'>
+           <strong>Total bill:</strong>
+        <%= number_to_currency(@timesheet.total_bill) %>
+      </div>
       
 </div>
-<div class='main-box'>
-   <%= render 'employee/shifts/wk_calendar' %>
+ <div class='col-md-12 dark'>
+<div class='well' data-behavior="timesheet-list">
+    
+  <%= render 'employee/timesheets/timesheet', timesheet: @timesheet %>
+  
+  </div>
+ 
+
+         <div id='comments_<%= @timesheet.class %>_<%= @timesheet.id %>'>
+            <% @timesheet.comments.each do |comment| %>
+            
+                <%= render 'comments/comment', comment: comment %>
+            <% end %>
+        
+        
+          <%= render partial: "comments/form", locals: {commentable: @timesheet} %>
+         </div>
+    
+      </div>
+
+<div class='col-md-12'>
+  <h3> Shifts</h3>
+   <%= render 'employee/shifts/table' %>
 </div>
 
 
 
 
-
-
-
 </div>
-</div>
+

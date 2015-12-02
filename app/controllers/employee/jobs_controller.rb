@@ -1,37 +1,21 @@
 class Employee::JobsController < ApplicationController
+  before_action :set_employee
   before_action :set_job, only: [:show, :edit, :update, :destroy, :clock_in, :clock_out]
   before_action :authenticate_user!
-  layout 'application'
+  layout 'employee'
 
 
 
   def index
-    @current_user = current_user
-    @current_employee = @current_user.employee if @current_user.present?
-    @jobs = @current_employee.jobs.order(created_at: :desc) if @current_employee.present?
+    @jobs = @current_employee.jobs.order(created_at: :desc)
      
     authorize @jobs
-
-   
-
   end
   
   def archived
-    @admin = current_user
-    @company = @admin.company
-    @archived_jobs = @company.jobs.inactive.with_employee
-    @active_jobs = @company.active.with_employee
-    
-    @all_jobs = Job.all
-    # authorize @active_jobs
+
   end
 
-
-
-
-
-  # GET /jobs/1
-  # GET /jobs/1.json
   def show
     
     @timesheet = @job.current_timesheet if @job.current_timesheet.present?
@@ -44,24 +28,7 @@ class Employee::JobsController < ApplicationController
   end
 
   # GET /jobs/new
-  def new
-    
-    @admin = current_user
-    if params[:order_id]
-      @order = Order.find(params[:order_id])
-      @agency = @order.agency
-      @job = @order.jobs.new
-      authorize @job
-    elsif params[:employee_id]
-      @employee = Employee.find(params[:employee_id])
-      @job = @employee.jobs.new
-      authorize @job
-    else
-      @job = Job.new
-      authorize @job
-    end
-
-  end
+  
 
   def clock_in
     authorize @job, :clock_in?
@@ -206,16 +173,16 @@ class Employee::JobsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_job
       @job = Job.includes(:employee, :order).find(params[:id])
-      authorize @job
-      @employee = @job.employee
-      @order = @job.order
-      @agency = @order.agency
       @company = @job.company
+      authorize @job
+     
+    end
+    def set_employee
+        @user = current_user
+        @employee = @user.employee
+        
     end
     
-    def pundit_user
-      current_user || current_user
-    end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def job_params

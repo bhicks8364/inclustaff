@@ -160,23 +160,26 @@ Rails.application.routes.draw do
     
     # EMPLOYEE ---> /employee
     namespace :employee do
-      get  'timeclock', to: 'dashboard#employee_view'
+      get  'timeclock', to: 'dashboard#timeclock'
       get  'home', to: 'dashboard#home'
+      get  'job_board', to: 'dashboard#jobs'
+      get  'profile', to: 'dashboard#profile'
+      resources :work_histories
       resources :orders do
-        collection do
-          get 'import'
-        end
         member do
           patch :apply
         end
       end
+      
       resources :jobs do
         member do
           patch 'clock_in'
           patch 'clock_out'
         end
       end
+      
       resources :timesheets
+      
       resources :shifts do
         member do
           patch 'clock_out'
@@ -185,6 +188,10 @@ Rails.application.routes.draw do
         end
       end
     end
+   # END EMPLOYEE
+    
+    
+    
     resources :comments 
     
     resources :events

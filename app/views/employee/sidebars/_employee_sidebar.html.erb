@@ -1,4 +1,4 @@
-<div class="col-md-2" id="nav-col">
+<div class="col-md-2">
 				<section id="col-left">
 					<div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">	
 						<ul class="nav nav-pills nav-stacked">
@@ -8,8 +8,18 @@
 											<span>Dashboard</span>
 										<% end %>
 									</li>
+									<li><%= link_to employee_job_board_path do %>
+										<i class="fa fa-briefcase"></i>
+											<span>Job Postings</span>
+										<% end %>
+									</li>
+									<li><%= link_to employee_home_path do %>
+										<i class="fa fa-dashboard"></i>
+											<span>Dashboard</span>
+										<% end %>
+									</li>
 									
-									<li><%= link_to current_user do %>
+									<li><%= link_to employee_profile_path do %>
 										<i class="fa fa-user"></i>
 											<span>Profile</span>
 										<% end %>
@@ -20,7 +30,7 @@
 										<% end %>
 									</li>
 									
-									<% if current_user.employee.assigned? %>
+									<% if @employee.assigned? %>
 									<li><%= link_to employee_timesheets_path do %>
 										<i class="fa fa-clock-o"></i>
 											<span>Timesheets</span>

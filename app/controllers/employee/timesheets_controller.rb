@@ -1,25 +1,19 @@
 class Employee::TimesheetsController < ApplicationController
   before_action :set_timesheet, only: [:show, :edit, :update, :destroy]
-  layout 'new_employee'
+  layout 'employee'
   # GET /timesheets
   # GET /timesheets.json
   def index
-    if admin_signed_in? 
-      @admin = current_admin
-      @company = @admin.company
-      @timesheets = @company.timesheets.order(updated_at: :desc)
-      gon.timesheets = @timesheets
-      
-      authorize @timesheets
-    elsif user_signed_in? && current_user.employee?
+
       @current_user = current_user if current_user.present?
       @employee = @current_user.employee
       @company = @employee.company
-      @current_job = @employee.current_job if @employee.current_job.present?
+      @current_job = @employee.current_job if @employee.assigned?
+      
       @timesheets = @employee.timesheets.order('timesheets.created_at DESC')
       # gon.jbuilder
       authorize @timesheets
-    end
+    
 
   end
 
@@ -27,15 +21,26 @@ class Employee::TimesheetsController < ApplicationController
   # GET /timesheets/1.json
   def show
     authorize @timesheet
+    @job = @timesheet.job
     @shifts = @timesheet.shifts.order(time_in: :desc)
     @employee = @timesheet.employee
-    @job = @timesheet.job
+   
     @last_complete_shift = @timesheet.shifts.clocked_out.last
     @current_shift = @timesheet.shifts.clocked_in.last if @timesheet.clocked_in?
     gon.timesheet = @timesheet
     gon.pay = @timesheet.gross_pay
     gon.status = @timesheet.shifts.last.state.titleize
-    
+    respond_to do |format|
+      format.html
+      format.json
+      format.pdf {
+        # This is just a placeholder. Should be more like a paystub that employees can print/save
+        send_data @timesheet.receipt.render,
+          filename: "#{@timesheet.week_ending}-#{@employee.name}-timesheet.pdf",
+          type: "application/pdf",
+          disposition: "inline"
+      }
+    end
   end
 
   # GET /timesheets/new

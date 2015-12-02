@@ -1,102 +1,42 @@
 class JobPolicy < ApplicationPolicy
-    class Scope < Scope
-        def resolve
-            if user.recruiter?
-                scope.where(:recruiter_id => user.id)
-            else
-                scope
-            end
+  class Scope < Scope
+    def resolve
+      if user.admin?
+        if user.recruiter?
+          scope.where(:recruiter_id => user.id)
+        else
+          scope.all
         end
+      elsif user.employee?
+        scope.where(:id => user.employee.current_job.id)
+      else
+        scope.none
+      end
     end
+  end
+  def create?
+    return true if user.recruiter? || user.owner?
+  end
   
-    def index?
-        if user.role != "Employee"
-            return true if user.present?
-
-        elsif user.role == "Employee"
-            user.employee.assigned?
-        end
-        # scope.where(:recruiter_id => user.id)
-       
-        # return true if user.manager? && job.order.manager_id == user.id
-        # return true if user.employee.id == job.employee_id && user.employee?
-        
-    end
+  def index?
+    return true if user.recruiter? || user.owner?
     
-    def show?
-        if user.role != "Employee"
-            return true if user.present?
-
-        elsif user.role == "Employee"
-            user.employee.assigned?
-        end
-        
-        
-        # scope.where(:id => job.id).exists?
-        # return true if user.admin? || user.payroll?
-        # return true if user.manager? && job.order.manager_id == user.id
-        # return true if user.employee.id == job.employee_id && user.employee?
-    end
+  end
+  def clock_in?
+    return true if user.admin?
+    user.employee? && record.employee_id == user.employee.id
     
-    def create?
-        if user.role != "Employee"
-            
-            
-            return true if user.owner? || user.payroll? || user.recruiter?
-
-        elsif user.role == "Employee"
-            return true if user.employee?
-        end
-    end
-    def clock_in?
-        if user.role != "Employee"
-            
-            return true if user.owner? || user.payroll?
-            user.recruiter? && user.id == job.recruiter_id
-
-        elsif user.role == "Employee"
-            return true if user.employee?
-        end
-        
-        
-        
-        
-    end
-    def clock_out?
-        if user.role != "Employee"
-            
-            return true if user.owner? || user.payroll? || user.recruiter?
-            
-
-        elsif user.role == "Employee"
-            return true if user.employee?
-        end
-    end
-    
-    def new?
-        create?
-    end
-    def update?
-        return true if user.owner? || user.payroll?
-        return true if user.recruiter? || user.account_manager?
-        
-        # true
-        # user.admin?
-        # user.not_an_employee?
-    end
-    
-    def edit?
-        update?
-    end
-
-    def destroy?
-        user.account_manager? || user.owner?
-    end
-    
-    private
-    def job
-        record
-    end
-  
+  end
+  def show?
+    return true if user.admin?
+    user.employee? && record.employee_id == user.employee.id
+  end
+  def update?
+    return true if user.recruiter? || user.owner?
+    user.employee? && record.employee_id == user.employee.id
+  end
+  def destroy?
+    false
+  end
   
 end

@@ -1,0 +1,48 @@
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>IncluStaff</title>
+	
+
+	<%= Gon::Base.render_data %>
+	<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  	<%= javascript_include_tag 'application' %>
+  	<%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
+
+	<!-- google font libraries -->
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300|Titillium+Web:200,300,400' rel='stylesheet' type='text/css'>
+
+	<%= csrf_meta_tags %>
+</head>
+
+<body>
+
+
+
+<%= render 'employee/shared/navbar' %>
+
+	
+		
+		<div class="row">
+	
+	
+		<% if user_signed_in? %><%= render 'employee/sidebars/employee_sidebar' %><% end %>
+		
+				<div class="col-md-10" id="content-wrapper">
+		
+				
+				<% if alert %><div class="alert alert-warning"><%= flash.alert %></div> <% end %>
+	    		<% if notice %> <div class="alert alert-info"><%= flash.notice %></div> <% end %>
+	    		<%= yield %>
+
+
+	    	</div>
+		</div>
+	</div>
+	<%= render 'layouts/footer' %>
+
+</body>
+</html>
+						

@@ -1,4 +1,4 @@
-<div class='col-md-12 dark'>
+<div class='col-md-12 transbox'>
    <h1> Employee Dashboard</h1>
    
    
@@ -11,23 +11,51 @@
 
    
     <% if @employee.assigned? %>
-      
-      <div class='well'>
+    <div class='col-md-12'>
+      <div class='col-md-6'>
         <%= render 'employee/jobs/job', job: @employee.current_job %>
       </div>
-      <div class='transbox'>
-        <%= render 'employee/timesheets/table' %>
-      </div>
-      <% if @employee.shifts.any? %>
-      <div class='transbox'>
-        <%= render 'employee/shifts/table' %>
-      </div>
-      <% end %>
       
-      <div class='transbox'>
-        <%= render 'employee/jobs/job', job: @employee.current_job %>
-      </div>
+    <div class='col-md-6'>
+      <strong>Employee:</strong>
+     
+      <strong>Start date:</strong>
+      <%= @job.start_date.strftime("%B %e, %Y ") %><br>
+      <strong>Gross this week:</strong> <%= number_to_currency(@job.current_week_pay) %><br>
+      <strong>Total Hours : </strong><%= @job.total_hours %>
+      <strong>Total Gross : </strong><%= @job.total_hours %>
+    </div>
+    <div class='col-md-6'>
+      <strong>Company:</strong>
+      <%= @company.name %><br>
     
+     
+      <strong>Job Title:</strong>
+      <%= @job.title %><br>
+      <strong>Recruiter:</strong>
+      <%= @job.recruiter.present? ? @job.recruiter.name : "Recruiter unavailable" %><br>
+      
+      <strong>Staff:</strong>
+      <%= @job.staff %><br>
+      
+      <strong>Pay rate:</strong>
+      <%= number_to_currency(@job.pay_rate, :unit => "$") %><br>
+    </div>
+
+
+  <div class='well'>
+
+      <strong>Description:</strong><br>
+  <%= @job.description %><br>
+  
+  <%= render 'employee/jobs/modal', job: @job %>
+  
+  </div>
+
+
+</div>
+
+    </div>
     <% else %>
     
       

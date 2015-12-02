@@ -36,7 +36,7 @@ class Employee < ActiveRecord::Base
   has_many :orders, :through => :jobs
   has_many :companies, :through => :orders
   has_one :current_job, -> { where active: true }, class_name: "Job"
-  has_one :current_shift, -> { where state: 'Clocked In' }, class_name: "Shift"
+  
   has_many :timesheets, :through => :jobs
   attachment :resume, extension: ["pdf", "doc", "docx"]
   
@@ -50,7 +50,7 @@ class Employee < ActiveRecord::Base
  
   
   delegate :last_clock_out, to: :current_job
-  delegate :manager, to: :current_job
+  delegate :current_shift, to: :current_job
   delegate :recruiter, to: :current_job
   delegate :code, to: :user
   delegate :current_sign_in_ip, to: :user
@@ -67,6 +67,11 @@ class Employee < ActiveRecord::Base
   end
   def title
     assigned? ? current_job.title : "Unassigned"
+  end
+  def manager
+    if assigned?
+      current_job.manager.present? ? current_job.manager : current_job.company.admins.first
+    end
   end
   
 

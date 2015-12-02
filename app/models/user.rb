@@ -59,6 +59,9 @@ class User < ActiveRecord::Base
   def has_no_employee?
     employee.nil?
   end
+  def admin?
+    false
+  end
   
   after_initialize :set_role
   

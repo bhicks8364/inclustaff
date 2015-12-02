@@ -7,7 +7,8 @@
     <div class='text-right'>
         
     <small>
-        <%= comment.admin.name %>
+        <%= comment.admin.try(:name) %>
+        <%= comment.user.try(:name) %>
     </small>
     <%= link_to "<i class='fa fa-trash-o fa-red'></i>".html_safe, admin_job_comment_path(commentable, comment), method: :delete, 
                                                     data: { confirm: 'Are you sure?' }, class: 'red' %>

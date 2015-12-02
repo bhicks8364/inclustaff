@@ -1,0 +1,33 @@
+<div class='col-md-10'>
+   
+        <div class='col-md-3'>
+            <h5><%= work_history.employer_name %></h5>
+            <%= work_history.title %>
+        </div>
+        <div class='col-md-5'>
+            <strong><%= work_history.start_date.stamp("December 2013") %> - <%= work_history.end_date.stamp("December 2013") %></strong>
+            <p><%= highlight(work_history.description, work_history.employee.tags.pluck(:name).to_a, highlighter: '<a href="/tags?tag=\1">\1</a>') %></p>
+        </div>
+        <div class='col-md-2'>
+            
+            <% if work_history.current? %>
+            <i class="fa fa-asterisk"></i>
+        <% end %>
+            
+            
+        <% if work_history.may_contact? %>
+            <i class="fa fa-phone-square"></i>
+        <% end %>
+        </div>
+        <div class='col-md-2'>
+        
+        <%= number_to_currency(work_history.pay) %><br>
+        <%= link_to "<i class='fa fa-external-link-square'></i>".html_safe, admin_employee_work_history_path(work_history.employee, work_history) %>
+        </div>
+        
+       
+        
+        
+        <hr>
+        
+</div>

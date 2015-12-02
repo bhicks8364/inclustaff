@@ -2,7 +2,7 @@ class Employee::ShiftsController < ApplicationController
   before_action :set_shift, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :set_employee
-
+  layout 'employee'
   # GET /shifts
   # GET /shifts.json
   def index

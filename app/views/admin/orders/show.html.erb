@@ -1,4 +1,4 @@
-<div class='col-md-12 main-box'>
+<div class='col-md-12 dark'>
   <% if @order.urgent? && @order.needs_attention?%>
     <div class="alert alert-danger fade in">
   		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -77,7 +77,7 @@
   
    
   <div class='dark col-md-8'>
-    <%= highlight(@order.notes, @order.tags.pluck(:name).to_a, highlighter: '<a href="/tags?tag=\1">\1</a>') %>
+    <%= markdownify(@order.notes) %>
   </div>
   <div class='col-md-4'>
     <strong>Shift</strong><br>

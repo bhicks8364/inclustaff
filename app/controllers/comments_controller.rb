@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-  # before_action :authenticate_admin!
+  before_action :set_comment
   layout :determine_layout
   def index
     @q = Comment.includes(:commentable).ransack(params[:q]) 
@@ -47,7 +47,9 @@ class CommentsController < ApplicationController
   end
 
   private
-
+    def set_comment
+      skip_authorization
+    end
     def comment_params
       params.require(:comment).permit(:body, :commentable_id, :commentable_type, :admin_id, :company_admin_id, :user_id)
     end

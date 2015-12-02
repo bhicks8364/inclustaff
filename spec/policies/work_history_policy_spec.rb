@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe JobPolicy do
+describe WorkHistoryPolicy do
 
   let(:user) { User.new }
 

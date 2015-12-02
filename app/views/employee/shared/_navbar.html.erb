@@ -8,7 +8,7 @@
 	        <span class="icon-bar"></span>
 	      </button>
 	      <% if @current_agency.present? %>
-		<%= link_to root_url, id: "logo", class: "navbar-brand col-md-3 col-sm-3 col-xs-12" do %>
+		<%= link_to root_url, id: "logo", class: "navbar-brand col-md-4" do %>
 			<%= @current_agency.name.titleize %>	
 			<% end %>
 		<% else %>

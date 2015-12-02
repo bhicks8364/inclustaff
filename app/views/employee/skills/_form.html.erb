@@ -1,11 +1,18 @@
 <%= simple_form_for [@skill], :remote => true do |f| %>
   <%= f.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :name, autofocus: true %>
-  </div>
+  
+    <%= f.input :name, label: false, autofocus: true, placeholder: "Type # for suggestions", input_html: {data: { behavior: "autocomplete_skills" }} %>
+    <% if skillable.class.to_s == "Order" %>
+       <%= f.input :required, label: 'Is this a requirement?' %>
+    <% end %>
+   
+    
 
-  <div class="form-actions">
+  <%= f.hidden_field :skillable_id, :value => skillable.id %>
+    <%= f.hidden_field :skillable_type, :value => skillable.class %>
+
+ 
     <%= f.button :submit %>
-  </div>
+ 
 <% end %>
