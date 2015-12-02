@@ -1,4 +1,4 @@
-<%= simple_form_for([:admin, @employee], defaults: { input_html: { class: 'form-control' }, wrapper_html: { class: '' } }) do |f| %>
+<%= simple_form_for([:admin, @employee], defaults: { input_html: { class: '' }, wrapper_html: { class: '' } }) do |f| %>
   <% if @employee.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@employee.errors.count, "error") %> prohibited this employee from being saved:</h2>
@@ -11,18 +11,25 @@
     </div>
   <% end %>
 
-  <div class="col-md-4 well">
+  <div class="col-md-6 well">
     <h3 class="text-center"><strong>Employee Information</strong></h3>
     <%= f.input :first_name, label: "First Name", autofocus: true, placeholder: "First Name" %>
     <%= f.input :last_name, label: "Last Name", placeholder: "Last Name" %>
+     <%= f.simple_fields_for :user do |u| %>
+     <%= u.input :email, required: true, placeholder: "Email  Address", label: false  %>
     <%= f.input :phone_number, as: :tel, placeholder: "Phone Number", label: "Phone Number"  %>
     <%= f.input :ssn, maxlength: 4, placeholder: "SSN - Last 4 only", label: "SSN" %>
-
+      <%= u.input :address, placeholder: "Street Address", label: "Address" %>
+      <%= u.input :city, required: true, placeholder: "City", label: false %>
+      <%= u.input :state, required: true, placeholder: "State", label: false %>
+      
+      
+      <% end %>
+    </div>
+ 
     
-  </div>
  
- 
-    <div class="col-md-4 well">
+  <div class="col-md-3 well">
       <h3 class="text-center"><strong>Availablility</strong></h3>
     
 
@@ -37,20 +44,18 @@
     
    
     </div>
-  <div class="col-md-4 well">
+     <div class="col-md-3 well">
     <h3 class="text-center"><strong>Additional Information</strong></h3>
     
     <%= f.input :desired_job_type, label: "Desired Job Type", collection: ["Full-time", "Part-time", "Any"], include_blank: false %>
     <%= f.input :desired_shift, label: "Desired Shift", collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible"], include_blank: false %>
   </div>
-  <div class="col-md-4 well">
+  <div class="col-md-3 well">
     <h3 class="text-center"><strong>Admin Use Only</strong></h3>
     <%= f.input :dns, as: :boolean, inline_label: "Mark as DNS", input_html: { class: 'boolean' } %>
   </div>
-  
- 
- <div class="center">
 
-    <%= f.submit "Save", class: 'btn btn-primary btn-lg btn-block' %>
- </div>
+
+    <%= f.submit "Save", class: 'btn btn-primary btn-lg' %>
+
 <% end %>

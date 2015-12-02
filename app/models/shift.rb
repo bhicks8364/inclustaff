@@ -177,6 +177,10 @@ class Shift < ActiveRecord::Base
       update(time_out: Time.current,
                   state: "Clocked Out")
   end
+  
+  def self.clock_out_all!
+      Shift.clocked_in.each {|s| s.update(time_out: Time.current, state: "Clocked Out") }
+  end
 
   def hours_worked
       if clocked_in? || on_break?

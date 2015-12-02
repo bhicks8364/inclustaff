@@ -1,4 +1,4 @@
-<div class='col-md-12 transbox'>
+<div class='col-md-12 dark'>
    <h1> Employee Dashboard</h1>
    
    
@@ -8,7 +8,7 @@
    <% end %>
  
         
- <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
+
    
     <% if @employee.assigned? %>
       
@@ -31,11 +31,10 @@
     <% else %>
     
       
-    <div class='well'>
-          <h4>All Open Positions</h4>
-        
-        <%= render 'employee/orders/open_table' %>
-        </div>
+    <div class='col-md-12'>
+       <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
+          
+    </div>
     
     
     <% end %>
