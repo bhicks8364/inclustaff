@@ -1,0 +1,28 @@
+<%= div_for(comment) do %>
+
+    <p><%= comment.body %></p>
+    <% if comment.recipient.present? %>
+    <small><%= comment.recipient.name %> </small>
+    <% end %>
+    <div class='text-right'>
+        
+       
+    <% if comment.admin.present? %>
+    <small><%= comment.admin.name %> </small>
+    <% end %>
+    <% if comment.company_admin.present? %>
+    <small><%= comment.company_admin.name %> </small>
+    <% end %>
+    <% if comment.user.present? %>
+    <small><%= link_to comment.user.name, comment.user %> </small>
+    <% end %>
+   
+    
+    
+    <%= link_to "<i class='fa fa-commenting'></i>".html_safe, comment if admin_signed_in? %>
+    <%= link_to "<i class='fa fa-trash-o fa-red'></i>".html_safe, admin_job_comment_path(comment.commentable, comment), method: :delete, 
+                                                    data: { confirm: 'Are you sure?' }, class: 'red' if admin_signed_in? %>
+    </div>
+    <%= comment.created_at.stamp('10/12/2013 at 12:34am') %>
+     <small><i><%= comment.mentioned_admins.map{|p| p.name.titleize}.join(", ") %></i></small>
+<% end %>

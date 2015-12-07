@@ -4,7 +4,7 @@
     <h1> <%= @employee.name %>'s Timesheets</h1>
     <h3>Gross pay: <%= number_to_currency(@timesheets.sum(:gross_pay)) %></h3>
 <div class="table-responsive" data-behavior="timesheet-list">
-  <table id="timesheets" class="table" cellspacing="0.5" width="85%">
+  <table id="timesheets" class="table" >
   <thead>
     <tr>
       <th></th>

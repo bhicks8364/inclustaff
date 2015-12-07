@@ -26,11 +26,12 @@ class Job
     if data.clocked_in
       $("[data-behavior='empjob-in-button_#{@id}']").hide()
       $("[data-behavior='empjob-out-button_#{@id}']").show()
+      
       #@item.find("[data-behavior='job-in-button_#{@id}']").hide()
       #@item.find("[data-behavior='job-out-button_#{@id}']").show()
-      @item.find("[data-behavior='emptime-out']").html "<small>Last Out: #{data.last_out}</small>"
-      @item.find("[data-behavior='emptime-in']").html "<small><strong> In:</strong> #{data.time_in}</small>"
-      @item.find("[data-behavior='empshift-state']").html "<strong>#{data.first_name} is now clocked in.</strong><br>"
+      @item.find("[data-behavior='emptime-out']").html "<p>Last Out: #{data.last_out}</p>"
+      @item.find("[data-behavior='emptime-in']").html "<p><strong> In:</strong> #{data.time_in}</p>"
+      @item.find("[data-behavior='empshift-state']").html "<strong>You are now clocked in.</strong><br>"
       console.log data.time_in
       console.log data.time_out
       
@@ -54,10 +55,10 @@ class Job
       $("[data-behavior='empjob-out-button_#{@id}']").hide()
       $("[data-behavior='empjob-in-button_#{@id}']").show()
       #@item.find("[data-behavior='empjob-in-button']").show()
-      @item.find("[data-behavior='emptime-in']").html "<small><strong> In:</strong> #{data.time_in}</small>"
-      @item.find("[data-behavior='emptime-out']").html "<small><strong> Out:</strong> #{data.time_out}</small>"
+      @item.find("[data-behavior='emptime-in']").html "<p><strong> In:</strong> #{data.time_in}</p>"
+      @item.find("[data-behavior='emptime-out']").html "<p><strong> Out:</strong> #{data.time_out}</p>"
      
-      @item.find("[data-behavior='empshift-state']").html "<strong>#{data.first_name} is now clocked out.</strong><br>"
+      @item.find("[data-behavior='empshift-state']").html "<strong>You are now clocked out.</strong><br>"
       console.log data.state
       console.log data.time_in
       console.log data.time_out

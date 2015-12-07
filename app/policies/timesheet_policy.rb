@@ -13,7 +13,9 @@ class TimesheetPolicy < ApplicationPolicy
   
   def index?
     user.present?
-    
+  end
+  def past?
+    user.present?
   end
   def show?
     return true if user.admin?

@@ -18,7 +18,7 @@ class Admin::TimesheetsController < ApplicationController
      	@timesheets = Timesheet.order(week: :desc)
 		end
 		gon.timesheets = @timesheets
-    
+    authorize @timesheets
     @current_timesheets = @timesheets.current_week if @timesheets.present?
 		respond_to do |format|
       format.html
@@ -46,7 +46,7 @@ class Admin::TimesheetsController < ApplicationController
 		
 		end
 		gon.timesheets = @timesheets
-	
+		authorize @timesheets
 		respond_to do |format|
       format.html
       format.csv { send_data @timesheets.to_csv, filename: "past-timesheets-export-#{Time.now}-inclustaff.csv" }

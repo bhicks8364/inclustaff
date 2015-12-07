@@ -101,7 +101,7 @@ class Shift < ActiveRecord::Base
   def clocked_in?; state == "Clocked In"; end
   def clocked_out?; state == "Clocked Out"; end
   def on_break?; state == "On Break"; end
-  
+  def start_time; time_in; end
   def name; employee.name; end
   def shift_data; [employee.name, time_in, time_out]; end
   def took_a_break?; breaks.any?; end

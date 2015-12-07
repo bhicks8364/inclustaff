@@ -4,45 +4,52 @@
         
            <% if job.current_shift.present? %>
            <span data-behavior='empshift-state'>
-    <strong> You are currently clocked in.</strong><br>
+    
+             <h3><%= job.current_shift.state %></h3>
+           
+           </span>
+             <span data-behavior="emptime-in">
+                  <small><strong> In:</strong> <%= job.current_shift.time_in.strftime("%l:%M%P") %></small>
+            </span>
              
-            <% if job.current_shift.on_break? %>
+               <% if job.current_shift.clocked_in? %>
+            <button data-behavior="empjob-out-button_<%= job.id %>" class='btn btn-danger'>
+            <i class='fa fa-sign-out'></i> Clock Out
+          </button>
+              <% end %>
+          <button data-behavior="empjob-in-button_<%= job.id %>" class='hide-this btn btn-success'>
+            <i class='fa fa-sign-out'></i> Clock In
+          </button>
+           <span data-behavior="emptime-out">
+              </span>
+              
+              <div id='break-list' class='clockbg'>
+                 <%= job.current_shift.took_a_break? ? "<h4 class='white'> Breaks</h4>".html_safe : "" %>
+                  <% job.current_shift.breaks.each_with_index do |break_ended, i | %>
+                    <div data-behavior="shift" id='break_<%= i %>' class=''>
+                      <span class=''> <%= i.even? ? "Out:" : "In:" %> <strong> <%= break_ended.to_datetime.stamp("1:30am") %></strong></span>
+                    </div>
+                  <% end %>
+              
+              
+       <% if job.current_shift.on_break? %>
       <%= link_to "End Break", break_end_employee_shift_path(job.current_shift), method: :patch, remote: true, class: 'btn btn-danger', id: 'end-break-btn' %>
        <%= link_to "Start Break", break_start_employee_shift_path(job.current_shift), method: :patch, remote: true, class: 'btn btn-success hide-this', id: 'start-break-btn' %>
     <% elsif job.current_shift.clocked_in? %>
           <%= link_to "End Break", break_end_employee_shift_path(job.current_shift), method: :patch, remote: true, class: 'btn btn-danger hide-this', id: 'end-break-btn' %>
       <%= link_to "Start Break", break_start_employee_shift_path(job.current_shift), method: :patch, remote: true, class: 'btn btn-success', id: 'start-break-btn' %>
     <% end %>
-           </span>
-             <span data-behavior="emptime-in">
-                  <small><strong> In:</strong> <%= job.current_shift.time_in.strftime("%l:%M%P") %></small>
-            </span>
-             
-               
-            <button data-behavior="empjob-out-button_<%= job.id %>" class='badge badge-danger'>
-            <i class='fa fa-sign-out'></i> Clock Out
-          </button>
-          <button data-behavior="empjob-in-button_<%= job.id %>" class='hide-this badge badge-success'>
-            <i class='fa fa-sign-out'></i> Clock In
-          </button>
-           <span data-behavior="emptime-out">
-              </span>
-
+        </div> 
         <% else %>
         
-        <span data-behavior='empshift-state'>
-             <strong> <%= link_to job.employee.first_name, employee_jobs_path(job), class: 'table-link' %>
-             is currently clocked out.</strong><br>
-             
-           
-           </span>
+  
         <span data-behavior="emptime-in">
           
         </span>
-          <button data-behavior="empjob-in-button_<%= job.id %>" class='badge badge-success'>
+          <button data-behavior="empjob-in-button_<%= job.id %>" class='btn btn-success'>
             <i class='fa fa-sign-in'></i> Clock In
           </button>
-          <button data-behavior="empjob-out-button_<%= job.id %>" class='hide-this badge badge-danger'>
+          <button data-behavior="empjob-out-button_<%= job.id %>" class='hide-this btn btn-danger'>
             <i class='fa fa-sign-out'></i> Clock Out
           </button>
         

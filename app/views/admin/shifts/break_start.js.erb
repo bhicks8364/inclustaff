@@ -1,7 +1,4 @@
-$("<li class='list-group-item'><h6> <%= @shift.breaks.count.even? ? "Out:" : "In:" %> <strong> <%= @shift.breaks.last.to_datetime.stamp("1:30am") %></strong></h5></li>").appendTo("#break-list");
-$('#start-break-btn').hide();
-$('#end-break-btn').show();
-<% if @shift.breaks.count == 1 %>
-$('#remove-breaks-btn').show();
-<% end %>
+$('#start-break-btn').show();
+$('#end-break-btn').hide();
 
+$("<li class='list-group-item list-group-item-success col-md-6'><p> <%= @shift.breaks.count.even? ? "Out:" : "In:" %> <strong> <%= @shift.breaks.last.to_datetime.stamp("1:30am") %></strong></p></li>").appendTo("#break-list");

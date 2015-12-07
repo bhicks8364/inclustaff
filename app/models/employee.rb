@@ -150,6 +150,9 @@ class Employee < ActiveRecord::Base
   def on_shift?
     shifts.clocked_in.any?
   end
+  def on_break?
+    shifts.on_break.any?
+  end
   def at_work?
     shifts.at_work.any?
   end

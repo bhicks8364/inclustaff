@@ -25,6 +25,7 @@ class Comment < ActiveRecord::Base
     belongs_to :company_admin
     include ArelHelpers::ArelTable
     include Arel::Nodes
+    validates :body, presence: true, length: { minimum: 1 }
     
     after_create :create_event
     
@@ -64,6 +65,9 @@ class Comment < ActiveRecord::Base
     def self.occurring_between(date1, date2)
       where(Event[:created_at].gteq(date1)
       .and(Event[:created_at].lteq(date2)))
+    end
+    def self.by_recipient(admin_id)
+       where(recipient_id: admin_id, recipient_type: "Admin")
     end
     def create_event
       Event.create(eventable_id: commentable_id, eventable_type: commentable_type, action: "commented", user_id: user_id, 

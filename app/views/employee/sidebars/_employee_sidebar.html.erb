@@ -1,49 +1,45 @@
 <div class="col-md-2">
-				<section id="col-left">
-					<div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">	
-						<ul class="nav nav-pills nav-stacked">
+	<section id="col-left">
+		<div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">	
+			<ul class="nav nav-pills nav-stacked">
+				
+				<li><%= link_to employee_home_path do %>
+					<i class="fa fa-dashboard"></i>
+						<span>Dashboard</span>
+					<% end %>
+				</li>
+				
+				<li><%= link_to employee_profile_path do %>
+					<i class="fa fa-user"></i>
+						<span>Profile</span>
+					<% end %>
+				</li>
+				
+				<% if @employee.assigned? %>
+				<li><%= link_to employee_timesheets_path do %>
+					<i class="fa fa-clock-o"></i>
+						<span>Timesheets</span>
+					<% end %>
+				</li>
 
-									<li><%= link_to employee_home_path do %>
-										<i class="fa fa-dashboard"></i>
-											<span>Dashboard</span>
-										<% end %>
-									</li>
-									<li><%= link_to employee_job_board_path do %>
-										<i class="fa fa-briefcase"></i>
-											<span>Job Postings</span>
-										<% end %>
-									</li>
-									<li><%= link_to employee_home_path do %>
-										<i class="fa fa-dashboard"></i>
-											<span>Dashboard</span>
-										<% end %>
-									</li>
-									
-									<li><%= link_to employee_profile_path do %>
-										<i class="fa fa-user"></i>
-											<span>Profile</span>
-										<% end %>
-									</li>
-									<li><%= link_to destroy_user_session_path, method: :delete do %>
-										<i class='fa fa-power-off'></i> 
-											<span>Logout</span>
-										<% end %>
-									</li>
-									
-									<% if @employee.assigned? %>
-									<li><%= link_to employee_timesheets_path do %>
-										<i class="fa fa-clock-o"></i>
-											<span>Timesheets</span>
-										<% end %>
-									</li>
-
-									<li><%= link_to employee_job_path(current_user.current_job) do %>
-										<i class="fa fa-users"></i>
-											<span>Current Job</span>
-										<% end %>
-									</li>
-									<% end %>
-						</ul>
-					</div>
-				</section>
-			</div>
+				<li><%= link_to employee_job_path(current_user.current_job) do %>
+					<i class="fa fa-users"></i>
+						<span>Current Job</span>
+					<% end %>
+				</li>
+				<% else %>
+				<li><%= link_to employee_job_board_path do %>
+					<i class="fa fa-briefcase"></i>
+						<span>Job Postings</span>
+					<% end %>
+				</li>
+				<% end %>
+				<li><%= link_to destroy_user_session_path, method: :delete do %>
+					<i class='fa fa-power-off'></i> 
+						<span>Logout</span>
+					<% end %>
+				</li>
+			</ul>
+		</div>
+	</section>
+</div>

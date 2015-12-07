@@ -24,7 +24,12 @@ class JobPolicy < ApplicationPolicy
   end
   def clock_in?
     return true if user.admin?
-    user.employee? && record.employee_id == user.employee.id
+    user.employee? && record.id == user.employee.current_job.id
+    
+  end
+  def clock_out?
+    return true if user.admin?
+    return true if user.employee? && record.id == user.employee.current_job.id
     
   end
   def show?

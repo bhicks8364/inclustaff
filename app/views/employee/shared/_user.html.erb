@@ -1,9 +1,14 @@
-<%= div_for(user, class: 'well well-sm') do %>
+<%= div_for(user, class: '') do %>
  <%= user.name %><br>
  <%= user.address %><br>
+ <%= user.employee.phone_number %><br>
+ <%= user.email %><br>
   Emp Code: <small><%= user.code %></small>
+  <div class='well well-sm'>
    <ul class="ip-log">
       <strong>Last sign in:</strong> <%= user.current_sign_in_at? ? user.current_sign_in_at.strftime("%A   %x   - %I:%M %p") : "Yet to sign in" %> -
       <%= user.current_sign_in_ip %>
     </ul>
+  </div>
+   
 <% end %>

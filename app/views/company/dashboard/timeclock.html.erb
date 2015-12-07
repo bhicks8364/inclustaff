@@ -3,7 +3,7 @@
  <h2>Current Employees</h2>
     <div class='col-md-6 well'>
           <h4>Clocked Out Employees</h4>
-        <%= div_for(@company.jobs.off_shift.each, class: 'clocked-in well well-sm') do |job| %>
+        <%= div_for(@company.jobs.off_shift.distinct.each, class: 'clocked-in well well-sm') do |job| %>
         <div data-behavior="job" data-id="<%= job.id %>">
         <%= job.employee.code %>
         
@@ -17,7 +17,7 @@
     </div>
     <div class='col-md-6 well'>
           <h4>Clocked In Employees</h4>
-        <%= div_for(@company.jobs.on_shift.each, class: 'clocked-in well well-sm') do |job| %>
+        <%= div_for(@company.jobs.on_shift.distinct.each, class: 'clocked-in well well-sm') do |job| %>
         <div data-behavior="job" data-id="<%= job.id %>">
         <%= job.employee.code %>
         

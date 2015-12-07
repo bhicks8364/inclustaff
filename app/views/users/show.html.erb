@@ -170,7 +170,7 @@
       <% if @user.events.any? %>
    <h3> Your Applications</h3>
       <div class='list-group'>
-						<% @user.events.each do |event| %>
+						<% @user.events.applications.each do |event| %>
 						  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
 						    <%= render partial: "events/activities/employee_applied", locals: {event: event} %>
 						  <% end %>

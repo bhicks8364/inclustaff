@@ -1,10 +1,10 @@
-
 <div class='col-md-12 transbox'>
  <h1><%= @shift.state %> <small><%= shift_times(@shift) %></small></h1>
     <h3 class="page-header">
   <strong> <%= @employee.name %>  <small> <%= @job.title %> - <%= @job.pay_rate %>/hr</small></strong>
   
 </h3>
+
  
   <div class='col-md-6'>
    
@@ -16,40 +16,24 @@
     
    <h4> Total Earnings: <%= number_to_currency(@shift.earnings) %></h4>
 
- 
+ <%= render 'employee/jobs/clock', job: @job if !@shift.on_break? %>
 
   <%= link_to 'View Timesheet', employee_timesheet_path(@shift.timesheet), class: "btn btn-info black" %>
   
   </div>
 
-       
+       <%= on_break_for(@shift) %>
+       <%=  break_times_for(@shift) %>
    <div class='col-md-6 well well-sm' id='break-times'>
     <% if @shift.breaks.any? %>
-    <% if @shift.on_break? %>
-  <h3> <%= @employee.first_name %> has been on break for <%= distance_of_time_in_words(@shift.breaks.last, Time.current, include_seconds: true) %></h3>
-    <% elsif !@shift.on_break? %>
-   <h4><%= @employee.first_name %> took a break for  <%= distance_of_time_in_words(@shift.breaks[0], @shift.breaks[1]) %></h4>
-     Total Break Time: <%= @shift.break_duration %><br>
-    Total Actual Time: <%= @shift.time_worked %><br>
-    <h4><strong><%= @shift.paid_breaks? ? "PAID BREAKS" : "" %></strong></h4>
-    Total (w/ paid breaks): <%= number_to_currency(@shift.with_paid_breaks) %><br>
-    Total (w/ unpaid break): <%= number_to_currency(@shift.with_unpaid_breaks) %><br>
-    <% end %>
-    
-        <h4>Break Times:</h4>
-    <% end %>
-    <div id='break-list' class='list-group'>
+        <div id='break-list' class='list-group'>
           <% @shift.breaks.each_with_index do |break_ended, i | %>
-            
-            <li data-behavior="shift" id='break_<%= i %>' class='col-md-6 list-group-item'>
-              <h6> <%= i.even? ? "Out:" : "In:" %> <strong> <%= break_ended.to_datetime.stamp("1:30am") %></strong></h5>
+            <li data-behavior="shift" id='break_<%= i %>' class='col-md-6 list-group-item list-group-item-success'>
+              <h6> <%= i.even? ? "In:" : "Out:" %> <strong> <%= break_ended.to_datetime.stamp("1:30am") %></strong></h5>
             </li>
-      <% end %>
-      
-      </div> 
-     
-
-   
+          <% end %>
+        </div> 
+    <% end %>
     <% if @shift.on_break? %>
       <%= link_to "End Break", break_end_employee_shift_path(@shift), method: :patch, remote: true, class: 'btn btn-danger', id: 'end-break-btn' %>
        <%= link_to "Start Break", break_start_employee_shift_path(@shift), method: :patch, remote: true, class: 'btn btn-success hide-this', id: 'start-break-btn' %>
@@ -57,15 +41,8 @@
           <%= link_to "End Break", break_end_employee_shift_path(@shift), method: :patch, remote: true, class: 'btn btn-danger hide-this', id: 'end-break-btn' %>
       <%= link_to "Start Break", break_start_employee_shift_path(@shift), method: :patch, remote: true, class: 'btn btn-success', id: 'start-break-btn' %>
     <% end %>
-  
-  
- 
     </div>
 
-
- 
-
- 
 <div class='col-md-6'>
     <h4>Shift Comments</h4>
         <div id='comments_<%= @shift.class %>_<%= @shift.id %>'>

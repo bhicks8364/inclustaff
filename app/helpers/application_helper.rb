@@ -9,4 +9,8 @@ module ApplicationHelper
         ], pipeline_context
         pipeline.call(content)[:output].to_s.html_safe
     end
+    def page_title(title)
+        title += " | " if title.present?
+        title += "Inclustaff"
+    end
 end

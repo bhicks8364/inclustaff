@@ -62,7 +62,8 @@ class Admin < ActiveRecord::Base
   def recruiter?;       role == "Recruiter";  end
   def hr?;              role == "HR"; end
   def limited?;         role == "Limited Access"; end
-         
+  def admin?;         true; end
+  
   def timesheets
     if recruiter?
       Timesheet.by_recuriter(id)
@@ -99,6 +100,9 @@ class Admin < ActiveRecord::Base
     else
       Company.all
     end
+  end
+  def messages
+      Comment.by_recipient(id)
   end
   
   def current_billing

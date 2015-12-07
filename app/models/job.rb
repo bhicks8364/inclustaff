@@ -185,9 +185,11 @@ class Job < ActiveRecord::Base
     
     def straight_8
         t = Time.current.beginning_of_week - 1.week + 8.hours
-        x = t + 8.hours 
-        5.times do |n|   
-         self.shifts.create(time_in: t + n.days, time_out: x + n.days, state: "Clocked Out", out_ip: "Admin-Clock-Out") 
+        
+        5.times do |n| 
+            time_in = t + n.days
+            time_out = time_in + 8.hours
+         self.shifts.create(time_in: time_in, time_out: time_out, state: "Clocked Out", out_ip: "Admin-Clock-Out") 
         
         end 
     
@@ -209,19 +211,29 @@ class Job < ActiveRecord::Base
     end
     
     def current_week_pay
-        hours = shifts.current_week.sum(:time_worked)
-        if hours > 40
-            reg_hours = 40
-            ot_hours = hours - 40
-            ot_rate = pay_rate * 1.5
-            pay_rate * reg_hours + ot_hours * ot_rate
+        
+        if shifts.current_week.any?
+            hours = shifts.current_week.sum(:time_worked)
+            if hours > 40
+                reg_hours = 40
+                ot_hours = hours - 40
+                ot_rate = pay_rate * 1.5
+                pay_rate * reg_hours + ot_hours * ot_rate
+            else
+                pay_rate * hours
+            end
         else
-            pay_rate * hours
+            0.00
         end
+        
     end
     
     def current_week_hours
-        shifts.current_week.sum(:time_worked)
+        if shifts.current_week.any?
+            shifts.current_week.sum(:time_worked)
+        else
+            0.00
+        end
     end
     
     def hours_until_ot
@@ -270,7 +282,7 @@ class Job < ActiveRecord::Base
     
     def last_clock_in
         if shifts.any?
-            shifts.last.time_in.strftime("%m/%e %I:%M%P")
+            shifts.last.time_in.stamp('11/12/2015 at 1:05am')
         else
             "No shifts yet."
         end
@@ -278,7 +290,7 @@ class Job < ActiveRecord::Base
     
     def last_clock_out
         if shifts.clocked_out.any?
-            shifts.clocked_out.last.time_out.strftime("%m/%e %I:%M%P")
+            shifts.clocked_out.last.time_out.stamp('11/12/2015 at 1:05am')
         else
             "No complete shifts."
         end

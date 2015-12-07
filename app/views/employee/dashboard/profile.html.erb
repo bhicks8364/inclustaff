@@ -30,7 +30,7 @@
   <div role="tabpanel" class="tab-pane fade in active" id="home">
         <%= render 'employee/shared/user', user: @user %>
      
-            <%= link_to "Dashboard", employee_home_path(@employee), class: 'btn btn-primary btn-lg' %>
+            
          	
    
   
@@ -99,8 +99,8 @@
   
   <div role="tabpanel" class="tab-pane fade" id="current-job">
     
-  <% if @jobs %>
-    <%= render @jobs %>
+  <% if @job %>
+    <%= render @job %>
     <% else %>
     <h3><%= @employee.first_name %> is currently unassigned.</h3>
   <% end %>
@@ -113,7 +113,7 @@
   <div role="tabpanel" class="tab-pane fade" id="shifts">
     
   <% if @employee.assigned? && @employee.shifts.any? %>
-        <%= render 'employee/shifts/shifts_calendar' %>
+        <%= render 'employee/shifts/shift_calendar' %>
     <% elsif @employee.unassigned? %>
     <h3> <%= @employee.first_name %> is currently unassigned.</h3>
   <% end %>
@@ -146,7 +146,7 @@
       <% if @user.events.any? %>
    <h3> Your Applications</h3>
         <div class='list-group'>
-    		<% @user.events.each do |event| %>
+    		<% @user.events.applications.each do |event| %>
     		  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
     		    <%= render partial: "events/activities/employee_applied", locals: {event: event} %>
     		  <% end %>

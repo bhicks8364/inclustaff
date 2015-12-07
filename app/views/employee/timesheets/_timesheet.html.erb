@@ -10,26 +10,26 @@
 				
 				<div class="conversation-body">
 					<h5><strong><%= timesheet.employee.name %></strong> <small><span data-behavior="timesheet-state"><%= timesheet.state.upcase %></span></small></h5>
-					<h6><%= link_to timesheet.job.title, employee_job_path(timesheet.job) %></h6>
+					<h4><%= link_to timesheet.job.title, employee_job_path(timesheet.job) %></h4>
 					<div class="col-md-4">
-						<h6><strong><%= timesheet.week_begin %>  -  <%= timesheet.week_ending %></strong><br>
+						<h4><strong><%= timesheet.week_begin %>  -  <%= timesheet.week_ending %></strong><br>
 						
 						 <%= timesheet.company.name %>
-						</h6>
+						</h4>
 						
 					</div>
 					<div class=" col-md-4">
 						<span class='text-center'>
-							<h6><strong>	Regular Hours:	<%= timesheet.reg_hours %></strong></h6>
+							<h4><strong>	Regular Hours:	<%= timesheet.reg_hours %></strong></h4>
 
-								<h6><strong>	Overtime Hours:	<%= timesheet.ot_hours %></strong></h6>
+								<h4><strong>	Overtime Hours:	<%= timesheet.ot_hours %></strong></h4>
 						</span>
 					</div>
 					<div class="col-md-4">
 						<span class='text-center'>
-							<h6><strong>	Gross Pay:	<%= number_to_currency(timesheet.gross_pay) %></strong></h6>
+							<h4><strong>	Gross Pay:	<%= number_to_currency(timesheet.gross_pay) %></strong></h4>
 
-								<h6><strong>	Total Bill:	<%= number_to_currency(timesheet.total_bill) %></strong></h6>
+								
 						</span>
 					</div>
 					
@@ -46,12 +46,7 @@
 							
 								<% end %>
 						
-						<%= link_to(edit_employee_timesheet_path(timesheet), class: "" ) do %>
-							<span class="fa-stack fa-lg">
-								  <i class="fa fa-square-o fa-stack-2x"></i>
-								  <i class="fa fa-pencil fa-stack-1x"></i>
-								</span>
-						<% end %>
+			
 
 					
 					<%= link_to(employee_timesheet_path(timesheet, format: :pdf), class: "btn btn-success btn-lg" ) do %>

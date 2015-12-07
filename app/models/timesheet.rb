@@ -98,24 +98,23 @@ class Timesheet < ActiveRecord::Base
     def receipt
         Receipts::Receipt.new(
           id: id,
-          message: "Timesheet Summary",
+          message: "Weekly Pay Summary",
           company: {
             name: "#{company.agency.name}",
             address: "8364 Oberlin Rd\nElyria, OH 44035",
             email: "contact@inclustaff.com",
-            logo: Rails.root.join("app/assets/images/incluStaff_logo.png")
+            logo: Rails.root.join("app/assets/images/clock.png")
           },
           
           line_items: [
             ["Week Ending",           week_ending],
-            ["Employee", "#{job.name_title} (#{employee.code})"],
+            ["Assignment", "#{job.id} (#{job.title})"],
             ["Mark up",        "#{mark_up_percent}    ($#{mark_up.round(2)})"],
             ["Reg Hrs",        "#{reg_hours}    ($#{pay_rate.round(2)})"],
             ["OT Hrs",       "#{ot_hours}    ($#{ot_rate.round(2)})"],
             ["Gross Pay",         "$#{gross_pay.round(2)}"],
-            ["Total Bill",         "$#{total_bill.round(2)}"],
-            ["Due Date",     "#{(created_at + 14.days).strftime("%x")}"],
-            ["Transaction ID", id]
+            
+            ["Payroll ID", "#{id} - #{week}"]
           ]
         )
     end

@@ -46,8 +46,11 @@ class User < ActiveRecord::Base
 
   validates :agency_id,  presence: true
   validates :role,  presence: true
+  validates :code, uniqueness: true
 
-  
+  devise :database_authenticatable, :authentication_keys => [:code]
+  devise :database_authenticatable, :registerable,
+        :recoverable, :rememberable, :trackable, :validatable
   
   scope :unassigned, -> { joins(:employee).merge(Employee.unassigned)}
   scope :available, -> { joins(:employee).merge(Employee.available)}
@@ -72,13 +75,6 @@ class User < ActiveRecord::Base
   def online?
     updated_at > 10.minutes.ago
   end
-  
-
-  devise :database_authenticatable, :registerable,
-        :recoverable, :rememberable, :trackable, :validatable
-        
-  # devise :database_authenticatable, :validatable, password_length: 4..6      
-  # delegate :ssn, to: :employee
 
   scope :dns, -> { joins(:employee).merge(Employee.dns)}
   scope :unassigned, -> { joins(:employee).merge(Employee.unassigned)}

@@ -1,3 +1,7 @@
-$("<%= escape_javascript(render @comment) %>").appendTo("#comments_<%= @comment.commentable_type %>_<%= @comment.commentable_id %>");
+<% if @comment.valid? %>
+$("<%= escape_javascript(render @comment) %>").appendTo("#comment-list");
 console.log("create.js.erb file");
-$(".body").val('');
+$("#comment_body").val('');
+<% else %>
+alert("Cannot leave a blank comment");
+<% end %>

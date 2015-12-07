@@ -1,0 +1,13 @@
+<div class='col-md-12 main-box'>
+    <p><%= @comment.body %></p>
+
+    <%= @comment.admin.try(:name) || @comment.company_admin.try(:name) %> - 
+						<%= @comment.admin.try(:role) || @comment.company_admin.try(:role) %>
+    <p><%= @comment.commentable_type %></p>
+    
+    <%= link_to "<i class='fa fa-trash-o fa-red'></i>".html_safe, comment_path(@comment), method: :delete, 
+                                                    data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+    <%= link_to "View All", comments_path, class: 'btn btn-primary' %>
+    <%= link_to "New", new_comment_path, class: 'btn btn-primary' %>
+</div>
+
