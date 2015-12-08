@@ -18,7 +18,7 @@
 	<tr data-behavior="timesheet" data-id="<%= timesheet.id %>">
 		<td><strong><%= link_to timesheet.week_ending, admin_timesheet_path(timesheet) %></strong></td>
 		<td class='text-left'><%= link_to timesheet.order.company, admin_company_path(timesheet.company), class: 'table-link'  %></td>
-      	<td class='text-left'><%= render 'admin/shared/modal', employee: timesheet.employee %><%= link_to timesheet.employee.name, admin_employee_path(timesheet.employee), class: 'table-link' %>
+      	<td class='text-left'><%= link_to timesheet.employee.name, admin_employee_path(timesheet.employee), class: 'table-link' %>
       	</td>
 
 			

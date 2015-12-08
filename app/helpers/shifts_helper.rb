@@ -22,7 +22,7 @@ module ShiftsHelper
       
       if shift.on_break? 
       "<h3>  #{shift.employee.first_name}  has been on break for  #{distance_of_time_in_words(shift.breaks.last, Time.current, include_seconds: true)} </h3>".html_safe
-      elsif !shift.on_break? && shift.took_a_break?
+      elsif shift.breaks.count >= 2
       "<h4>  #{shift.employee.first_name}  took a break for   #{distance_of_time_in_words(shift.breaks[0], shift.breaks[1]) } </h4>".html_safe
       elsif !shift.took_a_break?
       "<h4>  #{shift.employee.first_name}  has not taken a break. </h4>".html_safe

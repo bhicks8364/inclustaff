@@ -11,10 +11,7 @@ class Company::OrdersController < ApplicationController
       @company = @admin.company
       @orders = @company.orders.order(title: :asc)
    
-    
-    
-
-    
+    authorize @orders
   end
   
   def all
@@ -41,7 +38,7 @@ class Company::OrdersController < ApplicationController
   # GET /orders/1.json
   def show
     @company = @order.company
-    @inactivejobs = @order.jobs.inactive
+    @inactive_jobs = @order.jobs.inactive
     @active_jobs = @order.jobs.active
     @jobs = @order.jobs.active.includes(:shifts)
     # authorize @order
@@ -55,6 +52,7 @@ class Company::OrdersController < ApplicationController
       @company = @admin.company
       @order = @company.orders.new
     end
+    authorize @order
 
 
   end
@@ -107,6 +105,7 @@ class Company::OrdersController < ApplicationController
   # DELETE /orders/1.json
   def destroy
     authorize @order
+    
     @order.destroy
 
     respond_to do |format|
@@ -124,7 +123,7 @@ class Company::OrdersController < ApplicationController
     def set_order
 
       @order = Order.find(params[:id])
-         skip_authorization
+         authorize @order
     end
 
 

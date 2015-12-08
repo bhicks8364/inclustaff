@@ -127,7 +127,7 @@ class Timesheet < ActiveRecord::Base
     def self.by_total_bill
         order(:total_bill)
     end
-
+    # There should never be a timesheet without shifts. Need to fix this. 
     def self.without_shifts
         includes(:shifts).where( :shifts => { :timesheet_id => nil } )
     end
@@ -271,10 +271,10 @@ class Timesheet < ActiveRecord::Base
     end
     
     def week_ending
-        shifts.any? ? shifts.last.time_in.end_of_week.strftime("%x") : Date.today.end_of_week.strftime("%x")
+        shifts.any? ? shifts.last.time_in.end_of_week.stamp("11/15") : Date.today.end_of_week.stamp("11/15")
     end
     def week_begin
-        shifts.any? ? shifts.last.time_in.beginning_of_week.strftime("%x") : Date.today.beginning_of_week.strftime("%x")
+        shifts.any? ? shifts.last.time_in.beginning_of_week.stamp("11/15") : Date.today.beginning_of_week.stamp("11/15")
         
     end
     def time_frame

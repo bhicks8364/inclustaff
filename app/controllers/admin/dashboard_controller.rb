@@ -48,6 +48,7 @@ class Admin::DashboardController < ApplicationController
         @orders = Order.needs_attention
         @employees = Employee.unassigned
       end
+      skip_authorization
     end
     def all_tags
       if params[:tag]
@@ -57,6 +58,7 @@ class Admin::DashboardController < ApplicationController
         @orders = @current_agency.orders.needs_attention
         @employees = @current_agency.employees.available
       end
+      skip_authorization
     end
     def home
       gon.invoices = @current_agency.invoices.pluck(:total)

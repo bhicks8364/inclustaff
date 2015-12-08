@@ -5,9 +5,9 @@
    
     <h2>All Comments</h2>
     <% @comments.order(created_at: :desc).each do |comment| %>
-        <% if lookup_context.template_exists?(comment.commentable_type.downcase, "comments/forms", true) %>
-            <%= render partial: "comments/forms/#{comment.commentable_type.downcase}", locals: {comment: comment} %>
-        <% end %>
+      
+            <%= render 'comment' %>
+     
     <% end %>
     
     <%= will_paginate @comments  %>
@@ -16,7 +16,7 @@
 <div class='col-md-12'>
     <div class='col-md-6'>
     <h3>Timesheet Comments</h3>
-    <%= div_for(Timesheet.with_recent_comments.distinct, class: 'panel dark') do |timesheet| %>
+    <%= div_for(@current.timesheets.with_recent_comments.distinct, class: 'panel dark') do |timesheet| %>
     <h4><%= timesheet.job.name_title %></h4>
     <hr>
         <div id='comments_<%= timesheet.class %>_<%= timesheet.id %>'>

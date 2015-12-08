@@ -105,16 +105,12 @@
   </div>
   <div role="tabpanel" class="tab-pane fade" id="comments-tab">
      <div class='col-md-12 dark'>
-         <div id='comments_<%= @job.class %>_<%= @job.id %>'>
+         <div id='comment-list'>
             <% @job.comments.each do |comment| %>
-            
                 <%= render 'comments/comment', comment: comment %>
             <% end %>
-        
-        
           <%= render partial: "comments/form", locals: {commentable: @job} %>
          </div>
-    
       </div>
   </div>
      <div role="tabpanel" class="tab-pane fade" id="settings">

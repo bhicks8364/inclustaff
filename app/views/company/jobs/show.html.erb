@@ -50,13 +50,15 @@
       <div role="tabpanel" class="tab-pane fade" id="timesheets">
         <h2 class='page-header text-center'>Timesheets</h2>
         
-        <div id="pending" class='col-md-6 dark' data-behavior='company-timesheet-list'>
+        <div id="pending" class='col-md-6 dark' data-behavior='timesheet-list'>
           <h5 class='text-center'>Pending</h5>
           <%= render @job.timesheets.pending %>
         </div>
-        <div id="approved" class='col-md-6 dark' data-behavior='company-timesheet-list'>
+        <div id="approved" class='col-md-6 dark' data-behavior='timesheet-list'>
           <h5 class='text-center'>Approved</h5>
-          <%= render @job.timesheets.approved %>
+          <% @job.timesheets.approved.each do |timesheet| %>
+              <%= render 'company/timesheets/timesheet', timesheet: timesheet %>
+          <% end %>
         </div>
       </div>
       <div role="tabpanel" class="tab-pane fade" id="editing">
@@ -76,13 +78,19 @@
         </div>
       </div>
       <div role="tabpanel" class="tab-pane fade" id="comments">
-        <div class='col-md-12'>
-         <div class='well'>
-           <%= render 'comments' %>
-         </div>
-          
-          
-        </div>
+           <div class='col-md-8 dark'>
+             
+              <div class='scroll300' id='comment-list'>
+                  <% @job.comments.order(created_at: :desc).each do |comment| %>
+                      <%= render 'comments/comment', comment: comment %>
+                      <p><%= comment.mentioned_admins.map{|p| p.name.titleize}.join(", ") %></p>
+                  <% end %>
+               </div>
+              <div class=''>
+                <%= render partial: "comments/form", locals: {commentable: @job} %>
+              </div>
+            </div>
+        
       </div>
       
     </div>

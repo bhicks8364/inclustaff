@@ -39,7 +39,7 @@
   </div>
  
 
-         <div id='comments_<%= @timesheet.class %>_<%= @timesheet.id %>'>
+         <div id='comment-list'>
             <% @timesheet.comments.each do |comment| %>
             
                 <%= render 'comments/comment', comment: comment %>

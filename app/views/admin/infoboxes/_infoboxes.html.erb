@@ -1,7 +1,14 @@
 
-<div class='col-md-9 col-sm-12 col-xs-12 well'>
-<h3 class='text-center'> All Timesheets</h3>
-	<%= render 'admin/timesheets/table' %>
+<div class='col-md-12 col-sm-12 col-xs-12'>
+	<h2>Timesheets</h2>
+	<div class='col-md-6 col-sm-12 col-xs-12' data-behavior="timesheet-list">
+		<h3 class='text-center'> This Week</h3>
+		<%= render @current_admin.timesheets.current_week || "No timesheets this week yet." %>
+	</div>
+	<div class='col-md-6 col-sm-12 col-xs-12' data-behavior="timesheet-list">
+		<h3 class='text-center'> Last Week</h3>
+		<%= render @current_admin.timesheets.last_week || "No timesheets for last week." %>
+	</div>
 </div>
 
 <div class='col-md-3 col-sm-12 col-xs-12 well'>
@@ -9,7 +16,7 @@
 	<h5 class="white text-center">Recent Shift Notes</h5>
 		<div class='thumbnail white scroll300'>
 			
-			<%= div_for(Timesheet.current_week.with_shift_notes.includes(:job, :shifts).distinct, class: 'caption') do |timesheet| %>
+			<%= div_for(@current_admin.timesheets.current_week.with_shift_notes.includes(:job, :shifts).distinct, class: 'caption') do |timesheet| %>
 				<h5><strong><%= timesheet.job.name_title %> </strong> <br><small><%= timesheet.company.name %> </small></h5>
 				<ul class="fa-ul">
 					<% timesheet.shifts.with_notes.order(updated_at: :desc).each do |shift| %>

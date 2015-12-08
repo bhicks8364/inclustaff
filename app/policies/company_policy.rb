@@ -27,10 +27,9 @@ class CompanyPolicy < ApplicationPolicy
   def show?
     return true if user.admin?
   end
-  # def update?
-  #   return true if user.recruiter? || user.owner?
-  #   user.employee? && record.job_id == user.employee.current_job.id
-  # end
+  def update?
+    user.admin?
+  end
   def destroy?
     false
   end

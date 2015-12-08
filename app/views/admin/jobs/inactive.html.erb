@@ -11,12 +11,15 @@
    <hr>
   
   
-  <div class='col-md-12 well' id='comments_<%= job.class %>_<%= job.id %>'>
-      <h3>Comments</h3>
-            <% job.comments.each do |comment| %>
-                <%= render 'comments/comment', comment: comment %>
-            <% end %>
-        </div>
+    <div class='col-md-12 well' id='comment-list'>
+    <% if job.comments.any? %>
+        <h3>Comments</h3>
+        <% job.comments.each do |comment| %>
+            <%= render 'comments/comment', comment: comment %>
+        <% end %>
+    <% end %>
+    </div>
+        
         <%= link_to "Edit", edit_admin_job_path(job), class: 'btn btn-primary' %>
         <%= link_to "View", admin_job_path(job), class: 'btn btn-primary' %>
         <%= link_to "View Employee", admin_employee_path(job.employee), class: 'btn btn-primary' %>

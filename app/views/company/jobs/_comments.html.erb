@@ -1,6 +1,6 @@
 <div class='center commemts'>
     <h2 class='text-center'>Job Comments </h2>
-         <div id='comments_<%= @job.class %>_<%= @job.id %>'>
+         <div id='comments-list'>
             <% @job.comments.each do |comment| %>
             
                 <%= render 'comments/comment', comment: comment %>

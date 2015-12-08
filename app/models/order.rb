@@ -116,21 +116,21 @@ class Order < ActiveRecord::Base
     end
     
     def company_name
-      if self.company
-        self.company.name
+      if company
+        company.name
       else
         "Company Unavailable"
       end
     end
     
   def needs_attention?
-    if self.jobs.any?
-      j = self.jobs.count
+    if jobs.active.any?
+      j = jobs.active.count
     else
       j = 0
     end
-    if self.number_needed && self.active
-      if self.number_needed > j 
+    if number_needed && active
+      if number_needed > j 
         true
       else
         false
@@ -147,8 +147,8 @@ class Order < ActiveRecord::Base
   end
   
   def open_jobs
-    if self.number_needed != nil && self.jobs != nil
-      self.number_needed - self.jobs.count
+    if number_needed != nil && jobs.active != nil
+      number_needed - jobs.active.count
     end
   end
     
@@ -166,7 +166,7 @@ class Order < ActiveRecord::Base
     "#{company_name} - #{title}"
   end
   def to_s
-    self.title_company
+    title_company
   end
   
   def title_count
@@ -174,12 +174,12 @@ class Order < ActiveRecord::Base
   end
   
   def mark_up_percent
-    (self.mark_up * 100 - 100).to_i.to_s + "%" 
+    (mark_up * 100 - 100).to_i.to_s + "%" 
   end
   
   
   def applications
-      Event.where(eventable_id: self.id, eventable_type: 'Order', action: 'applied')
+      Event.where(eventable_id: id, eventable_type: 'Order', action: 'applied')
   end
 
   def mentions

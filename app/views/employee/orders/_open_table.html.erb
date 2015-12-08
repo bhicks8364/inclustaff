@@ -21,7 +21,10 @@
       <tr>
         
         
-        <td><% if @user.applied_to(order.id) %>
+        <td >
+          
+          <% if @user.applied_to(order.id) %>
+        
        <%= link_to order.title, employee_order_path(order), class: "btn btn-success fill" %>
         <% else %>
           <%= link_to order.title, employee_order_path(order), class: "btn btn-primary fill" %>
@@ -30,13 +33,23 @@
         <td><%= order.pay_range %></td>
         <td><%= order.shift %></td>
         <td><%= order.needed_by? ? order.needed_by.stamp("11/13/15") : "TBD" %></td>
-        <td><% if order.skills.any? %>
-          <% order.skills.order(:required).reverse_order.limit(3).each do |skill| %>
-            <small><%= skill.name %></small><br>
-          <% end %>
+        <td class='text-center'>
+          <% if order.skills.any? %>
+          <a href="#" data-toggle="tooltip" title="<%= order.skills.map(&:name).join(', ') %>">
+            <span class="fa-stack fa-lg">
+              <i class="fa fa-circle fa-stack-2x"></i>
+              <i class="fa fa-wrench fa-stack-1x fa-inverse"></i>
+            </span>
+         
+          </a>
           <% else %>
-            <small>None</small>
-        <% end %>
+          <a href="#" data-toggle="tooltip" title="No Special Skills Required">
+          <span class="fa-stack fa-lg" >
+            <i class="fa fa-wrench fa-stack-1x"></i>
+            <i class="fa fa-ban fa-stack-2x fa-flip-horizontal text-danger"></i>
+          </span>
+          </a>
+          <% end %>
         </td>
        
         

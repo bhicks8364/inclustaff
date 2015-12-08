@@ -1,8 +1,10 @@
 <div class='col-md-12'>
+    <h3 class='text-center'>Register your agency below.</h3>
+    <div class='col-md-3'></div>
+    <div class='col-md-6 dark white'>
+    <%= simple_form_for(@agency, class: '') do |f| %>
 
-    <%= simple_form_for(@agency, class: 'main-form') do |f| %>
-
-           <h3 class='text-center white'>Register your agency below.</h3>
+           
         <% if @agency.errors.any? %>
   <div id="error_explanation">
     <h3><%= pluralize(@agency.errors.count, "error") %> prohibited this agency from being saved:</h3>
@@ -14,18 +16,35 @@
     </ul>
   </div>
 <% end %>
-         <%= f.input :name, label: false, placeholder: "Agency Name", input_html: {class: "form-control"}  %>
-       
+<div class='col-md-6'>
+    <%= f.input :name, label: false, placeholder: "Agency Name", input_html: {class: "form-control"}  %>
     
-   
-       
-<div class="form-group">
-<%= f.input :subdomain, placeholder: "Lowercase only. No special characters or spaces.", hint: 'Once registered, you can access your portal at www.<u>yoursubdomain</u>.inclustaff.com'.html_safe, input_html: {class: "form-control"}  %>
+        <p><strong>Choose a subdomain</strong></p>
+        <%= f.input :subdomain, label: false, placeholder: "Lowercase only. No special characters or spaces.", input_html: {class: "form-control"}, wrapper_html: {class: "white"}  %>
+        <p class='text-center'>Once registered, you can access your portal at www.<u>yoursubdomain</u>.inclustaff.com </p>
+        
+    
+    </div>
+    <div class='col-md-6'>
+    <div class=''>
+        <%= f.input :address, label: false, placeholder: "Address", input_html: {class: "form-control"}  %>
+        <%= f.input :city, label: false, placeholder: "City", input_html: {class: "form-control"}  %>
 
-</div>
-            <div class="form-actions">
+        <%= f.input :state, label: false, placeholder: "State", input_html: {class: "form-control"}  %>
+        
+        <%= f.input :zipcode, label: false, placeholder: "Zipcode", input_html: {class: "form-control"}  %>
+        <%= f.input :phone_number, label: false, placeholder: "Phone Number", input_html: {class: "form-control"}  %>
+    </div>
+    
+
+        
+    </div>
+
+
+            <div class="form-actions pull-right">
               <%= f.button :submit, "Register Now", class: "btn btn-primary btn-lg" %>
             </div>
 
 <% end %>
+ </div>
 </div>

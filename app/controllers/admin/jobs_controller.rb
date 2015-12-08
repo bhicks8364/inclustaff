@@ -20,7 +20,12 @@ class Admin::JobsController < ApplicationController
   end
   
   def inactive
-    @jobs = Job.inactive
+    if params[:order_id]
+      @order = Order.find(params[:order_id])
+      @jobs = @order.jobs.inactive
+    else
+      @jobs = @current_agency.jobs.inactive
+    end
     authorize @jobs, :index?
   end
 

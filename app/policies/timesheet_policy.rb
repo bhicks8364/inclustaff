@@ -17,6 +17,9 @@ class TimesheetPolicy < ApplicationPolicy
   def past?
     user.present?
   end
+  def approve?
+    user.admin?
+  end
   def show?
     return true if user.admin?
     user.employee? && record.job_id == user.employee.current_job.id

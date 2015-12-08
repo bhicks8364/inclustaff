@@ -16,8 +16,11 @@
 		<%= f.input :pay_range, collection: [ "$8.10 - $10.00","$10.00 - $12.00","$12.00 - $15.00", "$15.00 - $18.00", "$18.00 - $22.00", "$22.00 +  "], prompt: " Select Pay Range", label: false, wrapper_html: {class: 'col-md-4'}   %>
 		<%= f.input :shift, collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible"], prompt: "Select shift needed", label: false, wrapper_html: {class: 'white col-md-4'}  %>
 		<% if @current_admin.role != "Account Manager" %>
-		<%= f.association :account_manager, collection: Admin.account_managers.order(:last_name), prompt: "Select Account Manager", label: false, wrapper_html: {class: 'white col-md-4'}  %>
+		<%= f.association :account_manager, collection: @current_agency.admins.account_managers.order(:last_name), prompt: "Select Account Manager", label: false, wrapper_html: {class: 'white col-md-4'}  %>
 		<% end %>
+		
+		<%= f.association :manager, collection: @company.admins.order(:last_name), prompt: "Select Company Manager", label: false, wrapper_html: {class: 'white col-md-4'}  %>
+	
 		
 
 		<%= f.input :notes, as: :text, label: false, placeholder: "Please list desired skills, qualifications, etc...", input_html: {data: { behavior: "autocomplete_order_notes" }, rows: 8 }, wrapper_html: {class: 'white col-md-12'} %>

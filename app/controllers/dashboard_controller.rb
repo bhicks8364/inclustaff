@@ -45,7 +45,7 @@ class DashboardController < ApplicationController
         @user = current_user
         @employee = @user.employee
         @job = @employee.current_job
-        @company = @job.company
+        @company = @job.company if @job.present?
         @events = @user.events.applications
         @applications = @events.applications
         render "employee/dashboard/home"

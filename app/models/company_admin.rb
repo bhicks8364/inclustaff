@@ -31,6 +31,8 @@
 
 class CompanyAdmin < ActiveRecord::Base
   belongs_to :company
+  has_many :jobs, through: :company
+  has_many :timesheets, through: :jobs
   has_many :events
   has_many :eventables, :through => :events
   # Include default devise modules. Others available are:
@@ -42,4 +44,13 @@ class CompanyAdmin < ActiveRecord::Base
   def name; "#{first_name} #{last_name}"; end
   def to_s; name; end
   def owner?;           role == "Owner";  end
+  def recruiter?;           false;  end
+  def account_manager?;           false;  end
+  def hr?;           role == "HR";  end
+  def timeclock?;           role == "Timeclock";  end
+  # TODO -> dont think admin? should return true for company_admin... Clashing with policies - shared controllers
+  def admin?;           true;  end
+    
+  
+ 
 end

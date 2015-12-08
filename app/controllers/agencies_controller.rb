@@ -1,7 +1,8 @@
 class AgenciesController < ApplicationController
   before_action :set_agency, only: [:show, :edit, :update, :destroy]
   # before_action :authenticate_admin!
-  layout 'application'
+  layout :determine_layout
+  
   # GET /agencies
   # GET /agencies.json
   def new
@@ -18,6 +19,11 @@ class AgenciesController < ApplicationController
   # GET /agencies/1.json
   
   def show
+    if user_signed_in?
+      @user = current_user
+    else
+      @user = User.new
+    end
     
   end
 
@@ -85,6 +91,15 @@ class AgenciesController < ApplicationController
   end
 
   private
+    def determine_layout
+      if admin_signed_in?
+        "admin_layout"
+      elsif company_admin_signed_in?
+        "company_layout"
+      else
+          "application"
+      end
+    end
     def pundit_user
       current_admin
     end
@@ -96,7 +111,7 @@ class AgenciesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def agency_params
-      params.require(:agency).permit(:name, :subdomain, :admin_id, :order_ids => [], :admin_ids => [], :user_ids => [],
+      params.require(:agency).permit(:name, :address, :city, :state, :zipcode, :contact_name, :contact_email, :subdomain, :admin_id, :order_ids => [], :admin_ids => [], :user_ids => [],
       admins_attributes: [:id, :email, :role, :password, :password_confirmation, :first_name, :last_name, :agency_id, :current_password])
     end
 end

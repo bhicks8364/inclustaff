@@ -1,6 +1,6 @@
 <div class='row row150'>
-	<div class="col-md-3 col-sm-6 col-xs-6 text-center">
-		<div class='main-box'>
+	<div class="col-md-3 col-sm-12 col-xs-12 text-center">
+		<div class='dark'>
 				
 		
 			
@@ -23,14 +23,14 @@
 		</div>
 	</div>
 
-	<div class="col-md-3 col-sm-6 col-xs-6 text-center">
-		<div class='main-box'>
+	<div class="col-md-3 col-sm-12 col-xs-12 text-center">
+		<div class='dark'>
 			<h5 class="center"><strong>Last Week Timesheets</strong>	  	</h5>
 		
 			<span class="badge badge-success center fill"><%= Timesheet.last_week.approved.try(:count) %> Approved </span>
 			<span class="badge badge-default center fill"><%= Timesheet.last_week.pending.try(:count) %> Pending </span>
 			<br>
-			<%= link_to(past_admin_timesheets_path, class: "btn btn-primary center fill") do %>
+			<%= link_to(past_admin_timesheets_path, class: "btn btn-primary btn-block") do %>
 				<strong>View Past Timesheets</strong>
 				<% end %>
 		</div>
@@ -39,21 +39,21 @@
 
 
 
-	<div class="col-md-3 col-sm-6 col-xs-6  text-center">
-		<div class="main-box">
-		<% if Timesheet.last_week.pending.any? %>
+	<div class="col-md-3 col-sm-12 col-xs-12  text-center">
+		<div class="dark">
+		<% if @current_admin.timesheets.last_week.pending.any? %>
 		
-			Pending: <%= Timesheet.last_week.pending.count %>
+			Pending: <%= @current_admin.timesheets.last_week.pending.count %>
 				<%= link_to(past_admin_timesheets_path, class: "btn btn-primary") do %>
-					<i class='fa fa-list-alt center2 fa-fw'></i> Last Week Timesheets
+					<i class='fa fa-list-alt fa-1x fa-fw'></i> Last Week Timesheets
 				<% end %>
 				
 		<% else %>
 		<i class="fa fa-check fa-1x"></i> 
-			All of last week's timesheets have been approved.
-		<hr>
-				<%= link_to(past_admin_timesheets_path(Timesheet, format: :csv), class: 'btn btn-success fill') do %>
-  					<i class="fa fa-download fa-1x fa-fw"></i><strong> Export to CSV</strong>
+		<p>	All of last week's timesheets have been approved.</p>
+		
+				<%= link_to(past_admin_timesheets_path(@current_admin.timesheets, format: :csv), class: 'btn btn-success') do %>
+  					<i class="fa fa-export fa-1x"></i> Export
   				<% end %>
 				
 		<% end %>
@@ -61,8 +61,8 @@
 		</div>
 	</div>
 	
-	<div class="col-md-3 col-sm-6 col-xs-6  text-center">
-		<div class="main-box">
+	<div class="col-md-3 col-sm-12 col-xs-12  text-center">
+		<div class="dark">
 			
 			<% if @newly_added.any? %>
 			<i class="fa fa-users fa-1x"></i>
@@ -78,7 +78,7 @@
 			<% else %>
 			<i class="fa fa-users fa-1x"></i>
 			<h5>There are no new employees at this time.</h4>
-			<br>
+			
 			<% end %>
 			<%= link_to(new_user_registration_path, class: 'btn btn-primary fill') do %>
   					<i class="fa fa-user-plus fa-1x"></i> Add Employee

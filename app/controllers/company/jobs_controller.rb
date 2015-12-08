@@ -3,13 +3,12 @@ class Company::JobsController < ApplicationController
   before_action :authenticate_company_admin!
   # before_action :set_order
 
-  # GET /jobs
-  # GET /jobs.json
   def index
     
       @admin = current_company_admin
       @company = @admin.company
-      @jobs = @company.jobs.order(title: :asc)
+      @jobs = @company.jobs.active.order(title: :asc)
+      authorize @jobs
 
   end
   
@@ -17,14 +16,12 @@ class Company::JobsController < ApplicationController
     @admin = current_company_admin
     @company = @admin.company
     @archived_jobs = @company.jobs.inactive.with_employee
-    @active_jobs = Job.active.with_employee
-    # authorize @active_jobs
+    
+    authorize @archived_jobs
   end
 
-  # GET /jobs/1
-  # GET /jobs/1.json
   def show
-    # authorize @job
+    authorize @job
     @employee = @job.employee
     @company = @job.company
     @order = @job.order
@@ -37,48 +34,7 @@ class Company::JobsController < ApplicationController
     
   end
 
-  # GET /jobs/new
-  def new
-
-  end
-
-  # GET /jobs/1/edit
-  def edit
-    @company = @job.company
-    @employees = @company.employees.unassigned
-    @order = @job.order
-    @employee = @job.employee
-    # authorize @job
-  end
-
-  # POST /jobs
-  # POST /jobs.json
-  def create
-   
-    if params[:order_id]
-      @order = Order.find(params[:order_id])
-      @company = @order.company
-      # @employee = Employee.create(employee_params)
-      @job = @order.jobs.new(job_params)
-      # authorize @job
-      # @job.order = @order
-      # @employee = @job.create_employee(employee_params)
-    else
-      # @employee = Employee.create(employee_params)
-      @job = Job.new(job_params)
-      # authorize @job
-    end
-    
-    respond_to do |format|
-      if @job.save
-        format.html { redirect_to job_path(@job, anchor: "job_#{@job.id}"), notice: 'Job was successfully created.' }
-        format.json { render :show, status: :created, location: @job }
-      else
-        format.html { render :new }
-        format.json { render json: @job.errors, status: :unprocessable_entity }
-      end
-    end
-  end
+  
   def verify_code
     skip_authorization
     @code = params[:code]
@@ -95,13 +51,13 @@ class Company::JobsController < ApplicationController
   end
   
   def clock_in
-    skip_authorization
-    # authorize @job, :clock_in?
+
+    authorize @job, :clock_in?
     if @job.off_shift?
       @shift = @job.shifts.create(time_in: Time.current, week: Date.today.beginning_of_week.cweek,
                                   state: "Clocked In",
                                   in_ip: "Company-Clock-In")
-     
+     current_company_admin.events.create(action: "clocked_in", eventable: @shift, user_id: @shift.employee.user_id)
 
     
       respond_to do |format|
@@ -114,8 +70,8 @@ class Company::JobsController < ApplicationController
   end
   
   def clock_out
-    skip_authorization
-    # authorize @job, :clock_out?
+
+    authorize @job, :clock_out?
     if @job.on_shift? && @job.current_shift.present?
         @shift = @job.current_shift
         @shift.update(time_out: Time.current,
@@ -149,7 +105,7 @@ class Company::JobsController < ApplicationController
   # DELETE /jobs/1
   # DELETE /jobs/1.json
   def destroy
-    authorize @job
+    
     @job.destroy
     respond_to do |format|
       format.html { redirect_to jobs_url, notice: 'Job was successfully destroyed.' }
@@ -164,7 +120,7 @@ class Company::JobsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_job
       @job = Job.find(params[:id])
-     
+      authorize @job
     end
     
     def set_order

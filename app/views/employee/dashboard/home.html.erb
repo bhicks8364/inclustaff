@@ -3,19 +3,15 @@
    	<% content_for :not_authorized do %>
 	  <script>alert('You are not authorized to view this page!')</script>
 	<% end %>
-  <%= content_for :not_authorized if current_user.nil? %>
+
  
-    <p> Last In: <br><%= @job.last_clock_in %> </p>
-     <p>Last Out: <br> <%= @job.last_clock_out %></p>
-   <% content_for :navigation do %>
-     <li><%= link_to 'Shift Calendar', controller: 'employee/shifts', action: 'index' %></li>
-     <li><%= link_to 'Home', controller: 'employee/dashboard', action: 'home' %></li>
-   <% end %>
-  <%= content_for :navigation %>
+   
 
 
    <%= user_email(@user) %>
     <% if @employee.assigned? %>
+     <p> Last In: <br><%= @job.last_clock_in %> </p>
+     <p>Last Out: <br> <%= @job.last_clock_out %></p>
    
           <% if @employee.on_shift? || @employee.on_break? %>
             <%= link_to "You're Currently Clocked In", employee_shift_path(@employee.current_shift), class: 'btn btn-primary' %>

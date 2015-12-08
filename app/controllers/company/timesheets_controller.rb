@@ -1,5 +1,5 @@
 class Company::TimesheetsController < ApplicationController
-  before_action :set_timesheet, only: [:show, :edit, :update, :destroy]
+  before_action :set_timesheet, only: [:show, :destroy, :approve]
   before_action :authenticate_company_admin!
   # GET /timesheets
   # GET /timesheets.json
@@ -9,6 +9,7 @@ class Company::TimesheetsController < ApplicationController
     @company = @admin.company
     @timesheets = @company.timesheets.order(updated_at: :desc)
     gon.timesheets = @timesheets
+    authorize @timesheets
     respond_to do |format|
       format.html
       format.csv { send_data @timesheets.to_csv, filename: "timesheets-export-#{Time.now}-inclustaff.csv" }
@@ -40,15 +41,10 @@ class Company::TimesheetsController < ApplicationController
     end
   end
 
-  # GET /timesheets/new
-  def new
-    @timesheet = Timesheet.new
-    
-    # authorize @timesheet
-  end
- 
+
   def approve
     @timesheet = Timesheet.find(params[:id])
+    # authorize @timesheet
     if @timesheet.clocked_out?
       approved_by = @timesheet.approved? ? nil : current_company_admin.id
       approved_by_type = @timesheet.approved? ? nil : "CompanyAdmin"
@@ -67,7 +63,7 @@ class Company::TimesheetsController < ApplicationController
 
   # GET /timesheets/1/edit
   def edit
-    # authorize @timesheet
+    
   end
 
   # POST /timesheets
@@ -114,9 +110,13 @@ class Company::TimesheetsController < ApplicationController
   end
 
   private
+  def pundit_user
+    current_company_admin
+  end
     # Use callbacks to share common setup or constraints between actions.
     def set_timesheet
       @timesheet = Timesheet.find(params[:id])
+      authorize @timesheet
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

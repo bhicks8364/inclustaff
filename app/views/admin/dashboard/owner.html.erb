@@ -1,8 +1,5 @@
-
-
 <div class="col-md-12">
-	
-	<div class="col-md-12">
+
 	  <div class="btn-group" role="group" aria-label="...">
      
         <%= link_to(@current_agency, class: "btn btn-primary") do %>
@@ -35,10 +32,11 @@
 			<span>Edit Agency</span>
 		<% end %>
 	  </div>
-	  
-	</div>
+	<div class="col-md-12">
+		
+		
 	<div class="col-md-8  text-center">
-		<h1 class='page-header'><%= @current_agency.name.titleize %>'s Owner Dashboard</h1>
+		<h1 class='page-header black'>Owner Dashboard</h1>
 		<div class="btn-group" role="group" aria-label="...">
      	<%= link_to(admin_account_manager_path, class: "btn btn-primary") do %>
 		<i class='fa fa-money fa-fw'></i>
@@ -60,29 +58,28 @@
 		
 
 	  </div>
-	   <hr>
-	</div>
+	   </div>
+
+	<div class='col-md-4 black'>
 	<% if @current_agency.companies.blank? %>
-    <div class='col-md-6 well'>
        <h4>Getting Started</h4>
-  <div id="no-companies-alert" class="alert alert-danger" role="alert">
-  <h5 class='text-center'> <i class="fa fa-exclamation-triangle fa-fw fa-border"></i> You currently don't have any companies entered. <br>
-  Please add a new company below.</h5>
-  	<%= link_to "Add A Company", new_admin_company_path, class: 'btn btn-primary' %>
-  </div>
-</div>
- <% end %>
-
-  <h3 class='text-center white'><strong>Current Billing:</strong> <%= number_to_currency(@current_agency.current_billing) %></h3>
-  <h3 class='text-center white'>
- 		<small><strong>Last Week:</strong> <%= number_to_currency(@current_agency.last_week_billing) %></small></h3>
-
- 
- 	<div class="row">
- 	
-	 	<%= render 'admin/infoboxes/leaderboxes' %>
+	  <div id="no-companies-alert" class="alert alert-danger" role="alert">
+		  <h5 class='text-center'> <i class="fa fa-exclamation-triangle fa-fw fa-border"></i> You currently don't have any companies entered. <br>
+		  Please add a new company below.</h5>
+		  	<%= link_to "Add A Company", new_admin_company_path, class: 'btn btn-primary' %>
+	  </div>
+  	<% else %>
+  	<div class='text-center'>
+  		<h3 class=''><strong>Current Billing:</strong> <%= number_to_currency(@current_agency.current_billing) %></h3>
+ 		<strong>Last Week:</strong> <%= number_to_currency(@current_agency.last_week_billing) %>
 	</div>
-	
+ 	<% end %>
+</div>
+
+	</div>
+  
+
+
 
 	<div class="col-md-4">
 	  <div class="panel panel-primary dark">
@@ -145,5 +142,5 @@
 	    </div>
 	  </div>
 	</div>
-	
+	<%= render 'admin/infoboxes/leaderboxes' %>
 </div>

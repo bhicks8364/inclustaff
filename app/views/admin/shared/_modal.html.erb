@@ -12,10 +12,10 @@
         
       </div>
       <div class="modal-body">
-     <% if employee.assigned?%>
+     <% if employee.assigned? %>
         <%= render employee.current_job %>
         <% else %>
-        <%= employee.name%> is currently unassigned.
+        <%= employee.name %> is currently unassigned.
         <% end %>
         
         

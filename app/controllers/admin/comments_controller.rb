@@ -18,10 +18,10 @@ class Admin::CommentsController < ApplicationController
     @job = Job.find(params[:job_id]) if params[:job_id].present?
     @comment = Comment.find(params[:id])
     @comment.destroy
-    
+    skip_authorization
       respond_to do |format|
         # format.js
-        format.html { redirect_to :back, notice: 'Comment was successfully destroyed.' }
+        format.html { redirect_to comments_path, notice: 'Comment was successfully destroyed.' }
         format.json { head :no_content }
       end
     

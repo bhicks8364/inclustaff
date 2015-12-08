@@ -8,6 +8,7 @@
         
     <small>
         <%= comment.admin.try(:name) %>
+        <%= comment.company_admin.try(:name) %>
         <%= comment.user.try(:name) %>
     </small>
     

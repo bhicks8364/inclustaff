@@ -60,7 +60,7 @@
           <%= link_to "End Break", break_end_admin_shift_path(@shift), method: :patch, remote: true, class: 'btn btn-danger hide-this', id: 'end-break-btn' %>
       <%= link_to "Start Break", break_start_admin_shift_path(@shift), method: :patch, remote: true, class: 'btn btn-success', id: 'start-break-btn' %>
     <% end %>
-     <% if !@shift.took_a_break? %>
+     <% if @shift.took_a_break? %>
       <%= link_to 'Remove All Breaks', remove_breaks_admin_shift_path(@shift), method: :patch, remote: true, data: { confirm: 'Are you sure you want to remove all breaks from this shift?' }, class: "btn btn-danger btn-sm hide-this", id: "remove-breaks-btn" %>
       <% end %>
     <%= link_to 'Remove All Breaks', remove_breaks_admin_shift_path(@shift), method: :patch, remote: true, data: { confirm: 'Are you sure you want to remove all breaks from this shift?' } , class: "btn btn-danger btn-sm", id: "remove-breaks-btn" if @shift.breaks.any? %>

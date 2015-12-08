@@ -167,7 +167,7 @@ class Company::ShiftsController < ApplicationController
 
     respond_to do |format|
       if @shift.update(shift_params)
-        format.html { redirect_to admin_shift_path(@shift), notice: 'Shift was successfully updated.' }
+        format.html { redirect_to company_shift_path(@shift), notice: 'Shift was successfully updated.' }
         format.json { render :show, status: :ok, location: @shift }
       else
         format.html { render :edit }
@@ -208,7 +208,7 @@ class Company::ShiftsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def shift_params
-      params.require(:shift).permit(:time_in, :time_out, :employee_id, :job_id, :note, :break_in, :break_out, :break_duration, :needs_adj, :week, :state).tap do |whitelisted|
+      params.require(:shift).permit(:time_in, :time_out, :paid_breaks, :pay_rate, :employee_id, :job_id, :note, :break_in, :break_out, :break_duration, :needs_adj, :week, :state).tap do |whitelisted|
             whitelisted[:breaks] = params[:shift][:breaks] if params[:shift][:breaks]
           end
     end

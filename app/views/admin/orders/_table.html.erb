@@ -35,7 +35,7 @@
         
         <td><%= link_to order.title, admin_company_order_path(order.company, order) %></td>
         <td><%= order.pay_range %></td>
-        <td><%= order.jobs_count %></td>
+        <td><%= order.jobs.active.count %></td>
         <td><%= number_to_currency( order.timesheets.sum(:total_bill) )%></td>
         <td><%= number_to_currency( order.timesheets.sum(:gross_pay) )%></td>
         <td><%= order.timesheets.sum(:reg_hours) %></td>

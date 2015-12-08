@@ -14,7 +14,7 @@ class Employee::DashboardController < ApplicationController
         
         @shifts = @employee.shifts
         @job = @employee.current_job
-        @company = @job.company 
+        @company = @job.company if @job.present?
         @jobs = @employee.jobs
         @orders = @current_agency.orders.needs_attention
         gon.shifts = @shifts
@@ -39,7 +39,7 @@ class Employee::DashboardController < ApplicationController
        @work_histories = @employee.work_histories
        @job = @employee.current_job
        @jobs = @employee.jobs
-       @shifts = @job.shifts
+       @shifts = @job.shifts if @job.present?
        
     end
     

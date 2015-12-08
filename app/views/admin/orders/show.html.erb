@@ -60,6 +60,7 @@
     <li role="presentation"><a href="#matches" aria-controls="matches" role="tab" data-toggle="tab">Matching Candidates</a></li>
     <li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li>
     <li role="presentation"><a href="#active-jobs" aria-controls="active-jobs" role="tab" data-toggle="tab">Active Jobs</a></li>
+    <li role="presentation"><a href="#inactive-jobs" aria-controls="inactive-jobs" role="tab" data-toggle="tab">Inactive Jobs</a></li>
     <li role="presentation"><a href="#skills-tab" aria-controls="skills-tab" role="tab" data-toggle="tab">Skills</a></li>
     <li role="presentation"><a href="#applications" aria-controls="applications" role="tab" data-toggle="tab">Applicants</a></li>
   </ul>
@@ -139,16 +140,25 @@
   <!--JOBS TAB-->
   <div role="tabpanel" class="tab-pane fade" id="active-jobs">
       <div class='dark'>
-        <% if @jobs.any? %>
-      <%= render 'admin/jobs/table' %>
         <% if policy(Job).create? %>
-         <%= link_to 'Add Job', new_admin_order_job_path(@order), class: "btn btn-primary" %>
+          <%= link_to 'Add Employee', new_admin_order_job_path(@order), class: "btn btn-primary" %>
         <% end %>
+        <% if @jobs.active.any? %>
+          <%= render 'admin/jobs/table' %>
+        <% else %>
+          <h3>No jobs to display yet.</h3>
+      <% end %>
+      </div>
+  </div>
+  <!--INACTIVE JOBS TAB-->
+  <div role="tabpanel" class="tab-pane fade" id="inactive-jobs">
+      <div class='dark'>
+        <% if @jobs.inactive.any? %>
+      <%= link_to "Inactive Jobs", inactive_admin_order_jobs_path(@order) %>
+        
       <% else %>
-      <h3>No jobs to display yet.</h3>
-        <% if policy(Job).create? %>
-         <%= link_to 'Assign Employee', new_admin_order_job_path(@order), class: "btn btn-primary" %>
-        <% end %>
+      <h3>No inactive jobs to display.</h3>
+        
       <% end %>
       </div>
   </div>

@@ -1,4 +1,4 @@
-<div class='col-md-12 main-box'>
+<div class='col-md-12 dark'>
     <h2 class='page-header'> Welcome, <%= current_company_admin.name %>!</h2>
  
    
@@ -8,10 +8,10 @@
         <%= link_to "Edit Company Admin", edit_company_admin_registration_path, class: 'btn btn-primary'%>
     </div>
      <hr>
-<div class='col-md-6 well'>
+<div class='col-md-6 '>
    <h2> Invoices <small><%= pluralize( @current_company_admin.company.invoices.unpaid.count, 'unpaid invoice') %></small></h2>
     <div class='fa-ul list-group'>
-       <% @current_company_admin.company.invoices.each do |invoice| %>
+       <% @current_company_admin.company.invoices.unpaid.each do |invoice| %>
        <% if invoice.paid %>
            <li class='list-group-item list-group-item-success'><i class="fa-li fa fa-check-square"></i>
            <%= invoice.paid_on %><%= number_to_currency(invoice.total) %>
@@ -37,7 +37,7 @@
    <% end %>
    </div>
 </div>
-   <div class='col-md-6 col-sm-12 col-xs-12 well'>
+   <div class='col-md-6 col-sm-12 col-xs-12 '>
 	    <div class='list-group scroll300'>
 			<h5 class="white text-center">Recent Timesheet Comments</h5>
 			<% @company.timesheets.with_recent_comments.order(updated_at: :desc).distinct.each do |timesheet| %>
@@ -59,7 +59,7 @@
 			<% end %>
 		</div>
     </div>
-    <div class='col-md-6 col-sm-12 col-xs-12 well'>
+    <div class='col-md-6 col-sm-12 col-xs-12 '>
 	    <div class='list-group scroll300'>
 			<h5 class="white text-center">Recent Job Comments</h5>
 			<% @company.jobs.with_recent_comments.order(updated_at: :desc).distinct.each do |job| %>

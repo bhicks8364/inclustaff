@@ -37,6 +37,13 @@ Rails.application.routes.draw do
         
       end
     end
+    resources :company_admins do
+      member do
+        post :mention
+        post :follow
+        
+      end
+    end
     resources :users do
       collection do
         post :import
@@ -83,20 +90,24 @@ Rails.application.routes.draw do
           get 'autocomplete'
           post 'import'
         end
-        resources :jobs
+        
         resources :skills
         resources :work_histories
       end
       
       resources :orders do
         resources :skills
-        resources :jobs
+        resources :jobs do
+          collection do
+            get 'inactive'
+          end
+        end
       end
 
       resources :jobs do
         collection do
-            get 'inactive'
-          end
+          get 'inactive'
+        end
         resources :comments
         resources :timesheets, shallow: true do
           collection do

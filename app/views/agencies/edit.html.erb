@@ -1,19 +1,50 @@
-<%= simple_form_for(@agency) do |f| %>
+<div class='col-md-12'>
+    <h3 class='text-center'>Edit your agency information.</h3>
+    <div class='col-md-3'></div>
+    <div class='col-md-6 dark white'>
+    <%= simple_form_for(@agency, class: '') do |f| %>
 
-
-    <%= f.input :name %>
-    <%= f.input :address %>
-    <%= f.input :city %>
-    <%= f.input :state %>
-    <%= f.input :zipcode %>
-    <%= f.input :phone_number %>
-   
+           
+        <% if @agency.errors.any? %>
+  <div id="error_explanation">
+    <h3><%= pluralize(@agency.errors.count, "error") %> prohibited this agency from being saved:</h3>
+ 
+    <ul>
+    <% @agency.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+<div class='col-md-6'>
+    <%= f.input :name, label: false, placeholder: "Agency Name", input_html: {class: "form-control"}  %>
     
+        <p><strong>Subdomain</strong></p>
+        <%= f.input :subdomain, label: false, disabled: true, placeholder: "Lowercase only. No special characters or spaces.", input_html: {class: "form-control"}, wrapper_html: {class: "white"}  %>
+        <p class='text-center'>You can access your portal at www.<u><%= @agency.subdomain %></u>.inclustaff.com </p>
+        
     
-    <%= f.association :contact %>
+    </div>
+    <div class='col-md-6'>
+    <div class=''>
+        <%= f.input :address, label: false, placeholder: "Address", input_html: {class: "form-control"}  %>
+        <%= f.input :city, label: false, placeholder: "City", input_html: {class: "form-control"}  %>
+
+        <%= f.input :state, label: false, placeholder: "State", input_html: {class: "form-control"}  %>
+        
+        <%= f.input :zipcode, label: false, placeholder: "Zipcode", input_html: {class: "form-control"}  %>
+        <%= f.input :phone_number, label: false, placeholder: "Phone Number", input_html: {class: "form-control"}  %>
+    </div>
+    
+
+        
+    </div>
 
 
-
-    <%= f.submit %>
+            <div class="form-actions pull-right">
+              <%= f.button :submit, "Save Changes", class: "btn btn-primary btn-lg" %>
+            </div>
 
 <% end %>
+ </div>
+</div>

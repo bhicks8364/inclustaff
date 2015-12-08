@@ -26,6 +26,7 @@ class Company::DashboardController < ApplicationController
   def set_company
     @current_company_admin = current_company_admin
     @company = @current_company_admin.company
+    skip_authorization
   end
     
     

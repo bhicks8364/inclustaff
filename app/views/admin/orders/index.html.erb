@@ -28,6 +28,11 @@
 			<%= render 'open_table' %>
 	
 	<%end%>
+	<% if @orders.filled.any? %>
+	
+			<%= render 'table' %>
+	
+	<%end%>
 
 	</div>
 
