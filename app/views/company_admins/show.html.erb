@@ -1,0 +1,13 @@
+<div class='dark'>
+    <h1><%= @company_admin.name %></h1>
+    <div class=''>
+        <%= @company_admin.company.name %> -
+        <%= @company_admin.role %>
+    </div>
+    <div class=''>
+        <%= @company_admin.email %>
+        <%= @company_admin.last_sign_in_ip if admin_signed_in? %>
+        <br>
+        <%= @company_admin.last_sign_in_at.stamp("11/12 at 11:15am") %>
+    </div>
+</div>

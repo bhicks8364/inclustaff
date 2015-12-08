@@ -1,0 +1,33 @@
+<li id='clocked-in-nav' class="dropdown hidden-xs">
+	<a class="btn nav-btn dropdown-toggle" data-toggle="dropdown">
+
+  		<i class="fa fa-history"></i> On Break
+		<span class="count" id="clocked-in-count">
+			<%= @current.jobs.on_break.try(:count) %>
+		</span>
+	</a>
+	<ul class="dropdown-menu dropdown-menu-left">
+		<li class="pointer">
+			<div class="pointer-inner">
+				<div class="arrow"></div>
+				<div class="arrow-border"></div>
+			</div>
+		</li>
+		<li id='clocked-in-count' class="item-header dark">
+			You have <%= pluralize( @current.jobs.on_break.try(:count), 'employee') %> on break.
+		</li>
+			<%  @current.jobs.on_break.order(updated_at: :desc).each do |job| %>
+		<li id='in-job-<%= job.id %>'class="list-item" >
+			
+			<%= link_to job.name_title, company_shift_path(job.current_shift) %>
+			
+			
+		</li>
+		<% end %>
+		
+		
+		<li class="item-footer">
+			<%= link_to "View all timesheets", company_timesheets_path %>
+		</li>
+	</ul>
+</li>
