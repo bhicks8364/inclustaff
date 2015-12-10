@@ -25,6 +25,7 @@ class Agency < ActiveRecord::Base
     has_many :companies
     has_many :orders
     has_many :jobs, :through => :orders
+    has_many :company_admins, :through => :companies, :source => 'admins'
     has_many :order_events, :through => :orders, :source => 'events'
     has_many :applications, :through => :orders, :source => 'events'
     has_many :applicants, :through => :applications, :source => 'users'

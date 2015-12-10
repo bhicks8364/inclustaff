@@ -12,6 +12,7 @@
 #  user_id          :integer
 #  agency_id        :integer
 #  company_admin_id :integer
+#  read_at          :datetime
 #
 
 class Event < ActiveRecord::Base
@@ -32,6 +33,9 @@ class Event < ActiveRecord::Base
     scope :comments, -> { where(action: 'commented')}
     scope :approvals, -> { where(action: 'approved')}
     scope :clock_outs, -> { where(action: 'clocked_out')}
+    scope :unread, -> { where(read_at: nil)}
+    scope :read, -> { where.not(read_at: nil)}
+    
     def self.happened_before(date)
       where(Event[:created_at].lteq(date))
     end
@@ -55,6 +59,15 @@ class Event < ActiveRecord::Base
         else
             false
         end
+    end
+    def unread?
+      read_at == nil
+    end
+    def read?
+      !unread?
+    end
+    def state
+      unread? ? "Unread" : "Read"
     end
     def job?
         if eventable_type == "Job"

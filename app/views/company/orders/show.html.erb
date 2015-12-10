@@ -19,6 +19,9 @@
         <%= @order.title %></h3>
         Created: <%= @order.created_at.stamp('11/12/2015') %> <br>
         Last Updated: <%= @order.updated_at.stamp("11/22 at 1:30pm") %> <br>
+        
+        <h4><%= @order.manager.try(:name) %></h4>
+        <h4><%= @order.account_manager.try(:name) %></h4>
       </div>
       <div class='col-md-6 dark'>
           <strong>Job Description:</strong>

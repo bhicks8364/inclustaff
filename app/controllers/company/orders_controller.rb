@@ -87,7 +87,7 @@ class Company::OrdersController < ApplicationController
   # PATCH/PUT /orders/1
   # PATCH/PUT /orders/1.json
   def update
-    @company = Order.find(params[:id])
+    @order = Order.find(params[:id])
     skip_authorization
     # authorize @order
     respond_to do |format|

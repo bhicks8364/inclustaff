@@ -4,9 +4,14 @@ class TimesheetQueryBuilder < ArelHelpers::QueryBuilder
     super(query || timesheet.unscoped)
   end
 
-  def billing_mare_than(amount)
+  def billing_more_than(amount)
     reflect(
       query.where(timesheet[:total_bill].gteq(amount))
+    )
+  end
+  def pay_more_than(amount)
+    reflect(
+      query.where(timesheet[:gross_pay].gteq(amount))
     )
   end
 

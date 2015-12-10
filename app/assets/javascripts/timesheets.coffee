@@ -45,18 +45,18 @@ class Timesheet
     if data.approved
       @item.removeClass('item-left').addClass('item-right')
       
-      @item.find("[data-behavior='approve-button']").html "<i class='fa fa-times fa-stack-1x'></i>"
+      @item.find("[data-behavior='approve-button']").html "<i class='fa fa-square-o fa-stack-2x'></i> <i class='fa fa-times fa-stack-1x'></i>"
       @item.appendTo("#approved");
-      @item.find(".conversation-user"). html "<i class='fa fa-calendar-check-o fa-3x'></i>"
+      @item.find(".conversation-user"). html "<h4 class='text-left'>#{data.name}<span class='label label-success black pull-right'><i class='fa fa-calendar-check-o fa-1x'></i>#{data.state}</span></h4>"
       @item.find("[data-behavior='user-approved']").html "<small>Approved by: #{data.user_approved}</small>"
       @item.find("[data-behavior='timesheet-state']").html "#{data.state}"
       console.log @item
       console.log data.state
     else
       @item.removeClass('item-right').addClass('item-left')
-      @item.find("[data-behavior='approve-button']").html "<i class='fa fa-check fa-stack-1x'></i>"
+      @item.find("[data-behavior='approve-button']").html "<i class='fa fa-square-o fa-stack-2x'></i> <i class='fa fa-check fa-stack-1x'></i>"
       @item.appendTo("#pending");
-      @item.find(".conversation-user"). html "<i class='fa fa-calendar-times-o fa-3x'></i>"
+      @item.find(".conversation-user"). html "<h4 class='text-left'>#{data.name}<span class='label label-danger black pull-right'><i class='fa fa-calendar-times fa-1x'></i>#{data.state}</span></h4>"
       @item.find("[data-behavior='user-approved']").html ""
       @item.find("[data-behavior='timesheet-state']").html "#{data.state}"
 

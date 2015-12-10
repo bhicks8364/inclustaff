@@ -232,7 +232,13 @@ class Shift < ActiveRecord::Base
     unpaid_breaks = (hours_worked - @break_duration) * pay_rate
     unpaid_breaks.round(2)
   end
-  
+  def work_date
+    if time_in > Time.current.beginning_of_day
+      "Today"
+    else
+      time_in.stamp("Sat 12/18")
+    end
+  end
   
   private
   

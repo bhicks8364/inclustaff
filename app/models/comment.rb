@@ -15,6 +15,7 @@
 #  recipient_id     :integer
 #  recipient_type   :string
 #  alert            :boolean
+#  read_at          :datetime
 #
 
 class Comment < ActiveRecord::Base
@@ -29,6 +30,8 @@ class Comment < ActiveRecord::Base
     
     after_create :create_event
     
+    scope :unread, -> { where(read_at: nil)}
+    scope :read, -> { where.not(read_at: nil)}
     scope :job_comments, -> { where(commentable_type: "Job")}
     scope :timesheet_comments, -> { where(commentable_type: "Timesheet")}
     scope :order_comments, -> { where(commentable_type: "Order")}
@@ -66,9 +69,23 @@ class Comment < ActiveRecord::Base
       where(Event[:created_at].gteq(date1)
       .and(Event[:created_at].lteq(date2)))
     end
-    def self.by_recipient(admin_id)
-       where(recipient_id: admin_id, recipient_type: "Admin")
+    def self.by_recipient(recipient_id, recipient_type)
+       where(recipient_id: recipient_id, recipient_type: recipient_type)
     end
+    def unread?
+      read_at == nil
+    end
+    def read?
+      !unread?
+    end
+    def state
+      unread? ? "Unread" : "Read"
+    end
+    def sender
+      user || company_admin || admin
+    end
+      
+      
     def create_event
       Event.create(eventable_id: commentable_id, eventable_type: commentable_type, action: "commented", user_id: user_id, 
       company_admin_id: company_admin_id, admin_id: admin_id)

@@ -31,6 +31,7 @@ class Timesheet < ActiveRecord::Base
     has_many :events, as: :eventable
 
     has_one :recruiter, through: :job, class_name: "Admin"
+    has_one :recruiter, through: :job
     include ArelHelpers::ArelTable
     
     
@@ -109,7 +110,6 @@ class Timesheet < ActiveRecord::Base
           line_items: [
             ["Week Ending",           week_ending],
             ["Assignment", "#{job.id} (#{job.title})"],
-            ["Mark up",        "#{mark_up_percent}    ($#{mark_up.round(2)})"],
             ["Reg Hrs",        "#{reg_hours}    ($#{pay_rate.round(2)})"],
             ["OT Hrs",       "#{ot_hours}    ($#{ot_rate.round(2)})"],
             ["Gross Pay",         "$#{gross_pay.round(2)}"],

@@ -78,7 +78,9 @@ div.panel.panel-primary {
 .list-group-item-success {
   background-color: rgba(34, 69, 63, 0.75);
 }
-
+.red {
+  color: red;
+}
 .carousel-image {
   // width: 400px;
   margin:auto;
@@ -131,4 +133,13 @@ h3 {
     margin: 40px 0 20px;
     border-bottom: none;
     /* border-bottom: 1px solid rgb(238, 238, 238); */
+}
+.pointer:hover {
+    cursor: pointer;
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.15);
+    /* border-bottom: 1px solid rgb(238, 238, 238); */
+}
+a:hover, a:focus {
+  color: #2a6496;
+  text-decoration: none; 
 }

@@ -14,8 +14,10 @@ class EventsController < ApplicationController
     elsif @end_time.present?
       @events = Event.happened_before(@end_time).order(created_at: :desc).distinct
     else
-      @events = Event.order(created_at: :desc)
+      @events = Event.unread.order(created_at: :desc)
+      # @events = @signed_in.events.unread
     end
+    
     # @q = Event.includes(:eventable).ransack(params[:q]) 
     # if params[:q].present?
     #   @events = @q.result(distinct: true).paginate(page: params[:page], per_page: 5)
@@ -62,7 +64,13 @@ class EventsController < ApplicationController
       end
     end
   end
-
+  def mark_as_read
+    skip_authorization
+    @events = Event.unread
+    @events.update_all(read_at: Time.zone.now)
+    
+    render json: {success: true}
+  end
   # PATCH/PUT /events/1
   # PATCH/PUT /events/1.json
   def update
@@ -96,7 +104,7 @@ class EventsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:admin_id, :agency_id, :company_admin_id, :action, :eventable_id, :eventable_type)
+      params.require(:event).permit(:admin_id, :agency_id, :company_admin_id, :action, :eventable_id, :eventable_type, :read_at)
     end
     
     private

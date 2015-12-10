@@ -1,13 +1,40 @@
-<div class='col-md-12 main-box'>
-    <p><%= @comment.body %></p>
+<div class='col-md-12 white'>
+    <!--<button type="button" class='black' onclick="document.getElementById('demo').innerHTML = Date()">-->
+    <!--    Click me to display Date and Time.-->
+    <!--</button>-->
+
+<p id="demo"></p>
+
+    <h2 class="pointer" id='recipient'> Recipient: <%= @comment.recipient.try(:name) %></h2>
+    <%= @comment.recipient_id %> <%= @comment.recipient_type %>
+    <%= selected_recipient(@comment.recipient_type, @comment.recipient_id) %>
+    <h2 class="" id="color">> Sender: <%= @comment.sender.try(:name) %></h2>
+    <p class="pointer" ><%= @comment.body %></p>
+
+    <script>
+        document.getElementById("recipient").addEventListener("click", myFunction);
+        document.getElementById("color").addEventListener("click", colorFunction);
+        
+        function myFunction() {
+            document.getElementById("demo").innerHTML = "YOU CLICKED ME!";
+        }
+        function colorFunction() {
+            document.getElementById("color").style.color = "red";
+        }
+    </script>
+    
+    
+    
+<%= link_to_commentable(@comment, class: "btn btn-primary") %>
 
     <%= @comment.admin.try(:name) || @comment.company_admin.try(:name) %> - 
 						<%= @comment.admin.try(:role) || @comment.company_admin.try(:role) %>
-    <p><%= @comment.commentable_type %></p>
-    
+    <p><%= %></p>
+   
     <%= link_to "<i class='fa fa-trash-o fa-red'></i>".html_safe, comment_path(@comment), method: :delete, 
                                                     data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
     <%= link_to "View All", comments_path, class: 'btn btn-primary' %>
     <%= link_to "New", new_comment_path, class: 'btn btn-primary' %>
+    <%= link_to "Edit", edit_comment_path(@comment), class: 'btn btn-primary' %>
 </div>
 

@@ -12,6 +12,7 @@
 #  user_id          :integer
 #  agency_id        :integer
 #  company_admin_id :integer
+#  read_at          :datetime
 #
 
 require 'rails_helper'

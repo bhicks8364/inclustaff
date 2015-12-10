@@ -29,7 +29,15 @@ Rails.application.routes.draw do
     devise_for :admins, controllers: {registrations: 'admins/registrations'}
     devise_for :company_admins, controllers: {registrations: 'company_admins/registrations'}
     devise_for :users, controllers: {registrations: 'users/registrations'}
-    resources :comments
+    resources :comments do
+      collection do
+      post :mark_all_read
+      match 'search' => 'comments#search', via: [:get, :post], as: :search
+    end
+      member do
+        patch :mark_as_read
+      end
+    end
     resources :admins do
       member do
         post :mention
@@ -205,7 +213,11 @@ Rails.application.routes.draw do
     
     resources :comments 
     
-    resources :events
+    resources :events do
+      collection do
+        post :mark_as_read
+      end
+    end
     resources :work_histories
     resources :skills do
       collection do

@@ -1,28 +1,40 @@
-<%= div_for(comment) do %>
+<%= div_for(comment, data: {behavior: "comment", id: "#{comment.id}"}) do %>
 
     <p><%= comment.body %></p>
-    <% if comment.recipient.present? %>
-    <small><%= link_to comment.recipient.name, comment.recipient %> </small>
+    <% if comment.recipient.present? && comment.recipient_type != "Employee" %>
+        To: <small><%= link_to comment.recipient.name, comment.recipient %> </small>
+    <% elsif comment.recipient.present? && comment.recipient_type == "Employee" %>
+        To: <small><%= link_to comment.recipient.name, comment.recipient.user %> </small>
+    <% elsif comment.recipient.nil? %>
+        To: <small>Nobody</small>
     <% end %>
     <div class='text-right'>
         
-       
     <% if comment.admin.present? %>
     <small><%= link_to comment.admin.name, comment.admin %> </small>
     <% end %>
     <% if comment.company_admin.present? %>
-    <small><%= comment.company_admin.name %> </small>
+    <small><%= link_to comment.company_admin.name, comment.company_admin %> </small>
     <% end %>
     <% if comment.user.present? %>
     <small><%= link_to comment.user.name, comment.user %> </small>
     <% end %>
    
     
-    
+   <button class='b' data-behavior="comment-toggle" >
+		<span  class="" data-behavior="read-button" >
+          <% if comment.unread? %>
+			  <i class="fa fa-square-o fa-1x"></i>
+          <% else %>
+			  <i class='fa fa-check-square-o fa-1x'></i>
+          <% end %>
+        </span>
+	</button>
     <%= link_to "<i class='fa fa-commenting'></i>".html_safe, comment if admin_signed_in? %>
     <%= link_to "<i class='fa fa-trash-o fa-red'></i>".html_safe, admin_job_comment_path(comment.commentable, comment), method: :delete, 
                                                     data: { confirm: 'Are you sure?' }, class: 'red' if admin_signed_in? %>
     </div>
     
      <small><%= comment.created_at.stamp('10/12/2013 at 12:34am') %></small>
+
 <% end %>

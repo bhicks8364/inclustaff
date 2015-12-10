@@ -1,21 +1,18 @@
-<div class='col-md-12 transbox'>
-  <h1>All Companies</h1>
 
-<%= link_to 'New Company', new_admin_company_path, class: 'btn btn-success pull-right' %>
-<hr>
+<div class='col-md-12 dark'>
+  <%= link_to 'New Company', new_admin_company_path, class: 'btn btn-success pull-right' %>
+  <h1 class='text-center'>All Companies</h1>
+
 <div class="table-responsive">
   <table id="" class="table table-bordered datatable">
   <thead>
     <tr>
       <th>Name</th>
-      
       <th>Contact</th>
       <th></th>
-      
-      <th>Balance</th>
-      <th>This Week Bill</th>
-      <th>Last Week Bill</th>
-      
+      <th>Current Bill</th>
+      <th>Unpaid Balance</th>
+      <th>Account Manager</th>
     </tr>
   </thead>
 
@@ -23,23 +20,21 @@
     <% @companies.each do |company| %>
       <tr>
         <td><%= link_to company.name, admin_company_path(company), class: 'btn btn-primary fill' %></td>
-        
         <td><%= company.contact_name %></td>
         <td><%= company.current_timesheets.try(:count) %> / <%= company.jobs.active.try(:count) %></td>
-        <td><%= number_to_currency(company.balance) %></td>
         <td><%= number_to_currency(company.timesheets.current_week.sum(:total_bill) )%></td>
         <td><%= number_to_currency(company.invoices.unpaid.sum(:total) ) %></td>
-       
+        <td><%= company.current_account_manager.name %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 </div>
-<br>
 
 
 
-<div class='well'>
+
+<div class=''>
   <%= form_for @import, url: import_admin_companies_path, multipart: true do |f| %>
   <%= f.file_field :file, class: '' %>
   <br>

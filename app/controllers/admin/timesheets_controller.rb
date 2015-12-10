@@ -101,9 +101,9 @@ class Admin::TimesheetsController < ApplicationController
       
       user_approved = @timesheet.approved? ? @timesheet.user_approved : @timesheet.state
       current_admin.events.create(action: state, eventable: @timesheet)
-      render json: { id: @timesheet.id, approved: @timesheet.approved?, 
+      render json: { id: @timesheet.id, approved: @timesheet.approved?, name: @timesheet.employee.name,
                     state: @timesheet.state.upcase, user_approved: user_approved, clocked_in: @timesheet.clocked_in? }
-    else
+    	else
       render json: { id: @timesheet.id, approved: @timesheet.approved?, clocked_in: @timesheet.clocked_in?, name: @timesheet.employee.name,
                     state: @timesheet.state.upcase, user_approved: user_approved }
     end

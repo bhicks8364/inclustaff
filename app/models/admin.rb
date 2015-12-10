@@ -35,6 +35,7 @@ class Admin < ActiveRecord::Base
   belongs_to :agency
   has_many :events
   has_many :eventables, :through => :events
+  has_many :comments
   
   has_many :recruiter_jobs, class_name: "Job", foreign_key: "recruiter_id"
   has_many :account_orders, class_name: "Order", foreign_key: "account_manager_id"

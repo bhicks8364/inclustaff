@@ -44,6 +44,7 @@
 @import "jobs";
 @import "mainpage";
 @import "work_histories";
+@import "shifts";
 
 body {
   // padding-top: 70px;
@@ -59,8 +60,8 @@ body {
 }
 #content-wrapper {
   // padding-top: 70px;
-    // background: rgba(21, 19, 19, 0.62);
-  background: url(colorful-triangles-background.jpg) no-repeat center center fixed; 
+    background: rgba(21, 19, 19, 0.62);
+  // background: url(colorful-triangles-background.jpg) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;

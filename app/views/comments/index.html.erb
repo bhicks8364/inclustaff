@@ -1,65 +1,77 @@
-<div class='col-md-12 transbox'>
  <%= render 'search' %>
- <% if @comments.present? %>
-<div class='list-group col-md-6 well'>
-   
-    <h2>All Comments</h2>
-    <% @comments.order(created_at: :desc).each do |comment| %>
-      
-            <%= render 'comment' %>
-     
-    <% end %>
-    
-    <%= will_paginate @comments  %>
-</div>
-<% end %>
+
 <div class='col-md-12'>
-    <div class='col-md-6'>
-    <h3>Timesheet Comments</h3>
-    <%= div_for(@current.timesheets.with_recent_comments.distinct, class: 'panel dark') do |timesheet| %>
-    <h4><%= timesheet.job.name_title %></h4>
-    <hr>
-        <div id='comments_<%= timesheet.class %>_<%= timesheet.id %>'>
-            <% timesheet.comments.each do |comment| %>
-            
-                <%= render 'comment', comment: comment %>
-            <% end %>
-        </div>
+    <div class='list-group col-md-6'>
         
-          <%= render partial: "comments/form", locals: {commentable: timesheet} %>
-          <hr>
-    <% end %>
-</div>
-<div class='col-md-6'>
-    <h3>Job Comments</h3>
-    <%= div_for(Job.with_recent_comments.distinct, class: 'panel dark') do |job| %>
-    <h4><%= job.name_title %></h4>
-    <hr>
-        <div id='comments_<%= job.class %>_<%= job.id %>'>
-            <% job.comments.each do |comment| %>
-                <%= render 'comment', comment: comment %>
+        <div data-behavior='comment-list'>
+            <h2>Unread Comments	<span class="badge" data-behavior='comments-count'>
+        		<%=  @comments.unread.count %>
+        </span></h2>
+        		
+            <% @comments.unread.order(created_at: :desc).each do |comment| %>
+                    <%= render 'comment', comment: comment %>
             <% end %>
         </div>
-          <%= render partial: "comments/form", locals: {commentable: job} %>
-    <% end %>
-</div>
-
-    <div class='list-group col-md-6 well'>
-    <h2>Comments by Company Admins</h2>
-    <% Comment.by_company_admins.each do |comment| %>
-        <% if lookup_context.template_exists?(comment.commentable_type.downcase, "comments/forms", true) %>
-            <%= render partial: "comments/forms/#{comment.commentable_type.downcase}", locals: {comment: comment} %>
+    </div>
+    <div class='list-group col-md-6'>
+        <h2>Old Comments</h2>
+        <div data-behavior='read-comment-list'>
+            <% @comments.read.order(read_at: :desc).each do |comment| %>
+                <%= render 'comment', comment: comment %>
         <% end %>
-    <% end %>
-</div>
-
-<div class='list-group col-md-6 well'>
-    <h2>Comments by Agecy Admins</h2>
-    <% Comment.by_agency_admins.order(created_at: :desc).each do |comment| %>
-        <% if lookup_context.template_exists?(comment.commentable_type.downcase, "comments/forms", true) %>
-            <%= render partial: "comments/forms/#{comment.commentable_type.downcase}", locals: {comment: comment} %>
-        <% end %>
-    <% end %>
-</div>
-</div>
+        </div>
+    </div>
+     
+    <div class='col-md-12'>
+        <div class='col-md-6'>
+            <h3>Timesheet Comments</h3>
+            <%= div_for(@current.timesheets.with_recent_comments.distinct, class: 'panel dark') do |timesheet| %>
+                <h4><%= timesheet.job.name_title %></h4>
+                
+                <div data-behavior='comment-list' id='comments_<%= timesheet.class %>_<%= timesheet.id %>'>
+                    <% timesheet.comments.each do |comment| %>
+                    
+                        <%= render 'comment', comment: comment %>
+                    <% end %>
+                </div>
+                
+                  <%= render partial: "comments/form", locals: {commentable: timesheet} %>
+                  
+            <% end %>
+        </div>
+        <div class='col-md-6'>
+            <h3>Job Comments</h3>
+            <%= div_for(Job.with_recent_comments.distinct, data: {behavior:'comment-list'}, class: 'panel dark') do |job| %>
+            <h4><%= job.name_title %></h4>
+            
+                <div id='comments_<%= job.class %>_<%= job.id %>'>
+                    <% job.comments.each do |comment| %>
+                        <%= render 'comment', comment: comment %>
+                    <% end %>
+                </div>
+                  <%= render partial: "comments/form", locals: {commentable: job} %>
+            <% end %>
+        </div>
+    
+        <div class='list-group col-md-6 well'>
+            <h2>Comments by Company Admins</h2>
+            <% Comment.by_company_admins.each do |comment| %>
+                <% if lookup_context.template_exists?(comment.commentable_type.downcase, "comments/forms", true) %>
+                    <%= render partial: "comments/forms/#{comment.commentable_type.downcase}", locals: {comment: comment} %>
+                <% end %>
+            <% end %>
+        </div>
+    
+        <div class='list-group col-md-6 well'>
+            <h2>Comments by Agency Admins</h2>
+            
+                <div data-behavior='comment-list' id='comment-list'>
+                    <% Comment.by_agency_admins.order(created_at: :desc).each do |comment| %>
+                        <%= render 'comments/comment', comment: comment %>
+                    <% end %>
+                  
+                 </div>
+           
+        </div>
+    </div>
 </div>

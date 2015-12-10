@@ -15,6 +15,7 @@
 #  recipient_id     :integer
 #  recipient_type   :string
 #  alert            :boolean
+#  read_at          :datetime
 #
 
 FactoryGirl.define do

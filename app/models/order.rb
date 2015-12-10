@@ -33,7 +33,7 @@ class Order < ActiveRecord::Base
   belongs_to :company
   has_many :events, foreign_key: "eventable_id"
   has_many :invoices, through: :timesheets
-  belongs_to :manager, foreign_key: 'manager_id', class_name: "Admin"
+  belongs_to :manager, foreign_key: 'manager_id', class_name: "CompanyAdmin"
   belongs_to :account_manager, foreign_key: 'account_manager_id',  class_name: "Admin"
   has_many :skills, as: :skillable
   has_many :jobs
@@ -139,7 +139,7 @@ class Order < ActiveRecord::Base
   end
   
   def filled?
-    if self.number_needed <= self.jobs_count 
+    if number_needed <= jobs_count 
         true
       else
         false

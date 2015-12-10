@@ -1,0 +1,15 @@
+<div class='col-md-4'>
+    <h3>By Week <small>over 30 hours</small></h3>
+    <div class='list-group scroll300'><% employee.shifts.report_by_week.each do |k, v| %>
+         <li class='list-group-item list-group-item-info'><strong><%=  k.stamp("Oct 2, 2015") %> </strong> -  Total Hours: <%= v.round(2) %>
+             <span class='label label-info black pull-right'><% if v > 30 %>Eligible<% else %> Not Eligible <% end %></span>
+         
+         </li>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" aria-valuenow="<%= v %>" aria-valuemin="0" aria-valuemax="30" style="min-width: 2em;">
+            <%= (v / 30 * 100).round(2) %>%
+          </div>
+        </div>
+         <% end %>
+    </div>
+</div>

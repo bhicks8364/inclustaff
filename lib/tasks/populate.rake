@@ -8,23 +8,23 @@ namespace :db do
 		def range (min, max)
 	    	rand * (max-min) + min
 		end
-		Apartment::Tenant.switch!('vector')
-		Company.populate 5 do |company|
+		Apartment::Tenant.switch!('orbie')
+		Company.populate 3 do |company|
 			company.name = FFaker::Company.name
 			company.city = FFaker::Address.city
 			company.state = FFaker::AddressUS.state
 			company.zipcode = FFaker::AddressUS.zip_code
 			company.address = FFaker::AddressUS.street_address
 			company.phone_number = FFaker::PhoneNumber.phone_number
-			company.agency_id = 21
+			company.agency_id = 23
 			company.contact_name = Faker::Name.name
 			company.contact_email = Faker::Internet.safe_email
-			Order.populate(1..5) do |order|
+			Order.populate(1...3) do |order|
 				order.company_id = company.id
-				order.agency_id = 21
-				order.needed_by = Faker::Date.forward(10)
+				order.agency_id = 23
+				order.needed_by = Faker::Date.forward(14)
 				order.title = FFaker::Company.position
-				order.notes = FFaker::BaconIpsum.sentences
+				order.notes = FFaker::HealthcareIpsum.paragraph
 				order.number_needed = 1..4
 				order.pay_range = [ "$8.10 - $10.00","$10.00 - $12.00","$12.00 - $15.00", "$15.00 - $18.00", "$18.00 - $22.00", "$22.00 +  "]
 				order.est_duration = [ "Temp-to-Hire", "Direct-Hire", "Temporary"]
@@ -137,7 +137,7 @@ namespace :db do
 		# admin.failed_attempts = 0
 		# puts admin.first_name
 	 # end
-	 Apartment::Tenant.switch!('vector')
+	 Apartment::Tenant.switch!('orbie')
 	  Admin.populate 15 do |admin|
 		admin.first_name = FFaker::Name.first_name
 		admin.last_name = FFaker::Name.last_name

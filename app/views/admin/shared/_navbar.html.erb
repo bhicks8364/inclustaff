@@ -27,8 +27,9 @@
 	       	
 					 <%= render 'admin/shared/clocked_in' if  @current.jobs.on_shift.any? %>
 					<%= render 'admin/shared/on_break' if @current.jobs.on_break.any? %>
-				
-	       <li><%= link_to @current_admin.name, @current_admin %></li>
+					<%= render 'admin/shared/dropdown'if @current_admin.comments.unread.any? %>
+		
+	       		<li><%= link_to @current_admin.name, @current_admin %></li>
 	        	
 				<li><%= link_to destroy_admin_session_path, method: :delete do %>
 						<i class='fa fa-power-off'></i>

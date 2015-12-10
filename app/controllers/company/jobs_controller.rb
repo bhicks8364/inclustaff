@@ -1,5 +1,5 @@
 class Company::JobsController < ApplicationController
-  before_action :set_job, only: [:show, :edit, :update, :destroy, :clock_in, :clock_out, :verify_code]
+  before_action :set_job, only: [:show, :edit, :update, :destroy, :clock_in, :clock_out]
   before_action :authenticate_company_admin!
   # before_action :set_order
 
@@ -36,6 +36,7 @@ class Company::JobsController < ApplicationController
 
   
   def verify_code
+    @job = Job.find(params[:id])
     skip_authorization
     @code = params[:code]
     @employee_code = @job.employee.code

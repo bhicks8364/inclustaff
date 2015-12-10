@@ -1,7 +1,7 @@
 <div class="col-md-12 transbox">
     <div class="col-md-6">
       <h5 class='text-center'><strong>Open Job Orders: <%= Order.needs_attention.count %></strong></h5>
-      <%= pie_chart Order.needs_attention.group(:company).count, library: {is3D: true, height: 300, chartArea: {width:'85%'}}%>
+      <%= pie_chart @current_agency.orders.needs_attention.group(:company).count, library: {is3D: true, height: 300, chartArea: {width:'85%'}}%>
     </div>
     <div class="col-md-6">
      <h5 class='text-center'><strong>Current Billing: <%= number_to_currency(Timesheet.current_week.sum(:total_bill)) %></strong></h5>

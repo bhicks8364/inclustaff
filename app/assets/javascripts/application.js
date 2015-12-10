@@ -34,6 +34,10 @@
 //= require forms
 //= require invoices
 //= require at_mentions
+//= require comments
+//= require messages
+//= require practice
+//= require orders
 
 
 

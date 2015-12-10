@@ -122,11 +122,6 @@
               <%= render order %>
           <% end %>
         </div>
-       
-  
-       
-        
-    
     </div>
       <!--EMPLOYEE PROFILE TAB-->
     <div role="tabpanel" class="tab-pane fade" id="payroll">
@@ -138,17 +133,12 @@
            <strong>Last sign in:</strong> <%= @user.current_sign_in_at %> -
               <%= @user.current_sign_in_ip %>
         </div>
-      
-    
-          
-          
-        
-    
-      </div>
+    </div>
       <!--ACA TAB-->
-         <div role="tabpanel" class="tab-pane fade" id="aca">
-         <h2 class="text-center">Payroll Information  </h2>
-         <div class='col-md-4'>
+    <div role="tabpanel" class="tab-pane fade" id="aca">
+        <h2 class="text-center">ACA Information  </h2>
+        <%= render 'aca_progress', employee: @employee %>
+        <div class='col-md-4'>
             <h3>By Week <small>over 30 hours</small></h3>
             <div class='list-group scroll300'><% @employee.shifts.report_by_week.each do |k, v| %>
                  <li class='list-group-item list-group-item-info'><strong><%=  k.stamp("Oct 2, 2015") %> </strong> -  Total Hours: <%= v.round(2) %>
