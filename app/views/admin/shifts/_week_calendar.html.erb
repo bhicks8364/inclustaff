@@ -1,8 +1,8 @@
 <div class="">
 
-	<%= month_calendar(attribute: :time_in, events: shifts) do |date, shifts| %>
+	<%= week_calendar(attribute: :time_in, events: shifts) do |date, shifts| %>
 	
-  <div class='cal-date'><%= date %></div>
+  <div class=''><%= date %></div>
 
   <% shifts.each do |shift| %>
     <div class='center transbox'>

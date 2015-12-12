@@ -37,6 +37,7 @@ class UsersController < ApplicationController
       end
     end
   end
+  
         
     
     def import
@@ -65,9 +66,16 @@ class UsersController < ApplicationController
     
     def show
         @user = User.includes(:employee, :shifts).find(params[:id])
+        @employee = @user.employee
+        @timesheets = @employee.timesheets
+        @work_histories = @employee.work_histories.order(end_date: :desc)
+        @skills = @employee.skills
+        if @user.assigned?
+            render "admin/employees/show"
+        end
         @job = @user.current_job
         @employee = @user.employee
-        @skills = @employee.skills
+        
         # @company = @employee.company
         @applications = @user.events.applications
         @events = Event.employee_events(@employee.id)
@@ -76,9 +84,25 @@ class UsersController < ApplicationController
         
         @jobs = @employee.jobs.includes(:order)
         @shifts = @employee.shifts.order(time_out: :desc).limit(1)
-        @timesheets = @employee.timesheets
-        @work_histories = @employee.work_histories.order(end_date: :desc)
+        
+        
 
+        skip_authorization
+    end
+    
+    def destroy
+        @user = User.find(params[:id])
+        skip_authorization
+        @user.destroy
+        respond_to do |format|
+          format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+          format.json { head :no_content }
+        end
+    end
+    def update_as_available
+        @user = User.includes(:employee, :shifts).find(params[:id])
+        @user.update(checked_in_at: Time.current)
+        @user.events.create(action: "looking for work")
         skip_authorization
     end
     

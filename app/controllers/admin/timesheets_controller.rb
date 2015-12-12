@@ -2,8 +2,7 @@ class Admin::TimesheetsController < ApplicationController
   before_action :set_timesheet, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_admin!
 	layout 'admin_layout'
-  # GET /timesheets
-  # GET /timesheets.json
+
 	def index
 		@test_timesheet = TimesheetQueryBuilder.new.with_admin_comments_by(@current_admin.id)
 		if params[:job_id]
@@ -12,9 +11,7 @@ class Admin::TimesheetsController < ApplicationController
   	elsif params[:company_id]
 			@company = Company.includes(:jobs, :timesheets).find(params[:company_id])
       @timesheets = @company.timesheets if @company.timesheets.any?
-       
     else
-    	
      	@timesheets = Timesheet.order(week: :desc)
 		end
 		gon.timesheets = @timesheets
@@ -24,26 +21,17 @@ class Admin::TimesheetsController < ApplicationController
       format.html
       format.csv { send_data @current_timesheets.to_csv, filename: "current_timesheets-export-#{Time.now}-inclustaff.csv" }
   	end 
-		
-		
-		
-		
 	end
 	
 	def past
 		if params[:job_id]
 			@job = Job.includes(:employee, :timesheets).find(params[:job_id])
 			@timesheets = @job.timesheets.past
-			
-			
-			
 		elsif params[:company_id]
 			@company = Company.includes(:jobs, :timesheets).find(params[:company_id])
 			@timesheets = @company.timesheets.past.order(created_at: :desc) if @company.present?
-		
 		else
 			@timesheets = Timesheet.past if current_admin.present?
-		
 		end
 		gon.timesheets = @timesheets
 		authorize @timesheets
@@ -51,15 +39,8 @@ class Admin::TimesheetsController < ApplicationController
       format.html
       format.csv { send_data @timesheets.to_csv, filename: "past-timesheets-export-#{Time.now}-inclustaff.csv" }
   	end 
-		
-		
-		
-		
-		
 	end
 
-  # GET /timesheets/1
-  # GET /timesheets/1.json
   def show
     authorize @timesheet
     @shifts = @timesheet.shifts
@@ -85,9 +66,7 @@ class Admin::TimesheetsController < ApplicationController
     
   end
 
-  # GET /timesheets/new
   def new
-  
   end
 
   def approve
@@ -98,9 +77,9 @@ class Admin::TimesheetsController < ApplicationController
       approved_by_type = @timesheet.approved? ? nil : "Admin"
       state = @timesheet.approved? ? 'pending' : 'approved'
       @timesheet.update(approved_by: approved_by, approved_by_type: approved_by_type, state: state)
-      
       user_approved = @timesheet.approved? ? @timesheet.user_approved : @timesheet.state
       current_admin.events.create(action: state, eventable: @timesheet)
+     
       render json: { id: @timesheet.id, approved: @timesheet.approved?, name: @timesheet.employee.name,
                     state: @timesheet.state.upcase, user_approved: user_approved, clocked_in: @timesheet.clocked_in? }
     	else
@@ -109,27 +88,15 @@ class Admin::TimesheetsController < ApplicationController
     end
   end
 
-    
-    
-
-  # GET /timesheets/1/edit
   def edit
     @job = @timesheet.job
-    
-    
     authorize @timesheet
   end
 
-  # POST /timesheets
-  # POST /timesheets.json
   def create
     @timesheet = Timesheet.new(timesheet_params)
-    
     @timesheet.shifts.last
-    
-    
     authorize @timesheet
-
     respond_to do |format|
       if @timesheet.save
         format.html { redirect_to admin_timesheets_path(@timesheet), notice: 'Timesheet was successfully created.' }

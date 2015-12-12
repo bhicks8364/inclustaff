@@ -25,6 +25,7 @@ class Agency < ActiveRecord::Base
     has_many :companies
     has_many :orders
     has_many :jobs, :through => :orders
+
     has_many :company_admins, :through => :companies, :source => 'admins'
     has_many :order_events, :through => :orders, :source => 'events'
     has_many :applications, :through => :orders, :source => 'events'
@@ -33,7 +34,9 @@ class Agency < ActiveRecord::Base
     has_many :events, :through => :admins
     has_many :users
     has_many :employees, :through => :users
-    
+    has_many :job_comments, through: :jobs, source: 'comments'
+    has_many :timesheet_comments, through: :timesheets, source: 'comments'
+    has_many :shift_comments, through: :shifts, source: 'comments'
     
     has_many :admin_events, :through => :admins, :source => 'events'
     has_many :jobs, :through => :orders
@@ -54,7 +57,7 @@ class Agency < ActiveRecord::Base
     validates :subdomain, exclusion: { in: %w(www us ca jp public admin inclustaff), message: "%{value} is reserved." }
     validates :name,  presence: true, length: { maximum: 50 }
     validates :subdomain, uniqueness: true
-    
+   
     def shifts
         Shift.order(updated_at: :desc)
     end

@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
     @current = @current_user || @current_admin || @current_company_admin
     @signed_in = @current
     @agency = @current_agency
-    
+    gon.current = @current
     
   end
 
@@ -62,6 +62,9 @@ class ApplicationController < ActionController::Base
   end
   def admin_activity
     current_admin.try :touch
+  end
+  def company_admin_activity
+    current_company_admin.try :touch
   end
   
   

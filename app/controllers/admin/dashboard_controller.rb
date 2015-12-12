@@ -15,8 +15,11 @@ class Admin::DashboardController < ApplicationController
         skip_authorization
     end
     def recruiter
+      @q = @current_agency.orders.needs_attention.ransack(params[:q]) 
+      @orders = @current_agency.orders.needs_attention
       if current_admin.recruiter?
-       
+        
+        
      
         @jobs = current_admin.jobs.active.paginate(page: params[:page], per_page: 5)
        

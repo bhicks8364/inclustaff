@@ -27,7 +27,7 @@ class Comment < ActiveRecord::Base
     include ArelHelpers::ArelTable
     include Arel::Nodes
     validates :body, presence: true, length: { minimum: 1 }
-    
+    validates :commentable_type, :commentable_id, presence: true
     after_create :create_event
     
     scope :unread, -> { where(read_at: nil)}
@@ -85,19 +85,33 @@ class Comment < ActiveRecord::Base
       user || company_admin || admin
     end
       
-      
     def create_event
       Event.create(eventable_id: commentable_id, eventable_type: commentable_type, action: "commented", user_id: user_id, 
       company_admin_id: company_admin_id, admin_id: admin_id)
     end
-    def admin_mentions
+    def mentions
       @mentions ||= begin
-                      regex = /@([\w]+)/
+                      # regex = /@([\w]+)/
+                      regex = /@(\w+\s+\w+)/
                       body.scan(regex).flatten
                     end
     end
     def mentioned_admins
-      @mentioned_admins ||= Admin.where(username: admin_mentions)
+      # mentions = admin_mentions.map!(&:squish!)
+      @mentioned_admins ||= Admin.where(name: mentions)
+    end
+    def mentioned_company_admins
+      @mentioned_company_admins ||= CompanyAdmin.where(name: mentions)
+    end
+    def mentioned_users
+      @mentioned_users ||= User.where(name: mentions)
+    end
+    def all_mentions
+      @all_mentions ||= mentioned_admins + mentioned_company_admins + mentioned_users
+      # @all_mentions.each do |mentioned|
+      #   sender.events.create(action: "mentioned", eventable_id: mentioned.id, eventable_type: mentioned.class.to_s)
+      #   # @job.send_notifications!
+      # end
     end
     
     

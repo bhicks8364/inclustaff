@@ -17,7 +17,9 @@
     <%= f.input :last_name, label: "Last Name", placeholder: "Last Name" %>
      <%= f.simple_fields_for :user do |u| %>
      <%= u.input :email, required: true, placeholder: "Email  Address", label: false  %>
+     <%= u.input :code, required: true, placeholder: "Code"  %>
     <%= f.input :phone_number, as: :tel, placeholder: "Phone Number", label: "Phone Number"  %>
+    <%= u.input :zipcode, placeholder: "Zipcode", label: "Zipcode"  %>
     <%= f.input :ssn, maxlength: 4, placeholder: "SSN - Last 4 only", label: "SSN" %>
       <%= u.input :address, placeholder: "Street Address", label: "Address" %>
       <%= u.input :city, required: true, placeholder: "City", label: false %>

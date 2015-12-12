@@ -53,6 +53,10 @@
 
 <div class='col-md-12'>
   <h3> Shifts</h3>
+   <%= render 'admin/shifts/week_calendar', shifts: @timesheet.shifts %>
+</div>
+<div class='col-md-12'>
+  <h3> Shifts</h3>
    <%= render 'admin/shifts/table' %>
 </div>
 

@@ -1,0 +1,3 @@
+$("#<%=@user.id%>-updated-available-at").text("<%= time_ago_in_words(@user.checked_in_at) %> ago");
+$("#<%=@user.id%>-updated-available-at-icon").html("<i class='fa fa-bullseye'></i>'");
+$("#<%=@user.id%>-updated-available-btn").hide();

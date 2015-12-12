@@ -111,6 +111,9 @@ class Order < ActiveRecord::Base
     def not_urgent?
       urgent == false
     end
+    def overdue?
+      needs_attention? && needed_by <= Date.today
+    end
     def set_needed_by
       self.needed_by = Date.today
     end

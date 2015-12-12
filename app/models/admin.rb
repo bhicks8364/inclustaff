@@ -24,6 +24,7 @@
 #  role                   :string
 #  username               :string
 #  agency_id              :integer
+#  name                   :string
 #
 
 class Admin < ActiveRecord::Base
@@ -36,7 +37,6 @@ class Admin < ActiveRecord::Base
   has_many :events
   has_many :eventables, :through => :events
   has_many :comments
-  
   has_many :recruiter_jobs, class_name: "Job", foreign_key: "recruiter_id"
   has_many :account_orders, class_name: "Order", foreign_key: "account_manager_id"
 
@@ -47,11 +47,11 @@ class Admin < ActiveRecord::Base
   scope :recruiters,       -> { where(role: "Recruiter")}
   scope :limited,          -> { where(role: "Limited Access")}
          
-  before_validation :set_username
+  before_validation :set_name, :set_username
   validates :agency_id,  presence: true
   validates_numericality_of :agency_id, allow_nil: true
     
-  def name;             "#{first_name} #{last_name}"; end
+  def set_name;             self.name = "#{first_name} #{last_name}"; end
   def phone_number;             agency.phone_number; end
   def to_s;             name; end
   def name_role;             "#{name} #{role}"; end
@@ -64,6 +64,11 @@ class Admin < ActiveRecord::Base
   def hr?;              role == "HR"; end
   def limited?;         role == "Limited Access"; end
   def admin?;         true; end
+  def employee?;         false; end
+    
+  def online?
+    updated_at > 10.minutes.ago
+  end
   
   def timesheets
     if recruiter?
@@ -103,7 +108,7 @@ class Admin < ActiveRecord::Base
     end
   end
   def messages
-      Comment.by_recipient(id)
+      Comment.by_recipient(id, "Admin")
   end
   
   def current_billing

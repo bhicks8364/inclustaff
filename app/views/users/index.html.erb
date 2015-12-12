@@ -15,7 +15,7 @@
 							<th><span>Created</span></th>
 							<th><span>Email</span></th>
 							<th><span>Skills</span></th>
-							
+							<th>Check-in</th>
 							<th>&nbsp;</th>
 						</tr>
 					</thead>
@@ -28,16 +28,16 @@
 								<small><span class="user-subhead"><%= user.employee.work_histories.last.try(:title) || "Unavailable" %></span></small>
 							
 							</td>
-							<td style="width: 20%;">
+							<td>
 								<%= user.created_at.strftime("%x") %>
 							</td>
-							<td class="text-center" style="width: 20%;">
+							<td class="text-center">
 								<%= user.email %>
 							</td>
-							<td style="width: 20%;">
+							<td>
 								<%= user.employee.tags.any? ? user.employee.tags.limit(3).map {|p| p.name.titleize}.join(", ")  : "N/A" %>
 							</td>
-							<td style="width: 20%;">
+							<td>
 								<%= link_to(user, class: "table-link") do %>
 								
 									<span class="fa-stack">
@@ -51,13 +51,15 @@
 										<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
 									</span>
 								<% end %>
-								<%= link_to(edit_user_registration_path(user), class: "table-link") do %>
+								<%= link_to(user, data: { confirm: "Are you sure?" }, method: :delete) do %>
 									<span class="fa-stack">
 										<i class="fa fa-square fa-stack-2x"></i>
 										<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
 									</span>
 								<% end %>
 							</td>
+							<td><span id='<%=user.id%>-updated-available-at'> <%= user.checked_in_at.present? ? "#{time_ago_in_words(user.checked_in_at)} ago" : "" %></span></td>
+							<td><%= link_to "<i class='fa fa-bullseye'></i>".html_safe, update_as_available_user_path(user), method: :patch, remote: true %></td>
 						<% end %>
 					
 					

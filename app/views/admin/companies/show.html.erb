@@ -1,46 +1,40 @@
 <div class="col-md-12 dark">
   <h2><%= @company.name %></h2>
-<%= link_to "Add Company Admin", new_company_admin_registration_path, class: 'btn btn-primary' %>
-   
-            
-<div class="btn-group btn-group-justified" role="group" aria-label="...">
-  <div class="btn-group" role="group">
-  <%= link_to(new_admin_company_order_path(@company), class: "btn btn-default") do %>
-							<i class='fa fa-user-plus'></i>
-
-								<span>New Job Order</span>
-							<% end %>
-
-  </div>
-  <div class="btn-group" role="group">
-  <%= link_to(admin_company_orders_path(@company), class: "btn btn-default") do %>
-							<i class='fa fa-briefcase'></i>
-
-								<span>Active Orders</span>
-							<% end %>
-
-  </div>
-  <div class="btn-group" role="group">
-  <%= link_to(admin_company_timesheets_path(@company), class: "btn btn-default") do %>
-							<i class='fa fa-clock-o'></i>
-
-								<span>Timesheets</span>
-							<% end %>
-
-  </div>
-  
+  <div class="btn-group btn-group-justified" role="group" aria-label="...">
+    
+    <div class="btn-group" role="group">
+      <%= link_to(new_admin_company_order_path(@company), class: "btn btn-primary") do %>
+    	  <span><i class='fa fa-plus-square fa-fw'></i> New Job Order</span>
+    	<% end %>
+    </div>
+    
+    <div class="btn-group" role="group">
+      <%= link_to(admin_company_orders_path(@company), class: "btn btn-primary") do %>
+  		  <span><i class='fa fa-briefcase fa-fw'></i> Active Orders</span>
+  		<% end %>
+    </div>
+    
+    <div class="btn-group" role="group">
+      <%= link_to(new_company_admin_registration_path, class: "btn btn-primary") do %>
+  		  <span><i class='fa fa-user-plus fa-fw'></i> Add Company User</span>
+  		<% end %>
+    </div>
+    
+    <div class="btn-group" role="group">
+      <%= link_to(admin_company_timesheets_path(@company), class: "btn btn-primary") do %>
+      		<span>	<i class='fa fa-clock-o fa-fw'></i>Timesheets</span>
+      <% end %>
+    </div>
+    <div class="btn-group" role="group">
+      <%= link_to(admin_company_invoices_path(@company), class: "btn btn-primary") do %>
+      		<span>	<i class='fa fa-usd fa-fw'></i>Invoices</span>
+      <% end %>
+    </div>
 </div>
-
-
-<br>
-     
-
-
   <!-- Nav tabs -->
   <ul class="nav nav-tabs nav-justified" role="tablist">
     <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Company Information</a></li>
     <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Job Orders</a></li>
-
     <li role="presentation"><a href="#employees" aria-controls="employees" role="tab" data-toggle="tab">Employees</a></li>
     <li role="presentation"><a href="#company-contacts" aria-controls="company-contacts" role="tab" data-toggle="tab">Company Admins</a></li>
     <li role="presentation"><a href="#invoices" aria-controls="invoices" role="tab" data-toggle="tab">Invoices</a></li>
@@ -83,6 +77,12 @@
       <h3>Company Contacts</h3>
        <%= render 'admin/companies/company_users' %>
     </div>
+   
+    <%= link_to(admin_company_path(@company), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger") do %>
+      <i class='fa fa-trash'></i>
+      <span>Delete Company</span>
+    <% end %>
+ 
 
 
     
@@ -94,7 +94,7 @@
        <br>
         <%= render 'admin/orders/table' %>
      </div>
-    <%= link_to(edit_admin_company_path(@company), class: "btn btn-default") do %>
+    <%= link_to(edit_admin_company_path(@company), class: "btn btn-primary") do %>
 				<i class='fa fa-pencil'></i>
 
 					<span>Edit Company</span>
@@ -104,13 +104,16 @@
   </div>
   
   <div role="tabpanel" class="tab-pane fade" id="employees">
-     <div class='well'>
+     <div class='col-md-6'>
        <% if @company.jobs.active.any? %>
        <h3>Current Employees</h3>
     <%= render @jobs %>
     <% else %>
       <h3>No employees to display.</h3>
       <% end %>
+     </div>
+     <div class='table-responsive'>
+       <%= render 'admin/shifts/week_calendar', shifts: @company.shifts.current_week %>
      </div>
   </div>
   <div role="tabpanel" class="tab-pane fade" id="invoices">

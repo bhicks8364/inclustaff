@@ -27,7 +27,7 @@
 	       	
 					 <%= render 'admin/shared/clocked_in' if  @current.jobs.on_shift.any? %>
 					<%= render 'admin/shared/on_break' if @current.jobs.on_break.any? %>
-					<%= render 'admin/shared/dropdown'if @current_admin.comments.unread.any? %>
+					<%= render 'admin/shared/dropdown'if Comment.unread.any? %>
 		
 	       		<li><%= link_to @current_admin.name, @current_admin %></li>
 	        	

@@ -24,6 +24,7 @@
 #  role                   :string
 #  username               :string
 #  agency_id              :integer
+#  name                   :string
 #
 
 require 'rails_helper'

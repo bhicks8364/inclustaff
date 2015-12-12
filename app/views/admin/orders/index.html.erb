@@ -1,13 +1,10 @@
 <div class="col-md-12 transbox">
 	
-    <div id="tag_cloud">
+    <div class='col-md-2' id="tag_cloud">
 	  <% tag_cloud @orders.needs_attention.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
 	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
 	  <% end %>
-	</div>
-	
-		<%= render 'search' %>
-			
+	  			
 		<% if @orders.needs_attention.any? %>
 	<div class="alert alert-danger fade in text-center">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -21,19 +18,25 @@
 			<h4><%= pluralize(@orders.needs_attention.count, 'open job order') %>. </h4>
 	</div>
 		<% end %>
+	</div>
+	
+		<%= render 'search' %>
+
 		
-	<div class="well">
+	
 	<% if @orders.needs_attention.any? %>
-	
-			<%= render 'open_table' %>
-	
+	<div class="border">
+			<%= render @orders.needs_attention %>
+	</div>
 	<%end%>
+	
 	<% if @orders.filled.any? %>
-	
+	<div class="dark">
+	<h4>Filled Job Orders</h4>
 			<%= render 'table' %>
-	
+	</div>
 	<%end%>
 
-	</div>
+	
 
 </div>

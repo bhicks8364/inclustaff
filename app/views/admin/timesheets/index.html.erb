@@ -1,16 +1,15 @@
 
-    <div class='col-md-12 main-box'>
-        <%  @test_timesheet.each do |timesheet| %>
-        <li><%= timesheet.job.name_title%>
-        <%= timesheet.week_ending %></li>
-        <%end %>
-        <h2 class='text-center'>Timesheets</h2>
-<div class='col-md-12 well'>
+    <div class='col-md-12'>
+        <%= link_to(admin_timesheets_path(@timesheets.current_week, format: :csv), class: 'btn btn-primary pull-right') do %>
+          		<i class="fa fa-file-excel-o fa-lg"></i> Export
+        <% end %>
+        <h2 class='text-center white'>Timesheets</h2>
+        
+<div class='col-md-12'>
     <% if @timesheets.present? %>
+    
     <%= render 'admin/timesheets/table' %>
-    <%= link_to(admin_timesheets_path(@timesheets, format: :csv), class: 'btn btn-primary') do %>
-  		<i class="fa fa-file-excel-o fa-lg"></i> Export
-<% end %>
+    
     <% else %>
     <h3>No timesheets to display.</h3>
     <% end %>

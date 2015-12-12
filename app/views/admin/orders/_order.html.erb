@@ -1,17 +1,20 @@
-<div class=''>
-   <%= link_to admin_order_path(order), class: 'list-group-item list-group-item-success' do %>
-        <p class='list-group-item-heading'><%= order.company.name %></p>
-       
-        <h5><%= order.title %>
-            <span class='label label-info black pull-right'>Open jobs: <%= order.open_jobs %> </span>
-        </h5>
+<div class='black'>
+ 
+    <p><%= order.company.name %> <%= skills_popover(order) %><span class='pull-right'> <%= status_tag(order) %></span></p>
+    
+ 
+   <%= link_to admin_order_path(order), class: '' do %>
+   
+        <p class='lead white'>
+           <%= order.title %>
+       <span class='label label-info black pull-right'>Open jobs: <%= order.open_jobs %> </span>
+
        <span class='label label-danger black pull-right'><%= order.needed_by? ? order.needed_by.stamp("Monday 11/12") : "n/a" %></span>
-        <p class='list-group-item-text'><strong><%= order.pay_range %></strong> <small><%= order.account_manager.try(:name) || "Unavailable" %></small></p>
+       <strong><%= order.pay_range %></strong> <small><%= order.account_manager.try(:name) || "Unavailable" %></small>
+        </p>
        
-       <%= order.tag_list%>
       <% end %>
-     
-      
+
       
 </div>
       

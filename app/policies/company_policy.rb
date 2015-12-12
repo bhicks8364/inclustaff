@@ -31,6 +31,6 @@ class CompanyPolicy < ApplicationPolicy
     user.admin?
   end
   def destroy?
-    false
+    user.admin? && user.owner?
   end
 end

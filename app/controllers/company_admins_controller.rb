@@ -7,6 +7,8 @@ class CompanyAdminsController < ApplicationController
         elsif company_admin_signed_in?
             @company_admins = @current_company.admins.all
         end
+        gon.admins = CompanyAdmin.all
+        gon.jbuilder
         skip_authorization
     end
     

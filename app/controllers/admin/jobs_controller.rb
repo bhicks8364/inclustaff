@@ -165,7 +165,7 @@ class Admin::JobsController < ApplicationController
         
         mentioned_admins.each do |mentioned_admin|
           current_admin.events.create(action: "mentioned", eventable: mentioned_admin)
-          @job.send_notifications!
+          # @job.send_notifications!
         end
         
         format.html { redirect_to admin_job_path(@job), notice: 'Job was successfully created.' }

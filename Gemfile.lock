@@ -134,6 +134,8 @@ GEM
     ffaker (2.1.0)
     font-awesome-rails (4.4.0.0)
       railties (>= 3.2, < 5.0)
+    friendly_id (5.1.0)
+      activerecord (>= 4.0.0)
     fullcalendar-rails (2.4.0.2)
       jquery-rails (>= 4.0.5, < 5.0.0)
       jquery-ui-rails (>= 5.0.2)
@@ -384,6 +386,7 @@ DEPENDENCIES
   faker
   ffaker
   font-awesome-rails
+  friendly_id (~> 5.1.0)
   fullcalendar-rails
   gemoji (~> 2.1.0)
   github-markdown (~> 0.6.7)

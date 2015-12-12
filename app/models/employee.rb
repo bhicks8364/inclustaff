@@ -36,7 +36,8 @@ class Employee < ActiveRecord::Base
   has_many :orders, :through => :jobs
   has_many :companies, :through => :orders
   has_one :current_job, -> { where active: true }, class_name: "Job"
-  
+  has_many :job_comments, through: :jobs, source: 'comments'
+  has_many :comments, as: :commentable
   has_many :timesheets, :through => :jobs
   attachment :resume, extension: ["pdf", "doc", "docx"]
   

@@ -15,20 +15,20 @@ class JobPolicy < ApplicationPolicy
     end
   end
   def create?
-    return true if user.recruiter? || user.owner?
+    return true if user.admin?
   end
   
   def index?
-    return true if user.recruiter? || user.owner?
+    return true if user.admin?
     
   end
   def clock_in?
-    return true if user.admin?
+    return true if user.owner?
     user.employee? && record.id == user.employee.current_job.id
     
   end
   def clock_out?
-    return true if user.admin?
+    return true if user.owner?
     return true if user.employee? && record.id == user.employee.current_job.id
     
   end
@@ -37,7 +37,7 @@ class JobPolicy < ApplicationPolicy
     user.employee? && record.employee_id == user.employee.id
   end
   def update?
-    return true if user.recruiter? || user.owner?
+    return true if user.admin?
     user.employee? && record.employee_id == user.employee.id
   end
   def destroy?

@@ -52,7 +52,7 @@
 		<i class="fa fa-check fa-1x"></i> 
 		<p>	All of last week's timesheets have been approved.</p>
 		
-				<%= link_to(past_admin_timesheets_path(@current_admin.timesheets, format: :csv), class: 'btn btn-success') do %>
+				<%= link_to(past_admin_timesheets_path(@current_admin.timesheets.last_week, format: :csv), class: 'btn btn-success') do %>
   					<i class="fa fa-export fa-1x"></i> Export
   				<% end %>
 				

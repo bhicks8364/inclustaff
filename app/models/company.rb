@@ -23,7 +23,7 @@ class Company < ActiveRecord::Base
     include ArelHelpers::ArelTable
     include ArelHelpers::JoinAssociation
     belongs_to :agency
-    has_many :admins, class_name: "CompanyAdmin", foreign_key: "company_id"
+    has_many :admins, class_name: "CompanyAdmin", foreign_key: "company_id", dependent: :destroy
     has_many :events, through: :admins
     has_many :payroll_admins, -> { where role: "Payroll" }, through: :agency, class_name: "Admin"
     has_many :invoices

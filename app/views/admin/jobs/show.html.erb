@@ -1,8 +1,6 @@
-<div class='col-md-12 dark'>
-  <h4><strong><%= @job.name_title %></strong></h4>
- 
+<div class='col-md-12'>
+  <h2><strong><%= @job.name_title %></strong></h2>
    <div class='col-md-4 text-center'>
-          
           <h4><small><strong><%= @job.company.name %></strong></small></h4>
        </div>
        <div class='col-md-4 text-center'>
@@ -124,13 +122,8 @@
         <% end %>
       
       <% end %>
+      <%= render "admin/shifts/aca_progress", employee: @employee %>
     </div>
-    
-    
-    
-    
-    
-    
     
   </div>
   <div role="tabpanel" class="tab-pane fade" id="skills-tab">
@@ -165,7 +158,7 @@
       <strong>Gross this week:</strong> <%= number_to_currency(@job.current_week_pay) %><br>
     
     
-    
+    <%= render "shifts/calendar", shifts: @job.shifts.current_week %>
     
     
     

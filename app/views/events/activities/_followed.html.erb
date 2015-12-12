@@ -1,13 +1,10 @@
 
-<%= link_to event.admin, class: 'list-group-item list-group-item-info' do %>
+<%= link_to event.admin, class: '' do %>
+<i class="fa fa-user fa-fw"></i>
 	 <%= event.company_admin.try(:name) || event.admin.try(:name) %>
-    	 <strong>	<%= event.action.humanize.downcase %></strong> <%= event.eventable.name %> 
-    	 <small><%= event.eventable.role %></small>
-    
-    	 
-
+    	<%= event.action.humanize.downcase %> <%= event.eventable.name %> 
 		<span class='label label-info black pull-right'>
-		 <small>  <%= event.created_at.stamp('11/13 at 8:30am') %></small>
+		 <small>  <%= event.created_at.stamp('11/13') %></small>
 		</span>
 
 <% end %>

@@ -18,7 +18,6 @@ class Admin::OrdersController < ApplicationController
       @order = @company.orders.new if @company.present?
      
     else
-      # @orders = @current_company.orders.active.order(created_at: :desc) if @current_company.present?
       @orders = Order.includes(:jobs).active.order(created_at: :desc) if @q.nil?
     end
     if params[:tag]
@@ -30,19 +29,15 @@ class Admin::OrdersController < ApplicationController
 
   end
   
-  
-
-  # GET /orders/1
-  # GET /orders/1.json
   def show
     @company = @order.company
-    @inactivejobs = @order.jobs.inactive
-    @active_jobs = @order.jobs.active
     @jobs = @order.jobs.includes(:timesheets, :shifts)
+    @inactivejobs = @jobs.inactive
+    @active_jobs = @jobs.active
+    
     @timesheets = @order.timesheets
     @current_timesheets = @order.current_timesheets
-    # authorize @order
-    skip_authorization
+    authorize @order
   end
     
 

@@ -60,6 +60,7 @@ Rails.application.routes.draw do
       end
       member do
         patch :grant_editing
+        patch :update_as_available
       end
     end
     

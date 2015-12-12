@@ -1,20 +1,13 @@
 <div class='col-md-12 transbox'>
- 
-
 <span id="user-role">  <strong><% if @user.can_edit? %> <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> <% end %></strong> </h3></span> 
-          
         <% if @employee.dns? %>
         <div class="alert alert-danger fade in text-center">
     		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
     		<i class="fa fa-exclamation-triangle fa-fw fa-lg"></i>
     			<h2><strong>Marked as DNS</strong>  </h2> 
 	    </div>
-       
         <% end %>
-    
-        
  <h2 class="page-header text-center"><%= @user.name %>'s Employee Profile  </h2>
-    
 <!--NAV TABS-->
     <div id='profile-nav' class=''>
       <!-- Nav tabs -->
@@ -41,60 +34,56 @@
       <div class="tab-content">
         <!--HOME TAB-->
       <div role="tabpanel" class="tab-pane fade in active" id="home">
-           <div class='well well-sm text-center'><span class='pull-left'><i class="fa fa-envelope-o"></i>  <%= @employee.email %></span><%= @user.address %>, <%= @user.state %> <%= @user.zipcode %><span class='pull-right'><i class="fa fa-phone-square"></i>  <%= @employee.phone_number %></span> </div>
+           <div class='col-md-2'>
+               <span class='pull-left'><i class="fa fa-envelope-o"></i> 
+               <%= @employee.email %></span>
+               <br>
+               <%= @user.address %>, <%= @user.state %> <%= @user.zipcode %>
+               <br>
+               <span class=''>
+               <i class="fa fa-phone-square"></i>  <%= @employee.phone_number %></span><br>
+              <span class=''><i class="fa fa-wrench"></i> <%= @employee.desired_job_type %></span><br>
+                   <span class=''><i class="fa fa-clock-o"></i>  <%= @employee.desired_shift %></span>
+           </div>
         
             <div class='col-md-4'>
-            <h3>Availablility</h3>
-                <div class='list-group'>
-                     <li class='list-group-item list-group-item-info'>
-                         <strong>Monday</strong> - <%= @employee.monday %>
-                     </li>
-                     <li class='list-group-item list-group-item-info'>
-                         <strong>Tuesday</strong> - <%= @employee.tuesday %>
-                     </li>
-                     <li class='list-group-item list-group-item-info'>
-                         <strong>Wednesday</strong> - <%= @employee.wednesday %>
-                     </li>
-                     <li class='list-group-item list-group-item-info'>
-                         <strong>Thursday</strong> - <%= @employee.thursday %>
-                     </li>
-                     <li class='list-group-item list-group-item-info'>
-                         <strong>Friday</strong> - <%= @employee.friday %>
-                     </li>
-                     <li class='list-group-item list-group-item-info'>
-                         <strong>Saturday</strong> - <%= @employee.saturday %>
-                     </li>
-                     <li class='list-group-item list-group-item-info'>
-                         <strong>Sunday</strong> - <%= @employee.sunday %>
-                     </li>
-                 
-                </div>
+                <h3>Availablility</h3>
+                <%= render 'admin/employees/availability', employee: @employee %>
             </div>
      <% if @employee.jobs.inactive.any? %>
-     <div class='list-group col-md-6 well'>
+     <div class='col-md-6'>
               <h5 class='text-center'>Past Job Assignments</h5>
         <% @employee.jobs.inactive.each do |job| %>
        
           <h4><%= job.company %> <small> <%= job.title %></small></h4>
           <small> Assignment duration: <%= distance_of_time_in_words(job.start_date, job.end_date, include_seconds: true) %></small>
           <p><%= job.start_date.stamp('11/12') %> - <%= job.end_date.stamp('11/12') %></p>
-           <div class='list-group-item black'>
-          <strong>Comments</strong>
-           <% job.comments.each do |comment| %>
-                <%= render 'comments/comment', comment: comment %>
+            <% if job.comments.unread.any? %>
+               <div class='' data-behavior='comment-list'>
+                    <strong>Unread Comments</strong>
+                    <% job.comments.unread.each do |comment| %>
+                        <%= render 'comments/comment', comment: comment %>
+                    <% end %>
+               </div>
+            <% elsif job.comments.read.any? %>
+               <div class='' data-behavior='read-comment-list'>
+                    <strong>Read Comments</strong>
+                    <% job.comments.read.each do |comment| %>
+                        <%= render 'comments/comment', comment: comment %>
+                    <% end %>
+               </div>   
             <% end %>
-           </div>
     <% end %>
        </div>
        <% end %>
        <% if @employee.jobs.active.any? %>
-     <div class='list-group col-md-6 well'>
+     <div class='col-md-6'>
               <h5 class='text-center'>Current Job Assignment</h5>
         <% @employee.jobs.active.each do |job| %>
           <h4><%= job.company %> <small> <%= link_to job.title, admin_job_path(job) %></small></h4>
-           <div class='list-group-item black'>
-          <strong>Comments</strong>
-           <% job.comments.each do |comment| %>
+           <div class=' black' data-behavior='comment-list'>
+          
+           <% job.comments.unread.each do |comment| %>
                 <%= render 'comments/comment', comment: comment %>
             <% end %>
            </div>
@@ -116,16 +105,17 @@
     <div role="tabpanel" class="tab-pane fade" id="matching_orders">
         
          <h2 class="text-center">Matching Job Orders  </h2>
-      
-        <div class=''>
+      <div class='col-md-3'></div>
+        <div class='col-md-6 black'>
           <% @employee.matching_orders.each do |order| %>
               <%= render order %>
           <% end %>
         </div>
+        <div class='col-md-3'></div>
     </div>
       <!--EMPLOYEE PROFILE TAB-->
     <div role="tabpanel" class="tab-pane fade" id="payroll">
-         <h2 class="text-center">ACA Information  </h2>
+         <h2 class="text-center">Payroll Information  </h2>
          
         <div class='col-md-4 well'>
             <%= @employee.ssn %><br>
@@ -137,7 +127,7 @@
       <!--ACA TAB-->
     <div role="tabpanel" class="tab-pane fade" id="aca">
         <h2 class="text-center">ACA Information  </h2>
-        <%= render 'aca_progress', employee: @employee %>
+        <%= render 'admin/shifts/aca_progress', employee: @employee %>
         <div class='col-md-4'>
             <h3>By Week <small>over 30 hours</small></h3>
             <div class='list-group scroll300'><% @employee.shifts.report_by_week.each do |k, v| %>
@@ -169,12 +159,6 @@
                  <% end %>
             </div>
         </div>
-       
-      
-    
-          
-          
-        
     
       </div>
       <!--TIMESHEETS TAB-->
@@ -201,27 +185,17 @@
         <% else %>
         <h3><%= @employee.first_name %> is currently unassigned.</h3>
       <% end %>
-         
-                    
-            
-    
-                
       </div>
       <div role="tabpanel" class="tab-pane fade" id="shifts">
         
       <% if @employee.assigned? && @employee.shifts.any? %>
       	<h1>Calendar</h1>
         <div class='well white'>
-          <%= render 'admin/shifts/calendar' %>
+          <%= render 'admin/shifts/calendar', shifts: @employee.shifts %>
         </div>
         <% else %>
         <h3> <%= @employee.first_name %> is currently unassigned.</h3>
       <% end %>
-         
-                    
-            
-    
-                
       </div>
       <div role="tabpanel" class="tab-pane fade" id="work_history">
         <div class='dark white'>
@@ -244,7 +218,7 @@
            
       </div>
       <div role="tabpanel" class="tab-pane fade" id="skills-tab">
-          <div class='col-md-8 '>
+          <div class='col-md-4'>
         <% if @skills.count < 1 %>
            <h4 id='no-skills' class="text-center">This employee has no skills entered.</h4>
           <% else %>
@@ -264,7 +238,7 @@
         	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
         	  <% end %>
         	</div>
-             <div class='form col-md-8'>
+             <div class='form-inline'>
                <%= render partial: "admin/skills/form", locals: {skillable: @employee} %>
              </div>
              
@@ -274,8 +248,32 @@
         <div role="tabpanel" class="tab-pane fade" id="settings">
             <div class='col-md-4'>
             <%= link_to "Edit Employee", edit_admin_employee_path(@employee), class: 'btn btn-primary' %>
+            <%= link_to "Edit User", edit_user_registration_path(@employee.user), class: 'btn btn-primary' %>
              
             </div>
+             <% if @current_job.present? %>
+            <div class='col-md-4 scroll400' data-behavior='comment-list'>
+                <h3>Job Comments</h3>
+                <div id='job_<%=@current_job.id %>'>
+                    <% @employee.job_comments.order(created_at: :asc).each do |comment| %>
+                      <%= render "comments/comment", comment: comment %>
+                    <% end %>
+                </div>
+               
+                <%= render partial: "comments/form", locals: {commentable: @current_job} %>
+            </div>
+            <% end %>
+            <div class='col-md-4 scroll400' data-behavior='comment-list'>
+                <h3>Employee Comments</h3>
+                <div id='employee_<%=@employee.id%>'>
+                    <% @employee.comments.order(created_at: :asc).each do |comment| %>
+                        <%= render "comments/comment", comment: comment %>
+                    <% end %>
+                </div>
+                <%= render partial: "comments/form", locals: {commentable: @employee} %>
+            </div>
+            
+            
 
           
       </div>

@@ -109,7 +109,7 @@ gem 'aasm'
 gem "sucker_punch"
 
 gem 'local_time', '~> 1.0.0'
-
+gem 'friendly_id', '~> 5.1.0'
 
 gem 'html-pipeline', '~> 1.11.0'
 gem 'github-markdown', '~> 0.6.7'

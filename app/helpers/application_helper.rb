@@ -13,4 +13,13 @@ module ApplicationHelper
         title += " | " if title.present?
         title += "Inclustaff"
     end
+    
+    def signed_in_link_to(model, options = {})
+        name = "View #{model.class.to_s}" 
+        id = model.id
+        controller = "#{model.class.to_s.downcase.pluralize}"
+        path = @signed_in.class.to_s.downcase + "/" + controller
+        # options[:class] ? options[:class] += ' pjax' : options[:class] = 'pjax'
+        link_to name, { controller: path, action: 'show', id: id}, options
+    end
 end

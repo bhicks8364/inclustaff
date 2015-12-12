@@ -28,6 +28,8 @@
 #  employee_id            :integer
 #  agency_id              :integer
 #  resume_id              :integer
+#  checked_in_at          :datetime
+#  name                   :string
 #
 
 require 'rails_helper'

@@ -1,0 +1,12 @@
+<%= simple_form_for [commentable.comments.new], class: 'comment', remote: true do |f| %>
+
+    <div class="form-group">
+      <%= f.input :body, label: false, input_html: {data: { behavior: "autocomplete_company_admins" }, 
+      class: "form-control body myatwho"}, placeholder: "Add a comment" %>
+
+      
+         <%= f.submit "Send", class: "btn btn-primary btn-block" %>
+     
+    </div>
+
+<% end %>

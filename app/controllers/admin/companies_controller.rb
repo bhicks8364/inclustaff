@@ -5,11 +5,11 @@ class Admin::CompaniesController < ApplicationController
   # GET /companies
   # GET /companies.json
   def index
-    @companies = @current_agency.companies
+    @companies = @current_admin.companies
     @top_billing = Company.ordered_by_current_bill
     
     @import = Company::Import.new
-    skip_authorization
+    authorize @companies
     respond_to do |format|
       format.html
       format.csv { send_data @companies.to_csv, filename: "companies-export-#{Time.now}-inclustaff.csv" }

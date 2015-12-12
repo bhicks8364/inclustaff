@@ -38,13 +38,13 @@
 //= require messages
 //= require practice
 //= require orders
-
+//= require employees
 
 
 //= require chartkick
 
 //= require charts
-
-
+//= require popovers
+//= require tooltips
 
 

@@ -1,0 +1,12 @@
+<h3 class='white'>Recruiting Calendar</h3>
+<h4><%= @orders.count %></h4>
+<%= month_calendar events: @orders, attribute: :needed_by do |date, orders| %>
+  <%= date %>
+
+  <% orders.each do |order| %>
+    <div>
+      <%= order.title %>
+      <%= status_tag(order) %>
+    </div>
+  <% end %>
+<% end %>

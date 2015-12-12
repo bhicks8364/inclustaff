@@ -29,9 +29,9 @@ class OrdersController < ApplicationController
   end
   
   def all
-   @q = Order.all.ransack(params[:q]) 
-  
-          @orders = @q.result(distinct: true).paginate(page: params[:page], per_page: 20)
+    @q = Order.needs_attention.ransack(params[:q]) 
+    @orders = @q.result(distinct: true).paginate(page: params[:page], per_page: 20)
+    skip_authorization
   end
 
   # GET /orders/1

@@ -1,46 +1,47 @@
-<div class="col-md-12 main-box">
-<div class="col-md-12 ">
-	<h4 class='text-center'>	<%= @employees.assigned.count %> Active Employees</h4>
-		<div class="table-responsive">
-			<table id='employees-datatable' class="table table-bordered ">
-				<thead>
-					<tr>
-						<th style="width: 10%;">Employee</th>
-						<th style="width: 10%;">Title</th>
-						
-						<th style="width: 10%;">Week Gross</th>
-						<th style="width: 10%;">YTD Gross</th>
-						
-					</tr>
-				</thead>
-				<tbody>
-					<%  @employees.assigned.each do |employee| %>
-					<% if employee.on_shift? %>
-						    <tr class="bg-success">
-						 	<% else %>
-						  	<tr class="bg-info">
-			        <% end %>
-						<td style="width: 10%;">
-							<%= link_to admin_employee_path(employee), class: "btn btn-primary fill"  do %>
-				
-									<i class="fa fa-user fa-lg fa-fw"></i> <%= employee.name %>
-							
-							<% end %></td>
-						<td style="width: 10%;"><%= employee.title %></td>
-						
-						<td style="width: 10%;"><%= number_to_currency(employee.current_timesheet.try(:gross_pay) || 0) %> </td>
-						<td style="width: 10%;"><%= number_to_currency(employee.current_job.try(:total_gross_pay) || 0) %> </td>
+<div class="col-md-12">
+	<div class="col-md-6 ">
+		<h2 class='white text-center'>	<%= @employees.assigned.count %> Active Employees</h2>
+			<div class="table-responsive">
+				<table id='' class="table table-bordered ">
+					<thead>
+						<tr>
+							<th>Employee</th>
+							<th>Title</th>
+							<th>Week Gross</th>
+							<th>YTD Gross</th>
+							<th></th>
 						</tr>
-					<% end %>
-					
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						<%  @employees.assigned.each do |employee| %>
+						<% if employee.on_shift? %>
+							    <tr class="bg-success">
+							 	<% else %>
+							  	<tr class="bg-info">
+				        <% end %>
+							<td>
+								<%= link_to "<i class='fa fa-user fa-lg fa-fw'></i> #{employee.name}".html_safe, admin_employee_path(employee), class: "" %>
+					</td>
+							<td><%= employee.title %></td>
+							
+							<td><%= number_to_currency(employee.current_timesheet.try(:gross_pay) || 0) %> </td>
+							<td><%= number_to_currency(employee.current_job.try(:total_gross_pay) || 0) %> </td>
+							<td><%= employee.deleted_at %></td>
+							</tr>
+						<% end %>
+						
+					</tbody>
+				</table>
+			</div>
+	</div>
+	<div class="col-md-6 ">
+		<h2 class='white text-center'>	<%= @employees.only_deleted.count %> Deleted Employees</h2>
+			<%= render 'table', employees: @employees.only_deleted %>
 		</div>
-		<%= form_for @import, url: import_admin_employees_path, multipart: true do |f| %>
-  <%= f.file_field :file %>
-  <%= f.submit "Upload", class: 'btn btn-success' %>
-<% end %>
-</div>
+<%= form_for @import, url: import_admin_employees_path, multipart: true do |f| %>
+		  <%= f.file_field :file %>
+		  <%= f.submit "Upload", class: 'btn btn-success' %>
+		<% end %>
 <%= link_to(admin_employees_path(@employees, format: :csv), class: 'btn btn-primary') do %>
   		<i class="fa fa-file-excel-o fa-lg"></i> Export Employee List
 <% end %>

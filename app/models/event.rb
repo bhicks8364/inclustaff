@@ -27,6 +27,7 @@ class Event < ActiveRecord::Base
     scope :company_admin, -> { where.not(company_admin_id: nil)}
   
     scope :applications, -> { where(action: 'applied').joins(:user).merge(User.available)}
+    scope :follows, -> { where(action: 'followed')}
     scope :clock_ins, -> { where(action: 'clocked_in')}
     scope :timesheets, -> { where(eventable_type: 'Timesheet')}
     scope :jobs, -> { where(eventable_type: 'Job')}
@@ -77,6 +78,15 @@ class Event < ActiveRecord::Base
         end
     end
     
+    def self.following_admin
+        where(action: "followed", eventable_type: "Admin")
+    end
+    def self.following_company_admin
+        where(action: "followed", eventable_type: "CompanyAdmin")
+    end
+    def self.following_candidates
+        where(action: "followed", eventable_type: "User")
+    end
     def self.mentions(admin_id)
         where(action: "mentioned", eventable_id: admin_id)
     end

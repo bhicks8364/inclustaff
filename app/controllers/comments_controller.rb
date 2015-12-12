@@ -15,6 +15,7 @@ class CommentsController < ApplicationController
     
     
   end
+        
   def search
     index
     render :index
@@ -23,6 +24,8 @@ class CommentsController < ApplicationController
     @comment = Comment.new
   end
   def show
+    gon.comment = @comment
+    gon.commentable = @comment.commentable
   end
   def create
     @comment = Comment.new comment_params
@@ -31,6 +34,7 @@ class CommentsController < ApplicationController
     @comment.admin = current_admin if admin_signed_in?
     @comment.company_admin = current_company_admin if company_admin_signed_in?
     @comment.save
+        
     
     respond_to do |format|
      

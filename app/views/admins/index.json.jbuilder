@@ -1,4 +1,4 @@
 json.array!(@admins) do |admin|
   json.id admin.id
-  json.name admin.username
+  json.name admin.name
 end

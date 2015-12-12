@@ -1,13 +1,13 @@
-<div class='col-md-12 transbox'>
-  <div class='col-md-3'>
-  <%= render 'admin/orders/search' %>
+<div class='col-md-12 dark'>
+  <div class='form-inline'>
+  <%= render 'orders/search' %>
   </div>
- <div class='col-md-9 table-responsive'>
+ <div class='col-md-12 table-responsive'>
   <table class="table table-bordered">
   <thead>
     <tr>
     <th><%= sort_link(@q, :created_at, 'Created', default_order: :desc) %></th>
-      <th>Company</th>
+      <th><%= sort_link(@q, :company, 'Company') %></th>
       <th>Title</th>
       <th>Dept. Manager</th>
       <th>Pay</th>
@@ -21,7 +21,7 @@
   <tbody>
     <% @orders.active.each do |order| %>
       <tr>
-        <td><%= order.created_at %></td>
+        <td><%= order.created_at.stamp("11/12/15") %></td>
         <td><%= order.company_name %></td>
         <td><%= link_to order.title, admin_company_order_path(order.company, order) %></td>
         <td><%= order.manager.present? ? order.manager.name : "N/A" %></td>

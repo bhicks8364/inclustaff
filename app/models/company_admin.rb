@@ -27,6 +27,7 @@
 #  locked_at              :datetime
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  name                   :string
 #
 
 class CompanyAdmin < ActiveRecord::Base
@@ -40,8 +41,8 @@ class CompanyAdmin < ActiveRecord::Base
   devise :database_authenticatable, :registerable, 
          :recoverable, :rememberable, :trackable, :validatable
   validates :company_id, presence: true
-  
-  def name; "#{first_name} #{last_name}"; end
+  before_validation :set_name
+  def set_name;   self.name = "#{first_name} #{last_name}"; end
   def to_s; name; end
   def owner?;           role == "Owner";  end
   def recruiter?;           false;  end
@@ -50,7 +51,9 @@ class CompanyAdmin < ActiveRecord::Base
   def timeclock?;           role == "Timeclock";  end
   # TODO -> dont think admin? should return true for company_admin... Clashing with policies - shared controllers
   def admin?;           true;  end
-    
+  def online?
+    updated_at > 10.minutes.ago
+  end
   
  
 end

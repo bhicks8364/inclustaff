@@ -1,6 +1,6 @@
-<%= div_for(comment, data: {behavior: "comment", id: "#{comment.id}"}) do %>
-
-    <p><%= comment.body %></p>
+<%= div_for(comment, class: 'white', data: {behavior: "comment", id: "#{comment.id}"}) do %>
+    
+    <p><%= markdownify(comment.body) %></p>
     <% if comment.recipient.present? && comment.recipient_type != "Employee" %>
         To: <small><%= link_to comment.recipient.name, comment.recipient %> </small>
     <% elsif comment.recipient.present? && comment.recipient_type == "Employee" %>
@@ -21,7 +21,7 @@
     <% end %>
    
     
-   <button class='b' data-behavior="comment-toggle" >
+   <a class='' data-behavior="comment-toggle" >
 		<span  class="" data-behavior="read-button" >
           <% if comment.unread? %>
 			  <i class="fa fa-square-o fa-1x"></i>
@@ -29,7 +29,7 @@
 			  <i class='fa fa-check-square-o fa-1x'></i>
           <% end %>
         </span>
-	</button>
+	</a>
     <%= link_to "<i class='fa fa-commenting'></i>".html_safe, comment if admin_signed_in? %>
     <%= link_to "<i class='fa fa-trash-o fa-red'></i>".html_safe, admin_job_comment_path(comment.commentable, comment), method: :delete, 
                                                     data: { confirm: 'Are you sure?' }, class: 'red' if admin_signed_in? %>

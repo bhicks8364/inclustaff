@@ -1,14 +1,18 @@
+console.log(gon.admins)
 jQuery ->
-  $('[data-behavior="autocomplete_users"]').atwho(
-    at: "@",
-    'data': "/users.json"
-  )
-  $('[data-behavior="autocomplete_skills"]').atwho(
-    at: "#",
-    'data': "/skills.json"
-  )
-
-  $('[data-behavior="autocomplete_order_notes"]').atwho(
-    at: "@",
-    'data': "/admins.json"
-  )
+  # $('.myatwho').atwho(
+  #   at: "@",
+  #   displayTpl: "<li> ${name} </li>",
+  #   insertTpl: ":${name}:",
+  #   'data': "/company_admins.json"
+  # )
+  $('.myatwho').atwho(
+    at: '@'
+    data: '/company_admins.json').atwho(
+    at: '#'
+    displayTpl: '<li>${name}  <small>${content}</small></li>'
+    data: '/company_admins.json').atwho
+    at: ':'
+    dispayTpl: '<li> ${name} </li>'
+    insertTpl: '${name}'
+    data: '/admins.json'

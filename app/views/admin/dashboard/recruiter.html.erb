@@ -1,11 +1,16 @@
 
-<div class='col-md-12 transbox'>
+<div class='col-md-12'>
 
-  <h1 class='page-header'><%= @current_agency.name.titleize %>'s Recruiting Dashboard</h1>
-  
-  <div class="col-md-12 ">
-		
-				
+<%= render 'admin/orders/search' %>
+  <h1 class='page-header'>Recruiting Dashboard</h1>
+  <div class="col-md-9">
+  	<%= render 'admin/infoboxes/recruiting_calendar' %>
+  	
+  </div>
+  <div class="col-md-3">
+  	<%= render 'admin/dashboard/recruiter', recruiter: @current_admin if @current_admin.recruiter? %>
+  </div>
+  <div class="col-md-10">
 				<div class="tabs-wrapper">
 					<div class="clearfix">
 					
@@ -21,9 +26,7 @@
 						<div class="tab-pane fade in active" id="tab-home">
 								<h3 class='text-center'>Open Job Orders</h3>
 								
-									<div class='well'>
-										<%= render 'admin/dashboard/orders_by_company' %>
-									</div>
+									
 							
 						</div>
 					  
@@ -32,7 +35,7 @@
 						<div class="tab-pane fade" id="tab-placements">
 						
 							<% if @current_admin.jobs %>
-							<div class='well list group'>
+							<div class=' list group'>
 			<%= div_for(@current_admin.jobs, class: 'list-group-item dark') do |job| %>
 									
 					
@@ -52,16 +55,8 @@
     	<strong>Total Billing: </strong> <%= number_to_currency(job.total_gross_bill) %> 
     </h4>
    	
-	<strong> Pay rate: </strong><%= number_to_currency(job.pay_rate) %>
-<span class='pull-right'> Account Manager: <%= job.account_manager.name %></span>
-
-  
-
-
-
-									
-								
-								
+								<strong> Pay rate: </strong><%= number_to_currency(job.pay_rate) %>
+							<span class='pull-right'> Account Manager: <%= job.account_manager.name %></span>
 							<% end %>
 	
 							<% else %>
@@ -71,20 +66,14 @@
 								
 								</div>
 							</div>	 
-
-					
 						<div class="tab-pane fade" id="tab-timesheets">
-						    <div class='col-md-12 well'>
+						    <div class='col-md-12 '>
 						        <% @timesheets.each do |timesheet| %>
 						    	<%= render 'admin/timesheets/timesheet', timesheet: timesheet %>
 						<% end %>
 						    </div>
-						
-			
 						</div>
-						
 						<div class="tab-pane fade" id="tab-events">
-						   
 							<% if Event.applications.any? %>
 							<% Event.applications.order(created_at: :desc).each do |event| %>
 							  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
@@ -92,17 +81,10 @@
 							  <% end %>
 							<% end %>
 							<% else %>
-							Sorry, there're are currently no events.
+							Sorry, there're are currently no applications.
 							<% end %>
 						</div>
-					
 					</div>
-					
 				</div>
-			
 		</div>
-
-
-
-
 </div>

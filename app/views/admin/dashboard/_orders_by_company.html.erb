@@ -1,11 +1,7 @@
 <div class="list-group">
-					
 	<li class="list-group-item"><div class='text-center'><i class="fa fa-users fa-fw"></i><strong>&nbsp; Open Orders</strong></div></li>
-	
-	<% Company.with_open_orders.order(:name).distinct.paginate(page: params[:page], per_page: 5).each do |company| %>
-		
+	<% @current_agency.companies.with_open_orders.order(:name).distinct.each do |company| %>
 		<%= link_to admin_company_path(company), class: 'list-group-item list-group-item-info' do %>
-			
 		<strong>	<%=  company.name %>
 		<% if current_admin.owner?%>
 		<span class='badge badge-primary pull-right'>
@@ -13,24 +9,14 @@
 		    <% end %>
 		    </strong>
 		<% end %>
-		
-				<% company.orders.needs_attention.each do |order| %>
-	
+				<% company.orders.needs_attention.order(needed_by: :asc).each do |order| %>
 				<%= link_to admin_order_path(order), class: 'list-group-item list-group-item-danger' do %>
 			<strong><%= order.title %></strong> <span class='badge badge-danger'><%= order.open_jobs %> needed</span>
-			
-			
 			<div class='text-left'>
 				<small><%= order.needed_by.stamp('Monday - 11/12') %></small>
 			</div>
-
-				 
 			<% end %>
-		
 		<% end %>
-	
-			
-		<li role="separator" class="list-group-item divider"></li>
 	<% end %>
-	
+		<li role="separator" class="list-group-item divider"></li>
 </div>

@@ -28,6 +28,8 @@
 #  employee_id            :integer
 #  agency_id              :integer
 #  resume_id              :integer
+#  checked_in_at          :datetime
+#  name                   :string
 #
 
 class User < ActiveRecord::Base
@@ -55,7 +57,7 @@ class User < ActiveRecord::Base
   scope :unassigned, -> { joins(:employee).merge(Employee.unassigned)}
   scope :available, -> { joins(:employee).merge(Employee.available)}
   scope :ordered_by_last_name, -> { order(last_name: :asc) }
-  # before_save :set_code
+  before_validation :set_code, :set_name
   
   after_create :set_employee, if: :has_no_employee?
   
@@ -71,7 +73,9 @@ class User < ActiveRecord::Base
   def set_role
     self.role = "Employee"
   end
-  
+  def to_param
+    "#{id}-#{name.parameterize }"
+  end
   def online?
     updated_at > 10.minutes.ago
   end
@@ -82,8 +86,8 @@ class User < ActiveRecord::Base
   scope :assigned, -> { joins(:employee).merge(Employee.with_active_jobs)}
   scope :online, -> { where("updated_at > ?", 10.minutes.ago) }
 
-  
-  def name; "#{first_name} #{last_name}";end
+  def set_name;             self.name = "#{first_name} #{last_name}"; end
+  # def name; "#{first_name} #{last_name}";end
 
   def employee?
     role == "Employee"
@@ -97,8 +101,11 @@ class User < ActiveRecord::Base
     self.update(code: new_code)
   end
   def set_code
-    new_code = last_name.upcase[0,4] + rand(1000..9999).to_s
-    self.code = new_code
+    if code.nil?
+      new_code = last_name.upcase[0,4] + rand(1000..9999).to_s
+      self.code = new_code
+    else
+    end
   end
   def reset_password!
     self.update(password: code, password_confirmation: code)
@@ -117,20 +124,12 @@ class User < ActiveRecord::Base
       employee.ssn = 1234
      end
   end
-
-
-
-
-
-
    # IMPORT TO CSV   
   def self.assign_from_row(row)
     user = User.where(email: row[:email]).first_or_initialize
     user.assign_attributes row.to_hash.slice(:first_name, :last_name, :agency_id, :email, :code, :role, :password, :password_confirmation)
     user
   end
-  
-  
   
    # EXPORT TO CSV
   def self.to_csv
@@ -151,17 +150,5 @@ class User < ActiveRecord::Base
       false
     end
   end
-  
-
-
-
-
-
-
-
-
-
-
-
         
 end
