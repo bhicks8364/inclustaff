@@ -57,6 +57,7 @@ class User < ActiveRecord::Base
   scope :unassigned, -> { joins(:employee).merge(Employee.unassigned)}
   scope :available, -> { joins(:employee).merge(Employee.available)}
   scope :ordered_by_last_name, -> { order(last_name: :asc) }
+  scope :ordered_by_check_in, -> { order(checked_in_at: :desc) }
   before_validation :set_code, :set_name
   
   after_create :set_employee, if: :has_no_employee?
@@ -74,7 +75,7 @@ class User < ActiveRecord::Base
     self.role = "Employee"
   end
   def to_param
-    "#{id}-#{name.parameterize }"
+    "#{id}-#{last_name.parameterize }"
   end
   def online?
     updated_at > 10.minutes.ago
@@ -88,7 +89,11 @@ class User < ActiveRecord::Base
 
   def set_name;             self.name = "#{first_name} #{last_name}"; end
   # def name; "#{first_name} #{last_name}";end
-
+  def set_check_in!
+    if checked_in_at.nil?
+      self.update(checked_in_at: created_at)
+    end
+  end
   def employee?
     role == "Employee"
   end

@@ -1,6 +1,6 @@
 
         <span data-behavior='shift-state'>
-             <strong> <%= link_to job.employee.name, company_job_path(job), class: 'table-link' %>
+             <strong> <%= link_to job.employee.first_name, company_job_path(job), class: 'white' %>
              is currently <%= job.on_shift? ? "clocked in" : "clocked out" %></strong>
         </span>
         

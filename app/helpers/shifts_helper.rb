@@ -34,6 +34,35 @@ module ShiftsHelper
     Total (w/ paid breaks):  #{number_to_currency(shift.with_paid_breaks)} 
     Total (w/ unpaid break):  #{number_to_currency(shift.with_unpaid_breaks) }"
     end
+    def shift_popover(shift)
+        "<i class='fa fa-info-circle' data-placement='top' data-toggle='popover' title='#{ shift.id}' 
+        data-content='#{ shift.state }'></i>".html_safe
+    end
+    
+    def shift_sym(shift)
+      if shift.on_break?
+        "<i class='fa fa-spinner fa-spin'></i>".html_safe 
+      elsif shift.clocked_in?
+        "<i class='fa fa-cog fa-spin'></i>".html_safe 
+      else
+        "<i class='fa fa-user'></i>".html_safe 
+      end
+    end
+    def breaks_collaspe(shift)
+      "<a class='btn btn-primary' role='button' data-toggle='collapse' href='#collapseShiftBreaks_#{shift.id}' aria-expanded='false' aria-controls='collapseShiftBreaks_#{shift.id}'>
+        <i class='fa fa-history fa-fw'></i> <small>Break Details</small>
+      </a>".html_safe
+    end
+    def comments_collaspe(shift)
+      "<a class='btn btn-primary' role='button' data-toggle='collapse' href='#collapseShiftComments_#{shift.id}' aria-expanded='false' aria-controls='collapseShiftComments_#{shift.id}'>
+       <i class='fa fa-commenting fa-fw'></i> <small>Comments</small>
+      </a>".html_safe
+    end
+    def shift_collaspe(shift)
+      "<a class='black' role='button' data-toggle='collapse' href='#collapseShift_#{shift.id}' aria-expanded='false' aria-controls='collapseShift_#{shift.id}'>
+        <i class='fa fa-user fa-fw'></i> <small>#{shift.employee.last_name}</small>
+      </a>".html_safe
+    end
 
   
   

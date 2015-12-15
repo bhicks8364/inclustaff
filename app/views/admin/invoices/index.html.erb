@@ -18,6 +18,7 @@
       <th></th>
       <th></th>
       <th></th>
+      <th></th>
     </tr>
   </thead>
 
@@ -32,6 +33,7 @@
         <td><%= number_to_currency(invoice.total) %></td>
         <td><%= number_to_currency(invoice.amt_paid) %></td>
         <td><%= invoice.paid_on %></td>
+        <td><%= timesheets_for(invoice) %></td>
         <td><%= link_to 'Show', admin_company_invoice_path(@company, invoice) %></td>
         <td><%= link_to 'Edit', edit_admin_company_invoice_path(@company, invoice) %></td>
         <td><%= link_to 'Destroy', admin_company_invoice_path(@company, invoice), method: :delete, data: { confirm: 'Are you sure?' } %></td>

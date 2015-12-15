@@ -4,9 +4,9 @@
   <%= date %>
 
   <% orders.each do |order| %>
-    <div>
-      <%= order.title %>
-      <%= status_tag(order) %>
+    <div class='black'>
+      <%= signed_in_link_to(order.open_jobs, order, class: "b") %>
+      <%= skills_popover(order) %>
     </div>
   <% end %>
 <% end %>

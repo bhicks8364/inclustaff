@@ -1,6 +1,6 @@
-<h4 class='text-center'>Needed Skills</h4>
-  <div class="well well-sm">
-  	 <%= link_to 'Clear Search', tags_path, class: 'btn btn-primary btn-tiny' %>
+<h4 class='text-center white'>Needed Skills</h4>
+  <div class="">
+  	 
   	<div class="scroll600">
 	  <% @current_agency.orders.needs_attention.tags_on(:tags).order(name: :asc).each do |tag, css_class| %>
 	  	<%= link_to(tag_path(tag.name), class: "list-group-item list-group-item-info") do  %>
@@ -12,7 +12,7 @@
 	   <% end %>
 	  <% end %>
 		</div>
-		
+	<%= link_to 'Clear Search', tags_path, class: 'pull-right small' %>
 		
 		
 	</div>

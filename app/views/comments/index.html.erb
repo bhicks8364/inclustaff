@@ -1,9 +1,20 @@
  <%= render 'search' %>
-
+ 
+<% if @searched.present? %>
+<div data-behavior='comment-list' class='scroll300'>
+            <h2>Searched Comments	<span class="badge" data-behavior='comments-count'>
+        		<%=  @searched.count %>
+        </span></h2>
+<% @searched.order(created_at: :asc).each do |comment| %>
+            <%= render 'comment', comment: comment %>
+            <%= render partial: "comments/form", locals: {commentable: comment.commentable} %>
+    <% end %>
+</div>
+<% end %>
 <div class='col-md-12'>
     <div class='dark col-md-6'>
         
-        <div data-behavior='comment-list' class='scroll300'>
+        <div data-behavior='comment-list' class='scroll600'>
             <h2>Unread Comments	<span class="badge" data-behavior='comments-count'>
         		<%=  @comments.unread.count %>
         </span></h2>

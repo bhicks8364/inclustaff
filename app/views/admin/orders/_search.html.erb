@@ -1,5 +1,5 @@
-<%= search_form_for(@q, class: 'form-inline') do |f| %>
-  <%= f.search_field :notes_or_title_cont, class: 'form-control', placeholder: "Search keywords" %>
-  <%= f.search_field :company_name_cont, class: 'form-control', placeholder: "Search by Company"%>
+<%= search_form_for @q, class: 'form-inline', url: search_admin_orders_path,
+                        html: { method: :post } do |f| %>
+  <%= f.search_field :notes_or_title_or_company_name_cont , class: 'form-control', placeholder: "Search..."%>
   <%= f.submit "GO!", class:'btn btn-success' %>
 <% end %>

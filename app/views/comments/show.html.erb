@@ -1,9 +1,4 @@
-<p class='white' id="demo">A Paragraph</p>
- <button onclick='getElementById("demo").innerHTML=Date()'>The time is?</button>
- <p class='white' id="demo2">A Paragraph</p>
-<button type="button" onclick="colorFunction()">Color</button>
-<button type="button" onclick="myFunction()">Try it</button>
-<button type="button" onclick="myFunction2()">Try it</button>
+
 <div class='col-md-12 white'>
 
     <% @comment.mentioned_company_admins.each do |admin| %>
@@ -16,7 +11,7 @@
         <%= link_to user.name, user %>
     <% end %>
     <% @comment.all_mentions.each do |user| %>
-        <%= link_to user.name, user %>
+        <%= link_to "<i class='fa fa-trash-o fa-red'></i> #{user.name}", user %>
     <% end %>
 
 

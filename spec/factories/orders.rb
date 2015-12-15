@@ -27,4 +27,7 @@
 #  est_duration       :string
 #  shift              :string
 #  bwc_code           :string
+#  min_pay            :decimal(, )
+#  max_pay            :decimal(, )
+#  pay_frequency      :string
 #

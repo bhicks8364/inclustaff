@@ -3,7 +3,19 @@
     <%= render 'admin/infoboxes/payroll_boxes' %>
   <%= render 'admin/infoboxes/infoboxes' %>
  	
+<h3 class='white'>Shifts Calendar</h3>
+<h4><%= @shifts.count %></h4>
+<%= month_calendar events: @shifts, attribute: :time_in do |date, shifts| %>
+  <%= date %>
 
+  <% shifts.each do |shift| %>
+   
+      <%= shift_collaspe(shift) %>
+       <div class='black collapse' id="collapseShift_<%=shift.id%>">
+           <%=link_to shift.employee.name, admin_employee_path(shift.employee)%>
+        </div>
+  <% end %>
+<% end %>
     
    
         

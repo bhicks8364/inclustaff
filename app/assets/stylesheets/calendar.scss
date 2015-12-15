@@ -1,0 +1,61 @@
+.simple-calendar {
+  
+  tr {
+    min-height: 100px;
+    max-height: 100px;
+    overflow: auto;
+  }
+    // background-color: black;
+  
+  .day {
+    background-color: rgba(128, 128, 128, 0.59);
+    min-width: 100px;
+    min-height: 100px;
+    max-width: 100px;
+    vertical-align: text-top;
+    text-align:right;
+    border: solid 1px black;
+    div {
+      margin-top: 5px;
+      text-align:center;
+      font-weight: bold;
+    //   font-size: .8em;
+    }
+  }
+
+  .wday-0 {}
+  .wday-1 {}
+  .wday-2 {}
+  .wday-3 {}
+  .wday-4 {}
+  .wday-5 {}
+  .wday-6 {}
+
+  .today {
+    border: solid 2px black;
+  }
+  .past {
+      background-color: rgba(128, 128, 128, 0.79);
+  }
+  .future {}
+
+  .start-date {}
+
+  .prev-month {}
+  .next-month { }
+  .current-month {
+    min-height: 100px;
+  }
+
+  .has-events {
+    
+    height: 100px;
+  }
+  .cal-date {
+    vertical-align:25px;
+    color: white;
+    
+    background-color: rgba(128, 128, 128, 0.59);
+  }
+}
+

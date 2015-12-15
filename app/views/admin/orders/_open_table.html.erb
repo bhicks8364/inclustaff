@@ -1,37 +1,32 @@
 
-  <div class="table-responsive">
-  <table id="orders-datatable2" class="table table-bordered">
+  <div class="table-responsive lightbox">
+  <table id="" class="table">
   <thead>
     <tr>
-      <th>Company</th>
-      <th>Needed By</th>
+      <th class='text-center'><i class="fa fa-calendar"></i></th>
       <th>Title</th>
       <th>Pay Range</th>
       <th>Open </th>
       <th>Account Manager</th>
-      <th>Tags</th>
+      <th>Matches</th>
+      <th></th>
     </tr>
   </thead>
 
   <tbody>
     <% @orders.needs_attention.order(:needed_by).each do |order| %>
       <tr>
-        
-     <td><%= link_to order.company_name, admin_company_path(order.company) %></td>
-     
         <td><%= order.needed_by? ? order.needed_by.stamp('11/12') : "n/a" %></td>
-       
-        <td><%= link_to order.title, admin_company_order_path(order.company, order) %></td>
-        <td><%= order.pay_range %></td>
-       
-        
+        <td><%= link_to order.title, admin_company_order_path(order.company, order), class: 'black' %></td>
+        <td><%= number_to_currency(order.min_pay) %> - <%= number_to_currency(order.max_pay) %></td>
         <td><%= order.open_jobs %></td>
-       
-        
-        
         <td><%= order.account_manager.present? ? order.account_manager.last_name : "Unassigned" %> </td>
-        <td>Tags: <%= raw order.tag_list.map { |t| link_to t, tag_path(t) }.join(', ') %></td>
-       
+        
+         <td><% if order.matching_employees.any? %>
+            <%= order.matching_employees.count %>
+            <%= matching_emp_popover(order) %>
+            <% end %></td>
+        <td><span class='pull-right'> <%= skills_popover(order) %></span></td>
       </tr>
     <% end %>
   </tbody>
@@ -40,3 +35,4 @@
 
   </div>
 
+ <%= raw Order.last.tag_list.map { |t| link_to t, tag_path(t) }.join(', ') %>

@@ -14,11 +14,19 @@ module ApplicationHelper
         title += "Inclustaff"
     end
     
-    def signed_in_link_to(model, options = {})
-        name = "View #{model.class.to_s}" 
+    def signed_in_link_to(name, model, options = {})
+        if @signed_in.class.to_s == "CompanyAdmin"
+            @path = "company"
+        elsif admin_signed_in?
+            @path = "admin"
+        elsif user_signed_in?
+            @path = "employee"
+        end
+        # name = "View #{model.class.to_s}" 
         id = model.id
         controller = "#{model.class.to_s.downcase.pluralize}"
-        path = @signed_in.class.to_s.downcase + "/" + controller
+        
+        path = @path + "/" + controller
         # options[:class] ? options[:class] += ' pjax' : options[:class] = 'pjax'
         link_to name, { controller: path, action: 'show', id: id}, options
     end

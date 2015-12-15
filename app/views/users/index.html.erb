@@ -1,65 +1,38 @@
-<div class='col-md-12 transbox'>
-	<div class="col-md-12 tag_cloud">
-		<h1>Candidate Skills</h1>
-	  <% tag_cloud Employee.unassigned.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
-	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
-	  <% end %>
-	</div>
-	<%= link_to "<i class='fa fa-user-plus fa-1x fa-fw pull-left'></i> Add Employee".html_safe, new_user_registration_path, class: 'btn btn-primary pull-right' %>
-		<div class="main-box clearfix">
+<%= link_to "<i class='fa fa-user-plus fa-1x fa-fw pull-left'></i> Add Employee".html_safe, new_user_registration_path, class: 'btn btn-primary pull-right' %>
+<div class='col-md-12'>
+	
+	
+		<div class=" col-md-8 lightbox">
 			<div class="table-responsive">
-				<table id='users-datatable' class="table table-bordered">
+				<table id='' class="table">
 					<thead>
 						<tr>
+							<th><i class='fa fa-cogs fa-1x fa-fw pull-center'></i></th>
 							<th><span>User</span></th>
-							<th><span>Created</span></th>
 							<th><span>Email</span></th>
-							<th><span>Skills</span></th>
 							<th>Check-in</th>
-							<th>&nbsp;</th>
 						</tr>
 					</thead>
 					<tbody>
 						<%= content_tag_for(:tr, @users) do |user| %>
+						<td>
+							<%= link_to "<i class='fa fa-bullseye black'></i>".html_safe, update_as_available_user_path(user), method: :patch, remote: true %>
+						</td>
 							<td>
+								<%= link_to user.name, user, class: "user-link black" %>
+							</td>
 						
-								<%= link_to user.name, user, class: "user-link" %>
-							
-								<small><span class="user-subhead"><%= user.employee.work_histories.last.try(:title) || "Unavailable" %></span></small>
-							
-							</td>
 							<td>
-								<%= user.created_at.strftime("%x") %>
-							</td>
-							<td class="text-center">
 								<%= user.email %>
 							</td>
 							<td>
-								<%= user.employee.tags.any? ? user.employee.tags.limit(3).map {|p| p.name.titleize}.join(", ")  : "N/A" %>
-							</td>
-							<td>
-								<%= link_to(user, class: "table-link") do %>
+								<small>
+									<span class='text-center' id='<%=user.id%>-updated-available-at'> 
+									<%= user.checked_in_at.present? ? "#{time_ago_in_words(user.checked_in_at)} ago" : "Never" %>
+									</span>
+								</small>
 								
-									<span class="fa-stack">
-										<i class="fa fa-square fa-stack-2x"></i>
-										<i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
-									</span>
-								<% end %>
-								<%= link_to(edit_user_path(user), class: "table-link") do %>
-									<span class="fa-stack">
-										<i class="fa fa-square fa-stack-2x"></i>
-										<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-									</span>
-								<% end %>
-								<%= link_to(user, data: { confirm: "Are you sure?" }, method: :delete) do %>
-									<span class="fa-stack">
-										<i class="fa fa-square fa-stack-2x"></i>
-										<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-									</span>
-								<% end %>
 							</td>
-							<td><span id='<%=user.id%>-updated-available-at'> <%= user.checked_in_at.present? ? "#{time_ago_in_words(user.checked_in_at)} ago" : "" %></span></td>
-							<td><%= link_to "<i class='fa fa-bullseye'></i>".html_safe, update_as_available_user_path(user), method: :patch, remote: true %></td>
 						<% end %>
 					
 					
@@ -68,26 +41,27 @@
 					</tbody>
 				</table>
 			</div>
-			<%= link_to 'DNS List', dns_list_users_path, class: 'btn btn-danger' %>
-		</div>
-		
-		<%= form_for @import, url: import_users_path, multipart: true do |f| %>
 			
-			<% if @import.errors.full_messages.each do |msg| %>
-			<div class='alert alert-danger'>
-			<div><%= msg %></div>
+		</div>
+		<div class='col-md-4'>
+			<%= link_to 'DNS List', dns_list_users_path, class: 'btn btn-danger' %>
+			<%= form_for @import, url: import_users_path, multipart: true do |f| %>
+				
+				<% if @import.errors.full_messages.each do |msg| %>
+					<div class='alert alert-danger'>
+					<div><%= msg %></div>
+						<% end %>
+					</div>
 				<% end %>
-			</div>
-		<% end %>
 		
-			<%= f.file_field :file %>
-			<%= f.submit "Upload" %>
-		<% end %>
+				<%= f.file_field :file %>
+					<%= f.submit "Upload" %>
+				<% end %>
 		
-	<%= link_to(users_path(@users, format: :csv), class: 'btn btn-primary') do %>
-  		<i class="fa fa-file-excel-o fa-lg"></i> Export CSV
-  	
-  	<% end %>
+			<%= link_to(users_path(@users, format: :csv), class: 'btn btn-primary') do %>
+		  		<i class="fa fa-file-excel-o fa-lg"></i> Export CSV
+		  	<% end %>
+		</div>
 		
 
 </div>

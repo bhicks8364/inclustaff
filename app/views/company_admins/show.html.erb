@@ -1,4 +1,4 @@
-<div class='dark'>
+<div class='col-md-12 white'>
     <h1><%= @company_admin.name %></h1>
     <div class=''>
         <%= @company_admin.company.name %> -
@@ -9,5 +9,28 @@
         <%= @company_admin.last_sign_in_ip if admin_signed_in? %>
         <br>
         <%= @company_admin.last_sign_in_at.stamp("11/12 at 11:15am") %>
+    </div>
+
+    <div class='dark col-md-6'>
+        
+        <div data-behavior='comment-list' class='scroll300'>
+            <h2>Unread Comments	<span class="badge" data-behavior='comments-count'>
+        		<%=  @company_admin.job_comments.unread.count %>
+        </span></h2>
+        		
+            <% @company_admin.job_comments.unread.order(created_at: :asc).each do |comment| %>
+                    <%= render 'comment', comment: comment %>
+                    <%= render partial: "comments/form", locals: {commentable: comment.commentable} %>
+            <% end %>
+        </div>
+    </div>
+    <div class='dark col-md-6'>
+        <h2>Old Comments</h2>
+        <div data-behavior='read-comment-list' class='scroll300'>
+            <% @company_admin.job_comments.read.limit(20).order(read_at: :desc).each do |comment| %>
+                <%= render 'comment', comment: comment %>
+                
+        <% end %>
+        </div>
     </div>
 </div>

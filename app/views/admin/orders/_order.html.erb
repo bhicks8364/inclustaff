@@ -1,19 +1,32 @@
-<div class='black'>
- 
-    <p><%= order.company.name %> <%= skills_popover(order) %><span class='pull-right'> <%= status_tag(order) %></span></p>
-    
- 
-   <%= link_to admin_order_path(order), class: '' do %>
-   
-        <p class='lead white'>
-           <%= order.title %>
-       <span class='label label-info black pull-right'>Open jobs: <%= order.open_jobs %> </span>
+<div class='lightbox black'>
+  <%= status_tag(order) %>
+   <%= info_popover(order) if order.account_manager.present?%>
 
-       <span class='label label-danger black pull-right'><%= order.needed_by? ? order.needed_by.stamp("Monday 11/12") : "n/a" %></span>
-       <strong><%= order.pay_range %></strong> <small><%= order.account_manager.try(:name) || "Unavailable" %></small>
-        </p>
+ <span class='label label-info black pull-right'>Open: <%= order.open_jobs %> </span>
+  <span class=''>
+    <% if order.matching_employees.any? %>
+      <%= order.matching_employees.count %>
+      <%= matching_emp_popover(order) %>
+    <% end %>
+  </span>
+    <span class='label label-info black pull-left'><%= order.needed_by? ? order.needed_by.stamp("Mon 11/12") : "n/a" %> </span>
+        <%= number_to_currency(order.min_pay) %> -  <%= number_to_currency(order.max_pay) %>
+   <%= link_to admin_order_path(order), class: 'black' do %>
+
+         <span class='text-center'><strong>  
+          <%= order.title %>  <span class=''> <%= skills_popover(order) %></span><br>
+          
+       </strong> 
+
+       </span>
        
+
       <% end %>
+     
+        
+    
+        
+   
 
       
 </div>

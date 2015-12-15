@@ -1,15 +1,23 @@
 .break-box {
-    padding: 5px;
-    background: black;
+    padding: 3px;
+    
+    // background: rgba(0,0,0,0.25);
     color: white;
 }
 #remove-breaks-btn {
-    background: black;
+    // background: black;
+
     color: red;
 }
 .break-list {
-    width: 50%;
+    // max-width: 50%;
 }
 .old-comment {
     background: gray;
+}
+#shift-break-box {
+//   box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75); 
+}
+#start-break-btn {
+    padding: 2px;
 }

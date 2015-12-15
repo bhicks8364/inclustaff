@@ -1,4 +1,6 @@
-
+  <% tag_cloud @orders.needs_attention.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
+    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
+  <% end %>
 <div class='col-md-12'>
 
 <%= render 'admin/orders/search' %>
@@ -56,7 +58,7 @@
     </h4>
    	
 								<strong> Pay rate: </strong><%= number_to_currency(job.pay_rate) %>
-							<span class='pull-right'> Account Manager: <%= job.account_manager.name %></span>
+							<span class='pull-right'> Account Manager: <%= job.account_manager.try(:name) %></span>
 							<% end %>
 	
 							<% else %>

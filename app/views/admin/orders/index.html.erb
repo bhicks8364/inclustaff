@@ -1,11 +1,4 @@
-<div class="col-md-12 transbox">
-	
-    <div class='col-md-2' id="tag_cloud">
-	  <% tag_cloud @orders.needs_attention.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
-	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
-	  <% end %>
-	  			
-		<% if @orders.needs_attention.any? %>
+	<% if @orders.needs_attention.any? %>
 	<div class="alert alert-danger fade in text-center">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 		<i class="fa fa-exclamation-triangle fa-fw fa-lg"></i>
@@ -18,25 +11,29 @@
 			<h4><%= pluralize(@orders.needs_attention.count, 'open job order') %>. </h4>
 	</div>
 		<% end %>
+<div class="col-md-12">
+	<div class='col-md-2'>
+	<%= render 'search' %>
+	 
+	  
+	  <h3>Sort By:</h3>
+	  <ul class="fa-ul">
+		  <li><i class="fa-li fa fa-square"></i><%= sort_link(@q, :title) %></li>
+		  <li><i class="fa-li fa fa-square"></i><%= sort_link(@q, :needed_by) %></li>
+		  <li><i class="fa-li fa fa-square"></i><%= sort_link(@q, :min_pay) %></li>
+		  <li><i class="fa-li fa fa-square"></i><%= sort_link(@q, :max_pay) %></li>
+		</ul>
+	  
 	</div>
 	
-		<%= render 'search' %>
-
-		
-	
 	<% if @orders.needs_attention.any? %>
-	<div class="border">
+	<div class="col-md-8 border">
 			<%= render @orders.needs_attention %>
 	</div>
 	<%end%>
-	
-	<% if @orders.filled.any? %>
-	<div class="dark">
-	<h4>Filled Job Orders</h4>
-			<%= render 'table' %>
-	</div>
-	<%end%>
+		<div class='col-md-2'>
+			 <%= render 'admin/infoboxes/taggings' %>
+		</div>
 
-	
 
 </div>

@@ -44,7 +44,7 @@
         
 
             <strong>Duties / Responsibilities</strong><br>
-            <%= @work_history.description %>
+            <%= markdownify(@work_history.description) %>
             <hr />
   </div>
        <div class='col-md-12'>

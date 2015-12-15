@@ -1,4 +1,4 @@
 $('#start-break-btn').hide();
-$('#end-break-btn').show();
-
-$("<li class=''><%= @shift.breaks.count.even? ? "Out:" : "In:" %> <strong> <%= @shift.breaks.last.to_datetime.stamp("1:30am") %></strong></li>").appendTo("#break-list");
+$('#break-end-btn').show();
+$("[data-behavior='job-out-button_<%=@shift.job_id%>']").hide();
+$("<li class=''><%= @shift.on_break? ? "<i class='fa-li fa fa-spinner fa-spin'></i>".html_safe : "<i class='fa-li fa fa-check-square'></i>".html_safe %> <strong> <%= @shift.breaks.last.to_datetime.stamp("1:30am") %></strong></li>").appendTo("#break-list");

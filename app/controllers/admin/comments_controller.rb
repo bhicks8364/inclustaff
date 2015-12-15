@@ -15,7 +15,6 @@ class Admin::CommentsController < ApplicationController
   end
   
   def destroy
-    @job = Job.find(params[:job_id]) if params[:job_id].present?
     @comment = Comment.find(params[:id])
     @comment.destroy
     skip_authorization

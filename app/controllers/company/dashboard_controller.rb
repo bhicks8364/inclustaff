@@ -17,6 +17,7 @@ class Company::DashboardController < ApplicationController
   def timeclock
     # 'entered_code' -> NOT WORKING ATM - Want to do somekind of find_by_code_and_clockin_in all in one thingy
     @entered_code = params[:code]
+    @orders = @company.orders.includes(:jobs)
   end
   def clock
     @job = @company.jobs.find(params[:id])

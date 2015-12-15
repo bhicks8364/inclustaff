@@ -15,10 +15,12 @@
   
     
    <h4> Total Earnings: <%= number_to_currency(@shift.earnings) %></h4>
+<div class=''  data-behavior="company-job-list">
+     <%= render 'company/jobs/job', job: @job if !@shift.on_break? %>
+</div>
 
- <%= render 'employee/jobs/clock', job: @job if !@shift.on_break? %>
 
-  <%= link_to 'View Timesheet', employee_timesheet_path(@shift.timesheet), class: "btn btn-info black" %>
+  <%= link_to 'View Timesheet', company_timesheet_path(@shift.timesheet), class: "btn btn-info black" %>
   
   </div>
 

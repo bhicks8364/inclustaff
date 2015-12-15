@@ -44,17 +44,20 @@ class Company::TimesheetsController < ApplicationController
 
   def approve
     @timesheet = Timesheet.find(params[:id])
-    # authorize @timesheet
+    authorize @timesheet, :approve?
     if @timesheet.clocked_out?
       approved_by = @timesheet.approved? ? nil : current_company_admin.id
       approved_by_type = @timesheet.approved? ? nil : "CompanyAdmin"
       state = @timesheet.approved? ? 'pending' : 'approved'
       @timesheet.update(approved_by: approved_by, approved_by_type: approved_by_type, state: state)
-      current_company_admin.events.create(action: state, eventable: @timesheet)
       user_approved = @timesheet.approved? ? @timesheet.user_approved : @timesheet.state
-      
-      render json: { id: @timesheet.id, approved: @timesheet.approved?, 
-                    state: @timesheet.state.titleize, user_approved: user_approved }
+      current_company_admin.events.create(action: state, eventable: @timesheet)
+     
+      render json: { id: @timesheet.id, approved: @timesheet.approved?, name: @timesheet.employee.name,
+                    state: @timesheet.state.upcase, user_approved: user_approved, clocked_in: @timesheet.clocked_in? }
+    	else
+      render json: { id: @timesheet.id, approved: @timesheet.approved?, clocked_in: @timesheet.clocked_in?, name: @timesheet.employee.name,
+                    state: @timesheet.state.upcase, user_approved: user_approved }
     end
   end
 
@@ -121,6 +124,8 @@ class Company::TimesheetsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def timesheet_params
-      params.require(:timesheet).permit(:week, :job_id, :reg_hours, :ot_hours, :gross_pay)
+      params.require(:timesheet).permit(:week, :job_id, :reg_hours, :ot_hours, :gross_pay, 
+        :shifts_attributes => [:id, :state, :job_id, :needs_adj, :employee_id, :note, 
+        :time_in, :time_out, :break_out, :break_in, :break_duration, :in_ip, :out_ip, :_destroy])
     end
 end

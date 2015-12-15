@@ -2,7 +2,7 @@ class UsersController < ApplicationController
     layout :determine_layout
     
     def index
-        @users = @current_agency.users.available
+        @users = @current_agency.users.available.ordered_by_check_in
         # @users = User.includes(:employee).available
         @import = User::Import.new
         skip_authorization

@@ -5,11 +5,15 @@
   <div class=''><%= date %></div>
 
   <% shifts.each do |shift| %>
-    <div class='center transbox'>
       
+    <div class=''>
+     
       <div class=''>
-        <%= render 'admin/shifts/shift', shift: shift %>
-
+         <%= shift_collaspe(shift) %>
+       <div class='black collapse' id="collapseShift_<%=shift.id%>">
+           <%= render 'admin/shifts/shift', shift: shift %>
+        </div>
+        
       </div>
       
     </div>

@@ -47,4 +47,3 @@
 //= require popovers
 //= require tooltips
 
-

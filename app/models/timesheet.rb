@@ -50,7 +50,7 @@ class Timesheet < ActiveRecord::Base
     delegate :manager, to: :job
     delegate :recruiter, to: :job
     delegate :current_shift, to: :job
-    
+    delegate :account_manager, to: :job
 
     before_save :total_timesheet, if: :clocked_out?
     after_initialize :defaults
@@ -183,7 +183,7 @@ class Timesheet < ActiveRecord::Base
     def user_approved
         if approved? && approved_by_type == "Admin"
             Admin.find(approved_by).name
-        elsif approved? && approved_by_type == "Company"
+        elsif approved? && approved_by_type == "CompanyAdmin"
             CompanyAdmin.find(approved_by).name
         end
     end

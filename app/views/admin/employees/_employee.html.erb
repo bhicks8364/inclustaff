@@ -1,7 +1,7 @@
 <div class=''>
    <%= link_to admin_employee_path(employee), class: 'list-group-item list-group-item-success' do %>
         <h4 class='list-group-item-heading'><%= employee.name %></h4>
-       <%= skills_popover(employee) %>
+       <%= emp_popover(employee) %>
         <h6>
             Most Recent Position:
             <span class='label label-info black'> <%= employee.work_histories.any? ? employee.work_histories.last.try(:title_pay) : "Unavailable" %>

@@ -25,7 +25,7 @@ class Admin::InvoicesController < ApplicationController
     else
       
       @invoice = Invoice.find(params[:id])
-      render 'invoices/show'
+      @company = @invoice.company
     end
     
     skip_authorization

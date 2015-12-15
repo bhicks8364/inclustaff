@@ -46,10 +46,7 @@ class Job < ActiveRecord::Base
     
         # setup settings
     store_accessor :settings
-    
-    
 
-   
     # VALIDATIONS
     # validates_associated :employee
     validates_associated :order
@@ -200,8 +197,8 @@ class Job < ActiveRecord::Base
         order.company
     end
     
-    def company_name
-        order.company.name
+    def title_company
+        "#{company.name} #{title} "
     end
     
 

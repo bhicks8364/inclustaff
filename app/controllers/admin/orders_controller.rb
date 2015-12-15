@@ -8,9 +8,9 @@ class Admin::OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
-     @q = Order.includes(:jobs).active.ransack(params[:q]) 
+     @q = Order.includes(:company, :jobs).active.ransack(params[:q]) 
   
-          @orders = @q.result(distinct: true).paginate(page: params[:page], per_page: 5) if @q.present?
+      @orders = @q.result(distinct: true).paginate(page: params[:page], per_page: 5) if @q.present?
     if params[:company_id]
       @company = Company.find(params[:company_id])
       @orders = @company.orders
@@ -27,6 +27,10 @@ class Admin::OrdersController < ApplicationController
     
     authorize @orders
 
+  end
+  def search
+    index
+    render :index
   end
   
   def show
@@ -148,7 +152,7 @@ class Admin::OrdersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.require(:order).permit(:id, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title, :pay_range, :notes, :number_needed, :needed_by, :urgent, :active, :dt_req, :bg_check, :stwb, :heavy_lifting, :shift, :est_duration, :tag_list, 
+      params.require(:order).permit(:id, :min_pay, :max_pay, :pay_frequency, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title, :pay_range, :notes, :number_needed, :needed_by, :urgent, :active, :dt_req, :bg_check, :stwb, :heavy_lifting, :shift, :est_duration, :tag_list, 
       jobs_attributes: [:order_id, :title, :description, :start_date, :id, :employee_id, :active], skills_attributes: [:id, :skillable_type, :skillable_id, :name, :required, :_destroy])
     end
 end

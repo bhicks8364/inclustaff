@@ -19,6 +19,13 @@ class Invoice < ActiveRecord::Base
     belongs_to :company
     belongs_to :agency
     has_many :timesheets
+    has_many :shifts, through: :timesheets
+    has_many :jobs, through: :timesheets
+    has_many :orders, through: :jobs
+    has_many :recruiters, through: :jobs
+    has_many :account_managers, through: :orders
+    has_many :comments, as: :commentable
+    has_many :events, as: :eventable
     # before_save :total_amount
     after_initialize :defaults
     
@@ -36,9 +43,13 @@ class Invoice < ActiveRecord::Base
     scope :paid, -> { where(paid: true)}
     scope :past, -> { where("week < ?", Date.today.beginning_of_week.cweek) }
     scope :past_due, -> { unpaid.where("due_by < ?", Date.today) }
-    
+    def account_manager
+        account_managers.first
+    end
+    def recruiter
+        recruiters.first
+    end
     def defaults
-       
         due = Date.today.beginning_of_week if self.new_record?
         self.total = 0 if total.nil?
         self.paid = false if self.paid.nil?
@@ -66,39 +77,24 @@ class Invoice < ActiveRecord::Base
         amt = self.amt_paid || 0
         self.total - amt
     end
-    def paid?
-        if self.paid == true
-            true
-        else
-            false
-        end
-    end
-    def unpaid?
-        if self.paid == false
-            true
-        else
-            false
-        end
-    end
     
     def paid_on
-        if self.date_paid.nil?
-            " "
+        if date_paid.nil?
+            ""
         else
-            self.date_paid.stamp('11/12/2015')
+            date_paid.stamp('11/12/2015')
         end
     end
     
     def state
-        if self.paid?
-            "Paid"
-        else
-            "Unpaid"
-        end
+        paid? ? "Paid" : "Unpaid"
+    end
+    def unpaid?
+        paid == false || nil
     end
         
     def timesheets_approved?
-        if self.timesheets.pending.any?
+        if timesheets.pending.any?
            false
         else
             true

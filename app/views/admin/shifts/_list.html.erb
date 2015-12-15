@@ -1,40 +1,29 @@
-<div class='break-box'>
-	<h4>Break Times:</h4>
+<div class='break-box' id='shift-break-box'>
+
 	<div class='break-list'>
 		
 		<ul class="fa-ul" id='break-list'>
-		          <% shift.breaks.each_with_index do |break_ended, i | %>
+		       <% shift.breaks.each_with_index do |break_ended, i | %>
+		          
 		            <li data-behavior="shift" id='break_<%= i %>' class=''>
-			            <% if shift.on_break? %>
-							<i class="fa-li fa fa-spinner fa-spin"></i>
-						<% else %>
-							<i class="fa-li fa fa-check-square"></i>
-						<% end %>
-		              <%= i.even? ? "Out:" : "In:" %> <strong> <%= break_ended.to_datetime.stamp("1:30am") %></strong>
+			          <%= i.even? ? "Start:" : "End:" %>  <%= shift.on_break? ? "<i class='fa-li fa fa-spinner fa-spin'></i>".html_safe : "<i class='fa-li fa fa-check-square'></i>".html_safe %>
+		               <strong> <%= break_ended.to_datetime.stamp("1:30am") %></strong>
 		            </li>
 		      <% end %>
 		</ul> 
 	</div>
 	<div class='break-list'>
-		<% if @shift.paid_breaks? %>
-			<h4> PAID BREAKS </h4>
-			<%= number_to_currency(@shift.with_paid_breaks) %>
-		<% else %>
-		<h4> UNPAID BREAKS </h4>
-		<%= number_to_currency(@shift.with_unpaid_breaks) %>
-		<% end %>
-	</div>
 	<% if shift.on_break? %>
 	     
-	       <%= link_to "Start Break", break_start_admin_shift_path(shift), method: :patch, remote: true, class: 'btn btn-success hide-this', id: 'start-break-btn' %>
+	       <%= link_to "<i class='fa fa-history'></i> Start Break".html_safe, break_start_admin_shift_path(shift), method: :patch, remote: true, class: 'btn btn-success hide-this', id: 'start-break-btn' %>
 	    <% elsif shift.clocked_in? %>
-	          <%= link_to "End Break", break_end_admin_shift_path(shift), method: :patch, remote: true, class: 'btn btn-danger hide-this', id: 'end-break-btn' %>
-	      <%= link_to "Start Break", break_start_admin_shift_path(shift), method: :patch, remote: true, class: 'btn btn-success', id: 'start-break-btn' %>
+	          <%= link_to "<i class='fa fa-clock-o'></i> End Break".html_safe, break_end_admin_shift_path(shift), method: :patch, remote: true, class: 'btn btn-danger hide-this', id: 'end-break-btn' %>
+	      <%= link_to "<i class='fa fa-history'></i> Start Break".html_safe, break_start_admin_shift_path(shift), method: :patch, remote: true, class: 'btn btn-success', id: 'start-break-btn' %>
 	    <% end %>
 	    <br>
 	     <% if shift.took_a_break? %>
-	      <%= link_to "<i class='fa fa-ban'></i>".html_safe, remove_breaks_admin_shift_path(shift), method: :patch, remote: true, data: { confirm: 'Are you sure you want to remove all breaks from this shift?', toggle:"tooltip", placement: "left" }, title: "Remove All Breaks", class: "btn btn-danger btn-sm hide-this", id: "remove-breaks-btn" %>
+	      <%= link_to "<i class='fa fa-ban'></i>".html_safe, remove_breaks_admin_shift_path(shift), method: :patch, remote: true, data: { confirm: 'Are you sure you want to remove all breaks from this shift?', toggle:"tooltip", placement: "left" }, title: "Remove All Breaks", class: "hide-this", id: "remove-breaks-btn" %>
 	      <% end %>
-	    <%= link_to "<i class='fa fa-ban'></i>".html_safe, remove_breaks_admin_shift_path(shift), method: :patch, remote: true, data: { confirm: 'Are you sure you want to remove all breaks from this shift?', toggle:"tooltip", placement: "left" }, title: "Remove All Breaks", class: "btn", id: "remove-breaks-btn" if shift.breaks.any? %>
-	    
+	    <%= link_to "<i class='fa fa-ban'></i>".html_safe, remove_breaks_admin_shift_path(shift), method: :patch, remote: true, data: { confirm: 'Are you sure you want to remove all breaks from this shift?', toggle:"tooltip", placement: "left" }, title: "Remove All Breaks", class: "", id: "remove-breaks-btn" if shift.breaks.any? %>
+	</div>
 </div>

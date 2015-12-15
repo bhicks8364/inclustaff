@@ -24,7 +24,7 @@
     <%= f.input :start_date, as: :string, placeholder: "Select start date", required: true %>
     <%= f.association :recruiter, collection: @current_agency.admins.recruiters.order(:last_name), prompt: "Choose a Recruiter" %>
    
-                <%= f.input :pay_rate, placeholder: "Pay Rate", label: false, required: true %>
+                <%= f.input :pay_rate, collection: @order.min_pay...@order.max_pay, label: false, required: true %>
 
 
 

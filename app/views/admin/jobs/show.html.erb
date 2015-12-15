@@ -1,4 +1,7 @@
 <div class='col-md-12'>
+  <% if @job.on_shift? %>
+         <%= shift_popover(@job.current_shift) %>
+        <% end %>
   <h2><strong><%= @job.name_title %></strong></h2>
    <div class='col-md-4 text-center'>
           <h4><small><strong><%= @job.company.name %></strong></small></h4>
@@ -64,7 +67,9 @@
   
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="job">
-     
+     <div class=''>
+       
+     </div>
     
  
   <div class='col-md-6 dark'>
@@ -158,7 +163,7 @@
       <strong>Gross this week:</strong> <%= number_to_currency(@job.current_week_pay) %><br>
     
     
-    <%= render "shifts/calendar", shifts: @job.shifts.current_week %>
+    <%= render "admin/shifts/calendar", shifts: @job.shifts.current_week %>
     
     
     

@@ -1,17 +1,13 @@
 <div class='col-md-12'>
     <div id='front-headline' data-behavior='element-list' class='text-center'>
         <h1 id='main-title' class='text-center black'>Optimize your workforce & maximize your profits.</h1>
-        <div data-behavior='element' class='clockbg'>
+        <div data-behavior='element' class=''>
             <%= @current_agency.try(:name) || "Welcome to IncluStaff" %>
-            <div class='col-md-6' data-behavior='element-toggle' class='pointer'>
-                <%= @current_user.try(:name) || "No User" %>
-            </div>
+            
         </div>
       
     </div>
-    <script>
-        document.getElementById("front-headline").innerHTML = "My First JavaScript";
-    </script>
+
 
   
     

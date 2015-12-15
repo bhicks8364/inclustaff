@@ -529,7 +529,7 @@ div.transbox {
   -ms-box-shadow: 1px 1px 2px 0 #CCCCCC;
   box-shadow: 1px 1px 2px 0 #CCCCCC;
   margin-bottom: 10px;
-  // padding: 20px;
+  padding: 10px;
   color: white;
   height: auto;
 }
@@ -576,8 +576,4 @@ div.transbox {
 .scroll800 {
   max-height: 800px;
   overflow: auto;
-}
-#content-wrapper > div > div.col-md-12 > div:nth-child(2) > div:nth-child(2) > a:nth-child(2) {
-  border: solid 2px yellow;
-  background-color: yellow;
 }

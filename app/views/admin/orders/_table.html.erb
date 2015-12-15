@@ -1,11 +1,9 @@
 <div class="table-responsive">
-  <table id="orders-datatable" class="table table-bordered display" cellspacing="0.5" width="100%">
+  <table id="" class="table table-bordered">
   <thead>
     <tr>
       <th></th>
-      <% if current_admin.agency? %>
       <th>Company</th>
-      <% end %>
       <th>Title</th>
       <th>Pay Range</th>
       <th>Active</th>
@@ -14,7 +12,6 @@
       <th>Reg Hours </th>
       <th>Ot Hours</th>
       <th>Timesheets</th>
-      
       <th>Acct Manager</th>
       <th></th>
       
@@ -22,18 +19,15 @@
   </thead>
 
   <tbody>
-    <% @orders.active.each do |order| %>
+    <% orders.each do |order| %>
       <tr>
         <td><% if order.needs_attention? %> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             <% else %>
         <span class="glyphicon glyphicon-check" aria-hidden="true"></span> 
             <% end %>
         </td>
-        <% if current_admin.agency? %>
-     <td><%= link_to order.company_name, admin_company_path(order.company) %></td>
-      <% end %>
-        
-        <td><%= link_to order.title, admin_company_order_path(order.company, order) %></td>
+        <td><%= link_to order.company_name, admin_company_path(order.company) %></td>
+        <td><%= order.title %></td>
         <td><%= order.pay_range %></td>
         <td><%= order.jobs.active.count %></td>
         <td><%= number_to_currency( order.timesheets.sum(:total_bill) )%></td>

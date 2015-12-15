@@ -105,6 +105,9 @@ Rails.application.routes.draw do
       end
       
       resources :orders do
+        collection do
+          match 'search' => 'orders#search', via: [:get, :post], as: :search
+        end
         resources :skills
         resources :jobs do
           collection do
@@ -166,7 +169,11 @@ Rails.application.routes.draw do
         end
         resources :comments
       end
-      resources :invoices
+      resources :invoices do 
+        member do
+          patch 'mark_as_paid'
+        end
+      end
       resources :shifts do 
         member do
           patch 'clock_out'

@@ -18,7 +18,7 @@
             <%= link_to "edit", edit_work_history_path(work_history) %>
      
             <%= number_to_currency(work_history.pay) %><hr>
-            <p><%= work_history.description %></p>
+            <p><%= markdownify(work_history.description) %></p>
        
             
             <%= link_to admin_employee_work_history_path(work_history.employee, work_history), class: "btn btn-primary" do %>

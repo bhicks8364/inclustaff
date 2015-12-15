@@ -1,26 +1,25 @@
-<div class='col-md-12 dark'>
-  <div class='btn-group'>
+<div class='col-md-12 transbox'>
+
     <%= link_to(company_timesheet_path(@timesheet, format: :pdf), class: 'btn btn-primary') do %>
   					<i class="fa fa-download fa-md"></i> Download PDF
   				
   				<% end %>
-  				<%= link_to 'All Timesheets', company_timesheets_path, class: 'btn btn-primary' %>
-  </div>
+  		
+          <%= link_to 'All Timesheets', company_jobs_path(@job), class: 'btn btn-primary' %>
   
-        
 <div class='col-md-12'>
-  <h4>For the week of:<strong><br>
+  <h3>For the week of:<strong><br>
         <%= @timesheet.week_begin %>
           - 
         <%= @timesheet.week_ending %>
-      </strong></h4>
+      </strong></h3>
   <div class='col-md-3 well well-sm'>
     <strong>Regular hours:</strong>
-    <%= @timesheet.reg_hours %>
+    <%= @timesheet.reg_hours.round(2) %>
   </div>
   <div class='col-md-3 well well-sm'>
     <strong>Overtime hours:</strong>
-    <%= @timesheet.ot_hours %>
+    <%= @timesheet.ot_hours.round(2) %>
   </div>
     <div class='col-md-3 well well-sm'>
            <strong>Gross pay:</strong>
@@ -30,23 +29,36 @@
            <strong>Total bill:</strong>
         <%= number_to_currency(@timesheet.total_bill) %>
       </div>
-      <div class='col-md-12 well' data-behavior="timesheet-list">
+      
+</div>
+ <div class='col-md-12 dark'>
+<div class='well' data-behavior="timesheet-list">
     
   <%= render @timesheet %>
   
   </div>
-</div>
-
-<div class='col-md-12 dark'>
-  <%= render 'comments' %>
-
-<div class='col-md-6'>
-  <h2 class='text-center'>Shifts</h2>
-   <%= render 'shifts_table' %>
-</div>
-</div>
  
- 
+
+         <div id='comment-list'>
+            <% @timesheet.comments.each do |comment| %>
+            
+                <%= render 'comments/comment', comment: comment %>
+            <% end %>
+        
+        
+          <%= render partial: "comments/form", locals: {commentable: @timesheet} %>
+         </div>
+    
+      </div>
+
+<div class='col-md-12'>
+  <h3> Shifts</h3>
+   <%= render 'company/shifts/week_calendar', shifts: @timesheet.shifts %>
+</div>
+<div class='col-md-12'>
+  <h3> Shifts</h3>
+   <%= render 'company/shifts/table' %>
+</div>
 
 
 

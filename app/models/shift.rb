@@ -46,6 +46,8 @@ class Shift < ActiveRecord::Base
   delegate :employee, to: :job
   delegate :order, to: :job
   delegate :manager, to: :job
+  delegate :recruiter, to: :job
+  delegate :account_manager, to: :job
   delegate :code, to: :employee
   delegate :week_ending, to: :timesheet
   
@@ -92,7 +94,8 @@ class Shift < ActiveRecord::Base
           start = Date.yesterday.beginning_of_day
           ending = Date.today.beginning_of_day
           where(time_in: start..ending)}
-
+  STARTING = Date.yesterday.beginning_of_day
+  ENDING = Date.today.beginning_of_day
   after_save :update_timesheet!
   before_save :set_week, :set_timesheet, :calculate_break, :reg_earnings
   after_initialize :set_defaults, if: :new_record?
@@ -105,7 +108,7 @@ class Shift < ActiveRecord::Base
   def name; employee.name; end
   def shift_data; [employee.name, time_in, time_out]; end
   def took_a_break?; breaks.any?; end
-    
+  def past?; time_in < Time.current - 12.hours; end
   def calculate_break
     if clocked_in? && breaks.count.even?
       @breaks = breaks 
@@ -234,9 +237,9 @@ class Shift < ActiveRecord::Base
   end
   def work_date
     if time_in > Time.current.beginning_of_day
-      "Today"
+      "Today, " + time_in.stamp("12/18")
     else
-      time_in.stamp("Sat 12/18")
+      time_in.stamp("Saturday, 12/18")
     end
   end
   

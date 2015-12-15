@@ -1,5 +1,6 @@
 <div class="col-md-12 dark">
   <h2><%= @company.name %></h2>
+  
   <div class="btn-group btn-group-justified" role="group" aria-label="...">
     
     <div class="btn-group" role="group">
@@ -47,27 +48,27 @@
     <div class='well'>
       <h3>Company Information</h3>
     
-    <% if @company.orders.count == 0 %>
-    <div id="no-orders-alert" class="alert alert-danger" role="alert">
-    
-    <h5 class='text-center'> <i class="fa fa-exclamation-triangle fa-fw fa-border"></i><%= @company.name %> doesn't have any job orders. <br>
-    Please add a new job order below.</h5>
-    	<%= link_to "Add Job Order", new_admin_company_order_path(@company), class: 'btn btn-primary' %>
-    </div>
-    <% end %>
-
-    <address class="">
-      <%= @company.address %> <%= @company.city %>, <%= @company.state %> <%= @company.zipcode %><br>
-      <abbr title="Phone">PH:</abbr>  <%= @company.phone_number || "Unavailable"  %> 
-    </address>
-    <address class="">
-      <strong><%= @company.contact_name %></strong><br>
-      <a href="mailto:#"><%= @company.contact_email %></a>
-    </address>
-
-    <span class="text-center">Balance: <%= number_to_currency(@company.balance) %></span>
-
-    </div>
+      <% if @company.orders.count == 0 %>
+      <div id="no-orders-alert" class="alert alert-danger" role="alert">
+      
+      <h5 class='text-center'> <i class="fa fa-exclamation-triangle fa-fw fa-border"></i><%= @company.name %> doesn't have any job orders. <br>
+      Please add a new job order below.</h5>
+      	<%= link_to "Add Job Order", new_admin_company_order_path(@company), class: 'btn btn-primary' %>
+      </div>
+      <% end %>
+  
+      <address class="">
+        <%= @company.address %> <%= @company.city %>, <%= @company.state %> <%= @company.zipcode %><br>
+        <abbr title="Phone">PH:</abbr>  <%= @company.phone_number || "Unavailable"  %> 
+      </address>
+      <address class="">
+        <strong><%= @company.contact_name %></strong><br>
+        <a href="mailto:#"><%= @company.contact_email %></a>
+      </address>
+  
+      <span class="text-center">Balance: <%= number_to_currency(@company.balance) %></span>
+  
+      </div>
 
   </div>
     
@@ -84,7 +85,6 @@
     <% end %>
  
 
-
     
   </div>
   <div role="tabpanel" class="tab-pane fade" id="profile">
@@ -92,17 +92,13 @@
      <div class='well'>
        <h3>Current Job Orders</h3>
        <br>
-        <%= render 'admin/orders/table' %>
+        <%= @company.orders.map(&:title).join(",") %>
      </div>
     <%= link_to(edit_admin_company_path(@company), class: "btn btn-primary") do %>
 				<i class='fa fa-pencil'></i>
-
 					<span>Edit Company</span>
 				<% end %>
-
-    
   </div>
-  
   <div role="tabpanel" class="tab-pane fade" id="employees">
      <div class='col-md-6'>
        <% if @company.jobs.active.any? %>
@@ -120,7 +116,7 @@
      <div class='col-md-6 well'>
        <% if @company.invoices.paid.any? %>
        <h3>Paid Invoices</h3>
-    <%= render @company.invoices.paid %>
+    <%= render @company.invoices.paid.order(created_at: :desc) %>
     <% else %>
       <h3>No paid invoices to display.</h3>
       <% end %>
@@ -128,17 +124,13 @@
      <div class='col-md-6 well'>
        <% if @company.invoices.unpaid.any? %>
        <h3>Open Invoices</h3>
-    <%= render @company.invoices.unpaid %>
+    <%= render @company.invoices.unpaid.order(created_at: :desc) %>
     <% else %>
       <h3>No open invoices to display.</h3>
       <% end %>
      </div>
   </div>
-  
-  
-  
  
-  
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
     <div class='well'>
       <% if @company.timesheets.any? %>
@@ -149,17 +141,6 @@
       <% end %>
     </div>
   </div>
-
-  
-  
-  
-  
 </div>
-
-
-
 <%= link_to "New Company", new_admin_company_path, class: "btn btn-primary" %>
-
-
-
 </div>

@@ -1,0 +1,65 @@
+<div class='col-md-12 white'>
+  <div class='col-md-3'>
+      <span id='balance'>
+     <h4><strong>Balance:</strong> <%= number_to_currency(@invoice.balance) %></h4>
+     </span>
+    <hr>
+    <h4><strong>Amount Paid:</strong> <%= number_to_currency(@invoice.amt_paid) %></h4>
+    <p>
+      <strong>Agency:</strong>
+      <%= @invoice.agency.name%>
+    </p>
+    <p>
+      <strong>Week:</strong>
+      <%= @invoice.week %>
+    </p>
+    
+    <p>
+      <strong>Due by:</strong>
+      <%= @invoice.due_by.stamp('12/18/2015') %>
+    </p>
+    
+    <p id='status'>
+      <strong>Status:</strong>
+      <%= @invoice.paid? ? "Paid" : "Open" %>
+    </p>
+    
+    <p>
+      <strong>Total:</strong>
+      <%= number_to_currency(@invoice.total) %>
+    </p>
+    
+    <p>
+      <strong>Amt paid:</strong>
+      <%= number_to_currency(@invoice.amt_paid) %>
+    </p>
+    
+    <p>
+      <strong>Date paid:</strong>
+      <%= @invoice.date_paid %>
+    </p>
+   
+  
+    <%= link_to 'Back', company_invoices_path %>
+    </div>
+   
+    
+    <div class='col-md-6'>
+      <h5 class='text-center'> Timesheets </h5>
+     <div class='list-group'>
+      <% @invoice.timesheets.each do |timesheet| %>
+     <%= link_to company_timesheet_path(timesheet) do %>
+         <li class='list-group-item list-group-item-success'><%= timesheet.week_ending %> - <%= timesheet.employee_bill %> - <small><%= timesheet.state %></small></li>
+        <% end %>
+    <% end %>
+      </div>
+      
+  </div>
+
+  
+  
+
+
+
+
+</div>

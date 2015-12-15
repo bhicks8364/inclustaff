@@ -1,2 +1,23 @@
 module TimesheetsHelper
+    def invoice_timesheet(timesheet)
+        "<small> ID: #{timesheet.id}</small><i class='fa-li fa fa-square-o'></i> #{ timesheet.week_ending } - #{ timesheet.total_bill }".html_safe
+    end
+    
+    def timesheet_popover(timesheet)
+        if timesheet.approved?
+            "<i class='fa fa-user' data-placement='right' data-toggle='popover' title='#{ timesheet.job.title} - #{ timesheet.employee.name}'
+            data-content='#{ timesheet.week_ending } - #{ number_to_currency(timesheet.total_bill) }'></i>".html_safe
+        else
+            "<i class='fa fa-user' data-placement='right' data-toggle='popover' title='#{ timesheet.job.title} - #{ timesheet.employee.name}'
+            data-content='#{ timesheet.week_ending } - #{ number_to_currency(timesheet.total_bill) }'></i>".html_safe
+        end
+    end
+    def timesheet_user(timesheet)
+        if timesheet.approved?
+            "<span class='green'>#{timesheet_popover(timesheet)}</span><br>".html_safe
+        else
+            "<span class='red'>#{timesheet_popover(timesheet)}</span><br>".html_safe
+        end
+        
+    end
 end

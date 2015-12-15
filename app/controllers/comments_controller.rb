@@ -3,12 +3,11 @@ class CommentsController < ApplicationController
   before_action :skip
   layout :determine_layout
   def index
+    @comments = Comment.all
     @q = Comment.includes(:commentable).ransack(params[:q]) 
-    # if params[:q].present?
-    #   @comments = @q.result(distinct: true).paginate(page: params[:page], per_page: 5)
-    # else
-      @comments = Comment.all
-    # end
+    if params[:q].present?
+      @searched = @q.result(distinct: true).paginate(page: params[:page], per_page: 5)
+    end
     gon.comments = Comment.unread
     # @notifications = Comment.where(recipient: current_user).unread
     # @notifications = Comment.where(recipient: @signed_in).unread
@@ -29,13 +28,10 @@ class CommentsController < ApplicationController
   end
   def create
     @comment = Comment.new comment_params
-   
     @comment.user = current_user if user_signed_in?
     @comment.admin = current_admin if admin_signed_in?
     @comment.company_admin = current_company_admin if company_admin_signed_in?
     @comment.save
-        
-    
     respond_to do |format|
      
       format.js 
@@ -81,7 +77,6 @@ class CommentsController < ApplicationController
   end
   
   def destroy
-    @job = Job.find(params[:job_id]) if params[:job_id].present?
     
     @comment.destroy
     

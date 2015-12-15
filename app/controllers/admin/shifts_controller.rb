@@ -24,6 +24,7 @@ class Admin::ShiftsController < ApplicationController
   def show
     @employee = @shift.employee
     @job = @shift.job
+    @company = @job.company
     @timesheet = @shift.timesheet
     gon.shift = @shift
     
@@ -206,7 +207,7 @@ class Admin::ShiftsController < ApplicationController
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_shift
-      @shift = Shift.find(params[:id])
+      @shift = Shift.includes(:timesheet, :job).find(params[:id])
       authorize @shift
     end
     

@@ -1,4 +1,4 @@
-<%= div_for(comment, class: 'white', data: {behavior: "comment", id: "#{comment.id}"}) do %>
+<%= div_for(comment, class: 'white dark', data: {behavior: "comment", id: "#{comment.id}"}) do %>
     
     <p><%= markdownify(comment.body) %></p>
     <% if comment.recipient.present? && comment.recipient_type != "Employee" %>
@@ -8,6 +8,8 @@
     <% elsif comment.recipient.nil? %>
         To: <small>Nobody</small>
     <% end %>
+    <br>
+    <%= comment.commentable.try(:recruiter).present? ? comment.commentable.recruiter.name : "" %> | <%= comment.commentable.account_manager.try(:name) %>
     <div class='text-right'>
         
     <% if comment.admin.present? %>

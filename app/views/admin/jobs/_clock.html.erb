@@ -15,9 +15,9 @@
 
         <% else %>
         <% if job.on_break? %>
-<%= link_to "End Break", break_end_admin_shift_path(job.current_shift), method: :patch, remote: true, class: 'btn btn-success' %>
+<%= link_to "<i class='fa fa-clock-o'></i> End Break".html_safe, break_end_admin_shift_path(job.current_shift), method: :patch, remote: true, id: "break-end-btn", class: 'btn btn-success' %>
 <% elsif job.current_shift.try(:clocked_in?) %>
-  <%= link_to "Start Break", break_start_admin_shift_path(job.current_shift), method: :patch, remote: true, class: 'btn btn-success' %>
+  <%= link_to "<i class='fa fa-history'></i> Start Break".html_safe, break_start_admin_shift_path(job.current_shift), method: :patch, remote: true, id: "break-start-btn", class: 'btn btn-success' %>
 <% end %>
      
           <button data-behavior="job-out-button" class='hide-this btn btn-danger'>

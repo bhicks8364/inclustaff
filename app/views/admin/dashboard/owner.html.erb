@@ -17,48 +17,47 @@
 		</div>
 	 	<% end %>
 	</div>
-	<div class="btn-group-vertical text-left" role="group" aria-label="...">
-		<%= link_to(@current_agency, role: "button", class: "btn btn-primary") do %>
-			<i class='fa fa-user'></i>
-			<span>Agency Page</span>
-		<% end %>
-		<%= link_to(@current_admin, role: "button", class: "btn btn-primary") do %>
+
+	<div class="btn-group-vertical" role="group" aria-label="...">
+		<%= link_to "<i class='fa fa-user'></i>&nbsp; Agency Page".html_safe, @current_agency, class: "btn btn-primary" %>
+
+		<%= link_to(@current_admin, class: "btn btn-primary") do %>
 			<i class='fa fa-user fa-fw'></i>
-			<span>Admin Home</span>
+			Admin Home
 		<% end %>
-		<%= link_to(admin_account_manager_path, role: "button", class: "btn btn-primary") do %>
+		<%= link_to(admin_account_manager_path, class: "btn btn-primary") do %>
 		<i class='fa fa-money fa-fw'></i>
-			<span>Sales Dashboard</span>
+			Sales Dashboard
 		<% end %>
-        <%= link_to(admin_payroll_path,  role: "button", class: "btn btn-primary") do %>
+        <%= link_to(admin_payroll_path,  class: "btn btn-primary") do %>
 		<i class='fa fa-usd fa-fw'></i>
-			<span>Payroll Dashboard</span>
+			Payroll Dashboard
 		<% end %>
-      	<%= link_to(admin_recruiter_path,  role: "button", class: "btn btn-primary") do %>
+      	<%= link_to(admin_recruiter_path,  class: "btn btn-primary") do %>
 		<i class='fa fa-users fa-fw'></i>
-			<span>Recruiting Dashboard</span>
+			Recruiting Dashboard
 		<% end %>
 	</div>
 	  <div class="btn-group" role="group" aria-label="...">
       	<%= link_to(admin_orders_path, class: "btn btn-primary") do %>
 			<i class='fa fa-briefcase fa-fw'></i>
-			<span>Active Orders</span>
+			Active Orders
 		<% end %>
       	<%= link_to(admin_timesheets_path, class: "btn btn-primary") do %>
 			<i class='fa fa-clock-o fa-fw'></i>
-			<span>Timesheets</span>
+			Timesheets
 		<% end %>
 		<%= link_to(admin_shifts_path, class: "btn btn-primary") do %>
 			<i class='fa fa-clock-o fa-fw'></i>
-			<span>Shifts</span>
+			Shifts
 		<% end %>
 	    <%= link_to(edit_agency_path(@current_agency), class: 'btn btn-primary') do %>
 	      <i class='fa fa-pencil fa-fw'></i>
-			<span>Edit Agency</span>
+			Edit Agency
 		<% end %>
 		<%= link_to(events_path, class: "btn btn-primary") do %>
 		<i class='fa fa-calendar fa-fw'></i>
-			<span>Events</span>
+			Events
 		<% end %>
 	  </div>
 	<div id=''>
@@ -74,7 +73,7 @@
 					      <strong> <%= invoice.company.name %></strong>
 					     	 <span class='label label-success pull-right black'>
 					     	 	<%= invoice.balance > 0.00 ? number_to_currency(invoice.balance) : "NEW!" %>
-					     	 	</span>
+					     	 	
 					       </div>
 					       <% end %>
 					  <% end %>

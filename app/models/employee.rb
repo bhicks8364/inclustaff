@@ -52,6 +52,7 @@ class Employee < ActiveRecord::Base
   
   delegate :last_clock_out, to: :current_job
   delegate :current_shift, to: :current_job
+  delegate :account_manager, to: :current_job
   delegate :recruiter, to: :current_job
   delegate :code, to: :user
   delegate :current_sign_in_ip, to: :user

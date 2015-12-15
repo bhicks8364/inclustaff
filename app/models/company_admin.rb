@@ -32,16 +32,21 @@
 
 class CompanyAdmin < ActiveRecord::Base
   belongs_to :company
+
   has_many :jobs, through: :company
   has_many :timesheets, through: :jobs
+  has_many :shifts, through: :timesheets
   has_many :events
   has_many :eventables, :through => :events
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
+  has_many :job_comments, through: :jobs, source: "comments"
+  has_many :timesheet_comments, through: :timesheets, source: 'comments'
+  has_many :shift_comments, through: :shifts, source: 'comments'
   devise :database_authenticatable, :registerable, 
          :recoverable, :rememberable, :trackable, :validatable
+
   validates :company_id, presence: true
   before_validation :set_name
+ 
   def set_name;   self.name = "#{first_name} #{last_name}"; end
   def to_s; name; end
   def owner?;           role == "Owner";  end
@@ -54,6 +59,9 @@ class CompanyAdmin < ActiveRecord::Base
   def online?
     updated_at > 10.minutes.ago
   end
+  
+
+  
   
  
 end

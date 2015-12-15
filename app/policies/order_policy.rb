@@ -23,6 +23,10 @@ class OrderPolicy < ApplicationPolicy
   def index?
     return true if user.admin?
   end
+  def search?
+    index?
+  end
+  
 
   def show?
     return true if user.admin?

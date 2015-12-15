@@ -1,15 +1,17 @@
-<div class='main-box'>
-  <h4><%= @invoice.week_ending %></h4>
-  <hr>
+<div class='white'>
+  <%= timesheets_for(@invoice) %>
+  <h4 id='example'><%= @invoice.week_ending %></h4>
+
   <span id='balance'>
    <h4><strong>Balance:</strong> <%= number_to_currency(@invoice.balance) %></h4>
 </span>
  
-<p>
+<h3>
   <strong>Company:</strong>
-  <%= @invoice.company.name %>
-</p>
-
+  <%= link_to @invoice.company.name, admin_company_path(@invoice.company) %>
+  
+</h3>
+<%= link_to "All Company Invoices", admin_company_invoices_path(@invoice.company), class: 'btn btn-primary' %>
 <p>
   <strong>Agency:</strong>
   <%= @invoice.agency.name%>

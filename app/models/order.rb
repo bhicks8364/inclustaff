@@ -26,6 +26,9 @@
 #  est_duration       :string
 #  shift              :string
 #  bwc_code           :string
+#  min_pay            :decimal(, )
+#  max_pay            :decimal(, )
+#  pay_frequency      :string
 #
 
 class Order < ActiveRecord::Base
@@ -89,18 +92,32 @@ class Order < ActiveRecord::Base
       case pay_range
       when "$8.10 - $10.00"
         self.mark_up = 1.5
+        self.min_pay = 8.10
+        self.max_pay = 10.00
       when "$10.00 - $12.00"
         self.mark_up = 1.5
+        self.min_pay = 10.00
+        self.max_pay = 12.00
       when "12.00 - $15.00"
         self.mark_up = 1.55
+        self.min_pay = 12.00
+        self.max_pay = 15.00
       when "15.00 - $18.00"
         self.mark_up = 1.6
+        self.min_pay = 15.00
+        self.max_pay = 18.00
       when "$18.00 - $22.00"
         self.mark_up = 1.6
+        self.min_pay = 18.00
+        self.max_pay = 22.00
       when "$22.00 +  "
         self.mark_up = 1.65
+        self.min_pay = 22.00
+        self.max_pay = 30.00
       else
         self.mark_up = 1.5
+        self.min_pay = 8.10
+        self.max_pay = 10.00
       end
     end
     
@@ -216,7 +233,9 @@ class Order < ActiveRecord::Base
   end
   
   def note_skills
-    @note_skills ||= Skill.where(name: keywords)
+    @note_skills ||= Skill.where(name: keywords).select(:name).distinct
+    @all_skills = @note_skills + skills.select(:name).distinct
+    @all_skills.uniq
   end
   
   def matching_skills
