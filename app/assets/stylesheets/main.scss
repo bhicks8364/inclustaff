@@ -1,44 +1,8 @@
-#timesheet-tools > div {
-    vertical-align:middle;
-}
-
-#timesheet-tools > div > button {
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    padding: 0px;
-    // vertical-align:baseline;
-    vertical-align:middle;
-    background-color: transparent;
-    color: rgb(43, 182, 163);
-    
-}
-#timesheet-tools > div > button > span > i.fa.fa-times.fa-stack-1x {
-    border: 2px;
-    border-color: rgb(43, 182, 163);
-}
-#timesheet-tools > div > button > span > i.fa.fa-check.fa-stack-1x {
-    border: 2px;
-    border-color: rgb(43, 182, 163);
-}
-
-
-// ORDER FORM
-.order-form {
-    // border: solid 3px black;
-   
-}
-
 
 
 #order_notes {
     width: 100%;
 }
-
-
-
-
-
 
 
 .center {
@@ -56,7 +20,12 @@
 .bg-clear {
     background: transparent;
 }
-
+.bg-dark {
+    background: rgba(0, 0, 0, 0.41);
+}
+.bg-white {
+    background: white;
+}
 
 .skill-list {
    

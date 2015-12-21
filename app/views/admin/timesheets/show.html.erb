@@ -1,4 +1,4 @@
-<div class='col-md-12 transbox'>
+<div class='col-md-12'>
 
     <%= link_to(admin_timesheet_path(@timesheet, format: :pdf), class: 'btn btn-primary') do %>
   					<i class="fa fa-download fa-md"></i> Download PDF
@@ -7,7 +7,7 @@
   		
           <%= link_to 'All Timesheets', admin_job_timesheets_path(@job), class: 'btn btn-primary' %>
   
-<div class='col-md-12'>
+<div class='col-md-12 white'>
   <h3>For the week of:<strong><br>
         <%= @timesheet.week_begin %>
           - 
@@ -32,15 +32,15 @@
       
 </div>
  <div class='col-md-12 dark'>
-<div class='well' data-behavior="timesheet-list">
+<div class='col-md-6 lightbox' data-behavior="timesheet-list">
     
   <%= render @timesheet %>
   
   </div>
  
 
-         <div id='comment-list'>
-            <% @timesheet.comments.each do |comment| %>
+         <div class='col-md-6' id='comment-list'>
+            <% @timesheet.comments.unread.each do |comment| %>
             
                 <%= render 'comments/comment', comment: comment %>
             <% end %>
@@ -53,6 +53,7 @@
 
 <div class=''>
   <h3> Shifts</h3>
+  
    <%= render 'admin/shifts/week_calendar', shifts: @timesheet.shifts %>
 </div>
 <div class='col-md-12'>

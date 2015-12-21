@@ -8,29 +8,35 @@ class Admin::OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
-     @q = Order.includes(:company, :jobs).active.ransack(params[:q]) 
-  
-      @orders = @q.result(distinct: true).paginate(page: params[:page], per_page: 5) if @q.present?
+    @import = Order::Import.new
     if params[:company_id]
       @company = Company.find(params[:company_id])
       @orders = @company.orders
-      @account_managers = @current_agency.account_managers if @current_agency.present?
-      @order = @company.orders.new if @company.present?
      
     else
-      @orders = Order.includes(:jobs).active.order(created_at: :desc) if @q.nil?
+      @q_orders = Order.includes(:company, :jobs).active.ransack(params[:q]) 
+      @orders = @q_orders.result(distinct: true).paginate(page: params[:page], per_page: 25)
+      # @orders = Order.includes(:jobs).active.order(created_at: :desc) 
     end
     if params[:tag]
+      @orders = Order.needs_attention
       @orders = @orders.tagged_with(params[:tag])
     end
-    
-    
     authorize @orders
-
+    
+    respond_to do |format|
+        format.html
+        format.json
+        format.csv { send_data @orders.to_csv, filename: "orders-export-#{Time.now}-inclustaff.csv" }
+    end 
+    
+    
   end
+  
   def search
-    index
-    render :index
+    @q_orders = Order.includes(:company, :jobs).active.ransack(params[:q]) 
+    @orders = @q_orders.result(distinct: true).paginate(page: params[:page], per_page: 25)
+    authorize @orders, :index?
   end
   
   def show
@@ -108,7 +114,18 @@ class Admin::OrdersController < ApplicationController
       end
     end
   end
-
+  def import
+      @import  = Order::Import.new(order_import_params)
+      
+      if @import.save
+          redirect_to admin_orders_path, notice: "Imported #{@import_count} orders."
+      else
+          @orders = Order.all
+          render action: :index, notice: "There were errors with your CSV file."
+      end
+      skip_authorization
+      
+  end
   # PATCH/PUT /orders/1
   # PATCH/PUT /orders/1.json
   def update
@@ -147,6 +164,9 @@ class Admin::OrdersController < ApplicationController
     def set_order
 
       @order = Order.includes(:skills).find(params[:id])
+    end
+    def order_import_params
+        params.require(:order_import).permit(:file)
     end
 
 

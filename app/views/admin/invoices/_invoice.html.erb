@@ -1,10 +1,6 @@
-<%= div_for invoice do %>
-<% if current_page?(action: "show", controller: "admin/companies") %>
-<%= link_to "View", admin_invoice_path(invoice) %><br>
-<% else %>
-<%= invoice.company.name %><br>
-<% end %>
- 
+<%= div_for invoice, class: "#{invoice.paid? ? "paid" : "unpaid"}" do %>
+
+ <%= invoice.company.name %><br>
       
      <strong> Week:</strong>  <%= invoice.week_ending %>
        
@@ -17,5 +13,8 @@
        <strong>Due by: </strong> <%= invoice.due_by.stamp('11/13') %><br>
        <small><%= distance_of_time_in_words(invoice.due_by, Date.today) %></small>
        <% end %>
+       <div class="inv">
+        <%= timesheets_for(invoice) %>
+       </div>
 
 <% end %>

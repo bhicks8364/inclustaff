@@ -1,5 +1,5 @@
-<div class='col-md-12 transbox'>
-<div class='well'>
+<div class='col-md-12 '>
+<div class=''>
 <div class='table-responsive'>
 <h1><%= @current_agency.name %>'s Invoices</h1>
 
@@ -25,7 +25,7 @@
   <tbody>
     <% @invoices.each do |invoice| %>
       <tr>
-        <td><%= invoice.paid? ? "<i class='fa fa-check-square-o fa-lg'></i>".html_safe : "<i class='fa fa-square-o fa-lg'></i>".html_safe %></td>
+        <td><%= inv_sym(invoice) %></td>
         <td><%= link_to invoice.company.name, admin_company_path(invoice.company) %></td>
         
         <td><%= invoice.week %></td>

@@ -71,11 +71,7 @@ class Event < ActiveRecord::Base
       unread? ? "Unread" : "Read"
     end
     def job?
-        if eventable_type == "Job"
-            true
-        else
-            false
-        end
+        eventable_type == "Job"
     end
     
     def self.following_admin

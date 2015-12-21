@@ -40,7 +40,7 @@ class Timesheet < ActiveRecord::Base
     validates_associated :shifts
     
 
-
+    delegate :name_title, to: :job
     delegate :mark_up, to: :job
     delegate :pay_rate, to: :job
     delegate :bill_rate, to: :job

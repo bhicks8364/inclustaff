@@ -1,0 +1,23 @@
+
+<div class="col-md-12">
+    <h1>Search Job Orders</h1>
+	<div class='col-md-2 bg-white'>
+	  	<h3>Sort By:</h3>
+	  <ul class="fa-ul">
+		  <li><i class="fa-li fa fa-square"></i><%= sort_link(@q_orders, :title) %></li>
+		  <li><i class="fa-li fa fa-square"></i><%= sort_link(@q_orders, :needed_by) %></li>
+		  <li><i class="fa-li fa fa-square"></i><%= sort_link(@q_orders, :min_pay) %></li>
+		  <li><i class="fa-li fa fa-square"></i><%= sort_link(@q_orders, :max_pay) %></li>
+		</ul>
+	   <%= render 'admin/infoboxes/taggings' %>
+	</div>
+	
+	<div class="col-md-8 border">
+			<%= render @orders.needs_attention %>
+	</div>
+		<div class='col-md-2'>
+				<%= render 'admin/shared/alerts/open_orders', orders: @orders %>
+		</div>
+
+
+</div>

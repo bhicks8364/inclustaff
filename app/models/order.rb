@@ -89,35 +89,23 @@ class Order < ActiveRecord::Base
     end
    
     def set_mark_up
-      case pay_range
-      when "$8.10 - $10.00"
-        self.mark_up = 1.5
-        self.min_pay = 8.10
-        self.max_pay = 10.00
-      when "$10.00 - $12.00"
-        self.mark_up = 1.5
-        self.min_pay = 10.00
-        self.max_pay = 12.00
-      when "12.00 - $15.00"
-        self.mark_up = 1.55
-        self.min_pay = 12.00
-        self.max_pay = 15.00
-      when "15.00 - $18.00"
-        self.mark_up = 1.6
-        self.min_pay = 15.00
-        self.max_pay = 18.00
-      when "$18.00 - $22.00"
-        self.mark_up = 1.6
-        self.min_pay = 18.00
-        self.max_pay = 22.00
-      when "$22.00 +  "
-        self.mark_up = 1.65
-        self.min_pay = 22.00
-        self.max_pay = 30.00
-      else
-        self.mark_up = 1.5
-        self.min_pay = 8.10
-        self.max_pay = 10.00
+      if mark_up.nil? 
+        case pay_range
+        when "$8.10 - $10.00"
+          self.mark_up = 1.5
+        when "$10.00 - $12.00"
+          self.mark_up = 1.5
+        when "12.00 - $15.00"
+          self.mark_up = 1.55
+        when "15.00 - $18.00"
+          self.mark_up = 1.6
+        when "$18.00 - $22.00"
+          self.mark_up = 1.6
+        when "$22.00 +  "
+          self.mark_up = 1.65
+        else
+          self.mark_up = 1.5
+        end
       end
     end
     
@@ -130,6 +118,9 @@ class Order < ActiveRecord::Base
     end
     def overdue?
       needs_attention? && needed_by <= Date.today
+    end
+    def priority?
+      needs_attention? && needed_by <= Date.today + 3.days
     end
     def set_needed_by
       self.needed_by = Date.today
@@ -189,6 +180,7 @@ class Order < ActiveRecord::Base
     title_company
   end
   
+  
   def title_count
     "#{title} (#{pay_range}) #{open_jobs}"
   end
@@ -204,8 +196,10 @@ class Order < ActiveRecord::Base
 
   def mentions
       @mentions ||= begin
-                      regex = /@([\w]+)/
-                      notes.scan(regex).flatten
+                    regex = /([\w]+)/
+                      if notes.present?
+                        notes.scan(regex).flatten
+                      end
                     end
   end
 
@@ -215,8 +209,10 @@ class Order < ActiveRecord::Base
   
   def admin_mentions
       @mentions ||= begin
+                      if notes.present?
                       regex = /([\w]+)/
                       notes.scan(regex).flatten
+                      end
                     end
   end
   
@@ -225,11 +221,13 @@ class Order < ActiveRecord::Base
   end
   
   def keywords
+    
       @keywords ||= begin
+                      if notes.present?
                       regex = /([\w]+)/
                       notes.scan(regex).flatten
+                      end
                     end
-      
   end
   
   def note_skills
@@ -256,10 +254,25 @@ class Order < ActiveRecord::Base
         self.skills.find_or_create_by(name: skill.name)
     end
   end
+  
+  
   def self.assign_from_row(row)
-    order = Order.where(title: row[:title], company_id: row[:company_id]).first_or_initialize
-    order.assign_attributes row.to_hash.slice(:name)
+    order = Order.where(id: row[:id], company_id: row[:company_id]).first_or_initialize
+    order.assign_attributes row.to_hash.slice(:title, :min_pay, :max_pay, :number_needed, :needed_by)
+    
     order
+  end
+  
+   # EXPORT TO CSV
+  def self.to_csv
+    attributes = %w{id agency_id company_id title min_pay max_pay pay_frequency account_manager_id manager_id mark_up title pay_range notes number_needed needed_by urgent active dt_req bg_check stwb heavy_lifting shift est_duration}
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+      
+      all.each do |jo|
+        csv << jo.attributes.values_at(*attributes)
+      end
+    end
   end
   
   def with_employee_skills

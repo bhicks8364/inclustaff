@@ -60,7 +60,13 @@ class CompanyAdmin < ActiveRecord::Base
     updated_at > 10.minutes.ago
   end
   
-
+  def managed_orders
+    if owner?
+      company.orders
+    else
+      Order.by_manager(id)
+    end
+  end
   
   
  

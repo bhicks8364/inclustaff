@@ -19,7 +19,7 @@ class Admin::TimesheetsController < ApplicationController
     @current_timesheets = @timesheets.current_week if @timesheets.present?
 		respond_to do |format|
       format.html
-      format.csv { send_data @current_timesheets.to_csv, filename: "current_timesheets-export-#{Time.now}-inclustaff.csv" }
+      format.csv { send_data @current_timesheets.to_csv, filename: "current_timesheets-export-#{Time.current}-inclustaff.csv" }
   	end 
 	end
 	
@@ -37,8 +37,17 @@ class Admin::TimesheetsController < ApplicationController
 		authorize @timesheets
 		respond_to do |format|
       format.html
-      format.csv { send_data @timesheets.to_csv, filename: "past-timesheets-export-#{Time.now}-inclustaff.csv" }
+      format.csv { send_data @timesheets.to_csv, filename: "past-timesheets-export-#{Time.current}-inclustaff.csv" }
   	end 
+	end
+	
+	def last_week
+		@timesheets = Timesheet.last_week
+		authorize @timesheets, :index?
+		respond_to do |format|
+      format.html
+      format.csv { send_data @timesheets.to_csv, filename: "last-week-timesheets-export-#{Time.current}-#{@current_agency.name}.csv" }
+  	end
 	end
 
   def show

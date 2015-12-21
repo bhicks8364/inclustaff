@@ -14,6 +14,16 @@ module ApplicationHelper
         title += "Inclustaff"
     end
     
+    def tag_link(taggable)
+        highlight(taggable.tag_list.to_s, ActsAsTaggableOn::Tag.all.map(&:name), highlighter: '<a href="/tags?tag=\1">\1</a>'.html_safe)
+    end
+    
+    def tag_popover(taggable)
+        
+        "<span class='black'><i class='fa fa-tag' data-placement='right' data-toggle='popover' title='Tags for #{ taggable.try(:title) || taggable.try(:first_name)}' 
+        data-content='#{ taggable.tag_list }'></i></span>".html_safe
+    end
+    
     def signed_in_link_to(name, model, options = {})
         if @signed_in.class.to_s == "CompanyAdmin"
             @path = "company"

@@ -1,8 +1,11 @@
 
 <div class="col-md-12">
-
-<div class='white'>
-	<h1 class='page-header white'>Owner Dashboard</h1>
+Agency ID: <%= @current_agency.id %>
+	<div class='white col-md-6'>
+		<h1 class='page-header white'>Owner Dashboard</h1>
+		<%= link_to "Agency Page", agency_path(@current_agency) %>
+	</div>
+	<div class='text-center white col-md-6'>
 		<% if @current_agency.companies.blank? %>
 	       <h4>Getting Started</h4>
 		  <div id="no-companies-alert" class="alert alert-danger" role="alert">
@@ -11,20 +14,14 @@
 			  	<%= link_to "Add A Company", new_admin_company_path, class: 'btn btn-primary' %>
 		  </div>
 	  	<% else %>
-	  	<div class='text-center'>
+	  	
 	  		<h3 class=''><strong>Current Billing:</strong> <%= number_to_currency(@current_agency.current_billing) %></h3>
 	 		<strong>Last Week:</strong> <%= number_to_currency(@current_agency.last_week_billing) %>
-		</div>
+	
 	 	<% end %>
 	</div>
 
-	<div class="btn-group-vertical" role="group" aria-label="...">
-		<%= link_to "<i class='fa fa-user'></i>&nbsp; Agency Page".html_safe, @current_agency, class: "btn btn-primary" %>
-
-		<%= link_to(@current_admin, class: "btn btn-primary") do %>
-			<i class='fa fa-user fa-fw'></i>
-			Admin Home
-		<% end %>
+	<div class="btn-group btn-group-justified" role="group" aria-label="...">
 		<%= link_to(admin_account_manager_path, class: "btn btn-primary") do %>
 		<i class='fa fa-money fa-fw'></i>
 			Sales Dashboard
@@ -37,81 +34,46 @@
 		<i class='fa fa-users fa-fw'></i>
 			Recruiting Dashboard
 		<% end %>
-	</div>
-	  <div class="btn-group" role="group" aria-label="...">
-      	<%= link_to(admin_orders_path, class: "btn btn-primary") do %>
-			<i class='fa fa-briefcase fa-fw'></i>
-			Active Orders
-		<% end %>
-      	<%= link_to(admin_timesheets_path, class: "btn btn-primary") do %>
-			<i class='fa fa-clock-o fa-fw'></i>
-			Timesheets
-		<% end %>
-		<%= link_to(admin_shifts_path, class: "btn btn-primary") do %>
-			<i class='fa fa-clock-o fa-fw'></i>
-			Shifts
-		<% end %>
-	    <%= link_to(edit_agency_path(@current_agency), class: 'btn btn-primary') do %>
-	      <i class='fa fa-pencil fa-fw'></i>
-			Edit Agency
-		<% end %>
-		<%= link_to(events_path, class: "btn btn-primary") do %>
-		<i class='fa fa-calendar fa-fw'></i>
-			Events
-		<% end %>
 	  </div>
+	 
 	<div id=''>
-		<div id='' class="col-md-4">
-		  <div class="panel panel-primary dark">
-		    <div class="panel-heading">
-		      <h3 class="panel-title"><strong>Open Invoices</strong><span class='label label-default pull-right black'> <%= number_to_currency(@current_agency.invoices.unpaid.sum(:total)) %></strong></h3>
-		    </div>
-		    <div class="panel-body scroll300">
+		<div id='' class="col-md-4 dark">
+		      <h3 class="title"><strong>Open Invoices</strong><span class='label label-success pull-right black'> <%= number_to_currency(@current_agency.invoices.unpaid.sum(:total)) %></strong></h3>
+		    <div class="scroll300">
 		      <% @current_agency.invoices.unpaid.order(:week).each do |invoice| %>
 						<%= link_to(admin_invoice_path(invoice), class: "list-group-item list-group-item-success") do %>
 					       <div data-behavior="invoice" data-id="<%= invoice.id %>" class=''>
 					      <strong> <%= invoice.company.name %></strong>
 					     	 <span class='label label-success pull-right black'>
 					     	 	<%= invoice.balance > 0.00 ? number_to_currency(invoice.balance) : "NEW!" %>
-					     	 	
 					       </div>
 					       <% end %>
 					  <% end %>
 		    </div>
-		  </div>
 		</div>
-		<div class="col-md-4">
-		  <div class="panel panel-primary dark">
-		    <div class="panel-heading">
-		      <h3 class="panel-title"><strong>Open Job Orders</strong></h3>
-		    </div>
-		    <div class="panel-body scroll300">
+		<div class="col-md-4 dark">
+		      <h3 class="title"><strong>Open Job Orders</strong></h3>
+		    <div class="scroll300">
 		      <%= render 'admin/dashboard/orders_by_company' %>
 					 
 		    </div>
-		  </div>
 		</div>
-		<div class="col-md-3">
-		  <div class="panel panel-primary dark">
-		    <div class="panel-heading">
-		      <h3 class="panel-title"><strong>Admins</strong></h3>
-		    </div>
-		    <div class="panel-body scroll300">
-		      <% @current_agency.admins.order(:last_name).each do |admin| %>
-						<%= link_to(admin_path(admin), class: "list-group-item list-group-item-success") do %>
-					
+		
+		
+		<div class="col-md-2 dark">
+			<h3 class="title"><strong>Admins</strong></h3>
+		    <div class="dark scroll300">
+		    	<% @current_agency.admins.order(:last_name).each do |admin| %>
+						<%= link_to(admin_path(admin), class: "list-group-item") do %>
 					       <div data-behavior="admin" data-id="<%= admin.id %>" class=''>
-					       
-					      <strong> <%= admin.name %></strong><br>
-					       	<small>	<%= admin.role %></small>
-					     	 
+						        <strong> <%= admin.name %></strong><br>
+						       	<small>	<%= admin.role %></small>
 					       </div>
 					       <% end %>
-					   
-					  <% end %>
+				<% end %>
 		    </div>
-		  </div>
 		</div>
+		 <%= render 'admin/infoboxes/leaderboxes' %>
 	</div>
-	<%= render 'admin/infoboxes/leaderboxes' %>
+	
 </div>

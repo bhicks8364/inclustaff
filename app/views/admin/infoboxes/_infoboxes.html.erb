@@ -1,19 +1,49 @@
-
-<div class='col-md-12 col-sm-12 col-xs-12'>
-	<h2>Timesheets</h2>
-	<div class='col-md-6 col-sm-12 col-xs-12' data-behavior="timesheet-list">
-		<h3 class='text-center'> This Week</h3>
-		<%= render @current_admin.timesheets.current_week || "No timesheets this week yet." %>
+<div class='col-md-6 '>
+	<h3 class='text-center white'>	ACA Tracking</h3>
+	<div class='lightbox scroll500'>
+	<% @current_agency.companies.includes(:jobs, :employees).order(:name).each do |company| %>
+	<div class=''><h4>	<%= company.name %></h4></div>
+      <% company.employees.order(:last_name).each do |employee| %>
+          <%= employee_collaspe(employee) %><br>
+           <div class='collapse black' id="collapseEmployee_<%=employee.id%>">
+              
+		    <div class=' scroll300'><% employee.shifts.current_report.each do |k, v| %>
+		         <li class='list-group-item'>
+			         	<p><strong><%=  k.stamp("Dec 2015") %> </strong> -  Total Hours: <%= v.round(2) %> 	</p>
+		         </li>
+		         <%= aca_progress(v, 130) if v > 10 %>
+		         <% end %>
+		    </div>
+               
+            </div>
+            <% end %>
+      <% end %>
+</div>
+</div>
+<div class='col-md-6 col-sm-12 col-xs-12'>
+	<h3 class='text-center white'>Needing Approval</h3>
+	<div class='lightbox scroll500' data-behavior="timesheet-list">
+	
+		<%= render @current_admin.timesheets.needing_approval || "No timesheets this week yet." %>
 	</div>
-	<div class='col-md-6 col-sm-12 col-xs-12' data-behavior="timesheet-list">
-		<h3 class='text-center'> Last Week</h3>
-		<%= render @current_admin.timesheets.last_week || "No timesheets for last week." %>
-	</div>
+	
 </div>
 
-<div class='col-md-3 col-sm-12 col-xs-12 well'>
 
-	<h5 class="white text-center">Recent Shift Notes</h5>
+
+<div class='col-md-6 col-sm-12 col-xs-12 scroll500'>
+			<h3 class='text-center'>ACA Tracking</h3>
+	<div class='lightbox' data-behavior="comment-list">
+		<h3 class='text-center'>Comments</h3>
+		<% @current_admin.comments.each do |comment| %>
+			<%= render partial: 'comments/comment', locals: {comment: comment} %>
+		<% end %>
+	</div>
+	
+</div>	
+<div class='col-md-6 col-sm-12 col-xs-12 well'>
+
+		<h5 class="white text-center">Recent Shift Notes</h5>
 		<div class='thumbnail white scroll300'>
 			
 			<%= div_for(@current_admin.timesheets.current_week.with_shift_notes.includes(:job, :shifts).distinct, class: 'caption') do |timesheet| %>
@@ -38,5 +68,3 @@
 			<% end %>
 		</div>
 </div>
-	
-	

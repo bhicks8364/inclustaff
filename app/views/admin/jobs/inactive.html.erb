@@ -3,7 +3,7 @@
     
  
    <div class='col-md-6 well'>
-     <h3><%= job.employee.name %> - <%= job.company_name %></h3>
+     <h3><%= job.employee.name %> - <%= job.company.name %></h3>
      <strong>Job Title: </strong><%= job.title %><br>
     <strong>Total Hours: </strong><%= job.total_hours %><br>
     <strong>Start Date: </strong><%= job.start_date.stamp('11/12/2013') %><br>
@@ -11,14 +11,16 @@
    <hr>
   
   
-    <div class='col-md-12 well' id='comment-list'>
+   
     <% if job.comments.any? %>
+     <div class='col-md-12 well' id='comment-list'>
         <h3>Comments</h3>
         <% job.comments.each do |comment| %>
             <%= render 'comments/comment', comment: comment %>
         <% end %>
+        </div>
     <% end %>
-    </div>
+    
         
         <%= link_to "Edit", edit_admin_job_path(job), class: 'btn btn-primary' %>
         <%= link_to "View", admin_job_path(job), class: 'btn btn-primary' %>

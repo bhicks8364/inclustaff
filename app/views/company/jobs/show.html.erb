@@ -50,11 +50,11 @@
       <div role="tabpanel" class="tab-pane fade" id="timesheets">
         <h2 class='page-header text-center'>Timesheets</h2>
         
-        <div id="pending" class='col-md-6 dark' data-behavior='timesheet-list'>
+        <div id="pending" class='col-md-6 ' data-behavior='timesheet-list'>
           <h5 class='text-center'>Pending</h5>
           <%= render @job.timesheets.pending %>
         </div>
-        <div id="approved" class='col-md-6 dark' data-behavior='timesheet-list'>
+        <div id="approved" class='col-md-6 ' data-behavior='timesheet-list'>
           <h5 class='text-center'>Approved</h5>
           <% @job.timesheets.approved.each do |timesheet| %>
               <%= render 'company/timesheets/timesheet', timesheet: timesheet %>

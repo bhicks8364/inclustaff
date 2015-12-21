@@ -32,6 +32,9 @@
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="home">
         <%= render @user %>
+                     <h2>Tags</h2>
+             <%= @employee.tag_list %>
+              <%= highlight(@employee.tag_list.to_s, ActsAsTaggableOn::Tag.all.map(&:name), highlighter: '<a href="/tags?tag=\1">\1</a>') %>
         <div class='col-md-3'>
             <% if admin_signed_in? %>        
                     <%= link_to "Employee Page", admin_employee_path(@employee), class: 'btn btn-primary btn-lg' %>

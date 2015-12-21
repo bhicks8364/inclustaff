@@ -91,11 +91,16 @@ Rails.application.routes.draw do
         resources :comments
         collection do
           get 'past'
+          get 'last_week'
         end
         
       end
       resources :employees do
+        member do
+          get 'aca'
+        end
         collection do
+          get 'report'
           get 'autocomplete'
           post 'import'
         end
@@ -106,6 +111,7 @@ Rails.application.routes.draw do
       
       resources :orders do
         collection do
+          post 'import'
           match 'search' => 'orders#search', via: [:get, :post], as: :search
         end
         resources :skills

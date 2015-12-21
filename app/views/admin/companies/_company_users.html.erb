@@ -3,7 +3,7 @@
     <br>
         <%= div_for(@company.admins) do |admin| %>
 
-            <p><%= admin.name %> <small>
+            <p><%= link_to admin.name, admin %> <small>
             <br> <%= admin.email %></small></p>
     
     

@@ -1,19 +1,19 @@
 <div class='col-md-12 transbox'>
- <h1>Past Timesheets</h1>
+ <h1>Last Week's Timesheets</h1>
    <div id='approved' class='col-md-5 lightbox' data-behavior="timesheet-list">
     <h4 class='black'>Approved</h4>
-    <% @timesheets.past.approved.each do |timesheet| %>
+    <% @timesheets.last_week.approved.each do |timesheet| %>
    <%= render timesheet %>
    <% end %>
    </div>
    <div id='pending' class='col-md-5 lightbox' data-behavior="timesheet-list">
     <h4 class='black'>Pending</h4>
-    <%= render(@timesheets.past.pending) || "There are no pending timesheets for last week yet." %>
+    <%= render(@timesheets.last_week.pending) || "There are no pending timesheets for last week yet." %>
    
   
    </div>
     <div class='col-md-2'>
-     <%= link_to(past_admin_timesheets_path(@timesheets, format: :csv), class: 'btn btn-primary') do %>
+     <%= link_to(last_week_admin_timesheets_path(@timesheets, format: :csv), class: 'btn btn-primary') do %>
 			  					<i class="fa fa-file-excel-o fa-lg"></i> Export CSV
 			  				
 			  				<% end %>

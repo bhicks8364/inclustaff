@@ -1,10 +1,11 @@
 class NotificationMailer < ApplicationMailer
     def job_notification(account_manager, job)
+        @job = job
         @account_manager = account_manager
-        @recruiter  = job.recruiter
-        @employee = job.employee
-        @company = job.company
-        mail(to: @account_manager.email, subject: 'New Job Placement!')
+        @recruiter  = @job.recruiter
+        @employee = @job.employee
+        @company = @job.company
+        mail(to: "bhicks8364@gmail.com", subject: 'New Job Placement!')
     end
     def new_company(company)
         template_name = "new-company"

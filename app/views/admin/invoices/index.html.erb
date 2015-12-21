@@ -1,43 +1,40 @@
-<div class='col-md-12 dark'>
-  <div class='table-responsive'>
-
-<h1>Listing Invoices</h1>
-
-<table class='table table-bordered'>
+<div class='col-md-3 lightbox'>
+  <% @invoices.each do |invoice| %>
+    <%= inv_timesheets_collaspe(invoice) %><br>
+    <div class='black collapse' id="collapseInv_<%=invoice.id%>">
+       <%= render 'admin/invoices/invoice', invoice: invoice %>
+    </div>
+  <% end %>
+</div>
+<div class='col-md-9'>
+  <div class='table-responsive lightbox'>
+<h1 class='black'> Invoices for <strong><%= @company.name %></strong></h1>
+<table class='table table-hover'>
   <thead>
     <tr>
-      <th>Company</th>
-   
       <th>Week</th>
       <th>Due by</th>
       <th>Paid</th>
       <th>Total</th>
       <th>Amt paid</th>
       <th>Paid on</th>
-      <th>Balance</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
     </tr>
   </thead>
 
   <tbody>
-    <% @invoices.order(:created_at).each do |invoice| %>
-      <tr>
-        <td><%= invoice.company.name %></td>
-      
-        <td><%= invoice.week %></td>
+    <% @invoices.order(week: :desc).each do |invoice| %>
+     <tr>
+    <%= link_to(admin_invoice_path(invoice)) do  %>
+     
+        <td><%=inv_sym(invoice)%> <%= invoice.week %></td>
         <td><%= invoice.due_by.stamp('11/13') %></td>
         <td><%= invoice.state %></td>
         <td><%= number_to_currency(invoice.total) %></td>
         <td><%= number_to_currency(invoice.amt_paid) %></td>
         <td><%= invoice.paid_on %></td>
-        <td><%= timesheets_for(invoice) %></td>
-        <td><%= link_to 'Show', admin_company_invoice_path(@company, invoice) %></td>
-        <td><%= link_to 'Edit', edit_admin_company_invoice_path(@company, invoice) %></td>
-        <td><%= link_to 'Destroy', admin_company_invoice_path(@company, invoice), method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+    
+      <% end %>
+        </tr>
     <% end %>
   </tbody>
 </table>

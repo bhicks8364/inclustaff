@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
     @signed_in = @current
     @agency = @current_agency
     gon.current = @current
-    
+    @q_orders = @current_agency.orders.includes(:company, :jobs).active.ransack(params[:q]) if admin_signed_in?
   end
 
   # def after_sign_in_path_for(resource)

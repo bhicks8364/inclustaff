@@ -3,17 +3,20 @@ class CompanyAdminsController < ApplicationController
     
     def index
         if admin_signed_in?
-            @company_admins = CompanyAdmin.all
+          @q = CompanyAdmin.includes(:company, :jobs).ransack(params[:q]) 
+  
+           @company_admins = @q.result(distinct: true).order('companies.name').paginate(page: params[:page], per_page: 10) if @q.present?
         elsif company_admin_signed_in?
-            @company_admins = @current_company.admins.all
+            @company_admins = @current_company.admins.all.paginate(page: params[:page], per_page: 10) 
+            @q = @company_admins.includes(:company, :jobs).ransack(params[:q]) 
         end
         gon.admins = CompanyAdmin.all
-        gon.jbuilder
         skip_authorization
     end
     
     def show
       @company_admin = CompanyAdmin.find(params[:id])
+      @company = @company_admin.company
       skip_authorization
     end
     

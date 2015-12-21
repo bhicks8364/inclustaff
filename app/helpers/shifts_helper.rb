@@ -60,7 +60,7 @@ module ShiftsHelper
     end
     def shift_collaspe(shift)
       "<a class='black' role='button' data-toggle='collapse' href='#collapseShift_#{shift.id}' aria-expanded='false' aria-controls='collapseShift_#{shift.id}'>
-        <i class='fa fa-user fa-fw'></i> <small>#{shift.employee.last_name}</small>
+        #{shift_sym(shift)} <small>#{truncate(shift.employee.name)}</small>
       </a>".html_safe
     end
 

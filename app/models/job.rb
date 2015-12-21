@@ -56,6 +56,7 @@ class Job < ActiveRecord::Base
     validates :title,  presence: true, length: { maximum: 50 }
     
     # CALLBACKS
+    # after_create :send_notifications!
     before_validation :defaults, :set_main_pay
     after_save :update_employee
     after_initialize :ensure_pay

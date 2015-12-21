@@ -1,16 +1,15 @@
-<div class='col-md-12 transbox'>
-    <div class='col-md-4 well well-sm'>
+<div class='col-md-12 white'>
+    <div class='col-md-2'>
         <h4>	<%= @admin.name %> <small><%= @admin.role %></small></h4>	
 <h5><%= @admin.email %></h5>
-    </div>
 
-<div class='col-md-4 well well-sm'>
   
     <h4>This week: <%= number_to_currency(@admin.current_billing) %></h4>
      <h5>Last week: <%= number_to_currency(@admin.last_week_billing)%></h5>
      <%= link_to "Edit", edit_admin_path(@admin), class: 'btn btn-primary btn-sm' %>
 </div>
-<div class='col-md-4 well well-sm'>
+
+<div class='col-md-4'>
     <h5class='text-center'>Current Placements</h5>
     <div class='list-group scroll500'>
         <%= div_for(@admin.jobs.distinct, class: 'list-group-item dark') do |job| %>
@@ -38,11 +37,9 @@
     							<% end %>
     </div>
 </div>
-
-<% if @admin.account_manager? %>
+<div class='col-md-4'></div>
 <%= render 'admin/infoboxes/account_manager_charts' if @admin.account_manager? %>
-<% end %>
-
+<%= render 'admin/infoboxes/owner_charts' if @admin.owner? %>
 <%= render 'admin/infoboxes/recruiter_charts' if @admin.recruiter? %>
 
 

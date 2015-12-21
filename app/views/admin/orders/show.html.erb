@@ -3,7 +3,7 @@
     <div class="alert alert-danger fade in">
   		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
   		<i class="fa fa-times-circle fa-fw fa-lg"></i>
-  		<strong>URGENT ORDER!!</strong> <%= @order.open_jobs %> people are needed by <strong><%= @order.needed_by.stamp("Sunday, 11/5") %></strong>  &nbsp;  <%= link_to "Assign someone now.", new_admin_order_job_path(@order), class: 'alert-link pull-center' %>
+  		<strong>URGENT ORDER!!</strong> <%= pluralize(@order.open_jobs, "person is") %> needed by <strong><%= @order.needed_by.stamp("Sunday, 11/5") %></strong>  &nbsp;  <%= link_to "Assign someone now.", new_admin_order_job_path(@order), class: 'alert-link pull-center' %>
   	</div>
   <% end %>
   <div class="btn-group btn-group-justified" role="group" aria-label="...">
@@ -67,7 +67,7 @@
   
   <div class="tab-content col-md-12">
     <div role="tabpanel" class="tab-pane fade in active" id="order">
-
+      <%= link_to @order.account_manager.name, @order.account_manager if @order.account_manager.present? %>
   <div class='col-md-12 dark'>
     <h4>Open positions: <%= @order.open_jobs %></h4>
 
@@ -111,7 +111,7 @@
    </div>
   <div class='col-md-4'>
      <strong>Mentioned Admins:</strong>
-  <p> <%= @order.mentions.map{|p| p.titleize}.join(", ")  %></p>
+  <p> <%= @order.mentioned_admins.map{|p| p.name.titleize}.join(", ")  %></p>
       <strong>Requested Employees</strong>
       <p><%= @order.requested_employees.map {|p| p.name.titleize}.join(", ") %></p>
    </div>
@@ -121,7 +121,8 @@
    </div>
    <div class='col-md-4'>
      <strong>Tags</strong>
-     <p><%= @order.tags.map {|p| p.name.titleize}.join(", ") %></p>
+      
+     <p><%= highlight(@order.tag_list.to_s, @order.tag_list, highlighter: '<a href="/tags?tag=\1">\1</a>') %></p>
    </div>
 
 

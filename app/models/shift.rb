@@ -134,7 +134,12 @@ class Shift < ActiveRecord::Base
   def self.report_by_year
     group_by_year(:time_in).sum(:time_worked)
   end
-  
+  def self.current_report
+    Shift.group_by_month(:time_in, range: 2.months.ago.midnight...Time.current).sum(:time_worked)
+  end
+  def self.current_week_report
+    Shift.group_by_week(:time_in, range: 2.months.ago.midnight...Time.current).sum(:time_worked)
+  end
   def remove_all_breaks!
     state = (time_out > time_in) ? "Clocked Out" : "Clocked In"
     update(

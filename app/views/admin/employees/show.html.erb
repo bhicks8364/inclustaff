@@ -49,6 +49,10 @@
             </div>
        <% if @employee.jobs.active.any? %>
          <div class='col-md-4 text-center'>
+             <h2>Job Count</h2>
+             <%= @employee.jobs.count %>
+              <h2>Tags</h2>
+              <%= highlight(@employee.tag_list.to_s, ActsAsTaggableOn::Tag.all.map(&:name), highlighter: '<a href="/tags?tag=\1">\1</a>') %>
                   <h4 class=''>Current Job Assignment</h4>
             <% @employee.jobs.active.each do |job| %>
               <h5><%= job.company %> <small> <%= link_to job.title, admin_job_path(job) %></small></h5>
@@ -96,7 +100,8 @@
     <div role="tabpanel" class="tab-pane fade" id="aca">
         <h2 class="text-center">ACA Information  </h2>
         <%= render 'admin/shifts/aca_progress', employee: @employee %>
-
+        
+        <%= link_to "View ACA Report", aca_admin_employee_path(@employee) %>
     
       </div>
       <!--TIMESHEETS TAB-->

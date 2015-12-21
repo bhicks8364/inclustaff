@@ -77,17 +77,25 @@ class Invoice < ActiveRecord::Base
         amt = self.amt_paid || 0
         self.total - amt
     end
-    
+    def current?
+        week == Date.today.cweek
+    end
     def paid_on
         if date_paid.nil?
-            ""
+            "UNPAID"
         else
             date_paid.stamp('11/12/2015')
         end
     end
     
     def state
-        paid? ? "Paid" : "Unpaid"
+        if paid?
+            "Paid"
+        elsif current?
+            "Current"
+        elsif unpaid?
+            "Unpaid"
+        end
     end
     def unpaid?
         paid == false || nil

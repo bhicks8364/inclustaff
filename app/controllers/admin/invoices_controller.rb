@@ -5,11 +5,11 @@ class Admin::InvoicesController < ApplicationController
   # GET /invoices.json
   def index
     if params[:company_id]
-      @company = Company.find(params[:company_id])
-      @invoices = @company.invoices.order(:due_by)
+      @company = Company.includes(:invoices).find(params[:company_id])
+      @invoices = @company.invoices.order(week: :desc)
     else
       
-      @invoices = Invoice.includes(:company).order(:week).reverse_order if @current_agency.present?
+      @invoices = @current_agency.invoices.includes(:company).order(week: :desc) 
       render 'invoices/index'
     end
     

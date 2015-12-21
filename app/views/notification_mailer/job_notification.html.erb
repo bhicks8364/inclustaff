@@ -8,9 +8,11 @@
     <p>
       <%= @recruiter.name %> assigned <%= @employee.name %> to <%= @company.name %><br>
     </p>
-    <p>
-      To login to the site, just follow this link: <%= @url %>.
+    <p><strong><%= @recruiter.first_name %>'s notes about this placement:</strong><br>
+      <%= @job.description %>
     </p>
-    <p>Thanks for joining and have a great day!</p>
+    <p>
+      To login to the site, just follow this link: NOT WORKING LINK.
+       Your approval maybe needed.</p>
   </body>
 </html>

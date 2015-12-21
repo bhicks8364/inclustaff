@@ -34,6 +34,16 @@ class Admin::EmployeesController < ApplicationController
         
   end
   
+  def aca
+    @employee = Employee.find(params[:id])
+    skip_authorization
+  end
+  
+  def report
+    @employees = Employee.all
+    skip_authorization
+  end
+  
 
 
   def show

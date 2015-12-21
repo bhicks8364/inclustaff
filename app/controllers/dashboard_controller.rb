@@ -21,8 +21,10 @@ class DashboardController < ApplicationController
         elsif current_admin.account_manager?
           render 'admin/dashboard/account_manager'
         elsif current_admin.recruiter?
+        @q = @current_agency.orders.includes(:company, :jobs).needs_attention.ransack(params[:q]) 
         @jobs = current_admin.jobs.active.paginate(page: params[:page], per_page: 5)
          @timesheets = Timesheet.by_recuriter(current_admin.id)
+         
          @orders = Order.needs_attention.order(:needed_by).paginate(page: params[:page], per_page: 5)
           render 'admin/dashboard/recruiter'
         elsif current_admin.payroll?

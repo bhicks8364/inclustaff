@@ -27,6 +27,7 @@ class Job
       $("[data-behavior='job-in-button_#{@id}']").hide()
       $("[data-behavior='job-out-button_#{@id}']").show()
       $("#clocked-in-count").text "#{data.new_count}"
+      $("#shift-sym").html "<i class='fa fa-cog fa-spin'></i>"
       @item.find("[data-behavior='time-out']").html "<small>Last Out: #{data.last_out}</small>"
       @item.find("[data-behavior='time-in']").html "<small><strong> In:</strong> #{data.time_in}</small>"
       @item.find("[data-behavior='shift-state']").html "<strong>#{data.first_name} is now clocked in.</strong><br>"
@@ -46,6 +47,7 @@ class Job
     if data.clocked_out
       $("[data-behavior='job-out-button_#{@id}']").hide()
       $("#in-job-#{@id}").hide()
+      $("#shift-sym").html "<i class='fa fa-user'></i>"
       $("[data-behavior='job-in-button_#{@id}']").show()
       $("#clocked-in-count").text "#{data.new_count}"
       @item.find("[data-behavior='time-in']").html "<small><strong> In:</strong> #{data.time_in}</small>"

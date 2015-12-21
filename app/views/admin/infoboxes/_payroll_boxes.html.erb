@@ -1,56 +1,41 @@
 <div class='row row150'>
 	<div class="col-md-3 col-sm-12 col-xs-12 text-center">
 		<div class='dark'>
-				
-		
-			
-			  	
-			<h5 class="center"><strong>This Week Timesheets</strong>	  	</h5>
-	
-
-			<span class="badge badge-success center fill"><%= Timesheet.current_week.approved.try(:count) %> Approved </span>
-			<span class="badge badge-default center fill"><%= Timesheet.current_week.pending.try(:count) %> Pending </span>
+			<h5 class="text-center"><strong>This Week</strong>	  	</h5>
+			<span class="badge badge-success"><%= @current_agency.timesheets.current_week.approved.try(:count) %> Approved </span>
+			<span class="badge badge-default"><%= @current_agency.timesheets.current_week.pending.try(:count) %> Pending </span>
 		<br>
-		
-
-	
-		
-		<%= link_to(admin_timesheets_path, class: "btn btn-primary center fill") do %>
-			<strong>View All Timesheets</strong>
-			
-			
+		<%= link_to(admin_timesheets_path, class: "btn btn-primary") do %>
+		View All Timesheets
 			<% end %>
 		</div>
 	</div>
 
 	<div class="col-md-3 col-sm-12 col-xs-12 text-center">
 		<div class='dark'>
-			<h5 class="center"><strong>Last Week Timesheets</strong>	  	</h5>
+			<h5 class="text-center"><strong>Last Week</strong>	  	</h5>
 		
-			<span class="badge badge-success center fill"><%= Timesheet.last_week.approved.try(:count) %> Approved </span>
-			<span class="badge badge-default center fill"><%= Timesheet.last_week.pending.try(:count) %> Pending </span>
+			<span class="badge badge-success"><%= @current_agency.timesheets.last_week.approved.try(:count) %> Approved </span>
+			<span class="badge badge-default"><%= @current_agency.timesheets.last_week.pending.try(:count) %> Pending </span>
 			<br>
-			<%= link_to(past_admin_timesheets_path, class: "btn btn-primary btn-block") do %>
-				<strong>View Past Timesheets</strong>
+			<%= link_to(past_admin_timesheets_path, class: "btn btn-primary") do %>
+				View Past Timesheets
 				<% end %>
 		</div>
 	</div>
-
-
-
-
 	<div class="col-md-3 col-sm-12 col-xs-12  text-center">
 		<div class="dark">
 		<% if @current_admin.timesheets.last_week.pending.any? %>
-		
-			Pending: <%= @current_admin.timesheets.last_week.pending.count %>
-				<%= link_to(past_admin_timesheets_path, class: "btn btn-primary") do %>
-					<i class='fa fa-list-alt fa-1x fa-fw'></i> Last Week Timesheets
+		<i class="fa fa-clock-o fa-1x"></i> 
+			<h5>There are <strong><%= @current_admin.timesheets.last_week.pending.count %></strong> pending timesheets from last week.</h4>
+			
+				<%= link_to(last_week_admin_timesheets_path, class: "btn btn-primary") do %>
+				Last Week Timesheets
 				<% end %>
 				
 		<% else %>
 		<i class="fa fa-check fa-1x"></i> 
-		<p>	All of last week's timesheets have been approved.</p>
+		<h5>	All of last week's timesheets have been approved.</h5>
 		
 				<%= link_to(past_admin_timesheets_path(@current_admin.timesheets.last_week, format: :csv), class: 'btn btn-success') do %>
   					<i class="fa fa-export fa-1x"></i> Export

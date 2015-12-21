@@ -49,7 +49,8 @@
 <div class='list-group'>
   <% @invoice.timesheets.each do |timesheet| %>
   <%= link_to admin_timesheet_path(timesheet) do %>
-     <li class='list-group-item list-group-item-success'><%= timesheet.week_ending %> - <%= timesheet.employee_bill %> - <small><%= timesheet.state %></small></li>
+  
+     <li class='list-group-item'><%= timesheet_user(timesheet) %> <%= timesheet.week_ending %> - <%= timesheet.employee_bill %> - <small><%= timesheet.state %></small></li>
     <% end %>
 <% end %>
 </div>

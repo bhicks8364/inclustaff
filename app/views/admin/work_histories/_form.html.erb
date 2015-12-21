@@ -48,6 +48,7 @@
 		  <%= f.input :may_contact, label: "May we contact this employer?", input_html: { type: 'checkbox' }, wrapper_html: { class: 'btn btn-primary fill' } %>
 	 
 	  </div>
+	  	<%= f.input :tag_list, as: :text, value: @work_history.tag_list.to_s, input_html: { class: '' }  %>
 	</div>
 	
     

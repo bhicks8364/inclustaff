@@ -1,4 +1,5 @@
 $('#start-break-btn').show();
 $('#break-end-btn').hide();
+$('#shift-sym').html("<%= shift_sym(@shift) %>");
 $("[data-behavior='job-out-button_<%=@shift.job_id%>']").show();
 $("<li class=''><%= @shift.on_break? ? "<i class='fa-li fa fa-spinner fa-spin'></i>".html_safe : "<i class='fa-li fa fa-check-square'></i>".html_safe %> <strong> <%= @shift.breaks.last.to_datetime.stamp("1:30am") %></strong></li>").appendTo("#break-list");

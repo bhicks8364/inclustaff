@@ -1,0 +1,31 @@
+<h1><%= @employee.name %>'s ACA Report</h1>
+<div class=''>
+    <div class='col-md-4'>
+        <h3 class='white'>By Week <small>over 30 hours</small></h3>
+        <div class='list-group'><% @employee.shifts.report_by_week.each do |k, v| %>
+             <li class='list-group-item '><strong><%=  k.stamp("Oct 2, 2015") %> </strong> -  Total Hours: <%= v.round(2) %>
+             </li>
+            <%= aca_progress(v, 30) if v > 5 %>
+             <% end %>
+        </div>
+    </div>
+    <div class='col-md-4'>
+        <h3 class='white'>By Month <small>over 130 hours</small></h3>
+        <div class=' list-group'><% @employee.shifts.report_by_month.each do |k, v| %>
+             <li class='list-group-item '><strong><%=  k.stamp("October 2015") %> </strong> -  Total Hours: <%= v.round(2) %>
+             </li>
+             <%= aca_progress(v, 130) %>
+             <% end %>
+        </div>
+    </div>
+    
+    <div class='col-md-4'>
+        <h3 class='white'>By Year <small>over 1560 hours</small></h3>
+        <div class='list-group'><% @employee.shifts.report_by_year.each do |k, v| %>
+             <li class='list-group-item '><strong><%=  k.stamp("2015") %> </strong> -  Total Hours: <%= v.round(2) %>
+             </li>
+             <%= aca_progress(v, 1560) %>
+             <% end %>
+        </div>
+    </div>
+</div>

@@ -47,11 +47,9 @@ class Company::OrdersController < ApplicationController
 
   # GET /orders/new
   def new
-    if company_admin_signed_in? 
       @admin = current_company_admin
       @company = @admin.company
       @order = @company.orders.new
-    end
     authorize @order
 
 
@@ -92,7 +90,7 @@ class Company::OrdersController < ApplicationController
     # authorize @order
     respond_to do |format|
       if @order.update(order_params)
-        format.html { redirect_to company_order_path(@company, @order), notice: 'Order was successfully updated.' }
+        format.html { redirect_to company_order_path(@order), notice: 'Order was successfully updated.' }
         format.json { render :show, status: :ok, location: @order }
       else
         format.html { render :edit }

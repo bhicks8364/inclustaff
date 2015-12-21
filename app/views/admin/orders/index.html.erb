@@ -1,39 +1,37 @@
-	<% if @orders.needs_attention.any? %>
-	<div class="alert alert-danger fade in text-center">
-		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-		<i class="fa fa-exclamation-triangle fa-fw fa-lg"></i>
-			<strong><%= pluralize(@orders.needs_attention.count, 'open job order') %> </strong>   
-	</div>
-		<% else %>
-	<div class="alert alert-success fade in">
-		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-		<i class="fa fa-check-square-o fa-fw fa-lg"></i>
-			<h4><%= pluralize(@orders.needs_attention.count, 'open job order') %>. </h4>
-	</div>
-		<% end %>
+
 <div class="col-md-12">
 	<div class='col-md-2'>
-	<%= render 'search' %>
-	 
-	  
-	  <h3>Sort By:</h3>
-	  <ul class="fa-ul">
-		  <li><i class="fa-li fa fa-square"></i><%= sort_link(@q, :title) %></li>
-		  <li><i class="fa-li fa fa-square"></i><%= sort_link(@q, :needed_by) %></li>
-		  <li><i class="fa-li fa fa-square"></i><%= sort_link(@q, :min_pay) %></li>
-		  <li><i class="fa-li fa fa-square"></i><%= sort_link(@q, :max_pay) %></li>
-		</ul>
-	  
+	   <%= render 'admin/infoboxes/taggings' %>
+	   
 	</div>
 	
-	<% if @orders.needs_attention.any? %>
 	<div class="col-md-8 border">
-			<%= render @orders.needs_attention %>
+		<h2 class='white'> All Job Orders</h2>
+			<%= render @orders.order(needed_by: :asc) %>
 	</div>
-	<%end%>
 		<div class='col-md-2'>
-			 <%= render 'admin/infoboxes/taggings' %>
+			<%= render 'admin/shared/alerts/open_orders', orders: @orders %>
+		<%= link_to(admin_orders_path(@orders, format: :csv), class: 'btn btn-primary') do %>
+		  		<i class="fa fa-file-excel-o fa-lg"></i> Export CSV
+		  	<% end %>
+		  	<div class='form-inline'>
+		  		<%= form_for @import, url: import_admin_orders_path, multipart: true do |f| %>
+				
+				<% if @import.errors.full_messages.each do |msg| %>
+					<div class='alert alert-danger'>
+					<div><%= msg %></div>
+						<% end %>
+					</div>
+				<% end %>
+		
+				<%= f.file_field :file %>
+					<%= f.submit "Upload" %>
+				<% end %>
+		  	</div>
 		</div>
+
+
+
 
 
 </div>

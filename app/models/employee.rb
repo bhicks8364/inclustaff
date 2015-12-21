@@ -90,6 +90,7 @@ class Employee < ActiveRecord::Base
   #                 uniqueness: { case_sensitive: false }
   
   # SCOPES
+  scope :with_late_timesheets, -> { joins(:timesheets).merge(Timesheet.needing_approval)}
   scope :with_active_jobs, -> { joins(:jobs).merge(Job.active)}
   scope :with_inactive_jobs, -> { joins(:jobs).merge(Job.inactive)}
   scope :on_shift, -> { joins(:shifts).merge(Shift.clocked_in)} 
@@ -121,6 +122,15 @@ class Employee < ActiveRecord::Base
     else
       []
     end
+  end
+  
+  def work_tags
+    @work_tags ||= work_histories.map(&:tag_list).flatten
+  end
+  
+  def set_work_tags!
+    self.tag_list.add(work_tags)
+    self.save
   end
   
  

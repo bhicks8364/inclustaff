@@ -36,13 +36,19 @@
 
     <div class='col-md-12'>
          <h1 class='text-center'><%= @agency.name %></h1>
-        <div class='col-md-3'>
-            <address>
+        <div class='col-md-6'>
+            <address class='white'>
               <strong><%= @agency.name %></strong><br>
              <%= @agency.address %><br>
               <%= @agency.city %>, <%= @agency.state %> <%= @agency.zipcode %><br>
               <abbr title="Phone">P:</abbr> <%= @agency.phone_number %>
             </address>
+            <div class='well scroll300'>
+                <% @agency.admins.each do |admin| %>
+                    <%=link_to admin.name, admin %> - <small><%= admin.role %></small><br>
+                <% end %>
+            </div>
+            
             <%  if policy(@agency).update? %>
                 <%= link_to(edit_agency_path(@current_agency), class: 'btn btn-primary') do %>
         	      <i class='fa fa-pencil fa-fw'></i>
@@ -51,8 +57,17 @@
     		<% end %>
            
         </div>
-        <div class='col-md-9 text-center'>
-             <%= render 'employee/orders/open_table' %>
+        <div class='col-md-6'>
+            <div class='well scroll300'>
+                <% @agency.companies.each do |company| %>
+                    <h4><%= link_to company.name, admin_company_path(company) %> <small><%= number_to_currency(company.current_billing) %></small></h4>
+                    Open: <%=company.orders.needs_attention.count %> | Filled: <%= company.orders.filled.count %> Acct Manager: <%= company.current_account_manager.name%><br>
+                    <% company.admins.each do |company_admin| %>
+                        <%= link_to company_admin.name, company_admin %> <small><%= company_admin.role %></small><br>
+                    <% end %>
+                    <hr>
+                <% end %>
+            </div>
         </div>
         
         

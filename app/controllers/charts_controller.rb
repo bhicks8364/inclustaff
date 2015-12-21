@@ -1,4 +1,5 @@
 class ChartsController < ApplicationController
+  before_action :no_auth
   def current_weeks_billing
     render json: Timesheet.current_week.order(week: :desc).map{|timesheet|
     [timesheet.company.name, timesheet.total_bill]}.chart_json
@@ -22,6 +23,10 @@ class ChartsController < ApplicationController
     render json: Order.all.map{|a|
       [a.title, a.needed_by, a.jobs.first.try(:created_at)]
     }.chart_json
+  end
+  private
+  def no_auth
+    skip_authorization
   end
   
 end

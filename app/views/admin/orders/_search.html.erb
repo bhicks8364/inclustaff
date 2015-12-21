@@ -1,5 +1,4 @@
-<%= search_form_for @q, class: 'form-inline', url: search_admin_orders_path,
+<%= search_form_for @q_orders, class: 'form-inline', url: search_admin_orders_path,
                         html: { method: :post } do |f| %>
-  <%= f.search_field :notes_or_title_or_company_name_cont , class: 'form-control', placeholder: "Search..."%>
-  <%= f.submit "GO!", class:'btn btn-success' %>
+  <%= f.search_field :notes_or_title_or_company_name_cont , class: 'form-control', placeholder: "Search Job Orders"%>
 <% end %>

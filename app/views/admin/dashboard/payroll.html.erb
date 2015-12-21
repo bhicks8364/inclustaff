@@ -1,35 +1,8 @@
-<div class='col-md-12 dark'>
+<div class='col-md-9'>
     <h1 class='page-header'>Payroll Dashboard</h1>
     <%= render 'admin/infoboxes/payroll_boxes' %>
-  <%= render 'admin/infoboxes/infoboxes' %>
- 	
-<h3 class='white'>Shifts Calendar</h3>
-<h4><%= @shifts.count %></h4>
-<%= month_calendar events: @shifts, attribute: :time_in do |date, shifts| %>
-  <%= date %>
-
-  <% shifts.each do |shift| %>
-   
-      <%= shift_collaspe(shift) %>
-       <div class='black collapse' id="collapseShift_<%=shift.id%>">
-           <%=link_to shift.employee.name, admin_employee_path(shift.employee)%>
-        </div>
-  <% end %>
-<% end %>
-    
-   
-        
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+      <%= render 'admin/infoboxes/infoboxes' %>
 </div>
 
-
+<%= render 'admin/shifts/one_day_calendar', shifts: @shifts %>
+<%= render 'admin/shared/one_day_calendar', events: @current_agency.events.order(id: :desc) %>

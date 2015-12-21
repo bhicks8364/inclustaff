@@ -6,7 +6,7 @@
         <div class='col-md-12'>
             <div class='col-md-8'>
                 <h1 class="text-center">
-                    <%= shift_sym(@shift) %>
+                    <span id='shift-sym'><%= shift_sym(@shift) %></span>
                     <%= @employee.name %>  <small class='white'><%= @job.company.name %> </small>
                 </h1>
                 <div class="btn-group btn-group-justified" role="group" aria-label="...">
@@ -17,6 +17,7 @@
                     <%= link_to '<i class="fa fa-trash"></i> Delete'.html_safe, admin_shift_path(@shift), method: :delete, data: { confirm: 'Are you sure you want to delete this shift?' }, class: "btn btn-primary" %>
                 </div>
                 <h1 class='text-center'> <%= @job.title %> <small class='white'> <%= number_to_currency(@job.pay_rate) %>/hr</small></h1>
+                <p class='lead'><%= markdownify(@shift.note) %></p>
             </div>
             <div class='col-md-4'>
                 <h1 class='text-center'><%= @shift.work_date %>  </h1>

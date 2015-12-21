@@ -33,10 +33,11 @@
             <strong>Supervisor:</strong>
             <%= @work_history.supervisor %>
          
-
+<h3>Tags</h3>
+<%= @work_history.tag_list %>
 </div>
     </div>    
-<div class='well row'>
+<div class=' '>
             <strong>Duties / Responsibilities</strong><br>
            <%= highlight(@work_history.description, Skill.job_order.map(&:name), highlighter: '<a href="/tags?tag=\1">\1</a>') %>
        </div>

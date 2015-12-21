@@ -93,7 +93,7 @@ class Admin::JobsController < ApplicationController
                         out_ip: "Admin-Clock-Out" )
         current_admin.events.create(action: "clocked_out", eventable: @shift.employee, user_id: @shift.employee.user_id)
       respond_to do |format|
-          format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
+          format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?,
                     state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out.strftime("%l:%M%P"),
                     in_ip: @shift.in_ip, first_name: @job.employee.first_name, new_count: current_admin.jobs.on_shift.count } }
 

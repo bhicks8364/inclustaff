@@ -1,0 +1,14 @@
+<div class='col-md-3 lightbox scroll300'>
+    <%= calendar events: shifts, attribute: :time_in, number_of_days: 1 do |date, shifts| %>
+      <%= date %>
+        <br>
+      <% shifts.each do |shift| %>
+          <%= shift_collaspe(shift) %><br>
+           <div class='bg-dark collapse white' id="collapseShift_<%=shift.id%>">
+              <%=link_to shift.employee.name, admin_employee_path(shift.employee), class: "white" %><br>
+               <small><%= shift_times(shift) %></small><br>
+               <small><%= link_to "#{shift.hours_worked.round(2)} hours", admin_shift_path(shift), class: "white" %></small>
+            </div>
+      <% end %>
+    <% end %>
+</div>

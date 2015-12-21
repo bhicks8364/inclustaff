@@ -1,0 +1,16 @@
+<div class='col-md-3 lightbox scroll300'>
+    <%= calendar events: events, attribute: :created_at, number_of_days: 1 do |date, events| %>
+      <%= date %>
+        <br>
+      <% events.reverse.each do |event| %>
+          <%= event_collaspe(event) %><br>
+           <div class='collapse white' id="collapseEvent_<%=event.id%>">
+      
+            
+                <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+                    <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
+                <% end %>
+            </div>
+      <% end %>
+    <% end %>
+</div>

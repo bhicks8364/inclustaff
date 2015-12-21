@@ -1,36 +1,28 @@
 <div class='col-md-12 white'>
     <h1><%= @company_admin.name %></h1>
-    <div class=''>
-        <%= @company_admin.company.name %> -
+    <%= link_to "Edit", edit_company_admin_registration_path %>
+    <div class='col-md-2'>
+        <%= signed_in_link_to( @company_admin.company.name, @company_admin.company) if admin_signed_in? %> 
         <%= @company_admin.role %>
-    </div>
-    <div class=''>
+
         <%= @company_admin.email %>
         <%= @company_admin.last_sign_in_ip if admin_signed_in? %>
         <br>
-        <%= @company_admin.last_sign_in_at.stamp("11/12 at 11:15am") %>
-    </div>
+        <%= @company_admin.last_sign_in_at.present? ? @company_admin.last_sign_in_at.stamp("11/12 at 11:15am") : "Yet to sign in" %>
 
-    <div class='dark col-md-6'>
-        
-        <div data-behavior='comment-list' class='scroll300'>
-            <h2>Unread Comments	<span class="badge" data-behavior='comments-count'>
-        		<%=  @company_admin.job_comments.unread.count %>
-        </span></h2>
-        		
-            <% @company_admin.job_comments.unread.order(created_at: :asc).each do |comment| %>
-                    <%= render 'comment', comment: comment %>
-                    <%= render partial: "comments/form", locals: {commentable: comment.commentable} %>
-            <% end %>
-        </div>
-    </div>
-    <div class='dark col-md-6'>
-        <h2>Old Comments</h2>
-        <div data-behavior='read-comment-list' class='scroll300'>
-            <% @company_admin.job_comments.read.limit(20).order(read_at: :desc).each do |comment| %>
-                <%= render 'comment', comment: comment %>
-                
+        <% @company.admins.each do |admin| %>
+             <%= admin.name %> <%= admin.email %><br>
         <% end %>
-        </div>
+        <hr>
+        <% @company_admin.managed_orders.each do |order| %>
+             <%= info_popover(order) %> <%= order.title %><br>
+        <% end %>
+
+        <% @company_admin.managed_orders.each do |order| %>
+             <%= info_popover(order) %> <%= order.title %><br>
+        <% end %>
     </div>
+     <div class='dark col-md-10'>
+         <%= render "admin/shared/quicklook", company: @company %>
+     </div>
 </div>

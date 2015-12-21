@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
     layout :determine_layout
-    
+
     def index
         @users = @current_agency.users.available.ordered_by_check_in
         # @users = User.includes(:employee).available
@@ -17,6 +17,7 @@ class UsersController < ApplicationController
     
     def dns_list
         @users = User.includes(:employee).dns
+        skip_authorization
     end
     
     def edit
