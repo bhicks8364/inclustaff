@@ -1,71 +1,44 @@
-<div class="col-md-12 transbox">
-<h1 class='page-header'><%= @current_agency.name.titleize %>'s Sales Dashboard</h1>
-<div class='col-md-4 well well-sm scroll400'>
-	<h4 class='text-center'>Priority Job Orders<br><small>Needed in the next 3 days</small></h4>
-	<%= render @current_agency.orders.priority %>
-</div>
-<div class='col-md-4 well well-sm scroll400'>
-	<h4>New Job Orders</h4>
-	<%= render @current_agency.orders.newly_added %>
-</div>
-<div class="btn-group">
-  <button class="btn btn-primary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Jump to... <span class="caret"></span>
-  </button>
-  <ul class="list-group dropdown-menu">
-    <%= link_to admin_companies_path, class: 'list-group-item list-group-item-info' do %>
-		<i class="fa fa-building-o"></i>
-			<span>All Companies</span>
-		<% end %>
-	
-	<%= link_to admin_orders_path, class: 'list-group-item list-group-item-info' do %>
-		<i class="fa fa-university"></i>
-		
-			<span>Orders</span>
-		<% end %>
-	
-	<% if current_admin.owner? %>
-	<%= link_to admin_invoices_path, class: 'list-group-item list-group-item-info' do %>
-		<i class="fa fa-money"></i>
-		
-			<span>Invoices</span>
-		<% end %>
-	
-	<% end %>
-
-	<%= link_to admins_path, class: 'list-group-item list-group-item-info' do %>
-		<i class="fa fa-users"></i>
-			<span>Agency Users</span>
-		<% end %>
-	
-	<%= link_to admin_employees_path, class: 'list-group-item list-group-item-info' do %>
-		<i class="fa fa-users"></i>
-			<span>Employees</span>
-		<% end %>
-	
-	<%= link_to admin_timesheets_path, class: 'list-group-item list-group-item-info' do %>
-		<i class="fa fa-file-text-o"></i>
-			<span>Timesheets</span>
-		<% end %>
-	
-  </ul>
-</div>
-	<div class='col-md-6 well'>
-		<h3 class='text-center'>Open Job Orders</h3>
-			<% if @current_admin.account_orders.filled.any? %>
-		<%= render @current_admin.account_orders.filled %>
-
+<div class="col-md-12">
+	<%= render 'admin/dashboard/admin_dropdown' %>
+	<h1 class='page-header'>Sales Dashboard</h1>
+	<%= render 'admin/charts/owner_charts' %>
+	<div class='col-md-4'>
+	<% if @current_admin.job_orders.needs_attention.any? %>
+		<h4 class='text-center white'>All Open Orders</h4>
+		<div class='scroll500 dark'>
+			<%= render @current_admin.job_orders.needs_attention.order(:needed_by) %>
+		</div>
 	<% else %>
-	<h4>No filled job orders</h4>
+		<h4 class='text-center white'>No Open Job Orders </h4>
 	<% end %>
 	</div>
-	<div class='col-md-6 well'>
-		<h3 class='text-center'>Filled Job Orders</h3>
-		<% if @current_admin.account_orders.filled.any? %>
-		<%= render @current_admin.account_orders.filled %>
-
+	<div class='col-md-4'>
+		<% if @current_admin.job_orders.priority.any? %>
+		<h4 class='text-center white'>Priority Job Orders</h4>
+		<div class='scroll500 dark'>
+			<%= render @current_admin.job_orders.priority.order(:needed_by) %>
+		</div>
+		<% else %>
+			<h4 class='text-center white'>No Job Orders need filled in the next 3 days</h4>
+		<% end %>
+	</div>
+	<div class='col-md-4'>
+		<% if @current_admin.job_orders.filled.any? %>
+		<h4 class='text-center white'>Filled Orders</h4>
+		<div class='scroll500 dark'>
+			<%= render @current_admin.job_orders.filled.order(:needed_by) %>
+		</div>
 	<% else %>
-	<h4>No filled job orders</h4>
+		<h4 class='text-center white'>No Filled Job Orders </h4>
 	<% end %>
 	</div>
+	<% if @current_admin.job_orders.newly_added.any? %>
+	<div class='col-md-4'>
+		<h4 class='text-center white'>New Job Orders</h4>
+		<div class='scroll500 dark'>
+			<%= render @current_admin.job_orders.newly_added.order(:needed_by) %>
+		</div>
+	</div>
+	<% end %>
+	
 </div>

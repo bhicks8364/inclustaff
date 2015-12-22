@@ -58,7 +58,8 @@
       <% end %>
   
       <address class="">
-        <%= @company.address %> <%= @company.city %>, <%= @company.state %> <%= @company.zipcode %><br>
+        <%= @company.address %><br>
+        <%= @company.city %>, <%= @company.state %> <%= @company.zipcode %><br>
         <abbr title="Phone">PH:</abbr>  <%= @company.phone_number || "Unavailable"  %> 
       </address>
       <address class="">
@@ -68,6 +69,11 @@
   
       <span class="text-center">Balance: <%= number_to_currency(@company.balance) %></span>
   
+      </div>
+      <div class=''>
+        <%= column_chart @company.jobs.map{|job|
+                {name: job.employee.name, data: job.shifts.group_by_week(:time_in, format: "%B %d, %Y").sum(:time_worked)}
+            }, xtitle: "Week", ytitle: "Total Hours" %>
       </div>
 
   </div>
@@ -135,7 +141,7 @@
     <div class='well'>
       <% if @company.timesheets.any? %>
        <h3>Timesheets</h3>
-      <%= render 'admin/timesheets/table' %>
+      <%= render 'admin/timesheets/table', timesheets: @company.timesheets %>
       <% else %>
       <h3>No timesheets to display.</h3>
       <% end %>

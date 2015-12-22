@@ -23,6 +23,7 @@ class ApplicationController < ActionController::Base
     @current_company = current_company_admin.company if company_admin_signed_in?
     @newly_added = @current_agency.employees.newly_added.order(created_at: :desc) if @current_agency.present?
     @newly_added = @current_company.employees.newly_added.order(created_at: :desc) if @current_company.present?
+    @on_shift = @current_company.jobs.on_shift.order(time_in: :asc) if @current_company.present?
 
     @current = @current_user || @current_admin || @current_company_admin
     @signed_in = @current

@@ -1,5 +1,8 @@
 <%= div_for(order, class: 'lightbox') do %>
-<h2 class=''><%= link_to title_for(order), admin_order_path(order), class: 'black' %> <span class='pull-right'><%= status_tag(order)%></span>  </h2>
+<h2 class=''><%= link_to title_for(order), admin_order_path(order), class: 'black' %> <span class='pull-right'><%= status_tag(order)%></span> 
+<%= heavy_lifting(order) %>
+</h2>
+
 <%= tag_popover(order) if order.tags.any?  %>
 
    <%= info_popover(order) if order.account_manager.present?%>

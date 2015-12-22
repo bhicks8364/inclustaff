@@ -1,107 +1,74 @@
-<div class='col-md-12 dark'>
-  <% if @order.urgent? && @order.needs_attention?%>
-    <div class="alert alert-danger fade in">
-  		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-  		<i class="fa fa-times-circle fa-fw fa-lg"></i>
-  		<strong>URGENT ORDER!!</strong> <%= pluralize(@order.open_jobs, "person is") %> needed by <strong><%= @order.needed_by.stamp("Sunday, 11/5") %></strong>  &nbsp;  <%= link_to "Assign someone now.", new_admin_order_job_path(@order), class: 'alert-link pull-center' %>
-  	</div>
-  <% end %>
-  <div class="btn-group btn-group-justified" role="group" aria-label="...">
-    <div class="btn-group" role="group">
-    <%= link_to(admin_company_path(@company), class: "btn btn-primary") do %>
-  							<i class='fa fa-home'></i>
-  
-  								<span>Back to Company</span>
-  							<% end %>
-  
+<div class='col-md-12'>
+  <div class='open-jobs'>
+    <p class=''><%= heavy_lifting(@order) %> <%= @order.number_needed %> / <%= @order.jobs.active.count %></p>
+  </div>
+  <div class='col-md-4'>
+   <h1 class='white'> <%= title_for(@order) %> </h1>
+   <h3 class='white'><%= link_to @order.company.name, admin_company_path(@order.company) %></h3> 
+  </div> 
+  <div class='col-md-5 white'>
+    <div class='col-md-6'>
+       <strong>Shift:</strong>
+      <h4><%= @order.shift %></h4>
+      <strong>Pay Range:</strong>
+      <h4><%= number_to_currency(@order.min_pay) %> - <%= number_to_currency(@order.max_pay) %></h4>
     </div>
-    <div class="btn-group" role="group">
-    <%= link_to(new_admin_company_order_path(@company), class: "btn btn-primary") do %>
-  							<i class='fa fa-user-plus'></i>
-  
-  								<span>New Job Order</span>
-  							<% end %>
-  
+    <div class='col-md-6'>
+      <strong>Location</strong>
+      <br>
+      <address class="">
+        <%= @company.address %><br> <%= @company.city %>, <%= @company.state %> <%= @company.zipcode %><br>
+      </address>
+      <strong>Company Manager</strong><br>
+      <%=
+         link_to_if(@order.manager.nil?, "Add Manager", { controller: "admin/orders", action: "edit", id: @order }) do
+           link_to(@order.manager.name, @order.manager)
+         end
+      %>
+      <br>
+      <strong>Account Manager</strong><br>
+      <%=
+         link_to_if(@order.account_manager.nil?, "Add Account Manager", { controller: "admin/orders", action: "edit", id: @order }) do
+           link_to(@order.account_manager.name, @order.account_manager)
+         end
+      %>
     </div>
-    <div class="btn-group" role="group">
-    <%= link_to(admin_company_orders_path(@company), class: "btn btn-primary") do %>
-  							<i class='fa fa-briefcase'></i>
-  
-  								<span>Active Orders</span>
-  							<% end %>
-  
-    </div>
-    <div class="btn-group" role="group">
-    <%= link_to(admin_company_timesheets_path(@company), class: "btn btn-primary") do %>
-  							<i class='fa fa-clock-o'></i>
-  
-  								<span>Timesheets</span>
-  							<% end %>
-  
-    </div>
-    
+  </div>
+  <div class='col-md-3'>
+    <%= render 'admin/shared/alerts/open_jobs', order: @order %>
   </div>
 
-<h1>  <%= @order.title_company %> </h1>
 
-<div class="btn-group" role="group" aria-label="...">
-    <% if policy(@order).update? %>
-      <%= link_to 'Edit Order', edit_admin_order_path(@order), class: "btn btn-primary" %>
-    <% end %>
-    <% if policy(Job).create? %>
-     <%= link_to 'Add Job', new_admin_order_job_path(@order), class: "btn btn-primary" %>
-    <% end %>
-  </div>
-<div class='dark' id="order-tabs">
+
+<div class='col-md-12' id="">
 
   <!-- Nav tabs -->
-  <ul id="order-nav" class="nav nav-tabs nav-justified" role="tablist">
+  <ul id="" class="nav nav-tabs nav-justified" role="tablist">
     <li role="presentation" class="active"><a href="#order" aria-controls="order" role="tab" data-toggle="tab">Order Info.</a></li>
-    <li role="presentation"><a href="#matches" aria-controls="matches" role="tab" data-toggle="tab">Matching Candidates</a></li>
+    <li role="presentation"><a href="#matches" aria-controls="matches" role="tab" data-toggle="tab">Candidates</a></li>
     <li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li>
     <li role="presentation"><a href="#active-jobs" aria-controls="active-jobs" role="tab" data-toggle="tab">Active Jobs</a></li>
     <li role="presentation"><a href="#inactive-jobs" aria-controls="inactive-jobs" role="tab" data-toggle="tab">Inactive Jobs</a></li>
-    <li role="presentation"><a href="#skills-tab" aria-controls="skills-tab" role="tab" data-toggle="tab">Skills</a></li>
     <li role="presentation"><a href="#applications" aria-controls="applications" role="tab" data-toggle="tab">Applicants</a></li>
   </ul>
   
-  <div class="tab-content col-md-12">
+  <div class="tab-content white">
     <div role="tabpanel" class="tab-pane fade in active" id="order">
-      <%= link_to @order.account_manager.name, @order.account_manager if @order.account_manager.present? %>
-  <div class='col-md-12 dark'>
-    <h4>Open positions: <%= @order.open_jobs %></h4>
-
-  <h1><%= @order.active ? "" : "Inactive" %></h1>
- 
+      
+    <div class='col-md-6 well well-sm scroll500'>
+      <%= markdownify(@order.notes) %>
+    </div>
+    <div class='col-md-3'>
+      <strong><%= @order.heavy_lifting ? "Heavy Lifting Required" : "" %></strong>
+      <br><strong><%= @order.stwb ? "STWB Required" : "" %></strong><br>
   
-
-  
-   
-  <div class='dark col-md-8'>
-    <%= markdownify(@order.notes) %>
-  </div>
-  <div class='col-md-4'>
-    <strong>Shift</strong><br>
-   <%= @order.shift %><br>
-  
-    <strong><%= @order.heavy_lifting ? "Heavy Lifting Required" : "" %></strong>
-    <br><strong><%= @order.stwb ? "STWB Required" : "" %></strong><br>
-  
-    <strong>Mark Up:</strong>
-    <%= @order.mark_up_percent %>
-  
-  </div>
-
-   <div class='col-md-4'>
+        
     <strong>Drug Test </strong><br>
     <%= @order.dt_req %><br>
   
 
     <strong>Background Check </strong><br>
     <%= @order.bg_check %><br>
-     </div>
-
-   <div class='col-md-4'>
 
     <strong>Assignment Type</strong><br>
     <%= @order.est_duration %><br>
@@ -109,38 +76,65 @@
     <strong>Pay Range:</strong><br>
     <%= @order.pay_range %>
    </div>
-  <div class='col-md-4'>
+  <div class='col-md-3'>
      <strong>Mentioned Admins:</strong>
   <p> <%= @order.mentioned_admins.map{|p| p.name.titleize}.join(", ")  %></p>
       <strong>Requested Employees</strong>
       <p><%= @order.requested_employees.map {|p| p.name.titleize}.join(", ") %></p>
-   </div>
-   <div class='col-md-4'>
-     <strong>Skills</strong>
-     <p><%= @order.skills.map {|p| p.name.titleize}.join(", ") %></p>
+      <hr>
+      <div class="btn-group-vertical" role="group" aria-label="...">
+          <%= link_to(admin_company_path(@company), class: "btn btn-primary") do %>
+      		  <i class='fa fa-home fa-fw pull-left'></i>Back to Company
+      		<% end %>
+          <%= link_to(new_admin_company_order_path(@company), class: "btn btn-primary") do %>
+      		  <i class='fa fa-user-plus fa-fw pull-left'></i>New Job Order
+      		<% end %>
+          <%= link_to(admin_company_orders_path(@company), class: "btn btn-primary") do %>
+  				  <i class='fa fa-briefcase fa-fw pull-left'></i> Active Orders
+  				<% end %>
+        <%= link_to(admin_company_timesheets_path(@company), class: "btn btn-primary") do %>
+    		  <i class='fa fa-clock-o fa-fw pull-left'></i>Timesheets
+    		<% end %>
+      </div>
+      <% if @order.skills.count < 1 %>
+           <h4 id='no-skills' class="text-center">This job order has no skills entered.</h4>
+          <% end %>
+            <div  id='skills' class=''>
+              <%= render @order.skills %>
+            </div>
+      <div class='form-inline'>
+        <%= render partial: "admin/skills/form", locals: {skillable: @order} %>
+      </div>
    </div>
    <div class='col-md-4'>
      <strong>Tags</strong>
       
      <p><%= highlight(@order.tag_list.to_s, @order.tag_list, highlighter: '<a href="/tags?tag=\1">\1</a>') %></p>
    </div>
-
-
-  </div>
-  
+   <div class="btn-group col-md-2">
+      <button type="button" class="btn btn-info black dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class='fa fa-cogs'></i> Admin
+        <span class="sr-only">Toggle Dropdown</span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><%= link_to "<i class='fa fa-building' data-toggle='tooltip' data-placement='right' title='View Company'></i> &nbsp; #{@order.company.name}".html_safe, @order.account_manager, class: "" %></li>
+        <li role="separator" class="divider"></li>
+        <% if policy(@order).update? %><li><%= link_to "<i class='fa fa-pencil' data-toggle='tooltip' data-placement='right' title='Edit Order'></i>&nbsp; Edit".html_safe, edit_admin_order_path(@order), class: "" %></li><% end %>
+        <% if policy(@order).destroy? %><li><%= link_to "<i class='fa fa-trash' data-toggle='tooltip' data-placement='right' title='Delete Order'></i>&nbsp; Delete".html_safe, admin_company_order_path(@company, @order), method: :delete, data: { confirm: 'Are you sure?' }, class: "" %></li><% end %>
+      </ul>
+    </div>
   </div>
   <!--MATCHING CANDIDATES TAB-->
   <div role="tabpanel" class="tab-pane fade" id="matches">
-     <div class='transbox'>
+     <div class=''>
        
        <strong>Matching Employees</strong>
-          <p><%= render @order.matching_employees %></p>
-           <p><strong><%= @order.matching_skills.map {|p| p.name.titleize}.join(", ")  %></strong></p>
+          <%= render @order.matching_employees %>
      </div>
   </div>
   <!--JOBS TAB-->
   <div role="tabpanel" class="tab-pane fade" id="active-jobs">
-      <div class='dark'>
+      <div class=''>
         <% if policy(Job).create? %>
           <%= link_to 'Add Employee', new_admin_order_job_path(@order), class: "btn btn-primary" %>
         <% end %>
@@ -153,7 +147,7 @@
   </div>
   <!--INACTIVE JOBS TAB-->
   <div role="tabpanel" class="tab-pane fade" id="inactive-jobs">
-      <div class='dark'>
+      <div class=''>
         <% if @jobs.inactive.any? %>
       <%= link_to "Inactive Jobs", inactive_admin_order_jobs_path(@order) %>
         
@@ -165,38 +159,22 @@
   </div>
   <!--TIMESHEETS TAB-->
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
-    <div class='dark'>
+    <div class=''>
       <% if @order.timesheets.current_week.any? %>
-        <%= render partial: "admin/timesheets/table", collection: @timesheets.current_week, as: :timesheet %>
+        <%= render "admin/timesheets/table", timesheets: @timesheets.current_week %>
       <% else %>
         <h3>No timesheets for this week yet.</h3>
       <% end %>
-      
       <% if @order.timesheets.any? %>
         <strong>All timesheets</strong>
-      <%= render partial: "admin/timesheets/table" %>
+      <%= render "admin/timesheets/table", timesheets: @timesheets.current_week %>
       <% end %>
     </div>
   </div>
-  <!--SKILLS TAB-->
-  <div role="tabpanel" class="tab-pane fade" id="skills-tab">
-     <div class='dark'>
-      <% if @order.skills.count < 1 %>
-           <h4 id='no-skills' class="center">This job order has no skills entered.</h4>
-          <% end %>
-            <div  id='skills' class=''>
-              <%= render @order.skills %>
-             
-            </div>
-      <div class='form-inline center'>
-        <%= render partial: "admin/skills/form", locals: {skillable: @order} %>
-      </div>
-      
-    </div>
-  </div>
+  
   <!--APPLICATIONS TAB-->
     <div role="tabpanel" class="tab-pane fade" id="applications">
-        <div class='dark'>
+        <div class=''>
           <% if @order.applications.any? %>
           <ul>
             <% @order.applications.each do |event| %>

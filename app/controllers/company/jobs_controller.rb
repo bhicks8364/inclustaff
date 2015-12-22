@@ -87,6 +87,18 @@ class Company::JobsController < ApplicationController
       end
     end
   end
+  
+  def clock_out_all
+      @all_jobs = current_company_admin.jobs
+      @jobs = @all_jobs.on_shift
+      @jobs.each {|job| job.clock_out! }
+      if !@all_jobs.on_shift.any?
+        redirect_to company_jobs_path, notice: "You have just clocked out all working employees"
+      else
+        redirect_to company_jobs_path, notice: "Unable to clocked out #{@jobs.count} employees"
+      end
+      skip_authorization
+  end
 
   # PATCH/PUT /jobs/1
   # PATCH/PUT /jobs/1.json

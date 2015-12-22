@@ -127,7 +127,11 @@ class Employee < ActiveRecord::Base
   def work_tags
     @work_tags ||= work_histories.map(&:tag_list).flatten
   end
-  
+  def work_history_data
+    @histories ||= work_histories.order(:start_date).map { |work_history| ["#{work_history.title}", "#{work_history.start_date}", "#{work_history.end_date}"]}
+    @jobs ||= jobs.map { |job| ["(#{job.order_id}00#{job.id}) - #{job.title}", "#{job.start_date}", "#{job.end_date.present? ? job.end_date : Date.today}"]}
+    @histories + @jobs
+  end
   def set_work_tags!
     self.tag_list.add(work_tags)
     self.save
@@ -135,10 +139,10 @@ class Employee < ActiveRecord::Base
   
  
   def mark_as_assigned!
-    if jobs.active.empty?
-      self.update(assigned: false)
-    else
+    if jobs.active.any?
       self.update(assigned: true)
+    else
+      self.update(assigned: false)
     end
   end 
   def set_defaults

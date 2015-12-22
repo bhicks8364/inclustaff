@@ -43,7 +43,16 @@ class Admin::JobsController < ApplicationController
     @last_week_timesheets =  @job.timesheets.last_week
     @skills = @job.employee.skills
     # @order_skills = @job.order.skills
-    
+    respond_to do |format|
+      format.html
+      format.json
+      format.pdf {
+        send_data @job.candidate_sheet.render,
+          filename: "#{@job.title_company}-#{@employee.name}-candidate-sheet.pdf",
+          type: "application/pdf",
+          disposition: :inline
+      }
+    end
   end
 
   # GET /jobs/new

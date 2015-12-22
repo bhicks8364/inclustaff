@@ -315,6 +315,33 @@ class Job < ActiveRecord::Base
             percent
         end
     end
+    def candidate_sheet
+        Receipts::Receipt.new(
+          id: id,
+          message: "Candidate Sheet: #{employee.name} - #{title_company}",
+          company: {
+            name: "#{company.name}",
+            address: "#{company.address}",
+            email: "#{company.contact_email}",
+            logo: Rails.root.join("app/assets/images/user-profile-1.png")
+          },
+          
+          line_items: [
+            ["Job Title",           title],
+            ["Employee:",           employee.name],
+            ["Recruiter:",          recruiter.name],
+            ["Interview Notes",     description],
+            ["Required Skills:",        "#{order.skills.required.order(:name).map(&:name).join(', ')}"],
+            ["Other Skills:",        "#{order.skills.additional.order(:name).map(&:name).join(', ')}"],
+            ["Candidate Skills:",        "#{employee.skills.order(:name).map(&:name).join(', ')}"],
+            ["Job Description:",      order.notes],
+            ["Needed By",         order.needed_by.stamp('11/12/2015')],
+            ["Pay - Bill",         "$#{pay_rate.round(2)}  -  $#{bill_rate.round(2)}"],
+            ["Mark Up",         mark_up_percent],
+            ["Start Date",         start_date.stamp('11/12/2015')]
+          ]
+        )
+    end
     private
 
       def remove_blanks

@@ -158,15 +158,18 @@ Rails.application.routes.draw do
     namespace :company do
       get  'dashboard' => 'dashboard#home'
       get 'timeclock' => 'dashboard#timeclock'
-
       get 'admins' => 'dashboard#admins'
       get 'admin/:id' => 'dashboard#admin', as: :admin_profile
       resources :orders
       resources :jobs do
+        collection do
+          patch 'clock_out_all'
+        end
         member do
           post 'verify_code'
           patch 'clock_in'
           patch 'clock_out'
+          
         end
       end
       resources :timesheets do

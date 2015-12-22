@@ -36,6 +36,7 @@ class WorkHistory < ActiveRecord::Base
     def title_pay
         "#{title} - $#{pay}"
     end
+    
    
     def words
         @words ||= begin

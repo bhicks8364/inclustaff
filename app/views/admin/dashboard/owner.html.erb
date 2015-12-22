@@ -37,8 +37,8 @@ Agency ID: <%= @current_agency.id %>
 	  </div>
 	 
 	<div id=''>
-		<div id='' class="col-md-4 dark">
-		      <h3 class="title"><strong>Open Invoices</strong><span class='label label-success pull-right black'> <%= number_to_currency(@current_agency.invoices.unpaid.sum(:total)) %></strong></h3>
+		<div id='' class="col-md-4">
+		      <h3 class="white"><strong>Open Invoices</strong><span class='label label-success pull-right black'> <%= number_to_currency(@current_agency.invoices.unpaid.sum(:total)) %></strong></h3>
 		    <div class="scroll300">
 		      <% @current_agency.invoices.unpaid.order(:week).each do |invoice| %>
 						<%= link_to(admin_invoice_path(invoice), class: "list-group-item list-group-item-success") do %>
@@ -51,8 +51,8 @@ Agency ID: <%= @current_agency.id %>
 					  <% end %>
 		    </div>
 		</div>
-		<div class="col-md-4 dark">
-		      <h3 class="title"><strong>Open Job Orders</strong></h3>
+		<div class="col-md-4">
+		      <h3 class="white"><strong>Open Job Orders</strong></h3>
 		    <div class="scroll300">
 		      <%= render 'admin/dashboard/orders_by_company' %>
 					 
@@ -60,9 +60,9 @@ Agency ID: <%= @current_agency.id %>
 		</div>
 		
 		
-		<div class="col-md-2 dark">
-			<h3 class="title"><strong>Admins</strong></h3>
-		    <div class="dark scroll300">
+		<div class="col-md-2">
+			<h3 class="white"><strong>Admins</strong></h3>
+		    <div class="scroll300">
 		    	<% @current_agency.admins.order(:last_name).each do |admin| %>
 						<%= link_to(admin_path(admin), class: "list-group-item") do %>
 					       <div data-behavior="admin" data-id="<%= admin.id %>" class=''>

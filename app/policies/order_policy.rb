@@ -38,6 +38,6 @@ class OrderPolicy < ApplicationPolicy
     user.employee? && record.employee_id == user.employee.id
   end
   def destroy?
-    false
+    return true if user.admin? && user.owner?
   end
 end

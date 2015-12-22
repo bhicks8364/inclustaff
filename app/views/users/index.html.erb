@@ -16,6 +16,7 @@
 					<tbody>
 						<%= content_tag_for(:tr, @users) do |user| %>
 						<td>
+							<%= user.employee.work_histories.count %>
 							<%= link_to "<i class='fa fa-bullseye black'></i>".html_safe, update_as_available_user_path(user), method: :patch, remote: true %>
 						</td>
 							<td>

@@ -18,7 +18,7 @@
 <% end %>
 <div class='col-md-6'>
     <%= f.input :name, label: false, placeholder: "Agency Name", input_html: {class: "form-control"}  %>
-    
+    <%= f.input :logo_url, label: "Logo URL", placeholder: "optional", input_html: {class: "form-control"}  %>
         <p><strong>Choose a subdomain</strong></p>
         <%= f.input :subdomain, label: false, placeholder: "Lowercase only. No special characters or spaces.", input_html: {class: "form-control"}, wrapper_html: {class: "white"}  %>
         <p class='text-center'>Once registered, you can access your portal at www.<u>yoursubdomain</u>.inclustaff.com </p>

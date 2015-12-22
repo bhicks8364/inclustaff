@@ -11,14 +11,10 @@
       
       <th>Week</th>
       <th>Due by</th>
-      
       <th>Total</th>
       <th>Amt paid</th>
       <th>Paid on</th>
       <th>Balance</th>
-    <th></th>
-      <th></th>
-      <th></th>
     </tr>
   </thead>
 
@@ -26,7 +22,7 @@
     <% @invoices.each do |invoice| %>
       <tr>
         <td><%= inv_sym(invoice) %></td>
-        <td><%= link_to invoice.company.name, admin_company_path(invoice.company) %></td>
+        <td><%= link_to invoice.company.name, admin_company_path(invoice.company), class: 'black' %></td>
         
         <td><%= invoice.week %></td>
         <td><%= invoice.due_by.stamp('11/12/2013') %></td>
@@ -35,9 +31,6 @@
         <td><%= number_to_currency(invoice.amt_paid) %></td>
         <td><%= invoice.paid_on %></td>
         <td><%= number_to_currency(invoice.balance) %></td>
-      <td><%= link_to '<i class="fa fa-file fa-1x "></i>'.html_safe, admin_invoice_path(invoice), class: 'btn btn-tiny' %></td>
-        <td><%= link_to '<i class="fa fa-pencil fa-1x "></i>'.html_safe, edit_admin_invoice_path(invoice), class: 'btn btn-tiny' %></td>
-        <td><%= link_to '<i class="fa fa-trash fa-1x "></i>'.html_safe, admin_invoice_path(invoice), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-tiny red' %></td>
       </tr>
     <% end %>
   </tbody>

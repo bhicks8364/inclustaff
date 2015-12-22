@@ -4,20 +4,17 @@
 <div class='col-md-12'>
 
 <%= render 'admin/orders/search' %>
+<%= render 'admin/dashboard/recruiter', recruiter: @current_admin if @current_admin.recruiter? %>
   <h1 class='page-header'>Recruiting Dashboard</h1>
-  <div class="col-md-9">
-  	<%= render 'admin/infoboxes/recruiting_calendar' %>
+  
   	
-  </div>
-  <div class="col-md-3">
-  	<%= render 'admin/dashboard/recruiter', recruiter: @current_admin if @current_admin.recruiter? %>
-  </div>
-  <div class="col-md-10">
+  <div class="col-md-12">
 				<div class="tabs-wrapper">
 					<div class="clearfix">
 					
 						<ul class="nav nav-tabs">
 						  <li class="active"><a href="#tab-home" data-toggle="tab">Open Job Orders</a></li>
+						  <li class=""><a href="#tab-calendar" data-toggle="tab">Calendar</a></li>
 							<li class=""><a href="#tab-placements" data-toggle="tab">Current Placements</a></li>
 							<li class=""><a href="#tab-timesheets" data-toggle="tab">Timesheets</a></li>
 							<li class=""><a href="#tab-events" data-toggle="tab">Applications</a></li>
@@ -74,6 +71,11 @@
 						    	<%= render 'admin/timesheets/timesheet', timesheet: timesheet %>
 						<% end %>
 						    </div>
+						</div>
+						<div class="tab-pane fade" id="tab-calendar">
+							<div class="">
+						  	<%= render 'admin/infoboxes/recruiting_calendar' %>
+						  </div>
 						</div>
 						<div class="tab-pane fade" id="tab-events">
 							<% if Event.applications.any? %>

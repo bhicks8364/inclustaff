@@ -33,7 +33,7 @@
       <div class="tab-content">
         <!--HOME TAB-->
       <div role="tabpanel" class="tab-pane fade in active" id="home">
-           <div class='col-md-3'>
+           <div class='col-md-2'>
                <h4>Contact Info</h4>
                <span class=''><i class="fa fa-envelope-o"></i> 
                <%= @employee.email %></span>
@@ -42,19 +42,20 @@
                <i class="fa fa-phone-square"></i>  <%= @employee.phone_number %></span><br>
                <span class=''><i class="fa fa-home"></i> 
                <%= @user.address %>, <%= @user.state %> <%= @user.zipcode %></span>
-         
-            <h4>Employee Details</h4>
-            <span class=''><i class="fa fa-wrench"></i> <%= @employee.desired_job_type %></span><br>
-            <span class=''><i class="fa fa-clock-o"></i>  <%= @employee.desired_shift %></span>
             </div>
-       <% if @employee.jobs.active.any? %>
-         <div class='col-md-4 text-center'>
-             <h2>Job Count</h2>
-             <%= @employee.jobs.count %>
-              <h2>Tags</h2>
-              <%= highlight(@employee.tag_list.to_s, ActsAsTaggableOn::Tag.all.map(&:name), highlighter: '<a href="/tags?tag=\1">\1</a>') %>
-                  <h4 class=''>Current Job Assignment</h4>
-            <% @employee.jobs.active.each do |job| %>
+        <div class='col-md-2'>
+            <h4>Employee Details</h4>
+                <span class=''><i class="fa fa-wrench"></i> <%= @employee.desired_job_type %></span><br>
+                <span class=''><i class="fa fa-clock-o"></i>  <%= @employee.desired_shift %></span>
+                
+        </div>
+        <div class='col-md-3'>
+            <h4>Availablility</h4>
+            <%= render 'admin/employees/availability', employee: @employee %>
+        </div>
+        <div class='col-md-3'>
+            <h4 class=''>Current Job Assignment</h4>
+             <% @employee.jobs.active.each do |job| %>
               <h5><%= job.company %> <small> <%= link_to job.title, admin_job_path(job) %></small></h5>
                <div class=' black' data-behavior='comment-list'>
              
@@ -63,15 +64,21 @@
                 <% end %>
                </div>
             <% end %>
-          </div>
-       <% end %>
-        <div class='col-md-3'>
-            <h4>Availablility</h4>
-            <%= render 'admin/employees/availability', employee: @employee %>
         </div>
+        <div class='col-md-2 text-center lightbox black'>
+             <h4>Tags</h4>
+              <%= highlight(@employee.tag_list.to_s, ActsAsTaggableOn::Tag.all.map(&:name), highlighter: '<a href="/tags?tag=\1" class="black">\1</a>') %>
+        </div>
+        <div class='col-md-12'>
+            <h2><%= @employee.first_name %>'s Employment Timeline</h2>
+            <%= timeline  @employee.work_history_data, width: "100%", height: "300px"  %>
+        </div>
+        
         <div class='white'>
+            
           <%= render 'admin/shifts/week_calendar', shifts: @employee.shifts.current_week %>
         </div>
+        
 
     </div>
     <div role="tabpanel" class="tab-pane fade" id="matching_orders">
@@ -141,12 +148,14 @@
       <% end %>
       </div>
       <div role="tabpanel" class="tab-pane fade" id="work_history">
+        
         <div class='dark white'>
+            
         <% if @employee.work_histories.any? %>
          
            
            <%= render 'work_histories/table' %>
-           
+          
        
         <% else %>
           <p>No Work History Available.</p>

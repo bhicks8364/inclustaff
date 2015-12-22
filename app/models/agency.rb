@@ -17,6 +17,7 @@
 #  contact_name  :string
 #  contact_email :string
 #  contact_id    :integer
+#  logo_url      :string
 #
 
 class Agency < ActiveRecord::Base

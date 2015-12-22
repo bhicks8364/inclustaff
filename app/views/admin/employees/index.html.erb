@@ -20,6 +20,7 @@
 							  	<tr class="bg-info">
 				        <% end %>
 							<td>
+								<%= employee.work_histories.count %>
 								<%= link_to "<i class='fa fa-user fa-lg fa-fw'></i> #{employee.name}".html_safe, admin_employee_path(employee), class: "" %>
 					</td>
 							<td><%= employee.title %></td>

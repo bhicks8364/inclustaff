@@ -3,9 +3,7 @@
 	<thead>
 		<th class='text-center'><i class="fa fa-calendar-o"></i><br>Week</th>
 		<th class='text-center'><i class="fa fa-building"></i><br>Company</th>
-		
 		<th class='text-center'><i class="fa fa-user"></i><br>Employee</th>
-
 		<th class='text-center'><i class="fa fa-money"></i><br>Gross Pay</th>
 		<th class='text-center'><i class="fa fa-clock-o"></i><br>Hours</th>
 		<th class='text-center'><i class="fa fa-certificate"></i><br>Status</th>
@@ -14,11 +12,11 @@
 	<tbody>
 	
 	
-		<% @timesheets.order(week: :desc).each do |timesheet| %>
+		<% timesheets.order(week: :desc).each do |timesheet| %>
 	<tr data-behavior="timesheet" data-id="<%= timesheet.id %>">
-		<td><strong><%= link_to timesheet.week_ending, admin_timesheet_path(timesheet) %></strong></td>
-		<td class='text-left'><%= link_to timesheet.order.company, admin_company_path(timesheet.company), class: 'table-link'  %></td>
-      	<td class='text-left'><%= link_to timesheet.employee.name, admin_employee_path(timesheet.employee), class: 'table-link' %>
+		<td><strong><%= link_to timesheet.week_ending, admin_timesheet_path(timesheet), class: 'black' %></strong></td>
+		<td class='text-left'><%= link_to timesheet.order.company, admin_company_path(timesheet.company), class: 'black'  %></td>
+      	<td class='text-left'><%= link_to timesheet.employee.name, admin_employee_path(timesheet.employee), class: 'black' %>
       	</td>
 
 			

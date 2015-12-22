@@ -1,4 +1,7 @@
 <div class='col-md-12'>
+  <%= link_to(admin_job_path(@job, format: :pdf), class: 'btn btn-primary') do %>
+  	<i class="fa fa-download fa-md"></i> Candidate Sheet
+  <% end %>
   <% if @job.on_shift? %>
          <%= shift_popover(@job.current_shift) %>
         <% end %>

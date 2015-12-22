@@ -30,8 +30,15 @@
   </ul>
   
   <div class="tab-content">
-  <div role="tabpanel" class="tab-pane fade in active" id="home">
-        <%= render @user %>
+    <div role="tabpanel" class="tab-pane fade in active" id="home">
+        <div class='col-md-12 dark'>
+            <h2><%= @employee.first_name %>'s Employment Timeline</h2>
+            <%= timeline  @employee.work_history_data, width: "100%", height: "300px"  %>
+        </div>
+      
+      
+        <div class='col-md-12'>
+            <%= render @user %>
                      <h2>Tags</h2>
              <%= @employee.tag_list %>
               <%= highlight(@employee.tag_list.to_s, ActsAsTaggableOn::Tag.all.map(&:name), highlighter: '<a href="/tags?tag=\1">\1</a>') %>
@@ -45,6 +52,7 @@
          <div class='col-md-3'>
             <%= link_to "Edit Profile", edit_user_path(@user), class: "btn btn-primary" %>
          </div>
+        </div>
         
    
     
@@ -155,15 +163,17 @@
   <div role="tabpanel" class="tab-pane fade" id="work_history">
     <div class='transbox'>
     <% if @employee.work_histories.any? %>
-     <div class=' table-responsive'>
+        <div class=' table-responsive'>
        
        <%= render 'admin/work_histories/table' %>
+       </div>
        <% if admin_signed_in? %>
          <%=link_to "Add Work History", new_admin_employee_work_history_path(@employee), class: 'btn btn-primary' %>
        <% elsif user_signed_in? %>
          <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
        <% end %>
-   </div>
+        
+        
     <% else %>
       <p>No Work History Available.</p>
        <% if admin_signed_in? %>

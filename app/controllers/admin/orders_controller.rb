@@ -11,10 +11,10 @@ class Admin::OrdersController < ApplicationController
     @import = Order::Import.new
     if params[:company_id]
       @company = Company.find(params[:company_id])
-      @orders = @company.orders
+      @orders = @company.orders.needs_attention
      
     else
-      @q_orders = Order.includes(:company, :jobs).active.ransack(params[:q]) 
+      @q_orders = Order.includes(:company, :jobs).needs_attention.ransack(params[:q]) 
       @orders = @q_orders.result(distinct: true).paginate(page: params[:page], per_page: 25)
       # @orders = Order.includes(:jobs).active.order(created_at: :desc) 
     end

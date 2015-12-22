@@ -1,0 +1,14 @@
+<% if order.needs_attention? %>
+<div class="alert alert-danger fade in">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+  
+ <h5 class='text-center'><%= status_tag(order)%> <%= pluralize(order.open_jobs, "open position") %> <strong><%= order.needed_by.stamp("Sunday, 11/5") %></strong></h5> 
+ 
+ &nbsp;  <%= link_to "<span class='black'><i class='fa fa-user-plus' data-toggle='tooltip' data-placement='right' title='Make a placement'></i></span>".html_safe, new_admin_order_job_path(order), class: 'btn btn-clear pull-right' %>
+</div>
+<% else %>
+<div class="alert alert-success fade in">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+ <h5 class='text-center'><%= status_tag(order)%> </h5> 
+</div>
+<% end %>

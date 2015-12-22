@@ -7,15 +7,15 @@ module OrdersHelper
     end
     def status_msg(order)
         if order.overdue? 
-          "Overdue " + "#{distance_of_time_in_words(order.needed_by, Time.current, include_seconds: true)}"
+          "Overdue " + "  #{order.needed_by.stamp("11/12/2015")}"
         elsif order.priority?
-          "Priority " + "#{distance_of_time_in_words(order.needed_by, Time.current, include_seconds: true)}"
+          "Priority " + "    #{order.needed_by.stamp("11/12/2015")}"
         elsif order.needs_attention? && order.needed_by.present?
-          "Open " + "#{distance_of_time_in_words(order.needed_by, Time.current, include_seconds: true)}"
+          "Open " + "  #{order.needed_by.stamp("11/12/2015")}"
         elsif order.needs_attention? && !order.needed_by.present?
             "OPEN - No fill date."
         elsif order.filled?
-            "Filled " + "#{distance_of_time_in_words(order.created_at, order.jobs.last.try(:created_at), include_seconds: true)}"
+            "Filled in " + "#{distance_of_time_in_words(order.created_at, order.jobs.last.try(:created_at), include_seconds: true)}"
         else
             "wtf"
         end
@@ -41,7 +41,24 @@ module OrdersHelper
             "<i class='fa fa-check fa-fw green' data-toggle='tooltip' data-placement='left' title='#{status_msg(order)}'></i>".html_safe
         end
     end
+    def status_tag(order, options={})
+        options[:class] ? options[:class] += ' status_msg' : options[:class] = 'status_msg'
+        if order.overdue?
+            "<i class='fa fa-exclamation fa-fw red' data-toggle='tooltip' data-placement='left' title='#{status_msg(order)}'></i>".html_safe
+        elsif order.priority?
+            "<i class='fa fa-exclamation-circle fa-fw red' data-toggle='tooltip' data-placement='left' title='#{status_msg(order)}'></i>".html_safe
+        elsif order.needs_attention?
+            "<i class='fa fa-clock-o fa-fw' data-toggle='tooltip' data-placement='left' title='#{status_msg(order)}'></i>".html_safe
+        elsif order.filled?
+            "<i class='fa fa-check fa-fw green' data-toggle='tooltip' data-placement='left' title='#{status_msg(order)}'></i>".html_safe
+        end
+    end
     def title_for(order)
         "<span class='black' data-placement='right' data-toggle='tooltip' title=' #{ order.company.name}'>#{order.title }</span>".html_safe
+    end
+    def heavy_lifting(order)
+        if order.heavy_lifting?
+            "<i class='fa fa-anchor fa-fw red' data-toggle='tooltip' data-placement='right' title='Heavy lifting required'></i>".html_safe
+        end
     end
 end

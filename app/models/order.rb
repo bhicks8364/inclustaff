@@ -123,7 +123,9 @@ class Order < ActiveRecord::Base
       needs_attention? && needed_by <= Date.today + 3.days
     end
     def set_needed_by
-      self.needed_by = Date.today
+      if needed_by.nil?
+        self.needed_by = Date.today
+      end
     end
     
     def company_name

@@ -14,49 +14,27 @@
   
     <h2 class='page-header'> Welcome, <%= current_company_admin.name %>!</h2>
  <div class='col-md-2'>
-<div class="btn-group-vertical" role="group" aria-label="...">   
+    <div class="btn-group-vertical" role="group" aria-label="...">   
         <%= link_to "Timeclock", company_timeclock_path, class: 'btn btn-primary'%>
         <%= link_to "Jobs", company_jobs_path, class: 'btn btn-primary'%>
         <%= link_to "Edit Company Admin", edit_company_admin_registration_path, class: 'btn btn-primary'%>
+        <%= link_to "Clock Out All", clock_out_all_company_jobs_path, method: :patch, class: 'btn btn-primary' if @on_shift.any? %>
     </div>
      </div>
 <div class='col-md-4 '>
-   <h2> Invoices <%= pluralize( @current_company_admin.company.invoices.unpaid.count, 'unpaid invoice') %></h2>
+    <h2>  <%= pluralize( @current_company_admin.company.invoices.unpaid.count, 'unpaid invoice') %></h2>
     <div class=''>
-       <%= div_for @company.invoices.order(created_at: :desc), class: "lightbox black fa-ul" do |invoice| %>
-       <%= invoice_popover(invoice) %>
-       <% if invoice.paid %>
-           <li class='paid'><i class="fa-li fa fa-check-square"></i>
-           <%= invoice.paid_on %><%= number_to_currency(invoice.total) %>
-           
-           </li>
-       <% else %>
-           <li class='unpaid'><i class="fa-li fa fa-square-o"></i>
-           
-          
-          
-         
-                <% invoice.timesheets.each do |timesheet| %>
-                 <li> <%= timesheet_popover(timesheet) %>
-          <%= link_to company_timesheet_path(timesheet), class: "black" do %>
-        
-             <%= invoice_timesheet(timesheet) %>
-            <% end %>
-            </li>
-        <% end %>
-          
-          
-           <p class='text-right'>Subtotal: <%= number_to_currency(invoice.total) %></p>
-           </li>
-       <% end %>
-      
-   <% end %>
-   </div>
+    <%= div_for @company.invoices.unpaid.order(created_at: :desc), class: "lightbox black fa-ul" do |invoice| %>
+        <%= render "company/invoices/invoice", invoice: invoice %>
+    
+    <% end %>
+    </div>
 </div>
-<div class='col-md-6'>
-<% @company.invoices.each do |invoice| %>
-		<%= render "company/invoices/invoice", invoice: invoice %>
-<% end %>
+<div class='col-md-4'>
+<%= div_for @company.invoices.paid.order(date_paid: :desc), class: "lightbox black fa-ul" do |invoice| %>
+        <%= render "company/invoices/invoice", invoice: invoice %>
+    
+    <% end %>
 </div>
    <div class='col-md-6 col-sm-12 col-xs-12 '>
 	    <div class='list-group scroll300'>

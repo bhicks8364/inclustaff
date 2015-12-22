@@ -26,7 +26,7 @@
         <td><%= work_history.title %></td>
         <td><%= work_history.start_date.stamp('11/2011') %></td>
         <td><%= work_history.end_date.stamp('11/2011') %></td>
-        <td> <%= highlight(work_history.description, work_history.employee.tags.pluck(:name), highlighter: '<a href="/tags?tag=\1">\1</a>') %></td>
+        <td> <%= highlight(truncate(work_history.description), work_history.employee.tags.pluck(:name), highlighter: '<a href="/tags?tag=\1">\1</a>') %></td>
         
         <td><%= number_to_currency(work_history.pay) %></td>
    

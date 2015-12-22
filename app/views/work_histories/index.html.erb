@@ -1,7 +1,7 @@
 <div class='dark'>
   <h1>Listing Work Histories</h1>
 
-<table class='table table-bordered white'>
+<table class='table table-bordered black datatable'>
   <thead>
     <tr>
       <th>Employer name</th>
@@ -10,12 +10,9 @@
       <th>Title</th>
       <th>Employee</th>
       <th>Description</th>
-      <th>Current</th>
-      <th>May contact</th>
-      <th>Supervisor</th>
-      <th>Phone number</th>
       <th>Pay</th>
-      <th colspan="2"></th>
+      <th></th>
+      <th></th>
     </tr>
   </thead>
 
@@ -28,10 +25,7 @@
         <td><%= work_history.title %></td>
         <td><%= link_to work_history.employee.name, admin_employee_path(work_history.employee) %></td>
         <td><%= truncate(work_history.description) %></td>
-        <td><%= work_history.listed_skills.map{|p| p.name}.join(", ")  %></td>
-        <td><%= work_history.may_contact %></td>
-        <td><%= work_history.supervisor %></td>
-        <td><%= work_history.phone_number %></td>
+
         <td><%= work_history.pay %></td>
        
         <td><%= link_to 'Edit', edit_work_history_path(work_history) %></td>
