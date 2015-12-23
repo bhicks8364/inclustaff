@@ -1,9 +1,11 @@
 jQuery ->
-  $('.datatable').dataTable
+  $('.datatable').DataTable
     sPaginationType: "full_numbers",
     "paging":   true,
+    # "scrollY": 400,
+    "sorting": true
     #"order": [[ 1, "asc" ]],
-    "info":     true
+    # "info":     true
   $('[data-toggle="tooltip"]').tooltip()
     
   # $('#timesheets-datatable').dataTable

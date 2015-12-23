@@ -14,7 +14,6 @@
 	</div>
 	<div class='break-list'>
 	<% if shift.on_break? %>
-	     
 	       <%= link_to "<i class='fa fa-history'></i> Start Break".html_safe, break_start_admin_shift_path(shift), method: :patch, remote: true, class: 'btn btn-success hide-this', id: 'start-break-btn' %>
 	    <% elsif shift.clocked_in? %>
 	          <%= link_to "<i class='fa fa-clock-o'></i> End Break".html_safe, break_end_admin_shift_path(shift), method: :patch, remote: true, class: 'btn btn-danger hide-this', id: 'end-break-btn' %>
@@ -22,8 +21,12 @@
 	    <% end %>
 	    <br>
 	     <% if shift.took_a_break? %>
-	      <%= link_to "<i class='fa fa-ban'></i>".html_safe, remove_breaks_admin_shift_path(shift), method: :patch, remote: true, data: { confirm: 'Are you sure you want to remove all breaks from this shift?', toggle:"tooltip", placement: "left" }, title: "Remove All Breaks", class: "hide-this", id: "remove-breaks-btn" %>
+	      <%= link_to "<i class='fa fa-ban red'></i> Remove All".html_safe, remove_breaks_admin_shift_path(shift),
+	      method: :patch, remote: true, data: { confirm: 'Are you sure you want to remove all breaks from this shift?', toggle:"tooltip", 
+	      placement: "top" }, title: "Remove All", class: "btn btn-danger black hide-this", id: "remove-breaks-btn" %>
 	      <% end %>
-	    <%= link_to "<i class='fa fa-ban'></i>".html_safe, remove_breaks_admin_shift_path(shift), method: :patch, remote: true, data: { confirm: 'Are you sure you want to remove all breaks from this shift?', toggle:"tooltip", placement: "left" }, title: "Remove All Breaks", class: "", id: "remove-breaks-btn" if shift.breaks.any? %>
+	    <%= link_to "<i class='fa fa-ban red'></i> Remove All Breaks".html_safe, remove_breaks_admin_shift_path(shift), 
+	    method: :patch, remote: true, data: { confirm: 'Are you sure you want to remove all breaks from this shift?', toggle:"tooltip", 
+	    placement: "top" }, title: "Remove All Breaks", class: "btn btn-danger black", id: "remove-breaks-btn" if shift.breaks.any? %>
 	</div>
 </div>

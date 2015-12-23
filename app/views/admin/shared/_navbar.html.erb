@@ -3,8 +3,9 @@
 		<div class="navbar-header">
 	      
 	      <% if @current_agency.present? %>
+	      
 			<%= link_to root_url, id: "logo", class: "navbar-brand" do %>
-				<%= @current_agency.name.titleize %>	
+				<%= image_tag(@current_agency.logo_url, class: "", id: "", alt: "img-#{@current_agency.id}")%> 	
 			<% end %>
 		<% else %>
 			<%= link_to root_url, id: "logo", class: "" do %>
@@ -25,9 +26,10 @@
 	       <ul class="nav navbar-nav navbar-right">
 	       	<% if @current_admin.present? %>
 	       	
-					 <%= render 'admin/shared/clocked_in' if  @current.jobs.on_shift.any? %>
+					<%= render 'admin/shared/clocked_in' if  @current.jobs.on_shift.any? %>
 					<%= render 'admin/shared/on_break' if @current.jobs.on_break.any? %>
-					<%= render 'admin/shared/dropdown'if Comment.unread.any? %>
+					<%= render 'admin/shared/dropdown'if Comment.includes(:commentable).unread.any? %>
+					<%= render 'admin/shared/event_dropdown', events: Event.includes(:eventable).current_week.order(created_at: :desc).limit(10) if Event.current_week.any? %>
 		
 	       		<li><%= link_to @current_admin.name, @current_admin %></li>
 	        	

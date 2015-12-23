@@ -34,6 +34,7 @@ class EventsController < ApplicationController
   def show
     @order = Order.find(@event.eventable_id) if @event.application?
     @timesheet = Timesheet.find(@event.eventable_id) if @event.timesheet?
+    @shift = Shift.find(@event.eventable_id) if @event.eventable_type == "Shift"
     @company = @order.company if @order.present?
     @employee = @event.user.employee if @event.application?
     @job = @order.jobs.new if @order.present?
@@ -64,12 +65,22 @@ class EventsController < ApplicationController
       end
     end
   end
-  def mark_as_read
+  def mark_all_as_read
     skip_authorization
     @events = Event.unread
     @events.update_all(read_at: Time.zone.now)
     
     render json: {success: true}
+  end
+  def mark_as_read
+    if @event.unread?
+      @event.update(read_at: Time.current)
+    else
+      @event.update(read_at: nil)
+    end
+    @new_count = Comment.unread.count
+    render json: { id: @event.id, read: @event.read?, new_count: @new_count,
+                    body: @event.body, eventable: @event.eventable, state: @event.state}
   end
   # PATCH/PUT /events/1
   # PATCH/PUT /events/1.json

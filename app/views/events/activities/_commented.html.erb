@@ -1,33 +1,13 @@
-<% if event.timesheet? %>
-<%= link_to admin_timesheet_path(event.eventable), class: 'list-group-item list-group-item-info' do %>
-	<p>	 <%= event.company_admin.try(:name) || event.admin.try(:name) %>
-    <strong>	<%= event.action.humanize.downcase %></strong> on <%= event.eventable.employee_name %>'s <%= event.eventable.class.to_s.downcase %> 
-    	
-    
-    	 
-	<span class='label label-info black pull-right'>
-		  <small> <%= event.created_at.stamp('11/13 at 8:30am') %></small>
-		</span></p>
-	
-<% end %>
-<% elsif event.job? %>
-<%= link_to admin_job_path(event.eventable), class: 'list-group-item list-group-item-info' do %>
-	<p>	 <%= event.company_admin.try(:name) || event.admin.try(:name) %>
-    <strong>	<%= event.action.humanize.downcase %></strong> on <%= event.eventable.try(:name_title) || event.eventable.try(:employee_name) %>'s <%= event.eventable.class.to_s.downcase %> 
-    	
-    
+<%= link_to event_path(event), class: 'list-group-item list-group-item-success' do %>
+	 <%= event.company_admin.try(:name) || event.admin.try(:name) %>
+	 <%= event.eventable.employee.try(:name) || "" %>
+   <strong>	<%= event.action.humanize.downcase %></strong> <%= event.eventable.name %> 
     	 
 
-	<span class='label label-info black pull-right'>
-		  <small> <%= event.created_at.stamp('11/13 at 8:30am') %></small>
-		</span></p>
+		<span class='label label-success black pull-right' data-toggle="tooltip" title="Current Status">
+		     <small> <%= event.created_at.stamp('11/13 at 8:30am') %></small>
+		  
+		</span>
 
 <% end %>
-<% else %>
-<%= signed_in_link_to event.eventable_type, event.eventable %>
-	<p>	 <%= event.company_admin.try(:name) || event.admin.try(:name) %>
-    <strong>	<%= event.action.humanize.downcase %></strong> on <%= event.eventable.try(:name_title) || event.eventable.try(:employee_name) %>'s <%= event.eventable.class.to_s.downcase %> 
-	<span class='label label-info black pull-right'>
-		  <small> <%= event.created_at.stamp('11/13 at 8:30am') %></small>
-		</span></p>
-<% end %>
+

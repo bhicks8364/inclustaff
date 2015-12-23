@@ -231,8 +231,11 @@ Rails.application.routes.draw do
     resources :comments 
     
     resources :events do
+      member do
+        patch :mark_as_read
+      end
       collection do
-        post :mark_as_read
+        post :mark_all_as_read
       end
     end
     resources :work_histories

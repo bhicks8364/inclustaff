@@ -1,0 +1,36 @@
+<li id='events-nav' class="dropdown hidden-xs">
+	<a class="btn nav-btn dropdown-toggle" data-toggle="dropdown">
+
+  		<i class="fa fa-bell-o fa-1x"></i> 
+		<span class="badge" data-behavior='events-count'>
+			<%= events.count < 10 ? events.count : "10+" %>
+		</span>
+	</a>
+	<ul class="dropdown-menu dropdown-menu-left" data-behavior='event-list'>
+		<li class="pointer">
+			<div class="pointer-inner">
+				<div class="arrow"></div>
+				<div class="arrow-border"></div>
+			</div>
+		</li>
+		<li id='events-count' class="item-header dark">
+			You have <%= pluralize( events.count, 'events') %>.
+		</li>
+			<%  events.order(updated_at: :desc).each do |event| %>
+		<li id='event-<%= event.id %>'class="list-item" >
+			
+			<%= link_to event do %>
+				<%= render 'events/event', event: event %>
+				 
+			<% end %>
+			
+			
+		</li>
+		<% end %>
+		
+		
+		<li class="item-footer">
+			<%= link_to "View all events", events_path %>
+		</li>
+	</ul>
+</li>

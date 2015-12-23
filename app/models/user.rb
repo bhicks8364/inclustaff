@@ -34,6 +34,7 @@
 
 class User < ActiveRecord::Base
   has_one :employee, dependent: :destroy
+  has_many :jobs, through: :employee
   has_many :shifts, through: :employee
   has_many :work_histories, through: :employee
   has_many :skills, through: :employee
@@ -50,7 +51,7 @@ class User < ActiveRecord::Base
   validates :role,  presence: true
   validates :code, uniqueness: true
 
-  devise :database_authenticatable, :authentication_keys => [:code]
+  # devise :database_authenticatable, :authentication_keys => [:code]
   devise :database_authenticatable, :registerable,
         :recoverable, :rememberable, :trackable, :validatable
   
@@ -74,6 +75,7 @@ class User < ActiveRecord::Base
   def set_role
     self.role = "Employee"
   end
+  
   def to_param
     "#{id}-#{last_name.parameterize }"
   end

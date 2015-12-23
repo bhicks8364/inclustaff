@@ -10,6 +10,7 @@
     			<h2><strong>Marked as DNS</strong>  </h2> 
 	    </div>
         <% end %>
+        
  <h2 class="page-header text-center"><%= @user.name %>'s Employee Profile  </h2>
 <!--NAV TABS-->
     <div id='profile-nav' class=''>
@@ -54,6 +55,7 @@
             <%= render 'admin/employees/availability', employee: @employee %>
         </div>
         <div class='col-md-3'>
+            <%= link_to "View ACA Report", aca_admin_employee_path(@employee), class: "btn btn-primary btn-lg btn-block" %>
             <h4 class=''>Current Job Assignment</h4>
              <% @employee.jobs.active.each do |job| %>
               <h5><%= job.company %> <small> <%= link_to job.title, admin_job_path(job) %></small></h5>
@@ -96,7 +98,7 @@
     <div role="tabpanel" class="tab-pane fade" id="payroll">
          <h2 class="text-center">Payroll Information  </h2>
          
-        <div class='col-md-4 well'>
+        <div class='col-md-4'>
             <%= @employee.ssn %><br>
           CODE:  <%= @employee.code %><br>
            <strong>Last sign in:</strong> <%= @user.current_sign_in_at %> -
@@ -108,19 +110,15 @@
         <h2 class="text-center">ACA Information  </h2>
         <%= render 'admin/shifts/aca_progress', employee: @employee %>
         
-        <%= link_to "View ACA Report", aca_admin_employee_path(@employee) %>
+        
     
       </div>
       <!--TIMESHEETS TAB-->
       <div role="tabpanel" class="tab-pane fade" id="timesheets">
         
         <% if @employee.timesheets.any? %>
-        
-        <% if user_signed_in? %>
-         <%= render 'employee/timesheets/table' %>
-         <% elsif admin_signed_in? %>
-         <%= render 'admin/timesheets/table' %>
-         <% end %>
+  
+         <%= render 'admin/timesheets/table', timesheets: @employee.timesheets %>
     
           <% end %>
     

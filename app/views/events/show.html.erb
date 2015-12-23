@@ -3,6 +3,9 @@
     <% if @event.timesheet? %>
 <h1> Timesheet!</h1>
 <%= render @timesheet %>
+<% elsif @event.eventable_type == 'Shift' %>
+<h1><%= @event.eventable_type.titleize %></h1>
+<%= render "admin/shifts/shift", shift: @shift if admin_signed_in? %>
 <% end %>
 <% if @event.action == 'applied' %>
 <% if admin_signed_in? %>

@@ -61,7 +61,7 @@ class Job < ActiveRecord::Base
     after_save :update_employee
     after_initialize :ensure_pay
     def ensure_pay
-        self.pay_rate = 9.00 if pay_rate.nil?
+        self.pay_rate = order.min_pay if pay_rate.nil?
     end
     
     

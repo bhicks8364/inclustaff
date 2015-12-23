@@ -36,7 +36,22 @@ class Event < ActiveRecord::Base
     scope :clock_outs, -> { where(action: 'clocked_out')}
     scope :unread, -> { where(read_at: nil)}
     scope :read, -> { where.not(read_at: nil)}
-    
+    scope :payroll_week,  -> {
+          start = Time.current.beginning_of_week
+          ending = start.end_of_week + 7.days
+          where(created_at: start..ending)}
+    scope :current_week, -> {
+          start = Time.current.beginning_of_week
+          ending = start.end_of_week
+          where(created_at: start..ending)}
+    scope :today, -> {
+          start = Date.today.beginning_of_day
+          ending = Date.today.end_of_day
+          where(created_at: start..ending)}
+    scope :yesterday, -> {
+          start = Date.yesterday.beginning_of_day
+          ending = Date.today.beginning_of_day
+          where(created_at: start..ending)}
     def self.happened_before(date)
       where(Event[:created_at].lteq(date))
     end
