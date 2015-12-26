@@ -1,4 +1,4 @@
-	<div class='col-md-12 mainbox'>
+	<div class='col-md-12'>
     <% Calendar.new events: @company.shifts do |date, shifts| %>
   <%= date %>
 
@@ -10,76 +10,29 @@
 <% end %>
   </div>
 <div class='col-md-12'>
-
-  
-    <h2 class='page-header'> Welcome, <%= current_company_admin.name %>!</h2>
- <div class='col-md-2'>
-    <div class="btn-group-vertical" role="group" aria-label="...">   
-        <%= link_to "Timeclock", company_timeclock_path, class: 'btn btn-primary'%>
-        <%= link_to "Jobs", company_jobs_path, class: 'btn btn-primary'%>
-        <%= link_to "Edit Company Admin", edit_company_admin_registration_path, class: 'btn btn-primary'%>
-        <%= link_to "Clock Out All", clock_out_all_company_jobs_path, method: :patch, class: 'btn btn-primary' if @on_shift.any? %>
+    <h2 class='page-header white'> Welcome, <%= current_company_admin.name %>!</h2>
+ 	<div class='col-md-2'>
+	    <div class="btn-group-vertical" role="group" aria-label="...">   
+	        <%= link_to "Timeclock", company_timeclock_path, class: 'btn btn-primary'%>
+	        <%= link_to "Jobs", company_jobs_path, class: 'btn btn-primary'%>
+	        <%= link_to "Edit Company Admin", edit_company_admin_registration_path, class: 'btn btn-primary'%>
+	        <%= link_to "Clock Out All", clock_out_all_company_jobs_path, method: :patch, class: 'btn btn-primary' if @on_shift.any? %>
+	    </div>
     </div>
-     </div>
-<div class='col-md-4 '>
-    <h2>  <%= pluralize( @current_company_admin.company.invoices.unpaid.count, 'unpaid invoice') %></h2>
-    <div class=''>
-    <%= div_for @company.invoices.unpaid.order(created_at: :desc), class: "lightbox black fa-ul" do |invoice| %>
-        <%= render "company/invoices/invoice", invoice: invoice %>
-    
-    <% end %>
-    </div>
-</div>
-<div class='col-md-4'>
-<%= div_for @company.invoices.paid.order(date_paid: :desc), class: "lightbox black fa-ul" do |invoice| %>
-        <%= render "company/invoices/invoice", invoice: invoice %>
-    
-    <% end %>
-</div>
-   <div class='col-md-6 col-sm-12 col-xs-12 '>
-	    <div class='list-group scroll300'>
-			<h5 class="white text-center">Recent Timesheet Comments</h5>
-			<% @company.timesheets.with_recent_comments.order(updated_at: :desc).distinct.each do |timesheet| %>
-					Timesheet ID: <%= timesheet.id %><%= link_to(company_timesheet_path(timesheet), class: '') do %>
-				<h5>	<strong><%= timesheet.job.name_title %> </strong></h5>
-				<ul class="fa-ul">
-					<% timesheet.comments.order(created_at: :desc).each do |comment| %>
-					<li><i class="fa-li fa fa-commenting"></i><strong>
-						<%= comment.admin.try(:name) || comment.company_admin.try(:name) %> - 
-						<%= comment.admin.try(:role) || comment.company_admin.try(:role) %>
-						</strong><br>
-					<p><%= comment.body %></p>
-					
-					<small><%= comment.created_at.stamp('Mon 11/30 at 11:30am') %>	</small>
-					</li>
-					<% end %></ul>
-					
-				<% end %>
+	<div class='col-md-6'>
+	    
+	   
+	</div>
+	<div class='col-md-4'>
+		<h2 class='white'>  <%= pluralize( @current_company_admin.company.invoices.unpaid.count, 'unpaid invoice') %></h2>
+		 <%= div_for @company.invoices.unpaid.order(created_at: :desc), class: "lightbox black fa-ul" do |invoice| %>
+	        <%= render "company/invoices/invoice", invoice: invoice %>
+	    
+	    <% end %>
+		<div class='scroll400'>
+			<%= div_for @company.invoices.paid.order(date_paid: :desc), class: "lightbox black fa-ul" do |invoice| %>
+			        <%= render "company/invoices/invoice", invoice: invoice %>
 			<% end %>
 		</div>
-    </div>
-    <div class='col-md-6 col-sm-12 col-xs-12 '>
-	    <div class='list-group scroll300'>
-			<h5 class="white text-center">Recent Job Comments</h5>
-			<% @company.jobs.with_recent_comments.order(updated_at: :desc).distinct.each do |job| %>
-			Job ID: <%= job.id %>
-			<%= link_to(company_job_path(job), class: '') do %>
-				<h5>	<strong><%= job.name_title %> </strong></h5>
-				<ul class="fa-ul">
-					<% job.comments.order(created_at: :desc).each do |comment| %>
-					<li><i class="fa-li fa fa-commenting"></i><strong>
-						<%= comment.admin.try(:name) || comment.company_admin.try(:name) %> - 
-						<%= comment.admin.try(:role) || comment.company_admin.try(:role) %>
-						</strong><br>
-					<p><%= comment.body %></p>
-					
-					<small><%= comment.created_at.stamp('Mon 11/30 at 11:30am') %>	</small>
-					</li>
-					<% end %></ul>
-					
-				<% end %>
-			<% end %>
-		</div>
-    </div>
-   
+	</div>
 </div>

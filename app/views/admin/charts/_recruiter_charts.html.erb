@@ -1,0 +1,20 @@
+<div class=''>
+        
+        <h5 class='text-center'>Recruiter Performance</h5>
+    
+
+        <div class='col-md-6'>
+            <h5 class='text-center'>Placements</h5>
+            
+            <%= pie_chart recruiter.jobs.includes(:current_timesheet, :employee).group(:last_name).sum(:total_bill), library: {legend: {position: "right"}, title: "Current Billings by Recruiter"} %>
+        </div>
+        <div class='col-md-12'>
+           
+        </div>
+   
+    <div class='col-md-12'>
+        <h5 class='text-center'>Current Billings by Recruiter</h5>
+         <%= line_chart recruiter.jobs.group_by_week(:created_at, format: "%B %d, %Y").count  %>
+         <%= line_chart recruiter.job_orders.includes(:timesheets).group_by_hour('timesheets.updated_at').sum(:total_bill)%>
+    </div>
+</div>

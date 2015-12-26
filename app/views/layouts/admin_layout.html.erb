@@ -21,33 +21,12 @@
 
 		<%= render 'admin/shared/navbar' %>
 
-	<div class="container" id="content-wrapper">
-		<div class="col-md-12">
-
-
-		<% if current_admin.payroll? %>
-			<%= render 'admin/sidebars/payroll_sidebar' %>
-			<% elsif current_admin.recruiter? %>
-			<%= render 'admin/sidebars/recruiter_sidebar' %>
-			<% elsif current_admin.owner? %>
-			<%= render 'admin/sidebars/owner_sidebar' %>
-		<% elsif current_admin.account_manager? %>
-			<%= render 'admin/sidebars/account_manager_sidebar' %>
-			<% else %>
-			<%= render 'admin/sidebars/admin_sidebar' %>
-			
-		<% end %>
-
+	<div class="row">
+			<div class="container" id="main-wrapper">
 	
 	
-			<div class="col-md-10" >
 
-				<% if alert %><div class="alert alert-warning">
-					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-					<%= flash.alert %></div> <% end %>
-	    		<% if notice %> <div class="alert alert-info">
-	    			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-	    			<%= flash.notice %></div> <% end %>
+				<%= render 'layouts/alerts' %>
 	    		<%= yield %>
 
 
@@ -56,8 +35,6 @@
 		
 		
 	</div>
-	</div>
-	<%= render 'layouts/footer' %>
 
 </body>
 </html>

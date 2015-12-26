@@ -21,37 +21,27 @@
 <body>
 
 
-<%if user_signed_in? %>
-<%= render 'employee/shared/navbar' %>
-	<% elsif company_admin_signed_in? %>
-		<%= render 'company/shared/navbar' %>
-		<% else %>
-		<div id='main-container' class="container">
+
 		<%= render 'shared/navbar' %>
-		
-	<%end %>
+
 	
 		
 		<div class="row">
-	
-		<% if company_admin_signed_in? %><%= render 'company/sidebars/company_sidebar' %><% end %>
-		<% if user_signed_in? %><%= render 'employee/sidebars/employee_sidebar' %><% end %>
+			<div class="col-md-12" id="main-wrapper">
+
 			<% if signed_in? == false %>
 			
-				<div class="col-md-12" id="main-wrapper">
+			
 					 <%= render 'dashboard/prelaunch' %>
-			<% else %>
-				<div class="col-md-10" id="content-wrapper">
+			
 			<% end %>
 				
-				<% if alert %><div class="alert alert-warning"><%= flash.alert %></div> <% end %>
-	    		<% if notice %> <div class="alert alert-info"><%= flash.notice %></div> <% end %>
+				<%= render 'layouts/alerts' %>
 	    		<%= yield %>
 
 
 	    	</div>
 		</div>
-	</div>
 	<%= render 'layouts/footer' %>
 
 </body>

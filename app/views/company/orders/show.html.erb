@@ -1,5 +1,5 @@
 
-<div class="col-md-12 main-box">
+<div class="col-md-12">
 <h1>  <%= @company.name %></h1>
 <hr>
 <div id="order-tabs">
@@ -8,6 +8,7 @@
   <ul id="order-nav" class="nav nav-tabs nav-justified" role="tablist">
     <li role="presentation" class="active"><a href="#order" aria-controls="order" role="tab" data-toggle="tab">Order Info.</a></li>
     <li role="presentation"><a href="#activejobs" aria-controls="activejobs" role="tab" data-toggle="tab">Active Jobs</a></li>
+    <li role="presentation"><a href="#pendingjobs" aria-controls="pendingjobs" role="tab" data-toggle="tab">Pending Approval</a></li>
     <li role="presentation"><a href="#inactivejobs" aria-controls="inactivejobs" role="tab" data-toggle="tab">Inactive Jobs</a></li>
   </ul>
   
@@ -55,6 +56,15 @@
       <h5 class='text-center'>Active Jobs</h5>
 
         <%= render 'company/jobs/table', jobs: @active_jobs %>
+    </div>
+
+  </div>
+  <div role="tabpanel" class="tab-pane fade" id="pendingjobs">
+    <div class='col-md-12'>
+      <h5 class='text-center'>Pending Approval</h5>
+
+        
+        <h3> PLACEHOLDER for presented candidates / pending interviews</h3>
     </div>
 
   </div>

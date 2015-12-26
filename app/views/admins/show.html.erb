@@ -1,4 +1,4 @@
-<div class='col-md-12 white'>
+<div class='col-md-12'>
     <div class='col-md-2'>
         <h4>	<%= @admin.name %> <small><%= @admin.role %></small></h4>	
 <h5><%= @admin.email %></h5>
@@ -9,6 +9,12 @@
      <%= link_to "Edit", edit_admin_path(@admin), class: 'btn btn-primary btn-sm' %>
 </div>
 
+
+<div class='col-md-10'>
+<%= render 'admin/charts/account_manager_charts' if @admin.account_manager? %>
+<%= render 'admin/charts/owner_charts' if @admin.owner? %>
+<%= render 'admin/charts/recruiter_charts', recruiter: @admin if @admin.recruiter? %>
+</div>
 <div class='col-md-4'>
     <h5class='text-center'>Current Placements</h5>
     <div class='list-group scroll500'>
@@ -37,11 +43,6 @@
     							<% end %>
     </div>
 </div>
-<div class='col-md-4'></div>
-<%= render 'admin/infoboxes/account_manager_charts' if @admin.account_manager? %>
-<%= render 'admin/infoboxes/owner_charts' if @admin.owner? %>
-<%= render 'admin/infoboxes/recruiter_charts' if @admin.recruiter? %>
-
 
 </div>
 

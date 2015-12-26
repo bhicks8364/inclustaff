@@ -2,7 +2,7 @@
 <%= f.hidden_field :commentable_id, value: commentable.id %>
 <%= f.hidden_field :commentable_type, value: commentable.class %>
     
-  
+  <%= commentable.try(:name) || commentable.employee.name %>
    
     
  

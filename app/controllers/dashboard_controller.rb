@@ -11,7 +11,7 @@ class DashboardController < ApplicationController
     #WITH SUBDOMAIN
     #ROOT FOR WHEN A SUBDOMAIN IS PRESENT && NO ONE IS SIGNED IN
     if @current_agency.present? && signed_in? == false
-        render 'sign_in_page'
+        @orders = @current_agency.orders.needs_attention.order(:needed_by).paginate(page: params[:page], per_page: 5)
     end
     #ROOT FOR ADMIN DASHBOARDS IF SIGNED IN
     if admin_signed_in? && @current_agency.present?

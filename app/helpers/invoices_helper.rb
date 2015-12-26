@@ -26,13 +26,17 @@ module InvoicesHelper
     end
     def inv_sym(inv)
         if inv.paid?
-            "<span class='green'><i class='fa fa-check' data-toggle='tooltip' data-placement='top' title='#{inv.state} Paid on #{inv.paid_on}'></i></span>".html_safe
+            "<span class='green'><i class='fa fa-check' data-toggle='tooltip' data-placement='top' 
+            title='#{inv.state} on #{inv.paid_on}'></i></span>".html_safe
         elsif inv.unpaid? && inv.timesheets_approved?
-            "<span class='red'><i class='fa fa-exclamation' data-toggle='tooltip' data-placement='top' title='#{inv.state} - Due #{distance_of_time_in_words(inv.due_by, Time.current, include_seconds: true)} ago'></i></span>".html_safe
+            "<span class='red'><i class='fa fa-exclamation' data-toggle='tooltip' data-placement='top'
+            title='#{inv.state} - Due #{distance_of_time_in_words(inv.due_by, Time.current, include_seconds: true)} ago'></i></span>".html_safe
         elsif !inv.timesheets_approved? && inv.current?
-            "<span class='black'><i class='fa fa-history' data-toggle='tooltip' data-placement='top' title='#{inv.state} - #{pluralize(inv.timesheets.count, 'timesheet')}'></i></span>".html_safe
+            "<span class='black'><i class='fa fa-history' data-toggle='tooltip' data-placement='top'
+            title='#{inv.state} - #{pluralize(inv.timesheets.count, 'timesheet')}'></i></span>".html_safe
         elsif !inv.timesheets_approved?
-            "<span class='red'><i class='fa fa-clock-o' data-toggle='tooltip' data-placement='top' title='#{inv.state} - #{pluralize(inv.timesheets.pending.count, 'unapproved timesheet')}'></i></span>".html_safe
+            "<span class='red'><i class='fa fa-clock-o' data-toggle='tooltip' data-placement='top'
+            title='#{inv.state} - #{pluralize(inv.timesheets.pending.count, 'unapproved timesheet')}'></i></span>".html_safe
         end
     end
     

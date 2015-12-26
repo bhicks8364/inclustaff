@@ -3,9 +3,6 @@
 	<div class='col-md-9 form-group'>
 		<% if @company.nil? %>
 			<%= f.association :company, collection: Company.all, prompt: "Choose a Company", wrapper_html: {class: 'col-md-12'}  %>
-			<% if @company.admins.any? %>
-				<%= f.association :manager, collection: @company.admins, prompt: "Select Company Manager", label: false, wrapper_html: {class: 'white col-md-4'}  %>
-			<% end %>
 		<% end %>
 	  
 		<%= f.input :title, placeholder: "Job Type (Ex. Warehouse, Adminstrative, General Labor, etc...)", label: false, wrapper_html: {class: 'col-md-9'}  %>

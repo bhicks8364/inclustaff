@@ -1,76 +1,37 @@
 class Company::OrdersController < ApplicationController
+  before_action :authenticate_company_admin!, :set_company
   before_action :set_order, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_company_admin!
 
-  
-
-  # GET /orders
-  # GET /orders.json
   def index
-    @admin = current_company_admin
-      @company = @admin.company
-      @orders = @company.orders.order(title: :asc)
-   
+    @orders = @company.orders.active.order(title: :asc)
     authorize @orders
   end
   
   def all
-    if admin_signed_in? 
-      @admin = current_admin
-      @company = @admin.company
-      @timesheets = @company.timesheets.order(updated_at: :desc)
-      @orders = @company.orders
-      @with_active_jobs = @orders.with_active_jobs
-    # authorize @orders
-    elsif user_signed_in? && current_user.not_an_employee?
-      @current_user = current_user if current_user.present?
-      @company = @current_user.company
-      @orders = @company.orders
-      @with_active_jobs = @orders.with_active_jobs
-      @timesheets = @company.timesheets.order(updated_at: :desc)
-    # authorize @orders
-    end
-    # @orders = Order.all
-    # authorize @orders
+    @orders = @company.orders.all
+    authorize @orders, :index?
   end
 
-  # GET /orders/1
-  # GET /orders/1.json
   def show
-    @company = @order.company
-    @inactive_jobs = @order.jobs.inactive
-    @active_jobs = @order.jobs.active
-    @jobs = @order.jobs.active.includes(:shifts)
-    # authorize @order
+    @jobs = @order.jobs.includes(:shifts)
+    @inactive_jobs = @jobs.inactive
+    @active_jobs = @jobs.active
   end
-    
 
-  # GET /orders/new
   def new
-      @admin = current_company_admin
-      @company = @admin.company
-      @order = @company.orders.new
+    @order = @company.orders.new
     authorize @order
-
-
   end
-
-  # GET /orders/1/edit
+  
   def edit
-
-      @order = Order.find(params[:id])
-
-
   end
 
-  # POST /orders
-  # POST /orders.json
   def create
-    @admin = current_company_admin
-    @company = @admin.company
     @order = @company.orders.new(order_params)
-    @order.agency = @current_agency if @current_agency.present?
+    @order.agency = @current_agency
+    @admin.events.create(action: "submitted", eventable: @order)
     skip_authorization
+    
     respond_to do |format|
       if @order.save 
         format.html { redirect_to company_order_path(@order), notice: 'Order was successfully created.' }
@@ -82,12 +43,8 @@ class Company::OrdersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /orders/1
-  # PATCH/PUT /orders/1.json
   def update
-    @order = Order.find(params[:id])
-    skip_authorization
-    # authorize @order
+
     respond_to do |format|
       if @order.update(order_params)
         format.html { redirect_to company_order_path(@order), notice: 'Order was successfully updated.' }
@@ -99,13 +56,9 @@ class Company::OrdersController < ApplicationController
     end
   end
 
-  # DELETE /orders/1
-  # DELETE /orders/1.json
   def destroy
-    authorize @order
-    
     @order.destroy
-
+    
     respond_to do |format|
       format.html { redirect_to company_orders_path(@company), notice: 'Order was successfully destroyed.' }
       format.json { head :no_content }
@@ -119,15 +72,17 @@ class Company::OrdersController < ApplicationController
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_order
-
-      @order = Order.find(params[:id])
-         authorize @order
+      @order = @company.orders.find(params[:id])
+        authorize @order
+    end
+    
+    def set_company
+      @admin = current_company_admin
+      @company = @admin.company
     end
 
-
-    # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.require(:order).permit(:id, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title, :pay_range, :notes, :number_needed, :needed_by, :urgent, :active, :dt_req, :bg_check, :stwb, :heavy_lifting, :shift, :est_duration, :tag_list, 
+      params.require(:order).permit(:id, :min_pay, :max_pay, :pay_frequency, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title, :pay_range, :notes, :number_needed, :needed_by, :urgent, :active, :dt_req, :bg_check, :stwb, :heavy_lifting, :shift, :est_duration, :tag_list, 
       jobs_attributes: [:order_id, :title, :description, :start_date, :id, :employee_id, :active], skills_attributes: [:id, :skillable_type, :skillable_id, :name, :required, :_destroy])
     end
 end

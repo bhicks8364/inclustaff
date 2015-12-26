@@ -1,6 +1,5 @@
 
 <div class="col-md-12">
-Agency ID: <%= @current_agency.id %>
 	<div class='white col-md-6'>
 		<h1 class='page-header white'>Owner Dashboard</h1>
 		<%= link_to "Agency Page", agency_path(@current_agency) %>
@@ -55,7 +54,6 @@ Agency ID: <%= @current_agency.id %>
 		      <h3 class="white"><strong>Open Job Orders</strong></h3>
 		    <div class="scroll300">
 		      <%= render 'admin/dashboard/orders_by_company' %>
-					 
 		    </div>
 		</div>
 		

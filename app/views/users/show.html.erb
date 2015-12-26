@@ -84,8 +84,13 @@
     	<h2 class="text-center">Suggested Positions </h2>
       
         <div class='list-group'>
+            
           <% @employee.matching_orders.each do |order| %>
-              <%= render 'employee/orders/order', order: order %>
+              <% if user_signed_in? %>
+                 <%= render 'employee/orders/order', order: order %>
+                 <% elsif admin_signed_in? %>
+                 <%= render 'admin/orders/order', order: order %>
+             <% end %>
           <% end %>
         </div>
     </div>
@@ -121,9 +126,9 @@
   
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
     <% if user_signed_in? %>
-     <%= render 'employee/timesheets/table' %>
+     <%= render 'employee/timesheets/table', timesheets: @employee.timesheets %>
      <% elsif admin_signed_in? %>
-     <%= render 'admin/timesheets/table' %>
+     <%= render 'admin/timesheets/table', timesheets: @employee.timesheets %>
      <% end %>
 
       

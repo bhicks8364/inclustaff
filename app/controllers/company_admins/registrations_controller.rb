@@ -1,7 +1,8 @@
 class CompanyAdmins::RegistrationsController < Devise::RegistrationsController
   before_filter :configure_sign_up_params, only: [:create]
   before_filter :configure_account_update_params, only: [:update]
-
+  layout :determine_layout
+  
   # GET /resource/sign_up
   def new
     super
@@ -78,6 +79,9 @@ class CompanyAdmins::RegistrationsController < Devise::RegistrationsController
     elsif signed_in? == false
       sign_in(resource)
     end
+  end
+  def determine_layout
+    current_admin ? "admin_layout" : "application"
   end
   
   # If you have extra params to permit, append them to the sanitizer.
