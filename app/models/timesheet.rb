@@ -29,16 +29,13 @@ class Timesheet < ActiveRecord::Base
     has_one :order, :through => :job
     has_many :comments, as: :commentable
     has_many :events, as: :eventable
-
     has_one :recruiter, through: :job, class_name: "Admin"
     has_one :recruiter, through: :job
     include ArelHelpers::ArelTable
     
-    
     accepts_nested_attributes_for :shifts, reject_if: :all_blank, allow_destroy: true
     
     validates_associated :shifts
-    
 
     delegate :name_title, to: :job
     delegate :mark_up, to: :job
@@ -60,7 +57,6 @@ class Timesheet < ActiveRecord::Base
     before_save :set_invoice, unless: :has_invoice?
     after_save :update_invoice!, if: :has_invoice?
     
-    
     def has_a_job?
         job.present?
     end
@@ -76,15 +72,12 @@ class Timesheet < ActiveRecord::Base
         joins(:job).where(jobs: { recruiter_id: admin_id })
     end
     
-
-        
-    
     scope :with_recent_comments,    -> { joins(:comments).merge(Comment.timesheet_comments.payroll_week)}
     scope :with_job, -> { includes(:job)}
     scope :with_shift_notes,    -> { joins(:shifts).merge(Shift.with_notes)}
     scope :approved, -> { where(state: "approved")}
     scope :pending, -> { where(state: "pending")}
-
+    scope :this_year,    -> { joins(:shifts).merge(Shift.this_year)}
     scope :last_week, ->{
         where(week: Date.today.beginning_of_week.cweek - 1)
     }
@@ -94,7 +87,6 @@ class Timesheet < ActiveRecord::Base
     
     scope :overtime_errors, -> { where('reg_hours > 40') }
     scope :needing_approval, -> { last_week.pending }
-    
     
     def receipt
         Receipts::Receipt.new(
@@ -122,7 +114,6 @@ class Timesheet < ActiveRecord::Base
     def bill_to
        company.owner
     end
-       
     
     def self.by_total_bill
         order(:total_bill)
@@ -144,7 +135,6 @@ class Timesheet < ActiveRecord::Base
     
     def approved?; state == "approved"; end
     def pending?; state == "pending"; end
-    
 
     def defaults
         self.state = "pending" if state.nil?
@@ -160,7 +150,6 @@ class Timesheet < ActiveRecord::Base
             reg_hours
         end
     end
-    
     
     def update_company_balance!
         company.set_payroll_cost!
@@ -208,13 +197,9 @@ class Timesheet < ActiveRecord::Base
         end
     end
     
-    
     def company_order
         order.company_name
     end
-    
-    
-    
 
     def job_title
         job.title
@@ -259,6 +244,7 @@ class Timesheet < ActiveRecord::Base
                 self.ot_hours = hours - 40
                 ot_rate = job.pay_rate * 1.5
                 self.gross_pay = job.pay_rate * self.reg_hours + self.ot_hours * ot_rate
+                self.total_bill = gross_pay * job.mark_up
             else
                 pay = job.pay_rate * hours
                 self.reg_hours = hours

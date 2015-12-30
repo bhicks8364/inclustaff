@@ -1,37 +1,32 @@
-<div class='col-md-12 transbox'>
+<div class='col-md-12'>
    <h1> <%= @employee.first_name %>'s Dashboard</h1>
-   	<% content_for :not_authorized do %>
-	  <script>alert('You are not authorized to view this page!')</script>
-	<% end %>
 
- 
+  <div class='lightbox'>
    
 
 
+  
    <%= user_email(@user) %>
     <% if @employee.assigned? %>
      <p> Last In: <br><%= @job.last_clock_in %> </p>
      <p>Last Out: <br> <%= @job.last_clock_out %></p>
    
           <% if @employee.on_shift? || @employee.on_break? %>
-            <%= link_to "You're Currently Clocked In", employee_shift_path(@employee.current_shift), class: 'btn btn-primary' %>
+            
+           
+                <%= link_to "You're Currently Clocked In", employee_shift_path(@employee.current_shift), class: 'btn btn-primary' %>
+                <h2>Shift Location</h2>
+                <%= image_tag "http://maps.google.com/maps/api/staticmap?size=250x300&sensor=false&zoom=12&markers=#{@employee.current_shift.latitude}%2C#{@employee.current_shift.longitude}",
+                    class: "img-zoom" %>
+            </div>
           <% end %>
       
       
-    <div class='col-md-12'>
+    <div class='col-md-8'>
        
       <div class='col-md-6'>
         <h2 class='text-center'>This week</h2>
-        <table class="table table-hover">
-          <tr class="info">
-            <td class="">Success</td>
-            <td class="">Warning</td>
-            <td class="">Danger</td>
-            <td class="">Info</td>
-            
-          </tr>
-
-        </table>
+        
         <dl class="">
           <dt>Gross Pay</dt>
           <dd><%= number_to_currency(@job.current_week_pay) %></dd>
@@ -98,7 +93,3 @@
     <% end %>
  
 </div>
-
-    <div class="col-xs-9 bordered">.col-xs-9</div>
-    <div class="col-xs-4 dark">.col-xs-4<br>Since 9 + 4 = 13 &gt; 12, this 4-column-wide div gets wrapped onto a new line as one contiguous unit.</div>
-    <div class="col-xs-6">.col-xs-6<br>Subsequent columns continue along the new line.</div>

@@ -25,6 +25,8 @@
 #  break_out      :datetime         is an Array
 #  paid_breaks    :boolean          default(FALSE)
 #  pay_rate       :decimal(, )
+#  latitude       :float
+#  longitude      :float
 #
 
 require 'test_helper'

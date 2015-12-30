@@ -1,7 +1,7 @@
 class Company::OrdersController < ApplicationController
   before_action :authenticate_company_admin!, :set_company
   before_action :set_order, only: [:show, :edit, :update, :destroy]
-
+  layout "company_layout"
   def index
     @orders = @company.orders.active.order(title: :asc)
     authorize @orders

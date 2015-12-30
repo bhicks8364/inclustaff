@@ -67,8 +67,10 @@ gem 'jquery-ui-rails'
 # CLOCKPICKER - FOR EDITING SHIFT TIMES BUT IDK IF GOING TO USE IT YET
 gem 'clockpicker-rails'
 
-
-
+# LOCATION SEARCHING FOR OPEN ORDER AND CANDIDATES
+gem 'geocoder', '~> 1.2', '>= 1.2.12'
+gem 'underscore-rails'
+gem 'gmaps4rails'
 # FONT AWESOME - ENOUGH SAID
 gem "font-awesome-rails"
 

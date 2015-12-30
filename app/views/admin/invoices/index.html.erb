@@ -23,18 +23,16 @@
 
   <tbody>
     <% @invoices.order(week: :desc).each do |invoice| %>
-     <tr>
-    <%= link_to(admin_invoice_path(invoice)) do  %>
-     
-        <td><%=inv_sym(invoice)%> <%= invoice.week %></td>
+    
+    
+      <tr>
+        <td><%=inv_sym(invoice)%> <%= link_to invoice.week_ending, admin_invoice_path(invoice) %></td>
         <td><%= invoice.due_by.stamp('11/13') %></td>
         <td><%= invoice.state %></td>
         <td><%= number_to_currency(invoice.total) %></td>
         <td><%= number_to_currency(invoice.amt_paid) %></td>
         <td><%= invoice.paid_on %></td>
-    
-      <% end %>
-        </tr>
+    </tr>
     <% end %>
   </tbody>
 </table>

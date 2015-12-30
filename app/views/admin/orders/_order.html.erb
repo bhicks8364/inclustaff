@@ -1,14 +1,14 @@
 <%= div_for(order, class: 'lightbox') do %>
-<h2 class=''><%= link_to title_for(order), admin_order_path(order), class: 'black' %> <span class='pull-right'><%= status_tag(order)%></span> 
+<div class=''><%= link_to title_for(order), admin_order_path(order), class: 'black' %> <span class='pull-right'><%= status_tag(order)%></span> 
 <%= heavy_lifting(order) %>
-</h2>
+</div>
 
 <%= tag_popover(order) if order.tags.any?  %>
 
    <%= info_popover(order) if order.account_manager.present?%>
 
  <span class='label label-info black pull-right'>Open: <%= order.open_jobs %> </span>
-   <%= skills_popover(order) if order.skills.any?%>
+   <%= order_skills_popover(order) if order.skills.any?%>
     <% if order.matching_employees.any? %>
     <span class=''>
       <%= matching_emp_popover(order) %>

@@ -1,6 +1,6 @@
 <div class='col-md-12'>
  
-<%= image_tag(@agency.logo_url, class: "img-zoom", alt: "img-#{@agency.id}")%> 
+
     <% if @current.present? && current_admin.nil? %>
 <div class='col-md-12 '>
     
@@ -37,10 +37,11 @@
 
     <div class='col-md-12'>
          <h1 class='text-center'><%= @agency.name %></h1>
-        <div class='col-md-6'>
-            
+            <div class='col-md-3'>
+                <%= image_tag(@agency.logo_url, class: "img-zoom", alt: "img-#{@agency.id}")%> 
             </div>
-        <div class='col-md-6'>
+        <div class='col-md-3'>
+            
             <address class='white'>
               <strong><%= @agency.name %></strong><br>
              <%= @agency.address %><br>

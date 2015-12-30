@@ -50,7 +50,13 @@ class User < ActiveRecord::Base
   validates :agency_id,  presence: true
   validates :role,  presence: true
   validates :code, uniqueness: true
-
+  
+  # GEOCODER
+  geocoded_by :fulladdress
+  after_validation :geocode
+  def fulladdress
+    "#{address} #{city}, #{state}"
+  end
   # devise :database_authenticatable, :authentication_keys => [:code]
   devise :database_authenticatable, :registerable,
         :recoverable, :rememberable, :trackable, :validatable
@@ -67,6 +73,9 @@ class User < ActiveRecord::Base
     employee.nil?
   end
   def admin?
+    false
+  end
+  def owner?
     false
   end
   
@@ -134,13 +143,13 @@ class User < ActiveRecord::Base
    # IMPORT TO CSV   
   def self.assign_from_row(row)
     user = User.where(email: row[:email]).first_or_initialize
-    user.assign_attributes row.to_hash.slice(:first_name, :last_name, :agency_id, :email, :code, :role, :password, :password_confirmation)
+    user.assign_attributes row.to_hash.slice(:first_name, :last_name, :agency_id, :email, :code, :role, :password, :password_confirmation, :address, :city, :state, :zipcode)
     user
   end
   
    # EXPORT TO CSV
   def self.to_csv
-    attributes = %w{id last_name first_name email code role}
+    attributes = %w{id last_name first_name email code role fulladdress address city state zipcode}
     CSV.generate(headers: true) do |csv|
       csv << attributes
       

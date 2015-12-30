@@ -36,7 +36,7 @@
 		</div>
 		<div class="tab-pane fade" id="tab-todo">
 			<% company.orders.each do |order| %>
-		             <%= skills_popover(order) %> <%= order.title %><br>
+		             <%= skills_popover(order.skills) %> <%= order.title %><br>
 			<% end %>
 		</div>
 		<div class="tab-pane fade" id="tab-messages" data-behavior="comment-list">

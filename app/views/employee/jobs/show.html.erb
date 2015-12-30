@@ -1,82 +1,101 @@
+<div class='col-md-12 '>
+  
+   <div class='col-md-4 text-center well well-sm'>
+   
+  <% if @job.on_shift? %>
+         <%= shift_popover(@job.current_shift) %>
+        <% end %>
+  <h2><strong><%= @job.title %></strong></h2>
+          <h4><%= @job.company.name %></h4>
+          
 
-<div class='col-md-12 main-box'>
+          <h4><%= number_to_currency(@job.pay_rate) %>/ hr</h4>
+ 
+          <h4><%= @job.start_date.strftime("%B %e, %Y ") %></h4>
+     
+     <%= link_to(employee_job_path(@job, format: :pdf), class: 'btn btn-primary') do %>
+  	<i class="fa fa-download fa-md"></i> Candidate Sheet
+  <% end %>
+       
+       </div>
+  <div class='col-md-8 '>
 
+  
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#job" aria-controls="job" role="tab" data-toggle="tab">Job Information</a></li>
     <li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li>
-    <li role="presentation"><a href="#company-info" aria-controls="company-info" role="tab" data-toggle="tab">Company Information</a></li>
-    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Departments</a></li>
+    <li role="presentation"><a href="#week-totals" aria-controls="week-totals" role="tab" data-toggle="tab">Week Totals</a></li>
+    <li role="presentation"><a href="#job-totals" aria-controls="job-totals" role="tab" data-toggle="tab">Job Totals</a></li>
+    <li role="presentation"><a href="#skills-tab" aria-controls="skills-tab" role="tab" data-toggle="tab">Skills</a></li>
+    <li role="presentation"><a href="#comments-tab" aria-controls="comments-tab" role="tab" data-toggle="tab">Comments</a></li>
+    
   </ul>
   
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="job">
-
-    <div class='col-md-6'>
-      <strong>Employee:</strong>
-     
-      <strong>Start date:</strong>
-      <%= @job.start_date.strftime("%B %e, %Y ") %><br>
-      <strong>Gross this week:</strong> <%= number_to_currency(@job.current_week_pay) %><br>
-      <strong>Total Hours : </strong><%= @job.total_hours %>
-      <strong>Total Gross : </strong><%= @job.total_hours %>
-    </div>
-    <div class='col-md-6'>
-      <strong>Company:</strong>
-      <%= @company.name %><br>
-    
-     
-      <strong>Job Title:</strong>
-      <%= @job.title %><br>
-      <strong>Recruiter:</strong>
-      <%= @job.recruiter.present? ? @job.recruiter.name : "Recruiter unavailable" %><br>
-      
-      <strong>Staff:</strong>
-      <%= @job.staff %><br>
-      
-      <strong>Pay rate:</strong>
-      <%= number_to_currency(@job.pay_rate, :unit => "$") %><br>
-    </div>
-
-
-  <div class='well'>
-
-      <strong>Description:</strong><br>
-  <%= @job.description %><br>
-  
-  <%= render 'employee/jobs/modal', job: @job %>
-  
+  <div class='col-md-3'>
+       Minimum Hours for Vacation: <%= @job.settings['min_hours_for_vac'] if @job.settings %>
   </div>
-
-
-</div>
-
+  <div class='col-md-6'>
+      
+        <%= @job.description %>
+     </div>
+     <div class='col-md-3'>
+      Pay: <%= @job.settings['pay_rate'] if @job.settings %><br>
+      Drive Pay: <%= @job.settings['drive_pay'] if @job.settings %><br>
+      Ride Pay: <%= @job.settings['ride_pay'] if @job.settings %><br>
+     </div>
+  </div>
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
     <h3>Timesheets</h3>
-      <%= render 'employee/timesheets/table' %>
-
+      <%= render @timesheet if @job.current_timesheet.present? %> 
+    <%= link_to "Timesheets", employee_timesheets_path(@job), class: "btn btn-success" %>
   </div>
-  
-  
-  
-  
-  <div role="tabpanel" class="tab-pane fade" id="company-info">
-     
-
-     </div>
-
-  <div role="tabpanel" class="tab-pane fade" id="settings">
-    <h3>Settings</h3>
+  <div role="tabpanel" class="tab-pane fade" id="comments-tab">
+     <div class=''>
+         <div id='comment-list'>
+            <% @job.comments.each do |comment| %>
+                <%= render 'comments/comment', comment: comment %>
+            <% end %>
+          <%= render partial: "comments/form", locals: {commentable: @job} %>
+         </div>
+      </div>
   </div>
 
-  
-
-  
+  <div role="tabpanel" class="tab-pane fade" id="skills-tab">
+      <div class='col-md-6'>
+      <h3><%= @employee.first_name %>'s Skills</h3>
+      <% @employee.skills.each do |skill| %>
+     <li class=''>
+       <%= highlight(skill.name, @order.skills.pluck(:name).to_a, highlighter: '<u>\1</u>') %>
+     </li>
+     <% end %>
+    </div>
   </div>
+  <div role="tabpanel" class="tab-pane fade" id="week-totals">
+    
+     <h4>Week Totals</h4>
+      <strong>Hours: </strong><%= @job.current_timesheet.try(:total_hours) || 0.00 %><br>
+      <strong>Gross pay: </strong><%= number_to_currency(@job.current_timesheet.try(:total_hours) || 0) %><br>
+      <strong>Gross pay: </strong><%= number_to_currency(@job.current_timesheet.try(:gross_pay) || 0) %><br>
+      <strong>Total bill: </strong><%= number_to_currency(@job.total_gross_bill) %>
 
- </div>
+      <strong>Gross this week:</strong> <%= number_to_currency(@job.current_week_pay) %><br>
+    
+    
+    <%= render "admin/shifts/calendar", shifts: @job.shifts.current_week %>
+  </div>
+  <div role="tabpanel" class="tab-pane fade" id="job-totals">
+     <h4>Grand Totals</h4>
+      <strong>Hours: </strong><%= @job.total_hours %><br>
+      <strong>Pay: </strong><%= number_to_currency(@job.total_gross_pay) %><br>
+      <strong>Total bill: </strong><%= number_to_currency(@job.total_gross_bill) %>
+  </div>
+</div>
+</div>
+</div>
 
 
 
-  
 

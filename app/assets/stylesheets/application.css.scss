@@ -47,28 +47,29 @@
 @import "shifts";
 
 body {
+  font-family: 'Titillium Web', Geneva, sans-serif;
   padding-top: 70px;
+  background: transparent;
 // background: url(colorful-triangles-background.jpg) no-repeat center center fixed; 
-  // background-color: rgba(0, 0, 0, 0.8);
+  // background-color: rgba(255, 255, 255, 0.8);
   background-image:
-        linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-        url(colorful-triangles-background.jpg);
+        // linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+        url(street.png);
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
 }
-
+#main-wrapper {
+  margin-top: -20px;
+  background-color: rgba(255, 255, 255, 0.6);
+}
 #DataTables_Table_0_filter > label {
   color: white;
 }
 #DataTables_Table_0_length > label {
   color: white;
 }
-#admin-nav {
-  // background-color: rgba(255,255,255,0.70);
-}
-
 
 #logo > img {
     // max-height: 45px;
@@ -78,56 +79,6 @@ body {
     vertical-align: middle;
     
     // margin-right: 20px;
-}
-// a#logo.navbar-brand {
-//     padding: 5px;
-// }
-
-// #shift-list-nav {
-//   align-content:center; 
-//   width: 300px;
-//   // border:3px solid #8AC007;
-//   padding: 10px;
-//   // margin-right: 15px;
-//   // margin-bottom: 15px;
-  
-// }
-#clock-out-nav {
-  float: right;
-
-}
-
-
-#clock-out-nav > a {
-  margin: 8px;
-}
-
-span > a.btn-comp {
-  background-color: rgb(81, 209, 190);
-  border: solid 1px blue;
-  text-decoration: none;
-  width: 85%;
-  height: 95%;
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
-  border-radius: 8px;
-  font-weight: bold;
-  color: black;
-  -webkit-box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.65);
-  -moz-box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.65);
-  box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.65);
-  border-color: transparent;
-  vertical-align: middle;
-  max-height: 75px;
-  vertical-align: center;
-  padding: 8px;
-  height: 450px;
-  
-}
-span.headline > a.btn:hover {
-  background-color: rgb(54, 54, 54);
-  color: white;
-  
 }
 
 .hide-this {
@@ -156,9 +107,41 @@ div.transbox {
   background-attachment: absolute;
   background-size: 100% 100%;
 }
-// #header-navbar {
-//   background:transparent;
-// }
+#header-navbar {
+  // background:transparent;
+  background: rgba(0, 0, 0, 0.82);
+  // background-image: url('street.png');
+  a {
+    color: white;
+  }
+  a:hover {
+    color: gray;
+  }
+  .dropdown-menu > li > a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.428571429;
+    color: rgb(51, 51, 51);
+    white-space: nowrap;
+  }
+  .list-group-item {
+    color: black;
+  }
+}
+#footer-navbar {
+  
+  // background:transparent;
+  background: rgba(0, 0, 0, 0.82);
+  // background-image: url('street.png');
+  a {
+    color: white;
+  }
+  a:hover {
+    color: gray;
+  }
+}
 // .mynavbar {
 //   background-color: rgba(87, 105, 113, 0.9);
 //   margin: 0px;
@@ -198,10 +181,10 @@ div.transbox {
 }
 
 .dark {
-  background: rgba(0, 0, 0, 0.62);
-  padding: 5px;
-  padding-bottom: 8px;
-  color: white;
+  // background: rgba(0, 0, 0, 0.62);
+  // padding: 5px;
+  // padding-bottom: 8px;
+  // color: white;
 }
 .maindark {
   background: rgba(21, 19, 19, 0.62);
@@ -231,4 +214,27 @@ div.transbox {
 .scroll800 {
   max-height: 800px;
   overflow: auto;
+}
+.btn.btn-primary {
+  background-color: rgba(21, 19, 24, 0.86);
+}
+.btn.btn-primary:hover {
+  background-color: rgba(21, 19, 24, 0.16);
+}
+
+.color {
+  background-color: rgba(21, 19, 24, 0.56);
+}
+.nav-tabs > li > a {
+    background-color: rgba(17, 17, 17, 0.77);
+    color: white;
+    border: none;
+}
+.nav-tabs > li > a:hover {
+    background-color: rgba(17, 17, 17, 0.17);
+    color: black;
+}
+.navbar.navbar-inverse {
+  border: none;
+  margin-bottom: 1px;
 }

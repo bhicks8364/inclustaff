@@ -8,6 +8,9 @@
                 <h1 class="text-center">
                     <span id='shift-sym'><%= shift_sym(@shift) %></span>
                     <%= @employee.name %>  <small class='white'><%= @job.company.name %> </small>
+                    <%= image_tag "http://maps.google.com/maps/api/staticmap?size=250x300&sensor=false&zoom=12&markers=#{@shift.latitude}%2C#{@shift.longitude}",
+                    class: "img-zoom" %>
+                    <h3> <%= @shift.latitude %> | <%= @shift.longitude %> </h3>
                 </h1>
                 <div class="btn-group btn-group-justified" role="group" aria-label="...">
                     <%= link_to '<i class="fa fa-user"></i> Employee'.html_safe, admin_employee_path(@employee), class: "btn btn-primary" %> 

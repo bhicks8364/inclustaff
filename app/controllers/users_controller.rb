@@ -2,10 +2,17 @@ class UsersController < ApplicationController
     layout :determine_layout
 
     def index
-        @users = @current_agency.users.available.ordered_by_check_in
+        @users = @current_agency.users.available.ordered_by_check_in.limit(10)
         # @users = User.includes(:employee).available
         @import = User::Import.new
         skip_authorization
+        gon.users = @users
+        @hash = Gmaps4rails.build_markers(@users) do |user, marker|
+          marker.lat user.latitude
+          marker.lng user.longitude
+          marker.infowindow user.name
+          marker.title user.name
+        end
         
         respond_to do |format|
             format.html

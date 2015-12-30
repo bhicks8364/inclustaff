@@ -28,9 +28,8 @@
 		<div class="row">
 	
 	
-		<% if user_signed_in? %><%= render 'employee/sidebars/employee_sidebar' %><% end %>
 		
-				<div class="col-md-10" id="content-wrapper">
+				<div class="col-md-12" id="content-wrapper">
 
 				<% if alert %><div class="alert alert-warning"><%= flash.alert %></div> <% end %>
 	    		<% if notice %> <div class="alert alert-info"><%= flash.notice %></div> <% end %>

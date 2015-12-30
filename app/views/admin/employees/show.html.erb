@@ -1,4 +1,4 @@
-<div class='col-md-12 white'>
+<div class='col-md-12 lightbox'>
     <% if @employee.clocked_in? %>
         <%= shift_popover(@employee.current_shift) %>
     <% end %>
@@ -56,6 +56,7 @@
         </div>
         <div class='col-md-3'>
             <%= link_to "View ACA Report", aca_admin_employee_path(@employee), class: "btn btn-primary btn-lg btn-block" %>
+            <h3 class=''>Average Hours per week: <%= @employee.average_weekly_hours %></h3>
             <h4 class=''>Current Job Assignment</h4>
              <% @employee.jobs.active.each do |job| %>
               <h5><%= job.company %> <small> <%= link_to job.title, admin_job_path(job) %></small></h5>
@@ -71,15 +72,16 @@
              <h4>Tags</h4>
               <%= highlight(@employee.tag_list.to_s, ActsAsTaggableOn::Tag.all.map(&:name), highlighter: '<a href="/tags?tag=\1" class="black">\1</a>') %>
         </div>
+         <div class='col-md-6'>
+         <%= image_tag "http://maps.google.com/maps/api/staticmap?size=250x300&sensor=false&zoom=16&markers=#{@user.latitude}%2C#{@user.longitude}",
+                    class: "img-zoom" %>
+                         <%= @user.distance_to(@order.address) if @order.present?%>
+      </div>
         <div class='col-md-12'>
             <h2><%= @employee.first_name %>'s Employment Timeline</h2>
             <%= timeline  @employee.work_history_data, width: "100%", height: "300px"  %>
         </div>
         
-        <div class='white'>
-            
-          <%= render 'admin/shifts/week_calendar', shifts: @employee.shifts.current_week %>
-        </div>
         
 
     </div>
@@ -138,7 +140,7 @@
         
       <% if @employee.assigned? && @employee.shifts.any? %>
       	<h1>Calendar</h1>
-        <div class='white'>
+        <div class=''>
           <%= render 'admin/shifts/calendar', shifts: @employee.shifts %>
         </div>
         <% else %>
@@ -147,7 +149,7 @@
       </div>
       <div role="tabpanel" class="tab-pane fade" id="work_history">
         
-        <div class='dark white'>
+        <div class=' '>
             
         <% if @employee.work_histories.any? %>
          
@@ -225,7 +227,7 @@
         <div role="tabpanel" class="tab-pane fade" id="settings">
             <div class='col-md-4'>
             <%= link_to "Edit Employee", edit_admin_employee_path(@employee), class: 'btn btn-primary' %>
-            <%= link_to "View User", admin_employee_path(@employee), class: 'btn btn-primary' %>
+            <%= link_to "View User", @employee.user, class: 'btn btn-primary' %>
             <%= link_to "Edit User", edit_user_registration_path(@employee.user), class: 'btn btn-primary' %>
              
             </div>

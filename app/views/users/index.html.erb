@@ -1,6 +1,8 @@
+
+
 <%= link_to "<i class='fa fa-user-plus fa-1x fa-fw pull-left'></i> Add Employee".html_safe, new_user_registration_path, class: 'btn btn-primary pull-right' %>
 <div class='col-md-12'>
-	
+
 	
 		<div class=" col-md-8 lightbox">
 			<div class="table-responsive">
@@ -9,7 +11,7 @@
 						<tr>
 							<th><i class='fa fa-cogs fa-1x fa-fw pull-center'></i></th>
 							<th><span>User</span></th>
-							<th><span>Email</span></th>
+							<th><span>Address</span></th>
 							<th>Check-in</th>
 						</tr>
 					</thead>
@@ -24,7 +26,7 @@
 							</td>
 						
 							<td>
-								<%= user.email %>
+								<%= user.fulladdress %>
 							</td>
 							<td>
 								<small>
@@ -66,3 +68,26 @@
 		
 
 </div>
+<div style='width: 800px;'>
+  <div id="map" style='width: 800px; height: 400px;'></div>
+</div>
+<script type='text/javascript'>
+handler = Gmaps.build('Google');
+handler.buildMap({
+    provider: {
+      disableDefaultUI: true,
+      zoom: 6
+      // pass in other Google Maps API options here
+    },
+    internal: {
+      id: 'map'
+    }
+  },
+  function(){
+    markers = handler.addMarkers(<%=raw @hash.to_json %>);
+    handler.bounds.extendWith(markers);
+    handler.fitMapToBounds();
+  }
+);
+
+</script>

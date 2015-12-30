@@ -1,43 +1,67 @@
-<header class="navbar" id="header-navbar">
-	<div class="container">
-		<div class="navbar-header">
-	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-	        <span class="sr-only">Toggle navigation</span>
-	        <span class="icon-bar"></span>
-	        <span class="icon-bar"></span>
-	        <span class="icon-bar"></span>
-	      </button>
-	      <% if @current_agency.present? %>
-		<%= link_to root_url, id: "logo", class: "navbar-brand col-md-4" do %>
-			<%= @current_agency.name.titleize %>	
-			<% end %>
-		<% else %>
-			<%= link_to root_url, id: "logo", class: "" do %>
-			       <%= image_tag("incluStaff_logo.png", alt: "Inclustaff") %>
+<nav id='admin-nav' class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <%= link_to root_url, id: "nav-logo", class: "navbar-brand" do %>
+			       <%= @current_agency.name %>
 			 <% end %>
-		<% end %>
-	    </div>
-		
-		<button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">
-			<span class="sr-only">Toggle navigation</span>
-			<span class="fa fa-bars"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-	       <ul class="nav navbar-nav navbar-right">
-	       	<% if user_signed_in? %>
-	       		<li> <%= link_to @current_user.name, @current_user %></li>
-	      	 
-	        	
-				<li><%= link_to destroy_user_session_path, method: :delete do %>
-						<i class='fa fa-power-off'></i>
+    </div>
+    
+	
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		<ul class="nav navbar-nav">
+			<li><%= link_to @current_user.name, @current_user %></li>
+			<li class="dropdown">
+			  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= @current_user.role %> Toolbox <span class="caret"></span></a>
+			  <ul class="dropdown-menu">
+			   <li><%= link_to employee_home_path do %>
+					<i class="fa fa-dashboard"></i>
+						<span>Dashboard</span>
+					<% end %>
+				</li>
+				
+				<li><%= link_to employee_profile_path do %>
+					<i class="fa fa-user"></i>
+						<span>Profile</span>
+					<% end %>
+				</li>
+				
+				<% if @employee.assigned? %>
+				<li><%= link_to employee_timesheets_path do %>
+					<i class="fa fa-clock-o"></i>
+						<span>Timesheets</span>
+					<% end %>
+				</li>
+
+				<li><%= link_to employee_job_path(current_user.current_job) do %>
+					<i class="fa fa-users"></i>
+						<span>Current Job</span>
+					<% end %>
+				</li>
+				<% else %>
+				<li><%= link_to employee_job_board_path do %>
+					<i class="fa fa-briefcase"></i>
+						<span>Job Postings</span>
 					<% end %>
 				</li>
 				<% end %>
-	      </ul>
-		
-      
-    </div>
-		
+			
+			    <li role="separator" class="divider"></li>
+			    <li><%= link_to "<i class='fa fa-power-off'></i> Sign Out".html_safe, destroy_user_session_path, method: :delete  %></li>
+			  </ul>
+			</li>
+		</ul>
 	
-	</div>
-</header>
+     
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+

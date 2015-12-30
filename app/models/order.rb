@@ -29,6 +29,9 @@
 #  min_pay            :decimal(, )
 #  max_pay            :decimal(, )
 #  pay_frequency      :string
+#  address            :string
+#  latitude           :float
+#  longitude          :float
 #
 
 class Order < ActiveRecord::Base
@@ -51,17 +54,20 @@ class Order < ActiveRecord::Base
   # VALIDATIONS
   validates_associated :company
   validates :title,  presence: true
-  validates :mark_up,  presence: true
+  validates :mark_up, :min_pay, :max_pay,  presence: true
 
   validates :company_id,  presence: true
-  validates :needed_by, presence: true, if: :not_urgent?
+  validates :needed_by, presence: true
   
     # CALLBACKS
     after_initialize :defaults
     before_validation :set_mark_up
     after_save :set_note_skills
-    before_save :set_needed_by, if: :urgent?
+    # before_save :set_needed_by, if: :urgent?
     
+  #  GEOCODER
+  geocoded_by :address
+  after_validation :geocode
     
     
     # NESTED ATTRIBUTES
@@ -86,22 +92,19 @@ class Order < ActiveRecord::Base
       self.active = true if self.active.nil?
       self.urgent = false if self.urgent.nil?
       self.jobs_count = 0 if self.jobs_count.nil?
+      self.address = "#{company.address} #{company.city}, #{company.state}" if address.nil?
     end
    
     def set_mark_up
       if mark_up.nil? 
-        case pay_range
-        when "$8.10 - $10.00"
+        case max_pay
+        when (8..10)
           self.mark_up = 1.5
-        when "$10.00 - $12.00"
-          self.mark_up = 1.5
-        when "12.00 - $15.00"
+        when (11..12)
           self.mark_up = 1.55
-        when "15.00 - $18.00"
-          self.mark_up = 1.6
-        when "$18.00 - $22.00"
-          self.mark_up = 1.6
-        when "$22.00 +  "
+        when (12..18)
+          self.mark_up = 1.60
+        when (18..25)
           self.mark_up = 1.65
         else
           self.mark_up = 1.5
@@ -127,6 +130,7 @@ class Order < ActiveRecord::Base
         self.needed_by = Date.today
       end
     end
+
     
     def company_name
       if company

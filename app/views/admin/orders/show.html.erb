@@ -1,46 +1,42 @@
-<div class='col-md-12'>
-  <div class='open-jobs'>
-    <p class=''><%= heavy_lifting(@order) %> <%= @order.number_needed %> / <%= @order.jobs.active.count %></p>
+<div class='col-md-12 lightbox'> 
+  <div class="btn-group pull-right">
+    <button type="button" class="btn btn-info black dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <i class='fa fa-cogs'></i> Admin
+      <span class="sr-only">Toggle Dropdown</span>
+    </button>
+    <ul class="dropdown-menu">
+      <li><%= link_to "<i class='fa fa-building' data-toggle='tooltip' data-placement='right' title='View Company'></i> &nbsp; #{@order.company.name}".html_safe, admin_company_path(@company), class: "" %></li>
+      <li role="separator" class="divider"></li>
+      <% if policy(@order).update? %><li><%= link_to "<i class='fa fa-pencil' data-toggle='tooltip' data-placement='right' title='Edit Order'></i>&nbsp; Edit".html_safe, edit_admin_order_path(@order), class: "" %></li><% end %>
+      <% if policy(@order).destroy? %><li><%= link_to "<i class='fa fa-trash' data-toggle='tooltip' data-placement='right' title='Delete Order'></i>&nbsp; Delete".html_safe, admin_order_path(@order), method: :delete, data: { confirm: 'Are you sure?' }, class: "" %></li><% end %>
+    </ul>
   </div>
-  <div class='col-md-4'>
-   <h1 class='white'> <%= title_for(@order) %> </h1>
-   <h3 class='white'><%= link_to @order.company.name, admin_company_path(@order.company) %></h3> 
-  </div> 
-  <div class='col-md-5 white'>
-    <div class='col-md-6'>
+   <h1 class=''> <%= title_for(@order) %> <small><%= @order.address %> <%= render "order_map", order: @order %></small> </h1>
+  <div class='col-md-2'>
+    <div class=''>
+      <h3><%= status_msg(@order) %></h3>
        <strong>Shift:</strong>
-      <h4><%= @order.shift %></h4>
-      <strong>Pay Range:</strong>
-      <h4><%= number_to_currency(@order.min_pay) %> - <%= number_to_currency(@order.max_pay) %></h4>
-    </div>
-    <div class='col-md-6'>
-      <strong>Location</strong>
-      <br>
-      <address class="">
-        <%= @company.address %><br> <%= @company.city %>, <%= @company.state %> <%= @company.zipcode %><br>
-      </address>
+      <%= @order.shift %> <br>
+      <strong>Pay Range:</strong><br>
+      <%= number_to_currency(@order.min_pay) %> - <%= number_to_currency(@order.max_pay) %><hr>
+
       <strong>Company Manager</strong><br>
       <%=
-         link_to_if(@order.manager.nil?, "Add Manager", { controller: "admin/orders", action: "edit", id: @order }) do
+         link_to_if(@order.manager.nil?, "Add Manager", { controller: "company/orders", action: "edit", id: @order }) do
            link_to(@order.manager.name, @order.manager)
          end
       %>
       <br>
       <strong>Account Manager</strong><br>
-      <%=
-         link_to_if(@order.account_manager.nil?, "Add Account Manager", { controller: "admin/orders", action: "edit", id: @order }) do
-           link_to(@order.account_manager.name, @order.account_manager)
-         end
-      %>
+      <%= @order.account_manager.try(:name) || "Unavailable" %>
     </div>
+    
   </div>
-  <div class='col-md-3'>
-    <%= render 'admin/shared/alerts/open_jobs', order: @order %>
-  </div>
+ 
 
 
 
-<div class='col-md-12' id="">
+<div class='col-md-10' id="">
 
   <!-- Nav tabs -->
   <ul id="" class="nav nav-tabs nav-justified" role="tablist">
@@ -52,12 +48,15 @@
     <li role="presentation"><a href="#applications" aria-controls="applications" role="tab" data-toggle="tab">Applicants</a></li>
   </ul>
   
-  <div class="tab-content white">
+  <div class="tab-content">
     <div role="tabpanel" class="tab-pane fade in active" id="order">
-      
-    <div class='col-md-6 well well-sm scroll500'>
-      <%= markdownify(@order.notes) %>
+      <div class='col-md-3'>
+      <% User.available.near(@order.address).limit(3).try(:each) do |user| %>
+        <li class=''><%= link_to user.name, user %> (<%= user.distance.round(2) %> miles)</li>
+      <% end %>
     </div>
+   
+    
     <div class='col-md-3'>
       <strong><%= @order.heavy_lifting ? "Heavy Lifting Required" : "" %></strong>
       <br><strong><%= @order.stwb ? "STWB Required" : "" %></strong><br>
@@ -81,21 +80,6 @@
   <p> <%= @order.mentioned_admins.map{|p| p.name.titleize}.join(", ")  %></p>
       <strong>Requested Employees</strong>
       <p><%= @order.requested_employees.map {|p| p.name.titleize}.join(", ") %></p>
-      <hr>
-      <div class="btn-group-vertical" role="group" aria-label="...">
-          <%= link_to(admin_company_path(@company), class: "btn btn-primary") do %>
-      		  <i class='fa fa-home fa-fw pull-left'></i>Back to Company
-      		<% end %>
-          <%= link_to(new_admin_company_order_path(@company), class: "btn btn-primary") do %>
-      		  <i class='fa fa-user-plus fa-fw pull-left'></i>New Job Order
-      		<% end %>
-          <%= link_to(admin_company_orders_path(@company), class: "btn btn-primary") do %>
-  				  <i class='fa fa-briefcase fa-fw pull-left'></i> Active Orders
-  				<% end %>
-        <%= link_to(admin_company_timesheets_path(@company), class: "btn btn-primary") do %>
-    		  <i class='fa fa-clock-o fa-fw pull-left'></i>Timesheets
-    		<% end %>
-      </div>
       <% if @order.skills.count < 1 %>
            <h4 id='no-skills' class="text-center">This job order has no skills entered.</h4>
           <% end %>
@@ -106,22 +90,13 @@
         <%= render partial: "admin/skills/form", locals: {skillable: @order} %>
       </div>
    </div>
-   <div class='col-md-4'>
+   <div class='col-md-3'>
      <strong>Tags</strong>
       
      <p><%= highlight(@order.tag_list.to_s, @order.tag_list, highlighter: '<a href="/tags?tag=\1">\1</a>') %></p>
    </div>
-   <div class="btn-group col-md-2">
-      <button type="button" class="btn btn-info black dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class='fa fa-cogs'></i> Admin
-        <span class="sr-only">Toggle Dropdown</span>
-      </button>
-      <ul class="dropdown-menu">
-        <li><%= link_to "<i class='fa fa-building' data-toggle='tooltip' data-placement='right' title='View Company'></i> &nbsp; #{@order.company.name}".html_safe, @order.account_manager, class: "" %></li>
-        <li role="separator" class="divider"></li>
-        <% if policy(@order).update? %><li><%= link_to "<i class='fa fa-pencil' data-toggle='tooltip' data-placement='right' title='Edit Order'></i>&nbsp; Edit".html_safe, edit_admin_order_path(@order), class: "" %></li><% end %>
-        <% if policy(@order).destroy? %><li><%= link_to "<i class='fa fa-trash' data-toggle='tooltip' data-placement='right' title='Delete Order'></i>&nbsp; Delete".html_safe, admin_company_order_path(@company, @order), method: :delete, data: { confirm: 'Are you sure?' }, class: "" %></li><% end %>
-      </ul>
+    <div class='col-md-8 scroll500'>
+      <%= markdownify(@order.notes) %>
     </div>
   </div>
   <!--MATCHING CANDIDATES TAB-->
@@ -139,7 +114,7 @@
           <%= link_to 'Add Employee', new_admin_order_job_path(@order), class: "btn btn-primary" %>
         <% end %>
         <% if @jobs.active.any? %>
-          <%= render 'admin/jobs/table' %>
+          <%= render 'admin/jobs/table', jobs: @jobs.active %>
         <% else %>
           <h3>No jobs to display yet.</h3>
       <% end %>
@@ -192,3 +167,4 @@
     </div>
   </div>
 </div>
+

@@ -182,7 +182,7 @@ class Job < ActiveRecord::Base
     end
     
     def straight_8
-        t = Time.current.beginning_of_week - 1.week + 8.hours
+        t = Time.current.beginning_of_week - 1.week 
         
         5.times do |n| 
             time_in = t + n.days

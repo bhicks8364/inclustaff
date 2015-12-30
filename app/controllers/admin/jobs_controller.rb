@@ -198,7 +198,7 @@ class Admin::JobsController < ApplicationController
         mentioned_admins.each do |mentioned_admin|
           current_admin.events.create(action: "mentioned", eventable: mentioned_admin)
         end
-        format.html { redirect_to admin_jobs_path(anchor: "mod_#{@job.id}"), notice: 'Job was successfully updated.' }
+        format.html { redirect_to admin_job_path(@job), notice: 'Job was successfully updated.' }
         format.json { render :show, status: :ok, location: @job }
       else
         format.html { render :edit }
@@ -213,7 +213,7 @@ class Admin::JobsController < ApplicationController
 
     @job.destroy
     respond_to do |format|
-      format.html { redirect_to jobs_url, notice: 'Job was successfully destroyed.' }
+      format.html { redirect_to admin_jobs_path, notice: 'Job was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -236,7 +236,7 @@ class Admin::JobsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def job_params
       params.require(:job).permit(:order, :recruiter_id, :title, :active, :description, 
-      :start_date, :pay_rate, :end_date, :order_id, :employee_id, :settings => [:pay_rate, :drive_pay, :ride_pay] )
+      :start_date, :pay_rate, :end_date, :order_id, :employee_id, :settings => [:pay_rate, :drive_pay, :ride_pay, :min_hours_for_vac] )
     end
     def employee_params
       params.require(:employee).permit(:first_name, :last_name, :email, :ssn, :phone_number)

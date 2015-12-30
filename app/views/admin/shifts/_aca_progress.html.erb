@@ -20,7 +20,8 @@
 
 <div class='col-md-4'>
     <h3 class='white'>By Year <small>over 1560 hours</small></h3>
-    <div class='list-group scroll300'><% @employee.shifts.report_by_year.each do |k, v| %>
+    <div class='list-group scroll300'>
+        <% @employee.shifts.report_by_year.each do |k, v| %>
          <li class='list-group-item list-group-item-info'><strong><%=  k.stamp("2015") %> </strong> -  Total Hours: <%= v.round(2) %>
          </li>
          <%= aca_progress(v, 1560) %>

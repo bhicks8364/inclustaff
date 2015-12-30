@@ -1,34 +1,27 @@
 <div class='table-responsive' data-behavior="timesheet-list">
-<table id='timesheets-datatable' class=" table table-bordered">
+<table id='' class=" table table-bordered datatable">
 	<thead>
 		<th class='text-center'><i class="fa fa-calendar-o"></i><br>Week</th>
 		<th class='text-center'><i class="fa fa-building"></i><br>Company</th>
-		
 		<th class='text-center'><i class="fa fa-user"></i><br>Employee</th>
-
 		<th class='text-center'><i class="fa fa-money"></i><br>Gross Pay</th>
 		<th class='text-center'><i class="fa fa-clock-o"></i><br>Hours</th>
 		<th class='text-center'><i class="fa fa-certificate"></i><br>Status</th>
-		<th class='text-center'><i class="fa fa-cogs"></i><br>Actions</th>
+		
 	</thead>
 	<tbody>
 	
 	
-		<% @timesheets.each do |timesheet| %>
+		<% timesheets.order(week: :desc).each do |timesheet| %>
 	<tr data-behavior="timesheet" data-id="<%= timesheet.id %>">
-		<td><strong><%= timesheet.week_ending %></strong></td>
-		<td class='text-left'><%= link_to timesheet.order.company, admin_company_path(timesheet.company), class: 'table-link'  %></td>
-      	<td class='text-left'><%= render 'admin/shared/modal', employee: timesheet.employee %><%= link_to timesheet.employee.name, admin_employee_path(timesheet.employee), class: 'table-link' %>
+		<td><strong><%= link_to timesheet.week_ending, company_timesheet_path(timesheet), class: 'black' %></strong></td>
+		<td class='text-left'><%= link_to timesheet.order.title, company_order_path(timesheet.order), class: 'black'  %></td>
+      	<td class='text-left'><%= link_to timesheet.employee.name, company_job_path(timesheet.job), class: 'black' %>
       	</td>
-
-			
-
 		<td class='text-center'><%= timesheet.gross_pay.present? ? number_to_currency(timesheet.gross_pay) : timesheet.shifts.last.state.upcase %></td>
-		
-
-		<td class='text-center'><%= timesheet.total_hours.present? ? timesheet.total_hours : timesheet.shifts.last.state.upcase %></td>
+		<td class='text-center'><%= timesheet.total_hours.present? ? timesheet.total_hours.round(2) : timesheet.shifts.last.state.upcase %></td>
 		<td class='text-center'>
-			<a class='btn btn-tiny' data-behavior="timesheet-toggle" >
+			<a class='btn btn-tiny' data-behavior="company-timesheet-toggle" >
 				<span  class="fa-stack" data-behavior="approve-button" >
 		          <% if timesheet.approved? %>
 					  <i class="fa fa-square-o fa-stack-2x"></i>
@@ -41,7 +34,7 @@
 			</a><br>
 			<span data-behavior='timesheet-state'><%= timesheet.state.upcase %></span>
 		</td>
-  		<td class="text-center"><%= render 'admin/timesheets/tool_buttons', timesheet: timesheet %></td>
+  		
 
 		</tr>
 		

@@ -1,9 +1,9 @@
 <div class='col-md-12 transbox'>
 <div class='well'>
-    <% if @jobs %>
+    <% if @jobs.active.any? %>
     
 <h1>All Active Jobs</h1>
-<%= render 'admin/jobs/table' %>
+<%= render 'admin/jobs/table', jobs: @jobs.active %>
 <% else %>
 No jobs to display.
 <% end %>

@@ -96,6 +96,8 @@ class AgenciesController < ApplicationController
         "admin_layout"
       elsif company_admin_signed_in?
         "company_layout"
+      elsif user_signed_in?
+        "employee"
       else
           "application"
       end

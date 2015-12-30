@@ -109,11 +109,13 @@ class DashboardController < ApplicationController
 
   
   private
-    def determine_layout
+      def determine_layout
       if admin_signed_in?
         "admin_layout"
       elsif company_admin_signed_in?
         "company_layout"
+      elsif user_signed_in?
+        "employee"
       else
           "application"
       end

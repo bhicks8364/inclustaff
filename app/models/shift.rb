@@ -25,6 +25,8 @@
 #  break_out      :datetime         is an Array
 #  paid_breaks    :boolean          default(FALSE)
 #  pay_rate       :decimal(, )
+#  latitude       :float
+#  longitude      :float
 #
 
 class Shift < ActiveRecord::Base
@@ -42,6 +44,9 @@ class Shift < ActiveRecord::Base
   has_many :events, as: :eventable
   accepts_nested_attributes_for :job
   
+  # GEOCODER
+  geocoded_by :in_ip
+  after_validation :geocode
 
   delegate :employee, to: :job
   delegate :order, to: :job
@@ -94,6 +99,10 @@ class Shift < ActiveRecord::Base
           start = Date.yesterday.beginning_of_day
           ending = Date.today.beginning_of_day
           where(time_in: start..ending)}
+  scope :this_year, -> {
+          start = Date.today.beginning_of_year.beginning_of_day
+          ending = Time.current
+          where(time_out: start..ending)}
   STARTING = Date.yesterday.beginning_of_day
   ENDING = Date.today.beginning_of_day
   after_save :update_timesheet!
@@ -203,7 +212,6 @@ class Shift < ActiveRecord::Base
           hours_worked - break_duration
       else
           hours_worked
-          
       end
   end
   

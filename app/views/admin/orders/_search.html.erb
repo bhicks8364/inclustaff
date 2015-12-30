@@ -2,3 +2,9 @@
                         html: { method: :post } do |f| %>
   <%= f.search_field :notes_or_title_or_company_name_cont , class: 'form-control', placeholder: "Search Job Orders"%>
 <% end %>
+<%= form_tag search_admin_orders_path, :method => :get do %>
+  <p>
+    <%= text_field_tag :search, params[:search] %>
+    <%= submit_tag "Search Near", :name => nil %>
+  </p>
+<% end %>

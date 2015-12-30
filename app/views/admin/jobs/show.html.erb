@@ -1,58 +1,33 @@
-<div class='col-md-12'>
-  <%= link_to(admin_job_path(@job, format: :pdf), class: 'btn btn-primary') do %>
-  	<i class="fa fa-download fa-md"></i> Candidate Sheet
-  <% end %>
+<div class='col-md-12 lightbox'>
+  
   <% if @job.on_shift? %>
          <%= shift_popover(@job.current_shift) %>
         <% end %>
   <h2><strong><%= @job.name_title %></strong></h2>
    <div class='col-md-4 text-center'>
-          <h4><small><strong><%= @job.company.name %></strong></small></h4>
+          <h4><%= @job.company.name %></h4>
        </div>
        <div class='col-md-4 text-center'>
           
-          <h4><small><strong><%= number_to_currency(@job.pay_rate) %>/ hr</strong></small></h4>
+          <h4><%= number_to_currency(@job.pay_rate) %>/ hr</h4>
        </div>
        <div class='col-md-4 text-center'>
           
-          <h4><small><%= @job.start_date.strftime("%B %e, %Y ") %></small></h4>
+          <h4><%= @job.start_date.strftime("%B %e, %Y ") %></h4>
+          
+       
        </div>
        
-      Pay: <%= @job.settings['pay_rate'] if @job.settings %><br>
-      Drive Pay: <%= @job.settings['drive_pay'] if @job.settings %><br>
-      Ride Pay: <%= @job.settings['ride_pay'] if @job.settings %>
-       
+     
        
        
        
        
    
-      <div class="btn-group btn-group-justified" role="group" aria-label="...">
-        <%= link_to "View Company", admin_company_path(@company), class: "btn btn-primary" %>
-        <%= link_to "View Job Order", admin_order_path(@order), class: 'btn btn-primary' %>
-        <%= link_to "View Employee", admin_employee_path(@employee), class: 'btn btn-primary' %>
-        <%= link_to "View User Profile", @employee.user, class: 'btn btn-primary' %>
-        <%= link_to "Edit Job", edit_admin_job_path(@job), class: "btn btn-primary" %>
-      </div>
-      <hr>
-        
-       
-      
-      
-      
       
    
-       
-  
-    
-      
-    
-
-    
-  
-
 <div class="row">
-  <div class='col-md-12 company-profile-nav'>
+  <div class='col-md-12'>
 
   
   <!-- Nav tabs -->
@@ -70,28 +45,26 @@
   
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="job">
-     <div class=''>
-       
-     </div>
-    
- 
-  <div class='col-md-6 dark'>
-    <div class='well'>
+
+  <div class='col-md-6'>
   <h4><strong>Interview Notes:</strong></h4>
-      
-        <%= @job.description %>
-     
-      
-      <% if @job.recruiter.present? %>
-        <h5>Recruiter: <small><%= link_to @job.recruiter.name, @job.recruiter %></small></h5>
-      <% end %>
- 
-      <%= render 'modal', job: @job %>
-    </div>
+        <%= markdownify(@job.description) %>
+        <hr>
+        <%= link_to(admin_job_path(@job, format: :pdf), class: 'btn btn-primary') do %>
+          	<i class="fa fa-download fa-md"></i> Candidate Sheet
+          <% end %>
      </div>
- 
-
-
+  <div class='col-md-6'>
+      <% if @job.recruiter.present? %>
+        <h5>Recruiter: <%= link_to @job.recruiter.name, @job.recruiter %></h5>
+      <% end %>
+         
+       Pay: <%= @job.settings['pay_rate'] if @job.settings %><br>
+      Drive Pay: <%= @job.settings['drive_pay'] if @job.settings %><br>
+      Ride Pay: <%= @job.settings['ride_pay'] if @job.settings %><br>
+      Minimum Hours for Vacation: <%= @job.settings['min_hours_for_vac'] if @job.settings %>
+    
+     </div>
 </div>
 
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
@@ -101,16 +74,13 @@
     <%= link_to "Past Timesheets", past_admin_job_timesheets_path(@job), class: "btn btn-success" %>
   </div>
   
-  
-  
-  
   <div role="tabpanel" class="tab-pane fade" id="order-info">
      <h3>
      Order Information</h3>
      <%= render @order %>
   </div>
   <div role="tabpanel" class="tab-pane fade" id="comments-tab">
-     <div class='col-md-12 dark'>
+     <div class='col-md-12'>
          <div id='comment-list'>
             <% @job.comments.each do |comment| %>
                 <%= render 'comments/comment', comment: comment %>
@@ -130,8 +100,16 @@
         <% end %>
       
       <% end %>
-      <%= render "admin/shifts/aca_progress", employee: @employee %>
+      
     </div>
+    <div class="btn-group btn-group-vertical" role="group" aria-label="...">
+        <%= link_to "View Company", admin_company_path(@company), class: "btn btn-primary" %>
+        <%= link_to "View Job Order", admin_order_path(@order), class: 'btn btn-primary' %>
+        <%= link_to "View Employee", admin_employee_path(@employee), class: 'btn btn-primary' %>
+        <%= link_to "View User Profile", @employee.user, class: 'btn btn-primary' %>
+        <%= link_to "Edit Job", edit_admin_job_path(@job), class: "btn btn-primary" %>
+      </div>
+    <%= render "admin/shifts/aca_progress", employee: @employee %>
     
   </div>
   <div role="tabpanel" class="tab-pane fade" id="skills-tab">

@@ -8,8 +8,13 @@ class Admin::EmployeesController < ApplicationController
 
   def index
     @admin = @current_admin
-    @employees = Employee.all
+    @employees = Employee.includes(:user).all
     # @employees = Employee.includes(:user).assigned
+    @hash = Gmaps4rails.build_markers(@employees) do |employee, marker|
+          marker.lat employee.user.latitude
+          marker.lng employee.user.longitude
+          marker.title employee.name
+        end
     gon.employees = @employees
     skip_authorization
     @import = Employee::Import.new
@@ -58,6 +63,7 @@ class Admin::EmployeesController < ApplicationController
    
     
     @current_job = @employee.current_job if @employee.current_job.present?
+    @order = @current_job.order if @current_job.present?
     @past_jobs = @employee.jobs.inactive if @employee.jobs.any?
    
     gon.skills = @skills

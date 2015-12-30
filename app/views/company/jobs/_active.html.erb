@@ -1,9 +1,9 @@
 
-  <%= div_for(@active_jobs, class: 'well') do |job| %>
+  <%= div_for(active_jobs, class: '') do |job| %>
 
   <% if job.on_shift? %>
 
-   <h4><%= link_to job.employee.name, job.employee %> | <%= link_to job.title, job %> </h4>
+   <h4><%= job.employee.name %> | <%= link_to job.title, company_job_path(job) %> </h4>
   
     Hours: <%= job.current_week_hours %>  | Pay:  <%= job.current_week_pay ? number_to_currency(job.current_week_pay) : "$0.00" %> 
   
@@ -12,12 +12,12 @@
    <p>Time In: <%= job.last_clock_in ? job.last_clock_in.strftime("%I:%M %p") : "No Shifts Yet" %>  
 
   <% else %>
-  <h4><%= link_to job.employee.name, job.employee %>   |    <%= link_to job.title, job %> </h4>
+  <h4><%=  job.employee.name %>   |    <%= link_to job.title, company_job_path(job) %> </h4>
    THIS WEEK <br> Hours: <%= job.current_week_hours %>  | Pay:  <%= job.current_week_pay ? number_to_currency(job.current_week_pay) : "$0.00" %> 
 <span class="label label-danger label-large pull-right"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Clocked Out</span>
     
 
-   <p>Last Clock In: <%= job.last_clock_in ? job.last_clock_in.strftime("%I:%M %p") : "No Shifts Yet" %>    |     Last Clock Out: <%= job.last_clock_out ? job.last_clock_out.strftime("%I:%M %p") : "No Shifts Yet" %></p>
+   <p>Last Clock In: <%= job.last_clock_in ? job.last_clock_in : "No Shifts Yet" %>    |     Last Clock Out: <%= job.last_clock_out ? job.last_clock_out : "No Shifts Yet" %></p>
 
 
    <% end %>
@@ -49,7 +49,7 @@
  <% end %>
    
   <% if job.current_timesheet != nil %>  
-  <%= link_to "<span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span>     View Timesheet".html_safe, timesheet_path(job.current_timesheet), class: "btn btn-info btn-sm" %>
+  <%= link_to "<span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span>     View Timesheet".html_safe, company_timesheet_path(job.current_timesheet), class: "btn btn-info btn-sm" %>
   <% end %>
   <% end %>
 

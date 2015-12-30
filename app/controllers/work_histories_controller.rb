@@ -82,10 +82,18 @@ class WorkHistoriesController < ApplicationController
       skip_authorization
     end
     def determine_layout
-      current_admin ? "admin_layout" : "application"
+      if admin_signed_in?
+        "admin_layout"
+      elsif company_admin_signed_in?
+        "company_layout"
+      elsif user_signed_in?
+        "employee"
+      else
+          "application"
+      end
     end
     # Never trust parameters from the scary internet, only allow the white list through.
     def work_history_params
-      params.require(:work_history).permit(:employer_name, :start_date, :end_date, :title, :employee_id, :description, :current, :may_contact, :supervisor, :phone_number, :pay)
+      params.require(:work_history).permit(:employer_name, :start_date, :end_date, :title, :employee_id, :description, :current, :may_contact, :supervisor, :phone_number, :pay, :tag_list)
     end
 end

@@ -1,0 +1,13 @@
+<a data-toggle="modal" data-target=".bs-map-modal-sm"><i class="fa fa-map-marker"></i></a>
+
+<div class="modal fade bs-map-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      
+         
+      <%= image_tag "http://maps.google.com/maps/api/staticmap?size=350x300&sensor=false&zoom=16&markers=#{order.latitude}%2C#{order.longitude}", class: "img-zoom" %>
+
+        
+    </div>
+  </div>
+</div>

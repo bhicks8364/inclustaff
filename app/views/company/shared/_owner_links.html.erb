@@ -1,0 +1,14 @@
+<li><%= link_to "<i class='fa fa-dashboard'></i> Dashboard".html_safe, company_dashboard_path %></li>
+<li><%= link_to "<i class='fa fa-plus-square'></i> New Job Order".html_safe, new_company_order_path %></li>
+<li><%= link_to "<i class='fa fa-clock-o'></i> Timeclock".html_safe, company_timeclock_path %></li>
+<li role="separator" class="divider"></li>
+<li><%= link_to "<i class='fa fa-home'></i> Agency Page".html_safe, @current_agency %></li>
+<li><%= link_to "<i class='fa fa-university'></i> Job Orders".html_safe, company_orders_path %></li>
+<li><%= link_to "<i class='fa fa-file-text'></i> Timesheets".html_safe, company_timesheets_path %></li>
+<li><%= link_to "<i class='fa fa-money'></i> Invoices".html_safe, company_invoices_path %></li>
+<li><%= link_to "<i class='fa fa-users'></i> Company Users".html_safe, company_admins_path %></li>
+<li><%= link_to "<i class='fa fa-commenting'></i> Messages".html_safe, comments_path %></li>
+<li><%= link_to "<i class='fa fa-briefcase'></i> Jobs".html_safe, company_jobs_path %></li>
+<li><%= link_to "<i class='fa fa-list'></i> Candidate List".html_safe, users_path %></li>
+<li role="separator" class="divider"></li>
+<%= link_to "Clock Out All", clock_out_all_company_jobs_path, method: :patch, class: 'btn btn-primary' if @on_shift.any? %>

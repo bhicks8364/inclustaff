@@ -13,7 +13,6 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   
   before_action :set_current
-  # before_action :get_subdomain
   
   def set_current
     subdomains = request.subdomains
@@ -28,6 +27,7 @@ class ApplicationController < ActionController::Base
     @current = @current_user || @current_admin || @current_company_admin
     @signed_in = @current
     @agency = @current_agency
+    @employee = @current_user.employee if @current_user.present?
     gon.current = @current
     @q_orders = @current_agency.orders.includes(:company, :jobs).active.ransack(params[:q]) if admin_signed_in?
   end
@@ -46,6 +46,7 @@ class ApplicationController < ActionController::Base
   # def not_found
   #   # raise ActionController::RoutingError.new("Subdomain Not Found. >>  Hey now! You shouldn't be here... You must register if you want to be here :) ")
   # end
+
   
   def update_permitted_parameters
     devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:id, :first_name, :last_name, :email, :role, :can_edit, :company_id, :password, :password_confirmation, :current_password, :address, :city, :state, :zipcode) }

@@ -15,7 +15,7 @@
 				
 
 					<div class='well'>
-						<%= render 'admin/jobs/table', collection: @jobs.on_shift %>
+						<%= render 'admin/jobs/table', jobs: @jobs.on_shift %>
 					</div>
 
 					<%= link_to "View all users", users_path, class: "btn btn-success pull-right" %>

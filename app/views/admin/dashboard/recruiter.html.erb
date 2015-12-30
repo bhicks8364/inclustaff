@@ -35,7 +35,7 @@
 						
 							<% if @current_admin.jobs %>
 							<div class=' list group'>
-			<%= div_for(@current_admin.jobs, class: 'list-group-item dark') do |job| %>
+			<%= div_for(@current_admin.jobs.active, class: 'list-group-item dark') do |job| %>
 									
 					
 

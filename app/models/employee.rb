@@ -92,6 +92,7 @@ class Employee < ActiveRecord::Base
   # SCOPES
   scope :with_late_timesheets, -> { joins(:timesheets).merge(Timesheet.needing_approval)}
   scope :with_active_jobs, -> { joins(:jobs).merge(Job.active)}
+  scope :worked_this_year, -> { joins(:shifts).merge(Shift.this_year)}
   scope :with_inactive_jobs, -> { joins(:jobs).merge(Job.inactive)}
   scope :on_shift, -> { joins(:shifts).merge(Shift.clocked_in)} 
   scope :at_work, -> { joins(:shifts).merge(Shift.at_work)} 
@@ -112,9 +113,31 @@ class Employee < ActiveRecord::Base
     current_job.company if current_job.present?
   end
   
+  def average_weekly_hours
+    if total_hours > 1
+      @average = []
+      timesheets.this_year.distinct.each do |timesheet|
+        @average << timesheet.total_hours
+      end
+      (@average.sum / timesheets.this_year.count).round(2)
+    end
+  end
+    
+  
   def current_status
     shifts.any? ? shifts.last.state.humanize : "No Shifts"
   end
+  def total_hours
+      shifts.sum(:time_worked)
+  end
+  def self.sorted_by_total_hours
+    all.sort_by(&:total_hours).reverse!
+  end
+  def current_report
+    shifts.group_by_year(:time_in, range: Time.current.beginning_of_year.midnight...Time.current).sum(:time_worked)
+  end
+  
+
   
   def current_timesheet
     if timesheets.current_week.any?
@@ -208,7 +231,7 @@ class Employee < ActiveRecord::Base
   end
     
   def total_all_hours
-      self.shifts.sum(:time_worked)
+      shifts.sum(:time_worked)
   end
   def matching_orders
      @matching_orders ||= Order.needs_attention.tagged_with([tag_list], :any => true)

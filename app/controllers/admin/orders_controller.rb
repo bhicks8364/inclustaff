@@ -9,6 +9,7 @@ class Admin::OrdersController < ApplicationController
   # GET /orders.json
   def index
     @import = Order::Import.new
+    
     if params[:company_id]
       @company = Company.find(params[:company_id])
       @orders = @company.orders.needs_attention
@@ -22,6 +23,13 @@ class Admin::OrdersController < ApplicationController
       @orders = Order.needs_attention
       @orders = @orders.tagged_with(params[:tag])
     end
+    @hash = Gmaps4rails.build_markers(@orders) do |order, marker|
+          marker.lat order.latitude
+          marker.lng order.longitude
+          marker.infowindow order.title_company
+          marker.title order.title
+        end
+    gon.order = @hash
     authorize @orders
     
     respond_to do |format|
@@ -34,9 +42,21 @@ class Admin::OrdersController < ApplicationController
   end
   
   def search
-    @q_orders = Order.includes(:company, :jobs).active.ransack(params[:q]) 
-    @orders = @q_orders.result(distinct: true).paginate(page: params[:page], per_page: 25)
+    
+    if params[:search].present?
+      @orders = Order.near(params[:search], 50).paginate(page: params[:page], per_page: 25)
+      
+    elsif params[:q].present?
+      @q_orders = Order.includes(:company, :jobs).active.ransack(params[:q]) 
+      @orders = @q_orders.result(distinct: true).paginate(page: params[:page], per_page: 25) 
+    end
     authorize @orders, :index?
+     @hash = Gmaps4rails.build_markers(@orders) do |order, marker|
+          marker.lat order.latitude
+          marker.lng order.longitude
+          marker.infowindow order.title_company
+          marker.title order.title
+        end
   end
   
   def show
@@ -48,6 +68,7 @@ class Admin::OrdersController < ApplicationController
     @timesheets = @order.timesheets
     @current_timesheets = @order.current_timesheets
     authorize @order
+   
   end
     
 
@@ -74,7 +95,8 @@ class Admin::OrdersController < ApplicationController
     authorize @order
     @company = @order.company
     @account_managers = @company.account_managers if @company.account_managers.any?
-    @account_managers = @current_agency.admins.account_managers if @current_agency.present?
+    
+    # @account_managers = @current_agency.admins.account_managers if @current_agency.present?
     # @order.skills
     
   end
@@ -172,7 +194,7 @@ class Admin::OrdersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.require(:order).permit(:id, :min_pay, :max_pay, :pay_frequency, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title, :pay_range, :notes, :number_needed, :needed_by, :urgent, :active, :dt_req, :bg_check, :stwb, :heavy_lifting, :shift, :est_duration, :tag_list, 
+      params.require(:order).permit(:id, :address, :min_pay, :max_pay, :pay_frequency, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title, :pay_range, :notes, :number_needed, :needed_by, :urgent, :active, :dt_req, :bg_check, :stwb, :heavy_lifting, :shift, :est_duration, :tag_list, 
       jobs_attributes: [:order_id, :title, :description, :start_date, :id, :employee_id, :active], skills_attributes: [:id, :skillable_type, :skillable_id, :name, :required, :_destroy])
     end
 end

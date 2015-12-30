@@ -41,11 +41,18 @@
 //= require employees
 
 
+
 //= require chartkick
 
 //= require charts
 //= require popovers
 //= require tooltips
+//= require underscore
+//= require gmaps/google
+
+
+
+
 
 $(document).ready(function(){
     $('.img-zoom').hover(function() {

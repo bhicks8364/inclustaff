@@ -2,7 +2,7 @@
 <div class="table-responsive">
   
 
-<table id='jobs-datatable' class="table table-hover table-bordered" >
+<table id='' class="table table-hover" >
   <thead>
     <tr>
     
@@ -19,7 +19,7 @@
   </thead>
 
   <tbody>
-    <% @jobs.each do |job| %>
+    <% jobs.each do |job| %>
     <% if job.on_shift? %>
     <tr class="success">
       <% else%>
@@ -27,7 +27,7 @@
       
       <% end %>
 
-        <td><%= render 'admin/jobs/modal', job: job %><td>
+        <td><%= job_sym(job) %> <%= link_to job.employee.name, admin_job_path(job) %><br> <small><%= job.title %></small></td>
         
         <td><%= number_to_currency(job.pay_rate) %></td>
         <td><%= job.total_hours.round(2) %></td>

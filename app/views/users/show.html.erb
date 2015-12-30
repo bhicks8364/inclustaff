@@ -1,5 +1,5 @@
 
-<div class='dark'>
+<div class=''>
 
   <h3 class="page-header"><%= @user.name %>'s Profile  </h3>
 <span id='<%=@user.id%>-updated-available-at'>Updated available: <%= @user.checked_in_at? ? "#{time_ago_in_words(@user.checked_in_at)} ago" : "" %></span>
@@ -31,17 +31,33 @@
   
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane fade in active" id="home">
-        <div class='col-md-12 dark'>
+        <div class='col-md-12 '>
             <h2><%= @employee.first_name %>'s Employment Timeline</h2>
-            <%= timeline  @employee.work_history_data, width: "100%", height: "300px"  %>
+            <%= link_to "Edit", edit_admin_employee_path(@employee) %>
+            
         </div>
       
       
         <div class='col-md-12'>
             <%= render @user %>
-                     <h2>Tags</h2>
-             <%= @employee.tag_list %>
+            
+            <div class='col-md-12'>
+
+               
+                     <div class='col-md-3'>
+                          <%= image_tag "http://maps.google.com/maps/api/staticmap?size=250x300&sensor=false&zoom=16&markers=#{@user.latitude}%2C#{@user.longitude}",
+                    class: "img-zoom" %>
+                         <% @current_agency.orders.needs_attention.near(@user.fulladdress).limit(3).try(:each) do |order| %>
+                            <li><%= link_to order.title, admin_order_path(order) %> (<%= order.distance.round(2) %> miles) <%= order.address %></li>
+                        <% end %>
+                     </div>
+                      <h2>Tags</h2>
+             
               <%= highlight(@employee.tag_list.to_s, ActsAsTaggableOn::Tag.all.map(&:name), highlighter: '<a href="/tags?tag=\1">\1</a>') %>
+                <%= timeline  @employee.work_history_data, width: "100%", height: "300px" if @employee.work_histories.any?  %>
+            
+           
+                    
         <div class='col-md-3'>
             <% if admin_signed_in? %>        
                     <%= link_to "Employee Page", admin_employee_path(@employee), class: 'btn btn-primary btn-lg' %>
@@ -53,7 +69,7 @@
             <%= link_to "Edit Profile", edit_user_path(@user), class: "btn btn-primary" %>
          </div>
         </div>
-        
+         </div>
    
     
      <% if user_signed_in? %>

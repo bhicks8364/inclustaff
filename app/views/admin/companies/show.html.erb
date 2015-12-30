@@ -1,4 +1,4 @@
-<div class="col-md-12">
+<div class="col-md-12 lightbox">
   <h2><%= @company.name %></h2>
   
   <div class="btn-group btn-group-justified" role="group" aria-label="...">
@@ -70,11 +70,12 @@
       <span class="text-center">Balance: <%= number_to_currency(@company.balance) %></span>
   
       </div>
-      <div class=''>
+      <div class='col-md-6'>
         <%= column_chart @company.jobs.map{|job|
                 {name: job.employee.name, data: job.shifts.group_by_week(:time_in, format: "%B %d, %Y").sum(:time_worked)}
             }, xtitle: "Week", ytitle: "Total Hours" %>
       </div>
+     
 
   </div>
     

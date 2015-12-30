@@ -30,14 +30,12 @@
 
         <%= f.input :pay_rate, as: :decimal, placeholder: "Pay Rate", label: false %>
       </div>
-                <div class='form-inline'>
-    <%= f.simple_fields_for :settings do |d| %>
-     
-    <%= d.input :pay_rate, label: false, placeholder: "Pay Rate", input_html: {class: "form-control"} %>
-    <%= d.input :drive_pay, label: false, placeholder: "Drive Pay", input_html: {class: "form-control"} %>
-    <%= d.input :ride_pay, label: false, placeholder: "Ride Pay", input_html: {class: "form-control"} %>
-    <% end %>
-  </div>
+               <%= f.simple_fields_for :settings do |d| %>
+      <%= d.input :min_hours_for_vac, label: false, placeholder: "Vacation Minimum Hours", input_html: {class: "form-control"} %>
+      <%= d.input :pay_rate, label: false, placeholder: "Pay Rate", input_html: {class: "form-control"} %>
+      <%= d.input :drive_pay, label: false, placeholder: "Drive Pay", input_html: {class: "form-control"} %>
+      <%= d.input :ride_pay, label: false, placeholder: "Ride Pay", input_html: {class: "form-control"} %>
+      <% end %>
  
 
 

@@ -30,6 +30,8 @@
 #  resume_id              :integer
 #  checked_in_at          :datetime
 #  name                   :string
+#  latitude               :float
+#  longitude              :float
 #
 
 require 'rails_helper'

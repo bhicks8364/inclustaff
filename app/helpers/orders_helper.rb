@@ -1,7 +1,7 @@
 module OrdersHelper
     include ActsAsTaggableOn::TagsHelper
     
-    def skills_popover(order)
+    def order_skills_popover(order)
         "<span class='black'><i class='fa fa-wrench fa-lg' data-placement='right' data-toggle='popover' title='Skills for #{ order.title}' 
         data-content='#{ order.skills.any? ? order.skills.map {|p| p.name.titleize}.join(', ') : order.tag_list }'></i></span>".html_safe
     end

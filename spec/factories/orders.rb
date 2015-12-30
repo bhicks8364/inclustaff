@@ -30,4 +30,7 @@
 #  min_pay            :decimal(, )
 #  max_pay            :decimal(, )
 #  pay_frequency      :string
+#  address            :string
+#  latitude           :float
+#  longitude          :float
 #

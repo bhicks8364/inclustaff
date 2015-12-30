@@ -13,8 +13,12 @@
 	   <%= render 'admin/infoboxes/taggings' %>
 	</div>
 	
-	<div class="col-md-8 border">
-			<%= render @orders.needs_attention %>
+	<div class="col-md-8">
+		<% @orders.needs_attention.each do |order| %>
+			<%= render 'admin/orders/order', order: order %>
+		<% end %>
+			<hr>
+			<div id="map" style='width: 400px; height: 400px;'></div>
 	</div>
 		<div class='col-md-2'>
 				<%= render 'admin/shared/alerts/open_orders', orders: @orders %>
@@ -22,3 +26,23 @@
 
 
 </div>
+<script type='text/javascript'>
+handler = Gmaps.build('Google');
+handler.buildMap({
+    provider: {
+      disableDefaultUI: true,
+      zoom: 4
+      // pass in other Google Maps API options here
+    },
+    internal: {
+      id: 'map'
+    }
+  },
+  function(){
+    markers = handler.addMarkers(<%=raw @hash.to_json %>);
+    handler.bounds.extendWith(markers);
+    handler.fitMapToBounds();
+  }
+);
+
+</script>

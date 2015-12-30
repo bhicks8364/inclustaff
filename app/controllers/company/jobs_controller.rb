@@ -2,7 +2,8 @@ class Company::JobsController < ApplicationController
   before_action :set_job, only: [:show, :edit, :update, :destroy, :clock_in, :clock_out]
   before_action :authenticate_company_admin!
   # before_action :set_order
-
+  layout "company_layout"
+  
   def index
     
       @admin = current_company_admin

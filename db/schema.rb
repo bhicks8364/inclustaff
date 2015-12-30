@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151222162943) do
+ActiveRecord::Schema.define(version: 20151226140749) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -283,6 +283,9 @@ ActiveRecord::Schema.define(version: 20151222162943) do
     t.decimal  "min_pay"
     t.decimal  "max_pay"
     t.string   "pay_frequency"
+    t.string   "address"
+    t.float    "latitude"
+    t.float    "longitude"
   end
 
   add_index "orders", ["account_manager_id"], name: "index_orders_on_account_manager_id", using: :btree
@@ -324,6 +327,8 @@ ActiveRecord::Schema.define(version: 20151222162943) do
     t.datetime "break_out",                                   array: true
     t.boolean  "paid_breaks",    default: false
     t.decimal  "pay_rate"
+    t.float    "latitude"
+    t.float    "longitude"
   end
 
   add_index "shifts", ["breaks"], name: "index_shifts_on_breaks", using: :btree
@@ -412,6 +417,8 @@ ActiveRecord::Schema.define(version: 20151222162943) do
     t.integer  "resume_id"
     t.datetime "checked_in_at"
     t.string   "name"
+    t.float    "latitude"
+    t.float    "longitude"
   end
 
   add_index "users", ["agency_id"], name: "index_users_on_agency_id", using: :btree
