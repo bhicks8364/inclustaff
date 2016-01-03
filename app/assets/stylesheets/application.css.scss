@@ -64,12 +64,11 @@ body {
   margin-top: -20px;
   background-color: rgba(255, 255, 255, 0.6);
 }
-#DataTables_Table_0_filter > label {
-  color: white;
+
+.dataTables_wrapper > label {
+  color: black;
 }
-#DataTables_Table_0_length > label {
-  color: white;
-}
+
 
 #logo > img {
     // max-height: 45px;
@@ -109,10 +108,12 @@ div.transbox {
 }
 #header-navbar {
   // background:transparent;
-  background: rgba(0, 0, 0, 0.82);
+  // background: rgba(0, 0, 0, 0.82);
+  border: none;
+  background: white;
   // background-image: url('street.png');
   a {
-    color: white;
+    color: black;
   }
   a:hover {
     color: gray;
@@ -220,6 +221,7 @@ div.transbox {
 }
 .btn.btn-primary:hover {
   background-color: rgba(21, 19, 24, 0.16);
+  color: black;
 }
 
 .color {
@@ -234,7 +236,7 @@ div.transbox {
     background-color: rgba(17, 17, 17, 0.17);
     color: black;
 }
-.navbar.navbar-inverse {
-  border: none;
-  margin-bottom: 1px;
-}
+// .navbar.navbar-inverse {
+//   border: none;
+//   margin-bottom: 1px;
+// }

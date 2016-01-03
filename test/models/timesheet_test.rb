@@ -18,6 +18,7 @@
 #  invoice_id       :integer
 #  adjustments      :hstore
 #  approved_by_type :string
+#  total_hours      :decimal(, )
 #
 
 require 'test_helper'

@@ -18,6 +18,7 @@
 #  timesheets_count :integer
 #  settings         :hstore
 #  pay_types        :text             is an Array
+#  vacation         :hstore
 #
 
 FactoryGirl.define do

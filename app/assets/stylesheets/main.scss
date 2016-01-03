@@ -366,7 +366,7 @@ h1, h2, h3, h4, h5, h6 {
 
 
 .lightbox {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.25);
     padding: 10px;
 }
 .green {
@@ -381,4 +381,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .sixty {
     opacity:0.6;
+}
+
+ul > li {
+    text-decoration: none;
 }

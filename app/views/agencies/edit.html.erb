@@ -20,7 +20,7 @@
     <%= f.input :name, label: false, placeholder: "Agency Name", input_html: {class: "form-control"}  %>
     <%= f.input :logo_url, label: "Logo URL", placeholder: "optional", input_html: {class: "form-control"}  %>
         <p><strong>Subdomain</strong></p>
-        <%= f.input :subdomain, label: false, disabled: true, placeholder: "Lowercase only. No special characters or spaces.", input_html: {class: "form-control"}, wrapper_html: {class: "white"}  %>
+        <%= f.input :subdomain, label: false, disabled: true, input_html: {class: "form-control"}, wrapper_html: {class: "white"}  %>
         <p class='text-center'>You can access your portal at www.<u><%= @agency.subdomain %></u>.inclustaff.com </p>
         
     

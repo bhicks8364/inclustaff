@@ -28,6 +28,8 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  name                   :string
+#  latitude               :float
+#  longitude              :float
 #
 
 FactoryGirl.define do

@@ -23,7 +23,7 @@
 
     <h4><strong>Job Order Information</strong></h4>
     <%= f.input :title, placeholder: "Enter Department Name", label: false %>
-    <%= f.association :manager, collection: @company.admins, placeholder: "Choose a Company Manager", label: false %>
+    <%= f.association :manager, collection: @company.admins, placeholder: "Choose a Company Manager", label: false if @company.present? %>
     <%= f.association :account_manager, collection: @account_managers, placeholder: "Choose aa Account Manager", label: false %>
     <%= f.input :pay_range, collection: [ "Hourly", "Salary", "Hourly + Commission"], prompt: " Select Pay Type", label: false %>
     <%= f.input :notes, label: "Additional Payroll Information", placeholder: "Vacation & holiday pay, bonus structure, shift differentials, etc...", label: false %>

@@ -1,41 +1,12 @@
 <div class="col-md-12 lightbox">
   <h2><%= @company.name %></h2>
   
-  <div class="btn-group btn-group-justified" role="group" aria-label="...">
-    
-    <div class="btn-group" role="group">
-      <%= link_to(new_admin_company_order_path(@company), class: "btn btn-primary") do %>
-    	  <span><i class='fa fa-plus-square fa-fw'></i> New Job Order</span>
-    	<% end %>
-    </div>
-    
-    <div class="btn-group" role="group">
-      <%= link_to(admin_company_orders_path(@company), class: "btn btn-primary") do %>
-  		  <span><i class='fa fa-briefcase fa-fw'></i> Active Orders</span>
-  		<% end %>
-    </div>
-    
-    <div class="btn-group" role="group">
-      <%= link_to(new_company_admin_registration_path, class: "btn btn-primary") do %>
-  		  <span><i class='fa fa-user-plus fa-fw'></i> Add Company User</span>
-  		<% end %>
-    </div>
-    
-    <div class="btn-group" role="group">
-      <%= link_to(admin_company_timesheets_path(@company), class: "btn btn-primary") do %>
-      		<span>	<i class='fa fa-clock-o fa-fw'></i>Timesheets</span>
-      <% end %>
-    </div>
-    <div class="btn-group" role="group">
-      <%= link_to(admin_company_invoices_path(@company), class: "btn btn-primary") do %>
-      		<span>	<i class='fa fa-usd fa-fw'></i>Invoices</span>
-      <% end %>
-    </div>
-</div>
+  
   <!-- Nav tabs -->
   <ul class="nav nav-tabs nav-justified" role="tablist">
     <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Company Information</a></li>
     <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Job Orders</a></li>
+    <li role="presentation"><a href="#company-stats" aria-controls="company-stats" role="tab" data-toggle="tab"> Stats</a></li>
     <li role="presentation"><a href="#employees" aria-controls="employees" role="tab" data-toggle="tab">Employees</a></li>
     <li role="presentation"><a href="#company-contacts" aria-controls="company-contacts" role="tab" data-toggle="tab">Company Admins</a></li>
     <li role="presentation"><a href="#invoices" aria-controls="invoices" role="tab" data-toggle="tab">Invoices</a></li>
@@ -45,10 +16,10 @@
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="home">
     
-    <div class=''>
-      <h3>Company Information</h3>
+    <div class='col-md-4 bg-white'>
+      <h4>Contact Information</h4>
     
-      <% if @company.orders.count == 0 %>
+      <% if @company.orders.active.count == 0 %>
       <div id="no-orders-alert" class="alert alert-danger" role="alert">
       
       <h5 class='text-center'> <i class="fa fa-exclamation-triangle fa-fw fa-border"></i><%= @company.name %> doesn't have any job orders. <br>
@@ -56,7 +27,7 @@
       	<%= link_to "Add Job Order", new_admin_company_order_path(@company), class: 'btn btn-primary' %>
       </div>
       <% end %>
-  
+      
       <address class="">
         <%= @company.address %><br>
         <%= @company.city %>, <%= @company.state %> <%= @company.zipcode %><br>
@@ -66,14 +37,41 @@
         <strong><%= @company.contact_name %></strong><br>
         <a href="mailto:#"><%= @company.contact_email %></a>
       </address>
-  
-      <span class="text-center">Balance: <%= number_to_currency(@company.balance) %></span>
+      <span class="text-center">Balance: <%= number_to_currency(@company.balance) %>
   
       </div>
-      <div class='col-md-6'>
-        <%= column_chart @company.jobs.map{|job|
-                {name: job.employee.name, data: job.shifts.group_by_week(:time_in, format: "%B %d, %Y").sum(:time_worked)}
-            }, xtitle: "Week", ytitle: "Total Hours" %>
+      <div class='col-md-4'></div>
+      <div class='col-md-4'>
+        <div class="btn-group btn-group-vertical" role="group" aria-label="...">
+    <div class="btn-group" role="group">
+      <%= link_to(new_admin_company_order_path(@company), class: "btn btn-primary") do %>
+    	  <i class='fa fa-plus-square fa-fw'></i> New Job Order
+    	<% end %>
+    </div>
+    
+    <div class="btn-group" role="group">
+      <%= link_to(admin_company_orders_path(@company), class: "btn btn-primary") do %>
+  		  <i class='fa fa-briefcase fa-fw'></i> Active Orders
+  		<% end %>
+    </div>
+    
+    <div class="btn-group" role="group">
+      <%= link_to(new_company_admin_registration_path, class: "btn btn-primary") do %>
+  		  <i class='fa fa-user-plus fa-fw'></i> Add Company User
+  		<% end %>
+    </div>
+    
+    <div class="btn-group" role="group">
+      <%= link_to(admin_company_timesheets_path(@company), class: "btn btn-primary") do %>
+      			<i class='fa fa-clock-o fa-fw'></i>Timesheets
+      <% end %>
+    </div>
+    <div class="btn-group" role="group">
+      <%= link_to(admin_company_invoices_path(@company), class: "btn btn-primary") do %>
+      			<i class='fa fa-usd fa-fw'></i>Invoices
+      <% end %>
+    </div>
+</div>
       </div>
      
 
@@ -81,36 +79,55 @@
     
   <div role="tabpanel" class="tab-pane fade " id="company-contacts">
     <div class=''>
-      
       <h3>Company Contacts</h3>
        <%= render 'admin/companies/company_users' %>
     </div>
-   
     <%= link_to(admin_company_path(@company), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger") do %>
       <i class='fa fa-trash'></i>
-      <span>Delete Company</span>
+      Delete Company
     <% end %>
- 
-
+  </div>
+  <div role="tabpanel" class="tab-pane fade " id="company-stats">
+    <div class='col-md-2'>
+      <h3>Account Manager:</h3>
+      <%= @company.current_account_manager.name %>
+    </div>
+    
+    
+    <div class='col-md-4'>
+      
+    </div>
+    <div class='col-md-4'>
+      
+    </div>
+    <div class='col-md-12'>
+      <p class='lead text-center'>Hours by Employee <small> Last 4 weeks</small></p>
+      <%= column_chart @company.jobs.active.map{|job|
+                {name: job.employee.name, data: job.shifts.group_by_week(:time_in, range: 4.weeks.ago.midnight..Time.current, format: "%m/%d").sum(:time_worked)}
+            }, xtitle: "Week", ytitle: "Total Hours", library: {height: 300, width: 1000} %>
+    </div>
     
   </div>
   <div role="tabpanel" class="tab-pane fade" id="profile">
     
      <div class=''>
        <h3>Current Job Orders</h3>
-       <br>
-        <%= @company.orders.map(&:title).join(",") %>
+       <ul>
+        <% @company.orders.active.each do |order| %>
+          <li class=''>        <%= link_to order.title, admin_company_order_path(@company, order) %> - <%= status_msg(order) %></li>
+        <% end %>
+        </ul>
      </div>
     <%= link_to(edit_admin_company_path(@company), class: "btn btn-primary") do %>
 				<i class='fa fa-pencil'></i>
-					<span>Edit Company</span>
+					Edit Company
 				<% end %>
   </div>
   <div role="tabpanel" class="tab-pane fade" id="employees">
      <div class='col-md-6'>
        <% if @company.jobs.active.any? %>
        <h3>Current Employees</h3>
-    <%= render @jobs %>
+    <%= render @jobs.active %>
     <% else %>
       <h3>No employees to display.</h3>
       <% end %>
@@ -149,5 +166,4 @@
     </div>
   </div>
 </div>
-<%= link_to "New Company", new_admin_company_path, class: "btn btn-primary" %>
 </div>

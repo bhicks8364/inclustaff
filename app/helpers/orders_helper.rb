@@ -30,15 +30,15 @@ module OrdersHelper
         data-content='#{ order.matching_employees.map {|p| p.name.titleize}.join(', ')}'></i></span>".html_safe
     end
    
-    def status_tag(order)
+    def lg_status_tag(order)
         if order.overdue?
-            "<i class='fa fa-exclamation fa-fw red' data-toggle='tooltip' data-placement='left' title='#{status_msg(order)}'></i>".html_safe
+            "<i class='fa fa-exclamation fa-3x fa-border red' data-toggle='tooltip' data-placement='right' title='#{pluralize(order.open_jobs, "open job")}'></i>".html_safe
         elsif order.priority?
-            "<i class='fa fa-exclamation-circle fa-fw red' data-toggle='tooltip' data-placement='left' title='#{status_msg(order)}'></i>".html_safe
+        "<i class='fa fa-exclamation-circle fa-3x fa-border red' data-toggle='tooltip' data-placement='right' title='#{pluralize(order.open_jobs, "open job")}'></i>".html_safe
         elsif order.needs_attention?
-            "<i class='fa fa-clock-o fa-fw' data-toggle='tooltip' data-placement='left' title='#{status_msg(order)}'></i>".html_safe
+            "<i class='fa fa-clock-o fa-3x fa-border' data-toggle='tooltip' data-placement='right' title='#{pluralize(order.open_jobs, "open job")}'></i>".html_safe
         elsif order.filled?
-            "<i class='fa fa-check fa-fw green' data-toggle='tooltip' data-placement='left' title='#{status_msg(order)}'></i>".html_safe
+        "<i class='fa fa-check-circle fa-3x fa-border green' data-toggle='tooltip' data-placement='right' title='#{pluralize(order.open_jobs, "open job")}'></i>".html_safe
         end
     end
     def status_tag(order, options={})
@@ -60,5 +60,8 @@ module OrdersHelper
         if order.heavy_lifting?
             "<i class='fa fa-anchor fa-fw red' data-toggle='tooltip' data-placement='right' title='Heavy lifting required'></i>".html_safe
         end
+    end
+    def title_count(order)
+        "<strong>#{order.title}</strong> (#{number_to_currency(order.min_pay)} - #{number_to_currency(order.min_pay)}) #{order.open_jobs}".html_safe
     end
 end

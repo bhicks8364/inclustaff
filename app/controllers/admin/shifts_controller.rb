@@ -208,6 +208,8 @@ class Admin::ShiftsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_shift
       @shift = Shift.includes(:timesheet, :job).find(params[:id])
+      @job = @shift.job
+      @order = @job.order
       authorize @shift
     end
     

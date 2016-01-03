@@ -2,7 +2,7 @@
 <%= f.hidden_field :commentable_id, value: commentable.id %>
 <%= f.hidden_field :commentable_type, value: commentable.class %>
     
-  <%= commentable.try(:name) || commentable.employee.name %>
+  
    
     
  
@@ -10,7 +10,7 @@
       <%= f.input :body, label: false, input_html: {data: { behavior: "autocomplete_company_admins" }, class: "form-control body myatwho"}, placeholder: "Add a comment" %>
 
       
-         <%= f.submit "Send", class: "btn btn-primary btn-block" %>
+         <%= f.submit "Send", class: "btn btn-primary" %>
      
     </div>
   

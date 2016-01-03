@@ -1,63 +1,86 @@
-<div class='white'>
-  <%= timesheets_for(@invoice) %>
-  <h4 id='example'><%= @invoice.week_ending %></h4>
-
-  <span id='balance'>
-   <h4><strong>Balance:</strong> <%= number_to_currency(@invoice.balance) %></h4>
-</span>
  
-<h3>
-  <strong>Company:</strong>
-  <%= link_to @invoice.company.name, admin_company_path(@invoice.company) %>
+<div class='col-md-12 bg-white'>
+  <p class='text-right text-muted'><i>Invoice for staffing services provided by <%= @invoice.agency.name%></i></p>
+
+  <h4 id='example'>
+    
+    <strong>Invoice Number:</strong> #<%= @current_agency.id %>-<%= @invoice.id %></h4>
+  <h3 class=''>
+      <%= link_to @invoice.company.name, admin_company_path(@invoice.company) %>
+    </h3>
+  <div class='col-md-8'>
+   
+   
+    <h2  class='text-center'> 
+   <span id='inv-sym'>
+     <%= inv_sym(@invoice) %> 
+   </span>
+     <span id='paid-on'>
+       <%= @invoice.paid_on %>
+     </span>
+    </h2>
+
+  <h2>
+     <span id='status'>
+       <%= @invoice.paid? ? "Paid" : "Due by: #{@invoice.due_by.stamp('12/18/2015')}" %>
+     </span>
+    </h2>
+<hr>
+<h3><span class='pull-center'>
+    <strong>Balance:</strong> <span id='balance'><%= number_to_currency(@invoice.balance) %> </span>
+  </span></h3>
+<p class='lead text-left'>
+  <span class=''>
+    <strong>Total:</strong>
+    <%= number_to_currency(@invoice.total) %>
+  </span>
+   
   
-</h3>
-<%= link_to "All Company Invoices", admin_company_invoices_path(@invoice.company), class: 'btn btn-primary' %>
-<p>
-  <strong>Agency:</strong>
-  <%= @invoice.agency.name%>
-</p>
-<p>
-  <strong>Week:</strong>
-  <%= @invoice.week %>
+  <p class='lead'>
+    <strong>Amt paid:</strong>
+    <span id='amt-paid'>
+      <%= number_to_currency(@invoice.amt_paid) %>
+    </span>
+    
+  </p>
 </p>
 
-<p>
-  <strong>Due by:</strong>
-  <%= @invoice.due_by.stamp('12/18/2015') %>
-</p>
-
-<p id='status'>
-  <strong>Status:</strong>
-  <%= @invoice.paid? ? "Paid" : "Open" %>
-</p>
-
-<p>
-  <strong>Total:</strong>
-  <%= number_to_currency(@invoice.total) %>
-</p>
-
-<p>
-  <strong>Amt paid:</strong>
-  <%= number_to_currency(@invoice.amt_paid) %>
-</p>
-
-<p>
-  <strong>Date paid:</strong>
-  <%= @invoice.date_paid %>
-</p>
-
-<div class='list-group'>
+  </div>
+  <div class='list-group col-md-4'>
+    <h3 class='text-center'>
+      Timesheets
+    </h3>
   <% @invoice.timesheets.each do |timesheet| %>
   <%= link_to admin_timesheet_path(timesheet) do %>
   
-     <li class='list-group-item'><%= timesheet_user(timesheet) %> <%= timesheet.week_ending %> - <%= timesheet.employee_bill %> - <small><%= timesheet.state %></small></li>
+     <li class='list-group-item'><%= timesheet.week_ending %> - <%= timesheet.employee_bill %> - <small><%= timesheet.state %></small></li>
     <% end %>
 <% end %>
 </div>
-<% if @invoice.unpaid? %>
-<%= link_to 'Mark As Paid', mark_as_paid_admin_invoice_path(@invoice), method: :patch, remote: true, id: 'pay-button', class: 'btn btn-primary' %>
-<% end %>
-<%= link_to 'Edit', edit_admin_company_invoice_path(@company, @invoice) %> |
-<%= link_to 'Back', admin_company_invoices_path(@company) %>
+  <div class='col-md-4'>
+    
+<p>
+  <strong>Week:</strong>
+  <%= @invoice.week %>
+  <br>
+<strong>Due by:</strong>
+  <%= @invoice.due_by.stamp('12/18/2015') %>
+  
+</p>
 
+
+
+  
+  </div>
+
+
+
+</div>
+<div class='btn-group'>
+  <% if @invoice.unpaid? %>
+  <%= link_to 'Mark As Paid', mark_as_paid_admin_invoice_path(@invoice), method: :patch, remote: true, id: 'pay-button', class: 'btn btn-primary' %>
+  <% end %>
+    <%= link_to 'Edit', edit_admin_company_invoice_path(@company, @invoice), class: 'btn btn-primary' %>
+  <%= link_to 'Back', admin_company_invoices_path(@company), class: 'btn btn-primary' %>
+  <%= link_to "All Company Invoices", admin_company_invoices_path(@invoice.company), class: 'btn btn-primary' %>
 </div>

@@ -8,13 +8,13 @@ jQuery ->
     # "info":     true
   $('[data-toggle="tooltip"]').tooltip()
     
-  # $('#timesheets-datatable').dataTable
-  #   sPaginationType: "full_numbers",
-  #   "paging":   true,
-  #   "scrollY": 400,
-  #   "ordering": true,
-  #   #"order": [[ 0, "desc" ]],
-  #   "info":     true
+  $('.inv_datatable').dataTable
+    sPaginationType: "full_numbers",
+    "paging":   true,
+    "scrollY": 500,
+    # "ordering": true,
+    #"order": [[ 0, "desc" ]],
+    "info":     true
   # $('#employees-datatable').dataTable
   #   sPaginationType: "full_numbers",
   #   "paging":   false,

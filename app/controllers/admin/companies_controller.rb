@@ -20,7 +20,7 @@ class Admin::CompaniesController < ApplicationController
   # GET /companies/1
   # GET /companies/1.json
   def show
-    @order = @company.orders.new
+    # @order = @company.orders.new
     authorize @company
     @orders = @company.orders
     @jobs = @company.jobs

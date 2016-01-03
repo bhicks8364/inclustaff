@@ -25,6 +25,8 @@
 #  username               :string
 #  agency_id              :integer
 #  name                   :string
+#  latitude               :float
+#  longitude              :float
 #
 
 class Admin < ActiveRecord::Base
@@ -32,7 +34,9 @@ class Admin < ActiveRecord::Base
   include ArelHelpers::JoinAssociation
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-
+  geocoded_by :current_sign_in_ip
+  after_validation :geocode
+  
   belongs_to :agency
   has_many :events
   has_many :eventables, :through => :events
@@ -65,7 +69,7 @@ class Admin < ActiveRecord::Base
   def limited?;         role == "Limited Access"; end
   def admin?;         true; end
   def employee?;         false; end
-    
+  def mention_data; {name: "#{name}", content: "#{role}"}; end
   def online?
     updated_at > 10.minutes.ago
   end

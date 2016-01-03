@@ -11,7 +11,7 @@
 
 
 <div class='col-md-10'>
-<%= render 'admin/charts/account_manager_charts' if @admin.account_manager? %>
+<%= render 'admin/charts/account_manager_charts', admin: @admin if @admin.account_manager? %>
 <%= render 'admin/charts/owner_charts' if @admin.owner? %>
 <%= render 'admin/charts/recruiter_charts', recruiter: @admin if @admin.recruiter? %>
 </div>

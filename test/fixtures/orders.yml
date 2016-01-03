@@ -32,6 +32,7 @@
 #  address            :string
 #  latitude           :float
 #  longitude          :float
+#  aca_type           :string
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

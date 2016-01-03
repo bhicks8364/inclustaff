@@ -1,28 +1,24 @@
 <div class='col-md-12'>
- 
+    
 
-    <% if @current.present? && current_admin.nil? %>
+    <% if @current_agency.present? && !signed_in? %>
 <div class='col-md-12 '>
     
 <h1 class='text-center'>
     Welcome to IncluStaff, <%= @agency.name %>!
     
 </h1>
-<h2 class='text-center'>Please start by signing in to your account.</h2>
-<div class='col-md-6 text-center'>
-    <h3 class='text-center'>Admin Users</h3>
-    <%= link_to(new_admin_session_path, class: 'btn btn-primary btn-lg')  do %>
-    <i class='fa fa-sign-in'></i> Admin Sign In 
-    <% end %>
-   <%= link_to "<i class='fa fa-user-plus fa-fw'></i> Admin Registration ".html_safe, new_admin_registration_path, class: 'btn btn-primary btn-lg ' %>
-</div>
-<div class='col-md-6 text-center '>
-	 <h3 class='text-center'>Employee Users</h3>
-				<%= link_to "<i class='fa fa-user-plus fa-fw '></i> Employee Registration".html_safe, new_user_registration_path, class: 'btn btn-primary btn-lg ' %>
-			
-	<%= link_to "<i class='fa fa-users fa-fw'></i> Employee Sign In".html_safe, new_user_session_path, class: 'btn btn-primary btn-lg ' %>
+<address class='white'>
+              <strong><%= @agency.name %></strong><br>
+             <%= @agency.address %><br>
+              <%= @agency.city %>, <%= @agency.state %> <%= @agency.zipcode %><br>
+              <abbr title="Phone">P:</abbr> <%= @agency.phone_number %>
+            </address>
 
-
+<div class='col-md-4'></div>
+<div class='col-md-4'>
+    <h2 class='text-center'>Please start by signing in to your account.</h2>
+    <%= link_to "Sign In", sign_in_path, class: "btn btn-primary btn-lg btn-block" %>
 </div>
 
 </div>
@@ -36,37 +32,59 @@
 
 
     <div class='col-md-12'>
-         <h1 class='text-center'><%= @agency.name %></h1>
-            <div class='col-md-3'>
-                <%= image_tag(@agency.logo_url, class: "img-zoom", alt: "img-#{@agency.id}")%> 
-            </div>
-        <div class='col-md-3'>
-            
-            <address class='white'>
-              <strong><%= @agency.name %></strong><br>
-             <%= @agency.address %><br>
-              <%= @agency.city %>, <%= @agency.state %> <%= @agency.zipcode %><br>
-              <abbr title="Phone">P:</abbr> <%= @agency.phone_number %>
-            </address>
-            <div class='well scroll300'>
-                <% @agency.admins.each do |admin| %>
-                    <%=link_to admin.name, admin %> - <small><%= admin.role %></small><br>
-                <% end %>
-            </div>
-            
-            <%  if policy(@agency).update? %>
+        <%  if policy(@agency).update? %>
                 <%= link_to(edit_agency_path(@current_agency), class: 'btn btn-primary') do %>
         	      <i class='fa fa-pencil fa-fw'></i>
         			<span>Edit Agency</span>
         		<% end %>
     		<% end %>
+         <h1 class='text-center'><%= @agency.name %></h1>
+            <div class='col-md-3 lightbox'>
+                <%= image_tag(@agency.logo_url, class: "img-zoom", alt: "img-#{@agency.id}")%> 
+                <p> Name: <strong><%= link_to @agency.contact_name, @agency.contact %></strong><br>
+                 Email: <strong><%= @agency.contact_email%></strong>
+                </p>
+                <address class='white'>
+                 <%= @agency.address %><br>
+                  <%= @agency.city %>, <%= @agency.state %> <%= @agency.zipcode %><br>
+                  <abbr title="Phone">P:</abbr> <%= @agency.phone_number %>
+                </address>
+            </div>
+        <div class='col-md-3 scroll500'>
+                <h3>Owners</h3>
+            <div class='scroll300'>
+                <% @agency.admins.owners.each do |admin| %>
+                    <%=link_to admin.name, admin %> - <small><%= admin.role %></small><br>
+                <% end %>
+            </div>
+            <h3>Account Managers</h3>
+            <div class='scroll300'>
+                <% @agency.admins.account_managers.each do |admin| %>
+                    <%=link_to admin.name, admin %> - <small><%= admin.role %></small><br>
+                <% end %>
+            </div>
+            <h3>Recruiters</h3>
+            <div class='scroll300'>
+                <% @agency.admins.recruiters.each do |admin| %>
+                    <%=link_to admin.name, admin %> - <small><%= admin.role %></small><br>
+                <% end %>
+            </div>
+            <h3>Payroll</h3>
+            <div class='scroll300'>
+                <% @agency.admins.payroll_admins.each do |admin| %>
+                    <%=link_to admin.name, admin %> - <small><%= admin.role %></small><br>
+                <% end %>
+            </div>
+            
            
         </div>
-        <div class='col-md-6'>
+          <div class='col-md-3'></div>
+        <div class='col-md-3'>
             <div class='well scroll300'>
                 <% @agency.companies.each do |company| %>
                     <h4><%= link_to company.name, admin_company_path(company) %> <small><%= number_to_currency(company.current_billing) %></small></h4>
-                    Open: <%=company.orders.needs_attention.count %> | Filled: <%= company.orders.filled.count %> Acct Manager: <%= company.current_account_manager.name%><br>
+                    Open: <%=company.orders.needs_attention.count %> | Filled: <%= company.orders.filled.count %> <br>
+                    Acct Manager: <%= company.current_account_manager.name%><br>
                     <% company.admins.each do |company_admin| %>
                         <%= link_to company_admin.name, company_admin %> <small><%= company_admin.role %></small><br>
                     <% end %>
@@ -78,39 +96,6 @@
         
     </div>
 
-
-
-
-
-
-
-
-
-
 <% end %>
-<% if @current.nil? && @agency.present? %>
-<div class='col-md-3 text-center'></div>
-<div class='col-md-6 dark text-center'>
-<h1 class='text-center'>
-    Welcome <%= @agency.name %>'s 
-    
-</h1>
-<h2 class='text-center'>Please start by signing in to your account.</h2>
-<h5 class='text-center'>Access your agency portal at www.<u><%= @agency.subdomain%></u>.inclustaff.com</h5>
-   <a class='btn btn-success btn-lg' href="http://www.<%=@agency.subdomain%>.inclustaff.com">
-        Go there now
-    </a>
-    
-
-</div>
-<div class='col-md-3 text-center'></div>
-
-
-<%end%>
-
-
-
-
-
 
 </div>

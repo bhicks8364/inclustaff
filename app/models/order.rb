@@ -32,6 +32,7 @@
 #  address            :string
 #  latitude           :float
 #  longitude          :float
+#  aca_type           :string
 #
 
 class Order < ActiveRecord::Base
@@ -43,10 +44,12 @@ class Order < ActiveRecord::Base
   belongs_to :account_manager, foreign_key: 'account_manager_id',  class_name: "Admin"
   has_many :skills, as: :skillable
   has_many :jobs
-  has_many :employees, :through => :jobs
   has_many :timesheets, :through => :jobs
   has_many :current_timesheets, :through => :jobs
   has_many :comments, as: :commentable
+  has_many :active_jobs, -> { where active: true }, class_name: "Job"
+  has_many :employees, :through => :active_jobs
+  has_many :users, through: :employees
   include ArelHelpers::ArelTable
   include ArelHelpers::JoinAssociation
   acts_as_taggable
@@ -61,7 +64,7 @@ class Order < ActiveRecord::Base
   
     # CALLBACKS
     after_initialize :defaults
-    before_validation :set_mark_up
+    before_validation :set_mark_up, :set_pay_range
     after_save :set_note_skills
     # before_save :set_needed_by, if: :urgent?
     
@@ -92,7 +95,8 @@ class Order < ActiveRecord::Base
       self.active = true if self.active.nil?
       self.urgent = false if self.urgent.nil?
       self.jobs_count = 0 if self.jobs_count.nil?
-      self.address = "#{company.address} #{company.city}, #{company.state}" if address.nil?
+      
+      self.jobs_count = 0 if jobs_count.nil?
     end
    
     def set_mark_up
@@ -112,8 +116,18 @@ class Order < ActiveRecord::Base
       end
     end
     
+    def set_pay_range
+      min = min_pay.to_s
+      max = max_pay.to_s
+      self.pay_range = min + " - " + max
+      self.address = "#{company.address} #{company.city}, #{company.state}" if address.nil?
+    end
+    
     def self.by_recuriter(admin_id)
         joins(:jobs).where( :jobs => { :recruiter_id => admin_id } )
+    end
+    def self.with_no_timesheets
+      where(active: true)
     end
     
     def not_urgent?
@@ -128,15 +142,6 @@ class Order < ActiveRecord::Base
     def set_needed_by
       if needed_by.nil?
         self.needed_by = Date.today
-      end
-    end
-
-    
-    def company_name
-      if company
-        company.name
-      else
-        "Company Unavailable"
       end
     end
     
@@ -166,6 +171,7 @@ class Order < ActiveRecord::Base
   def open_jobs
     if number_needed != nil && jobs.active != nil
       number_needed - jobs.active.count
+
     end
   end
     
@@ -180,16 +186,14 @@ class Order < ActiveRecord::Base
   end 
   
   def title_company
-    "#{company_name} - #{title}"
+    "#{company.name} - #{title}"
   end
   def to_s
     title_company
   end
   
   
-  def title_count
-    "#{title} (#{pay_range}) #{open_jobs}"
-  end
+  
   
   def mark_up_percent
     (mark_up * 100 - 100).to_i.to_s + "%" 

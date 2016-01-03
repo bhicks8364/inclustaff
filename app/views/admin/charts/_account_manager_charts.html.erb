@@ -1,8 +1,8 @@
 <div class="col-md-6 well">
    
-    <h5 class='text-center'>Total Orders: <%= @admin.account_orders.count %></h5>
+    <h5 class='text-center'>Total Orders: <%= admin.job_orders.count %></h5>
  
-        <%= pie_chart @admin.account_orders.group(:mark_up).count, min: 1000, max: 5000 , library: {legend: {position: "bottom"}, is3D: true, title: "Orders by Mark Up"} %>
+        <%= pie_chart admin.job_orders.group(:mark_up).count, min: 1000, max: 5000 , library: {legend: {position: "bottom"}, is3D: true, title: "Orders by Mark Up"} %>
         
 </div>
 
@@ -10,8 +10,8 @@
 <div class="col-md-6 well">
    
     <h5 class='text-center'>Billing by Day</h5>
-       <%= line_chart @admin.account_orders.map{|order|
-    {name: order.title, data: order.timesheets.group_by_day('timesheets.created_at').sum(:total_bill)}
+       <%= line_chart admin.job_orders.map{|order|
+    {name: order.title, data: order.timesheets.count}
 } %>
 </div>
 
@@ -19,13 +19,13 @@
    
     <h5 class='text-center'>Orders by Fill Date</h5>
  
-        <%= line_chart @admin.account_orders.group_by_day(:needed_by).count %>
+        <%= line_chart admin.job_orders.group_by_day(:needed_by).count %>
         
 </div>
 <div class="col-md-4 well">
    
     <h5 class='text-center'>New Companies by Day</h5>
  
-        <%= line_chart Company.by_account_manager(@admin.id).group_by_day('companies.created_at').count %>
+        <%= line_chart Company.by_account_manager(admin.id).group_by_day('companies.created_at').count %>
         
 </div>

@@ -18,6 +18,7 @@
 #  invoice_id       :integer
 #  adjustments      :hstore
 #  approved_by_type :string
+#  total_hours      :decimal(, )
 #
 
 class Timesheet < ActiveRecord::Base
@@ -198,7 +199,7 @@ class Timesheet < ActiveRecord::Base
     end
     
     def company_order
-        order.company_name
+        "#{company.name}" "#{order.title}"
     end
 
     def job_title
@@ -257,10 +258,10 @@ class Timesheet < ActiveRecord::Base
     end
     
     def week_ending
-        shifts.any? ? shifts.last.time_in.end_of_week.stamp("11/15") : Date.today.end_of_week.stamp("11/15")
+        shifts.any? ? shifts.last.time_in.end_of_week.stamp("11/22/2015") : Date.today.end_of_week.stamp("11/22/2015")
     end
     def week_begin
-        shifts.any? ? shifts.last.time_in.beginning_of_week.stamp("11/15") : Date.today.beginning_of_week.stamp("11/15")
+        shifts.any? ? shifts.last.time_in.beginning_of_week.stamp("11/22/2015") : Date.today.beginning_of_week.stamp("11/22/2015")
         
     end
     def time_frame

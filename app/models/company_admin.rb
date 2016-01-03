@@ -28,6 +28,8 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  name                   :string
+#  latitude               :float
+#  longitude              :float
 #
 
 class CompanyAdmin < ActiveRecord::Base
@@ -43,7 +45,11 @@ class CompanyAdmin < ActiveRecord::Base
   has_many :shift_comments, through: :shifts, source: 'comments'
   devise :database_authenticatable, :registerable, 
          :recoverable, :rememberable, :trackable, :validatable
-
+         
+  geocoded_by :current_sign_in_ip
+  after_validation :geocode
+  
+  
   validates :company_id, presence: true
   before_validation :set_name
  
@@ -59,7 +65,7 @@ class CompanyAdmin < ActiveRecord::Base
   def online?
     updated_at > 10.minutes.ago
   end
-  
+  def mention_data; {name: "#{name}", content: "#{role}", company: "#{company.name}"}; end
   def managed_orders
     if owner?
       company.orders

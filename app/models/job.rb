@@ -18,6 +18,7 @@
 #  timesheets_count :integer
 #  settings         :hstore
 #  pay_types        :text             is an Array
+#  vacation         :hstore
 #
 
 class Job < ActiveRecord::Base
@@ -45,7 +46,8 @@ class Job < ActiveRecord::Base
 
     
         # setup settings
-    store_accessor :settings
+    store_accessor :settings, :drive_pay, :ride_pay
+    store_accessor :vacation, :number_of_days, :milestone_1, :milestone_2, :milestone_3
 
     # VALIDATIONS
     # validates_associated :employee
@@ -93,7 +95,15 @@ class Job < ActiveRecord::Base
         NotificationMailer.job_notification(account_manager, self).deliver_later
     end
     
-    
+    def hours_until_vacation
+        if vacation['milestone_1'].to_i > total_hours
+            (vacation['milestone_1'].to_i - total_hours).round(2)
+        elsif vacation['milestone_2'].to_i > total_hours
+            (vacation['milestone_2'].to_i - total_hours).round(2)
+        elsif vacation['milestone_3'].to_i > total_hours
+            (vacation['milestone_3'].to_i - total_hours).round(2)
+        end
+    end
     
     def mentions
         @mentions ||= begin
@@ -206,6 +216,8 @@ class Job < ActiveRecord::Base
     def defaults
         self.active = true if active.nil?
         self.start_date = Date.today if start_date.nil?
+        self.settings = {} if settings.nil?
+        self.vacation = {} if vacation.nil?
     end
     
     def current_week_pay

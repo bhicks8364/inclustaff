@@ -114,7 +114,7 @@ class Employee < ActiveRecord::Base
   end
   
   def average_weekly_hours
-    if total_hours > 1
+    if total_hours > 1 && timesheets.this_year.any?
       @average = []
       timesheets.this_year.distinct.each do |timesheet|
         @average << timesheet.total_hours

@@ -1,4 +1,4 @@
-<div class='form col-md-12'>
+<div class=''>
 <%= simple_form_for([:admin, @company, @order], defaults: { label: false, input_html: { class: 'form-control' } }) do |f| %>
 	<div class='col-md-9 form-group'>
 		<% if @company.nil? %>
@@ -7,7 +7,7 @@
 	  
 		<%= f.input :title, placeholder: "Job Type (Ex. Warehouse, Adminstrative, General Labor, etc...)", label: false, wrapper_html: {class: 'col-md-9'}  %>
 		<%= f.input :address, label: false, wrapper_html: {class: 'col-md-9'}  %>
-		
+		<%= f.input :aca_type, collection: ["Variable-Hour", "Full-Time"], include_blank: false %>
 		<%= f.input :urgent, as: :boolean, inline_label: 'Do you need someone asap? ' , label: false, input_html: { class: 'boolean' }, wrapper_html: {class: 'white col-md-3'}  %>
 		<%= f.input :number_needed, collection: 1..10, prompt: "How many people are needed?", label: false, wrapper_html: {class: 'col-md-4'}  %>
 		<%= f.input :needed_by, as: :string, input_html: {class: 'datepicker'}, placeholder: "When would you like them to start?", label: false, wrapper_html: {class: 'col-md-4'}  %>
@@ -18,7 +18,7 @@
 		<%= f.association :account_manager, collection: @account_managers.order(:last_name), prompt: "Select Account Manager", label: false, wrapper_html: {class: 'white col-md-4'}  %>
 		<% end %>
 		
-		<%= f.association :manager, collection: @company.admins.order(:last_name), prompt: "Select Company Manager", label: false, wrapper_html: {class: 'white col-md-4'}  %>
+		<%= f.association :manager, collection: @company.admins.order(:last_name), prompt: "Select Company Manager", label: false, wrapper_html: {class: 'white col-md-4'} if @company.present? %>
 		<div class='form-inline'>
 			<%= f.input :min_pay %>
 			<%= f.input :max_pay %>

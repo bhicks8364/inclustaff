@@ -1,8 +1,6 @@
-<div class='col-md-12 lightbox'>
+<div class='col-md-12'>
   
-  <% if @job.on_shift? %>
-         <%= shift_popover(@job.current_shift) %>
-        <% end %>
+ 
   <h2><strong><%= @job.name_title %></strong></h2>
    <div class='col-md-4 text-center'>
           <h4><%= @job.company.name %></h4>
@@ -46,25 +44,57 @@
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="job">
 
-  <div class='col-md-6'>
+  <div class='col-md-4 lightbox'>
   <h4><strong>Interview Notes:</strong></h4>
         <%= markdownify(@job.description) %>
-        <hr>
+       <% if @job.recruiter.present? %>
+        <h5>Recruiter: <%= link_to @job.recruiter.name, @job.recruiter %></h5>
+      <% end %>
         <%= link_to(admin_job_path(@job, format: :pdf), class: 'btn btn-primary') do %>
           	<i class="fa fa-download fa-md"></i> Candidate Sheet
           <% end %>
      </div>
-  <div class='col-md-6'>
-      <% if @job.recruiter.present? %>
-        <h5>Recruiter: <%= link_to @job.recruiter.name, @job.recruiter %></h5>
-      <% end %>
-         
-       Pay: <%= @job.settings['pay_rate'] if @job.settings %><br>
+    
+      <div class='col-md-4'>
+          
+          
+       </div>
+    <div class='col-md-4'>
+      <% if @job.vacation['number_of_days'].present? %>
+  
+      <h2>Vacation Tracking</h2>  
+      
+          <p><%= @employee.first_name %> will earn <strong> <%= @job.vacation['number_of_days'] %> </strong> paid vacation days
+      when he/she has worked
+      <strong><%= @job.vacation['milestone_1'] %> </strong> hours. <br>
+      </p>
+      <p class='lead'>Vacation Schedule</p>
+        <div class='col-md-7'>
+          <ul class="fa-ul">
+              <li><i class="fa-li fa fa-clock-o"></i><%= @job.vacation['milestone_1'] %> hours</li>
+              <li><i class="fa-li fa fa-clock-o"></i><%= @job.vacation['milestone_2'] %> hours</li>
+              <li><i class="fa-li fa fa-clock-o"></i><%= @job.vacation['milestone_3'] %> hours</li>
+            </ul>
+        </div>
+        <div class='col-md-5 bottom'>
+           <ul class="fa-ul">
+              <li><i class="fa-li fa fa-calendar-check-o"></i><%= @job.vacation['number_of_days'] %> days</li>
+              <li><i class="fa-li fa fa-calendar-check-o"></i><%= @job.vacation['number_of_days'].to_i * 2 %> days</li>
+              <li><i class="fa-li fa fa-calendar-check-o"></i><%= @job.vacation['number_of_days'].to_i * 3 %> days</li>
+            </ul> 
+        </div>
+        
+        <div class='headline'><span class='label label-success black'>Hours until next milestone: <%= @job.hours_until_vacation %> </span></div>
+        <% else %>
+        <h3><strong>Vacation Tracking Unavailable</strong></h3>
+        <%= link_to "Add Vacation Milestones", edit_admin_job_path(@job), class: "btn btn-success" %>
+        <% end %>
+        <div class=''>
+            <h2>Pay Differentials</h2>  
       Drive Pay: <%= @job.settings['drive_pay'] if @job.settings %><br>
       Ride Pay: <%= @job.settings['ride_pay'] if @job.settings %><br>
-      Minimum Hours for Vacation: <%= @job.settings['min_hours_for_vac'] if @job.settings %>
-    
-     </div>
+        </div>
+    </div>
 </div>
 
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
@@ -140,6 +170,7 @@
       <strong>Gross pay: </strong><%= number_to_currency(@job.current_timesheet.try(:total_hours) || 0) %><br>
       <strong>Gross pay: </strong><%= number_to_currency(@job.current_timesheet.try(:gross_pay) || 0) %><br>
       <strong>Total bill: </strong><%= number_to_currency(@job.total_gross_bill) %>
+      <br>
 
       <strong>Gross this week:</strong> <%= number_to_currency(@job.current_week_pay) %><br>
     
@@ -156,18 +187,7 @@
       <strong>Hours: </strong><%= @job.total_hours %><br>
       <strong>Pay: </strong><%= number_to_currency(@job.total_gross_pay) %><br>
       <strong>Total bill: </strong><%= number_to_currency(@job.total_gross_bill) %>
-    
-    
-    
-    
-    
-    
-    
   </div>
-
-  
-
-  
   </div>
   </div>
 </div>

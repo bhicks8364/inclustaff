@@ -76,9 +76,11 @@ class Admin::OrdersController < ApplicationController
   def new
     if params[:company_id]
     @company = Company.find(params[:company_id])
+    @account_managers = @company.account_managers
     @order = @company.orders.new
     else
       @order = Order.new
+      @account_managers = @current_agency.account_managers
     end
     authorize @order
 
@@ -194,7 +196,9 @@ class Admin::OrdersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.require(:order).permit(:id, :address, :min_pay, :max_pay, :pay_frequency, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title, :pay_range, :notes, :number_needed, :needed_by, :urgent, :active, :dt_req, :bg_check, :stwb, :heavy_lifting, :shift, :est_duration, :tag_list, 
-      jobs_attributes: [:order_id, :title, :description, :start_date, :id, :employee_id, :active], skills_attributes: [:id, :skillable_type, :skillable_id, :name, :required, :_destroy])
+      params.require(:order).permit(:id, :address, :min_pay, :max_pay, :pay_frequency, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title, :pay_range, :notes, 
+      :number_needed, :needed_by, :urgent, :active, :dt_req, :bg_check, :stwb, :heavy_lifting, :shift, :est_duration, :tag_list, :aca_type,
+      jobs_attributes: [:order_id, :title, :description, :start_date, :id, :employee_id, :active], 
+      skills_attributes: [:id, :skillable_type, :skillable_id, :name, :required, :_destroy])
     end
 end

@@ -1,17 +1,35 @@
-<div class='col-md-3 lightbox'>
+<h1 class='black'> Invoices for <strong><%= @company.present? ? @company.name : @current_agency.name %></strong></h1>
+<div class='col-md-3'>
+  <h2><strong>Unpaid</strong></h2>
+  <div class='scroll500'>
+  <% if @company.present? %>
   <% @invoices.each do |invoice| %>
     <%= inv_timesheets_collaspe(invoice) %><br>
     <div class='black collapse' id="collapseInv_<%=invoice.id%>">
        <%= render 'admin/invoices/invoice', invoice: invoice %>
     </div>
   <% end %>
+  <% else %>
+    <% @current_agency.companies.includes(:invoices).order(:name).each do |company| %>
+     <h3> <%= company.name %></h3>
+        <% company.invoices.unpaid.order(week: :desc).each do |invoice| %>
+        <%= inv_timesheets_collaspe(invoice) %><br>
+        <div class='black collapse' id="collapseInv_<%=invoice.id%>">
+           <%= render 'admin/invoices/invoice', invoice: invoice %>
+        </div>
+        <% end %>
+    <% end %>
+  <% end %>
+  </div>
 </div>
 <div class='col-md-9'>
-  <div class='table-responsive lightbox'>
-<h1 class='black'> Invoices for <strong><%= @company.name %></strong></h1>
-<table class='table table-hover'>
+  <div class='table-responsive'>
+
+<table class='table table-hover inv_datatable'>
   <thead>
     <tr>
+      <th></th>
+      <th>Company</th>
       <th>Week</th>
       <th>Due by</th>
       <th>Paid</th>
@@ -26,7 +44,9 @@
     
     
       <tr>
-        <td><%=inv_sym(invoice)%> <%= link_to invoice.week_ending, admin_invoice_path(invoice) %></td>
+        <td><%=inv_sym(invoice)%></td>
+        <td><%= invoice.company.name %></td>
+        <td> <%= link_to invoice.week_ending, admin_invoice_path(invoice) %></td>
         <td><%= invoice.due_by.stamp('11/13') %></td>
         <td><%= invoice.state %></td>
         <td><%= number_to_currency(invoice.total) %></td>
@@ -38,6 +58,5 @@
 </table>
 </div>
 <br>
-<%= link_to 'Back', admin_company_invoices_path(@company), class: "btn btn-primary" %>
-<%= link_to 'New Invoice', new_admin_company_invoice_path(@company), class: "btn btn-primary" %>
+<%= link_to 'Back', admin_company_invoices_path(@company), class: "btn btn-primary" if @company.present? %>
 </div>

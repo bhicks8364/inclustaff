@@ -1,1 +1,4 @@
  <h1><%= @current_agency.name %></h1>
+ <%= @current_agency.inspect %>
+ 
+ <%= link_to "Edit Agency", edit_agency_path(@current_agency) %>

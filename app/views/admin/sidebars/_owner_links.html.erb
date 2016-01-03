@@ -3,6 +3,10 @@
 <li><%= link_to "<i class='fa fa-globe'></i> Sales".html_safe, admin_account_manager_path %></li>
 <li><%= link_to "<i class='fa fa-child'></i> Recruiting".html_safe, admin_recruiter_path %></li>
 <li role="separator" class="divider"></li>
+<li><%= link_to "<i class='fa fa-plus-square'></i> Add Company".html_safe, new_admin_company_path %></li>
+<li><%= link_to "<i class='fa fa-plus-square-o'></i> Add Job Order".html_safe, new_admin_order_path %></li>
+
+<li role="separator" class="divider"></li>
 <li><%= link_to "<i class='fa fa-home'></i> Agency Page".html_safe, @current_agency %></li>
 <li><%= link_to "<i class='fa fa-file-text'></i> Timesheets".html_safe, admin_timesheets_path %></li>
 <li><%= link_to "<i class='fa fa-file-text-o'></i> Past Timesheets".html_safe, past_admin_timesheets_path %></li>

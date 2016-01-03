@@ -18,6 +18,7 @@
 #  contact_email :string
 #  contact_id    :integer
 #  logo_url      :string
+#  preferences   :hstore           default({})
 #
 
 require 'rails_helper'

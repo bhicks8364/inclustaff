@@ -33,4 +33,5 @@
 #  address            :string
 #  latitude           :float
 #  longitude          :float
+#  aca_type           :string
 #

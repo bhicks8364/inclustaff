@@ -1,8 +1,10 @@
-<div class='col-md-12 main-box'>
+<div class='col-md-12'>
 
       
-    <h4><strong><%= link_to @company.name, admin_company_path(@company) %></strong></h4>
+    <% if @company.present? %>
+        <h4><strong><%= link_to @company.name, admin_company_path(@company) %></strong></h4>
     <%= render 'admin/companies/company_contact', company: @company %>
+    <%end%>
 
         
         <div class='dark'>

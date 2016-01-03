@@ -126,10 +126,13 @@ class Admin::JobsController < ApplicationController
       @order = @job.order
       @agency = @order.agency
        
+       
       authorize @job
     end
-   
-    
+   gon.admins = @current_agency.admins
+    gon.users = @current_agency.users.available
+    gon.admins_display = @company.account_managers.map(&:mention_data)
+    gon.company_admins_display = @company.admins.map(&:mention_data)
 
     
 
@@ -236,7 +239,8 @@ class Admin::JobsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def job_params
       params.require(:job).permit(:order, :recruiter_id, :title, :active, :description, 
-      :start_date, :pay_rate, :end_date, :order_id, :employee_id, :settings => [:pay_rate, :drive_pay, :ride_pay, :min_hours_for_vac] )
+      :start_date, :pay_rate, :end_date, :order_id, :employee_id, :drive_pay, :ride_pay,
+      :number_of_days, :milestone_1, :milestone_2, :milestone_3)
     end
     def employee_params
       params.require(:employee).permit(:first_name, :last_name, :email, :ssn, :phone_number)

@@ -32,6 +32,7 @@
 #  address            :string
 #  latitude           :float
 #  longitude          :float
+#  aca_type           :string
 #
 
 require 'test_helper'

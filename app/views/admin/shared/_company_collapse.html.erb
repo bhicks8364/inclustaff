@@ -1,0 +1,25 @@
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+   <h3> <%= pluralize(companies.count, "company") %></h3>
+    <% companies.each do |company| %>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading<%=company.id%>">
+          <h4 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#company_collapse<%=company.id%>" aria-expanded="true" aria-controls="company_collapse<%=company.id%>">
+              <%= company.name %> <span class='pull-right'><%= company_status(company) %></span>
+            </a>
+          </h4>
+        </div>
+        <div id="company_collapse<%=company.id%>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading<%=company.id%>">
+           
+          <div class="list-group">
+              <% company.orders.order(:title).each do |order| %>
+                  <li class='list-group-item'>
+                    <%= status_tag(order) %> 
+                    <%= link_to title_count(order), admin_company_order_path(company, order) %>
+                  </li>
+              <% end %>
+          </div>
+        </div>
+    </div>
+    <% end %>
+</div>

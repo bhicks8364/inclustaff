@@ -10,7 +10,7 @@ class Admin::InvoicesController < ApplicationController
     else
       
       @invoices = @current_agency.invoices.includes(:company).order(week: :desc) 
-      render 'invoices/index'
+      
     end
     
     skip_authorization
@@ -22,10 +22,12 @@ class Admin::InvoicesController < ApplicationController
     if params[:company_id]
       @company = Company.find(params[:company_id])
       @invoice = Invoice.find(params[:id])
+      
     else
       
       @invoice = Invoice.find(params[:id])
       @company = @invoice.company
+      
     end
     
     skip_authorization

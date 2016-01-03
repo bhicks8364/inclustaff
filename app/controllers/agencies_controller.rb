@@ -38,6 +38,7 @@ class AgenciesController < ApplicationController
 
   # GET /agencies/1/edit
   def edit
+    
     # authorize @agency
   end
 
@@ -66,6 +67,9 @@ class AgenciesController < ApplicationController
   # PATCH/PUT /agencies/1
   # PATCH/PUT /agencies/1.json
   def update
+    @contact = @agency.contact
+    @agency.contact_email = @contact.email
+    @agency.contact_name = @contact.name
     # authorize @agency
     respond_to do |format|
       if @agency.update(agency_params)

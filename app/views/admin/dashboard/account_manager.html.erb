@@ -1,44 +1,15 @@
 <div class="col-md-12">
-	<%= render 'admin/dashboard/admin_dropdown' %>
 	<h1 class='page-header'>Sales Dashboard</h1>
-	<%= render 'admin/charts/owner_charts' %>
-	<div class='col-md-4'>
-	<% if @current_admin.job_orders.needs_attention.any? %>
-		<h4 class='text-center white'>All Open Orders</h4>
-		<div class='scroll500 dark'>
-			<%= render @current_admin.job_orders.needs_attention.order(:needed_by) %>
-		</div>
-	<% else %>
-		<h4 class='text-center white'>No Open Job Orders </h4>
-	<% end %>
+	<div class='col-md-3'>
+		<%= render "admin/shared/alerts/open_orders", orders: @current_admin.job_orders %>
 	</div>
-	<div class='col-md-4'>
-		<% if @current_admin.job_orders.priority.any? %>
-		<h4 class='text-center white'>Priority Job Orders</h4>
-		<div class='scroll500 dark'>
-			<%= render @current_admin.job_orders.priority.order(:needed_by) %>
-		</div>
-		<% else %>
-			<h4 class='text-center white'>No Job Orders need filled in the next 3 days</h4>
-		<% end %>
+	<div class='col-md-9'>
+		<%= render 'admin/shared/company_collapse', companies: @current_admin.companies.order(:name) %>
 	</div>
-	<div class='col-md-4'>
-		<% if @current_admin.job_orders.filled.any? %>
-		<h4 class='text-center white'>Filled Orders</h4>
-		<div class='scroll500 dark'>
-			<%= render @current_admin.job_orders.filled.order(:needed_by) %>
-		</div>
-	<% else %>
-		<h4 class='text-center white'>No Filled Job Orders </h4>
-	<% end %>
+	
+	<div class='col-md-10'>
+		<%= render 'admin/charts/account_manager_charts', admin: @current_admin %>
 	</div>
-	<% if @current_admin.job_orders.newly_added.any? %>
-	<div class='col-md-4'>
-		<h4 class='text-center white'>New Job Orders</h4>
-		<div class='scroll500 dark'>
-			<%= render @current_admin.job_orders.newly_added.order(:needed_by) %>
-		</div>
-	</div>
-	<% end %>
+	
 	
 </div>

@@ -12,17 +12,21 @@
     </ul>
   </div>
    <h1 class=''> <%= title_for(@order) %> <small><%= @order.address %> <%= render "order_map", order: @order %></small> </h1>
-  <div class='col-md-2'>
+  <div class='col-md-2 bg-white'>
     <div class=''>
-      <h3><%= status_msg(@order) %></h3>
+      <h3 class='text-center'><%= lg_status_tag(@order) %> <%= status_msg(@order) %></h3>
+      <p class='lead'>Needed: <%= @order.number_needed %> <br>
+        Active: <%= @order.jobs.active.count %><br>
+        Open: <%= @order.open_jobs %>
+      </p>
        <strong>Shift:</strong>
       <%= @order.shift %> <br>
       <strong>Pay Range:</strong><br>
       <%= number_to_currency(@order.min_pay) %> - <%= number_to_currency(@order.max_pay) %><hr>
-
+      <p class='lead bg-white'><strong>ACA Type:</strong> <%= @order.aca_type %></p>
       <strong>Company Manager</strong><br>
       <%=
-         link_to_if(@order.manager.nil?, "Add Manager", { controller: "company/orders", action: "edit", id: @order }) do
+         link_to_if(@order.manager.nil?, "Add Manager", { controller: "admin/orders", action: "edit", id: @order }) do
            link_to(@order.manager.name, @order.manager)
          end
       %>
@@ -47,20 +51,19 @@
     <li role="presentation"><a href="#inactive-jobs" aria-controls="inactive-jobs" role="tab" data-toggle="tab">Inactive Jobs</a></li>
     <li role="presentation"><a href="#applications" aria-controls="applications" role="tab" data-toggle="tab">Applicants</a></li>
   </ul>
+ 
   
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane fade in active" id="order">
-      <div class='col-md-3'>
-      <% User.available.near(@order.address).limit(3).try(:each) do |user| %>
-        <li class=''><%= link_to user.name, user %> (<%= user.distance.round(2) %> miles)</li>
-      <% end %>
+      <h2>Job Description</h2>
+      <div class='col-md-8 scroll500 bg-white'>
+      <%= markdownify(@order.notes) %>
     </div>
    
     
     <div class='col-md-3'>
-      <strong><%= @order.heavy_lifting ? "Heavy Lifting Required" : "" %></strong>
-      <br><strong><%= @order.stwb ? "STWB Required" : "" %></strong><br>
-  
+      <p><%= @order.heavy_lifting ? "Heavy Lifting Required" : "" %></p>
+     <p><%= @order.stwb ? "STWB Required" : "" %></p>
         
     <strong>Drug Test </strong><br>
     <%= @order.dt_req %><br>
@@ -74,50 +77,72 @@
 
     <strong>Pay Range:</strong><br>
     <%= @order.pay_range %>
+    
+    
    </div>
   <div class='col-md-3'>
      <strong>Mentioned Admins:</strong>
   <p> <%= @order.mentioned_admins.map{|p| p.name.titleize}.join(", ")  %></p>
       <strong>Requested Employees</strong>
       <p><%= @order.requested_employees.map {|p| p.name.titleize}.join(", ") %></p>
-      <% if @order.skills.count < 1 %>
-           <h4 id='no-skills' class="text-center">This job order has no skills entered.</h4>
-          <% end %>
-            <div  id='skills' class=''>
-              <%= render @order.skills %>
-            </div>
-      <div class='form-inline'>
-        <%= render partial: "admin/skills/form", locals: {skillable: @order} %>
-      </div>
+     
    </div>
    <div class='col-md-3'>
      <strong>Tags</strong>
       
      <p><%= highlight(@order.tag_list.to_s, @order.tag_list, highlighter: '<a href="/tags?tag=\1">\1</a>') %></p>
    </div>
-    <div class='col-md-8 scroll500'>
-      <%= markdownify(@order.notes) %>
-    </div>
+   <div class='col-md-3'>
+        <% if @order.skills.count < 1 %>
+           <h4 id='no-skills' class="text-center">This job order has no skills entered.</h4>
+          <% end %>
+            <div  id='skills' class=''>
+              <%= render @order.skills %>
+            </div>
+        <div class='form-inline'>
+          <%= render partial: "admin/skills/form", locals: {skillable: @order} %>
+        </div>
+     </div>
+    
   </div>
   <!--MATCHING CANDIDATES TAB-->
   <div role="tabpanel" class="tab-pane fade" id="matches">
-     <div class=''>
+    <div class='col-md-6 lightbox '>
+        <% if @order.needs_attention? %>
+        <h3>Nearby Candidates</h3>
+        <% User.available.near(@order.address).limit(3).try(:each) do |user| %>
+          <li class='list-group-item' data-placement='right' data-toggle='tooltip' title='<%= user.skills.map(&:name).join(', ')%>'>
+            <%=users_tooltip(user)%> 
+          <%= link_to user.name, user %> (<%= user.distance.round(2) %> miles)</li>
+        <% end %>
+        <% else %>
+        <h3>Employee Commutes</h3>
+        <% @order.users.near(@order.address).try(:each) do |user| %>
+          <li class='list-group-item' data-placement='right' data-toggle='tooltip' title='<%= user.skills.map(&:name).join(', ')%>'>
+            <%=users_tooltip(user)%>
+            <%= link_to user.name, user %> (<%= user.distance.round(2) %> miles)</li>
+        <% end %>
+        
+      <% end %>
+    </div>
+     <div class='col-md-6 lightbox'>
        
-       <strong>Matching Employees</strong>
+       <h3>Matching Candidates</h3>
           <%= render @order.matching_employees %>
      </div>
   </div>
   <!--JOBS TAB-->
   <div role="tabpanel" class="tab-pane fade" id="active-jobs">
       <div class=''>
-        <% if policy(Job).create? %>
-          <%= link_to 'Add Employee', new_admin_order_job_path(@order), class: "btn btn-primary" %>
-        <% end %>
+        
         <% if @jobs.active.any? %>
           <%= render 'admin/jobs/table', jobs: @jobs.active %>
         <% else %>
           <h3>No jobs to display yet.</h3>
       <% end %>
+      <% if policy(Job).create? %>
+          <%= link_to 'Add Employee', new_admin_order_job_path(@order), class: "btn btn-primary" %>
+        <% end %>
       </div>
   </div>
   <!--INACTIVE JOBS TAB-->
@@ -135,15 +160,21 @@
   <!--TIMESHEETS TAB-->
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
     <div class=''>
+      <%= link_to "All Company Timesheets", admin_company_timesheets_path(@company), class: "btn btn-success" %>
       <% if @order.timesheets.current_week.any? %>
+      <h3><strong>This week timesheets</strong></h3>
         <%= render "admin/timesheets/table", timesheets: @timesheets.current_week %>
       <% else %>
         <h3>No timesheets for this week yet.</h3>
       <% end %>
-      <% if @order.timesheets.any? %>
-        <strong>All timesheets</strong>
-      <%= render "admin/timesheets/table", timesheets: @timesheets.current_week %>
+      <% if @order.timesheets.last_week.any? %>
+        <h3><strong>Last week timesheets</strong></h3>
+      <%= render "admin/timesheets/table", timesheets: @timesheets.last_week %>
+      <% else %>
+        <h3>No timesheets last week.</h3>
       <% end %>
+      
+      
     </div>
   </div>
   

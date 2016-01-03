@@ -17,6 +17,7 @@
 #  user_id       :integer
 #  agency_id     :integer
 #  admin_id      :integer
+#  preferences   :hstore           default({})
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

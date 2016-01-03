@@ -1,4 +1,3 @@
-console.log(gon.admins)
 jQuery ->
   # $('.myatwho').atwho(
   #   at: "@",
@@ -8,11 +7,13 @@ jQuery ->
   # )
   $('.myatwho').atwho(
     at: '@'
-    data: '/company_admins.json').atwho(
+    displayTpl: '<li>${name}  <small> ${content}</small></li>'
+    data: gon.admins_display).atwho(
     at: '#'
-    displayTpl: '<li>${name}  <small>${content}</small></li>'
-    data: '/company_admins.json').atwho
+    displayTpl: '<li>${name}  <small>${company} (${content})</small></li>'
+    insertTpl: '${name}'
+    data: gon.company_admins_display).atwho
     at: ':'
     dispayTpl: '<li> ${name} </li>'
     insertTpl: '${name}'
-    data: '/admins.json'
+    data: gon.users

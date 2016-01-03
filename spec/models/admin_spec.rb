@@ -25,6 +25,8 @@
 #  username               :string
 #  agency_id              :integer
 #  name                   :string
+#  latitude               :float
+#  longitude              :float
 #
 
 require 'rails_helper'
