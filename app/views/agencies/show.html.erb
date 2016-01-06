@@ -1,5 +1,13 @@
 <div class='col-md-12'>
+    <% if @agency.admins.count == 1 && admin_signed_in? %>
+    <h1>Welcome to IncluStaff, <%= @agency.name %>!</h1>
+    <% if current_admin.id == @agency.admins.first.id %>
+    <h1>Yup</h1>
+    <% end %>
     
+    
+    
+    <% end %>
 
     <% if @current_agency.present? && !signed_in? %>
 <div class='col-md-12 '>
@@ -8,14 +16,18 @@
     Welcome to IncluStaff, <%= @agency.name %>!
     
 </h1>
-<address class='white'>
+
+<address class=''>
               <strong><%= @agency.name %></strong><br>
              <%= @agency.address %><br>
               <%= @agency.city %>, <%= @agency.state %> <%= @agency.zipcode %><br>
               <abbr title="Phone">P:</abbr> <%= @agency.phone_number %>
             </address>
 
-<div class='col-md-4'></div>
+<div class='col-md-4'>
+    
+    
+</div>
 <div class='col-md-4'>
     <h2 class='text-center'>Please start by signing in to your account.</h2>
     <%= link_to "Sign In", sign_in_path, class: "btn btn-primary btn-lg btn-block" %>
@@ -32,12 +44,7 @@
 
 
     <div class='col-md-12'>
-        <%  if policy(@agency).update? %>
-                <%= link_to(edit_agency_path(@current_agency), class: 'btn btn-primary') do %>
-        	      <i class='fa fa-pencil fa-fw'></i>
-        			<span>Edit Agency</span>
-        		<% end %>
-    		<% end %>
+        
          <h1 class='text-center'><%= @agency.name %></h1>
             <div class='col-md-3 lightbox'>
                 <%= image_tag(@agency.logo_url, class: "img-zoom", alt: "img-#{@agency.id}")%> 
@@ -49,6 +56,18 @@
                   <%= @agency.city %>, <%= @agency.state %> <%= @agency.zipcode %><br>
                   <abbr title="Phone">P:</abbr> <%= @agency.phone_number %>
                 </address>
+            </div>
+            <div class='col-md-3'>
+            <h2>ACA Settings</h2>
+            <p>Measurement Period: <%= @agency.preferences['aca_measurement_period'] %></p>
+            <p>Administrative Period: <%= @agency.preferences['aca_administrative_period'] %></p>
+            <p>Stability Period: <%= @agency.preferences['aca_stability_period'] %></p>
+        <%  if policy(@agency).update? %>
+                <%= link_to(edit_agency_path(@current_agency), class: 'btn btn-primary') do %>
+        	      <i class='fa fa-pencil fa-fw'></i>
+        			<span>Edit Agency</span>
+        		<% end %>
+    		<% end %>
             </div>
         <div class='col-md-3 scroll500'>
                 <h3>Owners</h3>

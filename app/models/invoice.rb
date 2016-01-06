@@ -36,16 +36,21 @@ class Invoice < ActiveRecord::Base
     #       errors.add(:date_paid, "can't be in the future")
     #     end
     #   end
- 
+    
   
     
     scope :unpaid, -> { where(paid: false)}
     scope :paid, -> { where(paid: true)}
     scope :past, -> { where("week < ?", Date.today.beginning_of_week.cweek) }
     scope :past_due, -> { unpaid.where("due_by < ?", Date.today) }
-    def account_manager
-        account_managers.first
+    
+    def self.by_recuriter(admin_id)
+        joins(:jobs).where(jobs: { recruiter_id: admin_id })
     end
+    def self.by_account_manager(admin_id)
+        joins(:jobs => :orders).where( :orders => { :account_manager_id => admin_id } )
+    end
+    
     def recruiter
         recruiters.first
     end

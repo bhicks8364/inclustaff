@@ -16,6 +16,7 @@
 #  recipient_type   :string
 #  alert            :boolean
 #  read_at          :datetime
+#  notify           :hstore           default({})
 #
 
 class Comment < ActiveRecord::Base
@@ -27,8 +28,10 @@ class Comment < ActiveRecord::Base
     include ArelHelpers::ArelTable
     include Arel::Nodes
     validates :body, presence: true, length: { minimum: 1 }
-    validates :commentable_type, :commentable_id, presence: true
-    after_create :create_event
+    # validates :commentable_type, :commentable_id, presence: true
+    # after_create :create_event
+    
+    store_accessor :notify, :recruiter, :account_manager
     
     scope :unread, -> { where(read_at: nil)}
     scope :read, -> { where.not(read_at: nil)}
@@ -39,7 +42,16 @@ class Comment < ActiveRecord::Base
     scope :by_company_admins, -> { where.not(company_admin_id: nil)}
     scope :by_agency_admins, -> { where.not(admin_id: nil)}
     scope :by_employees, -> { where.not(user_id: nil)}
-    
+    def recruiter
+      if notify['recruiter']
+        Admin.find(notify['recruiter'])
+      end
+    end
+    def account_manager
+      if notify['account_manager']
+        Admin.find(notify['account_manager'])
+      end
+    end
     scope :payroll_week,  -> {
           start = Time.current.beginning_of_week
           ending = start.end_of_week + 7.days

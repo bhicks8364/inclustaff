@@ -1,7 +1,10 @@
 <div class='col-md-12 lightbox'> 
   <div class="btn-group pull-right">
-    <button type="button" class="btn btn-info black dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <i class='fa fa-cogs'></i> Admin
+    <% if policy(Job).create? && @order.needs_attention? %>
+          <%= link_to 'Add Employee', new_admin_order_job_path(@order), class: "btn btn-primary" %>
+        <% end %>
+    <button type="button" class="btn btn-primary black dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <i class='fa fa-pencil'></i> Edit
       <span class="sr-only">Toggle Dropdown</span>
     </button>
     <ul class="dropdown-menu">
@@ -15,6 +18,7 @@
   <div class='col-md-2 bg-white'>
     <div class=''>
       <h3 class='text-center'><%= lg_status_tag(@order) %> <%= status_msg(@order) %></h3>
+      <h3><%= link_to @company.name, admin_company_path(@company)%></h3>
       <p class='lead'>Needed: <%= @order.number_needed %> <br>
         Active: <%= @order.jobs.active.count %><br>
         Open: <%= @order.open_jobs %>
@@ -22,7 +26,8 @@
        <strong>Shift:</strong>
       <%= @order.shift %> <br>
       <strong>Pay Range:</strong><br>
-      <%= number_to_currency(@order.min_pay) %> - <%= number_to_currency(@order.max_pay) %><hr>
+      <%= pay_range(@order) %>
+      <hr>
       <p class='lead bg-white'><strong>ACA Type:</strong> <%= @order.aca_type %></p>
       <strong>Company Manager</strong><br>
       <%=
@@ -34,6 +39,8 @@
       <strong>Account Manager</strong><br>
       <%= @order.account_manager.try(:name) || "Unavailable" %>
     </div>
+    <strong>Mark Up </strong><br>
+    <%= @order.mark_up_percent %><br>
     
   </div>
  
@@ -46,23 +53,29 @@
   <ul id="" class="nav nav-tabs nav-justified" role="tablist">
     <li role="presentation" class="active"><a href="#order" aria-controls="order" role="tab" data-toggle="tab">Order Info.</a></li>
     <li role="presentation"><a href="#matches" aria-controls="matches" role="tab" data-toggle="tab">Candidates</a></li>
+    <% if @order.jobs.any? %>
     <li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li>
     <li role="presentation"><a href="#active-jobs" aria-controls="active-jobs" role="tab" data-toggle="tab">Active Jobs</a></li>
     <li role="presentation"><a href="#inactive-jobs" aria-controls="inactive-jobs" role="tab" data-toggle="tab">Inactive Jobs</a></li>
+    <% end %>
     <li role="presentation"><a href="#applications" aria-controls="applications" role="tab" data-toggle="tab">Applicants</a></li>
   </ul>
  
   
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane fade in active" id="order">
-      <h2>Job Description</h2>
-      <div class='col-md-8 scroll500 bg-white'>
-      <%= markdownify(@order.notes) %>
-    </div>
+      
+      <div class='col-md-8 bg-white'>
+        <h2>Job Description</h2>
+        <div class='scroll500'>
+        <%= markdownify(@order.notes) %>
+        </div>
+      </div>
    
     
-    <div class='col-md-3'>
-      <p><%= @order.heavy_lifting ? "Heavy Lifting Required" : "" %></p>
+    <div class='col-md-4 bg-white'>
+      
+     <%= @order.heavy_lifting ? "#{heavy_lifting(@order)} - Heavy Lifting Required".html_safe : "" %>
      <p><%= @order.stwb ? "STWB Required" : "" %></p>
         
     <strong>Drug Test </strong><br>
@@ -76,17 +89,11 @@
     <%= @order.est_duration %><br>
 
     <strong>Pay Range:</strong><br>
-    <%= @order.pay_range %>
+    <%= pay_range(@order) %>
     
     
    </div>
-  <div class='col-md-3'>
-     <strong>Mentioned Admins:</strong>
-  <p> <%= @order.mentioned_admins.map{|p| p.name.titleize}.join(", ")  %></p>
-      <strong>Requested Employees</strong>
-      <p><%= @order.requested_employees.map {|p| p.name.titleize}.join(", ") %></p>
-     
-   </div>
+
    <div class='col-md-3'>
      <strong>Tags</strong>
       
@@ -107,29 +114,44 @@
   </div>
   <!--MATCHING CANDIDATES TAB-->
   <div role="tabpanel" class="tab-pane fade" id="matches">
-    <div class='col-md-6 lightbox '>
+    <hr>
         <% if @order.needs_attention? %>
+        
+        <div class='col-md-6 bg-white '>
+          <% if @near_by.any? %>
         <h3>Nearby Candidates</h3>
-        <% User.available.near(@order.address).limit(3).try(:each) do |user| %>
-          <li class='list-group-item' data-placement='right' data-toggle='tooltip' title='<%= user.skills.map(&:name).join(', ')%>'>
-            <%=users_tooltip(user)%> 
-          <%= link_to user.name, user %> (<%= user.distance.round(2) %> miles)</li>
-        <% end %>
+          <% @near_by.each do |user| %>
+            <li class='list-group-item' data-placement='right' data-toggle='tooltip' title='<%= user.skills.map(&:name).join(', ')%>'>
+              <%=users_tooltip(user)%> 
+            <%= link_to user.name, user %> (<%= user.distance.round(2) %> miles)</li>
+          <% end %>
         <% else %>
+          <h3 class='text-center'>No nearby candidates.</h3>
+        <% end %>
+        </div>
+        <div class='col-md-6 bg-white'>
+          <% if @order.matching_employees.any? %>
+             <h3>Matching Candidates</h3>
+                <%= render @order.matching_employees %>
+              <% else %>
+        <h3 class='text-center'>No matching candidates.</h3>
+        <% end %>
+        
+          </div>
+          <%= link_to "Candidate List", users_path, class: "btn btn-primary" %>
+        <% else %>
+        <div class='col-md-6 bg-white '>
         <h3>Employee Commutes</h3>
         <% @order.users.near(@order.address).try(:each) do |user| %>
           <li class='list-group-item' data-placement='right' data-toggle='tooltip' title='<%= user.skills.map(&:name).join(', ')%>'>
             <%=users_tooltip(user)%>
             <%= link_to user.name, user %> (<%= user.distance.round(2) %> miles)</li>
         <% end %>
-        
+         </div>
       <% end %>
-    </div>
-     <div class='col-md-6 lightbox'>
-       
-       <h3>Matching Candidates</h3>
-          <%= render @order.matching_employees %>
-     </div>
+     
+      
+     
   </div>
   <!--JOBS TAB-->
   <div role="tabpanel" class="tab-pane fade" id="active-jobs">
@@ -140,9 +162,7 @@
         <% else %>
           <h3>No jobs to display yet.</h3>
       <% end %>
-      <% if policy(Job).create? %>
-          <%= link_to 'Add Employee', new_admin_order_job_path(@order), class: "btn btn-primary" %>
-        <% end %>
+      
       </div>
   </div>
   <!--INACTIVE JOBS TAB-->
@@ -180,7 +200,8 @@
   
   <!--APPLICATIONS TAB-->
     <div role="tabpanel" class="tab-pane fade" id="applications">
-        <div class=''>
+      <hr>
+        <div class='col-md-6 bg-white'>
           <% if @order.applications.any? %>
           <ul>
             <% @order.applications.each do |event| %>
@@ -190,7 +211,7 @@
             <% end %>
           </ul>
           <% else %>
-          <h4>No one has applied to this position yet.</h4>
+          <h3 class='text-center'>No one has applied to this position yet.</h3>
           <% end %>
         </div>
       </div>

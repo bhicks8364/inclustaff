@@ -1,15 +1,15 @@
 <div class="col-md-12">
 	<h1 class='page-header'>Sales Dashboard</h1>
-	<div class='col-md-3'>
-		<%= render "admin/shared/alerts/open_orders", orders: @current_admin.job_orders %>
+	<div class='bg-white'>
+		<div class='col-md-2'>
+			<%= render "admin/shared/alerts/open_orders", orders: @current_admin.job_orders %>
+		</div>
+		<div class="col-md-10">
+				<%= render 'admin/orders/table', orders: @orders %>
+				<%= will_paginate @orders %>
+		</div>
+		<div class='col-md-10'>
+			<%= render 'admin/shared/company_collapse', companies: @current_admin.companies.distinct.order(:name) %>
+		</div>
 	</div>
-	<div class='col-md-9'>
-		<%= render 'admin/shared/company_collapse', companies: @current_admin.companies.order(:name) %>
-	</div>
-	
-	<div class='col-md-10'>
-		<%= render 'admin/charts/account_manager_charts', admin: @current_admin %>
-	</div>
-	
-	
 </div>

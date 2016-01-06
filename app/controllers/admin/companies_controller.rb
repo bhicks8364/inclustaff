@@ -5,7 +5,7 @@ class Admin::CompaniesController < ApplicationController
   # GET /companies
   # GET /companies.json
   def index
-    @companies = @current_admin.companies
+    @companies = @current_admin.companies.distinct
     @top_billing = Company.ordered_by_current_bill
     
     @import = Company::Import.new
@@ -126,8 +126,8 @@ class Admin::CompaniesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def company_params
-      params.require(:company).permit(:name, :address, :city, :state, :zipcode, :contact_name, :contact_email, :admin_id, :agency_id, :phone_number,
-      orders_attributes: [:id, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title, :pay_range, 
+      params.require(:company).permit(:name, :address, :city, :state, :zipcode, :contact_name, :contact_email, :current_account_manager, :admin_id, :agency_id, :phone_number,
+      orders_attributes: [:id, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title,  
       :notes, :number_needed, :needed_by, :urgent, :active, :dt_req, :bg_check, :stwb, :heavy_lifting, :shift, :est_duration])
     end
 end

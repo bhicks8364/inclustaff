@@ -3,12 +3,15 @@
     <% companies.each do |company| %>
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="heading<%=company.id%>">
+          <%= link_to company.name, admin_company_path(company) %>
+          <% if company.orders.any? %>
           <h4 class="panel-title">
             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#company_collapse<%=company.id%>" aria-expanded="true" aria-controls="company_collapse<%=company.id%>">
-              <%= company.name %> <span class='pull-right'><%= company_status(company) %></span>
+               <span class='pull-right'><%= company_status(company) %> <i class="fa fa-caret-down"></i></span>
             </a>
           </h4>
         </div>
+        
         <div id="company_collapse<%=company.id%>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading<%=company.id%>">
            
           <div class="list-group">
@@ -20,6 +23,9 @@
               <% end %>
           </div>
         </div>
+        <% else %>
+        <%= company_status(company) %>
+        <%end%>
     </div>
     <% end %>
 </div>

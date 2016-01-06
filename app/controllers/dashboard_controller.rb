@@ -8,10 +8,11 @@ class DashboardController < ApplicationController
       render 'mainpage'
       @inquiry = Inquiry.new
     end
+    
     #WITH SUBDOMAIN
     #ROOT FOR WHEN A SUBDOMAIN IS PRESENT && NO ONE IS SIGNED IN
     if @current_agency.present? && signed_in? == false
-        @orders = @current_agency.orders.needs_attention.order(:needed_by).paginate(page: params[:page], per_page: 5)
+        @orders = Order.needs_attention.order(:needed_by).paginate(page: params[:page], per_page: 15)
     end
     #ROOT FOR ADMIN DASHBOARDS IF SIGNED IN
     if admin_signed_in? && @current_agency.present?
@@ -21,17 +22,23 @@ class DashboardController < ApplicationController
         elsif current_admin.account_manager?
           render 'admin/dashboard/account_manager'
         elsif current_admin.recruiter?
-        @q = @current_agency.orders.includes(:company, :jobs).needs_attention.ransack(params[:q]) 
-        @jobs = current_admin.jobs.active.paginate(page: params[:page], per_page: 5)
+        @q = Order.includes(:company, :jobs).needs_attention.ransack(params[:q]) 
+        @jobs = current_admin.jobs.active.paginate(page: params[:page], per_page: 15)
          @timesheets = Timesheet.by_recuriter(current_admin.id)
          
-         @orders = Order.needs_attention.order(:needed_by).paginate(page: params[:page], per_page: 5)
+         @orders = Order.needs_attention.order(:needed_by).paginate(page: params[:page], per_page: 15)
           render 'admin/dashboard/recruiter'
         elsif current_admin.payroll?
         @timesheets = Timesheet.all
           render 'admin/dashboard/payroll'
         else
           render 'admin/dashboard/home'
+        end
+        @hash = Gmaps4rails.build_markers(@orders) do |order, marker|
+          marker.lat order.latitude
+          marker.lng order.longitude
+          marker.infowindow order.title_company
+          marker.title order.title
         end
       @current_admin = current_admin
       #ROOT FOR COMPANY_ADMINS DASHBOARDS IF SIGNED IN

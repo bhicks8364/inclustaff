@@ -112,7 +112,14 @@ class Employee < ActiveRecord::Base
   def company
     current_job.company if current_job.present?
   end
-  
+  def initial_start_date
+    if jobs.any?
+      jobs.first.first_day
+    end
+  end
+  def days_from_initial_start
+    TimeDifference.between(initial_start_date, Time.current).in_days
+  end
   def average_weekly_hours
     if total_hours > 1 && timesheets.this_year.any?
       @average = []

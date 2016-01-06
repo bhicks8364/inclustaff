@@ -52,7 +52,13 @@ class CompanyAdmin < ActiveRecord::Base
   
   validates :company_id, presence: true
   before_validation :set_name
- 
+  
+  scope :owners, -> { where(role: "Owner")}
+  scope :managers, -> { where(role: "Manager")}
+  scope :hr, -> { where(role: "HR")}
+  scope :limited, -> { where(role: "Limited Access")}
+  scope :timclocks, -> { where(role: "Timeclock")}
+  
   def set_name;   self.name = "#{first_name} #{last_name}"; end
   def to_s; name; end
   def owner?;           role == "Owner";  end

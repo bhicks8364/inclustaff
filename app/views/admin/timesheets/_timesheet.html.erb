@@ -1,5 +1,5 @@
 
-<div class="timesheet color" data-behavior="timesheet" data-id="<%= timesheet.id %>">
+<div class="timesheet" data-behavior="timesheet" data-id="<%= timesheet.id %>">
   <p class='pull-right' data-behavior='timesheet-company'>
 		  <%= timesheet.company.name %> 
 		</p>
@@ -25,9 +25,9 @@
 			</span>
 		<% end %>
 	</div>
-	<div class="">
+	<div class="bg-white">
 	  
-	  <p class='pull-center' data-behavior='timesheet-employee'>
+	  <p class='lead pull-center' data-behavior='timesheet-employee'>
 			  <%= timesheet.employee.name %><small> <%=timesheet.job.title %></small>
 			</p>
 		<div class="col-md-6">

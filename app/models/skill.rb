@@ -50,7 +50,6 @@ class Skill < ActiveRecord::Base
     scope :job_order, -> { where(skillable_type: "Order")}
     scope :need_skills, -> { job_order.joins(:user).merge(User.unassigned)}
     scope :employee, -> { where(skillable_type: "Employee")}
-    scope :open_orders, -> { joins(:skillable).merge(Order.needs_attention) }
     # scope :employee, -> { where(skillable_type: "Employee")}
     
     

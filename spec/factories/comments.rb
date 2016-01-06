@@ -16,6 +16,7 @@
 #  recipient_type   :string
 #  alert            :boolean
 #  read_at          :datetime
+#  notify           :hstore           default({})
 #
 
 FactoryGirl.define do

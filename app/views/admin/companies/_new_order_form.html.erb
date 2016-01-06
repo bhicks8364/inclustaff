@@ -54,11 +54,6 @@
           <% end %>
 				</div>
 				
-				<div class="form-group form-group-select2">
-					<%= f.input :pay_range, collection: [ "$8.10 - $10.00","$10.00 - $12.00","$12.00 - $15.00", "$15.00 - $18.00", "$18.00 - $22.00",
-					"$22.00 +  ", "Salary", "Hourly + Commission"], prompt: " Select Pay Type", label: false %>
-    
-				</div>
 
 				<div class="form-group">
 					<%= f.text_area :notes, label: "Job Requirements", placeholder: "Please list desired skills, qualifications, etc...", rows: 10  %>

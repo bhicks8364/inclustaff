@@ -43,12 +43,11 @@ class Admin::OrdersController < ApplicationController
   
   def search
     
-    if params[:search].present?
-      @orders = Order.near(params[:search], 50).paginate(page: params[:page], per_page: 25)
-      
-    elsif params[:q].present?
-      @q_orders = Order.includes(:company, :jobs).active.ransack(params[:q]) 
+    if params[:q].present?
+      @q_orders = Order.includes(:company, :jobs).active.order(needed_by: :desc).ransack(params[:q]) 
       @orders = @q_orders.result(distinct: true).paginate(page: params[:page], per_page: 25) 
+    else
+      @orders = Order.includes(:company, :jobs).active.order(needed_by: :desc).paginate(page: params[:page], per_page: 25) 
     end
     authorize @orders, :index?
      @hash = Gmaps4rails.build_markers(@orders) do |order, marker|
@@ -64,7 +63,7 @@ class Admin::OrdersController < ApplicationController
     @jobs = @order.jobs.includes(:timesheets, :shifts)
     @inactivejobs = @jobs.inactive
     @active_jobs = @jobs.active
-    
+    @near_by = User.available.near(@order.address)
     @timesheets = @order.timesheets
     @current_timesheets = @order.current_timesheets
     authorize @order
@@ -196,8 +195,9 @@ class Admin::OrdersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.require(:order).permit(:id, :address, :min_pay, :max_pay, :pay_frequency, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title, :pay_range, :notes, 
+      params.require(:order).permit(:id, :address, :min_pay, :max_pay, :pay_frequency, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title, :notes, 
       :number_needed, :needed_by, :urgent, :active, :dt_req, :bg_check, :stwb, :heavy_lifting, :shift, :est_duration, :tag_list, :aca_type,
+      :education, :industry, :years_of_experience, :certifications, :requirement_1, :requirement_2, :requirement_3, :requirement_4, :published_at, :published_by, :expires_at, 
       jobs_attributes: [:order_id, :title, :description, :start_date, :id, :employee_id, :active], 
       skills_attributes: [:id, :skillable_type, :skillable_id, :name, :required, :_destroy])
     end

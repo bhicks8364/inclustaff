@@ -4,7 +4,6 @@
 #
 #  id                 :integer          not null, primary key
 #  company_id         :integer
-#  pay_range          :string
 #  notes              :text
 #  number_needed      :integer
 #  needed_by          :datetime
@@ -33,6 +32,12 @@
 #  latitude           :float
 #  longitude          :float
 #  aca_type           :string
+#  education          :hstore           default({})
+#  requirements       :hstore           default({})
+#  industry           :string
+#  published_at       :datetime
+#  published_by       :integer
+#  expires_at         :datetime
 #
 
 class Order < ActiveRecord::Base
@@ -62,9 +67,10 @@ class Order < ActiveRecord::Base
   validates :company_id,  presence: true
   validates :needed_by, presence: true
   
+  store_accessor :requirements, :industry, :years_of_experience, :certifications, :requirement_1, :requirement_2, :requirement_3, :requirement_4
     # CALLBACKS
     after_initialize :defaults
-    before_validation :set_mark_up, :set_pay_range
+    before_validation :set_mark_up, :set_address
     after_save :set_note_skills
     # before_save :set_needed_by, if: :urgent?
     
@@ -95,12 +101,12 @@ class Order < ActiveRecord::Base
       self.active = true if self.active.nil?
       self.urgent = false if self.urgent.nil?
       self.jobs_count = 0 if self.jobs_count.nil?
-      
-      self.jobs_count = 0 if jobs_count.nil?
+      self.aca_type = "Variable-Hour" if aca_type.nil?
+      self.requirements = {} if requirements.nil?
     end
    
     def set_mark_up
-      if mark_up.nil? 
+      if max_pay.present? 
         case max_pay
         when (8..10)
           self.mark_up = 1.5
@@ -108,19 +114,16 @@ class Order < ActiveRecord::Base
           self.mark_up = 1.55
         when (12..18)
           self.mark_up = 1.60
-        when (18..25)
+        when (18..30)
           self.mark_up = 1.65
         else
-          self.mark_up = 1.5
+          self.mark_up = 1.55
         end
       end
     end
     
-    def set_pay_range
-      min = min_pay.to_s
-      max = max_pay.to_s
-      self.pay_range = min + " - " + max
-      self.address = "#{company.address} #{company.city}, #{company.state}" if address.nil?
+    def set_address
+      self.address = "#{company.address} #{company.city}, #{company.state}" if address.blank?
     end
     
     def self.by_recuriter(admin_id)
@@ -130,6 +133,10 @@ class Order < ActiveRecord::Base
       where(active: true)
     end
     
+    def pay_range
+      "#{min_pay} - #{max_pay}"
+    end
+    
     def not_urgent?
       urgent == false
     end
@@ -137,7 +144,7 @@ class Order < ActiveRecord::Base
       needs_attention? && needed_by <= Date.today
     end
     def priority?
-      needs_attention? && needed_by <= Date.today + 3.days
+      needs_attention? && needed_by <= Date.today + 1.week
     end
     def set_needed_by
       if needed_by.nil?
@@ -275,7 +282,7 @@ class Order < ActiveRecord::Base
   
    # EXPORT TO CSV
   def self.to_csv
-    attributes = %w{id agency_id company_id title min_pay max_pay pay_frequency account_manager_id manager_id mark_up title pay_range notes number_needed needed_by urgent active dt_req bg_check stwb heavy_lifting shift est_duration}
+    attributes = %w{id agency_id company_id title min_pay max_pay pay_frequency account_manager_id manager_id mark_up title notes number_needed needed_by urgent active dt_req bg_check stwb heavy_lifting shift est_duration}
     CSV.generate(headers: true) do |csv|
       csv << attributes
       

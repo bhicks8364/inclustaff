@@ -5,7 +5,6 @@
 #
 #  id                 :integer          not null, primary key
 #  company_id         :integer
-#  pay_range          :string
 #  notes              :text
 #  number_needed      :integer
 #  needed_by          :datetime
@@ -34,4 +33,10 @@
 #  latitude           :float
 #  longitude          :float
 #  aca_type           :string
+#  education          :hstore           default({})
+#  requirements       :hstore           default({})
+#  industry           :string
+#  published_at       :datetime
+#  published_by       :integer
+#  expires_at         :datetime
 #

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151231205145) do
+ActiveRecord::Schema.define(version: 20160104132352) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,13 +98,14 @@ ActiveRecord::Schema.define(version: 20151231205145) do
     t.integer  "company_admin_id"
     t.integer  "user_id"
     t.text     "body"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.string   "action"
     t.integer  "recipient_id"
     t.string   "recipient_type"
     t.boolean  "alert"
     t.datetime "read_at"
+    t.hstore   "notify",           default: {}
   end
 
   add_index "comments", ["action"], name: "index_comments_on_action", using: :btree
@@ -265,14 +266,13 @@ ActiveRecord::Schema.define(version: 20151231205145) do
 
   create_table "orders", force: :cascade do |t|
     t.integer  "company_id"
-    t.string   "pay_range"
     t.text     "notes"
     t.integer  "number_needed"
     t.datetime "needed_by"
     t.boolean  "urgent"
     t.boolean  "active"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
     t.string   "title"
     t.datetime "deleted_at"
     t.integer  "manager_id"
@@ -294,12 +294,20 @@ ActiveRecord::Schema.define(version: 20151231205145) do
     t.float    "latitude"
     t.float    "longitude"
     t.string   "aca_type"
+    t.hstore   "education",          default: {}
+    t.hstore   "requirements",       default: {}
+    t.string   "industry"
+    t.datetime "published_at"
+    t.integer  "published_by"
+    t.datetime "expires_at"
   end
 
   add_index "orders", ["account_manager_id"], name: "index_orders_on_account_manager_id", using: :btree
   add_index "orders", ["agency_id"], name: "index_orders_on_agency_id", using: :btree
   add_index "orders", ["deleted_at"], name: "index_orders_on_deleted_at", using: :btree
+  add_index "orders", ["industry"], name: "index_orders_on_industry", using: :btree
   add_index "orders", ["manager_id"], name: "index_orders_on_manager_id", using: :btree
+  add_index "orders", ["published_by"], name: "index_orders_on_published_by", using: :btree
 
   create_table "resumes", force: :cascade do |t|
     t.string   "name"

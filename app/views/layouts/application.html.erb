@@ -24,25 +24,21 @@
 
 		<%= render 'shared/navbar' %>
 
+<div class="row">
+			<div class="container" id="main-wrapper">
 	
-		
-		<div class="row">
-			<div class="col-md-12" id="main-wrapper">
+	
 
-			<% if signed_in? == false %>
-			
-			
-					 <%= render 'dashboard/prelaunch' %>
-			
-			<% end %>
-				
 				<%= render 'layouts/alerts' %>
-	    		<%= yield %>
+				<%= yield %>
+	    		
 
 
-	    	</div>
+	    	
 		</div>
-	<%= render 'layouts/footer' %>
+		
+		
+	</div>
 
 </body>
 </html>

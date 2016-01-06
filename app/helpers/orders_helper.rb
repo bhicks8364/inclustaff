@@ -61,7 +61,15 @@ module OrdersHelper
             "<i class='fa fa-anchor fa-fw red' data-toggle='tooltip' data-placement='right' title='Heavy lifting required'></i>".html_safe
         end
     end
+    def stwb(order)
+        if order.stwb?
+            "<i class='fa fa-asterick fa-fw red' data-toggle='tooltip' data-placement='right' title='Steel Toe Workboots required'></i>".html_safe
+        end
+    end
     def title_count(order)
         "<strong>#{order.title}</strong> (#{number_to_currency(order.min_pay)} - #{number_to_currency(order.min_pay)}) #{order.open_jobs}".html_safe
+    end
+    def pay_range(order)
+      "#{number_to_currency(order.min_pay)} - #{number_to_currency(order.max_pay)}"
     end
 end

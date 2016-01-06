@@ -111,6 +111,15 @@ class Admin < ActiveRecord::Base
       Company.all
     end
   end
+  def invoices
+    if recruiter?
+      Invoice.by_recuriter(id)
+    elsif account_manager?
+      Invoice.by_account_manager(id)
+    else
+      Invoice.all
+    end
+  end
   def messages
       Comment.by_recipient(id, "Admin")
   end

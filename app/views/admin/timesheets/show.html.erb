@@ -1,13 +1,7 @@
 <div class='col-md-12'>
 
-   
-  
-<div class='col-md-12 white'>
-  <h3>For the week of:<strong><br>
-        <%= @timesheet.week_begin %>
-          - 
-        <%= @timesheet.week_ending %>
-      </strong></h3>
+<div class=''>
+ 
        <%= link_to(admin_timesheet_path(@timesheet, format: :pdf), class: 'btn btn-primary') do %>
   					<i class="fa fa-download fa-md"></i> Download PDF
   				
@@ -15,26 +9,17 @@
   		
           <%= link_to 'All Timesheets', admin_job_timesheets_path(@job), class: 'btn btn-primary' %>
           <%= link_to 'View Invoice', admin_invoice_path(@timesheet.invoice), class: 'btn btn-primary' %>
-  <div class='col-md-3 well well-sm'>
-    <strong>Regular hours:</strong>
-    <%= @timesheet.reg_hours.round(2) %>
-  </div>
-  <div class='col-md-3 well well-sm'>
-    <strong>Overtime hours:</strong>
-    <%= @timesheet.ot_hours.round(2) %>
-  </div>
-    <div class='col-md-3 well well-sm'>
-           <strong>Gross pay:</strong>
-        <%= number_to_currency(@timesheet.gross_pay) %>
-      </div>
-      <div class='col-md-3 well well-sm'>
-           <strong>Total bill:</strong>
-        <%= number_to_currency(@timesheet.total_bill) %>
-      </div>
       
 </div>
- <div class='col-md-12 dark'>
-<div class='col-md-6 lightbox' data-behavior="timesheet-list">
+ <div class='col-md-4 bg-white'>
+     <h3>For the week of:<strong><br>
+        <%= @timesheet.week_begin %>
+          - 
+        <%= @timesheet.week_ending %>
+      </strong></h3>
+ </div>
+     
+<div class='col-md-8 bg-white' data-behavior="timesheet-list">
     
   <%= render @timesheet %>
   

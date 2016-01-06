@@ -5,9 +5,9 @@ class Admin::DashboardController < ApplicationController
     def owner
 
       @current_agency = current_admin.agency
-      @jobs = @current_agency.jobs if @current_agency.present?
+      @jobs = @current_agency.jobs 
       
-      @orders = Order.all
+      @orders = Order.all.paginate(page: params[:page], per_page: 15)
     
       @timesheets = Timesheet.order(updated_at: :desc) 
   
@@ -15,31 +15,20 @@ class Admin::DashboardController < ApplicationController
         skip_authorization
     end
     def recruiter
-      @q = @current_agency.orders.needs_attention.ransack(params[:q]) 
-      @orders = @current_agency.orders.needs_attention
-      if current_admin.recruiter?
-        
-        
-     
-        @jobs = current_admin.jobs.active.paginate(page: params[:page], per_page: 5)
-       
-        @timesheets = Timesheet.by_recuriter(current_admin.id)
-      else
-        @jobs = Job.all.paginate(page: params[:page], per_page: 5)
-        @timesheets = Timesheet.current_week
-      end
-      @orders = Order.needs_attention.order(:needed_by).paginate(page: params[:page], per_page: 5)
-        @current_recruiter = @current_admin if @current_admin.recruiter?
-        @recruiter_jobs = @current_recruiter.jobs.by_recuriter(@current_recruiter.id) if @current_admin.recruiter?
-        
+      @orders = Order.needs_attention.paginate(page: params[:page], per_page: 15)
+      @q = @orders.ransack(params[:q]) 
+      
+      @timesheets = @current_admin.timesheets
+      @hash = Gmaps4rails.build_markers(@orders) do |order, marker|
+          marker.lat order.latitude
+          marker.lng order.longitude
+          marker.infowindow order.title_company
+          marker.title order.title
+        end
         skip_authorization
     end
     def account_manager
-      if current_admin.account_manager?
-        @orders = current_admin.account_orders.all.paginate(page: params[:page], per_page: 5)
-      else
-        @orders = Order.all.paginate(page: params[:page], per_page: 5)
-      end
+        @orders = Order.all.paginate(page: params[:page], per_page: 15)
         skip_authorization
     end
     

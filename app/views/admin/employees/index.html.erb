@@ -40,9 +40,11 @@
 				</table>
 			</div>
 	</div>
-	<div class="col-md-6 ">
-		<h2 class='white text-center'>	<%= @employees.only_deleted.count %> Deleted Employees</h2>
-			<%= render 'table', employees: @employees.only_deleted %>
+		<div class="col-md-4 ">
+			<h2 class='text-center'>	<%= @employees.only_deleted.count %> Deleted Employees</h2>
+			<% @employees.only_deleted.each do |employee| %>
+			<%= employee.name %> - <%= link_to "<i class='fa fa-trash'></i>".html_safe, admin_employee_path(employee), method: :destroy %><br>
+			<% end %>
 		</div>
 <%= form_for @import, url: import_admin_employees_path, multipart: true do |f| %>
 		  <%= f.file_field :file %>
@@ -51,7 +53,7 @@
 <%= link_to(admin_employees_path(@employees, format: :csv), class: 'btn btn-primary') do %>
   		<i class="fa fa-file-excel-o fa-lg"></i> Export Employee List
 <% end %>
-	<%= link_to "<i class='fa fa-user-plus fa-2x fa-fw pull-left'></i> Employee Registration".html_safe, new_user_registration_path, class: 'btn btn-primary btn-lg' %>
+	<%= link_to "<i class='fa fa-user-plus fa-lg fa-fw pull-left'></i> Employee Registration".html_safe, new_user_registration_path, class: 'btn btn-primary btn-lg' %>
 </div>
 
 

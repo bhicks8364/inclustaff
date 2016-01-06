@@ -35,7 +35,7 @@ class CommentsController < ApplicationController
     respond_to do |format|
      
       format.js 
-      format.html { redirect_to :back, notice: 'Comment was successfully created.' }
+      format.html { redirect_to comments_url, notice: 'Comment was successfully created.' }
       format.json { head :no_content }
 
     end
@@ -104,7 +104,7 @@ class CommentsController < ApplicationController
       skip_authorization
     end
     def comment_params
-      params.require(:comment).permit(:body, :commentable_id, :commentable_type, :admin_id, :read_at, :company_admin_id, :user_id, :recipient_id, :recipient_type)
+      params.require(:comment).permit(:body, :commentable_id, :commentable_type, :recruiter, :account_manager, :admin_id, :read_at, :company_admin_id, :user_id, :recipient_id, :recipient_type)
     end
   def determine_layout
     current_admin ? "admin_layout" : "application"

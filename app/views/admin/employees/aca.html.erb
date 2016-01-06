@@ -1,5 +1,9 @@
 <h1><%= @employee.name %>'s ACA Report</h1>
 <div class=''>
+    <h2><%= @employee.total_hours.round(2) %> Total Hours</h2>
+    <h2><%= @employee.initial_start_date.present? ?  @employee.initial_start_date.stamp("11/12/2016") : "No start date" %></h2>
+    <h3>Days from initial start date: <%= @employee.days_from_initial_start %></h3>
+    <p>Shift count: <%= @employee.shifts.count %></p>
     <div class='col-md-4'>
         <h3 class='white'>By Week <small>over 30 hours</small></h3>
         <div class='list-group'><% @employee.shifts.report_by_week.each do |k, v| %>

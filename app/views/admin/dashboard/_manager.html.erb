@@ -1,112 +1,66 @@
+
 <div class="col-md-12">
-		
-				
-				<div class="tabs-wrapper">
-					<div class="clearfix">
-						<h4 class="pull-left"><%= @current_admin.name %>
-						<span class='text-muted'>  <small><%= @current_admin.role %></small></span></h4>
-						<ul class="nav nav-tabs pull-right">
-							<li class="active"><a href="#open-orders" data-toggle="tab">Open Orders</a></li>
-							<li class=""><a href="#companies" data-toggle="tab">Companies</a></li>
-							<li class=""><a href="#filled-orders" data-toggle="tab">Filled Orders</a></li>
-							<li class=""><a href="#tab-placements" data-toggle="tab">Current Placements</a></li>
-							<li class=""><a href="#tab-timesheets" data-toggle="tab">Timesheets</a></li>
-							<li class=""><a href="#tab-events" data-toggle="tab">Events</a></li>
-						</ul>
-					</div>
-					
-					<div class="tab-content">
-						<div class="tab-pane fade active in" id="open-orders">
-						
-							<div class='col-md-10'>
-								<h3>Open jobs orders</h3>
-									<%= render partial: "admin/orders/order", collection: @current_admin.account_orders.needs_attention %>
-							</div>
-						</div>
-						<div class="tab-pane fade" id="filled-orders">
-							<div class='col-md-12 list-group dark white'>
-						
-							<div class='col-md-10'>
-									<h3>Filled jobs orders</h3>
-								
-										<%= render partial: "admin/orders/order", collection: @current_admin.account_orders.filled %>
-								</div>
-
-							</div>
-						
-							
-						</div>
-						<div class="tab-pane fade" id="companies">
-						    <div class='col-md-12'>
-						       <%= render partial: "admin/companies/company", collection: @current_admin.account_orders.collect { |a| a.company } %>
-						    </div>
-						
-			
-						</div>
-						
-						<div class="tab-pane fade" id="tab-placements">
-						
-							<% if @current_admin.jobs %>
-							<div class='col-md-12'>
-							<% @current_admin.jobs.each do |job| %>
-									
-					
-
-   <h4><%= link_to job.employee.name, admin_employee_path(job.employee) %><small><%= link_to job.title, admin_job_path(job) %></small> </h4>
-  
-    Hours: <%= job.current_week_hours %>  | Pay:  <%= job.current_week_pay ? number_to_currency(job.current_week_pay) : "$0.00" %> 
-  <% if job.on_shift? %>
-    <span class="label label-success label-large pull-right"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> Clocked In</span>
-    <% elsif job.on_break? %>
-    <span class="label label-warning label-large pull-right"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> On Break</span>
-    <% elsif job.off_shift? %>
-    <span class="label label-danger label-large pull-right"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Clocked Out</span>
-    <% end %>
-
-
-  <%= job.pay_rate %> <%= link_to job.recruiter.name, job.recruiter %>
-
-
-
-									
-								
-								
-							<% end %>
+	<div class='white col-md-6'>
+		<h1 class='page-header white'>Owner Dashboard</h1>
 	
-							<% else %>
-							<h3> No placements to show.</h3>
+	</div>
+	<div class='text-center white col-md-6'>
+		<% if account_manager.companies.blank? %>
+	       <h4>Getting Started</h4>
+		  <div id="no-companies-alert" class="alert alert-danger" role="alert">
+			  <h5 class='text-center'> <i class="fa fa-exclamation-triangle fa-fw fa-border"></i> You currently don't have any companies entered. <br>
+			  Please add a new company below.</h5>
+			  	<%= link_to "Add A Company", new_admin_company_path, class: 'btn btn-primary' %>
+		  </div>
+	  	<% else %>
+	  	
+	  		<h3 class=''><strong>Current Billing:</strong> <%= number_to_currency(account_manager.current_billing) %></h3>
+	 		<strong>Last Week:</strong> <%= number_to_currency(account_manager.last_week_billing) %>
+	
+	 	<% end %>
+	</div>
 
-							<% end %>
-								
-								</div>
-							</div>	 
-
-					
-						<div class="tab-pane fade" id="tab-timesheets">
-						    <div class='transbox'>
-						        <% @current_admin.timesheets.each do |timesheet| %>
-						    	<%= render 'admin/timesheets/timesheet', timesheet: timesheet %>
-						<% end %>
-						    </div>
-						
-			
-						</div>
-						
-						<div class="tab-pane fade" id="tab-events">
-						   
-							<% if @events %>
-							<% @events.each do |event| %>
-							  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
-							    <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
-							  <% end %>
-							<% end %>
-							<% else %>
-							Sorry, there're are currently no events.
-							<% end %>
-						</div>
-					
-					</div>
-					
-				</div>
-			
+	
+	 
+	<div class='col-md-12 dark' id=''>
+		<div class="btn-group btn-group-justified" role="group" aria-label="...">
+		<%= link_to(admin_account_manager_path, class: "btn btn-primary") do %>
+		<i class='fa fa-money fa-fw'></i>
+			Sales Dashboard
+		<% end %>
+        <%= link_to(admin_payroll_path,  class: "btn btn-primary") do %>
+		<i class='fa fa-usd fa-fw'></i>
+			Payroll Dashboard
+		<% end %>
+      	<%= link_to(admin_recruiter_path,  class: "btn btn-primary") do %>
+		<i class='fa fa-users fa-fw'></i>
+			Recruiting Dashboard
+		<% end %>
+	  </div>
+		<div id='' class="col-md-4">
+		      <h3 class="white"><strong>Open Invoices</strong><span class='label label-success pull-right black'> <%= number_to_currency(account_manager.invoices.unpaid.sum(:total)) %></strong></h3>
+		    <div class="scroll500">
+		      <% account_manager.invoices.unpaid.order(:week).each do |invoice| %>
+						<%= link_to(admin_invoice_path(invoice), class: "list-group-item list-group-item-success") do %>
+					       <div data-behavior="invoice" data-id="<%= invoice.id %>" class=''>
+					      <strong> <%= invoice.company.name %></strong>
+					     	 <span class='label label-success pull-right black'>
+					     	 	<%= invoice.balance > 0.00 ? number_to_currency(invoice.balance) : "NEW!" %>
+					       </div>
+					       <% end %>
+					  <% end %>
+		    </div>
 		</div>
+		<div class="col-md-4">
+		      <h3 class="white"><strong>Open Job Orders</strong></h3>
+		    <div class="scroll500">
+		      <%= render 'admin/dashboard/orders_by_company' %>
+		    </div>
+		</div>
+		
+		
+		
+		 <%= render 'admin/infoboxes/leaderboxes' %>
+	</div>
+	
+</div>

@@ -27,24 +27,31 @@
   <% end %>
 	
 
-   <div class='col-md-12 transbox'>
-	  	<div class="col-md-5 transbox">
+   <div class='col-md-12'>
+	  	<div class="col-md-6">
     		<h1><%= @employee.first_name %>'s Skills</h1>
     	  <% tag_cloud @employee.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
     	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
     	  <% end %>
     	  <%= pie_chart @employee.tags.order(:name).group(:name).count  %>
     	</div>
+    	<div class="col-md-6 tag_cloud">
+    		<h1><%= signed_in_link_to @order.title, @order %>'s Skills</h1>
+    	  <% tag_cloud @order.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
+    	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
+    	  <% end %>
+    	   <%= pie_chart @order.tags.order(:name).group(:name).count  %>
+    	</div>
 
 
-	  <div class="col-md-5 transbox">
+	  <div class="col-md-5">
     	<h1>Skills needed</h1>
   	  <% tag_cloud @order.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
   	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
   	  <% end %>
   	  <%= pie_chart @order.tags.order(:name).group(:name).count  %>
 	  </div>
-	  	<div class='col-md-6 transbox'>
+	  	<div class='col-md-6'>
 	     <% if @employee.unassigned? && @order.needs_attention? %>
        <%= render 'job_form' %>
        <% end %>
@@ -87,13 +94,7 @@
     			<% end %>
         </div>
       </div>
-      <div class="col-md-6 tag_cloud">
-		<h1><%= @order.title %>'s Skills</h1>
-	  <% tag_cloud @order.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
-	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
-	  <% end %>
-	   <%= pie_chart @order.tags.order(:name).group(:name).count  %>
-	</div>
+      
   <!--END OF BTN GROUP-->
 
         <div class='col-md-6'>

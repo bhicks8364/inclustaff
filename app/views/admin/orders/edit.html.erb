@@ -1,8 +1,10 @@
-<div class='main-box'>
-    <h4>Edit Order</h4>
-
-<%= render 'form' %>
-
+<div class='col-md-12'>
+    <h2>Edit Order</h2>
+<div class='col-md-2'></div>
+<div class='col-md-8 bg-white'>
+    <%= render 'form' %>
+</div>
+<div class='col-md-2'></div>
 <%= link_to 'Show', admin_company_order_path(@company, @order) %> |
 <%= link_to 'Back', admin_company_orders_path(@company) %>
 <%= link_to 'Delete', admin_company_order_path(@company, @order), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>

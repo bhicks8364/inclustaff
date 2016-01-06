@@ -220,6 +220,7 @@ class Job < ActiveRecord::Base
         self.vacation = {} if vacation.nil?
     end
     
+    
     def current_week_pay
         
         if shifts.current_week.any?
@@ -264,9 +265,9 @@ class Job < ActiveRecord::Base
     end
     def first_day
         if shifts.any?
-            shifts.first.time_in.stamp('11/12/2015')
+            shifts.first.time_in
         else
-            "TBD"
+            start_date
         end
     end
     

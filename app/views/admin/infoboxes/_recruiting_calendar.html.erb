@@ -7,7 +7,7 @@
   <% orders.each do |order| %>
     <div class='black small'>
       <%= signed_in_link_to(title_for(order), order, class: "small") %>
-      <%= order_skills_popover(order) if order.skills.any? %>
+      <%= skills_popover(order.skills) if order.skills.any? %>
     </div>
   <% end %>
 <% end %>

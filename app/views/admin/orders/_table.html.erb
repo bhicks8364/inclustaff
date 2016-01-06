@@ -1,54 +1,30 @@
+<% if orders.any? %>
 <div class="table-responsive">
   <table id="" class="table table-bordered">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Company</th>
-      <th>Title</th>
-      <th>Pay Range</th>
-      <th>Active</th>
-      <th>Total Bill</th>
-      <th>Gross Pay</th>
-      <th>Reg Hours </th>
-      <th>Ot Hours</th>
-      <th>Timesheets</th>
-      <th>Acct Manager</th>
-      <th></th>
-      
-    </tr>
-  </thead>
-
-  <tbody>
-    <% orders.each do |order| %>
+    <thead>
       <tr>
-        <td><% if order.needs_attention? %> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            <% else %>
-        <span class="glyphicon glyphicon-check" aria-hidden="true"></span> 
-            <% end %>
-        </td>
-        <td><%= link_to order.company_name, admin_company_path(order.company) %></td>
-        <td><%= order.title %></td>
-        <td><%= order.pay_range %></td>
-        <td><%= order.jobs.active.count %></td>
-        <td><%= number_to_currency( order.timesheets.sum(:total_bill) )%></td>
-        <td><%= number_to_currency( order.timesheets.sum(:gross_pay) )%></td>
-        <td><%= order.timesheets.sum(:reg_hours) %></td>
-         <td><%= order.timesheets.sum(:ot_hours) %></td>
-       
-        <td><%= order.current_timesheets.any? ? order.current_timesheets.count : "0" %></td>
-     
-        <td><%= order.account_manager.present? ? order.account_manager.last_name : "Unassigned" %> </td>
-        <td><%= link_to(edit_admin_order_path(order), class: "table-link" ) do %>
-					<span class="fa-stack">
-						<i class="fa fa-square fa-stack-3x fa-inverse"></i>
-						<i class="fa fa-pencil fa-stack-1x "></i>
-					</span>
-					<% end %>
-        </td>
+        <td>Industry</td>
+        <th>Title</th>
+        <th>Pay Range</th>
+        <th>Open</th>
+        <th>Make A Placement</th>
+        
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+  
+    <tbody>
+      <% orders.each do |order| %>
+        <tr>
+          <td><%= link_to "<i class='fa fa-pencil fa-lg'></i>".html_safe, edit_admin_order_path(order) %> <%= order.industry %></td>
+          <td><%= status_tag(order) %> &nbsp;<%= link_to title_for(order), admin_order_path(order) %></td>
+          <td><%= pay_range(order) %></td>
+          <td><%= order.open_jobs %></td>
+          <td class='text-center'><%= link_to "<i class='fa fa-user-plus fa-lg'></i>".html_safe, new_admin_order_job_path(order) %></td>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 
-
-  </div>
+<% end %>

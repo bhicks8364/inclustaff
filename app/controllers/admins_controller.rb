@@ -11,34 +11,24 @@ class AdminsController < ApplicationController
      
   end
     
-  # def new
-  #   if params[:company_id].present?
-  #     @company = Company.find(params[:company_id])
-  #     @admin = @company.admins.new
-  #   else
-  #     @admin = Admin.new
-  #   end
+  def new
+
+      @admin = Admin.new
+    skip_authorization    
+  end
+  def create
     
-  # end
-  # def create
-  #   if params[:company_id].present?
-  #     @company = Company.find(params[:company_id])
-  #     @admin = @company.admins.new(admin_params)
-  #   else
-  #     @admin = Admin.new(admin_params)
-  #   end
-    
-  #   if params[:password].blank?
-  #     @admin.password = "password"
-  #     @admin.password_confirmation = "password"
-  #   end
-  #   if @admin.save
-  #     redirect_to admins_path, notice: 'You are just added ' + "#{@admin.name}" 
-  #   else
-  #     redirect_to admins_path, notice: 'Unable to add admin'
-  #   end
-  #   skip_authorization
-  # end
+      @admin = Admin.new(admin_params)
+      @admin.agency_id = @current_agency.id    
+      @admin.password = "password"
+      @admin.password_confirmation = "password"
+    if @admin.save
+      redirect_to admins_path, notice: 'You are just added ' + "#{@admin.name}" 
+    else
+      redirect_to admins_path, notice: 'Unable to add admin'
+    end
+    skip_authorization
+  end
   
     
     def follow

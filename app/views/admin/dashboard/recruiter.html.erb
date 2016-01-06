@@ -1,12 +1,7 @@
-  <% tag_cloud @orders.needs_attention.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
-    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
-  <% end %>
 <div class='col-md-12'>
 
-<%= render 'admin/orders/search' %>
-<%= render 'admin/dashboard/recruiter', recruiter: @current_admin if @current_admin.recruiter? %>
   <h1 class='page-header'>Recruiting Dashboard</h1>
-  
+  <div class='pull-right'><%= render 'admin/orders/search' %></div>
   	
   <div class="col-md-12">
 				<div class="tabs-wrapper">
@@ -23,9 +18,21 @@
 					
 					<div class="tab-content">
 						<div class="tab-pane fade in active" id="tab-home">
-								<h3 class='text-center'>Open Job Orders</h3>
+								<div class='col-md-12 bg-white'>
+									<h3 class='text-center'>Open Job Orders</h3>
 								
-									
+								<div class="col-md-2">
+										<%= render "admin/shared/alerts/open_orders", orders: @orders %>
+								</div>
+								<div class="col-md-10">
+										<%= render 'admin/orders/table', orders: @orders %>
+										<%= will_paginate @orders %>
+								</div>
+									<div class="center">
+										<div id="map" style='width: 400px; height: 400px;'></div>
+										
+									</div>
+								</div>
 							
 						</div>
 					  
@@ -92,3 +99,26 @@
 				</div>
 		</div>
 </div>
+
+
+<script type='text/javascript'>
+console.log(gon.orders);
+handler = Gmaps.build('Google');
+handler.buildMap({
+    provider: {
+      disableDefaultUI: true,
+      zoom: 4
+      // pass in other Google Maps API options here
+    },
+    internal: {
+      id: 'map'
+    }
+  },
+  function(){
+    markers = handler.addMarkers(<%=raw @hash.to_json %>);
+    handler.bounds.extendWith(markers);
+    handler.fitMapToBounds();
+  }
+);
+
+</script>

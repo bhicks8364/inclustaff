@@ -1,5 +1,5 @@
  <%= render 'search' %>
- 
+ <%= link_to "Send a Message", new_comment_path, class: "btn btn-success" %>
 <% if @searched.present? %>
 <div data-behavior='comment-list' class='scroll300'>
             <h2>Searched Comments	<span class="badge" data-behavior='comments-count'>

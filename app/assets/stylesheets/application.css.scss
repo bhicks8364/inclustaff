@@ -47,23 +47,29 @@
 @import "shifts";
 
 body {
-  font-family: 'Titillium Web', Geneva, sans-serif;
+  // font-family: 'Titillium Web', Geneva, sans-serif;
   padding-top: 70px;
-  background: transparent;
-// background: url(colorful-triangles-background.jpg) no-repeat center center fixed; 
-  // background-color: rgba(255, 255, 255, 0.8);
-  background-image:
-        // linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
-        url(street.png);
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+  // background: transparent;
+background: url(street-white.png) no-repeat center center fixed;
+//   background-color: rgba(255, 255, 255, 0.8);
+  // background-image:
+  // //       linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+  //       url(street-white.png);
+  //       // url(InclusStaff-twitter-cover.png) no-repeat center center fixed; 
+  // -webkit-background-size: cover;
+  // -moz-background-size: cover;
+  // -o-background-size: cover;
+  // background-size: contain;
+  // background: url(autumn_blur.jpg) no-repeat center center fixed;
 }
 #main-wrapper {
   margin-top: -20px;
-  background-color: rgba(255, 255, 255, 0.6);
+  height: 100%;
+  
+  padding: 8px;
+  // background-color: rgba(255, 255, 255, 0.6);
 }
+
 
 .dataTables_wrapper > label {
   color: black;
@@ -230,13 +236,17 @@ div.transbox {
 .nav-tabs > li > a {
     background-color: rgba(17, 17, 17, 0.77);
     color: white;
-    border: none;
+    font-weight: bold;
 }
 .nav-tabs > li > a:hover {
-    background-color: rgba(17, 17, 17, 0.17);
+    background-color: rgba(255, 255, 255, 0.67);
     color: black;
+    
 }
 // .navbar.navbar-inverse {
 //   border: none;
 //   margin-bottom: 1px;
 // }
+.pad {
+  padding: 8px;
+}

@@ -1,6 +1,6 @@
 <div class="col-md-12 lightbox">
   <h2><%= @company.name %></h2>
-  
+  <h3><%= @company.current_account_manager.name %></h3>
   
   <!-- Nav tabs -->
   <ul class="nav nav-tabs nav-justified" role="tablist">
@@ -114,7 +114,12 @@
        <h3>Current Job Orders</h3>
        <ul>
         <% @company.orders.active.each do |order| %>
-          <li class=''>        <%= link_to order.title, admin_company_order_path(@company, order) %> - <%= status_msg(order) %></li>
+          <li class=''>        <%= link_to order.title, admin_company_order_path(@company, order) %> - <%= status_msg(order) %>
+          <p class=''>
+            <%=order.account_manager.try(:name) || "No Account Manager" %>
+          </p>
+          <%= link_to "Edit", edit_admin_company_order_path(@company, order) %>
+          </li>
         <% end %>
         </ul>
      </div>
@@ -124,7 +129,7 @@
 				<% end %>
   </div>
   <div role="tabpanel" class="tab-pane fade" id="employees">
-     <div class='col-md-6'>
+     <div class='col-md-6 bg-white'>
        <% if @company.jobs.active.any? %>
        <h3>Current Employees</h3>
     <%= render @jobs.active %>

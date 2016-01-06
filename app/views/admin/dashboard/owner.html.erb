@@ -1,46 +1,92 @@
-
 <div class="col-md-12">
-	<div class='white col-md-6'>
-		<h1 class='page-header white'>Owner Dashboard</h1>
-	
-	</div>
-	<div class='text-center white col-md-6'>
-		<% if @current_agency.companies.blank? %>
-	       <h4>Getting Started</h4>
-		  <div id="no-companies-alert" class="alert alert-danger" role="alert">
-			  <h5 class='text-center'> <i class="fa fa-exclamation-triangle fa-fw fa-border"></i> You currently don't have any companies entered. <br>
-			  Please add a new company below.</h5>
-			  	<%= link_to "Add A Company", new_admin_company_path, class: 'btn btn-primary' %>
-		  </div>
-	  	<% else %>
-	  	
-	  		<h3 class=''><strong>Current Billing:</strong> <%= number_to_currency(@current_agency.current_billing) %></h3>
-	 		<strong>Last Week:</strong> <%= number_to_currency(@current_agency.last_week_billing) %>
-	
-	 	<% end %>
-	</div>
-
-	
-	 
-	<div class='col-md-12 dark' id=''>
-		<div class="btn-group btn-group-justified" role="group" aria-label="...">
-		<%= link_to(admin_account_manager_path, class: "btn btn-primary") do %>
-		<i class='fa fa-money fa-fw'></i>
-			Sales Dashboard
-		<% end %>
-        <%= link_to(admin_payroll_path,  class: "btn btn-primary") do %>
-		<i class='fa fa-usd fa-fw'></i>
-			Payroll Dashboard
-		<% end %>
-      	<%= link_to(admin_recruiter_path,  class: "btn btn-primary") do %>
-		<i class='fa fa-users fa-fw'></i>
-			Recruiting Dashboard
-		<% end %>
-	  </div>
-		<div id='' class="col-md-4">
-		      <h3 class="white"><strong>Open Invoices</strong><span class='label label-success pull-right black'> <%= number_to_currency(@current_agency.invoices.unpaid.sum(:total)) %></strong></h3>
-		    <div class="scroll500">
-		      <% @current_agency.invoices.unpaid.order(:week).each do |invoice| %>
+	<h1 class='page-header white'>Owner Dashboard</h1>
+	<div class="tabs-wrapper">
+		<div class="clearfix">
+			<ul class="nav nav-tabs">
+			  <li class="active"><a href="#tab-home" data-toggle="tab">Dashboard</a></li>
+			  <li class=""><a href="#tab-orders" data-toggle="tab">Job Orders</a></li>
+			  <li class=""><a href="#tab-calendar" data-toggle="tab">Calendar</a></li>
+			  <li class=""><a href="#tab-invoices" data-toggle="tab">Invoices</a></li>
+			  <li class=""><a href="#tab-leaderboard" data-toggle="tab">Stats</a></li>
+			</ul>
+		</div>
+		<div class="tab-content">
+			<div class="tab-pane fade in active" id="tab-home">
+				<div class='col-md-12 bg-white'>
+				<% if @current_agency.companies.blank? %>
+	       		<h2 class=''>Getting Started</h2>
+	       			<div class='col-md-4 bg-white'>
+	       				<div id="no-companies-alert" class="alert alert-danger text-center" role="alert">
+							<h5 class='text-center'> <i class="fa fa-exclamation-triangle fa-fw fa-border"></i> 
+							There are currently no companies.</h5>
+							<p class=''>Please add a new company below.</p>
+							<%= link_to "New Company", new_admin_company_path, class: 'btn btn-success' %>
+					  	</div>
+	       			</div>
+	       			<% end %>
+	       			<% if @current_agency.admins.count < 3 %>
+	       			<div class='col-md-4 bg-white'>
+	       				<div class='text-center'>
+	       					<h5 class=''> <i class="fa fa-user-plus fa-fw fa-border"></i> 
+							There are currently <%= @current_agency.admins.count %> admin accounts.</h5>
+							<p class=''>Add additional accounts below.</p>
+							<%= link_to "New Admin Account", new_admin_path, class: 'btn btn-success' %>
+	       				</div>
+	       			</div>
+	       			<% end %>
+	       			<div class='col-md-4 bg-white'>
+	       				
+	       			</div>
+	       			
+			  	
+		 	
+	 			</div>
+			</div>
+			<div class="tab-pane fade in" id="tab-orders">
+				<div class='col-md-12 bg-white'>
+				<% if @orders %>
+				<div class='col-md-12 bg-white'>
+					<h3 class='text-center'>Open Job Orders</h3>
+					<div class="col-md-2">
+						<%= render "admin/shared/alerts/open_orders", orders: @orders %>
+					</div>
+					<div class="col-md-10">
+						<%= render 'admin/orders/table', orders: @orders %>
+						<%= will_paginate @orders %>
+					</div>
+					<div class="col-md-4">
+		      			<h3 class="white"><strong>Open Job Orders</strong></h3>
+					    <div class="scroll500">
+					      <%= render 'admin/dashboard/orders_by_company' %>
+					    </div>
+					</div>
+				</div>
+				<% else %>
+				<div class='col-md-12 bg-white'>
+					<h3 class='text-center'>No Job Orders</h3>
+					<div class="col-md-2">
+						<%= link_to "Add Job Order", new_admin_order_path %>
+					</div>
+					<div class="col-md-10">
+					</div>
+				</div>
+				<% end %>
+				</div>
+			</div>
+			<div class="tab-pane fade" id="tab-leaderboard">
+				<div class='white col-md-6'>
+					<h3 class=''><strong>Current Billing:</strong> <%= number_to_currency(@current_agency.current_billing) %></h3>
+					 		<strong>Last Week:</strong> <%= number_to_currency(@current_agency.last_week_billing) %>
+				</div>
+				<div class='col-md-12 bg-white'>
+					<%= render 'admin/infoboxes/leaderboxes' %>
+				</div>
+				
+			</div>
+			<div class="tab-pane fade" id="tab-invoices">
+				<div class='col-md-12 bg-white'>
+					<div class="scroll500">
+				     <% @current_agency.invoices.unpaid.order(:week).each do |invoice| %>
 						<%= link_to(admin_invoice_path(invoice), class: "list-group-item list-group-item-success") do %>
 					       <div data-behavior="invoice" data-id="<%= invoice.id %>" class=''>
 					      <strong> <%= invoice.company.name %></strong>
@@ -49,30 +95,30 @@
 					       </div>
 					       <% end %>
 					  <% end %>
-		    </div>
+				    </div>
+				    </div>
+			</div>
+			<div class="tab-pane fade" id="tab-calendar">
+				<div class='col-md-12 bg-white'>
+					<div class="">
+				  		<%= render 'admin/infoboxes/recruiting_calendar' if @orders %>
+				    </div>
+					<div class="col-md-2">
+						<h3 class="white"><strong>Admins</strong></h3>
+					    <div class="scroll500">
+					    	<% @current_agency.admins.order(:last_name).each do |admin| %>
+									<%= link_to(admin_path(admin), class: "list-group-item") do %>
+								       <div data-behavior="admin" data-id="<%= admin.id %>" class=''>
+									        <strong> <%= admin.name %></strong><br>
+									       	<small>	<%= admin.role %></small>
+								       </div>
+								       <% end %>
+							<% end %>
+					    </div>
+					</div>
+					 
+				 </div>
+			</div>
 		</div>
-		<div class="col-md-4">
-		      <h3 class="white"><strong>Open Job Orders</strong></h3>
-		    <div class="scroll500">
-		      <%= render 'admin/dashboard/orders_by_company' %>
-		    </div>
-		</div>
-		
-		
-		<div class="col-md-2">
-			<h3 class="white"><strong>Admins</strong></h3>
-		    <div class="scroll500">
-		    	<% @current_agency.admins.order(:last_name).each do |admin| %>
-						<%= link_to(admin_path(admin), class: "list-group-item") do %>
-					       <div data-behavior="admin" data-id="<%= admin.id %>" class=''>
-						        <strong> <%= admin.name %></strong><br>
-						       	<small>	<%= admin.role %></small>
-					       </div>
-					       <% end %>
-				<% end %>
-		    </div>
-		</div>
-		 <%= render 'admin/infoboxes/leaderboxes' %>
 	</div>
-	
 </div>

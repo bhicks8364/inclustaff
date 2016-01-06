@@ -1,7 +1,7 @@
+<% if commentable.present? %>
 <%= simple_form_for [commentable.comments.new], class: 'comment', remote: true do |f| %>
 <%= f.hidden_field :commentable_id, value: commentable.id %>
 <%= f.hidden_field :commentable_type, value: commentable.class %>
-    
   
    
     
@@ -17,4 +17,7 @@
     
   
   
+<% end %>
+<%else%>
+Nope
 <% end %>

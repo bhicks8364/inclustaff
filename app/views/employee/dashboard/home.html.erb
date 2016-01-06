@@ -1,7 +1,6 @@
-<div class='col-md-12'>
+<div class='col-md-12 bg-white'>
    <h1> <%= @employee.first_name %>'s Dashboard</h1>
 
-  <div class='lightbox'>
    
 
 
@@ -58,7 +57,7 @@
    
      </div>
     <h2 class='text-center'><%= @job.title %></h2>
-  <div class='scroll400 dark'>
+  <div class='scroll400'>
     
     <h5>Job Description:</h5>
     <%= markdownify(@job.order.notes) %>
@@ -84,10 +83,8 @@
     <% else %>
     
       
-    <div class='col-md-12'>
        <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
           
-    </div>
     
     
     <% end %>

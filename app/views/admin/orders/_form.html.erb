@@ -1,44 +1,61 @@
-<div class=''>
-<%= simple_form_for([:admin, @company, @order], defaults: { label: false, input_html: { class: 'form-control' } }) do |f| %>
-	<div class='col-md-9 form-group'>
-		<% if @company.nil? %>
-			<%= f.association :company, collection: Company.all, prompt: "Choose a Company", wrapper_html: {class: 'col-md-12'}  %>
-		<% end %>
-	  
-		<%= f.input :title, placeholder: "Job Type (Ex. Warehouse, Adminstrative, General Labor, etc...)", label: false, wrapper_html: {class: 'col-md-9'}  %>
-		<%= f.input :address, label: false, wrapper_html: {class: 'col-md-9'}  %>
-		<%= f.input :aca_type, collection: ["Variable-Hour", "Full-Time"], include_blank: false %>
-		<%= f.input :urgent, as: :boolean, inline_label: 'Do you need someone asap? ' , label: false, input_html: { class: 'boolean' }, wrapper_html: {class: 'white col-md-3'}  %>
-		<%= f.input :number_needed, collection: 1..10, prompt: "How many people are needed?", label: false, wrapper_html: {class: 'col-md-4'}  %>
-		<%= f.input :needed_by, as: :string, input_html: {class: 'datepicker'}, placeholder: "When would you like them to start?", label: false, wrapper_html: {class: 'col-md-4'}  %>
-		<%= f.input :est_duration, collection: [ "Temp-to-Hire", "Direct-Hire", "Temporary"], prompt: "Est. duration of assignment", label: false, wrapper_html: {class: 'col-md-4'}   %>
-		<%= f.input :pay_range, collection: [ "$8.10 - $10.00","$10.00 - $12.00","$12.00 - $15.00", "$15.00 - $18.00", "$18.00 - $22.00", "$22.00 +  "], prompt: " Select Pay Range", label: false, wrapper_html: {class: 'col-md-4'}   %>
-		<%= f.input :shift, collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible"], prompt: "Select shift needed", label: false, wrapper_html: {class: 'white col-md-4'}  %>
-		<% if @current_admin.role != "Account Manager" %>
-		<%= f.association :account_manager, collection: @account_managers.order(:last_name), prompt: "Select Account Manager", label: false, wrapper_html: {class: 'white col-md-4'}  %>
-		<% end %>
-		
-		<%= f.association :manager, collection: @company.admins.order(:last_name), prompt: "Select Company Manager", label: false, wrapper_html: {class: 'white col-md-4'} if @company.present? %>
-		<div class='form-inline'>
-			<%= f.input :min_pay %>
-			<%= f.input :max_pay %>
-		</div>
 
-		<%= f.input :notes, as: :text, label: false, placeholder: "Please list desired skills, qualifications, etc...", input_html: {data: { behavior: "autocomplete_order_notes" }, rows: 8 }, wrapper_html: {class: 'white col-md-12'} %>
-		<%= f.input :dt_req, collection: [ "None Required", "Yes - 5 panel screen", "Yes - 10 panel screen"], include_blank: false, label: "Drug Test", input_html: { class: 'form-control' }, wrapper_html: {class: 'white col-md-6'}  %>
-		<%= f.input :bg_check, collection: [ "None Required", "Yes - No Felonies", "Yes - Case by case"], include_blank: false, label: "Background Check", input_html: { class: 'form-control' }, wrapper_html: {class: 'white col-md-6'} %>
-		<%= f.input :stwb, as: :boolean, inline_label: "Do they need steel-toe workboots?", wrapper_html: {class: 'white col-md-6'}, input_html: {class: 'boolean'}   %>
-		<%= f.input :heavy_lifting, as: :boolean, inline_label: "Does this position require heavy lifting? (50 lbs +)", wrapper_html: {class: 'white col-md-6'}, input_html: {class: 'boolean'}   %> 
-
-		<%= f.input :tag_list, as: :text, value: @order.tag_list.to_s, input_html: { class: '' }  %>
-	</div>
-	
-
-		
-		<%= f.button :submit, "Submit", class: "btn btn-success btn-lg pull-right" %>
-	
-   
-    
-
+<%= simple_form_for [:admin, @company, @order], html: { class: 'form-horizontal' },
+  wrapper: :horizontal_form,
+  wrapper_mappings: {
+    check_boxes: :horizontal_radio_and_checkboxes,
+    radio_buttons: :horizontal_radio_and_checkboxes,
+    file: :horizontal_file_input,
+    boolean: :horizontal_boolean
+  } do |f| %>
+<%= f.error_notification %>
+<% if @company.nil? %>
+<%= f.association :company, collection: Company.all, prompt: "Choose a Company"  %>
 <% end %>
-</div>
+<%= f.input :industry, as: :radio_buttons, collection: [ "Manufacturing", "Office", "IT", "Retail", "Logistics", "Warehouse", "Medical", "Food Service"] %>
+<%= f.input :title, placeholder: "Job Type (Ex. Warehouse, Adminstrative, General Labor, etc...)"  %>
+<%= f.input :address  %>
+
+
+<%= f.input :aca_type, collection: ["Variable-Hour", "Full-Time"], include_blank: false %>
+<%= f.input :urgent, as: :boolean, inline_label: 'Do you need someone asap? ' %>
+<%= f.input :number_needed, collection: 1..10, prompt: "How many people are needed?"  %>
+<%= f.input :needed_by, as: :string, input_html: {class: 'datepicker'}, placeholder: "When would you like them to start?"  %>
+
+<%= f.input :shift,
+collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible"], 
+prompt: "Select shift needed"  %>
+<% if @current_admin.role != "Account Manager" %>
+<%= f.association :account_manager, collection: @current_agency.admins.account_managers.order(:last_name), prompt: "Select Account Manager"  %>
+<% end %>
+
+<%= f.association :manager, collection: @company.admins.order(:last_name), prompt: "Select Company Manager" if @company.present? %>
+
+<%= f.input :min_pay, as: :decimal, label: false, input_html: { class: 'form-control'}, placeholder: "Min Pay"%>
+
+                  <%= f.input :max_pay, as: :decimal, label: false, input_html: { class: 'form-control'}, placeholder: "Max Pay"%>
+   
+
+<%= f.input :notes, as: :text, placeholder: "Please list desired skills, qualifications, etc...", input_html: {data: { behavior: "autocomplete_order_notes" }, rows: 8 } %>
+<%= f.input :published_at %>
+<%= f.input :expires_at %>
+
+<%= f.input :bg_check, collection: [ "None Required", "Yes - No Felonies", "Yes - Case by case"], label: "Background Check" %>
+	
+	<%= f.input :tag_list, as: :text, label: "Tags", value: @order.tag_list.to_s  %>
+	<%= f.input :years_of_experience %>
+	<%= f.input :certifications %>
+
+	<%= f.input :requirement_1 %>
+	<%= f.input :requirement_2 %>
+	<%= f.input :requirement_3 %>
+	<%= f.input :stwb, as: :boolean, inline_label: "Do they need steel-toe workboots?", input_html: {class: 'boolean'}   %>
+	<%= f.input :heavy_lifting, as: :boolean, inline_label: "Does this position require heavy lifting? (50 lbs +)", input_html: {class: 'boolean'}   %> 
+
+	<%= f.input :dt_req, as: :radio_buttons, label: "Drug Test", collection: [ "None Required", "Yes - 5 panel screen", "Yes - 10 panel screen"] %>
+	
+	<%= f.input :est_duration, as: :radio_buttons,	collection: [ "Temp-to-Hire", "Direct-Hire", "Temporary", "Payroll"] %>
+	
+	
+
+	<%= f.button :submit %>
+<% end %>

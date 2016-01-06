@@ -44,7 +44,7 @@
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="job">
 
-  <div class='col-md-4 lightbox'>
+  <div class='col-md-4 bg-white'>
   <h4><strong>Interview Notes:</strong></h4>
         <%= markdownify(@job.description) %>
        <% if @job.recruiter.present? %>
@@ -56,10 +56,15 @@
      </div>
     
       <div class='col-md-4'>
-          
+          <% if @job.active? %>
+      <h4><%= @job.title %><smal><%= number_to_currency(@job.pay_rate) %></smal></h4>
+        <%= render @job %>
+        <% else %>
+        <h3> This position is currently inactive.</h3>
+      <% end %>
           
        </div>
-    <div class='col-md-4'>
+    <div class='col-md-4 bg-white'>
       <% if @job.vacation['number_of_days'].present? %>
   
       <h2>Vacation Tracking</h2>  
@@ -90,9 +95,12 @@
         <%= link_to "Add Vacation Milestones", edit_admin_job_path(@job), class: "btn btn-success" %>
         <% end %>
         <div class=''>
+            <% if @job.settings %>
             <h2>Pay Differentials</h2>  
-      Drive Pay: <%= @job.settings['drive_pay'] if @job.settings %><br>
+      Drive Pay: <%= @job.settings['drive_pay']  %><br>
       Ride Pay: <%= @job.settings['ride_pay'] if @job.settings %><br>
+      <% end %>
+      
         </div>
     </div>
 </div>
@@ -143,8 +151,8 @@
     
   </div>
   <div role="tabpanel" class="tab-pane fade" id="skills-tab">
-    <div class='dark col-md-12'>
-      <div class='col-md-5 list-group transbox'>
+    <div class='col-md-12'>
+      <div class='col-md-5 list-group'>
      <h3>Skills Needed</h3>
      <% @order.skills.each do |skill| %>
      <li class='list-group-item list-group-item-success black'>
@@ -152,7 +160,7 @@
      </li>
      <% end %>
     </div>
-    <div class='col-md-5 list-group transbox'>
+    <div class='col-md-5 list-group'>
       <h3><%= @employee.first_name %>'s Skills</h3>
       <% @employee.skills.each do |skill| %>
      <li class='list-group-item list-group-item-success black'>

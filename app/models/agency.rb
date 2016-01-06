@@ -27,7 +27,6 @@ class Agency < ActiveRecord::Base
     has_many :companies
     has_many :orders
     has_many :jobs, :through => :orders
-
     has_many :company_admins, :through => :companies, :source => 'admins'
     has_many :order_events, :through => :orders, :source => 'events'
     has_many :applications, :through => :orders, :source => 'events'
@@ -50,16 +49,22 @@ class Agency < ActiveRecord::Base
     has_many :recruiters, -> { where(role: 'Recruiter', company_id: nil) }, class_name: "Admin"
     has_many :payroll_admin,  -> { where(role: "Payroll", company_id: nil) }, class_name: "Admin"
     has_many :account_managers,  -> { where(role: "Account Manager", company_id: nil) }, class_name: "Admin"
+    store_accessor :preferences, :aca_measurement_period, :aca_administrative_period, :aca_stability_period
     
     accepts_nested_attributes_for :admins
     
     after_create :create_tenant
-
     validates :subdomain, :format => { :with => /\A[a-zA-Z]+\z/, :message => "Only letters allowed" }
     validates :subdomain, exclusion: { in: %w(www us ca jp public admin inclustaff), message: "%{value} is reserved." }
     validates :name,  presence: true, length: { maximum: 50 }
     validates :subdomain, uniqueness: true
-   
+    
+    before_validation :set_stability_period
+    
+    def set_stability_period
+        self.preferences = self.preferences.merge({aca_stability_period: self.aca_measurement_period})
+    end
+    
     def shifts
         Shift.order(updated_at: :desc)
     end
@@ -69,7 +74,6 @@ class Agency < ActiveRecord::Base
     def current_timesheets
         Timesheet.current_week.order(week: :desc)
     end
-    
     
     def current_billing
         timesheets.current_week.sum(:total_bill)
@@ -85,16 +89,13 @@ class Agency < ActiveRecord::Base
     def last_week_billing
         timesheets.last_week.sum(:total_bill)
     end
-    
-   
-    
   
     private
     def create_tenant
         Apartment::Tenant.create(subdomain)
     end
   
-        # Apartment::Tenant.switch!('ontimestaffing')
+    # Apartment::Tenant.switch!('ontimestaffing')
     # Apartment::Tenant.switch!('gtrjobs')
 
 end

@@ -1,4 +1,15 @@
- <h1><%= @current_agency.name %></h1>
- <%= @current_agency.inspect %>
+<div class='col-md-12'>
+  <div class='col-md-3 bg-white'>
+   <h1><%= @current_agency.name %></h1>
+   <p class=''>
+    Member since <%= @current_agency.created_at.stamp("December 2015") %> 
+   </p>
+  </div>
  
- <%= link_to "Edit Agency", edit_agency_path(@current_agency) %>
+ 
+</div>
+<div class='row'>
+ <div class='btn-group'>
+  <%= link_to "Edit Agency", edit_agency_path(@current_agency), class: "btn btn-primary" %>
+ </div>
+</div>

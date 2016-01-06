@@ -17,7 +17,7 @@
         <h4><strong>Job Information</strong></h4>
 <%= @job.employee.name %> <br> <%= @job.title %>  <%= @company.name %>
  <div class='form-group'>
-    <%= f.association :recruiter, collection: @agency.recruiters.order(:last_name), prompt: "Select Recruiter", label: false %>
+    <%= f.association :recruiter, collection: @current_agency.recruiters.order(:last_name), prompt: "Select Recruiter", label: false %>
    
 
    

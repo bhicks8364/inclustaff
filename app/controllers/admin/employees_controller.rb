@@ -8,7 +8,7 @@ class Admin::EmployeesController < ApplicationController
 
   def index
     @admin = @current_admin
-    @employees = Employee.includes(:user).all
+    @employees = Employee.includes(:user).assigned
     # @employees = Employee.includes(:user).assigned
     @hash = Gmaps4rails.build_markers(@employees) do |employee, marker|
           marker.lat employee.user.latitude

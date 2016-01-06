@@ -7,26 +7,17 @@
       <th>Title</th>
       <th>Pay Range</th>
       <th>Open </th>
-      <th>Account Manager</th>
-      <th>Matches</th>
-      <th></th>
     </tr>
   </thead>
 
   <tbody>
     <% @orders.needs_attention.order(:needed_by).each do |order| %>
       <tr>
-        <td><%= order.needed_by? ? order.needed_by.stamp('11/12') : "n/a" %></td>
+        <td><%= status_tag(order) %><%= order.needed_by.stamp('11/12')%></td>
         <td><%= link_to order.title, admin_company_order_path(order.company, order), class: 'black' %></td>
         <td><%= number_to_currency(order.min_pay) %> - <%= number_to_currency(order.max_pay) %></td>
         <td><%= order.open_jobs %></td>
-        <td><%= order.account_manager.present? ? order.account_manager.last_name : "Unassigned" %> </td>
-        
-         <td><% if order.matching_employees.any? %>
-            <%= order.matching_employees.count %>
-            <%= matching_emp_popover(order) %>
-            <% end %></td>
-        <td><span class='pull-right'> <%= skills_popover(order) %></span></td>
+  
       </tr>
     <% end %>
   </tbody>

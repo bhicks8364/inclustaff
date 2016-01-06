@@ -49,6 +49,8 @@ class Company < ActiveRecord::Base
     scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.current_week)}
     scope :ordered_by_current_bill, -> { includes(:current_timesheets).order('timesheets.total_bill') }
     
+    store_accessor :preferences, :current_account_manager
+    
     accepts_nested_attributes_for :orders
     def comments
       timesheet_comments + job_comments + shift_comments
@@ -92,12 +94,10 @@ class Company < ActiveRecord::Base
     end
     
     def current_account_manager
-      if orders.any? && orders.last.account_manager.present?
-         orders.last.account_manager
-      elsif orders.any? && agency.account_managers.any?
-        agency.account_managers.last
+      if preferences['current_account_manager'].present?
+        Admin.find(preferences['current_account_manager'])
       else
-        agency.owners.first
+        admins.owners.first
       end
     end
     def self.by_account_manager(admin_id)
