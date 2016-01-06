@@ -7,6 +7,7 @@
 			  <li class=""><a href="#tab-orders" data-toggle="tab">Job Orders</a></li>
 			  <li class=""><a href="#tab-calendar" data-toggle="tab">Calendar</a></li>
 			  <li class=""><a href="#tab-invoices" data-toggle="tab">Invoices</a></li>
+			  <li class=""><a href="#tab-admins" data-toggle="tab">Admins</a></li>
 			  <li class=""><a href="#tab-leaderboard" data-toggle="tab">Stats</a></li>
 			</ul>
 		</div>
@@ -24,16 +25,7 @@
 					  	</div>
 	       			</div>
 	       			<% end %>
-	       			<% if @current_agency.admins.count < 3 %>
-	       			<div class='col-md-4 bg-white'>
-	       				<div class='text-center'>
-	       					<h5 class=''> <i class="fa fa-user-plus fa-fw fa-border"></i> 
-							There are currently <%= @current_agency.admins.count %> admin accounts.</h5>
-							<p class=''>Add additional accounts below.</p>
-							<%= link_to "New Admin Account", new_admin_path, class: 'btn btn-success' %>
-	       				</div>
-	       			</div>
-	       			<% end %>
+	       			
 	       			<div class='col-md-4 bg-white'>
 	       				
 	       			</div>
@@ -72,6 +64,16 @@
 				</div>
 				<% end %>
 				</div>
+			</div>
+			<div class="tab-pane fade" id="tab-admins">
+				<div class='col-md-4 bg-white'>
+       				<div class='text-center'>
+       					<h5 class=''> <i class="fa fa-user-plus fa-fw fa-border"></i> 
+						There are currently <%= @current_agency.admins.count %> admin accounts.</h5>
+						<p class=''>Add additional accounts below.</p>
+						<%= link_to "New Admin Account", new_admin_path, class: 'btn btn-success' %>
+       				</div>
+       			</div>
 			</div>
 			<div class="tab-pane fade" id="tab-leaderboard">
 				<div class='white col-md-6'>

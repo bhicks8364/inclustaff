@@ -17,86 +17,36 @@
   </strong>
   
 </h2>
-<%= link_to(admin_company_path(@company), class: "btn btn-primary") do %>
-	  <i class='fa fa-home'></i>
-		<span>View Company Page</span>
-	<% end %>
-  <%= link_to admin_employee_path(@employee), class: "btn btn-primary"  do %>
-    <i class="fa fa-user fa-1x"></i>
-    View Employee
-  <% end %>
+    <div class='btn-group'>
+        <%= link_to(admin_order_path(@order), class: "btn btn-primary") do %>
+            <i class='fa fa-briefcase'></i>
+            <span>View Job Order</span>
+        <% end %>
+        <%= link_to(admin_company_path(@company), class: "btn btn-primary") do %>
+            <i class='fa fa-home'></i>
+            <span>View Company Page</span>
+        <% end %>
+        <%= link_to admin_employee_path(@employee), class: "btn btn-primary"  do %>
+            <i class="fa fa-user"></i>
+            View Employee
+        <% end %>
+    </div>
 	
 
-   <div class='col-md-12'>
+   <div class='col-md-12 bg-white'>
 	  	<div class="col-md-6">
     		<h1><%= @employee.first_name %>'s Skills</h1>
-    	  <% tag_cloud @employee.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
-    	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
-    	  <% end %>
     	  <%= pie_chart @employee.tags.order(:name).group(:name).count  %>
     	</div>
-    	<div class="col-md-6 tag_cloud">
+    	<div class="col-md-6 bg-white">
     		<h1><%= signed_in_link_to @order.title, @order %>'s Skills</h1>
-    	  <% tag_cloud @order.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
-    	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
-    	  <% end %>
     	   <%= pie_chart @order.tags.order(:name).group(:name).count  %>
     	</div>
-
-
-	  <div class="col-md-5">
-    	<h1>Skills needed</h1>
-  	  <% tag_cloud @order.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
-  	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
-  	  <% end %>
-  	  <%= pie_chart @order.tags.order(:name).group(:name).count  %>
-	  </div>
-	  	<div class='col-md-6'>
-	     <% if @employee.unassigned? && @order.needs_attention? %>
-       <%= render 'job_form' %>
-       <% end %>
-  	  </div>
-   </div>
-
-
-<div class='col-md-12'>
-     <h2 class='text-center'> <%= @order %></h2>
-    
-     <!--BTN GROUP-->
-    <div class="btn-group btn-group-justified" role="group" aria-label="...">
-      
-        <div class="btn-group" role="group">
-        <%= link_to(admin_company_path(@company), class: "btn btn-default") do %>
-      							<i class='fa fa-home'></i>
-      
-      								<span>View Company Page</span>
-      							<% end %>
-      
+        <div class='col-md-6 bg-white'>
+        <% if @employee.unassigned? && @order.needs_attention? %>
+            <%= render 'job_form' %>
+        <% end %>
         </div>
-        <div class="btn-group" role="group">
-            <%= link_to(new_admin_order_job_path(@order), class: "btn btn-default") do %>
-						  <i class='fa fa-user-plus'></i>
-							<span>New Job Order</span>
-						<% end %>
-        </div>
-        <div class="btn-group" role="group">
-        <%= link_to(admin_company_orders_path(@company), class: "btn btn-default") do %>
-      							<i class='fa fa-briefcase'></i>
-      
-      								<span>Active Orders</span>
-      							<% end %>
-      
-        </div>
-        <div class="btn-group" role="group">
-          <%= link_to(admin_company_timesheets_path(@company), class: "btn btn-default") do %>
-    				<span><i class='fa fa-clock-o'></i>
-    				Timesheets</span>
-    			<% end %>
-        </div>
-      </div>
-      
-  <!--END OF BTN GROUP-->
-
         <div class='col-md-6'>
          
          
@@ -108,8 +58,11 @@
             <p class='text-center'>Specific job details unavailable.</p>
             <% end %>
       
-      </div>
-      </div>
+        </div>
+   </div>
+
+
+    
   </div>
 
     <!--END OF JOB INFORMATION PAGE-->

@@ -94,12 +94,12 @@
     
    </div>
 
-   <div class='col-md-3'>
+   <div class='col-md-3 bg-white'>
      <strong>Tags</strong>
       
      <p><%= highlight(@order.tag_list.to_s, @order.tag_list, highlighter: '<a href="/tags?tag=\1">\1</a>') %></p>
    </div>
-   <div class='col-md-3'>
+   <div class='col-md-3 bg-white'>
         <% if @order.skills.count < 1 %>
            <h4 id='no-skills' class="text-center">This job order has no skills entered.</h4>
           <% end %>

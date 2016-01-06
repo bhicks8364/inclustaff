@@ -43,12 +43,12 @@ class Comment < ActiveRecord::Base
     scope :by_agency_admins, -> { where.not(admin_id: nil)}
     scope :by_employees, -> { where.not(user_id: nil)}
     def recruiter
-      if notify['recruiter']
+      if notify['recruiter'].present?
         Admin.find(notify['recruiter'])
       end
     end
     def account_manager
-      if notify['account_manager']
+      if notify['account_manager'].present?
         Admin.find(notify['account_manager'])
       end
     end

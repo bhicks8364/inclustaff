@@ -11,7 +11,7 @@
 <% if @company.nil? %>
 <%= f.association :company, collection: Company.all, prompt: "Choose a Company"  %>
 <% end %>
-<%= f.input :industry, as: :radio_buttons, collection: [ "Manufacturing", "Office", "IT", "Retail", "Logistics", "Warehouse", "Medical", "Food Service"] %>
+<%= f.input :industry, as: :radio_buttons, collection: [ "Manufacturing", "General Labor", "Office", "IT", "Retail", "Logistics", "Warehouse", "Medical", "Food Service"] %>
 <%= f.input :title, placeholder: "Job Type (Ex. Warehouse, Adminstrative, General Labor, etc...)"  %>
 <%= f.input :address  %>
 
