@@ -57,7 +57,7 @@ class AgenciesController < ApplicationController
       if @agency.save
     
         # sign_in(@agency.admins.first)
-        format.html { redirect_to @agency, notice: 'Welcome to IncluStaff!!' }
+        format.html { redirect_to root_url(subdomain: @agency.subdomain), notice: 'Welcome to IncluStaff!!' }
         format.json { render :show, status: :created, location: @agency }
       else
         format.html { render :new }
