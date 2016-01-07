@@ -13,7 +13,7 @@
   </thead>
 
   <tbody>
-    <% @emp_skills.each do |skill| %>
+    <% skills.each do |skill| %>
       <tr>
         <td><%= link_to skill.name, skill %></td>
         <td><%= skill.skillable.try(:name) || skill.skillable.try(:title) %></td>

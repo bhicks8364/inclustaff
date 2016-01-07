@@ -1,10 +1,10 @@
-<div class="col-md-12">
+<div class="col-md-12 lightbox">
 	<h1 class='page-header'>Sales Dashboard</h1>
-	<div class='bg-white'>
+	<div class=''>
 		<div class='col-md-2'>
 			<%= render "admin/shared/alerts/open_orders", orders: @current_admin.job_orders %>
 		</div>
-		<div class="col-md-10">
+		<div class="col-md-10 bg-white">
 				<%= render 'admin/orders/table', orders: @orders %>
 				<%= will_paginate @orders %>
 		</div>

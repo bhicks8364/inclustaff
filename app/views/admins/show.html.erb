@@ -1,48 +1,39 @@
-<div class='col-md-12'>
-    <div class='col-md-2'>
-        <h4>	<%= @admin.name %> <small><%= @admin.role %></small></h4>	
-<h5><%= @admin.email %></h5>
-
-  
-    <h4>This week: <%= number_to_currency(@admin.current_billing) %></h4>
-     <h5>Last week: <%= number_to_currency(@admin.last_week_billing)%></h5>
-     <%= link_to "Edit", edit_admin_path(@admin), class: 'btn btn-primary btn-sm' %>
-</div>
-
-
-<div class='col-md-10'>
-<%= render 'admin/charts/account_manager_charts', admin: @admin if @admin.account_manager? %>
-<%= render 'admin/charts/owner_charts' if @admin.owner? %>
-<%= render 'admin/charts/recruiter_charts', recruiter: @admin if @admin.recruiter? %>
-</div>
-<div class='col-md-4'>
-    <h5class='text-center'>Current Placements</h5>
-    <div class='list-group scroll500'>
-        <%= div_for(@admin.jobs.distinct, class: 'list-group-item dark') do |job| %>
-   <h3> <%= job.company.name %></h4>
-       <%= link_to job.employee.name, admin_employee_path(job.employee), class: 'btn btn-primary btn-sm' %>
-       <%= link_to job.title, admin_job_path(job), class: 'btn btn-primary btn-sm' %>
-      <% if job.on_shift? %>
-        <span class="label label-success label-large black pull-right"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> Clocked In</span>
-        <% elsif job.on_break? %>
-        <span class="label label-warning label-large black pull-right"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> On Break</span>
-        <% elsif job.off_shift? %>
-        <span class="label label-danger label-large black pull-right"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Clocked Out</span>
-        <% end %>
-        
-        <h5 class='text-center'>
-        	<strong>Total Hours: </strong> <%= job.total_hours.round(2) %> <br>
-        	<strong>Total Billing: </strong> <%= number_to_currency(job.total_gross_bill) %> 
-        </h5>
-       	
-    <p>	<strong> Pay rate: </strong><%= number_to_currency(job.pay_rate) %></p>
-   <p>	<strong> Mark Up: </strong><%= job.mark_up_percent %>
-    <span class='pull-right'> <strong>Recruiter:</strong>  <%= link_to job.recruiter.name, job.recruiter %> </span>
-    </p>
-    								
-    							<% end %>
+<div class='col-md-12 lightbox'>
+    <div class='page-header'>
+        <h1><%= @admin.name %> <small><%= @admin.role %></small></h1>
     </div>
-</div>
+    <div class='col-md-3 bg-white'>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <%= @admin.email %>
+                <h2>This week: <%= number_to_currency(@admin.current_billing) %></h2>
+                <h3>Last week: <%= number_to_currency(@admin.last_week_billing)%></h3>
+                <%= link_to "Edit", edit_admin_path(@admin), class: '' %>
+            </div>
+        </div>
+    </div>
+    <div class='col-md-6 bg-white'>
+        <div class=''><h3>Current Placements</h3></div>
+        <div class='scroll500'>
+            <%= div_for(@admin.jobs.includes(:order => :company).order('companies.name').distinct, class: 'list-group-item dark') do |job| %>
+            <h4 class='text-center'><%= job.company.name %></h4>
+           <p><strong><%= link_to job.employee.name, admin_employee_path(job.employee), class: '' %></strong> <br> <%= link_to job.title, admin_job_path(job), class: '' %>
+                 <% if job.on_shift? %>
+                    <span class="label label-success label-large black pull-right"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> Clocked In</span>
+                <% elsif job.on_break? %>
+                    <span class="label label-warning label-large black pull-right"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> On Break</span>
+                <% elsif job.off_shift? %>
+                    <span class="label label-danger label-large black pull-right"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Clocked Out</span>
+                <% end %>
+              </p>
+        <% end %>
+        </div>
+    </div>
+    <div class='col-md-10'>
+        <%= render 'admin/charts/account_manager_charts', admin: @admin if @admin.account_manager? %>
+        <%= render 'admin/charts/owner_charts' if @admin.owner? %>
+        <%= render 'admin/charts/recruiter_charts', recruiter: @admin if @admin.recruiter? %>
+    </div>
 
 </div>
 

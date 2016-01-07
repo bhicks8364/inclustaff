@@ -145,36 +145,21 @@ class Admin::JobsController < ApplicationController
     if params[:order_id]
       @order = Order.find(params[:order_id])
       @company = @order.company
-      # @employee = Employee.create(employee_params)
       @job = @order.jobs.new(job_params)
       authorize @job
-      
-      
-      # @job.order = @order
-      # @employee = @job.create_employee(employee_params)
     elsif params[:employee_id]
       @employee = Employee.find(params[:employee_id])
       @job = @employee.jobs.new(job_params)
-      
-      # @employee.mark_as_assigned!
-      
       authorize @job
     else
-      
       @job = Job.new(job_params)
       authorize @job
-      
-      @job.recruiter = current_admin if current_admin.recruiter?
-      @job.set_job_title
-      
-      
     end
+    @job.active = false if sending_for_approval?
     
     respond_to do |format|
       if @job.save
-        @job.employee.save
         mentioned_admins = @job.mentioned_admins if @job.mentioned_admins
-        
         mentioned_admins.each do |mentioned_admin|
           current_admin.events.create(action: "mentioned", eventable: mentioned_admin)
           # @job.send_notifications!
@@ -222,6 +207,10 @@ class Admin::JobsController < ApplicationController
   end
 
   private
+  
+  def sending_for_approval?
+    params[:commit] == "Send for Approval"
+  end
     # Use callbacks to share common setup or constraints between actions.
     def set_job
       @job = Job.includes(:employee, :order).find(params[:id])
@@ -233,7 +222,7 @@ class Admin::JobsController < ApplicationController
     end
     
     def pundit_user
-      current_admin || current_user
+      current_admin
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -242,7 +231,5 @@ class Admin::JobsController < ApplicationController
       :start_date, :pay_rate, :end_date, :order_id, :employee_id, :drive_pay, :ride_pay,
       :number_of_days, :milestone_1, :milestone_2, :milestone_3)
     end
-    def employee_params
-      params.require(:employee).permit(:first_name, :last_name, :email, :ssn, :phone_number)
-    end
+    
 end

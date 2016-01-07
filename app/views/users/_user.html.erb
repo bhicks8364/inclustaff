@@ -1,9 +1,7 @@
-<%= div_for(user, class: 'half') do %>
- <%= user.name %><br>
- <%= user.address %><br>
-  Emp Code: <small><%= user.code %></small>
-   <ul class="ip-log">
-      <strong>Last sign in:</strong> <%= user.current_sign_in_at? ? user.current_sign_in_at.strftime("%A   %x   - %I:%M %p") : "Yet to sign in" %> -
-      <%= user.current_sign_in_ip %>
-    </ul>
+<%= div_for(user, class: '') do %>
+  <address class="">
+    <%= user.address %><br>
+    <%= user.city %>, <%= user.state %> <%= user.zipcode %><br>
+    <i class="fa fa-phone-square"></i>  <%= user.employee.phone_number || "Unavailable"  %> 
+  </address>
 <% end %>

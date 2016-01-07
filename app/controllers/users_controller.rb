@@ -124,8 +124,16 @@ class UsersController < ApplicationController
         params.require(:user).permit(:id, :first_name, :last_name, :email, :role, :can_edit, :agency_id, :password, :password_confirmation, :address, :city, :state, :zipcode)
     end
     
-      def determine_layout
-        current_admin ? "admin_layout" : "application"
+    def determine_layout
+      if admin_signed_in?
+        "admin_layout"
+      elsif company_admin_signed_in?
+        "company_layout"
+      elsif user_signed_in?
+        "employee"
+      else
+          "application"
       end
+    end
     
 end

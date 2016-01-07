@@ -1,98 +1,70 @@
+<div class='col-md-12 lightbox'>
+  <div class="page-header">
+      <h1><%= @user.name %></h1>
+      <div id='<%=@user.id%>-updated-available-at-icon' class=''><%=check_in(@user)%></div>
+      </div>
 
-<div class='col-md-10 bg-white'>
 
-  <h3 class="page-header"><%= @user.name %>'s Profile  </h3>
-<span id='<%=@user.id%>-updated-available-at'>Updated as available: <%= @user.checked_in_at? ? "#{time_ago_in_words(@user.checked_in_at)} ago" : "" %></span>
-<span id="user-role"> 
-
-<%=check_in(@user)%>
 <!--NAV TABS-->
-<div id='profile-nav' class=''>
+<div id='' class='col-md-12'>
 
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
     <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
-   
+   <li role="presentation"><a href="#positions" aria-controls="positions" role="tab" data-toggle="tab">Suggested Positions</a></li>
     <li role="presentation"><a href="#work_history" aria-controls="work_history" role="tab" data-toggle="tab">Work History</a></li>
     <li role="presentation"><a href="#applications-tab" aria-controls="applications" role="tab" data-toggle="tab">Applications</a></li>
     <% if @employee.assigned? %>
     <li role="presentation"><a href="#current-job" aria-controls="current-job" role="tab" data-toggle="tab">Current Job</a></li>
     <li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li>
-    
     <li role="presentation"><a href="#shifts" aria-controls="shifts" role="tab" data-toggle="tab">Shifts</a></li>
-    
     <% end %>
     <% if admin_signed_in? %>
     <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
     <% end %>
   </ul>
-  
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane fade in active" id="home">
-        
-      
-      
-        <div class='col-md-12'>
+        <div class='col-md-12 bg-white'>
             <%= render @user %>
-            
-            <div class='col-md-12'>
-
-               
-                     <div class='col-md-4'>
-                          
-                         <% @current_agency.orders.needs_attention.near(@user.fulladdress).limit(3).try(:each) do |order| %>
-                            <li><%= link_to order.title, admin_order_path(order) %> (<%= order.distance.round(2) %> miles) <%= order.address %></li>
-                        <% end %>
-                    
-                      <h2>Tags</h2>
-             
-              <%= highlight(@employee.tag_list.to_s, ActsAsTaggableOn::Tag.all.map(&:name), highlighter: '<a href="/tags?tag=\1">\1</a>') %>
-               </div>
-                <% if @employee.work_histories.any?  %>
+            <div class='col-md-4'>
+                <div class='list-group'>
+                    <% @current_agency.orders.needs_attention.near(@user.fulladdress).limit(3).try(:each) do |order| %>
+                        <li><%= link_to order.title, admin_order_path(order) %> (<%= order.distance.round(2) %> miles) <%= order.address %></li>
+                    <% end %>
+                </div>
+                <h2>Tags</h2>
+                <%= highlight(@employee.tag_list.to_s, ActsAsTaggableOn::Tag.all.map(&:name), highlighter: '<a href="/tags?tag=\1">\1</a>') %>
+            </div>
+            <% if @employee.work_histories.any?  %>
             <div class='col-md-12 '>
-            <h2><%= @employee.first_name %>'s Employment Timeline</h2>
-            <%= timeline  @employee.work_history_data, width: "100%", height: "300px" %>
+                <h2><%= @employee.first_name %>'s Employment Timeline</h2>
+                <%= timeline  @employee.work_history_data, width: "100%", height: "300px" %>
             </div>
             <% end %>
             <%= link_to "Edit", edit_admin_employee_path(@employee) %>
-        
-           
-                    
-        
         </div>
-         </div>
    
-    
-     <% if user_signed_in? %>
-       <% if @employee.assigned? %>
-         <%= render 'employee/jobs/job', job: @job %>
-       
-       <% end %>
-    
-    
-     <% elsif admin_signed_in? %>
         <% if @employee.assigned? %>
-           <%= render 'admin/jobs/job', job: @job %>
-       <% else %>
-           <%= @employee.first_name %> is currently unassigned. 
-       <% end %>
-     <% end %>
-
-     
-      
-    
+        <%= render 'employee/jobs/job', job: @job if user_signed_in? %>
+        <%= render 'admin/jobs/job', job: @job if admin_signed_in? %>
+        <% else %>
+        <%= @employee.first_name %> is currently unassigned. 
+        <% end %>
   </div>
-  
+  <div role="tabpanel" class="tab-pane fade" id="postitions">
+      <%= render 'admin/orders/table', orders: @employee.matching_orders %>
+  </div>
   <div role="tabpanel" class="tab-pane fade" id="profile">
-     <div class="col-md-6">
-         <%= render 'admin/orders/table', orders: @employee.matching_orders %>
+     <div class="col-md-4 bg-white">
+         
          <%= image_tag "http://maps.google.com/maps/api/staticmap?size=250x300&sensor=false&zoom=16&markers=#{@user.latitude}%2C#{@user.longitude}",
                     class: "img-zoom" %>
      </div>
    
    
-    <div class="col-md-6">
+    <div class="col-md-6 bg-white">
     	<h2 class="text-center">Suggested Positions </h2>
       
         <div class='list-group'>
@@ -154,7 +126,7 @@
   <div role="tabpanel" class="tab-pane fade" id="current-job">
     
   <% if @jobs %>
-    <%= render @jobs %>
+    <%= @jobs.map(&:title).join(', ') %>
     <% else %>
     <h3><%= @employee.first_name %> is currently unassigned.</h3>
   <% end %>
@@ -212,9 +184,12 @@
 						  <% end %>
 						<% end %>
 					</div>
+			<% else %>
+			<h3>No applications to show.</h3>
 			<% end %>
   </div>
   <div role="tabpanel" class="tab-pane fade" id="settings">
+      <span id='<%=@user.id%>-updated-available-at'>Updated as available: <%= @user.checked_in_at? ? "#{time_ago_in_words(@user.checked_in_at)} ago" : "" %></span>
       <div class='btn-group'>
         <% if admin_signed_in? %>        
                 <%= link_to "Employee Profile", admin_employee_path(@employee), class: 'btn btn-primary' %>

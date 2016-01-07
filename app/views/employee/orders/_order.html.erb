@@ -1,5 +1,5 @@
  <%= link_to(employee_order_path(order), class: 'list-group-item list-group-item-info') do %>
- <%= order.title %> - <i><%= order.pay_range %></i>
+ <%= order.title %> - <i><%= pay_range(order) %></i>
          <% if order.applications.where(user_id: @user.id, action: 'applied').any?%>
          <span class='pull-right'>Applied! <i class="fa fa-check-square"></i></span>
         <% end %>

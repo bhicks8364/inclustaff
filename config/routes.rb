@@ -200,6 +200,7 @@ Rails.application.routes.draw do
       get  'home', to: 'dashboard#home'
       get  'job_board', to: 'dashboard#jobs'
       get  'profile', to: 'dashboard#profile'
+      resources :employees, only: [:show, :edit, :update]
       resources :work_histories
       resources :orders do
         member do

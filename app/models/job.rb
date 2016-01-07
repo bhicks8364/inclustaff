@@ -165,14 +165,6 @@ class Job < ActiveRecord::Base
         self.settings['pay_rate'] = pay
     end
     
-    # SETS JOB TITLE TO ORDER TITLE IF THEY DIDNT CHOOSE TO CHANGE IT
-    # pretty sure theres a better way to do this to. In the controller mayber?
-    def set_job_title
-        if title.nil? && order_id.present?
-            job_order = Order.find(order_id)
-            self.title = job_order.title
-        end
-    end
 
     def clock_in!
         if off_shift?
@@ -218,6 +210,7 @@ class Job < ActiveRecord::Base
         self.start_date = Date.today if start_date.nil?
         self.settings = {} if settings.nil?
         self.vacation = {} if vacation.nil?
+        self.title = order.title if title.nil?
     end
     
     

@@ -37,7 +37,7 @@
                <h4>Contact Info</h4>
                <span class=''><i class="fa fa-envelope-o"></i> 
                <%= @employee.email %></span>
-               
+               <br>
                <span class=''>
                <i class="fa fa-phone-square"></i>  <%= @employee.phone_number %></span><br>
                <span class=''><i class="fa fa-home"></i> 
@@ -45,7 +45,7 @@
             </div>
         <div class='col-md-3 bg-white'>
             <h4>Employee Details</h4>
-                <span class=''><i class="fa fa-wrench"></i> <%= @employee.desired_job_type %></span>
+                <span class=''><i class="fa fa-wrench"></i> <%= @employee.desired_job_type %></span><br>
                 <span class=''><i class="fa fa-clock-o"></i>  <%= @employee.desired_shift %></span>
                 
         </div>
@@ -69,12 +69,6 @@
             
         
         </div>
-        <% if @employee.work_histories.any? || @employee.assigned? %>
-         <div class='col-md-12 bg-white'>
-            <h2><%= @employee.first_name %>'s Employment Timeline</h2>
-            <%= timeline  @employee.work_history_data, width: "100%", height: "300px"  %>
-        </div>
-        <% end %>
         
 
     </div>
@@ -94,39 +88,35 @@
          <h2 class="text-center">Payroll Information  </h2>
          
         <div class='col-md-4'>
-            <p><%= @employee.ssn %></p>
-            <p>
-                <strong>Current sign in at:</strong> <%= @user.current_sign_in_at %> <br>
-                <strong>Current sign in IP:</strong>  <%= @user.current_sign_in_ip %>
-            </p>
-            <p>
-                <strong>Last sign in at:</strong> <%= @user.last_sign_in_at %> <br>
-                <strong>Last sign in IP:</strong>  <%= @user.last_sign_in_ip %>
-            </p>
-          
-           
+            <%= @employee.ssn %><br>
+          CODE:  <%= @employee.code %><br>
+           <strong>Last sign in:</strong> <%= @user.current_sign_in_at %> -
+              <%= @user.current_sign_in_ip %>
         </div>
+        
     </div>
       <!--ACA TAB-->
     <div role="tabpanel" class="tab-pane fade" id="aca">
-        <div class='col-md-12 bg-white'>
-            <h2 class="text-center">ACA Information  </h2>
-        <%= link_to "View ACA Report", aca_admin_employee_path(@employee), class: "btn btn-primary btn-lg" %>
+        <h2 class="text-center">ACA Information  </h2>
+        <%= link_to "View ACA Report", aca_admin_employee_path(@employee), class: "btn btn-primary btn-lg btn-block" %>
         <h3 class=''>Days since initial start date: <%= @employee.days_from_initial_start %></h3>
             <h3 class=''>Average Hours per week: <%= @employee.average_weekly_hours %></h3>
         <%= render 'admin/shifts/aca_progress', employee: @employee %>
-        </div>
+        
+        
+    
       </div>
       <!--TIMESHEETS TAB-->
       <div role="tabpanel" class="tab-pane fade" id="timesheets">
-        <div class='col-md-12 bg-white'>
+        
         <% if @employee.timesheets.any? %>
-            <%= render 'admin/timesheets/table', timesheets: @employee.timesheets %>
-        <% else %>
-            <h3>No timesheets to show.</h3>
-        <% end %>
-        </div>
+  
+         <%= render 'admin/timesheets/table', timesheets: @employee.timesheets %>
+    
+          <% end %>
+    
       </div>
+      
       <!--CURRENT JOB TAB-->
       <div role="tabpanel" class="tab-pane fade" id="current-job">
         
@@ -143,24 +133,22 @@
       <% end %>
       </div>
       <div role="tabpanel" class="tab-pane fade" id="shifts">
-        <div class='col-md-12 bg-white'>
-          <% if @employee.assigned? && @employee.shifts.any? %>
-          	<h1>Calendar</h1>
-              <%= render 'admin/shifts/calendar', shifts: @employee.shifts %>
-            <% else %>
-            <h3> <%= @employee.first_name %> has not clocked in yet.</h3>
-          <% end %>
+        
+      <% if @employee.assigned? && @employee.shifts.any? %>
+      	<h1>Calendar</h1>
+        <div class='bg-white'>
+          <%= render 'admin/shifts/calendar', shifts: @employee.shifts %>
         </div>
+        <% else %>
+        <h3> <%= @employee.first_name %> is currently unassigned.</h3>
+      <% end %>
       </div>
       <div role="tabpanel" class="tab-pane fade" id="work_history">
         
         <div class='col-md-12 bg-white'>
             
         <% if @employee.work_histories.any? %>
-         <div class='col-md-12 bg-white'>
-            <h2><%= @employee.first_name %>'s Employment Timeline</h2>
-            <%= timeline  @employee.work_history_data, width: "100%", height: "300px"  %>
-        </div>
+         
            
            <%= render 'work_histories/table' %>
           
@@ -202,6 +190,11 @@
              <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
            <% end %>
          </div>
+        <div class='col-md-12 bg-white'>
+            <h2><%= @employee.first_name %>'s Employment Timeline</h2>
+            <%= timeline  @employee.work_history_data, width: "100%", height: "300px"  %>
+        </div>
+           
       </div>
       <div role="tabpanel" class="tab-pane fade" id="skills-tab">
           <div class='col-md-4'>

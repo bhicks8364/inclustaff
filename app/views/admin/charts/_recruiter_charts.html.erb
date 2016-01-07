@@ -1,20 +1,21 @@
 <div class=''>
         
-        <h5 class='text-center'>Recruiter Performance</h5>
+        <div class='col-md-3'>
+        <h4 class='text-center'>Current Billings by Recruiter</h4>
+        <ul class="list-group">
+        <% @current_agency.admins.recruiters.sorted_by_current_billing.each do |admin| %>
+            <% if admin.id == recruiter.id %> <li class="list-group-item list-group-item-success"> <% else %><li class="list-group-item"><% end %>
+                <%= admin.name %> <span class="label label-success pull-right"><%= number_to_currency(admin.current_billing) %></span> 
+            </li>
+        <% end %>
+        </ul>
+    </div>
     
 
         <div class='col-md-6'>
-            <h5 class='text-center'>Placements</h5>
-            
+            <h4 class='text-center'>Placements</h4>
             <%= pie_chart recruiter.jobs.includes(:current_timesheet, :employee).group(:last_name).sum(:total_bill), library: {legend: {position: "right"}, title: "Current Billings by Recruiter"} %>
         </div>
-        <div class='col-md-12'>
-           
-        </div>
-   
-    <div class='col-md-12'>
-        <h5 class='text-center'>Current Billings by Recruiter</h5>
-         <%= line_chart recruiter.jobs.group_by_week(:created_at, format: "%B %d, %Y").count  %>
-         <%= line_chart recruiter.job_orders.includes(:timesheets).group_by_hour('timesheets.updated_at').sum(:total_bill)%>
-    </div>
+    
+    <%= line_chart recruiter.jobs.group_by_week('jobs.start_date').count%>
 </div>

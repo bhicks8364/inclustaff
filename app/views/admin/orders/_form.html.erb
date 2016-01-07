@@ -1,45 +1,48 @@
-
-<%= simple_form_for [:admin, @company, @order], html: { class: 'form-horizontal' },
-  wrapper: :horizontal_form,
-  wrapper_mappings: {
-    check_boxes: :horizontal_radio_and_checkboxes,
-    radio_buttons: :horizontal_radio_and_checkboxes,
-    file: :horizontal_file_input,
-    boolean: :horizontal_boolean
-  } do |f| %>
-<%= f.error_notification %>
-<% if @company.nil? %>
-<%= f.association :company, collection: Company.all, prompt: "Choose a Company"  %>
-<% end %>
-<%= f.input :industry, as: :radio_buttons, collection: [ "Manufacturing", "General Labor", "Office", "IT", "Retail", "Logistics", "Warehouse", "Medical", "Food Service"] %>
-<%= f.input :title, placeholder: "Job Type (Ex. Warehouse, Adminstrative, General Labor, etc...)"  %>
-<%= f.input :address  %>
-
-
-<%= f.input :aca_type, collection: ["Variable-Hour", "Full-Time"], include_blank: false %>
-<%= f.input :urgent, as: :boolean, inline_label: 'Do you need someone asap? ' %>
-<%= f.input :number_needed, collection: 1..10, prompt: "How many people are needed?"  %>
-<%= f.input :needed_by, as: :string, input_html: {class: 'datepicker'}, placeholder: "When would you like them to start?"  %>
-
-<%= f.input :shift,
-collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible"], 
-prompt: "Select shift needed"  %>
-<% if @current_admin.role != "Account Manager" %>
-<%= f.association :account_manager, collection: @current_agency.admins.account_managers.order(:last_name), prompt: "Select Account Manager"  %>
-<% end %>
-
-<%= f.association :manager, collection: @company.admins.order(:last_name), prompt: "Select Company Manager" if @company.present? %>
-
-<%= f.input :min_pay, as: :decimal, label: false, input_html: { class: 'form-control'}, placeholder: "Min Pay"%>
-
-                  <%= f.input :max_pay, as: :decimal, label: false, input_html: { class: 'form-control'}, placeholder: "Max Pay"%>
-   
-
-<%= f.input :notes, as: :text, placeholder: "Please list desired skills, qualifications, etc...", input_html: {data: { behavior: "autocomplete_order_notes" }, rows: 8 } %>
-<%= f.input :published_at %>
-<%= f.input :expires_at %>
-
-<%= f.input :bg_check, collection: [ "None Required", "Yes - No Felonies", "Yes - Case by case"], label: "Background Check" %>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Panel title</h3>
+  </div>
+  <div class="panel-body">
+    <%= simple_form_for [:admin, @company, @order], html: { class: 'form-horizontal' },
+	  wrapper: :horizontal_form,
+	  wrapper_mappings: {
+	    check_boxes: :horizontal_radio_and_checkboxes,
+	    radio_buttons: :horizontal_radio_and_checkboxes,
+	    file: :horizontal_file_input,
+	    boolean: :horizontal_boolean
+	  } do |f| %>
+	<%= f.error_notification %>
+	<% if @company.nil? %>
+	<%= f.association :company, collection: Company.all, prompt: "Choose a Company"  %>
+	<% end %>
+	<%= f.input :industry, as: :radio_buttons, collection: [ "Manufacturing", "General Labor", "Office", "IT", "Retail", "Logistics", "Warehouse", "Medical", "Food Service"] %>
+	<%= f.input :title, placeholder: "Job Type (Ex. Warehouse, Adminstrative, General Labor, etc...)"  %>
+	<%= f.input :address  %>
+	
+	
+	<%= f.input :aca_type, collection: ["Variable-Hour", "Full-Time"], include_blank: false %>
+	<%= f.input :urgent, as: :boolean, inline_label: 'Do you need someone asap? ' %>
+	<%= f.input :number_needed, collection: 1..10, prompt: "How many people are needed?"  %>
+	<%= f.input :needed_by, as: :string, input_html: {class: 'datepicker'}, placeholder: "When would you like them to start?"  %>
+	
+	<%= f.input :shift,
+	collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible"], 
+	prompt: "Select shift needed"  %>
+	<% if @current_admin.role != "Account Manager" %>
+	<%= f.association :account_manager, collection: @current_agency.admins.account_managers.order(:last_name), prompt: "Select Account Manager"  %>
+	<% end %>
+	
+	<%= f.association :manager, collection: @company.admins.order(:last_name), prompt: "Select Company Manager" if @company.present? %>
+	
+	<%= f.input :min_pay, as: :decimal, label: false, input_html: { class: 'form-control'}, placeholder: "Min Pay"%>
+	
+	                  <%= f.input :max_pay, as: :decimal, label: false, input_html: { class: 'form-control'}, placeholder: "Max Pay"%>
+	   
+	
+	<%= f.input :notes, as: :text, placeholder: "Please list desired skills, qualifications, etc...", input_html: {data: { behavior: "autocomplete_order_notes" }, rows: 8 } %>
+	<%= f.input :published_at, as: :string, input_html: {class: 'datepicker'}, placeholder: "Select start date?", label: false  %>
+	<%= f.input :expires_at, as: :string, input_html: {class: 'datepicker'}, placeholder: "Select start date?", label: false  %>
+	<%= f.input :bg_check, collection: [ "None Required", "Yes - No Felonies", "Yes - Case by case"], label: "Background Check" %>
 	
 	<%= f.input :tag_list, as: :text, label: "Tags", value: @order.tag_list.to_s  %>
 	<%= f.input :years_of_experience %>
@@ -59,3 +62,5 @@ prompt: "Select shift needed"  %>
 
 	<%= f.button :submit %>
 <% end %>
+  </div>
+</div>

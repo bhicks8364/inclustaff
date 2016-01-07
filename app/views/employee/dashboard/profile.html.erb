@@ -28,11 +28,16 @@
   
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="home">
-        <%= render 'employee/shared/user', user: @user %>
+        <%= render 'users/user', user: @user %>
      
-            
+            <div class=''>
+                <%= render 'employee/employees/availability', employee: @employee %>
+            </div>
          	
-   
+           <div class='btn-group'>
+                <%= link_to "Edit Profile", edit_employee_employee_path(@employee), class: 'btn btn-primary' %>
+                <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
+            </div>
   
    
 
@@ -61,14 +66,14 @@
           <% end %>
         </div>
     </div>
-    <div class='col-md-6 well'>
+    <div class='col-md-6'>
         <% if @employee.skills.any? %>
      
            <h4 class='text-center'>Skills</h4>
 
             <div id='skills' class='center'>
               <% @employee.skills.each do |skill| %>
-                  <%= render 'employee/skills/skill', skill: skill %>
+                  <%= render 'employee/skills/skill', skill: skill if !skill.new_record?%>
               <% end %>
              
              </div>
