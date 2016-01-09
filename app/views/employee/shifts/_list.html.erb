@@ -1,0 +1,23 @@
+<div class='break-box' id='shift-break-box'>
+
+	<div class='break-list'>
+		
+		<ul class="fa-ul" id='break-list'>
+		       <% shift.breaks.each_with_index do |break_ended, i | %>
+		          
+		            <li data-behavior="shift" id='break_<%= i %>' class=''>
+			          <%= i.even? ? "Start:" : "End:" %>  <%= shift.on_break? ? "<i class='fa-li fa fa-spinner fa-spin'></i>".html_safe : "<i class='fa-li fa fa-check-square'></i>".html_safe %>
+		               <strong> <%= break_ended.to_datetime.stamp("1:30am") %></strong>
+		            </li>
+		      <% end %>
+		</ul> 
+	</div>
+	<div class='break-list'>
+	<% if shift.on_break? %>
+	       <%= link_to "<i class='fa fa-history'></i> Start Break".html_safe, break_start_employee_shift_path(shift), method: :patch, remote: true, class: 'btn btn-success hide-this', id: 'start-break-btn' %>
+	    <% elsif shift.clocked_in? %>
+	          <%= link_to "<i class='fa fa-clock-o'></i> End Break".html_safe, break_end_employee_shift_path(shift), method: :patch, remote: true, class: 'btn btn-danger hide-this', id: 'end-break-btn' %>
+	      <%= link_to "<i class='fa fa-history'></i> Start Break".html_safe, break_start_employee_shift_path(shift), method: :patch, remote: true, class: 'btn btn-success', id: 'start-break-btn' %>
+	    <% end %>
+	</div>
+</div>

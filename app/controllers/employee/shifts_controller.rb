@@ -14,12 +14,14 @@ class Employee::ShiftsController < ApplicationController
 
   def show
     @job = @employee.current_job
+    @order = @job.order
+    @company = @order.company
   end
 
   # GET /shifts/new
   def new
       @job = @employee.current_job
-      @shift = @employee.shifts.new
+      @shift = @job.shifts.new
   end
 
 
@@ -32,12 +34,13 @@ class Employee::ShiftsController < ApplicationController
   def create
     @current_job = @employee.current_job
 
-    @shift = @job.shifts.new(job: @current_job, 
-                            employee: @employee,
+    @shift = Shift.new(job_id: @current_job.id, 
+                            employee_id: @employee.id,
                             time_in: Time.current,
                             earnings: 0.00,
                             week: Date.today.cweek,
-                            state: "Clocked In")
+                            state: "Clocked In",
+                            in_ip: @current_user.current_sign_in_ip)
 
 
     respond_to do |format|

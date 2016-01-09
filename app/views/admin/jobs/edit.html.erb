@@ -53,6 +53,7 @@
 
 <div id="job-end-date">
     <h4><%= f.input :active %></h4>
+    <%= f.input :current_state, as: :select, collection: ['Pending Approval', 'Currently Working', 'Assignment Ended'] %>
     <%= f.input :end_date, as: :string, input_html: { class: 'datepicker' }, placeholder: "End date", required: true, label: false %>
 </div>
 

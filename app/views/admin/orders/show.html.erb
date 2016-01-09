@@ -64,20 +64,20 @@
   
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane fade in active" id="order">
-      
       <div class='col-md-8 bg-white'>
-        <h2>Job Description</h2>
-        <div class='scroll500'>
-        <%= markdownify(@order.notes) %>
+        <h3><%= @order.requirements['agency_approval'] %></h3>
+        <h3><%= @order.requirements['company_approval'] %></h3>
+        <div class='row'>
+          <h2>Job Description</h2>
+          <div class='scroll500'>
+            <%= markdownify(@order.notes) %>
+          </div>
         </div>
       </div>
-   
-    
     <div class='col-md-4 bg-white'>
-      
      <%= @order.heavy_lifting ? "#{heavy_lifting(@order)} - Heavy Lifting Required".html_safe : "" %>
      <p><%= @order.stwb ? "STWB Required" : "" %></p>
-        
+     
     <strong>Drug Test </strong><br>
     <%= @order.dt_req %><br>
   

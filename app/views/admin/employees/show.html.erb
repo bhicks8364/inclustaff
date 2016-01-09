@@ -69,7 +69,7 @@
             
         
         </div>
-        <% if @employee.work_histories.any? || @employee.assigned? %>
+        <% if @employee.work_histories.any?  %>
          <div class='col-md-12 bg-white'>
             <h2><%= @employee.first_name %>'s Employment Timeline</h2>
             <%= timeline  @employee.work_history_data, width: "100%", height: "300px"  %>
@@ -169,13 +169,13 @@
           <p>No Work History Available.</p>
     
         <% end %>
-         <% if @employee.jobs.inactive.any? %>
+         <% if @employee.jobs.have_ended.any? %>
      <div class='col-md-6'>
               <h5 class='text-center'>Past Job Assignments</h5>
         <% @employee.jobs.inactive.each do |job| %>
        
           <h4><%= job.company %> <small> <%= job.title %></small></h4>
-          <small> Assignment duration: <%= distance_of_time_in_words(job.start_date, job.end_date, include_seconds: true) %></small>
+          <small> Assignment duration: <%= distance_of_time_in_words(job.start_date, job.end_date, include_seconds: true) if job.end_date.present? %></small>
           <p><%= job.start_date.stamp('11/12') %> - <%= job.end_date.stamp('11/12') %></p>
             <% if job.comments.unread.any? %>
                <div class='' data-behavior='comment-list'>

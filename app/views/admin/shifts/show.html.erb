@@ -6,8 +6,6 @@
         <span id='shift-sym'><%= shift_sym(@shift) %></span>
         <%= link_to @employee.name, admin_employee_path(@employee) %>  
     </h1>
-    
-    
 </div>
 <div class='col-md-8 lightbox'>
 <% if @shift.past? %>
@@ -21,7 +19,6 @@
     <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
     <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
   </ul>
-
   <!-- Tab panes -->
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="home">

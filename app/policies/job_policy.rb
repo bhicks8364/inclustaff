@@ -36,6 +36,12 @@ class JobPolicy < ApplicationPolicy
     return true if user.admin?
     user.employee? && record.employee_id == user.employee.id
   end
+  def approve?
+    user.admin? && user.account_manager? || user.owner?
+  end
+  def cancel?
+    user.admin? && user.account_manager? || user.owner?
+  end
   def update?
     return true if user.admin?
     user.employee? && record.employee_id == user.employee.id

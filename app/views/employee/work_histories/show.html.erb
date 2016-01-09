@@ -1,51 +1,47 @@
-<div class='col-md-12 dark'>
-<div class='row'>
- <% if @work_history.current? %>
-            <span data-toggle="tooltip" data-placement="top" title="Current Employer"><i class="fa fa-asterisk"></i> </span>
-        <% end %>
-        
-         <h1>  <%= @work_history.employer_name %> <small><%= @work_history.title %></small></h1>
-              
-<div class='col-md-4'>
-            <strong>Pay:</strong>
-           <%= number_to_currency(@work_history.pay) %>
-<h5>
-            <strong> Employed for <%= distance_of_time_in_words(@work_history.start_date, @work_history.end_date) %>. </strong><br>
-       <small> Ended about <%= time_ago_in_words(@work_history.end_date) %> ago.</small></h5>
-<hr>
-         
-<br>
-            <strong>Employment Dates:</strong><br>
-            <%= @work_history.start_date.stamp("December 2013") %> - <%= @work_history.end_date.stamp("December 2013") %>
-<br>
-
-<% if @work_history.may_contact? %>
-            <i class="fa fa-phone-square" data-toggle="tooltip" data-placement="top" title="Allowed to Contact"></i>
-             <%= @work_history.phone_number %>
-        <% end %>
-            
-
-            
-<br>
-            <strong>Supervisor:</strong>
-            <%= @work_history.supervisor %>
-         
-
-</div>
-    
-<div class='col-md-8'>
-<h3><strong>Duties / Responsibilities</strong></h3>
-           <%= markdownify(@work_history.description) %>
-       </div>
-
-     <div class='center'>
-         
-      <%= link_to '<i class="fa fa-trash red"></i>  Delete'.html_safe, @work_history, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
-      <%= link_to '<i class="fa fa-pencil"></i>  Edit'.html_safe, edit_employee_work_history_path(@work_history), class: 'btn btn-primary' %>
-     </div>
- 
-     
-        
-</div>
+<div class='row  lightbox'>
+    <div class='col-md-12'>
+        <div class='row'>
+            <div class='col-md-4 bg-white'>
+                
+                <h1>  <%= @work_history.employer_name %> </h1>
+                <h2><small><% if @work_history.current? %>
+                    <span data-toggle="tooltip" data-placement="top" title="Current Employer"><i class="fa fa-asterisk"></i> </span>
+                    <% end %>
+                <%= @work_history.title %></small></h2>
+            </div>
+            <div class='col-md-8 bg-white'>
+                <h3><strong>Duties / Responsibilities</strong></h3>
+                <%= markdownify(@work_history.description) %>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-md-4 bg-white'>
+                <p><strong>Pay:</strong>
+                <%= number_to_currency(@work_history.pay) %></p>
+                <h4>
+                <strong> Employed for <%= distance_of_time_in_words(@work_history.start_date, @work_history.end_date) %>. </strong><br>
+                <small> Ended about <%= time_ago_in_words(@work_history.end_date) %> ago.</small></h4>
+                <br>
+                <strong>Employment Dates:</strong><br>
+                <%= @work_history.start_date.stamp("December 2013") %> - <%= @work_history.end_date.stamp("December 2013") %>
+                <% if @work_history.may_contact? %>
+                <i class="fa fa-phone-square" data-toggle="tooltip" data-placement="top" title="Allowed to Contact"></i>
+                <%= @work_history.phone_number %>
+                <% end %>
+                <br>
+                <strong>Supervisor:</strong>
+                <p><%= @work_history.supervisor %></p>
+            </div>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Edit <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><%= link_to '<i class="fa fa-pencil"></i>  Edit'.html_safe, edit_employee_work_history_path(@work_history), class: '' %></li>
+                <li role="separator" class="divider"></li>
+                <li><%= link_to '<i class="fa fa-trash"></i>  Delete'.html_safe, @work_history, method: :delete, data: { confirm: 'Are you sure?' }, class: '' %></li>
+            </ul>
+        </div>
     </div>
-
+</div>

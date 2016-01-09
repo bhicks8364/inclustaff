@@ -9,20 +9,15 @@ module CompaniesHelper
     def company_status(company)
         @str = " "
         if company.orders.blank?
-          @str +=  "No Job Orders"
+            @str +=  "No Job Orders"
         elsif company.orders.active.blank?
-          @str +=  "No Active Job Orders"
+            @str +=  "No Active Job Orders"
         elsif company.orders.needs_attention.any? 
-            company.orders.needs_attention.each do |order|
-               @str += status_tag(order, class: 'status_msg')
-            end
-          
+            @str += "#{pluralize(company.orders.needs_attention.count, 'open job order')}"
         else company.orders.any? 
-            company.orders.each do |order|
-               @str += status_tag(order, class: 'status_msg')
-            end
+            @str += "#{pluralize(company.orders.count, 'job order')}"
         end
-        @str.html_safe
+        @str
     end
     
    def company_orders_msgs(company)

@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+    before_filter :authenticate_admin!
     layout :determine_layout
 
     def index
@@ -78,7 +79,7 @@ class UsersController < ApplicationController
         @timesheets = @employee.timesheets
         @work_histories = @employee.work_histories.order(end_date: :desc)
         @skills = @employee.skills
-        if @user.assigned?
+        if @user.assigned? && admin_signed_in?
             render "admin/employees/show"
         end
         @job = @user.current_job

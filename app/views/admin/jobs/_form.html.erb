@@ -12,7 +12,6 @@
   <% end %>
   
       <div class='form-control'>
-        <%= f.input :settings %>
         <%= f.grouped_collection_select(:order_id, @current_agency.companies.distinct, :orders, :name, :id, :title_count, prompt: "Select a @job", required: true ) %>
       </div>
     <span class='hide-this'>

@@ -1,15 +1,14 @@
-
-    <div class='col-lg-12 scroll main-box' data-behavior='timesheet-list'>
+<div class='col-md-12 lightbox' data-behavior='timesheet-list'>
    <div class='row'>
     <% if @timesheets.any? %>
             
             
-<div id='pending' class='col-lg-6' data-behavior='timesheet-list'>
+<div id='pending' class='col-md-6' data-behavior='timesheet-list'>
     <h4 class='text-center'><strong>Pending Timesheets</strong></h4>
     <%= render(@timesheets.pending) || "There are no pending timesheets for this week yet." %>
     
 </div>
-<div id='approved' class='col-lg-6' data-behavior='timesheet-list'>
+<div id='approved' class='col-md-6' data-behavior='timesheet-list'>
     <h4 class='text-center'><strong>Approved Timesheets</strong></h4>
     <%= render(@timesheets.approved) || "There are no approved timesheets for this week yet." %>
    
@@ -31,7 +30,7 @@
 
  <hr>
 <%= link_to(company_timesheets_path(@timesheets, format: :csv), class: 'btn btn-primary') do %>
-  		<i class="fa fa-file-excel-o fa-lg"></i> Export
+  		<i class="fa fa-file-excel-o fa-fw"></i> Export
 <% end %>
 
     

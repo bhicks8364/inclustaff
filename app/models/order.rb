@@ -58,16 +58,16 @@ class Order < ActiveRecord::Base
   include ArelHelpers::ArelTable
   include ArelHelpers::JoinAssociation
   acts_as_taggable
-  
+  store_accessor :requirements, :agency_approval, :company_approval, :industry, :years_of_experience, :certifications, :requirement_1, :requirement_2, :requirement_3, :requirement_4
   # VALIDATIONS
   validates_associated :company
   validates :title,  presence: true
-  validates :mark_up, :min_pay, :max_pay,  presence: true
+  validates :mark_up, :min_pay, :max_pay, :account_manager_id,  presence: true
 
   validates :company_id,  presence: true
   validates :needed_by, presence: true
   
-  store_accessor :requirements, :industry, :years_of_experience, :certifications, :requirement_1, :requirement_2, :requirement_3, :requirement_4
+  
     # CALLBACKS
     after_initialize :defaults
     before_validation :set_mark_up, :set_address
@@ -84,7 +84,7 @@ class Order < ActiveRecord::Base
     accepts_nested_attributes_for :skills, reject_if: :all_blank, allow_destroy: true
 
     # SCOPES
-    
+    scope :needing_company_approval, -> { where("requirements ? :key", :key => 'company_approval')}
     scope :active, -> { where(active: true)}
     scope :inactive, -> { where(active: false)}
     scope :urgent, -> { where(urgent: true)}
@@ -98,7 +98,7 @@ class Order < ActiveRecord::Base
     scope :overdue, -> { needs_attention.where(Order[:needed_by].lteq(Time.zone.now))}
     
     def defaults
-      self.active = true if self.active.nil?
+      self.active = false if self.active.nil?
       self.urgent = false if self.urgent.nil?
       self.jobs_count = 0 if self.jobs_count.nil?
       self.aca_type = "Variable-Hour" if aca_type.nil?
@@ -120,6 +120,13 @@ class Order < ActiveRecord::Base
           self.mark_up = 1.55
         end
       end
+    end
+    
+    def needs_agency_approval?
+      requirements['agency_approval'] == true
+    end
+    def needs_company_approval?
+      requirements['company_approval'] == true
     end
     
     def set_address

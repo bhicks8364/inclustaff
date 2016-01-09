@@ -2,8 +2,8 @@
     <div data-behavior="job" data-id="<%= job.id %>">
         <span data-behavior='shift-state'>
              <strong> <%= link_to job.employee.first_name, admin_employee_path(job.employee), class: 'table-link' %>
-             is currently 
-             <%= job.current_shift.try(:state) || job.shifts.last.try(:state) %></strong>
+             is  
+             <%= job.status %></strong>
         </span>
            <% if job.on_shift? %>
              <span data-behavior="time-in">

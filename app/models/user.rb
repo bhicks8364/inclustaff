@@ -88,7 +88,7 @@ class User < ActiveRecord::Base
   end
   
   def to_param
-    "#{id}-#{last_name.parameterize }"
+    "#{id}-#{name.parameterize }"
   end
   def online?
     updated_at > 10.minutes.ago

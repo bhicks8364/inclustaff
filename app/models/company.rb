@@ -43,7 +43,8 @@ class Company < ActiveRecord::Base
     has_many :job_comments, through: :jobs, source: 'comments'
     has_many :timesheet_comments, through: :timesheets, source: 'comments'
     has_many :shift_comments, through: :shifts, source: 'comments'
-
+    
+    scope :with_pending_jobs, -> { joins(:orders => :jobs).merge(Job.pending_approval)} 
     scope :with_open_orders, -> { joins(:orders).merge(Order.needs_attention)} 
     scope :with_balance, -> { where(Company[:balance].gt(0).and(Company[:balance].not_eq(nil))) }
     scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.current_week)}

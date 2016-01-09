@@ -1,0 +1,42 @@
+<div class='col-md-12 lightbox'>
+    <h2><strong><%= @job.name_title %></strong></h2>
+    <div class='col-md-4 text-center'>
+        <h4><%= @job.company.name %></h4>
+        <h2><%= @order.account_manager.name %></h2>
+    </div>
+    <div class='col-md-4 text-center'>
+        <h4><%= number_to_currency(@job.pay_rate) %>/ hr</h4>
+    </div>
+    <div class='col-md-4 text-center'>
+        <h4><%= @job.start_date.strftime("%B %e, %Y ") %></h4>
+    </div>
+    <div class='row'>
+        <div class='text-center' data-behavior="pending-job-status">
+            <h1><%= @job.status %></h1>
+        </div>
+        <div class=''>
+            <div data-behavior="pending-job-list">
+                <ul>
+                    <li data-behavior="pending-job" data-id="<%= @job.id %>">
+                        
+                      <span data-behavior="job-status"></span>
+                      <div data-behavior="job-state"></div>
+                        <button type='button' class='btn btn-warning' data-behavior='pending-job-toggle'>APPROVE </button>
+                          <% if @job.active? %>
+                            ACTIVE
+                          <% else %>
+                            <span data-behavior="job-end-date"></span>
+                            <h2><%= @job.created_at.stamp('11/12/2016') %></h2>
+                         <% end %>
+                    </li>
+              </ul>
+            </div>
+        </div>
+        
+        
+        
+        
+        
+    </div>
+</div>
+

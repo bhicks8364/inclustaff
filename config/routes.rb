@@ -138,6 +138,8 @@ Rails.application.routes.draw do
         member do
           patch 'clock_in'
           patch 'clock_out'
+          patch 'approve'
+          patch 'cancel'
         end
       end
       

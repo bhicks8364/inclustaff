@@ -3,6 +3,7 @@ class DashboardController < ApplicationController
   layout :determine_layout
   
   def home
+    @orders = @current_agency.orders.all.paginate(page: params[:page], per_page: 15) if admin_signed_in?
     #ROOT LANDING PAGE - NO SUBDOMAIN && NO ONE IS SIGNED IN
     if @current_agency.nil? && signed_in? == false
       render 'mainpage'
@@ -59,7 +60,7 @@ class DashboardController < ApplicationController
         @applications = @events.applications
         render "employee/dashboard/home"
     end
-    
+    @orders = Order.needs_attention.order(:needed_by).paginate(page: params[:page], per_page: 15)
         
     
     skip_authorization

@@ -1,4 +1,4 @@
-<div class='col-md-12'>
+<div class='col-md-12 lightbox'>
    <div class="col-md-4">
         <div class="panel panel-default">
           <div class="panel-body">
@@ -8,75 +8,67 @@
             <%= render 'users/user', user: @user %>
             <div class='btn-group'>
                 <%= link_to "Edit Profile", edit_employee_employee_path(@employee), class: 'btn btn-primary' %>
-                <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
+                <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' if @employee.unassigned? %>
+                <%= link_to "View Job Posting", employee_job_board_path, class: 'btn btn-primary' if @employee.unassigned? %>
             </div>
-          </div>
-        </div>
-   </div>
-   <div class="col-md-4">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <% if @employee.unassigned? %>
-                <div class='btn-group'>
-                    <%= link_to "View Job Posting", employee_job_board_path, class: 'btn btn-primary' %>
-                </div>
-            <% else %>
-                <div class=''>
-                    <%= render 'employee/jobs/job', job: @job %>
-                </div>
-                <div class=''>
-                    <h2 class='text-center'>This week</h2>
-                    <dl class="">
-                      <dt>Gross Pay</dt>
-                      <dd><%= number_to_currency(@job.current_week_pay) %></dd>
-                      <dt>Total Hours</dt>
-                      <dd><%= @job.current_week_hours %></dd>
-                    </dl>
-                </div>
-                <div class=''>
-                    <h2 class='text-center'>Job Info</h2>
-                    <dl class="">
-                      <dt>Company Name</dt>
-                      <dd><%= @company.name %></dd>
-                      <dt>Total Hours</dt>
-                      <dd><%= @job.total_hours.round(2) %></dd>
-                      <dt>Start Date</dt>
-                      <dd><%= @job.first_day %></dd>
-                      <dt>Recruiter</dt>
-                      <dd><%= @job.recruiter.present? ? @job.recruiter.name : "Recruiter unavailable" %></dd>
-                    </dl>
-                </div>
-            <% end %>
-          </div>
-        </div>
-   </div>
-   <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-body">
-            <% if @employee.on_shift? || @employee.on_break? %>
-                <%= link_to "You're Currently Clocked In", employee_shift_path(@employee.current_shift), class: 'btn btn-primary' %>
-                <h4>Shift Location</h4>
-                <%= image_tag "http://maps.google.com/maps/api/staticmap?size=250x300&sensor=false&zoom=12&markers=#{@employee.current_shift.latitude}%2C#{@employee.current_shift.longitude}",
-                class: "img-zoom" %>
+            <div class=''>
                 <h2 class='text-center'><%= @job.title %></h2>
+                <dl class="">
+                  <dt>Company Name</dt>
+                  <dd><%= @company.name %></dd>
+                  <dt>Total Hours</dt>
+                  <dd><%= @job.total_hours.round(2) %></dd>
+                  <dt>Start Date</dt>
+                  <dd><%= @job.first_day.stamp("December 18, 2015") %></dd>
+                  <dt>Recruiter</dt>
+                  <dd><%= @job.recruiter.present? ? @job.recruiter.name : "Recruiter unavailable" %></dd>
+                </dl>
+            </div>
+            <h4>Job Description:</h4>
                 <div class='scroll400'>
-                    <h5>Job Description:</h5>
+                    
                     <%= markdownify(@job.order.notes) %>
                 </div>
-            </div>
-            <% end %>
+          </div>
         </div>
    </div>
-    <div class='col-md-4 lightbox'>
-        <h2 class='text-center'>Messages</h2>
-        <div class='scroll400'>
-            <div id='comment-list'>
-            <%= render @job.comments %>
+    <% if @employee.assigned? %>
+   <div class="col-md-4">
+        <div class="panel panel-default">
+           
+          <div class="panel-body">
+            <h2 class='text-center'>This week</h2>
+            <%= render "employee/timesheets/timesheet", timesheet: @employee.current_timesheet if @employee.current_timesheet.present? %>
+          </div>
+          
+        </div>
+   </div>
+   <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-body text-center">
+            <% if @employee.on_shift? || @employee.on_break? %>
+                <%= link_to "You're Currently Clocked In", employee_shift_path(@employee.current_shift), class: 'btn btn-primary' %>
+                <h3><strong><%= shift_times(@employee.current_shift)%></strong></h3>
+            <% else %>
+            <h3><%= @job.title %></h3>
+                <%= render 'employee/jobs/clock', job: @job %>
+                <%= link_to "New Shift", new_employee_shift_path %>
+            <% end %>
             </div>
         </div>
-        <div class='lightbox'>
-            <%= render 'comments/send_to', commentable: @job %>
+   </div>
+   <% end %>
+    <div class='row'>
+        <div class='col-md-4 lightbox'>
+            <h2 class='text-center'>Messages</h2>
+            <div class='scroll400'>
+                <div id='comment-list'>
+                    <%= render 'employee/comments/comments', employee: @employee %>
+                </div>
+            </div>
+            <div class='lightbox'>
+                <%= render 'employee/comments/send_to', commentable: @employee %>
+            </div>
         </div>
-        
     </div>
 </div>

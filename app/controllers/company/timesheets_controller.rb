@@ -1,6 +1,7 @@
 class Company::TimesheetsController < ApplicationController
   before_action :set_timesheet, only: [:show, :destroy, :approve]
   before_action :authenticate_company_admin!
+  layout 'company_layout'
   # GET /timesheets
   # GET /timesheets.json
   def index

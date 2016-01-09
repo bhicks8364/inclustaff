@@ -1,5 +1,5 @@
 class Admin::JobsController < ApplicationController
-  before_action :set_job, only: [:show, :edit, :update, :destroy, :clock_in, :clock_out]
+  before_action :set_job, only: [:show, :edit, :update, :destroy, :clock_in, :clock_out, :approve, :cancel]
   before_action :authenticate_admin!
   layout 'admin_layout'
 
@@ -12,7 +12,7 @@ class Admin::JobsController < ApplicationController
       authorize @jobs
     else
      
-      @jobs = Job.active.order(created_at: :desc) if @current_agency.present?
+      @jobs = Job.order(created_at: :desc) if @current_agency.present?
       authorize @jobs
     end
    
@@ -36,22 +36,44 @@ class Admin::JobsController < ApplicationController
   # GET /jobs/1
   # GET /jobs/1.json
   def show
-    
-    @timesheet = @job.current_timesheet if @job.current_timesheet.present?
-    @shift = @job.shifts.last if @job.shifts.any?
-    @timesheets = @job.timesheets if @job.timesheets.any?
-    @last_week_timesheets =  @job.timesheets.last_week
-    @skills = @job.employee.skills
-    # @order_skills = @job.order.skills
-    respond_to do |format|
-      format.html
-      format.json
-      format.pdf {
-        send_data @job.candidate_sheet.render,
-          filename: "#{@job.title_company}-#{@employee.name}-candidate-sheet.pdf",
-          type: "application/pdf",
-          disposition: :inline
-      }
+    if @job.pending_approval?
+      render "pending_approval"
+    else
+      @timesheet = @job.current_timesheet if @job.current_timesheet.present?
+      @shift = @job.shifts.last if @job.shifts.any?
+      @timesheets = @job.timesheets if @job.timesheets.any?
+      @last_week_timesheets =  @job.timesheets.last_week
+      @skills = @job.employee.skills
+      # @order_skills = @job.order.skills
+      respond_to do |format|
+        format.html
+        format.json
+        format.pdf {
+          send_data @job.candidate_sheet.render,
+            filename: "#{@job.title_company}-#{@employee.name}-candidate-sheet.pdf",
+            type: "application/pdf",
+            disposition: :inline
+        }
+      end
+    end
+  end
+  
+  def approve
+    if @job.pending_approval?
+      @job.update(active: true, settings: @job.settings.merge({current_state: "Currently Working"}))
+      render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, state: @job.state }
+    elsif !@job.active?
+      @job.update(active: true, end_date: nil, settings: @job.settings.merge({current_state: "Currently Working"}))
+      render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, state: @job.state }
+    end
+  end
+  def cancel
+    if @job.active?
+      @job.update(active: false, end_date: Date.today, settings: @job.settings.merge({current_state: "Assignment Ended"})) 
+      render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, ended: @job.end_date.stamp('11/12/2016'), state: @job.state }
+    else
+      @job.update(active: false, settings: @job.settings.merge({current_state: "Rejected by #{current_admin.name}"}))
+      render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, state: @job.state }
     end
   end
 
@@ -228,7 +250,7 @@ class Admin::JobsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def job_params
       params.require(:job).permit(:order, :recruiter_id, :title, :active, :description, 
-      :start_date, :pay_rate, :end_date, :order_id, :employee_id, :drive_pay, :ride_pay,
+      :start_date, :pay_rate, :end_date, :order_id, :employee_id, :drive_pay, :ride_pay, :current_state,
       :number_of_days, :milestone_1, :milestone_2, :milestone_3)
     end
     

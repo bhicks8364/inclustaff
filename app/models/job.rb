@@ -46,7 +46,7 @@ class Job < ActiveRecord::Base
 
     
         # setup settings
-    store_accessor :settings, :drive_pay, :ride_pay
+    store_accessor :settings, :current_state, :drive_pay, :ride_pay
     store_accessor :vacation, :number_of_days, :milestone_1, :milestone_2, :milestone_3
 
     # VALIDATIONS
@@ -74,8 +74,10 @@ class Job < ActiveRecord::Base
     # scope :with_pay, -> { where("settings ? :key", :key => 'pay_rate')}
     # scope :with_drive_pay, -> { where("settings ? :key", :key => 'drive_pay')}
     scope :active, -> { where(active: true)}
-    scope :inactive, -> { where(active: false)}
     scope :with_employee, ->  { includes(:employee) }
+    scope :have_ended, -> { where(Job[:end_date].not_eq(nil)) }
+    scope :inactive, -> { where(active: false)}
+    scope :pending_approval, -> { where(Job[:end_date].eq(nil).and(Job[:active].eq(false))) }
     scope :new_start, -> { where(Job[:start_date].gteq(Date.today.beginning_of_week)) }
     
     # THESE WORKED!!!
@@ -105,6 +107,10 @@ class Job < ActiveRecord::Base
         end
     end
     
+    def state
+        settings['current_state']
+    end
+    
     def mentions
         @mentions ||= begin
                         regex = /@([\w]+)/
@@ -119,9 +125,25 @@ class Job < ActiveRecord::Base
         @requested_employees ||= User.where(last_name: mentions)
     end
     
-    def status
-        shifts.any? ? shifts.last.state : "No shifts yet"
+    def pending_approval?
+        !active? && end_date == nil
     end
+    
+    def status
+        if pending_approval?
+            "Pending Approval"
+        elsif !active?
+            "Inactive"
+        elsif shifts.any?
+            shifts.last.state
+        elsif shifts.blank?
+            "No shifts yet"
+        else
+            "SOMETHING WRONG HERE"
+        end
+    end
+    
+    
 
     
     def on_shift?

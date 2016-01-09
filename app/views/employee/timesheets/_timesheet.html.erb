@@ -1,67 +1,75 @@
-<% if timesheet.approved? %>
-<div class="conversation-item item-right clearfix" data-behavior="timesheet" data-id="<%= timesheet.id %>">
 
-<% else %>
-
-<div class="conversation-item item-left clearfix" data-behavior="timesheet" data-id="<%= timesheet.id %>">
-
-<% end %>
+<div class="timesheet" data-behavior="timesheet" data-id="<%= timesheet.id %>">
+  <p class='pull-right' data-behavior='timesheet-company'>
+		  <%= timesheet.company.name %> 
+		</p>
+  <div id='view-timesheet' class="btn-toolbar" role="toolbar" aria-label="...">
+	 <div class="btn-group" role="group" aria-label="...">
+		 <%= link_to(employee_timesheet_path(timesheet), data: {toggle: "tooltip", placement: "top", title: "View Timesheet"}, class: '') do %>
+    		<i class="fa fa-calendar-times-o fa-1x"></i>
+    		<%= timesheet.week_begin %>  -  <%= timesheet.week_ending %>
+  		<% end %>
+  	</div>
+  </div>
+  	
+	<div class=""  data-behavior='timesheet-state'>
+		<% if timesheet.approved? %>
+	  	<span class='label label-success black pull-right'>
+				<i class='fa fa-calendar-check-o fa-1x'></i>
+				<%= timesheet.state.upcase %>
+			</span>
+		<% else %>
+		  <span class='label label-danger black pull-right'>
+  			<i class='fa fa-calendar-times-o fa-1x'></i>
+  			<%= timesheet.state.upcase %>
+			</span>
+		<% end %>
+	</div>
+	<div class="bg-white">
+	  
+	  <p class='lead pull-center' data-behavior='timesheet-employee'>
+			  <%= timesheet.employee.name %><small> <%=timesheet.job.title %></small>
+			</p>
+		<div class="col-md-6">
+			<p class='text-center'>
+				<strong>Reg Hours:</strong>	<%= timesheet.reg_hours.round(2) %>
+				<br>
+				<strong>OT Hours:</strong>	<%= timesheet.ot_hours.round(2) %>
+			</p>
+		</div>
+		<div class="col-md-6">
+			<p class='text-center'>
+				<strong>	Gross Pay:</strong>	<%= number_to_currency(timesheet.gross_pay) %>
+			</p>
+		</div>
+		<% if timesheet.approved? %>
+				<p class='text-right' data-behavior='user-approved'><small>
+					
+				 Approved by: <%= timesheet.user_approved %></small></p>
+				 <% end %>
+				 
+				 <div class="btn-toolbar" role="toolbar" aria-label="...">
+            
+            <div class="btn-group" role="group" aria-label="...">
+              <%= link_to(employee_job_path(timesheet.job), data: {toggle: "tooltip", placement: "top", title: "View Your Current Job"}, class: "" ) do %>
+        					  <i class="fa fa-briefcase fa-1x"></i>
+        			<% end %>
+            </div>
+            <div class="btn-group" role="group" aria-label="...">
+              <%= link_to(employee_timesheet_path(timesheet, format: :pdf), data: {toggle: "tooltip", placement: "top", title: "Download PDF" }) do %>
+      					  <i class="fa fa-download fa-1x"></i>
+      				<% end %>
+            </div>
+            
+            
+          </div>
 			
-				
-				<div class="conversation-body">
-					<h5><strong><%= timesheet.employee.name %></strong> <small><span data-behavior="timesheet-state"><%= timesheet.state.upcase %></span></small></h5>
-					<h4><%= link_to timesheet.job.title, employee_job_path(timesheet.job) %></h4>
-					<div class="col-md-4">
-						<h4><strong><%= timesheet.week_begin %>  -  <%= timesheet.week_ending %></strong><br>
-						
-						 <%= timesheet.company.name %>
-						</h4>
-						
-					</div>
-					<div class=" col-md-4">
-						<span class='text-center'>
-							<h4><strong>	Regular Hours:	<%= timesheet.reg_hours %></strong></h4>
-
-								<h4><strong>	Overtime Hours:	<%= timesheet.ot_hours %></strong></h4>
-						</span>
-					</div>
-					<div class="col-md-4">
-						<span class='text-center'>
-							<h4><strong>	Gross Pay:	<%= number_to_currency(timesheet.gross_pay) %></strong></h4>
-
-								
-						</span>
-					</div>
-					
-					
-					
-						<div id='timesheet-tools' class="btn-toolbar" role="toolbar" aria-label="">
-							<div class='btn-group' role='group'>
-								
-								<%= link_to(employee_timesheet_path(timesheet), class: "" ) do %>
-								<span class="fa-stack fa-lg">
-								  <i class="fa fa-square-o fa-stack-2x"></i>
-								  <i class="fa fa-folder-open fa-stack-1x"></i>
-								</span>
-							
-								<% end %>
-						
 			
-
-					
-					<%= link_to(employee_timesheet_path(timesheet, format: :pdf), class: "btn btn-success btn-lg" ) do %>
-								<span class="fa-stack fa-lg">
-								  <i class="fa fa-square-o fa-stack-2x"></i>
-								  <i class="fa fa-download fa-stack-1x"></i>
-								</span>
-		  					Save as PDF
-		  				
-		  				<% end %>
-							</div>
-							
-							
-						</div>
-					</div>
+			
+		  
+		    
+			
+		</div>
 			
 </div>
 	

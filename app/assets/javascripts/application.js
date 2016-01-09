@@ -50,7 +50,7 @@
 //= require underscore
 //= require gmaps/google
 
-
+//= require pending_approval
 
 
 

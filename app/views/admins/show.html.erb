@@ -9,6 +9,12 @@
                 <h2>This week: <%= number_to_currency(@admin.current_billing) %></h2>
                 <h3>Last week: <%= number_to_currency(@admin.last_week_billing)%></h3>
                 <%= link_to "Edit", edit_admin_path(@admin), class: '' %>
+                <div class="">
+            		<h4>Following Admins</h4>
+            		<% @admin.events.following_admin.each do |event| %>
+            			<%= event.eventable.name %>
+            		<% end %>
+            	</div>
             </div>
         </div>
     </div>

@@ -3,11 +3,13 @@
   <table id="" class="table table-bordered">
     <thead>
       <tr>
+        <td>Fill Date</td>
         <td>Industry</td>
         <th>Title</th>
         <th>Pay Range</th>
         <th>Open</th>
         <th>Make A Placement</th>
+        <th><i class='fa fa-cog fa-lg pull-center'></i></th>
         
       </tr>
     </thead>
@@ -15,11 +17,13 @@
     <tbody>
       <% orders.each do |order| %>
         <tr>
-          <td><%= link_to "<i class='fa fa-pencil fa-lg'></i>".html_safe, edit_admin_order_path(order) %> <%= order.industry %></td>
+          <td><%= order.needed_by.stamp('Mon 11/12') %>  </td>
+          <td> <%= order.industry %></td>
           <td><%= status_tag(order) %> &nbsp;<%= link_to title_for(order), admin_order_path(order) %></td>
           <td><%= pay_range(order) %></td>
           <td><%= order.open_jobs %></td>
           <td class='text-center'><%= link_to "<i class='fa fa-user-plus fa-lg'></i>".html_safe, new_admin_order_job_path(order) %></td>
+          <td><%= link_to "<i class='fa fa-pencil fa-fw'></i>".html_safe, edit_admin_order_path(order) %></td>
           </td>
         </tr>
       <% end %>
