@@ -68,7 +68,7 @@ class Employee < ActiveRecord::Base
     assigned? ? current_job.name_title : "#{name} - Unassigned"
   end
   def title
-    assigned? ? current_job.title : "Unassigned"
+    current_job.present? ? current_job.title : "Unassigned"
   end
   def manager
     if assigned?
@@ -115,10 +115,15 @@ class Employee < ActiveRecord::Base
   def initial_start_date
     if shifts.any?
       shifts.order(:time_in).first.time_in
+   
     end
   end
   def days_from_initial_start
-    TimeDifference.between(initial_start_date, Time.current).in_days
+    if initial_start_date.present?
+      TimeDifference.between(initial_start_date, Time.current).in_days
+    else
+      0
+    end
   end
   def average_weekly_hours
     if total_hours > 1 && timesheets.any?
