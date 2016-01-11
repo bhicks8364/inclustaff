@@ -1,45 +1,36 @@
 <div class='col-md-12 lightbox'>
-    <div class='page-header'>
-        <h1><%= @admin.name %> <small><%= @admin.role %></small></h1>
+    <div class='col-md-12 bg-white'>
+        <h1 class='page-header'><%= @admin.name %> <small><%= @admin.role %></small></h1>
+        <h3><%= @admin.email %></h3>
+        <h3 class='text-center'>This week: <%= number_to_currency(@admin.current_billing) %>
+        </h3>
+         <h4 class='text-right'>Last week: <%= number_to_currency(@admin.last_week_billing)%></h4>
     </div>
-    <div class='col-md-3 bg-white'>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <%= @admin.email %>
-                <h2>This week: <%= number_to_currency(@admin.current_billing) %></h2>
-                <h3>Last week: <%= number_to_currency(@admin.last_week_billing)%></h3>
-                <%= link_to "Edit", edit_admin_path(@admin), class: '' %>
-                <div class="">
-            		<h4>Following Admins</h4>
-            		<% @admin.events.following_admin.each do |event| %>
-            			<%= event.eventable.name %>
-            		<% end %>
-            	</div>
-            </div>
-        </div>
-    </div>
-    <div class='col-md-6 bg-white'>
-        <div class=''><h3>Current Placements</h3></div>
-        <div class='scroll500'>
-            <%= div_for(@admin.jobs.includes(:order => :company).order('companies.name').distinct, class: 'list-group-item dark') do |job| %>
-            <h4 class='text-center'><%= job.company.name %></h4>
-           <p><strong><%= link_to job.employee.name, admin_employee_path(job.employee), class: '' %></strong> <br> <%= link_to job.title, admin_job_path(job), class: '' %>
-                 <% if job.on_shift? %>
-                    <span class="label label-success label-large black pull-right"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> Clocked In</span>
-                <% elsif job.on_break? %>
-                    <span class="label label-warning label-large black pull-right"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> On Break</span>
-                <% elsif job.off_shift? %>
-                    <span class="label label-danger label-large black pull-right"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Clocked Out</span>
-                <% end %>
-              </p>
-        <% end %>
-        </div>
-    </div>
-    <div class='col-md-10'>
-        <%= render 'admin/charts/account_manager_charts', admin: @admin if @admin.account_manager? %>
+    
+    <div class='col-md-12'>
+        <%= render 'admin/charts/account_manager_charts', admin: @admin if @admin.account_manager?  %>
         <%= render 'admin/charts/owner_charts' if @admin.owner? %>
         <%= render 'admin/charts/recruiter_charts', recruiter: @admin if @admin.recruiter? %>
     </div>
+    <div class="'col-md-4 bg-white">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h4>Following Admins</h4>
+        		<% @admin.events.following_admin.each do |event| %>
+        			<%= event.eventable.name %>
+        		<% end %>
+            </div>
+        </div>
+    		
+	</div>
+	<div class="'col-md-4 bg-white">
+	    <div class="btn-group">
+    		<%= link_to "Edit", edit_admin_path(@admin), class: 'btn btn-primary' %>
+    	</div>
+	</div>
+	<div class="'col-md-4 bg-white">
+	    
+	</div>
 
 </div>
 

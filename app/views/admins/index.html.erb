@@ -1,57 +1,50 @@
-					<div class="col-lg-12">
-					
-						<div class="clearfix">
-							<h1 class="pull-left">Admins</h1>
-
-						</div>
+<div class="col-lg-12 lightbox">
+	<h1 class="page-header">Admins</h1>
+	<div class="clearfix">
+		<div class="table-responsive">
+			<table id='' class="table table-bordered inv_datatable">
+				<thead>
+					<tr>
+						<th><span>Admin</span></th>
+						<th><span>Last Sign In</span></th>
+						<th><span>Accounts</span></th>
+						<th><span>Current Billing</span></th>
+					</tr>
+				</thead>
+				<tbody>
+					<%= content_tag_for(:tr, @admins) do |admin| %>
+						<td>
+						    <%= link_to(follow_admin_path(admin), method: :post, class: "table-link") do %>
+								<span class="fa-stack">
+									<i class="fa fa-square fa-stack-2x"></i>
+									<i class="fa fa-bookmark-o fa-stack-1x fa-inverse"></i>
+								</span>
+							<% end %>
+						  
+							<%= link_to admin.name, admin, class: "admin-link" %><br>
+							<small><%= admin.role %></small>
+						</td>
+						<td>
+							<%= admin.last_sign_in_at.present? ? admin.last_sign_in_at.strftime("%x") : "Yet to sign in" %>
+						</td>
+						<td>
+							<%= admin.recruiter_jobs.count if admin.recruiter? %>
+							<%= admin.account_orders.count if admin.account_manager? %>
+							<%= admin.role if admin.owner? %>
+						</td>
+						<td>
+							<%= number_to_currency(admin.billing) if admin.billing.present? %>
+							<%= admin.role if admin.owner? %>
+						</td>
 						
-						<div class="row">
-							<div class="col-lg-12">
-								<div class="clearfix">
-									<div class="table-responsive">
-										<table id='' class="table table-bordered datatable">
-											<thead>
-												<tr>
-													<th><span>Admin</span></th>
-													<th><span>Last Sign In</span></th>
-													<th><span>Accounts</span></th>
-													<th><span>Current Billing</span></th>
-												</tr>
-											</thead>
-											<tbody>
-												<%= content_tag_for(:tr, @admins) do |admin| %>
-													<td>
-													    <%= link_to(follow_admin_path(admin), method: :post, class: "table-link") do %>
-															<span class="fa-stack">
-																<i class="fa fa-square fa-stack-2x"></i>
-																<i class="fa fa-bookmark-o fa-stack-1x fa-inverse"></i>
-															</span>
-														<% end %>
-													  
-														<%= link_to admin.name, admin, class: "admin-link" %><br>
-														<small><%= admin.role %></small>
-													</td>
-													<td>
-														<%= admin.last_sign_in_at.present? ? admin.last_sign_in_at.strftime("%x") : "Yet to sign in" %>
-													</td>
-													<td>
-														<%= admin.recruiter_jobs.count if admin.recruiter? %>
-														<%= admin.account_orders.count if admin.account_manager? %>
-														<%= admin.role if admin.owner? %>
-													</td>
-													<td>
-														<%= number_to_currency(admin.billing) if admin.billing.present? %>
-														<%= admin.role if admin.owner? %>
-													</td>
-													
-												<% end %>
-											
-											
-											
-											
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
+					<% end %>
+				
+				
+				
+				
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
 					

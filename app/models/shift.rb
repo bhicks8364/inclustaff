@@ -83,7 +83,11 @@ class Shift < ActiveRecord::Base
   end
   
   
-  scope :last_week,     -> { where(week: Date.today.cweek - 1)}
+  # scope :last_week,     -> { where(week: Date.today.cweek - 1)}
+  scope :last_week, -> {
+          start = Time.current.beginning_of_week - 1.week
+          ending = start.end_of_week
+          where(time_in: start..ending)}
   scope :payroll_week,  -> {
           start = Time.current.beginning_of_week
           ending = start.end_of_week + 7.days
@@ -106,7 +110,7 @@ class Shift < ActiveRecord::Base
           where(time_out: start..ending)}
   STARTING = Date.yesterday.beginning_of_day
   ENDING = Date.today.beginning_of_day
-  # after_save :update_timesheet!
+  after_save :update_timesheet!
   before_save :set_week, :set_timesheet, :calculate_break, :reg_earnings
   after_initialize :set_defaults, if: :new_record?
   after_initialize :set_pay

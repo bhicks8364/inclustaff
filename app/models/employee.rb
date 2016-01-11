@@ -113,21 +113,25 @@ class Employee < ActiveRecord::Base
     current_job.company if current_job.present?
   end
   def initial_start_date
-    if jobs.any?
-      jobs.first.first_day
+    if shifts.any?
+      shifts.order(:time_in).first.time_in
     end
   end
   def days_from_initial_start
     TimeDifference.between(initial_start_date, Time.current).in_days
   end
   def average_weekly_hours
-    if total_hours > 1 && timesheets.this_year.any?
+    if total_hours > 1 && timesheets.any?
       @average = []
-      timesheets.this_year.distinct.each do |timesheet|
+      timesheets.distinct.each do |timesheet|
         @average << timesheet.total_hours
       end
-      (@average.sum / timesheets.this_year.count).round(2)
+      (@average.sum / timesheets.count).round(2)
     end
+  end
+  
+  def year_report
+    shifts.group_by_week(:time_in, range: initial_start_date...Time.current).sum(:time_worked)
   end
     
   

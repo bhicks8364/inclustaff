@@ -1,4 +1,4 @@
-<div class="col-md-6 well">
+<div class="col-md-6">
    
     <h5 class='text-center'>Total Orders: <%= admin.job_orders.count %></h5>
  
@@ -7,22 +7,21 @@
 </div>
 
 
-<div class="col-md-6 well">
-   
+<div class="col-md-6">
     <h5 class='text-center'>Billing by Day</h5>
        <%= line_chart admin.job_orders.map{|order|
     {name: order.title, data: order.timesheets.count}
 } %>
 </div>
 
-<div class="col-md-8 well">
+<div class="col-md-8">
    
     <h5 class='text-center'>Orders by Fill Date</h5>
  
         <%= line_chart admin.job_orders.group_by_day(:needed_by).count %>
         
 </div>
-<div class="col-md-4 well">
+<div class="col-md-4">
    
     <h5 class='text-center'>New Companies by Day</h5>
  

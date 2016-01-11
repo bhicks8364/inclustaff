@@ -31,7 +31,7 @@ class Admin::TimesheetsController < ApplicationController
 			@company = Company.includes(:jobs, :timesheets).find(params[:company_id])
 			@timesheets = @company.timesheets.past.order(created_at: :desc) if @company.present?
 		else
-			@timesheets = Timesheet.past if current_admin.present?
+			@timesheets = Timesheet.past 
 		end
 		gon.timesheets = @timesheets
 		authorize @timesheets

@@ -26,11 +26,13 @@
 	       			</div>
 	       			<% end %>
 	       			
-	       			<div class='col-md-4 bg-white'>
+	       			<div class='col-md-6 bg-white'>
+						<h2>Companies with Open Job Orders</h2>
+						<%= render 'admin/shared/company_collapse', companies: @current_admin.companies.with_open_orders.includes(:orders).distinct.order(:name) %>
+					</div>
+			  		<div class='col-md-4 bg-white'>
 	       				
 	       			</div>
-	       			
-			  	
 		 	
 	 			</div>
 			</div>

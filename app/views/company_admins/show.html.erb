@@ -1,7 +1,8 @@
-<div class='col-md-12 white'>
+<div class='col-md-12 lightbox'>
     <h1><%= @company_admin.name %></h1>
-    <%= link_to "Edit", edit_company_admin_registration_path %>
-    <div class='col-md-2'>
+    
+   
+    <div class='col-md-2 bg-white'>
         <%= signed_in_link_to( @company_admin.company.name, @company_admin.company) if admin_signed_in? %> 
         <%= @company_admin.role %>
 
@@ -10,19 +11,12 @@
         <br>
         <%= @company_admin.last_sign_in_at.present? ? @company_admin.last_sign_in_at.stamp("11/12 at 11:15am") : "Yet to sign in" %>
 
-        <% @company.admins.each do |admin| %>
-             <%= admin.name %> <%= admin.email %><br>
-        <% end %>
         <hr>
-        <% @company_admin.managed_orders.each do |order| %>
-             <%= info_popover(order) %> <%= order.title %><br>
-        <% end %>
 
-        <% @company_admin.managed_orders.each do |order| %>
-             <%= info_popover(order) %> <%= order.title %><br>
-        <% end %>
+        
     </div>
-     <div class='col-md-10'>
-         <%= render "admin/shared/quicklook", company: @company %>
+     <div class='col-md-10 bg-white'>
+         <%= render "quicklook", company: @company %>
      </div>
+      <%= link_to "Edit", edit_company_admin_registration_path %>
 </div>

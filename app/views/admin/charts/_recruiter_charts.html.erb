@@ -10,12 +10,14 @@
         <% end %>
         </ul>
     </div>
-    
+     <div class='col-md-8 bg-white'>
+        <%= line_chart recruiter.jobs.group_by_week('jobs.start_date', format: "%b %Y").count, library: {legend: {position: "right"}, title: "Placements by week"} %>
+    </div>
 
         <div class='col-md-6'>
             <h4 class='text-center'>Placements</h4>
             <%= pie_chart recruiter.jobs.includes(:current_timesheet, :employee).group(:last_name).sum(:total_bill), library: {legend: {position: "right"}, title: "Current Billings by Recruiter"} %>
         </div>
     
-    <%= line_chart recruiter.jobs.group_by_week('jobs.start_date').count%>
+    <%= line_chart recruiter.jobs.group_by_week('jobs.start_date', format: "%b %Y").count%>
 </div>

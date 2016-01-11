@@ -61,20 +61,28 @@ class Admin::JobsController < ApplicationController
   def approve
     if @job.pending_approval?
       @job.update(active: true, settings: @job.settings.merge({current_state: "Currently Working"}))
-      render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, state: @job.state }
     elsif !@job.active?
       @job.update(active: true, end_date: nil, settings: @job.settings.merge({current_state: "Currently Working"}))
-      render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, state: @job.state }
+    end
+    respond_to do |format|
+      format.json { render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, state: @job.state } }
     end
   end
+  
   def cancel
-    if @job.active?
+    if @job.active? && @job.shifts.any?
       @job.update(active: false, end_date: Date.today, settings: @job.settings.merge({current_state: "Assignment Ended"})) 
-      render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, ended: @job.end_date.stamp('11/12/2016'), state: @job.state }
+      respond_to do |format|
+        format.json { render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, ended: @job.end_date.stamp('11/12/2016'), state: @job.state } }
+      end
+      
     else
       @job.update(active: false, settings: @job.settings.merge({current_state: "Rejected by #{current_admin.name}"}))
-      render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, state: @job.state }
+      respond_to do |format|
+        format.json { render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, state: @job.state } }
+      end
     end
+    
   end
 
   # GET /jobs/new

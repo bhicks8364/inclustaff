@@ -5,6 +5,9 @@
 			<span class="badge badge-success"><%= @current_agency.timesheets.current_week.approved.try(:count) %> Approved </span>
 			<span class="badge badge-default"><%= @current_agency.timesheets.current_week.pending.try(:count) %> Pending </span>
 		<br>
+		<%= link_to(admin_timesheets_path(@current_admin.timesheets.current_week, format: :csv), class: 'btn btn-success') do %>
+  					<i class="fa fa-export fa-1x"></i> Export
+  				<% end %>
 		<%= link_to(admin_timesheets_path, class: "btn btn-primary") do %>
 		View All Timesheets
 			<% end %>

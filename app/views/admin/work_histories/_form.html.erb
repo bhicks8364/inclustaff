@@ -1,69 +1,47 @@
 <%= simple_form_for [:admin, @employee, @work_history] do |f| %>
+  
   <%= f.error_notification %>
-
-  <div class="form-group">
-    <div class="col-md-12">
-      <%= f.input :employer_name, label: false, placeholder: "Company Name" %>
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">General Info</h3>
+    </div>
+    <div class="panel-body">
+      <div class="col-md-12">
+        <%= f.input :title, placeholder: "Job Title" %>
+        <div class="col-md-6">
+          
+          <%= f.input :employer_name, placeholder: "Company Name" %>
+          <%= f.input :pay, placeholder: "Pay Rate" %>
+          <%= f.input :current, as: :select, label: "Is this your current position?", include_blank: false %>
+        </div>
+        <div class="col-md-6">
+          <%= f.input :may_contact, as: :select, include_blank: false, label: "May we contact this employer?" %>
+          <%= f.input :supervisor, placeholder: "Supervisor name" %>
+          <%= f.input :phone_number, placeholder: "Phone number" %>
+        </div>
+        <div class="col-md-6">
+          <%= f.input :start_date, as: :string, input_html: {class: 'datepicker'}, placeholder: "start_date" %>
+        </div>
+        <div class="col-md-6">
+          <%= f.input :end_date, as: :string, input_html: {class: 'datepicker'}, placeholder: "End date" %>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="form-group">
-    <div class="col-md-12">
-      <%= f.input :title, label: false, placeholder: "Job Title" %>
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">Job Description</h3>
     </div>
-    
- 
+    <div class="panel-body">
+      <div class="">
+        <div class="">
+          <%= f.input :description, as: :text, label: false, placeholder: "Job Duties / Responsiblities", input_html: {data: { behavior: "autocomplete_work_history" }, rows: 10 } %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='form-actions'>
+    <%= f.button :submit, "Save", class: 'btn btn-primary pull-right' %>
   </div>
   
-  <div class="form-group">
-    <div class="col-md-6">
-          <%= f.input :start_date, as: :string, input_html: { class: 'datepicker' }, placeholder: "Start date", required: true, label: false %>
-    </div>
-    <div class="col-md-6">
-        <%= f.input :end_date, as: :string, input_html: { class: 'datepicker' }, placeholder: "End date", required: false, label: false %>
-    </div>
-    <div class='col-md-4'>
-	    <%= f.input :pay, label: false, placeholder: "Pay Rate" %>
-	  </div>
-    
-  </div>
-
-	<div class='form-group'>
-	  <div class='col-md-4'>
-	    <%= f.input :supervisor, label: false, placeholder: "Supervisor name" %>
-	  </div>
-	  <div class='col-md-4'>
-	    <%= f.input :phone_number, label: false, placeholder: "Phone number" %>
-	  </div>
-	  
-	  
-
-	</div>
-	<div class='form-group'>
-	  <div class='col-md-6'>
-	    
-			<%= f.input :current, label: "Is this your current position?", input_html: { type: 'checkbox' }, wrapper_html: { class: 'btn btn-primary fill' } %>
-		</div>
-	  
-	  <div class='col-md-6'>
-		  <%= f.input :may_contact, label: "May we contact this employer?", input_html: { type: 'checkbox' }, wrapper_html: { class: 'btn btn-primary fill' } %>
-	 
-	  </div>
-	  	<%= f.input :tag_list, as: :text, value: @work_history.tag_list.to_s, input_html: { class: '' }  %>
-	</div>
-	
-    
-    
-    <div class='form-group'>
-      <%= f.input :description, as: :text , label: false, placeholder: "Job Duties / Responsiblities", input_html: {data: { behavior: "autocomplete_work_history" }, rows: 10 } %>
-    </div>
-    
-   
-    
-     
-    
- 
-
-  <div class="form-actions">
-    <%= f.button :submit, "Save", class: 'btn btn-primary fill' %>
-  </div>
 <% end %>
