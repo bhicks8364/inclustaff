@@ -44,7 +44,7 @@ class Invoice < ActiveRecord::Base
     scope :past, -> { where("week < ?", Date.today.beginning_of_week.cweek) }
     scope :past_due, -> { unpaid.where("due_by < ?", Date.today) }
     
-    def self.by_recuriter(admin_id)
+    def self.by_recruiter(admin_id)
         joins(:jobs).where(jobs: { recruiter_id: admin_id })
     end
     def self.by_account_manager(admin_id)

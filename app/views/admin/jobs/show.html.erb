@@ -1,9 +1,10 @@
 <div class='col-md-12 lightbox' data-behavior="job-list" >
   <div class='' data-behavior="job" data-id="<%= @job.id %>">
+    <div data-behavior="job-state"><h2 class='text-right'><span class='label label-success'><%= @job.state %></span></h2></div>
     <div class='page-header'>
      <h1><%= @job.name_title %></h1>
     </div>
- <div data-behavior="job-state"><h2><%= @job.state %></h2></div>
+ 
   
    <div class='col-md-4 text-center'>
           <h4><%= @job.company.name %></h4>
@@ -139,7 +140,8 @@
                       <span data-behavior="job-end-date"></span>
                         <% if @job.active? %>
                           <button type='button' class='btn btn-danger' data-behavior='active-job-cancel'>CANCEL </button>
-                        <% else %>
+                        <% elsif @job.pending_approval? %>
+                        <button type='button' class='btn btn-danger' data-behavior='active-job-cancel'>CANCEL </button
                           <button type='button' class='btn btn-success' data-behavior='job-toggle'>APPROVE </button>
                         <% end %>
                         <span data-behavior="job-status">
@@ -152,7 +154,12 @@
             </div>
         </div>
      <div class='col-md-6 bg-white'>
-      
+      <h3 class='text-center'>Recent Activity</h3>
+      <% @job.events.each do |event| %>
+        <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+          <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
+        <% end %>
+      <% end %>
       <% if @job.mentioned_admins.any? %>
       <strong>Mentioned Admins</strong>
         <% @job.mentioned_admins.each do |admin|%>

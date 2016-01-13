@@ -108,10 +108,22 @@ class UsersController < ApplicationController
           format.json { head :no_content }
         end
     end
+    def follow
+      @user = User.find(params[:id])
+      if admin_signed_in?
+          @event = current_admin.events.create(action: "followed", eventable: @user)
+      end
+      if @event.save
+        redirect_to users_path, notice: 'You are now following ' + "#{@user.name}"
+      else
+        redirect_to users_path, notice: 'Unable to follow ' + "#{@user.name}"
+      end
+      skip_authorization
+    end
     def update_as_available
         @user = User.includes(:employee, :shifts).find(params[:id])
         @user.update(checked_in_at: Time.current)
-        @user.events.create(action: "looking for work")
+        Event.create(action: "looking_for_work", eventable: @user)
         skip_authorization
     end
     

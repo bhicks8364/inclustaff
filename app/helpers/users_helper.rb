@@ -2,6 +2,7 @@ module UsersHelper
     def users_tooltip(user)
         "<i class='fa fa-user' data-placement='right' data-toggle='tooltip' title=' #{ user.name}'></i>".html_safe
     end
+    
     def check_in(user)
         if user.checked_in_at.present? && user.checked_in_at > Date.today.beginning_of_day
             "<span class='fa-stack fa-lg' data-placement='right' data-toggle='tooltip' title='Checked in #{time_ago_in_words(user.checked_in_at)} ago'>

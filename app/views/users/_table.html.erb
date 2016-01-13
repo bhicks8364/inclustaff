@@ -1,0 +1,31 @@
+
+<div="table-responsive">
+
+<table id="" class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Name</th> 
+      <th>Location</th>
+      <th>Last Position</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% users.each do |user| %>
+    <tr>
+        <td><%= user.name %></td>
+        <td><%= user.city %>, <%= user.state %></td>
+        
+        <td><%= user.work_histories.any? ? user.work_histories.order(start_date: :desc).last.title : "No work history" %></td>
+        <td><%= user.name %></td>
+        <td>
+            <%= user.checked_in_at.present? ? "#{time_ago_in_words(user.checked_in_at)} ago" : "Never" %>
+            <%= link_to "<i class='fa fa-bullseye black'></i>".html_safe, update_as_available_user_path(user), method: :patch, remote: true %></td>
+    </tr>   
+    <% end %>
+  
+  </tbody>
+</table>
+</div>
+

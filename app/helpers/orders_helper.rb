@@ -58,12 +58,12 @@ module OrdersHelper
     end
     def heavy_lifting(order)
         if order.heavy_lifting?
-            "<i class='fa fa-anchor fa-fw red' data-toggle='tooltip' data-placement='right' title='Heavy lifting required'></i>".html_safe
+            "<i class='fa fa-anchor fa-fw' data-toggle='tooltip' data-placement='right' title='Heavy lifting required'></i>".html_safe
         end
     end
     def stwb(order)
         if order.stwb?
-            "<i class='fa fa-asterick fa-fw red' data-toggle='tooltip' data-placement='right' title='Steel Toe Workboots required'></i>".html_safe
+            "<i class='fa fa-asterick fa-fw' data-toggle='tooltip' data-placement='right' title='Steel Toe Workboots required'></i>".html_safe
         end
     end
     def title_count(order)

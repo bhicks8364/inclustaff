@@ -61,6 +61,9 @@ class Employee < ActiveRecord::Base
   before_validation :check_if_assigned
   after_initialize :set_defaults
   
+  def available?
+    current_job.nil? && dns == false
+  end
   def has_no_user?
     user_id.nil?
   end

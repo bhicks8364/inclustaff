@@ -1,68 +1,42 @@
-<div class="row row150">
-	<div class="col-lg-3 col-sm-6 col-xs-12">
-		<div class="main-box infographic-box text-center">
-			
-			
-			<% if @admin.recruiter? %>
-			
-			<%= link_to "<i class='fa fa-users fa-2x'></i> <strong>Placements</strong>".html_safe, admin_jobs_path %>
-			<%= @recruiter_jobs.any? ? @recruiter_jobs.active.count : "No active jobs" %>
-			<% elsif @admin.account_manager? || @admin.payroll? %>
-			
-			<%= link_to "<i class='fa fa-users fa-2x'></i> <strong>Job Orders</strong>".html_safe, admin_jobs_path %>
-			<%= @jobs.active.count %>
-			<% elsif @admin.owner? && @admin.company? %>
-			
-			
-			<%= link_to "<i class='fa fa-users fa-2x'></i> <strong>Placements</strong>".html_safe, admin_jobs_path %>
-			<%= @company_jobs.any? ? @company_jobs.active.count : "No active jobs" %>
-			
-			<% else %>
-			No activity.
-			<% end %>
-			
-			
-			
-			
-			
-			
-			
-		</div>
+<div class='row'>
+	<div class="col-md-3 bg-white">
+	    <div class="panel panel-default">
+	        <div class="panel-body">
+	        	<% if @admin.events.following_admin.any? %>
+	            <h4>Following Admins</h4>
+	    		<ul class='fa-ul'>
+	    		    <% @admin.events.following_admin.each do |event| %>
+	        			<li><i class='fa fa-user'></i> <%= link_to event.eventable.name, event %></li>
+	        				        		<% end %>
+	    		</ul>
+	    		<% end %>
+	    		<% if @admin.events.following_candidates.any? %>
+	    		<h4>Following Users</h4>
+	    		<ul class='fa-ul'>
+	    		    <% @admin.events.following_candidates.each do |event| %>
+	        			<li><i class='fa fa-user'></i> <%= link_to event.eventable.name, event %></li>
+	        		<% end %>
+	    		</ul>
+	    		<% end %>
+	        </div>
+	    </div>
 	</div>
-	<div class="col-lg-3 col-sm-6 col-xs-12">
-		<div class="main-box infographic-box text-center">
-			
-		
-			
-			
-			
-		</div>
+	<div class="col-md-6 bg-white">
+	    <div class="panel panel-default">
+	        Recent Activity
+	        <div class="panel-body">
+	            <% @admin.events.order(:created_at).each do |event| %>
+	              <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+	                <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
+	              <% end %>
+	             <% end %>
+	        </div>
+	    </div>
 	</div>
-	<div class="col-lg-3 col-sm-6 col-xs-12">
-		<div class="main-box infographic-box text-center">
-			
-			<%= link_to "<i class='fa fa-money fa-2x green'></i> <strong> Current Billing </strong>".html_safe, admin_timesheets_path %>
-
-			<% if @admin.recruiter? || @admin.account_manager? %>
-			<%= number_to_currency(@admin.current_billing) %>
-
-			<% end %>
-			
-		</div>
-	</div>
-	<div class="col-lg-3 col-sm-6 col-xs-12">
-		<div class="main-box infographic-box text-center">
-			<% if @admin.recruiter? || @admin.account_manager? %>
-			<span class="headline"><%= link_to "<i class='fa fa-usd fa-2x green pull-left'></i> <strong>Current Commission</strong>".html_safe, admin_timesheets_path %>
-			
-			
-			<%= number_to_currency(@admin.current_commission) %>
-		
-			<% elsif @admin.owner? && @admin.agency? || @admin.payroll? %>
-			<span class="headline"><%= link_to "<i class='fa fa-usd fa-2x green pull-left'></i> <strong>Current Revenue</strong>".html_safe, admin_timesheets_path %>
-			<%= number_to_currency(@agency.current_revenue) %>
-		
-			<% end %>
-		</div>
+	<div class="col-md-3 bg-white">
+	    <div class="panel panel-default">
+	        <div class="panel-body">
+	        </div>
+	    </div>
 	</div>
 </div>

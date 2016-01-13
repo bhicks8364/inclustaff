@@ -61,7 +61,7 @@
                 <p>Administrative Period: <%= @agency.preferences['aca_administrative_period'] %></p>
                 <p>Stability Period: <%= @agency.preferences['aca_stability_period'] %></p>
             <%  if policy(@agency).update? %>
-                    <%= link_to(edit_agency_path(@current_agency), class: 'btn btn-primary') do %>
+                    <%= link_to(edit_agency_path(@agency), class: 'btn btn-primary') do %>
             	      <i class='fa fa-pencil fa-fw'></i>
             			<span>Edit Agency</span>
             		<% end %>

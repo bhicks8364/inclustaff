@@ -1,17 +1,10 @@
-<%= link_to event, class: 'list-group-item' do %>
-	 <%= event.company_admin.try(:name) || event.admin.try(:name) %>
-    	 <strong>	<%= event.action.humanize.downcase %></strong> a timesheet for <%= event.eventable.job.name_title %>
-    	 <small> <%= event.created_at.stamp('11/13 at 8:30am') %></small>
-    	 
-	<% if event.eventable.approved? %>
-		<span class='label label-success black pull-right' data-toggle="tooltip" title="Current Status">
-		<%= event.eventable.state %>
+<%= div_for event do %>
+<i class="fa fa-check fa-fw"></i>
+	<%= event.company_admin.try(:name) || event.admin.try(:name) %>
+    <strong>	<%= event.action.humanize.downcase %></strong>
+    a <%= event.eventable_type.downcase %> for <%=  signed_in_link_to event.eventable.name, event.eventable %>
+		<span class='label label-success black pull-right'>
+		    <%= event.created_at.stamp('11/13 at 8:30am') %>
 		</span>
-	<% else %>
-		<span class='label label-danger black pull-right' data-toggle="tooltip" title="Current Status">
-		   <%= event.eventable.state %>
-		</span>
-	<% end %>
-	
-<% end %>
 
+<% end %>

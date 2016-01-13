@@ -14,7 +14,7 @@ class EventsController < ApplicationController
     elsif @end_time.present?
       @events = Event.happened_before(@end_time).order(created_at: :desc).distinct
     else
-      @events = Event.unread.order(created_at: :desc)
+      @events = Event.all.order(created_at: :desc)
       # @events = @signed_in.events.unread
     end
     

@@ -65,8 +65,27 @@
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane fade in active" id="order">
       <div class='col-md-8 bg-white'>
-        <h3><%= @order.requirements['agency_approval'] %></h3>
-        <h3><%= @order.requirements['company_approval'] %></h3>
+        <table class="table">
+          <tr>
+            <th>Agency Approval</th>
+            <th>Company Approval</th>
+          </tr>
+          
+          <tr>
+            <td>
+              <%= @order.requirements['agency_approval'] %>
+              <br>
+              <small><%= @order.account_manager.try(:name) || "Unavailable" %></small>
+            </td>
+            <td>
+              <%= @order.requirements['company_approval'] %><br>
+              <small><%= @order.manager.try(:name) || "Unavailable" %></small>
+            </td>
+          </tr>
+          
+          <tr></tr>
+        </table>
+        
         <div class='row'>
           <h2>Job Description</h2>
           <div class='scroll500'>
@@ -155,7 +174,7 @@
   </div>
   <!--JOBS TAB-->
   <div role="tabpanel" class="tab-pane fade" id="active-jobs">
-      <div class=''>
+      <div class='col-md-12 bg-white'>
         
         <% if @jobs.active.any? %>
           <%= render 'admin/jobs/table', jobs: @jobs.active %>
@@ -167,9 +186,10 @@
   </div>
   <!--INACTIVE JOBS TAB-->
   <div role="tabpanel" class="tab-pane fade" id="inactive-jobs">
-      <div class=''>
+      <div class='col-md-12 bg-white'>
         <% if @jobs.inactive.any? %>
-      <%= link_to "Inactive Jobs", inactive_admin_order_jobs_path(@order) %>
+        <%= render 'admin/jobs/table', jobs: @jobs.inactive %>
+      <%= link_to "Inactive Jobs", inactive_admin_order_jobs_path(@order), class: "btn btn-warning" %>
         
       <% else %>
       <h3>No inactive jobs to display.</h3>
@@ -179,7 +199,7 @@
   </div>
   <!--TIMESHEETS TAB-->
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
-    <div class=''>
+    <div class='col-md-12 bg-white'>
       <%= link_to "All Company Timesheets", admin_company_timesheets_path(@company), class: "btn btn-success" %>
       <% if @order.timesheets.current_week.any? %>
       <h3><strong>This week timesheets</strong></h3>
@@ -200,7 +220,6 @@
   
   <!--APPLICATIONS TAB-->
     <div role="tabpanel" class="tab-pane fade" id="applications">
-      <hr>
         <div class='col-md-6 bg-white'>
           <% if @order.applications.any? %>
           <ul>

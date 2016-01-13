@@ -1,0 +1,31 @@
+<div class='col-md-12 lightbox' data-behavior="job-list" >
+    <div class='' data-behavior="job" data-id="<%= @job.id %>">
+        
+        <div data-behavior="job-state"><h2 class='text-right'><span class='label label-success'><%= @job.state %></span></h2></div>
+        <h1> <small>Last Updated: <%= time_ago_in_words(@job.updated_at) %> ago </small></h1>
+        <% if @job.state == "Already Working" %>
+        
+        <h2><%= @employee.current_job.present? ? "Current position: #{link_to @employee.current_job.title_company, admin_job_path(@employee.current_job)}".html_safe : "#{@employee.jobs.last.title} - Inactive" %></h2>
+        <% end %>
+        <div class='col-md-6 bg-white'>
+            <h2><%= @job.title_company %></h2>
+            
+            <p>Account Manager: <%= @order.account_manager.name %> </p>
+            <p>
+                 Recruiter: <%= @job.recruiter.name %>
+            </p>
+        </div>
+        <div class='col-md-6 bg-white'>
+            <h2><%= @employee.name %></h2>
+            <h3 class='text-center'>Recent Activity</h3>
+            <% @job.events.each do |event| %>
+              <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+                <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
+              <% end %>
+            <% end %>
+        </div>
+        
+        
+       
+    </div>
+</div>

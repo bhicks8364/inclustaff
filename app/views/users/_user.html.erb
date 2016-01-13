@@ -4,4 +4,13 @@
     <%= user.city %>, <%= user.state %> <%= user.zipcode %><br>
     <i class="fa fa-phone-square"></i>  <%= user.employee.phone_number || "Unavailable"  %> 
   </address>
+  <% if admin_signed_in? %>
+  <%= link_to(follow_user_path(user), method: :post, class: "table-link") do %>
+								<span class="fa-stack">
+									<i class="fa fa-square fa-stack-2x"></i>
+									<i class="fa fa-bookmark-o fa-stack-1x fa-inverse"></i>
+								</span>
+							<% end %>
+	<% end %>
+  
 <% end %>

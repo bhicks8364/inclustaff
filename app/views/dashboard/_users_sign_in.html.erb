@@ -1,0 +1,62 @@
+<div class='col-md-12'>
+    <div class='col-md-4'>
+        <div class='sign-up-info'>
+            <h3>
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-square-o fa-stack-2x"></i>
+                  <i class="fa fa-user-plus fa-stack-1x"></i>
+                </span>
+                 Job Seekers
+            </h3>
+           <h4 class=''>
+                Sign up to:</h4>
+            <ul class='fa-ul'>
+             <li><i class="fa-li fa fa-check-square"></i> Apply directly to job openings.  </li>
+             <li><i class="fa-li fa fa-check-square"></i> Get personalized job recommendations.  </li>
+             <li><i class="fa-li fa fa-check-square"></i> Communicate directly with recruiters.  </li>
+            </ul>
+            <div class='center'>
+                <%= link_to "<i class='fa fa-user-plus fa-fw'></i> Sign Up".html_safe, new_user_registration_path, class: 'btn btn-primary btn-lg btn-block' %>
+            </div>
+        </div>
+    </div>
+    <div class='col-md-4'>
+        <div class='sign-up-info'>
+            <h3>
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-square-o fa-stack-2x"></i>
+                  <i class="fa fa-briefcase fa-stack-1x"></i>
+                </span>
+                Returning Applicants</h3>
+           <h4 class=''> Remember</h4>
+            <ul class='fa-ul'>
+             <li><i class="fa-li fa fa-arrow-right"></i> 
+             Adding your availablity & work history information makes it easier 
+               for recruiters to place you at the best possible position. </li>
+            </ul>
+            <div class='center'>
+                <%= link_to "<i class='fa fa-sign-in fa-fw'></i>  Sign In".html_safe, new_user_session_path, class: 'btn btn-primary btn-lg btn-block' %>
+            </div>
+        </div>
+    </div>
+    <div class='col-md-4'>
+        <div class='sign-up-info'>
+            <h3 class='text-center'>
+            <span class='fa-stack fa-lg'>
+              <i class='fa fa-square-o fa-stack-2x'></i>
+              <i class='fa fa-users fa-stack-1x'></i>
+            </span>
+            Current Employees
+        </h3>
+           <h4 class=''> Sign in to:</h4>
+            <ul class='fa-ul'>
+            <li><i class="fa-li fa fa-check"></i> View/print pay records, total hours, etc.  </li>
+             <li><i class="fa-li fa fa-check"></i> Vacation tracking & requests  </li>
+             <li><i class="fa-li fa fa-check"></i> Clock-in & out of your current assignment.</li>
+            </ul>
+            <div class='center'>
+                <%= link_to "<i class='fa fa-sign-in fa-fw'></i>  Sign In".html_safe, new_user_session_path, class: 'btn btn-primary btn-lg btn-block' %>
+            </div>
+        </div>
+    </div>
+</div>

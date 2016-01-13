@@ -97,8 +97,10 @@ class Company < ActiveRecord::Base
     def current_account_manager
       if preferences['current_account_manager'].present?
         Admin.find(preferences['current_account_manager'])
+      elsif account_managers.any?
+        account_managers.last
       else
-        admins.owners.first
+        agency.admins.account_managers.first
       end
     end
     def self.by_account_manager(admin_id)

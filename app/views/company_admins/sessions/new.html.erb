@@ -1,6 +1,6 @@
-<div class='col-12-md main-box'>
-  <div class='col-6-md form'>
-    <h2>Log in</h2>
+<div class='col-md-12 lightbox'>
+  <div class='center form'>
+    <h2>Client Sign In</h2>
     
     <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
       <div class="form-inputs">
@@ -10,10 +10,10 @@
       </div>
     
       <div class="form-actions">
-        <%= f.button :submit, "Log in" %>
+        <%= f.button :submit, "Sign In" %>
       </div>
     <% end %>
     
-    <%= render "company_admins/shared/links" %>
+    <%= render "devise/shared/links" %>
 </div>
 </div>

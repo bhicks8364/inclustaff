@@ -26,9 +26,6 @@ class ApplicationController < ActionController::Base
 
     @current = @current_user || @current_admin || @current_company_admin
     @signed_in = @current
-    @agency = @current_agency
-    @employee = @current_user.employee if @current_user.present?
-    gon.current = @current
     @q_orders = @current_agency.orders.includes(:company, :jobs).active.ransack(params[:q]) if admin_signed_in?
   end
 

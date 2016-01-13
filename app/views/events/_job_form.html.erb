@@ -16,7 +16,7 @@
     
     <div class='form-group'>
         <%= f.input :title, placeholder: "Job Title", label: false %>
-        <%= f.input :description, placeholder: "Interview notes", label: false, input_html: {rows: 8 }  %>
+        <%= f.input :description, placeholder: "Interview notes", label: false %>
         <%= f.input :start_date, as: :string, input_html: {class: 'datepicker'}, placeholder: "Start Date", label: false  %>
         <% if @current_admin.recruiter? %>
             <%= f.hidden_field :recruiter_id, value: @current_admin.id %>
@@ -37,9 +37,9 @@
 
 
 
-    <div class='btn-group'>
-      <%= f.submit "Send for Approval", class: 'btn btn-primary' %>
-      <%= f.submit "Assign Now", class: 'btn btn-success' %>
+    <div class='form-actions'>
+      <%= f.submit "Send for Approval", class: 'btn btn-primary' if @order.needs_approval? %>
+      <%= f.submit "Assign Now", class: 'btn btn-success' if !@order.needs_approval? %>
     </div>
 
 <% end %>

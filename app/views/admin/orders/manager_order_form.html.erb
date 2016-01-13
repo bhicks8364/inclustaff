@@ -1,36 +1,31 @@
 <div class="panel panel-default">
   
   <div class="panel-body">
-    <%= simple_form_for [:admin, @company, @order], html: { class: 'form-horizontal' } do |f| %>
+    <%= simple_form_for [:admin, @order], html: { class: 'form-horizontal' } do |f| %>
 	<%= f.error_notification %>
-	<% if @company.nil? %>
 		<%= f.association :company, collection: @current_admin.companies.distinct, prompt: "Choose a Company"  %>
-	<% end %>
 	<div class='form-group'>
-	
 		<%= f.input :industry, as: :select, collection: [ "Manufacturing", "General Labor", "Office", "IT", "Retail", "Logistics", "Warehouse", "Medical", "Food Service"], prompt: "Select an industry", label: false  %>
 		<%= f.input :title, placeholder: "Job Title"  %>
 		<%= f.input :address, label: "Jobsite Location", value: @company.address if @company.present?  %>
 	</div>
-
-
-	
-	<div class='col-md-6'>
+	<div class='col-md-6 form-inline'>
 		<%= f.input :aca_type, collection: ["Variable-Hour", "Full-Time", "Part-Time"], include_blank: false %>
 		<%= f.input :urgent, as: :boolean %>
 	</div>
 	
-	<div class='col-md-6'>
+	<div class='col-md-6 form-inline'>
 		<%= f.input :number_needed, as: :select, collection: 1..30, label: "How many people are needed?", include_blank: false  %>
 		<%= f.input :needed_by, as: :string, input_html: {class: 'datepicker'}, placeholder: "When would you like them to start?", label: false  %>
+		<%= f.input :shift, as: :select,
+    	collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible"], 
+    	label: "Select shift needed", include_blank: false %>
 	</div>
 	
 	
-	<%= f.input :shift, as: :select,
-	collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible"], 
-	label: "Select shift needed", include_blank: false %>
 	
-	<div class='form-group'>
+	
+	<div class='form-inline'>
 		<div class="input-group">
 	        <div class="input-group-addon">$</div>
 	                  <%= f.input :min_pay, as: :decimal, input_html: { class: 'form-control'}, placeholder: "Minimum pay", label: false %>

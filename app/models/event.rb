@@ -22,6 +22,10 @@ class Event < ActiveRecord::Base
     belongs_to :eventable, polymorphic: true
     include ArelHelpers::ArelTable
     include Arel::Nodes
+    
+    validates_presence_of :eventable_id, :eventable_type, :action
+    
+    
     scope :admin, -> { where.not(admin_id: nil)}
     scope :employee, -> { where.not(user_id: nil)}
     scope :company_admin, -> { where.not(company_admin_id: nil)}
@@ -32,7 +36,9 @@ class Event < ActiveRecord::Base
     scope :timesheets, -> { where(eventable_type: 'Timesheet')}
     scope :jobs, -> { where(eventable_type: 'Job')}
     scope :comments, -> { where(action: 'commented')}
-    scope :approvals, -> { where(action: 'approved')}
+    scope :looking_for_work, -> { where(action: 'looking_for_work')}
+    scope :job_approvals, -> { where(action: 'approved', eventable_type: 'Job')}
+    scope :timesheet_approvals, -> { where(action: 'approved', eventable_type: 'Timesheet')}
     scope :clock_outs, -> { where(action: 'clocked_out')}
     scope :unread, -> { where(read_at: nil)}
     scope :read, -> { where.not(read_at: nil)}

@@ -1,0 +1,10 @@
+<%= div_for event do %>
+<i class="fa fa-phone fa-fw"></i>
+<%= link_to event.eventable.name, event.eventable, class: "", data: {toggle: "tooltip"}, title: event.eventable.skills.map {|p| p.name.titleize}.join(', ') %> is now
+    <strong>	<%= event.action.humanize.downcase %></strong> 
+		<span class='label label-info black pull-right'>
+		    <%= event.created_at.stamp('11/13 at 8:30am') %>
+		</span>
+		
+ 
+<% end %>

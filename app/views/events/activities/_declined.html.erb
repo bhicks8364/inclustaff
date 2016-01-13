@@ -1,0 +1,10 @@
+<%= div_for event do %>
+<i class="fa fa-times fa-fw"></i>
+	<%= event.company_admin.try(:name) || event.admin.try(:name) %>
+	
+    <strong>	<%= event.action.humanize.downcase %></strong> placing <%=  signed_in_link_to event.eventable.employee.first_name, event.eventable %> at <%= event.eventable.company.name %>
+		<span class='label label-danger black pull-right'>
+		    <%= event.created_at.stamp('11/13') %>
+		</span>
+
+<% end %>

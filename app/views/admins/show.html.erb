@@ -1,4 +1,6 @@
 <div class='col-md-12 lightbox'>
+
+    <%= render 'infoboxes' %>
     <div class='col-md-12 bg-white'>
         <h1 class='page-header'><%= @admin.name %> <small><%= @admin.role %></small></h1>
         <h3><%= @admin.email %></h3>
@@ -12,23 +14,13 @@
         <%= render 'admin/charts/owner_charts' if @admin.owner? %>
         <%= render 'admin/charts/recruiter_charts', recruiter: @admin if @admin.recruiter? %>
     </div>
-    <div class="'col-md-4 bg-white">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <h4>Following Admins</h4>
-        		<% @admin.events.following_admin.each do |event| %>
-        			<%= event.eventable.name %>
-        		<% end %>
-            </div>
-        </div>
-    		
-	</div>
-	<div class="'col-md-4 bg-white">
+    
+	<div class="col-md-4 bg-white">
 	    <div class="btn-group">
     		<%= link_to "Edit", edit_admin_path(@admin), class: 'btn btn-primary' %>
     	</div>
 	</div>
-	<div class="'col-md-4 bg-white">
+	<div class="col-md-4 bg-white">
 	    
 	</div>
 

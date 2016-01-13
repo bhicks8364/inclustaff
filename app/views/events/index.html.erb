@@ -3,21 +3,21 @@
     <%= render 'shared/searching_between' %>
   </div>
  
-  <div class='col-md-6 form-inline well well-sm text-center'>
+  <div class='col-md-6 form-inline lightbox text-center'>
      <%= render 'events/search' %>
   </div>
   
-  <div class='col-md-6 list-group'>
-    <li class="list-group-item"><div class='text-center'><i class="fa fa-file-text-o fa-fw"></i><strong>&nbsp; Agency Events</strong></div></li>
+  <div class='col-md-6'>
+    <h3 class=''><i class="fa fa-file-text-o fa-fw"></i><strong>&nbsp; Agency Events</strong></h3>
   
-    <% @events.all.each do |event| %>
+    <% @events.admin.each do |event| %>
       <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
         <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
       <% end %>
     <% end %>
   </div>
-  <div class='col-md-6 list-group'>
-     <li class="list-group-item"><div class='text-center'><i class="fa fa-file-text-o fa-fw"></i><strong>&nbsp; Company Events</strong></div></li>
+  <div class='col-md-6'>
+     <h3 class=''><i class="fa fa-file-text-o fa-fw"></i><strong>&nbsp; Company Events</strong></h3>
    
   
     <% @events.company_admin.each do |event| %>
@@ -27,7 +27,15 @@
     <% end %>
   </div>
   <div class='col-md-6'>
-    <h1>Applications</h1>
     <%= render 'events/applications' %>
+  </div>
+  <div class='col-md-6'>
+    <h3 class=''><i class="fa fa-file-text-o fa-fw"></i><strong>&nbsp; Availability List</strong></h3>
+  
+    <% @events.looking_for_work.each do |event| %>
+      <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+        <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
+      <% end %>
+    <% end %>
   </div>
 </div>

@@ -1,4 +1,5 @@
 <div class='col-md-12 lightbox'>
+    <% if @employee.assigned? %>
    <div class="col-md-4">
         <div class="panel panel-default">
           <div class="panel-body">
@@ -11,6 +12,7 @@
                 <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' if @employee.unassigned? %>
                 <%= link_to "View Job Posting", employee_job_board_path, class: 'btn btn-primary' if @employee.unassigned? %>
             </div>
+             
             <div class=''>
                 <h2 class='text-center'><%= @job.title %></h2>
                 <dl class="">
@@ -32,7 +34,7 @@
           </div>
         </div>
    </div>
-    <% if @employee.assigned? %>
+   
    <div class="col-md-4">
         <div class="panel panel-default">
            
@@ -57,18 +59,25 @@
             </div>
         </div>
    </div>
-   <% end %>
-    <div class='row'>
-        <div class='col-md-4 lightbox'>
-            <h2 class='text-center'>Messages</h2>
-            <div class='scroll400'>
-                <div id='comment-list'>
-                    <%= render 'employee/comments/comments', employee: @employee %>
-                </div>
-            </div>
-            <div class='lightbox'>
-                <%= render 'employee/comments/send_to', commentable: @employee %>
+   <% else %>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                  <h2><%= @user.name %></h2>
+                <%= user_email(@user) %>
+              
+                <%= render 'users/user', user: @user %>
+                
             </div>
         </div>
+        <div class='btn-group'>
+            <%= link_to "Edit Profile", edit_employee_employee_path(@employee), class: 'btn btn-primary' %>
+            <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' if @employee.unassigned? %>
+            <%= link_to "View Job Posting", employee_job_board_path, class: 'btn btn-primary' if @employee.unassigned? %>
+        </div>
     </div>
+    <div class="col-md-6">
+        <%= render 'employee/employees/availability', employee: @employee %>
+    </div>
+   <% end %>
 </div>

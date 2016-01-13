@@ -75,8 +75,12 @@
 
   <!--IF IS AN APPLICATION-->
 <% end %>
-
+<% if @event.action == "followed" %>
+<h1><%= @event.action %></h1>
+<% end %>
 <!--IF AN ADMIN IS SIGNED IN-->
 <% end %>
 
  </div>
+ 
+ 

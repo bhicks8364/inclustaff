@@ -4,7 +4,7 @@
   <h1 class='text-center'>All Companies</h1>
 
 <div class="table-responsive">
-  <table id="" class="table table-bordered datatable">
+  <table id="" class="table table-bordered inv_datatable">
   <thead>
     <tr>
       <th>Name</th>
@@ -19,12 +19,13 @@
   <tbody>
     <% @companies.each do |company| %>
       <tr>
-        <td><%= link_to company.name, admin_company_path(company), class: 'btn btn-primary fill' %></td>
+        <td><%= link_to company.name, admin_company_path(company), class: '' %></td>
         <td><%= company.contact_name %></td>
         <td><%= company.current_timesheets.try(:count) %> / <%= company.jobs.active.try(:count) %></td>
         <td><%= number_to_currency(company.timesheets.current_week.sum(:total_bill) )%></td>
         <td><%= number_to_currency(company.invoices.unpaid.sum(:total) ) %></td>
         <td><%= company.current_account_manager.name %></td>
+        <td><%= link_to "<i class='fa fa-file-pencil fa-fw'></i> ".html_safe, edit_admin_company_path(company), class: 'btn btn-primary fill' %></td>
       </tr>
     <% end %>
   </tbody>

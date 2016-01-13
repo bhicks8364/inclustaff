@@ -77,7 +77,12 @@ class Job < ActiveRecord::Base
     scope :with_employee, ->  { includes(:employee) }
     scope :have_ended, -> { where(Job[:end_date].not_eq(nil)) }
     scope :inactive, -> { where(active: false)}
-    scope :pending_approval, -> { where(Job[:end_date].eq(nil).and(Job[:active].eq(false))) }
+    scope :pending_approval, -> { where("settings @> hstore(:key, :value)", key: "current_state", value: "Pending Approval")}
+    scope :currently_working, -> { where("settings @> hstore(:key, :value)", key: "current_state", value: "Currently Working")}
+    scope :ended_assignments, -> { where("settings @> hstore(:key, :value)", key: "current_state", value: "Assignment Ended")}
+    scope :declined_by_agency, -> { where("settings @> hstore(:key, :value)", key: "current_state", value: "Declined by agency") }
+    scope :declined_by_company, -> { where("settings @> hstore(:key, :value)", key: "current_state", value: "Declined by company")}
+    scope :declined_by_candidate, -> { where("settings @> hstore(:key, :value)", key: "current_state", value: "Declined by candidate")}
     scope :new_start, -> { where(Job[:start_date].gteq(Date.today.beginning_of_week)) }
     
     # THESE WORKED!!!
@@ -106,7 +111,9 @@ class Job < ActiveRecord::Base
             (vacation['milestone_3'].to_i - total_hours).round(2)
         end
     end
-    
+    def set_state
+        update(active: false, end_date: Date.today, settings: @job.settings.merge({current_state: "Assignment Ended"})) 
+    end
     def state
         settings['current_state']
     end
@@ -126,7 +133,10 @@ class Job < ActiveRecord::Base
     end
     
     def pending_approval?
-        !active? && end_date == nil
+        state == "Pending Approval"
+    end
+    def declined?
+        state == "Declined by agency" || state == "Declined by company" || state == "Declined by employee" || state == "Declined by other" || state == "Already Working"
     end
     
     def status
@@ -188,35 +198,21 @@ class Job < ActiveRecord::Base
     end
     
 
-    def clock_in!
-        if off_shift?
-            self.shifts.create(time_in: Time.current, time_out: nil,
-                    state: "Clocked In",
-                    out_ip: "Admin-Clock-In")
-        end
-
-    end
-    
-    def clock_out!
-        if on_shift? 
-            current_shift.update(time_out: Time.current,
-                        state: "Clocked Out",
-                        out_ip: "Admin-Clock-Out" )
-        end
-    end
-    
-    def straight_8
-        t = Time.current.beginning_of_week - 1.week 
+   
+    # def straight_8
+    #     t = Time.current.beginning_of_week - 1.week 
         
-        5.times do |n| 
-            time_in = t + n.days
-            time_out = time_in + 8.hours
-         self.shifts.create(time_in: time_in, time_out: time_out, state: "Clocked Out", out_ip: "Admin-Clock-Out") 
+    #     5.times do |n| 
+    #         time_in = t + n.days
+    #         time_out = time_in + 8.hours
+    #      self.shifts.create(time_in: time_in, time_out: time_out, state: "Clocked Out", out_ip: "Admin-Clock-Out") 
         
-        end 
+    #     end 
     
+    # end
+    def name
+        employee.name
     end
-    
     
     def company
         order.company
@@ -228,9 +224,10 @@ class Job < ActiveRecord::Base
     
 
     def defaults
-        self.active = true if active.nil?
+        self.active = false if active.nil?
         self.start_date = Date.today if start_date.nil?
-        self.settings = {} if settings.nil?
+        # self.settings = {current_state: "Pending Approval"} if settings[:current_state].nil? && active == false
+        self.settings = {current_state: "Currently Working"} if settings[:current_state].nil? && active == true
         self.vacation = {} if vacation.nil?
         self.title = order.title if title.nil?
     end

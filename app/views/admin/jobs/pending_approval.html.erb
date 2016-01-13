@@ -1,17 +1,19 @@
 <div class='col-md-12 lightbox' data-behavior="job-list" >
     <div class='' data-behavior="job" data-id="<%= @job.id %>">
+        <div data-behavior="job-state"><h2 class='text-right'><span class='label label-success'><%= @job.state %></span></h2></div>
         <div class='page-header'>
+            <h1><%= @job.title_company %></h1>
             
-            <span data-behavior="job-state"><h2><%= @job.state %></h2></span>
         </div>
-        <div class='col-md-4 text-center'>
-            <h1><%= @job.name_title %></h1>
-            <h4><%= @job.company.name %></h4>
-        </div>
-        <div class='col-md-4 text-center'>
+        <div class='col-md-4 text-center bg-white'>
+            
             <h4><%= number_to_currency(@job.pay_rate) %>/ hr</h4>
         </div>
-        <div class='col-md-4 text-center'>
+        <div class='col-md-4 text-center bg-white'>
+            <h1><%= @employee.name %></h1>
+            
+        </div>
+        <div class='col-md-4 text-center bg-white'>
             <h4><%= @job.start_date.strftime("%B %e, %Y ") %></h4>
         </div>
         <div class="row">
@@ -40,25 +42,29 @@
                     <div class='col-md-4 lightbox'>
                         <div class='col-md-6 bg-white'>
                             <span data-behavior="job-status">
-                                
+                                 <h2><%= @job.status %></h2>
                             </span>
                             <span data-behavior="job-state">
                                 <h2><%= @job.state %></h2>
                             </span>
                             <span data-behavior="job-end-date">
-                                <h2><%= @job.end_date %></h2>
+                                <h2><%= @job.end_date.present? ? @job.end_date.stamp("11/13/16") : @job.state %></h2>
                             </span>
-                            <% if @job.active? %>
-                            <button type='button' class='btn btn-danger' data-behavior='active-job-cancel'>CANCEL </button>
-                            <button type='button' class='btn btn-success hide-this' data-behavior='job-toggle'>APPROVE </button>
-                            <% else %>
-                            <button type='button' class='btn btn-success' data-behavior='job-toggle'>APPROVE </button>
-                            <button type='button' class='btn btn-danger hide-this' data-behavior='active-job-cancel'>CANCEL </button>
-                            <% end %>
-                            <span data-behavior="job-status">
-                                <h2><%= @job.status %></h2>
-                            </span>
+                            <div class='btn-group'>
+                                <button type='button' class='btn btn-danger' data-behavior='active-job-cancel'>Decline </button>
+                                <% if @employee.available? %>
+                                <button type='button' class='btn btn-success' data-behavior='job-toggle'>APPROVE </button>
+                                <% end %>
+                            </div>
                         </div>
+                    </div>
+                    <div class='col-md-4 bg-white'>
+                        <h3 class='text-center'>Recent Activity</h3>
+                        <% @job.events.each do |event| %>
+                          <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+                            <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
+                          <% end %>
+                        <% end %>
                     </div>
                     
                 </div>

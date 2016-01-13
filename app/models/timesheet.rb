@@ -69,7 +69,7 @@ class Timesheet < ActiveRecord::Base
         self.job = shifts.first.job
     end
     
-    def self.by_recuriter(admin_id)
+    def self.by_recruiter(admin_id)
         joins(:job).where(jobs: { recruiter_id: admin_id })
     end
     
@@ -111,6 +111,10 @@ class Timesheet < ActiveRecord::Base
             ["Payroll ID", "#{id} - #{week}"]
           ]
         )
+    end
+    
+    def name
+        employee.name
     end
    
     def bill_to

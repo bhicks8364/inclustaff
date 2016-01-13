@@ -11,7 +11,6 @@ class Employee::DashboardController < ApplicationController
     end
     
     def home
-        
         @shifts = @employee.shifts
         @job = @employee.current_job
         @company = @job.company if @job.present?

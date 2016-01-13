@@ -1,0 +1,35 @@
+<div class='col-md-12 lighterbox'>
+    <h1 class='metal bold page-header'>Public Job Board</h1>
+    
+    <div class='col-md-6 lightbox'>
+    
+        <div class=''>
+            <table class='table inv_datatable'>
+                <thead>
+                    <tr>
+                    <th>Job Title</th>
+                    <th>Location</th>
+                    <th>Pay</th>
+                    <th>Details</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <% @orders.each do |order| %>
+                    <tr>
+                        <td><%= order.title %></td>
+                        <td><%= order.location %></td>
+                        <td><%= pay_range(order) %></td>
+                        <td class='text-center'><%= stwb(order) %> <br><%= heavy_lifting(order) %></td>
+                    </tr>
+                    <% end %>
+                </tbody>
+            </table>
+            
+        </div>
+    </div>
+    
+    <div class=''>
+        <%= render 'users_sign_in' %>
+    </div>
+    
+</div>

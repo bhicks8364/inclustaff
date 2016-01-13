@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   
   constraints SubdomainConstraint do
     get  'sign_in' => 'dashboard#sign_in_page'  
+    get  'public_job_board' => 'dashboard#public_job_board'
     # TAGS
     get 'tags' => 'admin/dashboard#all_tags'
     get 'tags/:tag', to: 'admin/dashboard#tag', as: :tag
@@ -59,6 +60,7 @@ Rails.application.routes.draw do
         
       end
       member do
+        post :follow
         patch :grant_editing
         patch :update_as_available
       end

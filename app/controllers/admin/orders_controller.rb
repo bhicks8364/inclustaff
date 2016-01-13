@@ -80,6 +80,8 @@ class Admin::OrdersController < ApplicationController
     else
       @order = Order.new
       @account_managers = @current_agency.account_managers
+      
+      render 'manager_order_form' if current_admin.account_manager?
     end
     authorize @order
 

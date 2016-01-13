@@ -56,3 +56,35 @@ img.feature-pic {
 .panel-collapse{
     background: white;
 }
+.home-button {
+    background-color: black;
+    float: right;
+    margin: 3px;
+}
+.sign-up-info {
+    min-height: 250px;
+    padding: 5px;
+    margin-bottom: 30px;
+    background-color: rgba(255, 255, 255, 0.49);
+    -webkit-box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+    
+}
+.bold {
+    font-weight: bold;
+}
+.home-logo {
+    width: 100px;
+    // float: left;
+    // margin-right: 8px;
+    margin: auto;
+    margin-bottom: 10px;
+}
+.metal {
+    font-family: 'Titillium Web', Geneva, sans-serif;
+}
+.lighterbox {
+    background-color: rgba(255, 255, 255, 0.65);
+    padding: 10px;
+}

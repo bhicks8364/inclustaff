@@ -76,7 +76,7 @@ class Admin < ActiveRecord::Base
   
   def timesheets
     if recruiter?
-      Timesheet.by_recuriter(id)
+      Timesheet.by_recruiter(id)
     elsif account_manager?
       Timesheet.by_account_manager(id)
     else
@@ -95,7 +95,7 @@ class Admin < ActiveRecord::Base
   end
   def job_orders
     if recruiter?
-      Order.by_recuriter(id)
+      Order.by_recruiter(id)
     elsif account_manager?
       account_orders
     else
@@ -104,7 +104,7 @@ class Admin < ActiveRecord::Base
   end
   def companies
     if recruiter?
-      Company.by_recuriter(id)
+      Company.by_recruiter(id)
     elsif account_manager?
       Company.by_account_manager(id)
     else
@@ -113,7 +113,7 @@ class Admin < ActiveRecord::Base
   end
   def invoices
     if recruiter?
-      Invoice.by_recuriter(id)
+      Invoice.by_recruiter(id)
     elsif account_manager?
       Invoice.by_account_manager(id)
     else

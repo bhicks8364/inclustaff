@@ -92,17 +92,10 @@ class DashboardController < ApplicationController
       skip_authorization
 
   end
-  # def employee_view
-  #     @employee = current_user.employee if current_user.employee?
-  #     @company = @employee.company if @employee.present?
-  #     @shifts = @employee.shifts.order(time_in: :desc)
-  #     # skip_authorization
-  # end
-  
-  # def profile
-  #     @user = current_user
-  #     skip_authorization
-  # end
+  def public_job_board
+    @orders = @current_agency.orders.published
+    skip_authorization
+  end
   
   def agency_view
       @current_admin = current_admin if admin_signed_in?

@@ -29,15 +29,11 @@ class Admin::JobsController < ApplicationController
     authorize @jobs, :index?
   end
 
-
-
-
-
-  # GET /jobs/1
-  # GET /jobs/1.json
   def show
     if @job.pending_approval?
       render "pending_approval"
+    elsif @job.declined?
+      render "declined"
     else
       @timesheet = @job.current_timesheet if @job.current_timesheet.present?
       @shift = @job.shifts.last if @job.shifts.any?
@@ -61,8 +57,11 @@ class Admin::JobsController < ApplicationController
   def approve
     if @job.pending_approval?
       @job.update(active: true, settings: @job.settings.merge({current_state: "Currently Working"}))
+      current_admin.events.create(action: "approved", eventable: @job, user_id: @employee.user_id)
     elsif !@job.active?
-      @job.update(active: true, end_date: nil, settings: @job.settings.merge({current_state: "Currently Working"}))
+    # NOT LIKING THIS - maybe should throw an error? An inactive job should always be "pending" or "ended" Create new job if reassigning 
+      @job.update(active: true, settings: @job.settings.merge({current_state: "Currently Working"}))
+      current_admin.events.create(action: "approved", eventable: @job, user_id: @employee.user_id)
     end
     respond_to do |format|
       format.json { render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, state: @job.state } }
@@ -72,12 +71,19 @@ class Admin::JobsController < ApplicationController
   def cancel
     if @job.active? && @job.shifts.any?
       @job.update(active: false, end_date: Date.today, settings: @job.settings.merge({current_state: "Assignment Ended"})) 
+      current_admin.events.create(action: "canceled", eventable: @job, user_id: @employee.user_id)
       respond_to do |format|
         format.json { render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, ended: @job.end_date.stamp('11/12/2016'), state: @job.state } }
       end
-      
+    elsif @job.pending_approval? && !@employee.available?
+      @job.update(active: false, settings: @job.settings.merge({current_state: "Already Working"}))
+      current_admin.events.create(action: "declined", eventable: @job, user_id: @employee.user_id)
+      respond_to do |format|
+        format.json { render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, state: @job.state } }
+      end
     else
-      @job.update(active: false, settings: @job.settings.merge({current_state: "Rejected by #{current_admin.name}"}))
+      @job.update(active: false, settings: @job.settings.merge({current_state: "Declined by agency"}))
+      current_admin.events.create(action: "declined", eventable: @job, user_id: @employee.user_id)
       respond_to do |format|
         format.json { render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, state: @job.state } }
       end
@@ -110,7 +116,7 @@ class Admin::JobsController < ApplicationController
     if @job.off_shift?
       @shift = @job.shifts.create(time_in: Time.current, week: Date.today.beginning_of_week.cweek,
                                   state: "Clocked In",
-                                  in_ip: "Admin-Clock-In")
+                                  in_ip: current_admin.current_sign_in_ip)
       current_admin.events.create(action: "clocked_in", eventable: @shift, user_id: @shift.employee.user_id)
 
     
@@ -129,8 +135,8 @@ class Admin::JobsController < ApplicationController
         @shift = @job.current_shift
         @shift.update(time_out: Time.current,
                         state: "Clocked Out", week: Date.today.beginning_of_week.cweek,
-                        out_ip: "Admin-Clock-Out" )
-        current_admin.events.create(action: "clocked_out", eventable: @shift.employee, user_id: @shift.employee.user_id)
+                        out_ip: current_admin.current_sign_in_ip )
+        current_admin.events.create(action: "clocked_out", eventable: @shift, user_id: @shift.employee.user_id)
       respond_to do |format|
           format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?,
                     state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out.strftime("%l:%M%P"),
@@ -185,7 +191,13 @@ class Admin::JobsController < ApplicationController
       @job = Job.new(job_params)
       authorize @job
     end
-    @job.active = false if sending_for_approval?
+    if sending_for_approval?
+      @job.active = false 
+      @job.settings = @job.settings.merge({current_state: "Pending Approval"})
+      current_admin.events.create(action: "presented", eventable: @job)
+    else
+      @job.settings = @job.settings.merge({current_state: "Currently Working"})
+    end
     
     respond_to do |format|
       if @job.save
