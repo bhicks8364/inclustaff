@@ -75,7 +75,7 @@ img.feature-pic {
     font-weight: bold;
 }
 .home-logo {
-    width: 100px;
+    width: 100%;
     // float: left;
     // margin-right: 8px;
     margin: auto;
@@ -91,4 +91,22 @@ img.feature-pic {
 input.file-field {
     font-family: 'Titillium Web', Geneva, sans-serif;
     display: inline;
+}
+.fill-pic {
+    width: 100%;
+}
+.user-icon {
+    width: 35px;
+}
+.payroll-boxes {
+    min-height: 300px;
+    
+}
+.bottom {
+    vertical-align: -50px;
+}
+.label-fill {
+    min-width: 100%;
+    margin: 8px;
+    padding: 8px;
 }

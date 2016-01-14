@@ -1,9 +1,11 @@
 <div class='col-md-12 lightbox'>
 
-    <%= render 'infoboxes' %>
+    
     <div class='col-md-12'>
         <div class="col-md-4">
-            <h1 class='page-header'><%= @admin.name %> <small><%= @admin.role %></small></h1>
+            
+            <div class='page-header'><%= image_tag("User_Circle.png", class: 'user-icon') %>
+                <%= @admin.name %> <small><%= @admin.role %></small></div>
             <h3><%= @admin.email %></h3>
             
         </div>
@@ -20,7 +22,15 @@
          </div>
          
     </div>
-    
+    <div class='col-md-12'>
+        <div class="col-md-3">
+            
+        </div>
+        <div class="col-md-3"></div>
+        <div class="col-md-3"></div>
+        <div class="col-md-3"></div>
+        <%= render 'infoboxes' %>
+    </div>
     <div class='col-md-12'>
         <%= render 'admin/charts/account_manager_charts', admin: @admin if @admin.account_manager?  %>
         <%= render 'admin/charts/owner_charts' if @admin.owner? %>

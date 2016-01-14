@@ -10,8 +10,17 @@ module ApplicationHelper
         pipeline.call(content)[:output].to_s.html_safe
     end
     def page_title(title)
-        title += " | " if title.present?
-        title += "Inclustaff"
+        if title.present?
+            title += " | " 
+            title += "Inclustaff"
+        else
+            "IncluStaff"
+        end
+    end
+    
+    def custom_form_for(object, *args, &block)
+      options = args.extract_options!
+      simple_form_for(object, *(args << options.merge(builder: CustomFormBuilder)), &block)
     end
     
     def tag_link(taggable)

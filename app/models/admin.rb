@@ -71,8 +71,6 @@ class Admin < ActiveRecord::Base
   def mention_data; {name: "#{name}", content: "#{role}"}; end
     
   def set_name             
-    self.first_name.titlize!
-    self.last_name.titlize!
     self.name = "#{first_name} #{last_name}"
   end  
   def online?

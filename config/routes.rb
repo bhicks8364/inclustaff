@@ -78,6 +78,7 @@ Rails.application.routes.draw do
         resources :invoices
         resources :timesheets
         resources :orders
+        
         collection do
           post 'import'
         end
@@ -108,6 +109,7 @@ Rails.application.routes.draw do
         end
         
         resources :skills
+        resources :shifts
         resources :work_histories
       end
       

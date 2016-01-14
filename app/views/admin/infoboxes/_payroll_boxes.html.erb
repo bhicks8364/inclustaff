@@ -1,60 +1,33 @@
 <div class='payroll-boxes'>
-	<div class="col-md-3 lightbox">
-		<div class='center'>
-			<p class="text-center"><strong>This Week</strong>	  	</p>
-			<span class="label label-success"><%= @current_agency.timesheets.current_week.approved.try(:count) %> Approved </span>
-			<span class="label label-default"><%= @current_agency.timesheets.current_week.pending.try(:count) %> Pending </span>
+	<div class="col-md-4 lightbox">
 		
-		<%= link_to(admin_timesheets_path(@current_admin.timesheets.current_week, format: :csv), class: 'btn btn-success') do %>
-  					<i class="fa fa-export fa-fw"></i> Export
-  				<% end %>
-		<%= link_to(admin_timesheets_path, class: "btn btn-primary btn-lg btn-block") do %>
-		View All Timesheets
-			<% end %>
-		</div>
 	</div>
 
-	<div class="col-md-3 lightbox">
+	<div class="col-md-4 lightbox">
 		<div class='center'>
-			<p class="text-center"><strong>Last Week</strong>	  	</p>
-		
-			<span class="label label-success"><%= @current_agency.timesheets.last_week.approved.try(:count) %> Approved </span>
-			<span class="label label-default"><%= @current_agency.timesheets.last_week.pending.try(:count) %> Pending </span>
-			
-			<%= link_to(past_admin_timesheets_path, class: "btn btn-primary btn-lg btn-block") do %>
-				View Past Timesheets
-				<% end %>
-		</div>
-	</div>
-	<div class="col-md-3 lightbox">
-		<div class='center'>
-		<% if @current_admin.timesheets.last_week.pending.any? %>
-		<i class="fa fa-clock-o fa-fw"></i> 
-			<p>There are <strong><%= @current_admin.timesheets.last_week.pending.count %></strong> pending timesheets from last week.</p>
-			
-				<%= link_to(last_week_admin_timesheets_path, class: "btn btn-primary btn-lg btn-block") do %>
-				Last Week Timesheets
-				<% end %>
 				
-		<% else %>
-		<i class="fa fa-check fa-fw"></i> 
-		<p>	All of last week's timesheets have been approved.</p>
+		<% if @current_agency.timesheets.last_week.pending.none? %>
+		<div class='text-center metal'>	  	
 		
-				<%= link_to(past_admin_timesheets_path(@current_admin.timesheets.last_week, format: :csv), class: 'btn btn-success') do %>
-  					<i class="fa fa-export fa-fw"></i> Export
-  				<% end %>
-				
-		<% end %>
-			
+			<p class='lead'>
+				All timesheets for last week have been approved.<br>
+				<span class="list-group-item"><%= @current_agency.timesheets.last_week.approved.try(:count) %> Approved </span>
+			</p>
+			</div>
+			<%= link_to(past_admin_timesheets_path(@current_admin.timesheets.last_week, format: :csv), class: 'btn btn-success') do %>
+  				<i class="fa fa-upload fa-fw"></i> Export
+  			<% end %>
+  		<% end %>
 		</div>
 	</div>
 	
-	<div class="col-md-3 lightbox">
+	
+	<div class="col-md-4 lightbox">
 		<div class='center'>
 			
 			<% if @newly_added.any? %>
-			<i class="fa fa-users fa-fw"></i>
-			<h4>New Employees</h4>
+			
+			<h3> <i class="fa fa-users fa-fw"></i> &nbsp; New Employees</h3>
 			<div class="list-group">
 				<% @newly_added.limit(3).each do |employee| %>
 			<%= link_to "<i class='fa fa-user fa-fw'></i> &nbsp; #{employee.name}".html_safe, admin_employee_path(employee), class: "list-group-item list-group-item-info" %>

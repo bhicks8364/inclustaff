@@ -1,4 +1,5 @@
 <div class='row'>
+	<div class='col-md-1'></div>
 	<div class="col-md-3 bg-white">
 	    <div class="panel panel-default">
 	        <div class="panel-body">
@@ -21,10 +22,10 @@
 	        </div>
 	    </div>
 	</div>
-	<div class="col-md-6 bg-white">
+	<div class="col-md-3 bg-white">
 	    <div class="panel panel-default">
-	        Recent Activity
-	        <div class="panel-body">
+	        <h4>Recent Activity</h4>
+	        <div class="panel-body scroll400">
 	            <% @admin.events.order(:created_at).each do |event| %>
 	              <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
 	                <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>

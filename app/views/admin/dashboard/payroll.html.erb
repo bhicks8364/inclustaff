@@ -48,7 +48,25 @@
 				</div>
 			</div>
 			<div class="tab-pane fade in" id="tab-timesheets">
-			    <div class='col-md-12 bg-white'>
+				<div class='col-md-3 text-center metal lighterbox'>
+					<h3 class='bold'>This Week</h3>	  	
+					<div class='list-group'>
+						<%= link_to(admin_timesheets_path, class: "btn btn-primary btn-lg btn-block ") do %>
+						<span class="label-fill"><%= @current_agency.timesheets.current_week.approved.try(:count) %> Approved </span>
+				
+						<span class="label-fill"><%= @current_agency.timesheets.current_week.pending.try(:count) %> Pending </span>
+						<% end %>
+					</div>
+					<hr>
+					<h3 class='bold'>Last Week</h3>
+					<div class='list-group'>	
+					<%= link_to(past_admin_timesheets_path, class: "btn btn-primary btn-lg btn-block") do %>
+						<span class="label-fill"><%= @current_agency.timesheets.last_week.approved.try(:count) %> Approved </span>
+						<span class="label-fill"><%= @current_agency.timesheets.last_week.pending.try(:count) %> Pending </span>
+					<% end %>
+					</div>
+				</div>
+			    <div class='col-md-9 bg-white'>
 			        <h2>Current Timesheets</h2>
 					<%= render 'admin/timesheets/table', timesheets: @timesheets.current_week.order(updated_at: :desc) %>
 					 

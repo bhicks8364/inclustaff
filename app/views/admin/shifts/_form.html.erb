@@ -1,60 +1,38 @@
 <div class="well">
-  <%= @job.try(:name_title) %>
-<%= simple_form_for [:admin, @shift] do |f| %>
-<div class="form-group black">
-
-    <% if @job.nil? %>
-
-    <%= f.input :job_id, collection: @jobs, as: :select, label_method: :name_title, value_method: :id, include_blank: false, required: true  %>
-    <% end %>
-
-</div>
+ 
+<%= simple_form_for [:admin, @shift], html: { class: 'form' } do |f| %>
 <div class="form-group black">
     <label class='white' for="TimeIn">Time In: </label>
-    <%= f.datetime_select :time_in, ampm: true, default: Time.current %>
-    
+    <%= f.datetime_select :time_in, ampm: true, default: Time.current %>    
 </div>
-
-
-
-
 
 <div class="form-contol black">
    <div class="field">
-  
-    <%= f.select :state, ["Clocked In", "Clocked Out"], selected: @shift.state %>
+    <%= f.input :state, as: :select, collection: ["Clocked In", "Clocked Out", "On Break"], selected: @shift.state, label: false %>
   </div>
 </div>
 
 <div class="form-group black clocked-out">
   <div class="field time-out-field">
-    <%= f.label :time_out, "Time Out" %><br>
-    <%= f.datetime_select :time_out, ampm: true, default: nil %>
+      <label class='white' for="TimeOut">Time Out: </label>
+       <%= f.datetime_select :time_out, ampm: true, default: nil %>
   </div>
-   
-   
-
 </div>
-
+<div class='form-group'>
+     <div class="input-group">
+        <span class="input-group-addon"><i class='fa fa-usd'></i></span>
+        <%= f.input :pay_rate, label: false, :input_html => {value: number_with_precision(f.object.pay_rate, precision: 2) } %>
+        <span class="input-group-addon">/hr</span>
+      </div>
+</div>
+   <div class='form-group'>
+       <%= f.input :paid_breaks, as: :select %>
+       
+       <%= f.input :break_duration, disabled: true %>
+   </div>
 <div class="form-group">
-    <label for="Not">Notes: </label>
-    <%= f.text_area :note, placeholder: "Add a note.", rows: 2, class: "form-control" %>
-    <%= f.input :paid_breaks %>
-    <%= f.input :pay_rate %>
+    <%= f.input :note, placeholder: "Add a note.", input_html: {rows: 2, class: "form-control"}, label: false %>
 </div>
-
-
-
-                <div class=''>
-   <%= f.input :breaks, as: :array, input_html: {class: "form-control black"} %>
-  
-   <%= f.input :break_duration %>
-  
-  </div>
- 
-
-
-
 
 <div class="form-actions">
 
