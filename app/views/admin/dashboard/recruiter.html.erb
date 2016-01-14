@@ -2,7 +2,7 @@
 
   <h1 class='page-header'>Recruiting Dashboard</h1>
   <div class='pull-right'><%= render 'admin/orders/search' %></div>
-  	
+  	<h2><%= @current_admin.username %></h2>
   <div class="col-md-12 bg-white">
 				<div class="tabs-wrapper">
 					<div class="clearfix">
@@ -35,7 +35,15 @@
 					                <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
 					              <% end %>
 					            <% end %>
+					            <hr>
+					            <h2 class=''>Recent Job Declines</h2>
+								<% Event.job_rejections.order(:created_at).each do |event| %>
+					              <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+					                <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
+					              <% end %>
+					            <% end %>
 								</div>
+								
 							</div>
 						</div>
 						<div class="tab-pane fade in" id="tab-job-orders">
@@ -59,28 +67,30 @@
 						
 						
 						<div class="tab-pane fade" id="tab-candidates">
-							<div class="">
+							<div class="col-md-12 bg-white">
+								<h3>Candidate List</h3>
 								<%= render 'users/table', users: @candidates.order(:checked_in_at).limit(50) %>
 							</div>
-						
-						
 						</div>	 
 						
 						<div class="tab-pane fade" id="tab-calendar">
-							<div class="">
-						  	<%= render 'admin/infoboxes/recruiting_calendar' %>
-						  </div>
+							<div class="col-md-12 bg-white">
+							  	<%= render 'admin/infoboxes/recruiting_calendar' %>
+						  	</div>
 						</div>
 						<div class="tab-pane fade" id="tab-events">
+							<div class="col-md-12 bg-white">
 							<% if Event.applications.any? %>
+							<h3>Recent Applications</h3>
 							<% Event.applications.order(created_at: :desc).each do |event| %>
 							  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
 							    <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
 							  <% end %>
 							<% end %>
 							<% else %>
-							Sorry, there're are currently no applications.
+							<h3>Sorry, there're are currently no applications.</h3>
 							<% end %>
+							</div>
 						</div>
 					</div>
 				</div>

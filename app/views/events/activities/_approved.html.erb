@@ -1,6 +1,7 @@
 <%= div_for event do %>
 <i class="fa fa-check fa-fw"></i>
-	<%= event.company_admin.try(:name) || event.admin.try(:name) %>
+	<%= event.admin.try(:first_name) if !current_page?('/admins/:id') %>
+	<%= event.company_admin.try(:first_name) if !current_page?('/company_admins/:id') %>
     <strong>	<%= event.action.humanize.downcase %></strong>
     a <%= event.eventable_type.downcase %> for <%=  signed_in_link_to event.eventable.name, event.eventable %>
 		<span class='label label-success black pull-right'>

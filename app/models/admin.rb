@@ -55,7 +55,6 @@ class Admin < ActiveRecord::Base
   validates :agency_id,  presence: true
   validates_numericality_of :agency_id, allow_nil: true
     
-  def set_name;             self.name = "#{first_name} #{last_name}"; end
   def phone_number;             agency.phone_number; end
   def to_s;             name; end
   def name_role;             "#{name} #{role}"; end
@@ -70,6 +69,12 @@ class Admin < ActiveRecord::Base
   def admin?;         true; end
   def employee?;         false; end
   def mention_data; {name: "#{name}", content: "#{role}"}; end
+    
+  def set_name             
+    self.first_name.titlize!
+    self.last_name.titlize!
+    self.name = "#{first_name} #{last_name}"
+  end  
   def online?
     updated_at > 10.minutes.ago
   end

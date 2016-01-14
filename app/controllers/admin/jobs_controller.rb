@@ -71,6 +71,9 @@ class Admin::JobsController < ApplicationController
   def cancel
     if @job.active? && @job.shifts.any?
       @job.update(active: false, end_date: Date.today, settings: @job.settings.merge({current_state: "Assignment Ended"})) 
+      # It'd be nice to have them be required to give a reason when ending an assignment 
+      # Like just a comment and/or choices (hired-in, quit, ncns, laid-off, fired) 
+      # ** choices would make employment verifications easier
       current_admin.events.create(action: "canceled", eventable: @job, user_id: @employee.user_id)
       respond_to do |format|
         format.json { render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, ended: @job.end_date.stamp('11/12/2016'), state: @job.state } }

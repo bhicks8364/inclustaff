@@ -31,6 +31,7 @@ class DashboardController < ApplicationController
           render 'admin/dashboard/recruiter'
         elsif current_admin.payroll?
         @timesheets = Timesheet.all
+        @shifts = @current_agency.shifts.today
           render 'admin/dashboard/payroll'
         else
           render 'admin/dashboard/home'
@@ -45,8 +46,9 @@ class DashboardController < ApplicationController
       #ROOT FOR COMPANY_ADMINS DASHBOARDS IF SIGNED IN
     elsif company_admin_signed_in? && @current_agency.present?
     @current_company_admin = current_company_admin
-      @company = current_company_admin.company
+      @company = current_company_admin.company.includes(:jobs, :shifts)
       @at_work = @company.jobs.at_work 
+      @shifts = @company.shifts.today
          render 'company/dashboard/home'
       
       
@@ -61,7 +63,7 @@ class DashboardController < ApplicationController
         render "employee/dashboard/home"
     end
     @orders = Order.needs_attention.order(:needed_by).paginate(page: params[:page], per_page: 15)
-        
+     
     
     skip_authorization
   end

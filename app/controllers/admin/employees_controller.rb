@@ -8,12 +8,13 @@ class Admin::EmployeesController < ApplicationController
 
   def index
     @admin = @current_admin
-    @employees = Employee.includes(:user).assigned
+    @employees = Employee.includes(:user).assigned.order(:last_name)
     # @employees = Employee.includes(:user).assigned
     @hash = Gmaps4rails.build_markers(@employees) do |employee, marker|
           marker.lat employee.user.latitude
           marker.lng employee.user.longitude
           marker.title employee.name
+          marker.infowindow employee.name_title
         end
     gon.employees = @employees
     skip_authorization
@@ -136,7 +137,7 @@ class Admin::EmployeesController < ApplicationController
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_employee
-      @employee = Employee.includes(:user).find(params[:id])
+      @employee = Employee.includes(:user, :jobs).find(params[:id])
       authorize @employee
     end
 

@@ -67,8 +67,12 @@ class User < ActiveRecord::Base
   scope :available, -> { joins(:employee).merge(Employee.available)}
   scope :ordered_by_last_name, -> { order(last_name: :asc) }
   scope :ordered_by_check_in, -> { order(checked_in_at: :desc) }
-  before_validation :set_code, :set_name
   
+  before_validation do
+    self.role = "Employee"
+    self.name = "#{first_name} #{last_name}"
+  end
+  before_validation :set_code, :set_role
   after_create :set_employee, if: :has_no_employee?
   
   def has_no_employee?
@@ -81,10 +85,10 @@ class User < ActiveRecord::Base
     false
   end
   
-  after_initialize :set_role
   
   def set_role
-    self.role = "Employee"
+    # Maybe this should change depending on if they have ever worked for the agency or if theyre just a candidate
+      self.role = "Employee"
   end
   
   def to_param
@@ -100,8 +104,7 @@ class User < ActiveRecord::Base
   scope :assigned, -> { joins(:employee).merge(Employee.with_active_jobs)}
   scope :online, -> { where("updated_at > ?", 10.minutes.ago) }
 
-  def set_name;             self.name = "#{first_name} #{last_name}"; end
-  # def name; "#{first_name} #{last_name}";end
+  
   def set_check_in!
     if checked_in_at.nil?
       self.update(checked_in_at: created_at)

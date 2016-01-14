@@ -1,47 +1,47 @@
-<div class='row row150'>
-	<div class="col-md-3 col-sm-12 col-xs-12 text-center">
-		<div class='dark'>
-			<h5 class="text-center"><strong>This Week</strong>	  	</h5>
-			<span class="badge badge-success"><%= @current_agency.timesheets.current_week.approved.try(:count) %> Approved </span>
-			<span class="badge badge-default"><%= @current_agency.timesheets.current_week.pending.try(:count) %> Pending </span>
-		<br>
+<div class='payroll-boxes'>
+	<div class="col-md-3 lightbox">
+		<div class='center'>
+			<p class="text-center"><strong>This Week</strong>	  	</p>
+			<span class="label label-success"><%= @current_agency.timesheets.current_week.approved.try(:count) %> Approved </span>
+			<span class="label label-default"><%= @current_agency.timesheets.current_week.pending.try(:count) %> Pending </span>
+		
 		<%= link_to(admin_timesheets_path(@current_admin.timesheets.current_week, format: :csv), class: 'btn btn-success') do %>
-  					<i class="fa fa-export fa-1x"></i> Export
+  					<i class="fa fa-export fa-fw"></i> Export
   				<% end %>
-		<%= link_to(admin_timesheets_path, class: "btn btn-primary") do %>
+		<%= link_to(admin_timesheets_path, class: "btn btn-primary btn-lg btn-block") do %>
 		View All Timesheets
 			<% end %>
 		</div>
 	</div>
 
-	<div class="col-md-3 col-sm-12 col-xs-12 text-center">
-		<div class='dark'>
-			<h5 class="text-center"><strong>Last Week</strong>	  	</h5>
+	<div class="col-md-3 lightbox">
+		<div class='center'>
+			<p class="text-center"><strong>Last Week</strong>	  	</p>
 		
-			<span class="badge badge-success"><%= @current_agency.timesheets.last_week.approved.try(:count) %> Approved </span>
-			<span class="badge badge-default"><%= @current_agency.timesheets.last_week.pending.try(:count) %> Pending </span>
-			<br>
-			<%= link_to(past_admin_timesheets_path, class: "btn btn-primary") do %>
+			<span class="label label-success"><%= @current_agency.timesheets.last_week.approved.try(:count) %> Approved </span>
+			<span class="label label-default"><%= @current_agency.timesheets.last_week.pending.try(:count) %> Pending </span>
+			
+			<%= link_to(past_admin_timesheets_path, class: "btn btn-primary btn-lg btn-block") do %>
 				View Past Timesheets
 				<% end %>
 		</div>
 	</div>
-	<div class="col-md-3 col-sm-12 col-xs-12  text-center">
-		<div class="dark">
+	<div class="col-md-3 lightbox">
+		<div class='center'>
 		<% if @current_admin.timesheets.last_week.pending.any? %>
-		<i class="fa fa-clock-o fa-1x"></i> 
-			<h5>There are <strong><%= @current_admin.timesheets.last_week.pending.count %></strong> pending timesheets from last week.</h4>
+		<i class="fa fa-clock-o fa-fw"></i> 
+			<p>There are <strong><%= @current_admin.timesheets.last_week.pending.count %></strong> pending timesheets from last week.</p>
 			
-				<%= link_to(last_week_admin_timesheets_path, class: "btn btn-primary") do %>
+				<%= link_to(last_week_admin_timesheets_path, class: "btn btn-primary btn-lg btn-block") do %>
 				Last Week Timesheets
 				<% end %>
 				
 		<% else %>
-		<i class="fa fa-check fa-1x"></i> 
-		<h5>	All of last week's timesheets have been approved.</h5>
+		<i class="fa fa-check fa-fw"></i> 
+		<p>	All of last week's timesheets have been approved.</p>
 		
 				<%= link_to(past_admin_timesheets_path(@current_admin.timesheets.last_week, format: :csv), class: 'btn btn-success') do %>
-  					<i class="fa fa-export fa-1x"></i> Export
+  					<i class="fa fa-export fa-fw"></i> Export
   				<% end %>
 				
 		<% end %>
@@ -49,30 +49,24 @@
 		</div>
 	</div>
 	
-	<div class="col-md-3 col-sm-12 col-xs-12  text-center">
-		<div class="dark">
+	<div class="col-md-3 lightbox">
+		<div class='center'>
 			
 			<% if @newly_added.any? %>
-			<i class="fa fa-users fa-1x"></i>
-			<strong>New Employees</strong>
-			<br>
-			<ul>
+			<i class="fa fa-users fa-fw"></i>
+			<h4>New Employees</h4>
+			<div class="list-group">
 				<% @newly_added.limit(3).each do |employee| %>
-			<li class='list-item'><%= employee.name %></li>
-			
-			
+			<%= link_to "<i class='fa fa-user fa-fw'></i> &nbsp; #{employee.name}".html_safe, admin_employee_path(employee), class: "list-group-item list-group-item-info" %>
 			<% end %>
-			</ul>	
+			</div>	
 			<% else %>
-			<i class="fa fa-users fa-1x"></i>
-			<h5>There are no new employees at this time.</h4>
-			
+			<i class="fa fa-users fa-fw"></i>
+			<p>There are no new employees at this time.</p>
 			<% end %>
-			<%= link_to(new_user_registration_path, class: 'btn btn-primary fill') do %>
-  					<i class="fa fa-user-plus fa-1x"></i> Add Employee
+			<%= link_to(new_user_registration_path, class: 'btn btn-primary btn-lg btn-block') do %>
+  					<i class="fa fa-user-plus fa-fw"></i> Add Employee
   				<% end %>
-			
-			
 		</div>
 		
 	</div>

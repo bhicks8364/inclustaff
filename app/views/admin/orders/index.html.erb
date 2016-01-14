@@ -1,11 +1,11 @@
 
-<div class="col-md-12">
+<div class="col-md-12 lightbox">
 	
-	<div class='col-md-2'>
+	<div class=''>
 	   <%= render 'admin/orders/search' %>
 	</div>
 	
-	<div class="col-md-8">
+	<div class="col-md-10">
 		<% @orders.needs_attention.each do |order| %>
 			<%= render 'admin/orders/order', order: order %>
 		<% end %>

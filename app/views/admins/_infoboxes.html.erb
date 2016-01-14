@@ -36,6 +36,7 @@
 	<div class="col-md-3 bg-white">
 	    <div class="panel panel-default">
 	        <div class="panel-body">
+	        	<%= render "admin/shared/one_day_calendar", events: @admin.events.order(:created_at) %>
 	        </div>
 	    </div>
 	</div>

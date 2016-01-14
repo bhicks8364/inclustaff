@@ -1,11 +1,11 @@
 <div class='col-md-12 lightbox' data-behavior="job-list" >
     <div class='' data-behavior="job" data-id="<%= @job.id %>">
         
-        <div data-behavior="job-state"><h2 class='text-right'><span class='label label-success'><%= @job.state %></span></h2></div>
+        <div data-behavior="job-state"><h2 class='text-right'><span class='label label-danger'><%= @job.state %></span></h2></div>
         <h1> <small>Last Updated: <%= time_ago_in_words(@job.updated_at) %> ago </small></h1>
         <% if @job.state == "Already Working" %>
         
-        <h2><%= @employee.current_job.present? ? "Current position: #{link_to @employee.current_job.title_company, admin_job_path(@employee.current_job)}".html_safe : "#{@employee.jobs.last.title} - Inactive" %></h2>
+        <h4 class='text-right'><%= @employee.current_job.present? ? "Current position: #{link_to @employee.current_job.title_company, admin_job_path(@employee.current_job)}".html_safe : "#{@employee.jobs.last.title} - Inactive" %></h4>
         <% end %>
         <div class='col-md-6 bg-white'>
             <h2><%= @job.title_company %></h2>

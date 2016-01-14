@@ -34,7 +34,7 @@
 		<ul class="nav navbar-nav">
 			<%= render 'admin/shared/clocked_in' if  @current_admin.jobs.on_shift.any? %>
 			<%= render 'admin/shared/on_break' if @current_admin.jobs.on_break.any? %>
-			<%= render 'admin/shared/dropdown'if @current_admin.comments.includes(:commentable).unread.any? %>
+			<!--<%= render 'admin/shared/dropdown'if @current_admin.comments.includes(:commentable).unread.any? %>-->
 		</ul>
      
     </div><!-- /.navbar-collapse -->

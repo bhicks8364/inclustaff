@@ -1,12 +1,24 @@
 <div class='col-md-12 lightbox'>
 
     <%= render 'infoboxes' %>
-    <div class='col-md-12 bg-white'>
-        <h1 class='page-header'><%= @admin.name %> <small><%= @admin.role %></small></h1>
-        <h3><%= @admin.email %></h3>
-        <h3 class='text-center'>This week: <%= number_to_currency(@admin.current_billing) %>
-        </h3>
-         <h4 class='text-right'>Last week: <%= number_to_currency(@admin.last_week_billing)%></h4>
+    <div class='col-md-12'>
+        <div class="col-md-4">
+            <h1 class='page-header'><%= @admin.name %> <small><%= @admin.role %></small></h1>
+            <h3><%= @admin.email %></h3>
+            
+        </div>
+        
+         <div class="col-md-4">
+             <h3 class='text-center'>This week: <%= number_to_currency(@admin.current_billing) %>
+            </h3>
+             <h4 class='text-right'>Last week: <%= number_to_currency(@admin.last_week_billing)%></h4>
+         </div>
+         <div class="col-md-4">
+             <div class="btn-group">
+        		<%= link_to "Edit", edit_admin_path(@admin), class: 'btn btn-primary' %>
+        	</div>
+         </div>
+         
     </div>
     
     <div class='col-md-12'>
@@ -15,14 +27,8 @@
         <%= render 'admin/charts/recruiter_charts', recruiter: @admin if @admin.recruiter? %>
     </div>
     
-	<div class="col-md-4 bg-white">
-	    <div class="btn-group">
-    		<%= link_to "Edit", edit_admin_path(@admin), class: 'btn btn-primary' %>
-    	</div>
-	</div>
-	<div class="col-md-4 bg-white">
 	    
-	</div>
+	    
 
 </div>
 

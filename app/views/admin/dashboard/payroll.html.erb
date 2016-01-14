@@ -16,12 +16,13 @@
 		<div class="tab-content">
 			<div class="tab-pane fade in active" id="tab-home">
 				<div class='col-md-12 bg-white'>
-	       			<%= render 'admin/shifts/one_day_calendar', shifts: @shifts %>
-                    <%= render 'admin/shared/one_day_calendar', events: @current_agency.events.order(id: :desc) %>
-	       			<div class='col-md-4 bg-white'>
-	       				
+	       			
+                    
+	       			
+	       			<div class='col-md-12 bg-white'>
+	       				<%= render 'admin/infoboxes/payroll_boxes' %>
 	       			</div>
-	       			<%= render 'admin/infoboxes/payroll_boxes' %>
+	       			
 	 			</div>
 			</div>
 			<div class="tab-pane fade in" id="tab-aca">
@@ -55,7 +56,13 @@
 			</div>
 			<div class="tab-pane fade" id="tab-calendar">
 				<div class='col-md-12 bg-white'>
-					
+					<h3>Events</h3>
+					<div class='col-md-3 bg-white'>
+	       				<%= render 'admin/shifts/one_day_calendar', shifts: @shifts %>
+	       			</div>
+	       			<div class='col-md-9 bg-white'>
+	       				<%= render 'admin/shared/one_day_calendar', events: @current_agency.events.order(created_at: :desc) %>
+	       			</div>
 					 
 				</div>
 			</div>

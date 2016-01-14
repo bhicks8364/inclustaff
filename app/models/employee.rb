@@ -49,7 +49,7 @@ class Employee < ActiveRecord::Base
   # This isnt working right. Think I should use arrays for this or maybe a new model all together. idk
   store_accessor :availablity, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday
  
-  
+  delegate :last_clock_in, to: :current_job
   delegate :last_clock_out, to: :current_job
   delegate :current_shift, to: :current_job
   delegate :account_manager, to: :current_job
@@ -68,7 +68,7 @@ class Employee < ActiveRecord::Base
     user_id.nil?
   end
   def name_title
-    assigned? ? current_job.name_title : "#{name} - Unassigned"
+    current_job.present? ? current_job.name_title : "#{name} - Unassigned"
   end
   def title
     current_job.present? ? current_job.title : "Unassigned"
@@ -202,7 +202,7 @@ class Employee < ActiveRecord::Base
   end
   
   def unassigned?
-    !assigned?
+    active == false
   end
 
   def on_shift?

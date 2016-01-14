@@ -305,7 +305,7 @@ class Job < ActiveRecord::Base
     
     def last_clock_in
         if shifts.any?
-            shifts.last.time_in.stamp('11/12/2015 at 1:05am')
+            shifts.last.time_in.stamp('Mon 11/12 at 1:05am')
         else
             "No shifts yet."
         end
@@ -313,7 +313,7 @@ class Job < ActiveRecord::Base
     
     def last_clock_out
         if shifts.clocked_out.any?
-            shifts.clocked_out.last.time_out.stamp('11/12/2015 at 1:05am')
+            shifts.clocked_out.last.time_out.stamp('Mon 11/12/2015 at 1:05am')
         else
             "No complete shifts."
         end
