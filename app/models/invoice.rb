@@ -37,8 +37,6 @@ class Invoice < ActiveRecord::Base
     #     end
     #   end
     
-  
-    
     scope :unpaid, -> { where(paid: false)}
     scope :paid, -> { where(paid: true)}
     scope :past, -> { where("week < ?", Date.today.beginning_of_week.cweek) }

@@ -15,9 +15,11 @@
 		<%= render "admin/shared/alerts/open_orders", orders: @current_admin.job_orders %>
 	</div>
 	<div class='row'>
-		<div class="col-md-12 bg-white">
-			<h2>All Job Order</h2>
-				<%= render 'admin/orders/table', orders: @current_admin.job_orders.includes(:company).order(:created_at) %>
+		<div class="col-md-12 lighterbox">
+			<h2>All Job Orders</h2>
+				<div class='col-md-10 scroll400'>
+					<%= render 'admin/orders/table', orders: @current_admin.job_orders.includes(:company).order(:created_at) %>
+				</div>
 		</div>
 		
 	</div>

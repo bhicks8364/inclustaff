@@ -1,44 +1,50 @@
-<div class='row'>
-	<div class='col-md-1'></div>
-	<div class="col-md-3 bg-white">
-	    <div class="panel panel-default">
-	        <div class="panel-body">
-	        	<% if @admin.events.following_admin.any? %>
-	            <h4>Following Admins</h4>
-	    		<ul class='fa-ul'>
-	    		    <% @admin.events.following_admin.each do |event| %>
-	        			<li><i class='fa fa-user'></i> <%= link_to event.eventable.name, event %></li>
-	        				        		<% end %>
-	    		</ul>
-	    		<% end %>
-	    		<% if @admin.events.following_candidates.any? %>
-	    		<h4>Following Users</h4>
-	    		<ul class='fa-ul'>
-	    		    <% @admin.events.following_candidates.each do |event| %>
-	        			<li><i class='fa fa-user'></i> <%= link_to event.eventable.name, event %></li>
-	        		<% end %>
-	    		</ul>
-	    		<% end %>
-	        </div>
-	    </div>
+<div class=''>
+	<div class="col-md-12">
+        <div class="">
+           <%= pie_chart @admin.invoices.group(:company).references(:invoices).sum(:total), min: 1000, max: 5000 ,
+           library: {legend: {position: "left"}, is3D: true, title: "Invoices by Company"} %>
+        </div>
 	</div>
-	<div class="col-md-3 bg-white">
-	    <div class="panel panel-default">
-	        <h4>Recent Activity</h4>
-	        <div class="panel-body scroll400">
-	            <% @admin.events.order(:created_at).each do |event| %>
+	<div class="col-md-4">
+        <div class="">
+        	<h4>Following Admins</h4>
+        	<% if @admin.events.following_admin.any? %>
+    		<ul class='fa-ul'>
+    		    <% @admin.events.following_admin.each do |event| %>
+        			<li><i class='fa fa-user'></i> <%= link_to event.eventable.name, event.eventable %></li>
+        		<% end %>
+    		</ul>
+    		<% else %>
+    		<p class='bold'>No admins to show.</p>
+    		<% end %>
+    		<h4>Following Users</h4>
+    		<% if @admin.events.following_candidates.any? %>
+    		
+    		<ul class='fa-ul'>
+    		    <% @admin.events.following_candidates.each do |event| %>
+        			<li><i class='fa fa-user'></i> <%= link_to event.eventable.name, event.eventable %></li>
+        		<% end %>
+    		</ul>
+    		<% else %>
+    		<p class='bold'>No users to show.</p>
+    		<% end %>
+    	</div>
+	</div>
+	<div class="col-md-8">
+	    <div class="box">
+	        <div class="">
+	    		<h4>Recent Activity</h4>
+	        <% if @admin.events.any? %>
+	        <div class="scroll400">
+	            <% @admin.events.order(:created_at).limit(10).each do |event| %>
 	              <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
 	                <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
 	              <% end %>
 	             <% end %>
 	        </div>
-	    </div>
-	</div>
-	<div class="col-md-3 bg-white">
-	    <div class="panel panel-default">
-	        <div class="panel-body">
-	        	<%= render "admin/shared/one_day_calendar", events: @admin.events.order(:created_at) %>
-	        </div>
+	        <% else %>
+	        <p class='bold'>No activity to show.</p>
+	        <% end %>
 	    </div>
 	</div>
 </div>

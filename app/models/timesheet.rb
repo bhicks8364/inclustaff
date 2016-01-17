@@ -80,12 +80,9 @@ class Timesheet < ActiveRecord::Base
     scope :pending, -> { where(state: "pending")}
     scope :this_year,    -> { joins(:shifts).merge(Shift.this_year)}
     scope :last_week,    -> { joins(:shifts).merge(Shift.last_week)}
-    # scope :last_week, ->{
-    #     where(week: Date.today.beginning_of_week.cweek - 1)
-    # }
     scope :approaching_overtime, -> { where('reg_hours > 36') }
-    scope :current_week, ->{ where(week: Date.today.cweek) }
-    scope :past, -> { where("week < ?", Date.today.beginning_of_week.cweek) }
+    scope :current_week, ->{ joins(:shifts).merge(Shift.current_week) }
+    scope :past, -> { joins(:shifts).merge(Shift.past) }
     
     scope :overtime_errors, -> { where('reg_hours > 40') }
     scope :needing_approval, -> { last_week.pending }

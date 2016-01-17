@@ -70,6 +70,7 @@ class Shift < ActiveRecord::Base
   scope :with_notes,    -> { where(NamedFunction.new("LENGTH", [Shift[:note]]).gt(2))}
   scope :short_shifts,  -> { where('time_worked > 4') }
   scope :over_8,        -> { where('time_worked > 8') }
+  scope :past, -> { where(Shift[:time_in].lteq(Date.yesterday))}
   
   def self.worked_before(date)
     where(Shift[:time_in].lteq(date))

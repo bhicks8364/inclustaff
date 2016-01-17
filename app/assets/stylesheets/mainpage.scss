@@ -1,11 +1,11 @@
 #front-headline {
-    margin:auto;
+    // margin:auto;
     // border: solid 8px green;
     padding: 5px;
-    min-height: 200px;
+    // min-height: 200px;
     // background-image:
-    //     linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
-    //     url(InclusStaff-twitter-cover.png);
+        // linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+        // url(wood-bg.jpg);
     
 }
 img.feature-pic {
@@ -97,6 +97,7 @@ input.file-field {
 }
 .user-icon {
     width: 35px;
+    float: left;
 }
 .payroll-boxes {
     min-height: 300px;
@@ -109,4 +110,34 @@ input.file-field {
     min-width: 100%;
     margin: 8px;
     padding: 8px;
+}
+.main-div {
+    width: 50%;
+    // border: 1px solid black;
+    
+}
+.box-border {
+    border: 1px solid black;
+    padding: 8px; 
+}
+.box {
+    padding: 8px;
+}
+#prelaunch {
+    // background-color: rgba(193, 99, 6, 0.8);
+    margin: auto;
+    // background-color: rgba(225, 225, 225, 0.8);
+    // box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+}
+.front-icon {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.online-icon {
+    width: 50px;
+    height: 50px;
+    display: block;
+    // margin-left: auto;
+    // margin-right: auto;
 }

@@ -1,8 +1,8 @@
-<div class='col-md-12 lighterbox'>
+<div class='col-md-12 '>
     <div class='col-md-3'>
         <%= @current_agency.present? ? image_tag(@current_agency.logo_url, class: "home-logo", alt: "img-#{@current_agency.id}") : "" %> 
     </div>
-    <div class='col-md-6'><h1 class='metal bold text-center'><%= @current_agency.try(:name) || "IncluStaff" %></h1></div>
+    <div class='col-md-6'><h1 class='metal bold page-header'><%= @current_agency.try(:name) || "IncluStaff" %></h1></div>
     
     <div class='col-md-3'>
         <%= link_to "<h3><i class='fa fa-search fa-fw'></i> Job Search</h3>".html_safe, public_job_board_path, class: "btn btn-primary btn-lg btn-block" %>
@@ -10,12 +10,12 @@
     <div class='col-md-12'>
         <%= render 'dashboard/users_sign_in' if @current_agency.present? %>
     </div>
+    <div class='col-md-3 text-center pull-right'>
+        <h3 class='metal'>Admin</h3>
+    	<div class='btn-group'>
+    		<%= link_to "<span class='metal bold'><i class='fa fa-plus fa-fw'></i>Add Account</span>".html_safe, new_admin_registration_path, class: 'btn btn-default' %>
+    		<%= link_to "<span class='metal bold'><i class='fa fa-sign-in fa-fw'></i> Sign In</span> ".html_safe, new_admin_session_path, class: 'btn btn-default' %>
+    	</div>
+    </div>
 </div>
 
-
-<div class='col-md-3'>
-	<div class='text-right'>
-		<%= link_to "<i class='fa fa-plus fa-fw'></i>Admin Sign Up ".html_safe, new_admin_registration_path, class: '' %>
-		<%= link_to "<i class='fa fa-sign-in fa-fw'></i> Admin Sign In ".html_safe, new_admin_session_path, class: '' %>
-	</div>
-</div>

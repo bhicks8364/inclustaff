@@ -375,8 +375,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .autumn-blur {
     background: url(autumn_blur.jpg) no-repeat center center fixed; 
-    
-    color: white;
+    // color: white;
 }
 
 .sixty {
@@ -391,4 +390,11 @@ ul > li {
     align: right;
     
 }
-
+.nav-brand {
+    font-size: 30;
+    line-height: 30;
+}
+.pdf {
+    background: url(pdf19.png) no-repeat center center fixed; 
+    // color: white;
+}

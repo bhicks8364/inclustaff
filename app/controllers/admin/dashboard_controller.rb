@@ -89,9 +89,7 @@ class Admin::DashboardController < ApplicationController
    
     
     def payroll
-      @admin = @current_admin
-      @orders = @current_agency.orders.needs_attention
-      @timesheets = @current_agency.timesheets.all
+      @timesheets = @current_agency.timesheets.includes(:shifts).all
       @jobs = @current_agency.jobs.all
       @shifts = @current_agency.shifts.current_week
       skip_authorization

@@ -48,8 +48,8 @@
          <h1 class='text-center'><%= @agency.name %></h1>
             <div class='col-md-3 bg-white'>
                 <%= image_tag(@agency.logo_url, class: "img-zoom", alt: "img-#{@agency.id}")%> 
-                <p> Name: <strong><%= link_to @agency.contact_name, @agency.contact %></strong><br>
-                 Email: <strong><%= @agency.contact_email%></strong>
+                <p> Name: <strong><%= link_to @agency.contact.name, @agency.contact %></strong><br>
+                 Email: <strong><%= @agency.contact.email%></strong>
                 </p>
                 <address class='white'>
                  <%= @agency.address %><br>

@@ -202,7 +202,7 @@ class Employee < ActiveRecord::Base
   end
   
   def unassigned?
-    active == false
+    assigned == false
   end
 
   def on_shift?
