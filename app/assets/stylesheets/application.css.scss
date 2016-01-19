@@ -49,6 +49,7 @@
 body {
   // font-family: 'Titillium Web', Geneva, sans-serif;
   padding-top: 70px;
+  
   background-color: #e3e4e4;
   // background: transparent;
   // background: url(colorful-triangles-background.jpg) no-repeat center center fixed;
@@ -68,6 +69,7 @@ body {
   height: 100%;
   
   padding: 5px;
+  // padding-bottom: 20px;
   
 }
 
@@ -279,4 +281,7 @@ h1 {
   top: 0; left: 0;
   width: 100%;
   height: 100%;
+}
+.footer {
+  margin-bottom: 0px;
 }

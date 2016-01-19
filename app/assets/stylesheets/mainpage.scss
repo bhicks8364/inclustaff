@@ -1,7 +1,12 @@
 #front-headline {
+    // background-color: #ccc;
+    // background-color: rgba(0, 0, 0, 0.49);
+    // background: url(sky.png) no-repeat; 
     // margin:auto;
     // border: solid 8px green;
-    padding: 5px;
+    padding: 15px;
+    padding-left: 5px;
+    // background: url(street-white.png) no-repeat center center fixed; 
     // min-height: 200px;
     // background-image:
         // linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
@@ -155,6 +160,7 @@ input.file-field {
     background: url(street-white.png) no-repeat center center fixed; 
     background-size: contain;
     background-origin: content-box;
+    vertical-align: middle;
 }
 .feature-icon {
     width: 50px;
@@ -162,4 +168,25 @@ input.file-field {
     // display: block;
     // margin-left: auto;
     // margin-right: auto;
+}
+
+.bullet-icon {
+    width: 100px;
+    height: 100px;
+    display: block;
+    // margin-left: auto;
+    // margin-right: auto;
+    // margin-top: 25px;
+}
+.mainpage {
+    margin-bottom: 70px;
+}
+.main-logo {
+    width: 300px;
+    height: auto;
+    // display: block;
+    // float: left;
+    // margin-left: 10px;
+    // margin-right: auto;
+    // margin-top: 15px;
 }

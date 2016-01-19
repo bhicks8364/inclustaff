@@ -1,5 +1,5 @@
 <div class='metal'>
- <h2 class='page-header bold  '>From the first punch to the final invoice...IncluStaff does it all.</h2>
+
   <!-- Nav tabs -->
   <ul class="nav nav-tabs nav-justified" role="tablist">
     <li role="presentation" class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">Overview</a></li>
@@ -15,13 +15,14 @@
   <!-- Tab panes -->
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane fade in active" id="overview">
-     
+      <h1 class='text-info text-center  '>From the first punch to the final invoice...IncluStaff does it all.</h1>
+      <hr>
       <%= render 'front_info' %>
     </div>
     
     <div role="tabpanel" class="tab-pane fade" id="sales">
-      <h1 class='text-center'>Sales</h1>
-      <h3>Easily enter job orders from anywhere</h3> 
+      <h1 class='text-info'>Sales</h1>
+      
        <div class='col-md-6'>
          
          <%= image_tag("sales-dash.png", class: 'screenshot') %>
@@ -31,30 +32,25 @@
      
     </div>
     <div role="tabpanel" class="tab-pane fade" id="recruiting">
-      <h1 class='text-center'> Recruiting</h1>
+      <h1 class='text-info'> Recruiting</h1>
         
         
          <%= render 'recruiter' %>
 
-       <div class='col-md-6'>
-         <%= image_tag("recruiting-dash.png", class: 'screenshot') %>
-       </div>
-       <div class='col-md-6'>
-         <%= image_tag("recruiting-orders-tab.png", class: 'screenshot') %>
-         
-        </div>
+       
        
     </div>
     <div role="tabpanel" class="tab-pane fade" id="payroll">
-      <h1 class='text-center'>Payroll</h1>
+      <h1 class='text-info'>Payroll</h1>
+     
        <div class='col-md-6'>
+         <p class='lead text-danger'>Missing hours are expensive. </p>
+          
          <%= image_tag("payroll-timesheets-tab.png", class: 'screenshot') %>
        </div>
        <div class='col-md-6'>
-          <p class='lead '>Missing hours are expensive. <br>
+         <p class='lead '>
           Eliminate the extra expense of additional payrolls fees  by tracking all of your employees' hours in real-time.</p>
-       </div>
-       <div class='col-md-6'>
          <%= image_tag("timesheets-index.png", class: 'screenshot') %>
        </div>
       
@@ -62,12 +58,12 @@
     </div>
     
     <div role="tabpanel" class="tab-pane fade" id="aca">
-      <h1 class='text-center'>ACA Compliance</h1>
-      <p  class='lead'>ACA Tracking specifically designed for Staffing Agenices</p>
-     
-      <h2>Avoid penalties. Track eligibility. Simplify reporting. </h2>
-      <div class='col-md-6'>
-        
+      <h1 class='text-info'>ACA Compliance</h1>
+      <div class='col-md-4'>
+        <p class='lead'>ACA Tracking specifically designed for Staffing Agenices</p>
+      </div>
+      <div class='col-md-8'>
+        <h2>Avoid penalties. Track eligibility. Simplify reporting. </h2>
         <ul class='fa-ul bold'>
          <li><i class="fa-li fa fa-check-square"></i> IRS 1095-C and 1094-C report preparation </li>
          <li><i class="fa-li fa fa-check-square"></i> Forecast and view ACA eligibility </li>
@@ -78,23 +74,20 @@
         </ul>
         
       </div>
-      
-      <div class='col-md-6'>
-        <%= render 'aca_tip1' %>
-      </div>
     </div>
     <div role="tabpanel" class="tab-pane fade" id="customers">
-      <h1 class='text-center'>Your Customers</h1>
-      <p  class='lead'>Customer Portals</p>
+      <h1 class='text-info'>Your Customers</h1>
+     
       <div class='col-md-8'>
         <%= image_tag("company-signin.png", class: 'screenshot') %>
       </div>
       <div class='col-md-4'>
+         <p  class='lead bold'>Customer Portals</p>
         <p class='lead'>Give your customers the added value and flexiblity of managing their accounts through your custom portal.  </p>
       </div>
     </div>
     <div role="tabpanel" class="tab-pane fade" id="employees">
-      <h1 class='text-center'>Your Employees</h1>
+      <h1 class='text-info'>Your Employees</h1>
       
       <div class='col-md-12'>
         <%= render 'employee' %>

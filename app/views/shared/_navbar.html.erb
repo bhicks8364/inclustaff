@@ -20,7 +20,6 @@
         <li><%= link_to "About", about_path %></li>
         <li><%= link_to "Contact", contact_path %></li>
         <li><%= link_to "Features", features_path %></li>
-        <li><%= link_to "Sign Up", new_agency_path %></li>
         <% end %>
         <% if !signed_in? && @current_agency.present?  %>
         <li><%= link_to "Job Search", public_job_board_path %></li>
