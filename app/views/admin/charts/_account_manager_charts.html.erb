@@ -1,24 +1,26 @@
-<div class="col-md-6">
-   
+<div class="col-md-4">
+    
     <h5 class='text-center'>Total Orders: <%= admin.job_orders.count %></h5>
  
         <%= pie_chart admin.job_orders.group(:mark_up).count, min: 1000, max: 5000 , library: {legend: {position: "bottom"}, is3D: true, title: "Orders by Mark Up"} %>
         
 </div>
-
-
-<div class="col-md-6">
-    <h5 class='text-center'>Billing by Day</h5>
-       <%= line_chart admin.job_orders.map{|order|
-    {name: order.title, data: order.timesheets.count}
-} %>
+<div class="col-md-4">
+    <h2><%= admin.first_name %>'s Companies</h2>
+    <%= render 'admin/shared/company_collapse', companies: admin.companies %>
+   <% admin.companies.each do |company| %>
+       <%= company.name %><br>
+   <% end %>
 </div>
 
-<div class="col-md-8">
+
+
+
+<div class="col-md-4">
    
     <h5 class='text-center'>Orders by Fill Date</h5>
  
-        <%= line_chart admin.job_orders.group_by_day(:needed_by).count %>
+        <%= line_chart admin.job_orders.needs_attention.group_by_day(:needed_by).count %>
         
 </div>
 <div class="col-md-4">

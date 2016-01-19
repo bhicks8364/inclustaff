@@ -1,10 +1,59 @@
-<div class='col-md-12 lightbox'>
-    
-    <div class='col-md-12 lighterbox'>
-        <%= image_tag("inclustaff_flowchart.png", class: "fill", alt: "flowchart")%> 
+<div class='metal'>
+ <h2 class='page-header bold  '>From the first punch to the final invoice...IncluStaff does it all.</h2>
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs nav-justified" role="tablist">
+    <li role="presentation" class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">Overview</a></li>
+    <li role="presentation"><a href="#faq" aria-controls="faq" role="tab" data-toggle="tab">FAQ</a></li>
+    <li role="presentation"><a href="#how-it-works" aria-controls="how-it-works" role="tab" data-toggle="tab">How It Works</a></li>
+  </ul>
 
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane fade in active" id="overview">
+        <hr>
+        <div class='col-md-6'>
+             <p class='lead'>Avoid costly mistakes - eliminate data entry errors, expensive extra payrolls, <i>no-bill</i> paychecks & more</p>
+            <p>Save thousands of dollars and countless hours in payroll alone! For example, 48 hours a week spent in time collection 
+            and verification can be reduced to a few quick button clicks. 
+            At just $12 per hour that’s a savings of over $30,000 per year!!</p>
+        </div>
+        <div class='col-md-6'>
+            <p class='lead'>
+                Gain a true competitive advantage
+            </p>
+            <p>
+
+Getting orders in real time allows your candidates and recruiters the chance to fill the position before your competitors even know it is available.
+Empowering your clients to submit their own orders makes the process so easy that they won’t even take the time to think about contacting a competitor!
+
+Plus keep your finger on the pulse of your business with a concise dashboard info and MUCH, MUCH more!!
+</p>
+        </div>
+      
     </div>
     
-  
+    <div role="tabpanel" class="tab-pane fade" id="faq">
+      <h1 class='text-center'>  <%= image_tag("businessman205.png", class: 'front-icon') %> FAQ</h1>
+     
+      <%= render 'faq' %>
+     
+    </div>
+    <div role="tabpanel" class="tab-pane fade" id="how-it-works">
+        <h1 class='text-center'> How It Works</h1>
+        <div class='col-md-6'>
+            <div class="embed-container">  
+            <%= embed("www.youtube.com/watch?v=UNh62maKFK4") %>
+            </div> 
+        </div>
+        <div class='col-md-6'>
+            
+        </div>
+       <div class='col-md-12'>
+           
+           <%= image_tag("inclustaff_flowchart.png", class: "screenshot", alt: "flowchart")%> 
+       </div>
+       
+    </div>
+  </div>
 
 </div>

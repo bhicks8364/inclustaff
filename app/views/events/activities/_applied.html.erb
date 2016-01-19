@@ -1,6 +1,6 @@
 
 <%= link_to event, class: 'list-group-item list-group-item-success' do %>
-	<%= user_signed_in? ? "You" : event.user.name %> <%= event.action %>  to  <%= event.eventable.title %>
+	<%= user_signed_in? ? "You" : event.user.name %> <%= event.action %>  to  <%= event.eventable.try(:title) || "a job order that has since been removed." %>
 
 	<% if event.user.assigned? %>
 		<span class='label label-danger pull-right'>

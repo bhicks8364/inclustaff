@@ -1,4 +1,6 @@
 <div class='col-md-12'>
+  
+    
     <%= column_chart @current_agency.companies.order('name').map{|company|
         {name: company.name, data: company.invoices.group_by_month('created_at', range: 3.months.ago.midnight..Time.current, format: "%b/%d/%y").sum(:total)}
     }, library: {backgroundColor: "#ccc", legend: {position: "right"}, title: "Company Billings by Month"} %>
