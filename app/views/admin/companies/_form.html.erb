@@ -7,7 +7,7 @@
         <%= f.input :phone_number, placeholder: "Phone Number"  %>
         
         <%= f.input :preferences, class: "" do %>
-          <%= f.input :current_account_manager, collection: @current_agency.admins.account_managers.order(:last_name), placeholder: "Account Manager", class: "form-control" %>
+          <%= f.input :current_account_manager, collection: @current_agency.admins.account_managers.order(:last_name), include_blank: false, class: "form-control" %>
         <% end %>
         
         <%= f.input :contact_name, placeholder: "Contact name"  %>

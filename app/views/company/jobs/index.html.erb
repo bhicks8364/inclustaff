@@ -1,12 +1,12 @@
-<div class='col-md-12 main-box'>
+<div class='col-md-12'>
   <% if @jobs %>
   <h1>Active Jobs <small><%= @company.name %></small></h1>
-  <div id="dataTable" class="table-responsive">
-    <table id="myTable" class="table" cellspacing="0.5" width="85%">
+  <div id="" class="table-responsive">
+    <table id="" class="table" cellspacing="0.5" width="85%">
     <thead>
       <tr>
      
-      
+        <th>Status</th>
         <th>Employee</th>
         <th>Title</th>
         <th>Start date</th>
@@ -26,6 +26,7 @@
         <% else %>
           <tr class="clocked_out">
         <% end %>
+          <td><%= job.status %></td>
           <td><%= job.employee.name %></td>
           <td><%= link_to job.order.title, company_order_path(job.order) %></td>
           <td><%= job.start_date.strftime("%B %e, %Y") %></td>

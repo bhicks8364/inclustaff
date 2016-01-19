@@ -1,46 +1,106 @@
-<div class='panel'>
-
+<div class='metal'>
+ <h2 class='page-header bold  '>From the first punch to the final invoice...IncluStaff does it all.</h2>
   <!-- Nav tabs -->
   <ul class="nav nav-tabs nav-justified" role="tablist">
     <li role="presentation" class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">Overview</a></li>
     <li role="presentation"><a href="#sales" aria-controls="sales" role="tab" data-toggle="tab">Sales</a></li>
     <li role="presentation"><a href="#recruiting" aria-controls="recruiting" role="tab" data-toggle="tab">Recruiting</a></li>
     <li role="presentation"><a href="#payroll" aria-controls="payroll" role="tab" data-toggle="tab">Payrolll</a></li>
+    <li role="presentation"><a href="#customers" aria-controls="customers" role="tab" data-toggle="tab">Your Customers</a></li>
+    <li role="presentation"><a href="#employees" aria-controls="employees" role="tab" data-toggle="tab">Your Employees</a></li>
     <li role="presentation"><a href="#aca" aria-controls="aca" role="tab" data-toggle="tab">ACA Compliance</a></li>
+    
   </ul>
 
   <!-- Tab panes -->
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane fade in active" id="overview">
-      <h2 class=' bold metal '>From the first punch to the final invoice...IncluStaff does it all.</h2>
+     
       <%= render 'front_info' %>
     </div>
     
     <div role="tabpanel" class="tab-pane fade" id="sales">
-      <h1>Sales</h1>
-      <h3 class='text-center'>Easily enter job orders from anywhere</h3> 
-      <p class='lead'>From the company’s lips to your recruiters ears…IncluStaff provides
-      a way for your client to easily add a job order to your system. Why would they even think about calling a competitor and waiting for an order to be processed when your company makes it so easy?
-      </p>
+      <h1 class='text-center'>Sales</h1>
+      <h3>Easily enter job orders from anywhere</h3> 
+       <div class='col-md-6'>
+         
+         <%= image_tag("sales-dash.png", class: 'screenshot') %>
+       </div>
+       <%= render 'manager' %>
+      
+     
     </div>
     <div role="tabpanel" class="tab-pane fade" id="recruiting">
-      <h1> Recruiting</h1>
-      <%= image_tag("achievement1.png", class: 'front-icon') %>
-      <p class='lead '>Identify your all-stars!</p>
-      <p>Quickly and easily view bill & fill rates, placement numbers and commission comparisons.    </p>
+      <h1 class='text-center'> Recruiting</h1>
+        
+        
+         <%= render 'recruiter' %>
+
+       <div class='col-md-4'>
+         <%= image_tag("recruiting-dash.png", class: 'screenshot') %>
+       </div>
+       <div class='col-md-6'>
+         <%= image_tag("recruiting-orders-tab.png", class: 'screenshot') %>
+         <p class='lead '>Identify your all-stars!<br>
+          Quickly and easily view bill & fill rates, placement numbers and commission comparisons.    </p>
+        </div>
+       
     </div>
     <div role="tabpanel" class="tab-pane fade" id="payroll">
-      <h1>Payroll</h1>
-      <p class='lead '>Missing hours are expensive. </p>
-      <p>Eliminate the extra expense of additional payrolls fees  by tracking all of your employees' hours in real-time.</p>
+      <h1 class='text-center'>Payroll</h1>
+       <div class='col-md-6'>
+         <%= image_tag("payroll-timesheets-tab.png", class: 'screenshot') %>
+       </div>
+       <div class='col-md-6'>
+          <p class='lead '>Missing hours are expensive. <br>
+          Eliminate the extra expense of additional payrolls fees  by tracking all of your employees' hours in real-time.</p>
+       </div>
+       <div class='col-md-6'>
+         <%= image_tag("timesheets-index.png", class: 'screenshot') %>
+       </div>
+      
       <%= render 'payroll' %>
     </div>
     
     <div role="tabpanel" class="tab-pane fade" id="aca">
-      <h1>ACA Compliance</h1>
-      <p  class='lead'>ACA tracking can be tricky</p>
-      <p>Easily determine an employee's status at any given time and can notify you when they become eligible for coverage.   </p>
-      <%= render 'aca_tip1' %>
+      <h1 class='text-center'>ACA Compliance</h1>
+      <p  class='lead'>ACA Tracking specifically designed for Staffing Agenices</p>
+     
+      <h2>Avoid penalties. Track eligibility. Simplify reporting. </h2>
+      <div class='col-md-4'>
+        
+        <ul class='fa-ul bold'>
+         <li><i class="fa-li fa fa-check-square"></i> IRS 1095-C and 1094-C report preparation </li>
+         <li><i class="fa-li fa fa-check-square"></i> Forecast and view ACA eligibility </li>
+         <li><i class="fa-li fa fa-check-square"></i> Collects and monitors actual hours worked by all employees  </li>
+         <li><i class="fa-li fa fa-check-square"></i> Ensures IRS audit preparedness </li>
+         <li><i class="fa-li fa fa-check-square"></i> Provides advance alerts before employee thresholds are exceeded</li>
+         <li><i class="fa-li fa fa-check-square"></i> Collects and monitors actual hours worked by all employee  </li>
+        </ul>
+        
+      </div>
+      
+      <div class='col-md-8'>
+        <%= render 'aca_tip1' %>
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane fade" id="customers">
+      <h1 class='text-center'>Your Customers</h1>
+      <p  class='lead'>Customer Portals</p>
+      <div class='col-md-8'>
+        <%= image_tag("company-signin.png", class: 'screenshot') %>
+      </div>
+      <div class='col-md-4'>
+        <p class='lead'>Give your customers the added value and flexiblity of managing their accounts through your custom portal.  </p>
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane fade" id="employees">
+      <h1 class='text-center'>Your Employees</h1>
+      
+      <div class='col-md-12'>
+        <%= render 'employee' %>
+      </div>
+     
     </div>
   </div>
 

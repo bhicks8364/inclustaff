@@ -3,16 +3,17 @@
   <%= link_to 'New Company', new_admin_company_path, class: 'btn btn-success pull-right' %>
   <h1 class='text-center'>All Companies</h1>
 
-<div class="table-responsive">
-  <table id="" class="table table-bordered inv_datatable">
+<div class="">
+  <table id="" class="table display">
   <thead>
     <tr>
       <th>Name</th>
       <th>Contact</th>
-      <th></th>
+      <th>Current/Active</th>
       <th>Current Bill</th>
       <th>Unpaid Balance</th>
       <th>Account Manager</th>
+      <th><span class=''><i class='fa fa-cogs'></i></span></th>
     </tr>
   </thead>
 
@@ -25,7 +26,7 @@
         <td><%= number_to_currency(company.timesheets.current_week.sum(:total_bill) )%></td>
         <td><%= number_to_currency(company.invoices.unpaid.sum(:total) ) %></td>
         <td><%= company.current_account_manager.name %></td>
-        <td><%= link_to "<i class='fa fa-file-pencil fa-fw'></i> ".html_safe, edit_admin_company_path(company), class: 'btn btn-primary fill' %></td>
+        <td><%= link_to "<i class='fa fa-pencil fa-fw'></i> ".html_safe, edit_admin_company_path(company), class: 'btn btn-primary' %></td>
       </tr>
     <% end %>
   </tbody>

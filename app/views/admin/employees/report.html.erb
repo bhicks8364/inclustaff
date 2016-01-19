@@ -1,11 +1,13 @@
-<div class='col-md-12 lightbox'>
+<div class='col-md-12'>
     
     <h1>ACA Reporting</h1>
-    <div class='col-md-4 bg-white'></div>
-    <div class='col-md-4 bg-white'>
+    <div class='col-md-4'></div>
+    <div class='col-md-4'>
     <% @employees.worked_this_year.distinct.sorted_by_total_hours.each do |employee| %>
         
-        <%= link_to employee.name, admin_employee_path(employee) %>  - <%= employee.total_hours.round(2) %> (Average: <%= employee.average_weekly_hours %>)
+        <%= link_to employee.name, admin_employee_path(employee) %>  - <%= employee.total_hours.round(2) %>
+        <br>
+        (Average: <%= employee.average_weekly_hours %> Days: <%= employee.days_from_initial_start %>)
         <%= link_to aca_admin_employee_path(employee), class: "aca-link" do %>
             <i class='fa fa-folder-open'></i>
         <% end %>
@@ -19,5 +21,5 @@
     
     <% end %>
     </div>
-    <div class='col-md-4 bg-white'></div>
+    <div class='col-md-4'></div>
 </div>

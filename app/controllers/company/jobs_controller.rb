@@ -8,7 +8,7 @@ class Company::JobsController < ApplicationController
     
       @admin = current_company_admin
       @company = @admin.company
-      @jobs = @company.jobs.active.order(title: :asc)
+      @jobs = @company.jobs.order(title: :asc)
       authorize @jobs
 
   end

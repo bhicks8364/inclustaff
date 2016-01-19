@@ -7,6 +7,7 @@
         <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
         <li role="presentation"><a href="#work_history" aria-controls="work_history" role="tab" data-toggle="tab">Work History</a></li>
         <li role="presentation"><a href="#applications-tab" aria-controls="applications" role="tab" data-toggle="tab">Applications</a></li>
+        <li role="presentation"><a href="#jobs-tab" aria-controls="jobs" role="tab" data-toggle="tab">Jobs</a></li>
         <% if @employee.assigned? %>
         <li role="presentation"><a href="#current-job" aria-controls="current-job" role="tab" data-toggle="tab">Current Job</a></li>
         <li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li>
@@ -115,6 +116,15 @@
             	    <br>
             	<%= link_to "View Job Posting", employee_job_board_path, class: 'btn btn-primary' %>
             	<% end %>
+            	</div>
+            	
+            </div>
+            <div role="tabpanel" class="tab-pane fade dark" id="jobs-tab">
+                <h3>Jobs</h3>
+                <div class='list-group'>
+            		<% @employee.jobs.each do |job| %>
+            		  <%= job.title %> - <%= job.state %>
+            		<% end %>
             	</div>
             </div>
         </div>

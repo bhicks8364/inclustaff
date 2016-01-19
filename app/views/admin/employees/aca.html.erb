@@ -1,21 +1,12 @@
 
-<div class='col-md-12 lightbox'>
-    <div class='col-md-4 bg-white'>
+<div class='col-md-12'>
+    <div class='col-md-4 '>
         <h1><%= link_to @employee.name, admin_employee_path(@employee) %>'s ACA Report 
         <span class='label label-primary pull-right'><%= @employee.total_hours.round(2) %> Total Hours</span></h1>
+         
     </div>
+   <%= aca_progress(@employee.total_hours, 1560) %>
     
-    <div class='col-md-4 bg-white'>
-        <% @employee.year_report.each do |k, v| %>
-            <%  if v > 5 %>
-            <li class='list-group-item '><strong><%=  k.stamp("Oct 2, 2015") %> </strong> 
-                <span class='badge'><%= v.round(2) %></span>
-            </li>
-            <%= aca_progress(v, 30) %>
-            <% end %>
-        <% end %>
-    </div>
-                 
         <h3 class=''>Average Hours per week: <%= @employee.average_weekly_hours %></h3>
         <h2><%= @employee.initial_start_date.present? ?  @employee.initial_start_date.stamp("Monday, October 21, 2016") : "No start date" %></h2>
         <h3>Days from initial start date: <%= @employee.days_from_initial_start %></h3>
@@ -35,7 +26,7 @@
             </div>
         </div>
     </div>
-    <div class='col-md-4 bg-white'>
+    <div class='col-md-4 '>
         <h3 class='white'>By Month <small>over 130 hours</small></h3>
         <div class=' list-group'><% @employee.shifts.report_by_month.each do |k, v| %>
              <li class='list-group-item '><strong><%=  k.stamp("October 2015") %> </strong> -  <%= v.round(2) %>
@@ -44,7 +35,7 @@
              <% end %>
         </div>
     </div>
-    <div class='col-md-4 bg-white'>
+    <div class='col-md-4 '>
         <h3 class='white'>By Year <small>over 1560 hours</small></h3>
         <div class='list-group'><% @employee.shifts.report_by_year.each do |k, v| %>
              <li class='list-group-item '><strong><%=  k.stamp("2015") %> </strong> -  <%= v.round(2) %>

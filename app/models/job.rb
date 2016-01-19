@@ -62,6 +62,7 @@ class Job < ActiveRecord::Base
     before_validation :defaults, :set_main_pay
     after_save :update_employee
     after_initialize :ensure_pay
+    
     def ensure_pay
         self.pay_rate = order.min_pay if pay_rate.nil?
     end
@@ -221,6 +222,8 @@ class Job < ActiveRecord::Base
     def title_company
         "#{company.name} #{title} "
     end
+    
+    
     
 
     def defaults

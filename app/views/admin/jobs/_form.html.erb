@@ -12,7 +12,7 @@
   <% end %>
 
         <h4><strong>Job Information</strong></h4>
-<%= @job.employee.name %> <br> <%= @job.title %>  <%= @company.name %>
+ <%= @order.title %> <br> <%= @company.name %>
  <div class='form-group'>
     <%= f.association :recruiter, collection: @current_agency.recruiters.order(:last_name), prompt: "Select Recruiter", label: false %>
    
@@ -55,12 +55,9 @@
 
 
    <div class='form-actions'>
-       <% if current_page?(action: 'edit') %>
-       <%= f.submit "Save Changes", class: 'btn btn-success' %>
-        <% else %>
           <%= f.submit "Send for Approval", class: 'btn btn-primary' if @order.needs_approval? %>
           <%= f.submit "Assign Now", class: 'btn btn-success' if !@order.needs_approval? %>
-        <% end -%>
+        
       
     </div>
 

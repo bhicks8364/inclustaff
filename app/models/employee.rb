@@ -152,8 +152,11 @@ class Employee < ActiveRecord::Base
   def self.sorted_by_total_hours
     all.sort_by(&:total_hours).reverse!
   end
+  # def current_report
+  #   shifts.group_by_year(:time_in, range: Time.current.beginning_of_year.midnight...Time.current).sum(:time_worked)
+  # end
   def current_report
-    shifts.group_by_year(:time_in, range: Time.current.beginning_of_year.midnight...Time.current).sum(:time_worked)
+    shifts.group_by_year(:time_in, range: initial_start_date...Time.current).sum(:time_worked)
   end
   
 

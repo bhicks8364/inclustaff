@@ -1,76 +1,12 @@
-<div id="manager-home">
-    <h3>Welcome <%= current_admin.name %>,</h3>
-    <!--ORDER/JOB BUTTONS-->
-        <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title"> Your Departments</h3>
-        </div>
-        <% if @orders.any? %>
-        <div class="panel-body">
-            <% @orders.each do |order| %>
-            <div class="btn-group" role="group" aria-label="Departments">
-                
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <%= order.title %>
-              <span class="caret"></span>
-            </button>
-            
-            <ul class="dropdown-menu">
-            <%= content_tag_for(:li, order.jobs) do |job| %>
-              <%= link_to job.employee.name, admin_job_path(job) %>
-             <% end %>
-            </ul>
-            
-            </div>
-            <% end %>
-        <% end %>
-        </div>
-    </div>
 
-    <!--TIMESHEETS FOR THE DEPARTMENTS THE CURRENT USER MANAGES-->
-
-    <% if @manager_timesheets %>
-    
-    
-           
-          <div class="manager-timesheets">
-              <p>Timesheets for week ending <%= @timesheets.this_week.first.week_ending %></p>
-
-    <%= div_for(@manager_timesheets) do |order| %>
-
-        
-              <ul class="list-group">
-                  <p class="lead"><strong><%= order.title %> </strong></p>
-                 <p class="text-right text-muted"><strong>Number of employees: <%= order.jobs.active.count %> </strong></p>
-                 <small><%= order.pay_range %></small>
-                  <% order.timesheets.this_week.each do |timesheet| %>
-                        <% if timesheet.employee.clocked_in? %>
-                    <li class="clocked_in">
-                        <% else %>
-                    <li class="clocked_out">
-                        <% end %>
-                        <span class="badge"><%= number_to_currency(timesheet.gross_pay) %></span>
-                        <strong><%= timesheet.employee.name %> </strong><%= timesheet.job.title %>
-                    </li>
-                        
-                  <% end %>
-              </ul>
-              
-        <% end %>
-         
-        
-        
-
-    <% end %>
-
-    
-     </div>
-         
-    
-        
-        
-        
-    
-    
-    
+<div class='col-md-6'>
+    <%= image_tag("businessman99.png", class: 'front-icon') %>
+     <p class='lead'>From the company’s lips to your recruiters ears…IncluStaff provides
+      a way for your client to easily add a job order to your system. Why would they even think about calling a competitor and waiting for an order to be processed when your company makes it so easy?
+      </p>
+  <p class='lead'>
+        No more paper waiting for manual data entry gives your team the competitive advantage
+by having the order immediately visible to your recruiters & candidates.
+Immediate action is key to a quick fill - and increased revenue!
+  </p>
 </div>

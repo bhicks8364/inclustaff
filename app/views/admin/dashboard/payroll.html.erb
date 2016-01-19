@@ -25,7 +25,16 @@
 			</div>
 			<div class="tab-pane fade in" id="tab-aca">
 				<div class='col-md-12'>
-			        <%= link_to "ACA Reports", report_admin_employees_path, class: "btn btn-primary" %>
+			        <%= link_to "ACA Reports", report_admin_employees_path, class: "btn btn-primary btn-lg" %>
+			        
+			        <h2>ACA Settings</h2>
+	                <p>Measurement Period: <%= @current_agency.preferences['aca_measurement_period'] %></p>
+	                <p>Administrative Period: <%= @current_agency.preferences['aca_administrative_period'] %></p>
+	                <p>Stability Period: <%= @current_agency.preferences['aca_stability_period'] %></p>
+	                    <%= link_to(edit_agency_path(@current_agency), class: 'btn btn-primary') do %>
+	            	      <i class='fa fa-pencil fa-fw'></i>
+	            			<span>Edit Agency</span>
+	            		<% end %>
 				</div>
 			</div>
 			<div class="tab-pane fade" id="tab-admins">
@@ -78,10 +87,12 @@
 			</div>
 			<div class="tab-pane fade" id="tab-calendar">
 				<div class='col-md-12'>
-					<h3>Events</h3>
+					<h3>Shifts</h3>
 					<div class='col-md-3'>
 	       				<%= render 'admin/shifts/one_day_calendar', shifts: @shifts %>
 	       			</div>
+					<h3>Events</h3>
+					
 	       			<div class='col-md-9'>
 	       				<%= render 'admin/shared/one_day_calendar', events: @current_agency.events.order(created_at: :desc) %>
 	       			</div>

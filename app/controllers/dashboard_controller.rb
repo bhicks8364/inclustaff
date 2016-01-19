@@ -46,9 +46,10 @@ class DashboardController < ApplicationController
       #ROOT FOR COMPANY_ADMINS DASHBOARDS IF SIGNED IN
     elsif company_admin_signed_in? && @current_agency.present?
     @current_company_admin = current_company_admin
-      @company = current_company_admin.company.includes(:jobs, :shifts)
+      @company = current_company_admin.company
       @at_work = @company.jobs.at_work 
       @shifts = @company.shifts.today
+      @invoices = @company.invoices
          render 'company/dashboard/home'
       
       

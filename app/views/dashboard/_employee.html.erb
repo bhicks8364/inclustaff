@@ -1,24 +1,34 @@
-<div id="employee-home-page">
-    <% if @current_shift.present? %>
-<div class="col-md-3">
-    <%= render @current_shift %>
+<div class="col-md-6 ">
+    <h2 class=''>Before hire...</h2>
+     <%= image_tag("online22.png", class: 'front-icon') %>
+     
+    <h2 class='metal text-center'>Candidate Profiles</h2>
+    <ul class='fa-ul'>
+        <li><i class="fa-li fa fa-check-square"></i> Apply directly to job openings.  </li>
+        <li><i class="fa-li fa fa-check-square"></i> Get personalized job recommendations.  </li>
+        <li><i class="fa-li fa fa-check-square"></i> Communicate directly with recruiters.  </li>
+    </ul>
 </div>
-    <% end %>
+<div class="col-md-6 ">
+    <h2 class=''>On the job...</h2>
+    <%= image_tag("industry1.png", class: 'front-icon') %>
+     <h2 class='metal text-center'>Employee Access</h2>
+     
+    <ul class='fa-ul bold'>
+     <li><i class="fa-li fa fa-check"></i> View/print pay records, total hours, etc.  </li>
+        <li><i class="fa-li fa fa-check"></i> Vacation tracking & requests  </li>
+        <li><i class="fa-li fa fa-check"></i> Clock-in & out of your current assignment.</li>
+    </ul>
     
-<div class="col-md-3">
-    <strong><%= @employee.name %></strong> <br>
-<%= @employee.email %>
-<br>
-
-<%= @job.title %>  - <%= number_to_currency(@job.pay_rate) %> 
 </div>
-<%= link_to "Dashboard", timeclock_path(@employee), class: "btn btn-default" %>
-<%= link_to "Current Timesheet", @current_timesheet, class: "btn btn-default" %>
-<%= render 'employee/timesheets/table' %>
 
+<div class='col-md-12'>
+    <p class=''>
+        Employee self-serve frees up staff time and increases agency’s professionalism
 
+Gone are the calls about how many hours an employee worked or how much vacation time they have available. IncluStaff allows employees to view their profiles, check vacation balances, get time card info as well as any contact info they would need for both the company and the agency.
 
-
-
-
+This self serve feature promotes the agency’s employer brand by giving the employee the info they need when they need it. Payroll staff can concentrate on their jobs without interruption of streams of employee phone calls
+    </p>
 </div>
+

@@ -102,7 +102,7 @@ class Order < ActiveRecord::Base
     scope :long,    -> { where(NamedFunction.new("LENGTH", [Order[:notes]]).gt(200))}
     
     def defaults
-      self.active = false if self.active.nil?
+      self.active = true if self.active.nil?
       self.urgent = false if self.urgent.nil?
       self.jobs_count = 0 if self.jobs_count.nil?
       self.aca_type = "Variable-Hour" if aca_type.nil?

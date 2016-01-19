@@ -1,4 +1,4 @@
-<div class='col-md-12 transbox'>
+<div class='col-md-12'>
 
     <%= link_to(company_timesheet_path(@timesheet, format: :pdf), class: 'btn btn-primary') do %>
   					<i class="fa fa-download fa-md"></i> Download PDF
@@ -31,15 +31,13 @@
       </div>
       
 </div>
- <div class='col-md-12 dark'>
-<div class='well' data-behavior="timesheet-list">
+ <div class='col-md-6'>
+<div class='' data-behavior="timesheet-list">
     
   <%= render @timesheet %>
   
   </div>
- 
-
-         <div id='comment-list'>
+  <div id='comment-list'>
             <% @timesheet.comments.each do |comment| %>
             
                 <%= render 'comments/comment', comment: comment %>
@@ -48,14 +46,13 @@
         
           <%= render partial: "comments/form", locals: {commentable: @timesheet} %>
          </div>
+
+        
     
       </div>
 
-<div class='col-md-12'>
-  <h3> Shifts</h3>
-   <%= render 'company/shifts/week_calendar', shifts: @timesheet.shifts %>
-</div>
-<div class='col-md-12'>
+
+<div class='col-md-6'>
   <h3> Shifts</h3>
    <%= render 'company/shifts/table' %>
 </div>

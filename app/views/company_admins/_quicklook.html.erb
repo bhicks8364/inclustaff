@@ -11,11 +11,15 @@
 	</div>
 	<div class="tab-content">
 		<div class="tab-pane fade in active" id="tab-users">
+		<h2>	Job Orders I Manage</h2>
 			<% @company_admin.managed_orders.each do |order| %>
-	             <%= info_popover(order) %> <%= order.title %><br>
+	           <%= order.id%>   <%= info_popover(order) %> <%= order.title %><br>
+	          <% order.jobs.each do |job| %>
+	          	<%= job.status %><br>
+	          <% end %>
 	        <% end %>
 			<% if company.employees.any? %>
-		
+	<h2>	All Company employees</h2>
 				<% company.employees.each do |employee| %>
 					<%= timesheet_user(employee.current_timesheet) if employee.current_timesheet.present? %>	<%= employee.name %> 
 				<% end %>

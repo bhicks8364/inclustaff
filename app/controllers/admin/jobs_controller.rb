@@ -100,6 +100,7 @@ class Admin::JobsController < ApplicationController
     @admin = current_admin
     if params[:order_id]
       @order = Order.find(params[:order_id])
+      @company = @order.company
       @agency = @order.agency
       @job = @order.jobs.new
       authorize @job

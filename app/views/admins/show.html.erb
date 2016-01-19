@@ -1,8 +1,8 @@
- <% if @admin.online? %> <%= image_tag("user-green.png", class: 'online-icon') %> <% end %>
+ 
 <div class='col-md-12 metal'>
     <h1><%= @admin.name %></h1>
     <div class='col-md-2'>
-         
+         <% if @admin.online? %> <%= image_tag("user-green.png", class: 'online-icon') %> <% end %>
         <p class='lead'>
             <%= @admin.role %>
         <%= @admin.email %>

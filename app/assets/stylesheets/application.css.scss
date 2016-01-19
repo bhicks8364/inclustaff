@@ -49,12 +49,13 @@
 body {
   // font-family: 'Titillium Web', Geneva, sans-serif;
   padding-top: 70px;
+  background-color: #e3e4e4;
   // background: transparent;
   // background: url(colorful-triangles-background.jpg) no-repeat center center fixed;
   // background-color: rgba(255, 255, 255, 0.8);
-  background-image:
-        linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), 
-        url(colorful-triangles-background.jpg) no-repeat center center fixed;
+  // background-image:
+  //       linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), 
+  //       url(colorful-triangles-background.jpg) no-repeat center center fixed;
   //       // url(InclusStaff-twitter-cover.png) no-repeat center center fixed; 
   // -webkit-background-size: cover;
   // -moz-background-size: cover;
@@ -67,7 +68,7 @@ body {
   height: 100%;
   
   padding: 5px;
-  // background-color: rgba(255, 255, 255, 0.6);
+  
 }
 
 
@@ -246,6 +247,8 @@ div.transbox {
 .navbar.navbar-default {
   border: none;
   font-family: 'Titillium Web', Geneva, sans-serif;
+  // background-color: rgb(230, 230, 230);
+  // height: 75px;
   // margin-bottom: 1px;
 }
 .pad {

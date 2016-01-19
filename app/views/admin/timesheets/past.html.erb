@@ -1,8 +1,9 @@
 <div class='col-md-12 lightbox'>
  <h1>Past Timesheets</h1>
+  <h4 class='text-left'>Approved</h4>
    <div id='approved' class='col-md-5' data-behavior="timesheet-list">
-    <h4 class='black'>Approved</h4>
-    <% @timesheets.past.approved.each do |timesheet| %>
+   
+    <% @timesheets.past.approved.order(updated_at: :desc).limit(40).each do |timesheet| %>
    <%= render timesheet %>
    <% end %>
    </div>

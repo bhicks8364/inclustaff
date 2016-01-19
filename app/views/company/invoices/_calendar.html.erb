@@ -1,14 +1,14 @@
 <div class="">
 
-	<%= Calendar.new(attribute: :time_in) do |date, events| %>
+	<%= month_calendar(attribute: :due_by, events: @invoices) do |date, invoices| %>
 	
   <div class='cal-date'><%= date %></div>
 
-  <% events.each do |event| %>
-    <div class='center transbox'>
+  <% invoices.each do |invoice| %>
+    <div class=''>
       
       <div class=''>
-        <%= render 'admin/shifts/shift', shift: event %>
+        <%= inv_sym(invoice) %> <%= link_to "Invoice #: #{invoice.id}", company_invoice_path(invoice), class: 'black'%>
 
       </div>
       

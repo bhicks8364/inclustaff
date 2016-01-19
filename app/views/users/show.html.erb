@@ -1,4 +1,6 @@
+<% if @user.online? %> <%= image_tag("user-green.png", class: 'online-icon') %> <% end %>
 <div class='col-md-12 lightbox'>
+    
   <div class="page-header">
       <h1><%= @user.name %></h1>
       <div id='<%=@user.id%>-updated-available-at-icon' class=''><%=check_in(@user)%></div>

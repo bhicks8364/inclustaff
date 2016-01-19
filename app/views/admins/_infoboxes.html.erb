@@ -1,8 +1,13 @@
 <div class=''>
 	<div class="col-md-12">
         <div class="">
+        	<% if @admin.owner? %>
            <%= pie_chart @admin.invoices.group(:company).references(:invoices).sum(:total), min: 1000, max: 5000 ,
            library: {legend: {position: "left"}, is3D: true, title: "Invoices by Company"} %>
+           <% else %>
+           <%= pie_chart @admin.timesheets.group(:job).sum(:total_bill), min: 1000, max: 5000 ,
+           library: {legend: {position: "left"}, is3D: true, title: "Invoices by Company"} %>
+           <% end %>
         </div>
 	</div>
 	<div class="col-md-4">
