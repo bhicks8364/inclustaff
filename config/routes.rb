@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   
   constraints SubdomainConstraint do
     get  'sign_in' => 'dashboard#sign_in_page'  
+    get  'public_job_board' => 'dashboard#public_job_board'
     # TAGS
     get 'tags' => 'admin/dashboard#all_tags'
     get 'tags/:tag', to: 'admin/dashboard#tag', as: :tag
@@ -59,6 +60,7 @@ Rails.application.routes.draw do
         
       end
       member do
+        post :follow
         patch :grant_editing
         patch :update_as_available
       end
@@ -76,6 +78,7 @@ Rails.application.routes.draw do
         resources :invoices
         resources :timesheets
         resources :orders
+        
         collection do
           post 'import'
         end
@@ -106,6 +109,7 @@ Rails.application.routes.draw do
         end
         
         resources :skills
+        resources :shifts
         resources :work_histories
       end
       
@@ -138,6 +142,8 @@ Rails.application.routes.draw do
         member do
           patch 'clock_in'
           patch 'clock_out'
+          patch 'approve'
+          patch 'cancel'
         end
       end
       
@@ -200,6 +206,7 @@ Rails.application.routes.draw do
       get  'home', to: 'dashboard#home'
       get  'job_board', to: 'dashboard#jobs'
       get  'profile', to: 'dashboard#profile'
+      resources :employees, only: [:show, :edit, :update]
       resources :work_histories
       resources :orders do
         member do

@@ -1,9 +1,9 @@
+<% if skill.required? %>
+<i class='fa fa-star'></i><% else %>
+<i class='fa fa-star-o'></i>
+<% end %>
 
-<%= div_for(skill, class: 'well well-sm') do %>
-
-    <%= skill.required? ? "<i class='fa fa-star'></i>".html_safe : "<i class='fa fa-star-o'></i>".html_safe %>
-    <strong><%= skill.name %></strong>
+<strong><%= skill.name %></strong>
    
 
-<% end %>
 

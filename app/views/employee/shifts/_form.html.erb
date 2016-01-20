@@ -1,7 +1,7 @@
 <h3><%= @employee.name %></h3>
 <hr>
 <%= @shift.state ? @shift.state.titleize : "New Shift" %>
-<%= simple_form_for [@job, @shift] do |f| %>
+<%= simple_form_for [:employee, @shift] do |f| %>
       <hr>
 
 

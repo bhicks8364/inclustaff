@@ -1,3 +1,5 @@
+
+
 change_visibility = (state) ->
   if state == "Clocked Out"
     $(".clocked-out").show()

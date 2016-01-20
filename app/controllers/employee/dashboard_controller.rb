@@ -11,7 +11,6 @@ class Employee::DashboardController < ApplicationController
     end
     
     def home
-        
         @shifts = @employee.shifts
         @job = @employee.current_job
         @company = @job.company if @job.present?
@@ -20,10 +19,12 @@ class Employee::DashboardController < ApplicationController
         gon.shifts = @shifts
         gon.emp_code = @employee.code
         gon.clocked_in = @employee.clocked_in?
-        gon.current_shift = @employee.current_shift
-        gon.current_job = @employee.current_job
-       
-
+        gon.current_shift = @job.current_shift if @job
+        gon.current_job = @job
+    end
+    
+    def edit_profile
+        @employee = current_user.employee
     end
     
     def employee_view
@@ -37,7 +38,7 @@ class Employee::DashboardController < ApplicationController
     def profile
        @skill = @employee.skills.new
        @work_histories = @employee.work_histories
-       @job = @employee.current_job
+       @job = @employee.current_job 
        @jobs = @employee.jobs
        @shifts = @job.shifts if @job.present?
        

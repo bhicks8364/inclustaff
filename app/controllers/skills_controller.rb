@@ -21,7 +21,6 @@ class SkillsController < ApplicationController
   end
   def import
       @import  = Skill::Import.new(skill_import_params)
-      
       if @import.save
           redirect_to skills_path, notice: "Imported #{@import_count} skills."
       else

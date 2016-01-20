@@ -1,7 +1,10 @@
-<div class='col-md-12 transbox'>
+<div class="col-md-12">
+    <% if admin_signed_in? %>
     <h2>New Work History for <%= @employee.name %></h2>
-    <%= render 'form' %>
-    <%= link_to 'All Employee Work Histories', admin_employee_work_histories_path(@employee), class: "btn btn-primary btn-lg" %>
+    <% else %>
+	<h1>Edit your profile</h1>
+	<% end %>
+	<%= render 'form' %>
 </div>
 
 

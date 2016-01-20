@@ -43,7 +43,8 @@ class Company < ActiveRecord::Base
     has_many :job_comments, through: :jobs, source: 'comments'
     has_many :timesheet_comments, through: :timesheets, source: 'comments'
     has_many :shift_comments, through: :shifts, source: 'comments'
-
+    
+    scope :with_pending_jobs, -> { joins(:orders => :jobs).merge(Job.pending_approval)} 
     scope :with_open_orders, -> { joins(:orders).merge(Order.needs_attention)} 
     scope :with_balance, -> { where(Company[:balance].gt(0).and(Company[:balance].not_eq(nil))) }
     scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.current_week)}
@@ -96,8 +97,10 @@ class Company < ActiveRecord::Base
     def current_account_manager
       if preferences['current_account_manager'].present?
         Admin.find(preferences['current_account_manager'])
+      elsif account_managers.any?
+        account_managers.last
       else
-        admins.owners.first
+        agency.admins.account_managers.first
       end
     end
     def self.by_account_manager(admin_id)

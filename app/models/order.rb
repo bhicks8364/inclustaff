@@ -58,16 +58,16 @@ class Order < ActiveRecord::Base
   include ArelHelpers::ArelTable
   include ArelHelpers::JoinAssociation
   acts_as_taggable
-  
+  store_accessor :requirements, :agency_approval, :company_approval, :years_of_experience, :certifications, :requirement_1, :requirement_2, :requirement_3, :requirement_4
   # VALIDATIONS
   validates_associated :company
   validates :title,  presence: true
-  validates :mark_up, :min_pay, :max_pay,  presence: true
+  validates :mark_up, :min_pay, :max_pay, :account_manager_id,  presence: true
 
   validates :company_id,  presence: true
   validates :needed_by, presence: true
   
-  store_accessor :requirements, :industry, :years_of_experience, :certifications, :requirement_1, :requirement_2, :requirement_3, :requirement_4
+  
     # CALLBACKS
     after_initialize :defaults
     before_validation :set_mark_up, :set_address
@@ -84,7 +84,8 @@ class Order < ActiveRecord::Base
     accepts_nested_attributes_for :skills, reject_if: :all_blank, allow_destroy: true
 
     # SCOPES
-    
+    scope :needing_company_approval, -> { where("requirements ? :key", :key => 'company_approval')}
+    scope :needing_agency_approval, -> { where("requirements ? :key", :key => 'agency_approval')}
     scope :active, -> { where(active: true)}
     scope :inactive, -> { where(active: false)}
     scope :urgent, -> { where(urgent: true)}
@@ -93,9 +94,12 @@ class Order < ActiveRecord::Base
     scope :off_shift, -> { joins(:jobs).merge(Job.off_shift)}
     scope :needs_attention, -> { where(Order[:number_needed].gt(Order[:jobs_count])) }
     scope :filled, -> { where(Order[:jobs_count].gteq(Order[:number_needed])) }
-    scope :priority, -> { needs_attention.where(Order[:needed_by].lteq(Time.zone.now + 3.days))}
-    scope :newly_added, -> { needs_attention.where(Order[:created_at].gteq(Time.zone.now - 1.day))}
-    scope :overdue, -> { needs_attention.where(Order[:needed_by].lteq(Time.zone.now))}
+    scope :priority, -> { needs_attention.where(Order[:needed_by].lteq(Time.current + 3.days))}
+    scope :newly_added, -> { needs_attention.where(Order[:created_at].gteq(Time.current - 1.day))}
+    scope :overdue, -> { needs_attention.where(Order[:needed_by].lteq(Time.current))}
+    scope :published, -> { needs_attention.where(Order[:published_at].lteq(Time.current))}
+    scope :unpublished, -> { needs_attention.where(Order[:published_at].eq(nil))}
+    scope :long,    -> { where(NamedFunction.new("LENGTH", [Order[:notes]]).gt(200))}
     
     def defaults
       self.active = true if self.active.nil?
@@ -103,6 +107,7 @@ class Order < ActiveRecord::Base
       self.jobs_count = 0 if self.jobs_count.nil?
       self.aca_type = "Variable-Hour" if aca_type.nil?
       self.requirements = {} if requirements.nil?
+      self.account_manager = company.current_account_manager if account_manager_id.nil?
     end
    
     def set_mark_up
@@ -122,6 +127,16 @@ class Order < ActiveRecord::Base
       end
     end
     
+    def needs_agency_approval?; requirements['agency_approval'] == "Yes"; end
+    def needs_company_approval?;  requirements['company_approval'] == "Yes";  end
+    def needs_approval?;  needs_agency_approval? || needs_company_approval?;  end
+    
+    def send_approval_notifications!
+      # TODO
+      # sends notification to the account manager if needs_agency_approval?
+      # send notifications to the manager if needs_company_approval?
+    end
+      
     def set_address
       self.address = "#{company.address} #{company.city}, #{company.state}" if address.blank?
     end
@@ -136,7 +151,9 @@ class Order < ActiveRecord::Base
     def pay_range
       "#{min_pay} - #{max_pay}"
     end
-    
+    def location
+      "#{company.city}, #{company.state}"
+    end
     def not_urgent?
       urgent == false
     end
@@ -153,12 +170,8 @@ class Order < ActiveRecord::Base
     end
     
   def needs_attention?
-    if jobs.active.any?
-      j = jobs.active.count
-    else
-      j = 0
-    end
-    if number_needed && active
+    j = jobs_count
+    if number_needed
       if number_needed > j 
         true
       else
@@ -181,6 +194,7 @@ class Order < ActiveRecord::Base
 
     end
   end
+  
     
 
     

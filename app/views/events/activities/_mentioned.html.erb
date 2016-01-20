@@ -1,6 +1,7 @@
 
 <%= link_to event.admin, class: 'list-group-item list-group-item-success' do %>
-	 <%= event.company_admin.try(:name) || event.admin.try(:name) %>
+	 <%= event.admin.try(:first_name) if !current_page?('/admins/:id') %>
+	<%= event.company_admin.try(:first_name) if !current_page?('/company_admins/:id') %>
     	 <strong>	<%= event.action.humanize.downcase %></strong> <%= event.eventable.name %> <br>
     	 <small><%= event.eventable.role %></small>
     

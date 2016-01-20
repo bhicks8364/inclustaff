@@ -4,4 +4,7 @@ class CurrencyInput < SimpleForm::Inputs::Base
 
     "$ #{@builder.text_field(attribute_name, merged_input_options)}".html_safe
   end
+  
+  
+  
 end

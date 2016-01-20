@@ -1,77 +1,99 @@
-
-
-   
-     
-<div class="btn-group btn-group-justified" role="group" aria-label="...">
-  <div class="btn-group" role="group">
-  <%= link_to(new_user_registration_path, class: "btn btn-success") do %>
-							<i class='fa fa-user-plus'></i>
-
-								<span>Employee Sign Up</span>
-							<% end %>
-
-  </div>
-  
-  <!--<div class="btn-group" role="group">-->
-  <!--<%= link_to(admin_timesheets_path, class: "btn btn-default") do %>-->
-		<!--					<i class='fa fa-clock-o'></i>-->
-
-		<!--						<span>Timesheets</span>-->
-		<!--					<% end %>-->
-
-  <!--</div>-->
-  
-</div>
-        <h1 class="page-header"><%= @current.name %></h1>
-      
-      
-
+<div class='metal'>
 
   <!-- Nav tabs -->
   <ul class="nav nav-tabs nav-justified" role="tablist">
-    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Contact Information</a></li>
-    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Current Orders</a></li>
-    <li role="presentation"><a href="#employees" aria-controls="employees" role="tab" data-toggle="tab">Active Employees</a></li>
-    <li role="presentation"><a href="#current-contacts" aria-controls="current-contacts" role="tab" data-toggle="tab">Company Admins</a></li>
-    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Timeclock</a></li>
+    <li role="presentation" class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">Overview</a></li>
+    <li role="presentation"><a href="#sales" aria-controls="sales" role="tab" data-toggle="tab">Sales</a></li>
+    <li role="presentation"><a href="#recruiting" aria-controls="recruiting" role="tab" data-toggle="tab">Recruiting</a></li>
+    <li role="presentation"><a href="#payroll" aria-controls="payroll" role="tab" data-toggle="tab">Payrolll</a></li>
+    <li role="presentation"><a href="#customers" aria-controls="customers" role="tab" data-toggle="tab">Your Customers</a></li>
+    <li role="presentation"><a href="#employees" aria-controls="employees" role="tab" data-toggle="tab">Your Employees</a></li>
+    <li role="presentation"><a href="#aca" aria-controls="aca" role="tab" data-toggle="tab">ACA Compliance</a></li>
+    
   </ul>
-  <div class='main-box'>
+
+  <!-- Tab panes -->
   <div class="tab-content">
-      <div role="tabpanel" class="tab-pane fade in active" id="home">
-     
-          <%= @current.try(:address) %> <%= @current.try(:city) %> <%= @current.try(:state) %> <%= @current.try(:zipcode) %><br>
-          <%= @current.try(:phone_number) %> 
-        
-       
-      
-    
-    
-         </div>
-    
-          <div role="tabpanel" class="tab-pane fade " id="current-contacts">
-        
-              <h3>Company Contacts</h3>
-             
-        
-        
-            
-          </div>
-          <div role="tabpanel" class="tab-pane fade" id="profile">
-            <h3>Timesheets by Dept.</h3>
-            <%= render 'employee/orders/open_orders' %>
-            
-          </div>
-          
-          <div role="tabpanel" class="tab-pane fade" id="employees">
-           <h3>Current Employees</h3>
-           
-          </div>
-          
-          
-          
-          <div role="tabpanel" class="tab-pane fade" id="settings">
-             <h3>Settings</h3>
-        
-          </div>
+    <div role="tabpanel" class="tab-pane fade in active" id="overview">
+      <h1 class='text-info text-center  '>From the first punch to the final invoice...IncluStaff does it all.</h1>
+      <hr>
+      <%= render 'front_info' %>
     </div>
+    
+    <div role="tabpanel" class="tab-pane fade" id="sales">
+      <h1 class='text-info'>Sales</h1>
+      
+       <div class='col-md-6'>
+         
+         <%= image_tag("sales-dash.png", class: 'screenshot') %>
+       </div>
+       <%= render 'manager' %>
+      
+     
+    </div>
+    <div role="tabpanel" class="tab-pane fade" id="recruiting">
+      <h1 class='text-info'> Recruiting</h1>
+        
+        
+         <%= render 'recruiter' %>
+
+       
+       
+    </div>
+    <div role="tabpanel" class="tab-pane fade" id="payroll">
+      <h1 class='text-info'>Payroll</h1>
+     
+       <div class='col-md-6'>
+         <p class='lead text-danger'>Missing hours are expensive. </p>
+          
+         <%= image_tag("payroll-timesheets-tab.png", class: 'screenshot') %>
+       </div>
+       <div class='col-md-6'>
+         <p class='lead '>
+          Eliminate the extra expense of additional payrolls fees  by tracking all of your employees' hours in real-time.</p>
+         <%= image_tag("timesheets-index.png", class: 'screenshot') %>
+       </div>
+      
+      <%= render 'payroll' %>
+    </div>
+    
+    <div role="tabpanel" class="tab-pane fade" id="aca">
+      <h1 class='text-info'>ACA Compliance</h1>
+      <div class='col-md-4'>
+        <p class='lead'>ACA Tracking specifically designed for Staffing Agenices</p>
+      </div>
+      <div class='col-md-8'>
+        <h2>Avoid penalties. Track eligibility. Simplify reporting. </h2>
+        <ul class='fa-ul bold'>
+         <li><i class="fa-li fa fa-check-square"></i> IRS 1095-C and 1094-C report preparation </li>
+         <li><i class="fa-li fa fa-check-square"></i> Forecast and view ACA eligibility </li>
+         <li><i class="fa-li fa fa-check-square"></i> Collects and monitors actual hours worked by all employees  </li>
+         <li><i class="fa-li fa fa-check-square"></i> Ensures IRS audit preparedness </li>
+         <li><i class="fa-li fa fa-check-square"></i> Provides advance alerts before employee thresholds are exceeded</li>
+         <li><i class="fa-li fa fa-check-square"></i> Collects and monitors actual hours worked by all employee  </li>
+        </ul>
+        
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane fade" id="customers">
+      <h1 class='text-info'>Your Customers</h1>
+     
+      <div class='col-md-8'>
+        <%= image_tag("company-signin.png", class: 'screenshot') %>
+      </div>
+      <div class='col-md-4'>
+         <p  class='lead bold'>Customer Portals</p>
+        <p class='lead'>Give your customers the added value and flexiblity of managing their accounts through your custom portal.  </p>
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane fade" id="employees">
+      <h1 class='text-info'>Your Employees</h1>
+      
+      <div class='col-md-12'>
+        <%= render 'employee' %>
+      </div>
+     
+    </div>
+  </div>
+
 </div>

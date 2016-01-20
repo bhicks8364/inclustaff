@@ -1,4 +1,4 @@
-<%= simple_form_for [:admin, @job] do |f| %>
+<%= simple_form_for [:admin, @job], html: { class: 'form' } do |f| %>
 <h4>Assign <%= @employee.first_name %> to this position.</h4>
   <% if @job.errors.any? %>
     <div id="error_explanation">
@@ -11,32 +11,35 @@
       </ul>
     </div>
   <% end %>
-   <span class='hide-this'>
-      
-       <%= f.hidden_field :order_id, value: @order.id %>
-
-   
-      <%= f.hidden_field :employee_id, value: @employee.id %>
-    </span>
+    <%= f.hidden_field :order_id, value: @order.id %>
+    <%= f.hidden_field :employee_id, value: @employee.id %>
     
-    <%= f.input :title, placeholder: "Job Title", label: false %>
-    <%= f.input :description, placeholder: "Interview notes", label: false  %>
-    <%= f.input :start_date, as: :string, placeholder: "Select start date", required: true, label: false %>
-    <% if @current_admin.recruiter? %>
-        <%= f.hidden_field :recruiter_id, value: @current_admin.id %>
-    <% else %>
-        <%= f.association :recruiter, collection: @current_agency.admins.recruiters.order(:last_name), prompt: "Choose a Recruiter", label: false  %>
-    <% end %>
+    <div class='form-group'>
+        <%= f.input :title, placeholder: "Job Title", label: false %>
+        <%= f.input :description, placeholder: "Interview notes", label: false %>
+        <%= f.input :start_date, as: :string, input_html: {class: 'datepicker'}, placeholder: "Start Date", label: false  %>
+        <% if @current_admin.recruiter? %>
+            <%= f.hidden_field :recruiter_id, value: @current_admin.id %>
+        <% else %>
+            <%= f.association :recruiter, collection: @current_agency.admins.recruiters.order(:last_name), prompt: "Choose a Recruiter", label: false  %>
+        <% end %>
+        
+                    
+      <div class="input-group">
+        <span class="input-group-addon"><i class='fa fa-usd'></i></span>
+        <%= f.input :pay_rate, label: false, :input_html => {value: number_with_precision(f.object.pay_rate, precision: 2) } %>
+        <span class="input-group-addon">/hr</span>
+      </div>
+    </div>
     
-   
-                <%= f.input :pay_rate, placeholder: "Pay Rate", label: false, required: true %>
+  
 
 
 
 
-
-
-
-    <%= f.submit "Save", class: 'btn btn-primary' %>
+    <div class='form-actions'>
+      <%= f.submit "Send for Approval", class: 'btn btn-primary' if @order.needs_approval? %>
+      <%= f.submit "Assign Now", class: 'btn btn-success' if !@order.needs_approval? %>
+    </div>
 
 <% end %>

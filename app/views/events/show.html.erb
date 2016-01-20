@@ -1,15 +1,15 @@
 
-<div class='col-md-12'>
+<div class='col-md-12 lightbox'>
     <% if @event.timesheet? %>
-<h1> Timesheet!</h1>
+<h3> Timesheet!</h3>
 <%= render "admin/timesheets/timesheet", timesheet: @timesheet if admin_signed_in? %>
 <% elsif @event.eventable_type == 'Shift' %>
-<h1><%= @event.eventable_type.titleize %></h1>
+<h3><%= @event.eventable_type.titleize %></h3>
 <%= render "admin/shifts/shift", shift: @shift if admin_signed_in? %>
 <% end %>
 <% if @event.action == 'applied' %>
 <% if admin_signed_in? %>
-<div class='col-md-12 text-center'>
+<div class='col-md-12 '>
   	
   <h2>
   <strong>
@@ -34,26 +34,28 @@
 	
 
    <div class='col-md-12 bg-white'>
-	  	<div class="col-md-6">
-    		<h1><%= @employee.first_name %>'s Skills</h1>
-    	  <%= pie_chart @employee.tags.order(:name).group(:name).count  %>
+	  	<div class="col-md-4">
+	  	    	<h3><%= signed_in_link_to @order.title, @order %></h3>
+	  	    	<h4>Pay range: <%= pay_range(@order) %></h4>
+    	    <%= @order.tag_list %>
     	</div>
-    	<div class="col-md-6 bg-white">
-    		<h1><%= signed_in_link_to @order.title, @order %>'s Skills</h1>
-    	   <%= pie_chart @order.tags.order(:name).group(:name).count  %>
+    	<div class="col-md-4 bg-white">
+    		<h3><%= signed_in_link_to @employee.name, @employee %></h3>
+    	    <%= @employee.tag_list || "No employee tags" %>
+    	    	<h4>Preferred job type:  <%= @employee.desired_job_type %></h4>
+    	    	<h4>Preferred shift:  <%= @employee.desired_shift %></h4>
     	</div>
-        <div class='col-md-6 bg-white'>
+        <div class='col-md-4 bg-white'>
+            
         <% if @employee.unassigned? && @order.needs_attention? %>
             <%= render 'job_form' %>
         <% end %>
         </div>
         <div class='col-md-6'>
+          <h3>Job Description</h3>
          
-         
-          <h5>Job Description</h5>
-         <%= @order.pay_range %>
             <% if @order.notes.length > 5 %>
-            <p><%= @order.notes %></p>
+            <p><%= markdownify(@order.notes) %></p>
             <% else %>
             <p class='text-center'>Specific job details unavailable.</p>
             <% end %>
@@ -73,8 +75,12 @@
 
   <!--IF IS AN APPLICATION-->
 <% end %>
-
+<% if @event.action == "followed" %>
+<h1><%= @event.action %></h1>
+<% end %>
 <!--IF AN ADMIN IS SIGNED IN-->
 <% end %>
 
  </div>
+ 
+ 

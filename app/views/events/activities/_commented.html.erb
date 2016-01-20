@@ -1,13 +1,10 @@
-<%= link_to event_path(event), class: 'list-group-item list-group-item-success' do %>
-	 <%= event.company_admin.try(:name) || event.admin.try(:name) %>
-	 <%= event.eventable.employee.try(:name) || "" %>
-   <strong>	<%= event.action.humanize.downcase %></strong> <%= event.eventable.name %> 
-    	 
-
-		<span class='label label-success black pull-right' data-toggle="tooltip" title="Current Status">
-		     <small> <%= event.created_at.stamp('11/13 at 8:30am') %></small>
-		  
+<%= div_for event do %>
+	<i class="fa fa-user fa-fw"></i>
+	<%= event.admin.try(:first_name) if !current_page?('/admins/:id') %>
+	<%= event.company_admin.try(:first_name) if !current_page?('/company_admins/:id') %>
+    	<%= event.action.humanize.downcase %> <%=  signed_in_link_to event.eventable.name, event.eventable %>
+		<span class='label label-info black pull-right'>
+		 <small>  <%= event.created_at.stamp('11/13 at 8:30am') %></small>
 		</span>
 
 <% end %>
-

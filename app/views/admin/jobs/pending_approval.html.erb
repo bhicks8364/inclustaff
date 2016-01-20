@@ -1,0 +1,171 @@
+<div class='col-md-12 lightbox' data-behavior="job-list" >
+    <div class='' data-behavior="job" data-id="<%= @job.id %>">
+        <div data-behavior="job-state"><h2 class='text-right'><span class='label label-success'><%= @job.state %></span></h2></div>
+        <div class='page-header'>
+            <h1><%= @job.title_company %></h1>
+            
+        </div>
+        <div class='col-md-4 text-center bg-white'>
+            
+            <h4><%= number_to_currency(@job.pay_rate) %>/ hr</h4>
+        </div>
+        <div class='col-md-4 text-center bg-white'>
+            <h1><%= @employee.name %></h1>
+            
+        </div>
+        <div class='col-md-4 text-center bg-white'>
+            <h4><%= @job.start_date.strftime("%B %e, %Y ") %></h4>
+        </div>
+        <div class="row">
+            <div class='col-md-12'>
+            <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#job" aria-controls="job" role="tab" data-toggle="tab">Job Information</a></li>
+                <li role="presentation"><a href="#order-info" aria-controls="order-info" role="tab" data-toggle="tab">Order Information</a></li>
+                <li role="presentation"><a href="#skills-tab" aria-controls="skills-tab" role="tab" data-toggle="tab">Skills</a></li>
+                <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+                <li role="presentation"><a href="#comments-tab" aria-controls="comments-tab" role="tab" data-toggle="tab">Comments</a></li>
+                </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade in active" id="job">
+                    <div class='col-md-4 bg-white'>
+                        <h4><strong>Interview Notes:</strong></h4>
+                        <%= markdownify(@job.description) %>
+                        <% if @job.recruiter.present? %>
+                        <h5>Recruiter: <%= link_to @job.recruiter.name, @job.recruiter %></h5>
+                        <% end %>
+                        <%= link_to(admin_job_path(@job, format: :pdf), class: 'btn btn-primary') do %>
+                        <i class="fa fa-download fa-md"></i> Candidate Sheet
+                        <% end %>
+                    </div>
+                    
+                    <div class='col-md-4 lightbox'>
+                        <div class='col-md-6 bg-white'>
+                            <span data-behavior="job-status">
+                                 <h2><%= @job.status %></h2>
+                            </span>
+                            <span data-behavior="job-state">
+                                <h2><%= @job.state %></h2>
+                            </span>
+                            <span data-behavior="job-end-date">
+                                <h2><%= @job.end_date.present? ? @job.end_date.stamp("11/13/16") : @job.state %></h2>
+                            </span>
+                            <div class='btn-group'>
+                                <button type='button' class='btn btn-danger' data-behavior='active-job-cancel'>Decline </button>
+                                <% if @employee.available? %>
+                                <button type='button' class='btn btn-success' data-behavior='job-toggle'>APPROVE </button>
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-4 bg-white'>
+                        <h3 class='text-center'>Recent Activity</h3>
+                        <% @job.events.each do |event| %>
+                          <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+                            <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
+                          <% end %>
+                        <% end %>
+                    </div>
+                    
+                </div>
+               
+                <div role="tabpanel" class="tab-pane fade" id="order-info">
+                    <h3>Order Information</h3>
+                    <%= render @order %>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="comments-tab">
+                    <div class='col-md-12'>
+                        <div id='comment-list'>
+                        <% @job.comments.each do |comment| %>
+                            <%= render 'comments/comment', comment: comment %>
+                        <% end %>
+                            <%= render partial: "comments/form", locals: {commentable: @job} %>
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="settings">
+                    <div class='col-md-6 bg-white'>
+                        <% if @job.mentioned_admins.any? %>
+                        <strong>Mentioned Admins</strong>
+                            <% @job.mentioned_admins.each do |admin|%>
+                            <%= admin.name %> - <%= admin.role %>
+                            <% end %>
+                        <% end %>
+                    </div>
+                    <div class='col-md-4 bg-white'>
+                        <% if @job.vacation['number_of_days'].present? %>
+                        <h2>Vacation Tracking</h2>  
+                        <p><%= @employee.first_name %> will earn <strong> <%= @job.vacation['number_of_days'] %> </strong> paid vacation days
+                        when he/she has worked
+                        <strong><%= @job.vacation['milestone_1'] %> </strong> hours. <br>
+                        </p>
+                        <p class='lead'>Vacation Schedule</p>
+                        <div class='col-md-7'>
+                            <ul class="fa-ul">
+                            <li><i class="fa-li fa fa-clock-o"></i><%= @job.vacation['milestone_1'] %> hours</li>
+                            <li><i class="fa-li fa fa-clock-o"></i><%= @job.vacation['milestone_2'] %> hours</li>
+                            <li><i class="fa-li fa fa-clock-o"></i><%= @job.vacation['milestone_3'] %> hours</li>
+                            </ul>
+                        </div>
+                        <div class='col-md-5 bottom'>
+                            <ul class="fa-ul">
+                            <li><i class="fa-li fa fa-calendar-check-o"></i><%= @job.vacation['number_of_days'] %> days</li>
+                            <li><i class="fa-li fa fa-calendar-check-o"></i><%= @job.vacation['number_of_days'].to_i * 2 %> days</li>
+                            <li><i class="fa-li fa fa-calendar-check-o"></i><%= @job.vacation['number_of_days'].to_i * 3 %> days</li>
+                            </ul> 
+                        </div>
+                    
+                        <div class='headline'><span class='label label-success black'>Hours until next milestone: <%= @job.hours_until_vacation %> </span></div>
+                        <% else %>
+                        <div class='headline'><h3><span class='label label-warning black'>Vacation Tracking Unavailable</span></h3>
+                        <%= link_to "Add Vacation Milestones", edit_admin_job_path(@job), class: "btn btn-success" %>
+                        </div>
+                        
+                        <% end %>
+                        <div class=''>
+                        <% if @job.settings['drive_pay'].present? || @job.settings['ride_pay'].present? %>
+                        <h3>Pay Differentials</h3>  
+                        Drive Pay: <%= @job.settings['drive_pay']  %><br>
+                        Ride Pay: <%= @job.settings['ride_pay'] if @job.settings %><br>
+                        <% end %>
+                        </div>
+                    </div>
+                    <div class='col-md-2'>
+                        <div class="btn-group btn-group-vertical" role="group" aria-label="...">
+                            <%= link_to "View Company", admin_company_path(@company), class: "btn btn-primary" %>
+                            <%= link_to "View Job Order", admin_order_path(@order), class: 'btn btn-primary' %>
+                            <%= link_to "View Employee", admin_employee_path(@employee), class: 'btn btn-primary' %>
+                            <%= link_to "View User Profile", @employee.user, class: 'btn btn-primary' %>
+                            <%= link_to "Edit Job", edit_admin_job_path(@job), class: "btn btn-primary" %>
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="skills-tab">
+                    <div class='col-md-12'>
+                        <div class='col-md-5 list-group'>
+                            <h3>Skills Needed</h3>
+                            <% @order.skills.each do |skill| %>
+                            <li class='list-group-item list-group-item-success black'>
+                                <%= highlight(skill.name, @employee.skills.pluck(:name).to_a, highlighter: '<u>\1</u>') %>
+                            </li>
+                            <% end %>
+                        </div>
+                        <div class='col-md-5 list-group'>
+                            <h3><%= @employee.first_name %>'s Skills</h3>
+                            <% @employee.skills.each do |skill| %>
+                            <li class='list-group-item list-group-item-success black'>
+                                <%= highlight(skill.name, @order.skills.pluck(:name).to_a, highlighter: '<u>\1</u>') %>
+                            </li>
+                            <% end %>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

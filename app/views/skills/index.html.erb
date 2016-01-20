@@ -1,4 +1,4 @@
-<div class='col-md-12 transbox'>
+<div class='col-md-12 lightbox'>
 <%= link_to(update_all_skills_path, method: :post, class: "table-link") do %>
 	<span class="fa-stack">
 		<i class="fa fa-square fa-stack-2x"></i>
@@ -17,7 +17,7 @@
   <div class='col-md-4'>
   <h4>Job Order Skills</h4>
   <%= div_for(@order_skills) do |skill| %>
-    <strong><%= skill.name %></strong> - <%= skill.skillable.title_count %>
+    <strong><%= skill.name %></strong> - <%= skill.skillable.title_company %>
 
   <% end %>
   </div>

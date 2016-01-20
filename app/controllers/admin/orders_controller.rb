@@ -42,20 +42,19 @@ class Admin::OrdersController < ApplicationController
   end
   
   def search
+    @q = Order.includes(:company, :jobs).active.order(needed_by: :desc).ransack(params[:q]) if @current_admin.owner? || @current_admin.payroll?
+    @q = Order.includes(:company).needs_attention.order(needed_by: :desc).ransack(params[:q]) if @current_admin.recruiter?
+    @q = Order.includes(:company).needs_attention.order(needed_by: :desc).ransack(params[:q]) if @q.nil?
     
-    if params[:q].present?
-      @q_orders = Order.includes(:company, :jobs).active.order(needed_by: :desc).ransack(params[:q]) 
-      @orders = @q_orders.result(distinct: true).paginate(page: params[:page], per_page: 25) 
-    else
-      @orders = Order.includes(:company, :jobs).active.order(needed_by: :desc).paginate(page: params[:page], per_page: 25) 
-    end
-    authorize @orders, :index?
+      
+      @orders = @q.result(distinct: true).paginate(page: params[:page], per_page: 25) 
      @hash = Gmaps4rails.build_markers(@orders) do |order, marker|
           marker.lat order.latitude
           marker.lng order.longitude
           marker.infowindow order.title_company
           marker.title order.title
         end
+    authorize @orders, :index?
   end
   
   def show
@@ -80,6 +79,8 @@ class Admin::OrdersController < ApplicationController
     else
       @order = Order.new
       @account_managers = @current_agency.account_managers
+      
+      render 'manager_order_form' if current_admin.account_manager?
     end
     authorize @order
 
@@ -197,7 +198,8 @@ class Admin::OrdersController < ApplicationController
     def order_params
       params.require(:order).permit(:id, :address, :min_pay, :max_pay, :pay_frequency, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title, :notes, 
       :number_needed, :needed_by, :urgent, :active, :dt_req, :bg_check, :stwb, :heavy_lifting, :shift, :est_duration, :tag_list, :aca_type,
-      :education, :industry, :years_of_experience, :certifications, :requirement_1, :requirement_2, :requirement_3, :requirement_4, :published_at, :published_by, :expires_at, 
+      :education, :industry, :years_of_experience, :certifications, :requirement_1, :requirement_2, :requirement_3, :requirement_4, 
+      :published_at, :published_by, :expires_at, :company_approval, :agency_approval,
       jobs_attributes: [:order_id, :title, :description, :start_date, :id, :employee_id, :active], 
       skills_attributes: [:id, :skillable_type, :skillable_id, :name, :required, :_destroy])
     end

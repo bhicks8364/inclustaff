@@ -1,11 +1,16 @@
 #front-headline {
-    margin:auto;
+    // background-color: #ccc;
+    // background-color: rgba(0, 0, 0, 0.49);
+    // background: url(sky.png) no-repeat; 
+    // margin:auto;
     // border: solid 8px green;
-    padding: 5px;
-    min-height: 200px;
+    padding: 15px;
+    padding-left: 5px;
+    // background: url(street-white.png) no-repeat center center fixed; 
+    // min-height: 200px;
     // background-image:
-    //     linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
-    //     url(InclusStaff-twitter-cover.png);
+        // linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+        // url(wood-bg.jpg);
     
 }
 img.feature-pic {
@@ -47,12 +52,141 @@ img.feature-pic {
   background-size: cover;
 }
 
-#macbook {
+.macbook {
 
   background: url(macbook.jpg) no-repeat center center fixed; 
   background-size: contain;
   background-origin: content-box;
 }
 .panel-collapse{
-    background: white;
+    // background: white;
+}
+.home-button {
+    background-color: black;
+    float: right;
+    margin: 3px;
+}
+.sign-up-info {
+    min-height: 250px;
+    padding: 5px;
+    margin-bottom: 30px;
+    background-color: rgba(255, 255, 255, 0.49);
+    -webkit-box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+    
+}
+.bold {
+    font-weight: bold;
+}
+.home-logo {
+    width: 100%;
+    // float: left;
+    // margin-right: 8px;
+    margin: auto;
+    margin-bottom: 10px;
+}
+.metal {
+    font-family: 'Titillium Web', Geneva, sans-serif;
+}
+.lighterbox {
+    background-color: rgba(255, 255, 255, 0.65);
+    padding: 10px;
+}
+input.file-field {
+    font-family: 'Titillium Web', Geneva, sans-serif;
+    display: inline;
+}
+.fill-pic {
+    width: 100%;
+}
+.user-icon {
+    width: 35px;
+    float: left;
+}
+.payroll-boxes {
+    min-height: 300px;
+    
+}
+.bottom {
+    vertical-align: -50px;
+}
+.label-fill {
+    min-width: 100%;
+    margin: 8px;
+    padding: 8px;
+}
+.main-div {
+    // width: 50%;
+    // border: 1px solid black;
+    
+}
+.box-border {
+    border: 1px solid black;
+    padding: 8px; 
+}
+.box {
+    padding: 8px;
+}
+#prelaunch {
+    // background-color: rgba(193, 99, 6, 0.8);
+    margin: auto;
+    // background-color: rgba(225, 225, 225, 0.8);
+    // box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+}
+.front-icon {
+    width: 100px;
+    height: 100px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;
+}
+.online-icon {
+    width: 50px;
+    height: 50px;
+    display: block;
+    // margin-left: auto;
+    // margin-right: auto;
+}
+.screenshot {
+    max-width: 100%;
+    max-height: 100%;
+    // padding: 20px;
+    // margin: 20px;
+    border: solid 2px black;
+}
+.sky {
+    background: url(street-white.png) no-repeat center center fixed; 
+    background-size: contain;
+    background-origin: content-box;
+    vertical-align: middle;
+}
+.feature-icon {
+    width: 50px;
+    height: 50px;
+    // display: block;
+    // margin-left: auto;
+    // margin-right: auto;
+}
+
+.bullet-icon {
+    width: 100px;
+    height: 100px;
+    display: block;
+    // margin-left: auto;
+    // margin-right: auto;
+    // margin-top: 25px;
+}
+.mainpage {
+    margin-bottom: 70px;
+}
+.main-logo {
+    width: 300px;
+    height: auto;
+    // display: block;
+    // float: left;
+    // margin-left: 10px;
+    // margin-right: auto;
+    // margin-top: 15px;
 }

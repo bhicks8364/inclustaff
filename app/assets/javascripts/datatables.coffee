@@ -1,12 +1,12 @@
 jQuery ->
-  $('.datatable').DataTable
-    sPaginationType: "full_numbers",
-    "paging":   true,
-    # "scrollY": 400,
-    "sorting": true
+  # $('.datatable').DataTable
+  #   sPaginationType: "full_numbers",
+  #   "paging":   true,
+  #   # "scrollY": 400,
+  #   "sorting": true
     #"order": [[ 1, "asc" ]],
     # "info":     true
-  $('[data-toggle="tooltip"]').tooltip()
+  # $('[data-toggle="tooltip"]').tooltip()
     
   $('.inv_datatable').dataTable
     sPaginationType: "full_numbers",

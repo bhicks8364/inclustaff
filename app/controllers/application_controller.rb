@@ -26,21 +26,12 @@ class ApplicationController < ActionController::Base
 
     @current = @current_user || @current_admin || @current_company_admin
     @signed_in = @current
-    @agency = @current_agency
-    @employee = @current_user.employee if @current_user.present?
-    gon.current = @current
-    @q_orders = @current_agency.orders.includes(:company, :jobs).active.ransack(params[:q]) if admin_signed_in?
+    @q = @current_agency.orders.includes(:company, :jobs).active.ransack(params[:q]) if admin_signed_in?
   end
 
-  # def after_sign_in_path_for(resource)
-  #   # check for the class of the object to determine what type it is
-  #   case resource.class
-  #   when Admin
-  #     redirect_to root_path  
-  #   when User
-  #     redirect_to root_path
-  #   end
-  # end
+  def after_sign_in_path_for(resource)
+      resource
+  end
   
   private
   # def not_found

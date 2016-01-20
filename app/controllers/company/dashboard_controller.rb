@@ -6,6 +6,7 @@ class Company::DashboardController < ApplicationController
   
   def home
     @company = current_company_admin.company
+    @invoices = @company.invoices
     @at_work = @company.jobs.at_work 
   end
   def admins

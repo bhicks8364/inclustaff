@@ -1,18 +1,11 @@
-<%= link_to event, class: 'list-group-item list-group-item-danger' do %>
-	 <%= event.company_admin.try(:name) || event.admin.try(:name) %>
-    	<strong> unapproved</strong> a timesheet for <%= event.eventable.job.name_title %> 
-    	 
-    	 <small> <%= event.created_at.stamp('11/13 at 8:30am') %></small>
-    	 
-	<% if event.eventable.approved? %>
-		<span class='label label-success black pull-right' data-toggle="tooltip" title="Current Status">
-		<%= event.eventable.state %>
+<%= div_for event do %>
+<i class="fa fa-times fa-fw"></i>
+	<%= event.admin.try(:first_name) if !current_page?('/admins/:id') %>
+	<%= event.company_admin.try(:first_name) if !current_page?('/company_admins/:id') %>
+	marked a timesheet for <%=  signed_in_link_to event.eventable.name, event.eventable %> as 
+	<strong>	<%= event.action.humanize.downcase %></strong>
+		<span class='label label-warning black pull-right'>
+		    <%= event.created_at.stamp('11/13 at 8:30am') %>
 		</span>
-	<% else %>
-		<span class='label label-danger black pull-right' data-toggle="tooltip" title="Current Status">
-		   <%= event.eventable.state %>
-		</span>
-	<% end %>
-	
-<% end %>
 
+<% end %>

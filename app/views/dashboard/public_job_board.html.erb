@@ -1,0 +1,36 @@
+<div class='col-md-12 lighterbox'>
+    <div class=''>
+        <%= render 'users_sign_in' %>
+    </div>
+    <h1 class='metal bold page-header'><%= @current_agency.name %> <small> Current Positions</small></h1>
+    
+    <div class='col-md-12 lightbox'>
+    
+        <div class=''>
+            <table class='table inv_datatable'>
+                <thead>
+                    <tr>
+                    <th>Posting Date</th>
+                    <th>Job Title</th>
+                    <th>Location</th>
+                    <th>Pay</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <% @orders.each do |order| %>
+                    <tr>
+                        <td><%= order.title %></td>
+                        <td><%= order.location %></td>
+                        <td><%= pay_range(order) %></td>
+                        <td class='text-center'><%= order.published_at.stamp("11-12-15") %> %></td>
+                    </tr>
+                    <% end %>
+                </tbody>
+            </table>
+            
+        </div>
+    </div>
+    
+    
+    
+</div>

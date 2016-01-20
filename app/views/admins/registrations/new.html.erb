@@ -3,7 +3,7 @@
      
     	<div class=" bg-clear center">
     	  <h2>Agency Admin Registration</h2>
-        <div class='well center'>
+        <div class='center'>
            
           
           <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), class: 'form') do |f| %>
@@ -25,7 +25,7 @@
             </div>
           <% end %>
           
-          <%= render "admins/shared/links" %>
+          <%= render "devise/shared/links" %>
         </div>
     </div>	
   </div>

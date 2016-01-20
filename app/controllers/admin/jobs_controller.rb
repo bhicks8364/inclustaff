@@ -1,5 +1,5 @@
 class Admin::JobsController < ApplicationController
-  before_action :set_job, only: [:show, :edit, :update, :destroy, :clock_in, :clock_out]
+  before_action :set_job, only: [:show, :edit, :update, :destroy, :clock_in, :clock_out, :approve, :cancel]
   before_action :authenticate_admin!
   layout 'admin_layout'
 
@@ -12,7 +12,7 @@ class Admin::JobsController < ApplicationController
       authorize @jobs
     else
      
-      @jobs = Job.active.order(created_at: :desc) if @current_agency.present?
+      @jobs = Job.order(created_at: :desc) if @current_agency.present?
       authorize @jobs
     end
    
@@ -29,30 +29,69 @@ class Admin::JobsController < ApplicationController
     authorize @jobs, :index?
   end
 
-
-
-
-
-  # GET /jobs/1
-  # GET /jobs/1.json
   def show
-    
-    @timesheet = @job.current_timesheet if @job.current_timesheet.present?
-    @shift = @job.shifts.last if @job.shifts.any?
-    @timesheets = @job.timesheets if @job.timesheets.any?
-    @last_week_timesheets =  @job.timesheets.last_week
-    @skills = @job.employee.skills
-    # @order_skills = @job.order.skills
-    respond_to do |format|
-      format.html
-      format.json
-      format.pdf {
-        send_data @job.candidate_sheet.render,
-          filename: "#{@job.title_company}-#{@employee.name}-candidate-sheet.pdf",
-          type: "application/pdf",
-          disposition: :inline
-      }
+    if @job.pending_approval?
+      render "pending_approval"
+    elsif @job.declined?
+      render "declined"
+    else
+      @timesheet = @job.current_timesheet if @job.current_timesheet.present?
+      @shift = @job.shifts.last if @job.shifts.any?
+      @timesheets = @job.timesheets if @job.timesheets.any?
+      @last_week_timesheets =  @job.timesheets.last_week
+      @skills = @job.employee.skills
+      # @order_skills = @job.order.skills
+      respond_to do |format|
+        format.html
+        format.json
+        format.pdf {
+          send_data @job.candidate_sheet.render,
+            filename: "#{@job.title_company}-#{@employee.name}-candidate-sheet.pdf",
+            type: "application/pdf",
+            disposition: :inline
+        }
+      end
     end
+  end
+  
+  def approve
+    if @job.pending_approval?
+      @job.update(active: true, settings: @job.settings.merge({current_state: "Currently Working"}))
+      current_admin.events.create(action: "approved", eventable: @job, user_id: @employee.user_id)
+    elsif !@job.active?
+    # NOT LIKING THIS - maybe should throw an error? An inactive job should always be "pending" or "ended" Create new job if reassigning 
+      @job.update(active: true, settings: @job.settings.merge({current_state: "Currently Working"}))
+      current_admin.events.create(action: "approved", eventable: @job, user_id: @employee.user_id)
+    end
+    respond_to do |format|
+      format.json { render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, state: @job.state } }
+    end
+  end
+  
+  def cancel
+    if @job.active? && @job.shifts.any?
+      @job.update(active: false, end_date: Date.today, settings: @job.settings.merge({current_state: "Assignment Ended"})) 
+      # It'd be nice to have them be required to give a reason when ending an assignment 
+      # Like just a comment and/or choices (hired-in, quit, ncns, laid-off, fired) 
+      # ** choices would make employment verifications easier
+      current_admin.events.create(action: "canceled", eventable: @job, user_id: @employee.user_id)
+      respond_to do |format|
+        format.json { render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, ended: @job.end_date.stamp('11/12/2016'), state: @job.state } }
+      end
+    elsif @job.pending_approval? && !@employee.available?
+      @job.update(active: false, settings: @job.settings.merge({current_state: "Already Working"}))
+      current_admin.events.create(action: "declined", eventable: @job, user_id: @employee.user_id)
+      respond_to do |format|
+        format.json { render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, state: @job.state } }
+      end
+    else
+      @job.update(active: false, settings: @job.settings.merge({current_state: "Declined by agency"}))
+      current_admin.events.create(action: "declined", eventable: @job, user_id: @employee.user_id)
+      respond_to do |format|
+        format.json { render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, state: @job.state } }
+      end
+    end
+    
   end
 
   # GET /jobs/new
@@ -61,6 +100,7 @@ class Admin::JobsController < ApplicationController
     @admin = current_admin
     if params[:order_id]
       @order = Order.find(params[:order_id])
+      @company = @order.company
       @agency = @order.agency
       @job = @order.jobs.new
       authorize @job
@@ -80,7 +120,7 @@ class Admin::JobsController < ApplicationController
     if @job.off_shift?
       @shift = @job.shifts.create(time_in: Time.current, week: Date.today.beginning_of_week.cweek,
                                   state: "Clocked In",
-                                  in_ip: "Admin-Clock-In")
+                                  in_ip: current_admin.current_sign_in_ip)
       current_admin.events.create(action: "clocked_in", eventable: @shift, user_id: @shift.employee.user_id)
 
     
@@ -99,8 +139,8 @@ class Admin::JobsController < ApplicationController
         @shift = @job.current_shift
         @shift.update(time_out: Time.current,
                         state: "Clocked Out", week: Date.today.beginning_of_week.cweek,
-                        out_ip: "Admin-Clock-Out" )
-        current_admin.events.create(action: "clocked_out", eventable: @shift.employee, user_id: @shift.employee.user_id)
+                        out_ip: current_admin.current_sign_in_ip )
+        current_admin.events.create(action: "clocked_out", eventable: @shift, user_id: @shift.employee.user_id)
       respond_to do |format|
           format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?,
                     state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out.strftime("%l:%M%P"),
@@ -145,36 +185,27 @@ class Admin::JobsController < ApplicationController
     if params[:order_id]
       @order = Order.find(params[:order_id])
       @company = @order.company
-      # @employee = Employee.create(employee_params)
       @job = @order.jobs.new(job_params)
       authorize @job
-      
-      
-      # @job.order = @order
-      # @employee = @job.create_employee(employee_params)
     elsif params[:employee_id]
       @employee = Employee.find(params[:employee_id])
       @job = @employee.jobs.new(job_params)
-      
-      # @employee.mark_as_assigned!
-      
       authorize @job
     else
-      
       @job = Job.new(job_params)
       authorize @job
-      
-      @job.recruiter = current_admin if current_admin.recruiter?
-      @job.set_job_title
-      
-      
+    end
+    if sending_for_approval?
+      @job.active = false 
+      @job.settings = @job.settings.merge({current_state: "Pending Approval"})
+      current_admin.events.create(action: "presented", eventable: @job)
+    else
+      @job.settings = @job.settings.merge({current_state: "Currently Working"})
     end
     
     respond_to do |format|
       if @job.save
-        @job.employee.save
         mentioned_admins = @job.mentioned_admins if @job.mentioned_admins
-        
         mentioned_admins.each do |mentioned_admin|
           current_admin.events.create(action: "mentioned", eventable: mentioned_admin)
           # @job.send_notifications!
@@ -222,6 +253,10 @@ class Admin::JobsController < ApplicationController
   end
 
   private
+  
+  def sending_for_approval?
+    params[:commit] == "Send for Approval"
+  end
     # Use callbacks to share common setup or constraints between actions.
     def set_job
       @job = Job.includes(:employee, :order).find(params[:id])
@@ -233,16 +268,14 @@ class Admin::JobsController < ApplicationController
     end
     
     def pundit_user
-      current_admin || current_user
+      current_admin
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def job_params
       params.require(:job).permit(:order, :recruiter_id, :title, :active, :description, 
-      :start_date, :pay_rate, :end_date, :order_id, :employee_id, :drive_pay, :ride_pay,
+      :start_date, :pay_rate, :end_date, :order_id, :employee_id, :drive_pay, :ride_pay, :current_state,
       :number_of_days, :milestone_1, :milestone_2, :milestone_3)
     end
-    def employee_params
-      params.require(:employee).permit(:first_name, :last_name, :email, :ssn, :phone_number)
-    end
+    
 end

@@ -1,15 +1,10 @@
-<%= simple_form_for [Comment.new], class: 'form', remote: true do |f| %>
+<%= simple_form_for commentable.comments.new, remote: true do |f| %>
 <%= f.hidden_field :commentable_id, value: commentable.id %>
     <%= f.hidden_field :commentable_type, value: commentable.class %>
-    <% if admin_signed_in? %>
-    <%= f.hidden_field :admin_id, value: current_admin.id %>
-    <% elsif user_signed_in? %>
-    <%= f.hidden_field :admin_id, value: current_user.id %>
-    <% elsif company_admin_signed_in? %>
-    <%= f.hidden_field :admin_id, value: current_company_admin.id %>
-    <% end %>
+    <%= f.hidden_field :user_id, value: current_user.id %>
+    
   
-    <%= f.association :recipient, collection: Admin.order(:role), label_method: :name_role, value_method: :id, include_blank: false %>
+    <%= f.association :recipient, collection: Admin.recruiters.order(:last_name), label_method: :name, value_method: :id, include_blank: false %>
     
  
     <div class="form-group">

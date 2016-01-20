@@ -24,6 +24,7 @@ class Admin::ShiftsController < ApplicationController
   def show
     @employee = @shift.employee
     @job = @shift.job
+    @order = @job.order
     @company = @job.company
     @timesheet = @shift.timesheet
     gon.shift = @shift
@@ -101,14 +102,16 @@ class Admin::ShiftsController < ApplicationController
   
   def clock_out
     @shift = Shift.find(params[:id])
+    @employee = @shift.employee
+    @user = @employee.user
     if @shift.clock_in?
-      
-      @shift.update(time_out: Time.current,
-                          state: "Clocked Out",
-                          out_ip: "Admin-Clock-Out", week: Date.today.cweek )
+      @shift.update(
+          time_out: Time.current,
+          state: "Clocked Out",
+          week: Date.today.cweek )
       
       respond_to do |format|
-        if @shift.save
+        if @shift.update
           
           current_admin.events.create(action: "clocked_in", eventable: @shift, user_id: @shift.employee.user_id)
   
@@ -172,8 +175,8 @@ class Admin::ShiftsController < ApplicationController
   # PATCH/PUT /shifts/1
   # PATCH/PUT /shifts/1.json
   def update
-    @job = @shift.job
-    @employee = @shift.employee
+    # @job = @shift.job
+    # @employee = @shift.employee
     time = @shift.time_out || @shift.time_in
     @shift.week = time.to_datetime.cweek
 
@@ -207,9 +210,8 @@ class Admin::ShiftsController < ApplicationController
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_shift
-      @shift = Shift.includes(:timesheet, :job).find(params[:id])
-      @job = @shift.job
-      @order = @job.order
+      @shift = Shift.find(params[:id])
+      
       authorize @shift
     end
     

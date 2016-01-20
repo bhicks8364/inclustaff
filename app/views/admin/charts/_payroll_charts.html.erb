@@ -1,0 +1,17 @@
+<div class="row">
+  <%= bar_chart Timesheet.group(:week).sum(:total_bill) %>
+  <div class="col-x-6">
+    <h3>Last week </h3>
+    
+  </div>
+  <div class="col-x-6">
+      <%= column_chart @current_agency.companies.order('name').map{|company|
+        {name: company.name, data: company.invoices.group_by_month('created_at', range: 3.months.ago.midnight..Time.current, format: "%b/%d/%y").sum(:total)}
+    }, library: {backgroundColor: "#eee", legend: {position: "right"}, title: "Company Billings by Week"} %>
+    <%= line_chart @current_agency.companies.order('name').map{|company|
+        {name: company.name, data: company.invoices.group_by_month('created_at', range: 3.months.ago.midnight..Time.current, format: "%b/%d/%y").sum(:total)}
+    }, library: {backgroundColor: "#eee", legend: {position: "right"}, title: "Company Billings by Week"} %>
+
+  </div>
+   
+</div>

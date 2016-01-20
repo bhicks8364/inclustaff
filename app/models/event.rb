@@ -22,6 +22,10 @@ class Event < ActiveRecord::Base
     belongs_to :eventable, polymorphic: true
     include ArelHelpers::ArelTable
     include Arel::Nodes
+    
+    validates_presence_of :eventable_id, :eventable_type, :action
+    
+    
     scope :admin, -> { where.not(admin_id: nil)}
     scope :employee, -> { where.not(user_id: nil)}
     scope :company_admin, -> { where.not(company_admin_id: nil)}
@@ -32,7 +36,10 @@ class Event < ActiveRecord::Base
     scope :timesheets, -> { where(eventable_type: 'Timesheet')}
     scope :jobs, -> { where(eventable_type: 'Job')}
     scope :comments, -> { where(action: 'commented')}
-    scope :approvals, -> { where(action: 'approved')}
+    scope :looking_for_work, -> { where(action: 'looking_for_work')}
+    scope :job_approvals, -> { where(action: 'approved', eventable_type: 'Job')}
+    scope :job_rejections, -> { where(action: 'declined', eventable_type: 'Job')}
+    scope :timesheet_approvals, -> { where(action: 'approved', eventable_type: 'Timesheet')}
     scope :clock_outs, -> { where(action: 'clocked_out')}
     scope :unread, -> { where(read_at: nil)}
     scope :read, -> { where.not(read_at: nil)}
@@ -62,33 +69,20 @@ class Event < ActiveRecord::Base
       where(Event[:created_at].gteq(date1)
       .and(Event[:created_at].lteq(date2)))
     end
-    def application?
-        if self.action == "applied"
-            true
-        else
-            false
-        end
-    end
-    def timesheet?
-        if eventable_type == "Timesheet"
-            true
-        else
-            false
-        end
-    end
-    def unread?
-      read_at == nil
-    end
-    def read?
-      !unread?
-    end
-    def state
-      unread? ? "Unread" : "Read"
-    end
-    def job?
-        eventable_type == "Job"
-    end
     
+    def unread?;    read_at == nil;    end
+    def read?;  !unread?;    end
+    def state;  unread? ? "Unread" : "Read";    end
+    def declined?; action == "declined";  end
+    def follow?; action == "followed";  end
+    def application?; action == "applied";  end
+    def timesheet?; eventable_type == "Timesheet";  end
+    def job?;   eventable_type == "Job";    end
+    def admin?;   eventable_type == "Admin";    end
+    def company_admin?;   eventable_type == "CompanyAdmin";    end
+    def user?;   eventable_type == "User";    end
+    def shift?;   eventable_type == "Shift";    end
+        
     def self.following_admin
         where(action: "followed", eventable_type: "Admin")
     end

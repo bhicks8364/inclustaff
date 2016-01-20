@@ -37,6 +37,7 @@ class Shift < ActiveRecord::Base
   acts_as_paranoid
   
   belongs_to :job
+  belongs_to :employee
   belongs_to :timesheet, counter_cache: true
   has_one :employee, through: :job
   belongs_to :company, class_name: "Company", foreign_key: "company_id"
@@ -48,7 +49,7 @@ class Shift < ActiveRecord::Base
   geocoded_by :in_ip
   after_validation :geocode
 
-  delegate :employee, to: :job
+  # delegate :employee, to: :job
   delegate :order, to: :job
   delegate :manager, to: :job
   delegate :recruiter, to: :job
@@ -69,6 +70,7 @@ class Shift < ActiveRecord::Base
   scope :with_notes,    -> { where(NamedFunction.new("LENGTH", [Shift[:note]]).gt(2))}
   scope :short_shifts,  -> { where('time_worked > 4') }
   scope :over_8,        -> { where('time_worked > 8') }
+  scope :past, -> { where(Shift[:time_in].lteq(Date.yesterday))}
   
   def self.worked_before(date)
     where(Shift[:time_in].lteq(date))
@@ -82,7 +84,11 @@ class Shift < ActiveRecord::Base
   end
   
   
-  scope :last_week,     -> { where(week: Date.today.cweek - 1)}
+  # scope :last_week,     -> { where(week: Date.today.cweek - 1)}
+  scope :last_week, -> {
+          start = Time.current.beginning_of_week - 1.week
+          ending = start.end_of_week
+          where(time_in: start..ending)}
   scope :payroll_week,  -> {
           start = Time.current.beginning_of_week
           ending = start.end_of_week + 7.days
@@ -164,8 +170,8 @@ class Shift < ActiveRecord::Base
     self.break_duration = 0 if break_duration.nil?
   end
   def set_defaults
-      self.employee = job.employee if employee.nil? 
-      self.in_ip = employee.current_sign_in_ip if in_ip.nil?
+      # self.employee = job.employee if employee.nil? 
+      # self.in_ip = employee.current_sign_in_ip if in_ip.nil?
       self.break_out = [] if break_out.nil?
       self.break_in = [] if break_in.nil?
       self.breaks = [] if breaks.nil?

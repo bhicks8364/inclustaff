@@ -1,8 +1,9 @@
 class UsersController < ApplicationController
+    before_filter :authenticate_admin!
     layout :determine_layout
 
     def index
-        @users = @current_agency.users.available.ordered_by_check_in.limit(10)
+        @users = @current_agency.users.available.ordered_by_check_in
         # @users = User.includes(:employee).available
         @import = User::Import.new
         skip_authorization
@@ -78,7 +79,7 @@ class UsersController < ApplicationController
         @timesheets = @employee.timesheets
         @work_histories = @employee.work_histories.order(end_date: :desc)
         @skills = @employee.skills
-        if @user.assigned?
+        if @user.assigned? && admin_signed_in?
             render "admin/employees/show"
         end
         @job = @user.current_job
@@ -107,10 +108,22 @@ class UsersController < ApplicationController
           format.json { head :no_content }
         end
     end
+    def follow
+      @user = User.find(params[:id])
+      if admin_signed_in?
+          @event = current_admin.events.create(action: "followed", eventable: @user)
+      end
+      if @event.save
+        redirect_to users_path, notice: 'You are now following ' + "#{@user.name}"
+      else
+        redirect_to users_path, notice: 'Unable to follow ' + "#{@user.name}"
+      end
+      skip_authorization
+    end
     def update_as_available
         @user = User.includes(:employee, :shifts).find(params[:id])
         @user.update(checked_in_at: Time.current)
-        @user.events.create(action: "looking for work")
+        Event.create(action: "looking_for_work", eventable: @user)
         skip_authorization
     end
     
@@ -124,8 +137,16 @@ class UsersController < ApplicationController
         params.require(:user).permit(:id, :first_name, :last_name, :email, :role, :can_edit, :agency_id, :password, :password_confirmation, :address, :city, :state, :zipcode)
     end
     
-      def determine_layout
-        current_admin ? "admin_layout" : "application"
+    def determine_layout
+      if admin_signed_in?
+        "admin_layout"
+      elsif company_admin_signed_in?
+        "company_layout"
+      elsif user_signed_in?
+        "employee"
+      else
+          "application"
       end
+    end
     
 end

@@ -1,56 +1,39 @@
-<div class='col-md-12 transbox'>
-
-    <%= link_to(employee_timesheet_path(@timesheet, format: :pdf), class: 'btn btn-primary') do %>
-  					<i class="fa fa-download fa-md"></i> Download PDF
-  				
-  				<% end %>
-  		
-          <%= link_to 'All Timesheets', employee_timesheets_path(@job), class: 'btn btn-primary' %>
+<div class='col-md-12 lightbox'>
+    <%= link_to "<i class='fa fa-download fa-md'></i> Download PDF".html_safe, employee_timesheet_path(@timesheet, format: :pdf), class: 'btn btn-primary'%>
+    <%= link_to 'All Timesheets', employee_timesheets_path(@job), class: 'btn btn-primary' %>
   
-<div class='col-md-12'>
+<div class='col-md-12 lightbox'>
   <h3>For the week of:<strong><br>
         <%= @timesheet.week_begin %>
           - 
         <%= @timesheet.week_ending %>
       </strong></h3>
-  <div class='col-md-4 well well-sm'>
+  <div class='col-md-4 bg-white'>
     <h4><strong>Regular hours:</strong>
     <%= @timesheet.reg_hours.round(2) %></h4>
   </div>
-  <div class='col-md-4 well well-sm'>
+  <div class='col-md-4 bg-white'>
    <h4> <strong>Overtime hours:</strong>
     <%= @timesheet.ot_hours.round(2) %></h4>
   </div>
-    <div class='col-md-4 well well-sm'>
+    <div class='col-md-4 bg-white'>
            <h4><strong>Gross pay:</strong>
         <%= number_to_currency(@timesheet.gross_pay) %></h4>
       </div>
 
       
 </div>
- <div class='col-md-6 dark'>
-
- 
-
+<div class='col-md-6 bg-white'>
          <div id='comments_<%= @timesheet.class %>_<%= @timesheet.id %>'>
             <% @timesheet.comments.each do |comment| %>
-            
-                <%= render 'comments/comment', comment: comment %>
+                <%= render 'employee/comments/comment', comment: comment %>
             <% end %>
-        
-        
-          
          </div>
-    <%= render partial: "comments/form", locals: {commentable: @timesheet} %>
+        <%= render partial: "employee/comments/form", locals: {commentable: @timesheet} %>
       </div>
-
-<div class='col-md-12'>
+<div class='col-md-12 bg-white'>
   <h4> Shifts</h4>
    <%= render 'employee/shifts/table' %>
 </div>
-
-
-
-
 </div>
 

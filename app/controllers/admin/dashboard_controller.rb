@@ -3,22 +3,17 @@ class Admin::DashboardController < ApplicationController
     layout 'admin_layout'
     
     def owner
-
-      @current_agency = current_admin.agency
+      @top_billing = @current_agency.companies.ordered_by_current_bill
       @jobs = @current_agency.jobs 
-      
       @orders = Order.all.paginate(page: params[:page], per_page: 15)
-    
       @timesheets = Timesheet.order(updated_at: :desc) 
-  
-  
-        skip_authorization
+      skip_authorization
     end
     def recruiter
-      @orders = Order.needs_attention.paginate(page: params[:page], per_page: 15)
+      @orders = @current_agency.orders.needs_attention.paginate(page: params[:page], per_page: 15)
       @q = @orders.ransack(params[:q]) 
+      @candidates = User.available
       
-      @timesheets = @current_admin.timesheets
       @hash = Gmaps4rails.build_markers(@orders) do |order, marker|
           marker.lat order.latitude
           marker.lng order.longitude
@@ -94,9 +89,7 @@ class Admin::DashboardController < ApplicationController
    
     
     def payroll
-      @admin = @current_admin
-      @orders = @current_agency.orders.needs_attention
-      @timesheets = @current_agency.timesheets.all
+      @timesheets = @current_agency.timesheets.includes(:shifts).all
       @jobs = @current_agency.jobs.all
       @shifts = @current_agency.shifts.current_week
       skip_authorization

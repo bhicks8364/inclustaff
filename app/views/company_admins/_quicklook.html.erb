@@ -1,0 +1,68 @@
+<div class="tabs-wrapper">
+	<div class="clearfix">
+		<h2 class="pull-left">At a glance</h2>
+		<ul class="nav nav-tabs pull-right">
+			<li class="active"><a href="#tab-users" data-toggle="tab">Employees</a></li>
+			<li><a href="#tab-products" data-toggle="tab">Timesheets</a></li>
+			<li><a href="#tab-todo" data-toggle="tab">Open Orders</a></li>
+			<li><a href="#tab-messages" data-toggle="tab">New Messages</a></li>
+			<li><a href="#tab-archived" data-toggle="tab">Archived</a></li>
+		</ul>
+	</div>
+	<div class="tab-content">
+		<div class="tab-pane fade in active" id="tab-users">
+		<h2>	Job Orders I Manage</h2>
+			<% @company_admin.managed_orders.each do |order| %>
+	           <%= order.id%>   <%= info_popover(order) %> <%= order.title %><br>
+	          <% order.jobs.each do |job| %>
+	          	<%= job.status %><br>
+	          <% end %>
+	        <% end %>
+			<% if company.employees.any? %>
+	<h2>	All Company employees</h2>
+				<% company.employees.each do |employee| %>
+					<%= timesheet_user(employee.current_timesheet) if employee.current_timesheet.present? %>	<%= employee.name %> 
+				<% end %>
+			<%else%>
+				
+			<% end %>
+		</div>
+		<div class="tab-pane fade" id="tab-products" data-behavior="timesheet-list">
+			<div class='col-md-6'>
+				<h4>Timesheets waiting for approval</h4>
+				<% company.timesheets.needing_approval.each do |timesheet| %>
+					<%= render "company/timesheets/timesheet", timesheet: timesheet %>
+				<% end %>
+			</div>
+			<div class='col-md-6'>
+				<h4>Timesheets for this week</h4>
+				<% company.current_timesheets.each do |timesheet| %>
+					<%= render "company/timesheets/timesheet", timesheet: timesheet %>
+				<% end %>
+			</div>
+		</div>
+		<div class="tab-pane fade" id="tab-todo">
+			<% company.orders.each do |order| %>
+		             <%= skills_popover(order.skills) %> <%= order.title %><br>
+			<% end %>
+		</div>
+		<div class="tab-pane fade" id="tab-messages" data-behavior="comment-list">
+			<% if company.job_comments.unread.any? %>
+				<% company.job_comments.unread.each do |comment| %>
+			             <%= render 'comments/comment', comment: comment %>
+				<% end %>
+			<% else %>
+				No new messages.
+			<% end %>
+		</div>
+		<div class="tab-pane fade" id="tab-archived" data-behavior="comment-list">
+			<% if company.job_comments.read.any? %>
+				<% company.job_comments.read.each do |comment| %>
+			             <%= render 'comments/comment', comment: comment %>
+				<% end %>
+			<% else %>
+				No messages to show.
+			<% end %>
+		</div>
+	</div>
+</div>

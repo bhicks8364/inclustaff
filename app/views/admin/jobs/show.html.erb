@@ -1,7 +1,11 @@
-<div class='col-md-12'>
-  
+<div class='col-md-12 lightbox' data-behavior="job-list" >
+  <div class='' data-behavior="job" data-id="<%= @job.id %>">
+    <div data-behavior="job-state"><h2 class='text-right'><span class='label label-success'><%= @job.state %></span></h2></div>
+    <div class='page-header'>
+     <h1><%= @job.name_title %></h1>
+    </div>
  
-  <h2><strong><%= @job.name_title %></strong></h2>
+  
    <div class='col-md-4 text-center'>
           <h4><%= @job.company.name %></h4>
        </div>
@@ -38,72 +42,71 @@
     <li role="presentation"><a href="#skills-tab" aria-controls="skills-tab" role="tab" data-toggle="tab">Skills</a></li>
     <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
     <li role="presentation"><a href="#comments-tab" aria-controls="comments-tab" role="tab" data-toggle="tab">Comments</a></li>
-    
   </ul>
   
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="job">
-
-  <div class='col-md-4 bg-white'>
-  <h4><strong>Interview Notes:</strong></h4>
-        <%= markdownify(@job.description) %>
-       <% if @job.recruiter.present? %>
-        <h5>Recruiter: <%= link_to @job.recruiter.name, @job.recruiter %></h5>
-      <% end %>
-        <%= link_to(admin_job_path(@job, format: :pdf), class: 'btn btn-primary') do %>
-          	<i class="fa fa-download fa-md"></i> Candidate Sheet
-          <% end %>
-     </div>
-    
-      <div class='col-md-4'>
-          <% if @job.active? %>
-      <h4><%= @job.title %><smal><%= number_to_currency(@job.pay_rate) %></smal></h4>
-        <%= render @job %>
-        <% else %>
-        <h3> This position is currently inactive.</h3>
-      <% end %>
-          
-       </div>
     <div class='col-md-4 bg-white'>
-      <% if @job.vacation['number_of_days'].present? %>
-  
-      <h2>Vacation Tracking</h2>  
-      
-          <p><%= @employee.first_name %> will earn <strong> <%= @job.vacation['number_of_days'] %> </strong> paid vacation days
-      when he/she has worked
-      <strong><%= @job.vacation['milestone_1'] %> </strong> hours. <br>
-      </p>
-      <p class='lead'>Vacation Schedule</p>
-        <div class='col-md-7'>
-          <ul class="fa-ul">
-              <li><i class="fa-li fa fa-clock-o"></i><%= @job.vacation['milestone_1'] %> hours</li>
-              <li><i class="fa-li fa fa-clock-o"></i><%= @job.vacation['milestone_2'] %> hours</li>
-              <li><i class="fa-li fa fa-clock-o"></i><%= @job.vacation['milestone_3'] %> hours</li>
-            </ul>
-        </div>
-        <div class='col-md-5 bottom'>
-           <ul class="fa-ul">
-              <li><i class="fa-li fa fa-calendar-check-o"></i><%= @job.vacation['number_of_days'] %> days</li>
-              <li><i class="fa-li fa fa-calendar-check-o"></i><%= @job.vacation['number_of_days'].to_i * 2 %> days</li>
-              <li><i class="fa-li fa fa-calendar-check-o"></i><%= @job.vacation['number_of_days'].to_i * 3 %> days</li>
-            </ul> 
-        </div>
-        
-        <div class='headline'><span class='label label-success black'>Hours until next milestone: <%= @job.hours_until_vacation %> </span></div>
-        <% else %>
-        <h3><strong>Vacation Tracking Unavailable</strong></h3>
-        <%= link_to "Add Vacation Milestones", edit_admin_job_path(@job), class: "btn btn-success" %>
+    <h4><strong>Interview Notes:</strong></h4>
+          <%= markdownify(@job.description) %>
+         <% if @job.recruiter.present? %>
+          <h5>Recruiter: <%= link_to @job.recruiter.name, @job.recruiter %></h5>
         <% end %>
-        <div class=''>
-            <% if @job.settings %>
-            <h2>Pay Differentials</h2>  
-      Drive Pay: <%= @job.settings['drive_pay']  %><br>
-      Ride Pay: <%= @job.settings['ride_pay'] if @job.settings %><br>
-      <% end %>
+          <%= link_to(admin_job_path(@job, format: :pdf), class: 'btn btn-primary') do %>
+            	<i class="fa fa-download fa-md"></i> Candidate Sheet
+            <% end %>
+       </div>
       
-        </div>
-    </div>
-</div>
+        <div class='col-md-4 lightbox'>
+            <% if @job.active? %>
+        <h4><%= @job.title %><small><%= number_to_currency(@job.pay_rate) %></small></h4>
+          <%= render @job %>
+          <% else %>
+          <h3> This position is currently inactive.</h3>
+        <% end %>
+            
+         </div>
+      <div class='col-md-4 bg-white'>
+        <% if @job.vacation['number_of_days'].present? %>
+    
+        <h2>Vacation Tracking</h2>  
+        
+            <p><%= @employee.first_name %> will earn <strong> <%= @job.vacation['number_of_days'] %> </strong> paid vacation days
+        when he/she has worked
+        <strong><%= @job.vacation['milestone_1'] %> </strong> hours. <br>
+        </p>
+        <p class='lead'>Vacation Schedule</p>
+          <div class='col-md-7'>
+            <ul class="fa-ul">
+                <li><i class="fa-li fa fa-clock-o"></i><%= @job.vacation['milestone_1'] %> hours</li>
+                <li><i class="fa-li fa fa-clock-o"></i><%= @job.vacation['milestone_2'] %> hours</li>
+                <li><i class="fa-li fa fa-clock-o"></i><%= @job.vacation['milestone_3'] %> hours</li>
+              </ul>
+          </div>
+          <div class='col-md-5 bottom'>
+             <ul class="fa-ul">
+                <li><i class="fa-li fa fa-calendar-check-o"></i><%= @job.vacation['number_of_days'] %> days</li>
+                <li><i class="fa-li fa fa-calendar-check-o"></i><%= @job.vacation['number_of_days'].to_i * 2 %> days</li>
+                <li><i class="fa-li fa fa-calendar-check-o"></i><%= @job.vacation['number_of_days'].to_i * 3 %> days</li>
+              </ul> 
+          </div>
+          
+          <div class='headline'><span class='label label-success black'>Hours until next milestone: <%= @job.hours_until_vacation %> </span></div>
+          <% else %>
+          <div class='headline'><h3><span class='label label-warning black'>Vacation Tracking Unavailable</span></h3>
+            <%= link_to "Add Vacation Milestones", edit_admin_job_path(@job), class: "btn btn-success" %>
+          </div>
+          
+          <% end %>
+          <div class=''>
+          <% if @job.settings['drive_pay'].present? || @job.settings['ride_pay'].present? %>
+            <h3>Pay Differentials</h3>  
+            Drive Pay: <%= @job.settings['drive_pay']  %><br>
+            Ride Pay: <%= @job.settings['ride_pay'] if @job.settings %><br>
+          <% end %>
+          </div>
+      </div>
+  </div>
 
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
     <h3>Timesheets</h3>
@@ -128,48 +131,77 @@
       </div>
   </div>
      <div role="tabpanel" class="tab-pane fade" id="settings">
-     
-     <div class='col-md-6'>
-      
+     <div class='col-md-6 bg-white'>
+       
+              
+                <div>
+                      
+                      <span data-behavior="job-status"></span>
+                      <span data-behavior="job-end-date"></span>
+                        <% if @job.active? %>
+                          <button type='button' class='btn btn-danger' data-behavior='active-job-cancel'>CANCEL </button>
+                        <% elsif @job.pending_approval? %>
+                        <button type='button' class='btn btn-danger' data-behavior='active-job-cancel'>CANCEL </button
+                          <button type='button' class='btn btn-success' data-behavior='job-toggle'>APPROVE </button>
+                        <% end %>
+                        <span data-behavior="job-status">
+                          <% if @job.active? %>
+                            <%= @employee.name %>
+                          <% else %>
+                            <del><%= @employee.name %></del>
+                         <% end %>
+                        </span>
+            </div>
+        </div>
+     <div class='col-md-6 bg-white'>
+      <h3 class='text-center'>Recent Activity</h3>
+      <% @job.events.each do |event| %>
+        <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+          <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
+        <% end %>
+      <% end %>
       <% if @job.mentioned_admins.any? %>
       <strong>Mentioned Admins</strong>
         <% @job.mentioned_admins.each do |admin|%>
           <%= admin.name %> - <%= admin.role %>
         <% end %>
-      
       <% end %>
-      
     </div>
-    <div class="btn-group btn-group-vertical" role="group" aria-label="...">
+    
+    
+    <div class='col-md-2'>
+      <div class="btn-group btn-group-vertical" role="group" aria-label="...">
         <%= link_to "View Company", admin_company_path(@company), class: "btn btn-primary" %>
         <%= link_to "View Job Order", admin_order_path(@order), class: 'btn btn-primary' %>
         <%= link_to "View Employee", admin_employee_path(@employee), class: 'btn btn-primary' %>
         <%= link_to "View User Profile", @employee.user, class: 'btn btn-primary' %>
         <%= link_to "Edit Job", edit_admin_job_path(@job), class: "btn btn-primary" %>
       </div>
-    <%= render "admin/shifts/aca_progress", employee: @employee %>
+    </div>
+   
     
   </div>
   <div role="tabpanel" class="tab-pane fade" id="skills-tab">
     <div class='col-md-12'>
-      <div class='col-md-5 list-group'>
-     <h3>Skills Needed</h3>
-     <% @order.skills.each do |skill| %>
-     <li class='list-group-item list-group-item-success black'>
-       <%= highlight(skill.name, @employee.skills.pluck(:name).to_a, highlighter: '<u>\1</u>') %>
-     </li>
-     <% end %>
+      <div class='col-md-5'>
+        <h3>Skills Needed</h3>
+        <% @order.skills.each do |skill| %>
+        <li class=''>
+        <%= highlight(skill.name, @employee.skills.pluck(:name).to_a, highlighter: '<u>\1</u>') %>
+        </li>
+        <% end %>
+      </div>
+      <div class='col-md-5'>
+        <h3><%= @employee.first_name %>'s Skills</h3>
+        <ul class='fa-ul'>
+          <% @employee.skills.each do |skill| %>
+            <li class=''>
+            <%= highlight(skill.name, @order.skills.pluck(:name).to_a, highlighter: '<u>\1</u>') %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
     </div>
-    <div class='col-md-5 list-group'>
-      <h3><%= @employee.first_name %>'s Skills</h3>
-      <% @employee.skills.each do |skill| %>
-     <li class='list-group-item list-group-item-success black'>
-       <%= highlight(skill.name, @order.skills.pluck(:name).to_a, highlighter: '<u>\1</u>') %>
-     </li>
-     <% end %>
-    </div>
-    </div>
-    
   </div>
   <div role="tabpanel" class="tab-pane fade" id="week-totals">
     
@@ -198,6 +230,7 @@
   </div>
   </div>
   </div>
+</div>
 </div>
 </div>
 

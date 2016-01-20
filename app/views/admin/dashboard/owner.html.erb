@@ -1,4 +1,4 @@
-<div class="col-md-12">
+<div class="col-md-12 lightbox">
 	<h1 class='page-header white'>Owner Dashboard</h1>
 	<div class="tabs-wrapper">
 		<div class="clearfix">
@@ -26,25 +26,26 @@
 	       			</div>
 	       			<% end %>
 	       			
-	       			<div class='col-md-4 bg-white'>
+	       			<div class='col-md-6 bg-white'>
+						<h2>Companies with Open Job Orders</h2>
+						<%= render 'admin/shared/company_collapse', companies: @current_admin.companies.with_open_orders.includes(:orders).distinct.order(:name) %>
+					</div>
+			  		<div class='col-md-4 bg-white'>
 	       				
 	       			</div>
-	       			
-			  	
 		 	
 	 			</div>
 			</div>
 			<div class="tab-pane fade in" id="tab-orders">
 				<div class='col-md-12 bg-white'>
-				<% if @orders %>
+				<% if @current_agency.orders %>
 				<div class='col-md-12 bg-white'>
 					<h3 class='text-center'>Open Job Orders</h3>
 					<div class="col-md-2">
-						<%= render "admin/shared/alerts/open_orders", orders: @orders %>
+						<%= render "admin/shared/alerts/open_orders", orders: @current_agency.orders %>
 					</div>
 					<div class="col-md-10">
-						<%= render 'admin/orders/table', orders: @orders %>
-						<%= will_paginate @orders %>
+						<%= render 'admin/orders/table', orders: @current_agency.orders.needs_attention %>
 					</div>
 					<div class="col-md-4">
 		      			<h3 class="white"><strong>Open Job Orders</strong></h3>

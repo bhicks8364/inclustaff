@@ -1,14 +1,20 @@
-<div class='col-md-12 transbox'>
-<div class='well'>
-    <% if @jobs.active.any? %>
+<div class='col-md-12 lightbox'>
+    <div class='row'>
+        <div class='col-md-4 bg-white'>
+            <%= render 'admin/jobs/pending_list', jobs: @jobs.inactive %>
+        </div>
+    </div>
+    <div class='col-md-8 bg-white'>
+        <% if @jobs.active.any? %>
+        
+    <h1>All Active Jobs</h1>
+    <%= render 'admin/jobs/table', jobs: @jobs.active %>
+    <% else %>
+    No jobs to display.
+    <% end %>
     
-<h1>All Active Jobs</h1>
-<%= render 'admin/jobs/table', jobs: @jobs.active %>
-<% else %>
-No jobs to display.
-<% end %>
-
-
-<%= link_to 'View Inactive', inactive_admin_jobs_path, class: 'btn btn-primary' %>
-</div>
+    
+    <%= link_to 'View Inactive', inactive_admin_jobs_path, class: 'btn btn-primary' %>
+    </div>
+    
 </div>

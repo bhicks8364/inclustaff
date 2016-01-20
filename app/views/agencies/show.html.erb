@@ -1,4 +1,4 @@
-<div class='col-md-12'>
+<div class='col-md-12 lightbox'>
     <% if @agency.admins.count == 1 && admin_signed_in? %>
     <h1>Welcome to IncluStaff, <%= @agency.name %>!</h1>
     <% if current_admin.id == @agency.admins.first.id %>
@@ -46,30 +46,28 @@
     <div class='col-md-12'>
         
          <h1 class='text-center'><%= @agency.name %></h1>
-            <div class='col-md-3 lightbox'>
+            <div class='col-md-3 bg-white'>
                 <%= image_tag(@agency.logo_url, class: "img-zoom", alt: "img-#{@agency.id}")%> 
-                <p> Name: <strong><%= link_to @agency.contact_name, @agency.contact %></strong><br>
-                 Email: <strong><%= @agency.contact_email%></strong>
+                <p> Name: <strong><%= link_to @agency.contact.name, @agency.contact %></strong><br>
+                 Email: <strong><%= @agency.contact.email%></strong>
                 </p>
                 <address class='white'>
                  <%= @agency.address %><br>
                   <%= @agency.city %>, <%= @agency.state %> <%= @agency.zipcode %><br>
                   <abbr title="Phone">P:</abbr> <%= @agency.phone_number %>
                 </address>
-            </div>
-            <div class='col-md-3'>
-            <h2>ACA Settings</h2>
-            <p>Measurement Period: <%= @agency.preferences['aca_measurement_period'] %></p>
-            <p>Administrative Period: <%= @agency.preferences['aca_administrative_period'] %></p>
-            <p>Stability Period: <%= @agency.preferences['aca_stability_period'] %></p>
-        <%  if policy(@agency).update? %>
-                <%= link_to(edit_agency_path(@current_agency), class: 'btn btn-primary') do %>
-        	      <i class='fa fa-pencil fa-fw'></i>
-        			<span>Edit Agency</span>
+                <h2>ACA Settings</h2>
+                <p>Measurement Period: <%= @agency.preferences['aca_measurement_period'] %></p>
+                <p>Administrative Period: <%= @agency.preferences['aca_administrative_period'] %></p>
+                <p>Stability Period: <%= @agency.preferences['aca_stability_period'] %></p>
+            <%  if policy(@agency).update? %>
+                    <%= link_to(edit_agency_path(@agency), class: 'btn btn-primary') do %>
+            	      <i class='fa fa-pencil fa-fw'></i>
+            			<span>Edit Agency</span>
+            		<% end %>
         		<% end %>
-    		<% end %>
             </div>
-        <div class='col-md-3 scroll500'>
+        <div class='col-md-3 bg-white'>
                 <h3>Owners</h3>
             <div class='scroll300'>
                 <% @agency.admins.owners.each do |admin| %>
@@ -97,9 +95,12 @@
             
            
         </div>
-          <div class='col-md-3'></div>
-        <div class='col-md-3'>
-            <div class='well scroll300'>
+          <div class='col-md-2'>
+              
+          </div>
+        <div class='col-md-4 bg-white'>
+            <h3><%= pluralize(@agency.companies.count, "Company") %></h3>
+            <div class='scroll300'>
                 <% @agency.companies.each do |company| %>
                     <h4><%= link_to company.name, admin_company_path(company) %> <small><%= number_to_currency(company.current_billing) %></small></h4>
                     Open: <%=company.orders.needs_attention.count %> | Filled: <%= company.orders.filled.count %> <br>

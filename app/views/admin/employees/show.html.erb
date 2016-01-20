@@ -17,7 +17,7 @@
         <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
         <li role="presentation"><a href="#work_history" aria-controls="work_history" role="tab" data-toggle="tab">Work History</a></li>
         <li role="presentation"><a href="#skills-tab" aria-controls="skills-tab" role="tab" data-toggle="tab">Skills</a></li>
-        <% if @employee.assigned? %>
+        <% if @employee.shifts.any? %>
         <li role="presentation"><a href="#payroll" aria-controls="payroll" role="tab" data-toggle="tab">Payroll Information</a></li>
         <li role="presentation"><a href="#aca" aria-controls="aca" role="tab" data-toggle="tab">ACA Information</a></li>
         <li role="presentation"><a href="#current-job" aria-controls="current-job" role="tab" data-toggle="tab">Time Clock</a></li>
@@ -37,7 +37,7 @@
                <h4>Contact Info</h4>
                <span class=''><i class="fa fa-envelope-o"></i> 
                <%= @employee.email %></span>
-               <br>
+               
                <span class=''>
                <i class="fa fa-phone-square"></i>  <%= @employee.phone_number %></span><br>
                <span class=''><i class="fa fa-home"></i> 
@@ -45,7 +45,7 @@
             </div>
         <div class='col-md-3 bg-white'>
             <h4>Employee Details</h4>
-                <span class=''><i class="fa fa-wrench"></i> <%= @employee.desired_job_type %></span><br>
+                <span class=''><i class="fa fa-wrench"></i> <%= @employee.desired_job_type %></span>
                 <span class=''><i class="fa fa-clock-o"></i>  <%= @employee.desired_shift %></span>
                 
         </div>
@@ -69,54 +69,71 @@
             
         
         </div>
+        <% if @employee.work_histories.any?  %>
+         <div class='col-md-12 bg-white'>
+            <h2><%= @employee.first_name %>'s Employment Timeline</h2>
+            <%= timeline  @employee.work_history_data, width: "100%", height: "300px"  %>
+        </div>
+        <% end %>
         
 
     </div>
     <div role="tabpanel" class="tab-pane fade" id="matching_orders">
         
          <h2 class="text-center">Matching Job Orders  </h2>
-      <div class='col-md-3'></div>
-        <div class='col-md-6 black'>
-          <% @employee.matching_orders.each do |order| %>
-              <%= render order %>
-          <% end %>
+        <div class='col-md-9 black'>
+              <%= render 'admin/orders/table', orders: @employee.matching_orders %>
         </div>
-        <div class='col-md-3'></div>
+        <div class='col-md-3'>
+             <div  id='skills' class=''>
+             <% @employee.skills.each do |skill| %>
+              <%= render "admin/skills/skill", skill: skill %>
+            <% end %>
+            </div>
+
+             <div class=''>
+               <%= render partial: "admin/skills/form", locals: {skillable: @employee} %>
+             </div>
+        </div>
     </div>
       <!--EMPLOYEE PROFILE TAB-->
     <div role="tabpanel" class="tab-pane fade" id="payroll">
          <h2 class="text-center">Payroll Information  </h2>
          
         <div class='col-md-4'>
-            <%= @employee.ssn %><br>
-          CODE:  <%= @employee.code %><br>
-           <strong>Last sign in:</strong> <%= @user.current_sign_in_at %> -
-              <%= @user.current_sign_in_ip %>
+            <p><%= @employee.ssn %></p>
+            <p>
+                <strong>Current sign in at:</strong> <%= @user.current_sign_in_at %> <br>
+                <strong>Current sign in IP:</strong>  <%= @user.current_sign_in_ip %>
+            </p>
+            <p>
+                <strong>Last sign in at:</strong> <%= @user.last_sign_in_at %> <br>
+                <strong>Last sign in IP:</strong>  <%= @user.last_sign_in_ip %>
+            </p>
+          
+           
         </div>
-        
     </div>
       <!--ACA TAB-->
     <div role="tabpanel" class="tab-pane fade" id="aca">
-        <h2 class="text-center">ACA Information  </h2>
-        <%= link_to "View ACA Report", aca_admin_employee_path(@employee), class: "btn btn-primary btn-lg btn-block" %>
+        <div class='col-md-12 bg-white'>
+            <h2 class="text-center">ACA Information  </h2>
+        <%= link_to "View ACA Report", aca_admin_employee_path(@employee), class: "btn btn-primary btn-lg" %>
         <h3 class=''>Days since initial start date: <%= @employee.days_from_initial_start %></h3>
             <h3 class=''>Average Hours per week: <%= @employee.average_weekly_hours %></h3>
         <%= render 'admin/shifts/aca_progress', employee: @employee %>
-        
-        
-    
+        </div>
       </div>
       <!--TIMESHEETS TAB-->
       <div role="tabpanel" class="tab-pane fade" id="timesheets">
-        
+        <div class='col-md-12 bg-white'>
         <% if @employee.timesheets.any? %>
-  
-         <%= render 'admin/timesheets/table', timesheets: @employee.timesheets %>
-    
-          <% end %>
-    
+            <%= render 'admin/timesheets/table', timesheets: @employee.timesheets %>
+        <% else %>
+            <h3>No timesheets to show.</h3>
+        <% end %>
+        </div>
       </div>
-      
       <!--CURRENT JOB TAB-->
       <div role="tabpanel" class="tab-pane fade" id="current-job">
         
@@ -133,22 +150,24 @@
       <% end %>
       </div>
       <div role="tabpanel" class="tab-pane fade" id="shifts">
-        
-      <% if @employee.assigned? && @employee.shifts.any? %>
-      	<h1>Calendar</h1>
-        <div class='bg-white'>
-          <%= render 'admin/shifts/calendar', shifts: @employee.shifts %>
+        <div class='col-md-12 bg-white'>
+          <% if @employee.assigned? && @employee.shifts.any? %>
+          	<h1>Calendar</h1>
+              <%= render 'admin/shifts/calendar', shifts: @employee.shifts %>
+            <% else %>
+            <h3> <%= @employee.first_name %> has not clocked in yet.</h3>
+          <% end %>
         </div>
-        <% else %>
-        <h3> <%= @employee.first_name %> is currently unassigned.</h3>
-      <% end %>
       </div>
       <div role="tabpanel" class="tab-pane fade" id="work_history">
         
         <div class='col-md-12 bg-white'>
             
         <% if @employee.work_histories.any? %>
-         
+         <div class='col-md-12 bg-white'>
+            <h2><%= @employee.first_name %>'s Employment Timeline</h2>
+            <%= timeline  @employee.work_history_data, width: "100%", height: "300px"  %>
+        </div>
            
            <%= render 'work_histories/table' %>
           
@@ -157,13 +176,13 @@
           <p>No Work History Available.</p>
     
         <% end %>
-         <% if @employee.jobs.inactive.any? %>
+         <% if @employee.jobs.have_ended.any? %>
      <div class='col-md-6'>
               <h5 class='text-center'>Past Job Assignments</h5>
         <% @employee.jobs.inactive.each do |job| %>
        
           <h4><%= job.company %> <small> <%= job.title %></small></h4>
-          <small> Assignment duration: <%= distance_of_time_in_words(job.start_date, job.end_date, include_seconds: true) %></small>
+          <small> Assignment duration: <%= distance_of_time_in_words(job.start_date, job.end_date, include_seconds: true) if job.end_date.present? %></small>
           <p><%= job.start_date.stamp('11/12') %> - <%= job.end_date.stamp('11/12') %></p>
             <% if job.comments.unread.any? %>
                <div class='' data-behavior='comment-list'>
@@ -190,11 +209,6 @@
              <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
            <% end %>
          </div>
-        <div class='col-md-12 bg-white'>
-            <h2><%= @employee.first_name %>'s Employment Timeline</h2>
-            <%= timeline  @employee.work_history_data, width: "100%", height: "300px"  %>
-        </div>
-           
       </div>
       <div role="tabpanel" class="tab-pane fade" id="skills-tab">
           <div class='col-md-4'>
@@ -209,14 +223,8 @@
              <% @employee.skills.each do |skill| %>
               <%= render "admin/skills/skill", skill: skill %>
             <% end %>
-             
             </div>
-            <div class="col-md-4 tag_cloud">
-        		<h1>Candidate Skills</h1>
-        	  <% tag_cloud @employee.tag_counts, %w[css1 css2 css3 css4] do |tag, css_class| %>
-        	    <%= link_to tag.name, tag_path(tag.name), class: css_class %>
-        	  <% end %>
-        	</div>
+
              <div class='form-inline'>
                <%= render partial: "admin/skills/form", locals: {skillable: @employee} %>
              </div>

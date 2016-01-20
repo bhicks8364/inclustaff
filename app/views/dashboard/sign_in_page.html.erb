@@ -1,29 +1,30 @@
-<div class='col-md-12 '>
+<div class='col-md-12 lightbox'>
 	<% if @current_agency.present? %>
-	<h1 class='text-center black'>Welcome to <%= @current_agency.name %>'s portal!</h1>
-	<div class='col-md-4'>
-		<%= link_to "<i class='fa fa-user-plus fa-fw pull-left'></i> Employee Sign Up".html_safe, new_user_registration_path, class: 'btn btn-primary' %>
-		
-		<%= link_to "<i class='fa fa-users fa-fw pull-left'></i> Employee Sign In".html_safe, new_user_session_path, class: 'btn btn-primary' %>
+	<h1 class='metal bold'>Welcome to <%= @current_agency.name %>'s Client Portal </h1>
+	<div class='col-md-3'>
+        
+    </div>
+	<div class='col-md-6 lightbox'>
 	
-		
+		<div class='sign-up-info'>
+				<h3>Once signed in you can...</h3>
+	    	<ul class='fa-ul'>
+				<li><i class="fa-li fa fa-check-square"></i> Submit a new job order request  </li>
+				<li><i class="fa-li fa fa-check-square"></i> Review potential candiate's profiles  </li>
+				<li><i class="fa-li fa fa-check-square"></i> Enable on-site and/or mobile timeclocks </li>
+				<li><i class="fa-li fa fa-check-square"></i> Set-up multiple admin accounts </li>
+				<li><i class="fa-li fa fa-check-square"></i> Approve timesheets instantly </li>
+			</ul>
+			<div class='metal'>
+	        	 <%= link_to "<i class='fa fa-sign-in fa-fw'></i> Client Sign-In".html_safe, new_company_admin_session_path, class: 'btn btn-primary btn-lg home-button' %>
+	        </div>
+	    </div>
 	</div>
-
-	<div class='col-md-4'>
-		<%= link_to "<i class='fa fa-user-plus fa-fw pull-left'></i> Agency Admin Sign Up ".html_safe, new_admin_registration_path, class: 'btn btn-primary' %>
-		
-		<%= link_to "<i class='fa fa-user fa-fw pull-left'></i> Agency Admin Sign In ".html_safe, new_admin_session_path, class: 'btn btn-primary' %>
-	</div>
-	<div class='col-md-4'>
-		
-		<%= link_to "<i class='fa fa-user fa-fw pull-left'></i>Company Admin Sign In ".html_safe, new_company_admin_session_path, class: 'btn btn-primary' %>
-	</div>
-	
-	
+	<div class='col-md-3'>
+        
+    </div>
 	<% else %>
-	
 	<h2>Please check your URL. We don't recongize that subdomain. </h2>
 	<%= link_to "Go Back", root_path, class: "btn btn-primary" %>
 	<% end %>		
-	
 </div>

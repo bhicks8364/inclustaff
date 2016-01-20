@@ -1,43 +1,16 @@
 <div class='col-md-12'>
-  <div class='col-md-12'>
-    <%= line_chart @current_agency.companies.order('name').map{|company|
-        {name: company.name, data: company.invoices.group_by_week('created_at').sum(:total)}
-    }, library: {backgroundColor: "#eee", legend: {position: "bottom"}, title: "Company Billings by Week"} %>
-  </div>
-  <div class='col-md-6'>
-    <%= column_chart Admin.account_managers.map{|admin|
-      {name: admin.name, data: admin.account_orders.includes(:jobs => :current_timesheet).group(:account_manager).sum(:total_bill)}
-  } %>
-  </div>
-  <div class='col-md-6'>
-    <%= column_chart Admin.account_managers.map{|admin|
-      {name: admin.name, data: admin.account_orders.includes(:jobs => :timesheets).group(:account_manager).sum(:total_bill)}
-  } %>
-  </div>
-  <div class='col-md-6'>
-    <%= column_chart Admin.recruiters.map{|admin|
-      {name: admin.name, data: admin.jobs.includes(:current_timesheet).group(:recruiter).sum(:total_bill)}
-  } %>
-  </div>
+  
+    
+    <%= column_chart @current_agency.companies.order('name').map{|company|
+        {name: company.name, data: company.invoices.group_by_month('created_at', range: 3.months.ago.midnight..Time.current, format: "%b/%d/%y").sum(:total)}
+    }, library: {backgroundColor: "#ccc", legend: {position: "right"}, title: "Company Billings by Month"} %>
 </div>
 
-  
-    <div class="col-md-6 ">
-      <h5 class='text-center'>Recruiter Activity</h5>
-  <%= column_chart Admin.recruiters.map { |admin|
-  { name: admin.name, data: admin.jobs.group_by_day(:created_at, format: "%B %d, %Y").count }
-  } %>
+<div class="col-md-12 ">
+ <%= line_chart @current_agency.admins.account_managers.map{|am|
+  {name: am.name, data: am.account_orders.includes(:timesheets).group_by_week('timesheets.created_at', range: 3.weeks.ago.midnight..Time.current, format: "%b/%d/%y").sum(:total_bill)}
+} %>
 </div>
-    <div class="col-md-6 ">
-      <h5 class='text-center'>Shifts</h5>
-      <h5 class='text-center'><small><%= Shift.count %></small></h5>
-      1`
-    </div>
-    <div class="col-md-12 ">
-      <h5 class='text-center'> Billings by Hour</h5>
-      <h5 class='text-center'><small><%= Timesheet.current_week.sum(:total_bill) %></small></h5>
-    
-         <%= line_chart Admin.account_managers.map{|am|
-          {name: am.name, data: am.account_orders.includes(:timesheets).group_by_hour('timesheets.updated_at').sum(:total_bill)}
-      } %>
-    </div>
+<%= line_chart @current_agency.companies.includes(:invoices).map{|company|
+    {name: company.name, data: company.invoices.group_by_week(:created_at).sum(:total)}
+} %>

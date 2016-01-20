@@ -18,6 +18,7 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		<ul class="nav navbar-nav">
 			<li><%= link_to @current_admin.name, @current_admin %></li>
+			<li><%= link_to "<i class='fa fa-bell-o'></i>".html_safe, events_path %></li>
 			<li class="dropdown">
 			  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= @current_admin.role %> Toolbox <span class="caret"></span></a>
 			  <ul class="dropdown-menu">
@@ -26,7 +27,6 @@
 			    <%= render "admin/sidebars/payroll_links" if @current_admin.payroll? %>
 			    <%= render "admin/sidebars/owner_links" if @current_admin.owner? %>
 			    <li role="separator" class="divider"></li>
-			    <li><%= link_to @current_admin.name, @current_admin %></li>
 			    <li><%= link_to "<i class='fa fa-power-off'></i> Sign Out".html_safe, destroy_admin_session_path, method: :delete  %></li>
 			  </ul>
 			</li>
@@ -34,7 +34,7 @@
 		<ul class="nav navbar-nav">
 			<%= render 'admin/shared/clocked_in' if  @current_admin.jobs.on_shift.any? %>
 			<%= render 'admin/shared/on_break' if @current_admin.jobs.on_break.any? %>
-			<%= render 'admin/shared/dropdown'if @current_admin.comments.includes(:commentable).unread.any? %>
+			<!--<%= render 'admin/shared/dropdown'if @current_admin.comments.includes(:commentable).unread.any? %>-->
 		</ul>
      
     </div><!-- /.navbar-collapse -->

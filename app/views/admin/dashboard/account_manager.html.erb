@@ -1,15 +1,26 @@
-<div class="col-md-12">
-	<h1 class='page-header'>Sales Dashboard</h1>
-	<div class='bg-white'>
-		<div class='col-md-2'>
-			<%= render "admin/shared/alerts/open_orders", orders: @current_admin.job_orders %>
+<div class="col-md-12 lightbox">
+	<div class='pull-right'><%= render 'admin/orders/search' %></div>
+	<h1 class='page-header text-center'>Sales Dashboard</h1>
+	
+	<div class="col-md-4 bg-white">
+			<h2>Pending Approval</h2>
+				<%= render 'admin/jobs/pending_list', jobs: @current_admin.jobs.pending_approval %>
 		</div>
-		<div class="col-md-10">
-				<%= render 'admin/orders/table', orders: @orders %>
-				<%= will_paginate @orders %>
+	
+	<div class='col-md-6 bg-white'>
+		<h2>Companies with Open Job Orders</h2>
+		<%= render 'admin/shared/company_collapse', companies: @current_admin.companies.with_open_orders.includes(:orders).distinct.order(:name) %>
+	</div>
+	<div class='col-md-2 lightbox'>
+		<%= render "admin/shared/alerts/open_orders", orders: @current_admin.job_orders %>
+	</div>
+	<div class='row'>
+		<div class="col-md-12 lighterbox">
+			<h2>All Job Orders</h2>
+				<div class='col-md-10 scroll400'>
+					<%= render 'admin/orders/table', orders: @current_admin.job_orders.includes(:company).order(:created_at) %>
+				</div>
 		</div>
-		<div class='col-md-10'>
-			<%= render 'admin/shared/company_collapse', companies: @current_admin.companies.distinct.order(:name) %>
-		</div>
+		
 	</div>
 </div>

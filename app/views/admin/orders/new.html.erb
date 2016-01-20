@@ -1,5 +1,5 @@
-<div class='col-md-12'>
-
+<div class='col-md-12 lightbox'>
+<h3 class='text-center'>New Job Order</h3>
       
     <% if @company.present? %>
         <h4><strong><%= link_to @company.name, admin_company_path(@company) %></strong></h4>
@@ -7,8 +7,8 @@
     <%end%>
 
         
-        <div class='dark'>
-             <h3 class='text-center'>New Job Order</h3>
+        <div class=''>
+             
             <%= render 'form' %>
         </div>
 

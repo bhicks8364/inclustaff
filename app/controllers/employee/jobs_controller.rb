@@ -173,6 +173,7 @@ class Employee::JobsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_job
       @job = Job.includes(:employee, :order).find(params[:id])
+      @order = @job.order
       @company = @job.company
       authorize @job
      

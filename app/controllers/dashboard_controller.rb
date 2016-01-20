@@ -3,6 +3,7 @@ class DashboardController < ApplicationController
   layout :determine_layout
   
   def home
+    @orders = @current_agency.orders.all.paginate(page: params[:page], per_page: 15) if admin_signed_in?
     #ROOT LANDING PAGE - NO SUBDOMAIN && NO ONE IS SIGNED IN
     if @current_agency.nil? && signed_in? == false
       render 'mainpage'
@@ -30,6 +31,7 @@ class DashboardController < ApplicationController
           render 'admin/dashboard/recruiter'
         elsif current_admin.payroll?
         @timesheets = Timesheet.all
+        @shifts = @current_agency.shifts.today
           render 'admin/dashboard/payroll'
         else
           render 'admin/dashboard/home'
@@ -46,6 +48,8 @@ class DashboardController < ApplicationController
     @current_company_admin = current_company_admin
       @company = current_company_admin.company
       @at_work = @company.jobs.at_work 
+      @shifts = @company.shifts.today
+      @invoices = @company.invoices
          render 'company/dashboard/home'
       
       
@@ -59,8 +63,8 @@ class DashboardController < ApplicationController
         @applications = @events.applications
         render "employee/dashboard/home"
     end
-    
-        
+    @orders = Order.needs_attention.order(:needed_by).paginate(page: params[:page], per_page: 15)
+     
     
     skip_authorization
   end
@@ -91,17 +95,10 @@ class DashboardController < ApplicationController
       skip_authorization
 
   end
-  # def employee_view
-  #     @employee = current_user.employee if current_user.employee?
-  #     @company = @employee.company if @employee.present?
-  #     @shifts = @employee.shifts.order(time_in: :desc)
-  #     # skip_authorization
-  # end
-  
-  # def profile
-  #     @user = current_user
-  #     skip_authorization
-  # end
+  def public_job_board
+    @orders = @current_agency.orders.published
+    skip_authorization
+  end
   
   def agency_view
       @current_admin = current_admin if admin_signed_in?

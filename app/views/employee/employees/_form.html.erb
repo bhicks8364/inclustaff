@@ -1,0 +1,51 @@
+<%= simple_form_for [:employee, @employee], html: { class: 'form-horizontal' },
+  wrapper: :horizontal_form,
+  wrapper_mappings: {
+    check_boxes: :horizontal_radio_and_checkboxes,
+    radio_buttons: :horizontal_radio_and_checkboxes,
+    file: :horizontal_file_input,
+    boolean: :horizontal_boolean
+  } do |f| %>
+  <%= f.error_notification %>
+  <div class='col-md-4'>
+    <div class="panel panel-default">
+      <h3 class="text-center"><strong>Contact Information</strong></h3>
+      <div class='panel-body'>
+        <%= f.input :first_name, label: "First Name", disabled: true, label: false %>
+        <%= f.input :last_name, label: "Last Name", disabled: true, label: false %>
+        <%= f.simple_fields_for :user do |u| %>
+        <%= u.input :email, disabled: true, placeholder: "Email  Address", label: false  %>
+        <hr>
+        <%= f.input :phone_number, as: :tel, placeholder: "Phone Number", label: "Phone Number"  %>
+        <%= u.input :address, placeholder: "Street Address" %>
+        <%= u.input :city, required: true, placeholder: "City" %>
+        <%= u.input :state, required: true, placeholder: "State" %>
+        <%= u.input :zipcode, placeholder: "Zipcode"  %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 panel panel-default">
+      <h3 class="text-center"><strong>Availablility</strong></h3>
+    <div class="panel-body">
+      <%= f.input :monday, as: :select, collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible", "Not Available"], include_blank: false %>
+      <%= f.input :tuesday, as: :select, collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible", "Not Available"], include_blank: false %>
+      <%= f.input :wednesday, as: :select, collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible", "Not Available"], include_blank: false %>
+      <%= f.input :thursday, as: :select, collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible", "Not Available"], include_blank: false %>
+      <%= f.input :friday, as: :select, collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible", "Not Available"], include_blank: false %>
+      <%= f.input :saturday, as: :select, collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible", "Not Available"], include_blank: false %>
+      <%= f.input :sunday, as: :select, collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible", "Not Available"], include_blank: false %>
+    </div>
+    </div>
+     <div class="col-md-4 panel panel-default">
+        <h3 class="text-center"><strong>Additional Information</strong></h3>
+      <div class='panel-body'>
+        <%= f.input :desired_job_type, label: "Desired Job Type", collection: ["Full-time", "Part-time", "Any"], include_blank: false %>
+        <%= f.input :desired_shift, label: "Desired Shift", collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible"], include_blank: false %>
+      </div>        
+      </div>
+
+
+    <%= f.submit "Save", class: 'btn btn-primary btn-lg' %>
+
+<% end %>

@@ -1,6 +1,6 @@
-<div class='col-md-12 '>
+<div class='col-md-12 lightbox '>
   
-   <div class='col-md-4 text-center well well-sm'>
+   <div class='col-md-4 bg-white text-center'>
    
   <% if @job.on_shift? %>
          <%= shift_popover(@job.current_shift) %>
@@ -13,12 +13,10 @@
  
           <h4><%= @job.start_date.strftime("%B %e, %Y ") %></h4>
      
-     <%= link_to(employee_job_path(@job, format: :pdf), class: 'btn btn-primary') do %>
-  	<i class="fa fa-download fa-md"></i> Candidate Sheet
-  <% end %>
+
        
        </div>
-  <div class='col-md-8 '>
+  <div class='col-md-8'>
 
   
   <!-- Nav tabs -->
@@ -34,31 +32,43 @@
   
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="job">
-  <div class='col-md-3'>
-       Minimum Hours for Vacation: <%= @job.settings['min_hours_for_vac'] if @job.settings %>
-  </div>
-  <div class='col-md-6'>
+      <div class='col-md-6 bg-white'>
+          <h3 class='text-center'>Vacation Tracking</h3>
+          <% if @job.settings['min_hours_for_vac'].present? %>
+           <p>Minimum Hours for Vacation: <%= @job.settings['min_hours_for_vac'] %></p>
+           <% else %>
+           <p>Please contact your recruiter, <%= @job.recruiter.name %> at <%= @job.recruiter.email %> for information about earning paid vacation days.</p>
+           <% end %>
+      </div>
+      <div class='col-md-6 bg-white'>
       
-        <%= @job.description %>
+        <%= markdownify(@order.notes) %>
      </div>
      <div class='col-md-3'>
-      Pay: <%= @job.settings['pay_rate'] if @job.settings %><br>
+      <% if @job.settings['drive_pay'].present? || @job.settings['drive_pay'].present? %>
       Drive Pay: <%= @job.settings['drive_pay'] if @job.settings %><br>
       Ride Pay: <%= @job.settings['ride_pay'] if @job.settings %><br>
+      <% end %>
+    
+     </div>
+     <div class='btn-group'>
+        <%= link_to(employee_job_path(@job, format: :pdf), class: 'btn btn-primary') do %>
+            <i class="fa fa-download fa-md"></i> Candidate Sheet
+        <% end %>
      </div>
   </div>
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
     <h3>Timesheets</h3>
       <%= render @timesheet if @job.current_timesheet.present? %> 
-    <%= link_to "Timesheets", employee_timesheets_path(@job), class: "btn btn-success" %>
+    <%= link_to "Current Timesheet", employee_timesheet_path(@job.current_timesheet), class: "btn btn-success" %>
   </div>
   <div role="tabpanel" class="tab-pane fade" id="comments-tab">
      <div class=''>
          <div id='comment-list'>
             <% @job.comments.each do |comment| %>
-                <%= render 'comments/comment', comment: comment %>
+                <%= render 'employee/comments/comment', comment: comment %>
             <% end %>
-          <%= render partial: "comments/form", locals: {commentable: @job} %>
+          <%= render partial: "employee/comments/form", locals: {commentable: @job} %>
          </div>
       </div>
   </div>

@@ -16,6 +16,8 @@ class Company::ShiftsController < ApplicationController
     @employee = @shift.employee
     @job = @shift.job
     @timesheet = @shift.timesheet
+    @order = @job.order
+    @company = @order.company
     gon.shift = @shift
     
   end

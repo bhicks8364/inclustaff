@@ -1,15 +1,16 @@
-<div class='dark white'>
-    <h3>Editing a shift for <%= @employee.name %></h3>
-<%= render 'form' %>
+<div class='col-md-12 lightbox'>
+    <h2>Editing a shift for <%= @job.try(:name_title) %></h2>
+    <div class='col-md-3'></div>
+   <div class='col-md-6'>
+       <%= render 'form' %>
+   </div>
+   <div class='col-md-3'></div>
 
 
-<br>
-
-Total break time: <%= @shift.break_duration %><br>
-
-<hr>
-
-<%= link_to 'Back to view', admin_shift_path(@shift), class: "btn btn-info" %> 
-<%= link_to 'All Company Shifts', admin_shifts_path, class: "btn btn-info" %>
+<div class='btn-group'>
+    <%= link_to 'All Employee Shifts', admin_employee_shifts_path(@employee), class: "btn btn-info black" %> 
+    <%= link_to 'Back to view', admin_shift_path(@shift), class: "btn btn-info black" %> 
+    <%= link_to 'All Company Shifts', admin_shifts_path, class: "btn btn-info black" %>
+</div>
 
 </div>

@@ -1,175 +1,134 @@
-<div class='col-md-12 bg-white'>
-  <h3 class="page-header"><%= @user.name %>'s Profile  </h3>
-
-<span id="user-role">  <strong><% if @user.can_edit? %> <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> <% end %></strong> </h3></span> 
-          
-
+<div class='col-md-12 lightbox'>
 <!--NAV TABS-->
-<div id='profile-nav' class=''>
-
-  <!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
-    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
-   
-    <li role="presentation"><a href="#work_history" aria-controls="work_history" role="tab" data-toggle="tab">Work History</a></li>
-    <li role="presentation"><a href="#applications-tab" aria-controls="applications" role="tab" data-toggle="tab">Applications</a></li>
-    <% if @employee.assigned? %>
-    <li role="presentation"><a href="#current-job" aria-controls="current-job" role="tab" data-toggle="tab">Current Job</a></li>
-    <li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li>
-    
-    <li role="presentation"><a href="#shifts" aria-controls="shifts" role="tab" data-toggle="tab">Shifts</a></li>
-    
-    <% end %>
-    <% if admin_signed_in? %>
-    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
-    <% end %>
-  </ul>
-  
-  <div class="tab-content">
-  <div role="tabpanel" class="tab-pane fade in active" id="home">
-        <%= render 'employee/shared/user', user: @user %>
-     
+    <div id='profile-nav' class=''>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
+        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
+        <li role="presentation"><a href="#work_history" aria-controls="work_history" role="tab" data-toggle="tab">Work History</a></li>
+        <li role="presentation"><a href="#applications-tab" aria-controls="applications" role="tab" data-toggle="tab">Applications</a></li>
+        <li role="presentation"><a href="#jobs-tab" aria-controls="jobs" role="tab" data-toggle="tab">Jobs</a></li>
+        <% if @employee.assigned? %>
+        <li role="presentation"><a href="#current-job" aria-controls="current-job" role="tab" data-toggle="tab">Current Job</a></li>
+        <li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li>
+        <li role="presentation"><a href="#shifts" aria-controls="shifts" role="tab" data-toggle="tab">Shifts</a></li>
+        <% end %>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade in active" id="home">
+                <div class='col-md-6 bg-white'>
+                    <%= render 'users/user', user: @user %>
+                    <%= render 'employee/employees/availability', employee: @employee %>
+                </div>
+                <div class='col-md-6 bg-white'>
+                    <div class='btn-group'>
+                        <%= link_to "Edit Profile", edit_employee_employee_path(@employee), class: 'btn btn-primary' %>
+                        <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="profile">
+                <div class="col-md-6 bg-white">
+                    <% if @employee.matching_orders.any? %>
+                	<h2 class="text-center">Suggested Positions </h2>
+                    <div class='list-group'>
+                      <% @employee.matching_orders.each do |order| %>
+                          <%= render 'employee/orders/order', order: order %>
+                      <% end %>
+                    </div>
+                    <% end %>
+                </div>
+                <div class='col-md-6 bg-white'>
+                    <% if @employee.skills.any? %>
+                       <h4 class='text-center'>Skills</h4>
+                        <div id='skills' class='center'>
+                          <% @employee.skills.each do |skill| %>
+                              <%= render 'employee/skills/skill', skill: skill if !skill.new_record?%>
+                          <% end %>
+                         </div>
+                      <% else %>
+                       <h4 id='no-skills' class="center"><%= @employee.first_name %> has no skills entered.</h4>
+                          <div id='skills' class='center'>
+                          </div>
+                      <% end %>
+                    <div class='form-inline'>
+                        <%= render partial: "employee/skills/form", locals: {skillable: @employee} %>
+                    </div>
+                </div>
+            </div>
             
-         	
-   
-  
-   
-
-       <% if @employee.assigned? %>
-         <%= render 'employee/jobs/job', job: @job %>
-       
-       <% end %>
-    
-    
-     
-     
-      
-    
-  </div>
-  
-  <div role="tabpanel" class="tab-pane fade" id="profile">
-     
-   
-   
-    <div class="col-md-6">
-    	<h2 class="text-center">Suggested Positions </h2>
-      
-        <div class='list-group'>
-          <% @employee.matching_orders.each do |order| %>
-              <%= render 'employee/orders/order', order: order %>
-          <% end %>
+            <div role="tabpanel" class="tab-pane fade" id="timesheets">
+                 <%= render 'employee/timesheets/table' %>
+            </div>
+            
+            <div role="tabpanel" class="tab-pane fade" id="current-job">
+            <% if @job %>
+            <div class="panel panel-default">
+                <div class="panel-body text-center">
+                <% if @employee.on_shift? || @employee.on_break? %>
+                    <%= link_to "You're Currently Clocked In", employee_shift_path(@employee.current_shift), class: 'btn btn-primary' %>
+                    <h3><strong><%= shift_times(@employee.current_shift)%></strong></h3>
+                <% else %>
+                <h3><%= @job.title %></h3>
+                    <%= render 'employee/jobs/clock', job: @job %>
+                    <%= link_to "New Shift", new_employee_shift_path %>
+                <% end %>
+                </div>
+            </div>
+            <% else %>
+            <h3><%= @employee.first_name %> is currently unassigned.</h3>
+            <% end %>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="shifts">
+            <% if @employee.assigned? && @employee.shifts.any? %>
+                <%= render 'employee/shifts/shift_calendar' %>
+            <% elsif @employee.unassigned? %>
+            <h3> <%= @employee.first_name %> is currently unassigned.</h3>
+            <% end %>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="work_history">
+            <div class='col-md-12 bg-white'>
+                <% if @employee.work_histories.any? %>
+                 <h3>Work History</h3>
+                    <div class='table-responsive'>
+                        <%= render 'employee/work_histories/table' %>
+                    </div>
+                <% else %>
+                 <h3>No work history to show.</h3>
+                    <p>Adding your work history makes it easier to match you with right position.</p>
+                <% end %>
+                <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
+            </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade dark" id="applications-tab">
+              <div class='col-md-12 bg-white'>
+              <% if @user.events.any? %>
+                <h3> Your Applications</h3>
+                <div class='list-group'>
+            		<% @user.events.applications.each do |event| %>
+            		  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+            		    <%= render partial: "events/activities/employee_applied", locals: {event: event} %>
+            		  <% end %>
+            		<% end %>
+            	</div>
+            	<% else %>
+            	    <h3 class='text-center'> You haven't applied to any jobs yet.</h3>
+            	    <br>
+            	<%= link_to "View Job Posting", employee_job_board_path, class: 'btn btn-primary' %>
+            	<% end %>
+            	</div>
+            	
+            </div>
+            <div role="tabpanel" class="tab-pane fade dark" id="jobs-tab">
+                <h3>Jobs</h3>
+                <div class='list-group'>
+            		<% @employee.jobs.each do |job| %>
+            		  <%= job.title %> - <%= job.state %>
+            		<% end %>
+            	</div>
+            </div>
         </div>
     </div>
-    <div class='col-md-6 well'>
-        <% if @employee.skills.any? %>
-     
-           <h4 class='text-center'>Skills</h4>
-
-            <div id='skills' class='center'>
-              <% @employee.skills.each do |skill| %>
-                  <%= render 'employee/skills/skill', skill: skill %>
-              <% end %>
-             
-             </div>
-              
-          <% else %>
-           <h4 id='no-skills' class="center"><%= @employee.first_name %> has no skills entered.</h4>
-              <div id='skills' class='center'>
-                  
-              </div>
-          <% end %>
-          <div class='form-inline'>
-               <%= render partial: "employee/skills/form", locals: {skillable: @employee} %>
-             </div>
-
-      </div>
-    
-    
-  
-    
-
-  </div>
-  
-  <div role="tabpanel" class="tab-pane fade" id="timesheets">
-
-     <%= render 'employee/timesheets/table' %>
-            
-  </div>
-  
-  <div role="tabpanel" class="tab-pane fade" id="current-job">
-    
-  <% if @job %>
-    <%= render @job %>
-    <% else %>
-    <h3><%= @employee.first_name %> is currently unassigned.</h3>
-  <% end %>
-     
-                
-        
-
-            
-  </div>
-  <div role="tabpanel" class="tab-pane fade" id="shifts">
-    
-  <% if @employee.assigned? && @employee.shifts.any? %>
-        <%= render 'employee/shifts/shift_calendar' %>
-    <% elsif @employee.unassigned? %>
-    <h3> <%= @employee.first_name %> is currently unassigned.</h3>
-  <% end %>
-     
-                
-        
-
-            
-  </div>
-  <div role="tabpanel" class="tab-pane fade" id="work_history">
-    <div class='transbox'>
-    <% if @employee.work_histories.any? %>
-     <div class=' table-responsive'>
-       
-       <%= render 'employee/work_histories/table' %>
-       
-         <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
-  
-   </div>
-    <% else %>
-      <p>No Work History Available.</p>
-
-         <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
-    
-    <% end %>
-     </div>
-       
-  </div>
-  <div role="tabpanel" class="tab-pane fade dark" id="applications-tab">
-      <% if @user.events.any? %>
-   <h3> Your Applications</h3>
-        <div class='list-group'>
-    		<% @user.events.applications.each do |event| %>
-    		  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
-    		    <%= render partial: "events/activities/employee_applied", locals: {event: event} %>
-    		  <% end %>
-    		<% end %>
-    	</div>
-    	<% else %>
-    	<div class='text-center'>
-    	    <h3 class='text-center'> You haven't applied to any jobs yet.</h3>
-    	    <br>
-    	<%= link_to "View Job Posting", employee_job_board_path, class: 'btn btn-primary' %>
-    	</div>
-		<% end %>
-  </div>
-  
-  <div role="tabpanel" class="tab-pane fade" id="settings">
-    <h6>User Updated:<span id="updated-at"> <%= time_ago_in_words(@user.updated_at) %> ago</span></h6>
-    <%= link_to "Allow to Edit", grant_editing_user_path(@user), class: "btn btn-primary", method: :patch, remote: true %> 
-    <%= link_to "Edit", edit_user_registration_path(current_user), class: 'btn btn-default' %>  
-   
-    
-  </div>
-</div>
-</div>
   
   
   

@@ -49,7 +49,7 @@ class Employee < ActiveRecord::Base
   # This isnt working right. Think I should use arrays for this or maybe a new model all together. idk
   store_accessor :availablity, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday
  
-  
+  delegate :last_clock_in, to: :current_job
   delegate :last_clock_out, to: :current_job
   delegate :current_shift, to: :current_job
   delegate :account_manager, to: :current_job
@@ -61,14 +61,17 @@ class Employee < ActiveRecord::Base
   before_validation :check_if_assigned
   after_initialize :set_defaults
   
+  def available?
+    current_job.nil? && dns == false
+  end
   def has_no_user?
     user_id.nil?
   end
   def name_title
-    assigned? ? current_job.name_title : "#{name} - Unassigned"
+    current_job.present? ? current_job.name_title : "#{name} - Unassigned"
   end
   def title
-    assigned? ? current_job.title : "Unassigned"
+    current_job.present? ? current_job.title : "Unassigned"
   end
   def manager
     if assigned?
@@ -113,21 +116,30 @@ class Employee < ActiveRecord::Base
     current_job.company if current_job.present?
   end
   def initial_start_date
-    if jobs.any?
-      jobs.first.first_day
+    if shifts.any?
+      shifts.order(:time_in).first.time_in
+   
     end
   end
   def days_from_initial_start
-    TimeDifference.between(initial_start_date, Time.current).in_days
+    if initial_start_date.present?
+      TimeDifference.between(initial_start_date, Time.current).in_days
+    else
+      0
+    end
   end
   def average_weekly_hours
-    if total_hours > 1 && timesheets.this_year.any?
+    if total_hours > 1 && timesheets.any?
       @average = []
-      timesheets.this_year.distinct.each do |timesheet|
+      timesheets.distinct.each do |timesheet|
         @average << timesheet.total_hours
       end
-      (@average.sum / timesheets.this_year.count).round(2)
+      (@average.sum / timesheets.count).round(2)
     end
+  end
+  
+  def year_report
+    shifts.group_by_week(:time_in, range: initial_start_date...Time.current).sum(:time_worked)
   end
     
   
@@ -140,8 +152,11 @@ class Employee < ActiveRecord::Base
   def self.sorted_by_total_hours
     all.sort_by(&:total_hours).reverse!
   end
+  # def current_report
+  #   shifts.group_by_year(:time_in, range: Time.current.beginning_of_year.midnight...Time.current).sum(:time_worked)
+  # end
   def current_report
-    shifts.group_by_year(:time_in, range: Time.current.beginning_of_year.midnight...Time.current).sum(:time_worked)
+    shifts.group_by_year(:time_in, range: initial_start_date...Time.current).sum(:time_worked)
   end
   
 
@@ -190,7 +205,7 @@ class Employee < ActiveRecord::Base
   end
   
   def unassigned?
-    !assigned?
+    assigned == false
   end
 
   def on_shift?

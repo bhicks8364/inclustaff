@@ -214,8 +214,8 @@ h1, h2, h3, h4, h5, h6 {
     // margin-top: 8px;
 }
 .well {
-    background-color: rgba(0, 0, 0, 0.72);
-    color: white;
+    // background-color: rgba(0, 0, 0, 0.72);
+    // color: white;
 }
 
 
@@ -375,8 +375,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .autumn-blur {
     background: url(autumn_blur.jpg) no-repeat center center fixed; 
-    
-    color: white;
+    // color: white;
 }
 
 .sixty {
@@ -385,4 +384,17 @@ h1, h2, h3, h4, h5, h6 {
 
 ul > li {
     text-decoration: none;
+}
+
+.aca-link {
+    align: right;
+    
+}
+.nav-brand {
+    font-size: 30;
+    line-height: 30;
+}
+.pdf {
+    background: url(pdf19.png) no-repeat center center fixed; 
+    // color: white;
 }

@@ -8,7 +8,7 @@ class Company::JobsController < ApplicationController
     
       @admin = current_company_admin
       @company = @admin.company
-      @jobs = @company.jobs.active.order(title: :asc)
+      @jobs = @company.jobs.order(title: :asc)
       authorize @jobs
 
   end
@@ -58,8 +58,8 @@ class Company::JobsController < ApplicationController
     if @job.off_shift?
       @shift = @job.shifts.create(time_in: Time.current, week: Date.today.beginning_of_week.cweek,
                                   state: "Clocked In",
-                                  in_ip: "Company-Clock-In")
-     current_company_admin.events.create(action: "clocked_in", eventable: @shift, user_id: @shift.employee.user_id)
+                                  in_ip: current_company_admin.current_sign_in_ip)
+    current_company_admin.events.create(action: "clocked_in", eventable: @shift, user_id: @shift.employee.user_id)
 
     
       respond_to do |format|
@@ -78,7 +78,8 @@ class Company::JobsController < ApplicationController
         @shift = @job.current_shift
         @shift.update(time_out: Time.current,
                         state: "Clocked Out", week: Date.today.beginning_of_week.cweek,
-                        out_ip: "Company-Clock-Out" )
+                        out_ip: current_company_admin.current_sign_in_ip )
+      current_company_admin.events.create(action: "clocked_out", eventable: @shift, user_id: @shift.employee.user_id)
        
       respond_to do |format|
           format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
@@ -112,6 +113,37 @@ class Company::JobsController < ApplicationController
       else
         format.html { render :edit }
         format.json { render json: @job.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
+  def approve
+    if @job.pending_approval?
+      @job.update(active: true, settings: @job.settings.merge({current_state: "Currently Working"}))
+      current_company_admin.events.create(action: "approved", eventable: @job, user_id: @employee.user_id)
+    elsif !@job.active?
+    # NOT LIKING THIS - maybe should throw an error? An inactive job should always be "pending" or "ended" Create new job if reassigning 
+      @job.update(active: true, settings: @job.settings.merge({current_state: "Currently Working"}))
+      current_company_admin.events.create(action: "approved", eventable: @job, user_id: @employee.user_id)
+    end
+    respond_to do |format|
+      format.json { render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, state: @job.state } }
+    end
+  end
+  
+  def cancel
+    if @job.active? && @job.shifts.any?
+      @job.update(active: false, end_date: Date.today, settings: @job.settings.merge({current_state: "Assignment Ended"})) 
+      current_company_admin.events.create(action: "canceled", eventable: @job, user_id: @employee.user_id)
+      respond_to do |format|
+        format.json { render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, ended: @job.end_date.stamp('11/12/2016'), state: @job.state } }
+      end
+      
+    else
+      @job.update(active: false, settings: @job.settings.merge({current_state: "Declined by agency"}))
+      current_company_admin.events.create(action: "declined", eventable: @job, user_id: @employee.user_id)
+      respond_to do |format|
+        format.json { render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, state: @job.state } }
       end
     end
   end

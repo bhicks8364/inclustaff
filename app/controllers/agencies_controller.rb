@@ -19,11 +19,10 @@ class AgenciesController < ApplicationController
   # GET /agencies/1.json
   
   def show
-    if user_signed_in?
-      @user = current_user
-    else
-      @user = User.new
+    if !signed_in?
+      render "dashboard/home"
     end
+      
     
   end
 

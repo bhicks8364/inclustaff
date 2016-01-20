@@ -29,11 +29,19 @@ module ShiftsHelper
       end
     end
     def break_times_for(shift)
-    "Total Break Time:  #{shift.break_duration}
-    Total Actual Time:  #{shift.time_worked} 
-    Total (w/ paid breaks):  #{number_to_currency(shift.with_paid_breaks)} 
-    Total (w/ unpaid break):  #{number_to_currency(shift.with_unpaid_breaks) }"
+      @str = ""
+      shift.breaks.each_with_index do |break_ended, i |
+        @str += i.even? ? "Start:" : "End:"
+        @str += " "
+        @str += break_ended.to_datetime.stamp("1:30am")
+        @str += "<br>"
+      end
+      @str.html_safe
     end
+    # "Total Break Time:  #{shift.break_duration}
+    # Total Actual Time:  #{shift.time_worked} 
+    # Total (w/ paid breaks):  #{number_to_currency(shift.with_paid_breaks)} 
+    # Total (w/ unpaid break):  #{number_to_currency(shift.with_unpaid_breaks) }"
     def shift_popover(shift)
         "<i class='fa fa-info-circle' data-placement='top' data-toggle='popover' title='#{ shift.id}' 
         data-content='#{ shift.state }'></i>".html_safe
