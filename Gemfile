@@ -158,7 +158,6 @@ gem 'bower-rails'
 # ****TO-DO -> NEED TO FIGURE OUT WHAT I'M DOING FOR SEARCHING
 # RANSACK SEARCH 
 gem 'ransack', github: 'activerecord-hackery/ransack', branch: 'rails-4.2'
-ruby "2.2.1"
 
 
 # # ELASTICSEARCH

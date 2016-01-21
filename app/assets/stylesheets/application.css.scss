@@ -49,28 +49,25 @@
 body {
   // font-family: 'Titillium Web', Geneva, sans-serif;
   padding-top: 70px;
-  
-  background-color: #e3e4e4;
+  height: 100%;
+  // background-color: #e3e4e4;
   // background: transparent;
-  // background: url(colorful-triangles-background.jpg) no-repeat center center fixed;
+  background: url(light_bg.png) no-repeat center center fixed;
   // background-color: rgba(255, 255, 255, 0.8);
   // background-image:
   //       linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), 
   //       url(colorful-triangles-background.jpg) no-repeat center center fixed;
   //       // url(InclusStaff-twitter-cover.png) no-repeat center center fixed; 
-  // -webkit-background-size: cover;
-  // -moz-background-size: cover;
-  // -o-background-size: cover;
-  // background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
   // background: url(autumn_blur.jpg) no-repeat center center fixed;
 }
 #main-wrapper {
   margin-top: -20px;
-  height: 100%;
-  
-  padding: 5px;
-  // padding-bottom: 20px;
-  
+  padding-top: 15px;
+  margin-bottom: 70px;
 }
 
 
@@ -109,105 +106,8 @@ div.transbox {
   background-color: rgba(87, 105, 113, 0.62);
   color: white;
 }
-.street {
-  background-image: url('street.png');
-  background-repeat: no-repeat;
-  background-attachment: absolute;
-  background-size: 100% 100%;
-}
-#header-navbar {
-  // background:transparent;
-  // background: rgba(0, 0, 0, 0.82);
-  border: none;
-  background: white;
-  // background-image: url('street.png');
-  a {
-    color: black;
-  }
-  a:hover {
-    color: gray;
-  }
-  .dropdown-menu > li > a {
-    display: block;
-    padding: 3px 20px;
-    clear: both;
-    font-weight: normal;
-    line-height: 1.428571429;
-    color: rgb(51, 51, 51);
-    white-space: nowrap;
-  }
-  .list-group-item {
-    color: black;
-  }
-}
-#footer-navbar {
-  
-  // background:transparent;
-  background: rgba(0, 0, 0, 0.82);
-  // background-image: url('street.png');
-  a {
-    color: white;
-  }
-  a:hover {
-    color: gray;
-  }
-}
-// .mynavbar {
-//   background-color: rgba(87, 105, 113, 0.9);
-//   margin: 0px;
-//   padding-bottom: 3px;
-// }
-.main-box {
-  background: rgba(21, 19, 19, 0.62);
-  -webkit-box-shadow: 1px 1px 2px 0 #CCCCCC;
-  -moz-box-shadow: 1px 1px 2px 0 #CCCCCC;
-  -o-box-shadow: 1px 1px 2px 0 #CCCCCC;
-  -ms-box-shadow: 1px 1px 2px 0 #CCCCCC;
-  box-shadow: 1px 1px 2px 0 #CCCCCC;
-  margin-bottom: 10px;
-  // padding: 15px;
-  color: white;
-  height: 100%;
-}
-.main-box-short {
-  background: rgba(21, 19, 19, 0.62);
-  -webkit-box-shadow: 1px 1px 2px 0 #CCCCCC;
-  -moz-box-shadow: 1px 1px 2px 0 #CCCCCC;
-  -o-box-shadow: 1px 1px 2px 0 #CCCCCC;
-  -ms-box-shadow: 1px 1px 2px 0 #CCCCCC;
-  box-shadow: 1px 1px 2px 0 #CCCCCC;
-  margin-bottom: 10px;
-  padding: 10px;
-  color: white;
-  height: auto;
-}
 
-#users-datatable_length > label {
-  font-weight: bold;
-}
-#users-datatable_wrapper {
-  padding: 10px;
-  background: rgba(76, 139, 128, 0.67);
-}
 
-.dark {
-  // background: rgba(0, 0, 0, 0.62);
-  // padding: 5px;
-  // padding-bottom: 8px;
-  // color: white;
-}
-.maindark {
-  background: rgba(21, 19, 19, 0.62);
-}
-
-.css1 { 
-  font-size: 1.0em; 
-  color: red;
-  
-}
-.css2 { font-size: 1.4em; color: green}
-.css3 { font-size: 1.6em; color: pink; }
-.css4 { font-size: 1.8em; color: orange; }
 
 .scroll300 {
   max-height: 300px;
@@ -284,4 +184,13 @@ h1 {
 }
 .footer {
   margin-bottom: 0px;
+  margin-top: 10px;
+}
+.navbar-static-bottom {
+    border-radius: 0;
+    z-index: 1000;
+    border-width: 0 0 1px;
+    padding-right: 0;
+    padding-left: 0;
+    margin: 20px 0 0;
 }
