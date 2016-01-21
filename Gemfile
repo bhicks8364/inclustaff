@@ -96,7 +96,7 @@ gem 'presume', '~> 0.0.4'
 gem 'refile', '~> 0.5.5', require: ['refile/rails', 'refile/image_processing']
 gem 'refile-mini_magick'
 
-# FOR JAVASCRIPT 
+# FOR JAVASCRIPT
 gem 'gon'
 gem 'jquery-turbolinks'
 
@@ -157,10 +157,8 @@ gem 'angular-rails-templates'
 gem 'bower-rails'
 
 # ****TO-DO -> NEED TO FIGURE OUT WHAT I'M DOING FOR SEARCHING
-# RANSACK SEARCH 
+# RANSACK SEARCH
 gem 'ransack', github: 'activerecord-hackery/ransack', branch: 'rails-4.2'
-ruby "2.2.1"
-
 
 # # ELASTICSEARCH
 # gem 'searchkick'

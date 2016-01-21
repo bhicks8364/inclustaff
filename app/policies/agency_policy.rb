@@ -3,20 +3,21 @@ class AgencyPolicy < ApplicationPolicy
     def resolve
       if user.admin?
           scope.all
-        
+
       else
           scope.none
       end
     end
   end
+
   def create?
-    return true 
+    return true
   end
-  
+
   def index?
     return true if user.admin?
   end
- 
+
   def show?
     return true if user.agency_id == record.id
   end
