@@ -197,7 +197,7 @@ class Admin::JobsController < ApplicationController
     end
     if sending_for_approval?
       @job.active = false 
-      @job.settings = @job.settings.merge({current_state: "Pending Approval"})
+      @job.settings = {current_state: "Pending Approval"}
       current_admin.events.create(action: "presented", eventable: @job)
     else
       @job.settings = @job.settings.merge({current_state: "Currently Working"})

@@ -49,7 +49,7 @@ class Agency < ActiveRecord::Base
     has_many :recruiters, -> { where(role: 'Recruiter', company_id: nil) }, class_name: "Admin"
     has_many :payroll_admin,  -> { where(role: "Payroll", company_id: nil) }, class_name: "Admin"
     has_many :account_managers,  -> { where(role: "Account Manager", company_id: nil) }, class_name: "Admin"
-    store_accessor :preferences, :aca_measurement_period, :aca_administrative_period, :aca_stability_period
+    store_accessor :preferences, :aca_measurement_period, :aca_administrative_period, :aca_stability_period, :weekly_sales_goal
     
     accepts_nested_attributes_for :admins
     
@@ -63,6 +63,14 @@ class Agency < ActiveRecord::Base
     
     def set_stability_period
         self.preferences = self.preferences.merge({aca_stability_period: self.aca_measurement_period})
+    end
+    
+    def weekly_sales_goal
+        preferences['weekly_sales_goal'].present? ? preferences['weekly_sales_goal'].to_i : 0
+    end
+    
+    def percent_to_sales_goal
+        current_billing / weekly_sales_goal * 100
     end
     
     def shifts

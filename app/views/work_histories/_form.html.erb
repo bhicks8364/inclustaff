@@ -19,6 +19,12 @@
           <%= f.input :supervisor, placeholder: "Supervisor name" %>
           <%= f.input :phone_number, placeholder: "Phone number" %>
         </div>
+        <div class="col-md-6">
+          <%= f.input :start_date, as: :string, input_html: {class: 'datepicker'}, placeholder: "Start date" %>
+        </div>
+        <div class="col-md-6">
+          <%= f.input :end_date, as: :string, input_html: {class: 'datepicker'}, placeholder: "End date" %>
+        </div>
       </div>
     </div>
   </div>

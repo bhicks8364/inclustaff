@@ -3,16 +3,11 @@
 <table class='table table-bordered dark white'>
   <thead>
     <tr>
-        <th></th>
+        <th><i class="fa fa-cog fa-pull-center"></i></th>
       <th>Employer</th>
       <th>Title</th>
-      
       <th>Dates</th>
-      
-      
       <th>Description</th>
-      
-      
       <th>Pay</th>
      <th></th>
     </tr>
@@ -32,12 +27,7 @@
         <% end %></td>
         <td><%= link_to work_history.employer_name, employee_work_history_path(work_history) %></td>
         <td><%= work_history.title %></td>
-        <% if work_history.start_date.present? %>
-        <td><%= work_history.start_date.stamp("Dec 2013") %>
-        <% end %>
-        <% if work_history.end_date.present? %>
-        - <%= work_history.end_date.stamp("Dec 2013") %></td>
-        <% end %>
+       <td> <%= work_history.start_date.present? ? work_history.start_date.stamp("Dec 2013") : "" %>  -   <%= work_history.end_date.present? ? work_history.end_date.stamp("Dec 2013") : "No end date" %></td>
         
         <td><%= truncate(work_history.description, length: 20, separator: ' ') %></td>
         

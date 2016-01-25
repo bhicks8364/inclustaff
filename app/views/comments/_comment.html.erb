@@ -1,15 +1,10 @@
-<%= div_for(comment, class: 'white dark', data: {behavior: "comment", id: "#{comment.id}"}) do %>
+<%= div_for(comment, class: 'well well-sm', data: {behavior: "comment", id: "#{comment.id}"}) do %>
     
     <p><%= markdownify(comment.body) %></p>
-    <% if comment.recipient.present? && comment.recipient_type != "Employee" %>
-        To: <small><%= link_to comment.recipient.name, comment.recipient %> </small>
-    <% elsif comment.recipient.present? && comment.recipient_type == "Employee" %>
-        To: <small><%= link_to comment.recipient.name, comment.recipient.user %> </small>
-    <% elsif comment.recipient.nil? %>
-    <% end %>
+  
     
     <%= notify(comment) %>
-    <hr>
+
     <div class='text-right'>
         
     <% if comment.admin.present? %>

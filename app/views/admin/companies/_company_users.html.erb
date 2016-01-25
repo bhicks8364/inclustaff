@@ -1,11 +1,9 @@
 
-    <p class='text-center'><strong><%= @company.name %>'s Admins</strong></p>
-    <br>
+   
         <%= div_for(@company.admins) do |admin| %>
 
-            <p><%= link_to admin.name, admin %> <small>
-            <br> <%= admin.email %></small></p>
-    
+            <p><%= link_to admin.name, admin, class: "btn" %></p>
+            <p> <%= admin.email %></p>
     
         <% end %>
 

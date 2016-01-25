@@ -45,11 +45,13 @@
 @import "mainpage";
 @import "work_histories";
 @import "shifts";
+@import "companies";
 
 body {
   // font-family: 'Titillium Web', Geneva, sans-serif;
   padding-top: 70px;
   height: 100%;
+  
   // background-color: #e3e4e4;
   // background: transparent;
   background: url(light_bg.png) no-repeat center center fixed;

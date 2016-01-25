@@ -126,6 +126,13 @@ class Admin < ActiveRecord::Base
   def messages
       Comment.by_recipient(id, "Admin")
   end
+  def is_following?(user)
+    if Event.where(admin_id: self.id, eventable: user, action: 'followed').any?
+      true
+    else
+      false
+    end
+  end
   
   def current_billing
     if timesheets.any?

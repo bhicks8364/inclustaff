@@ -54,6 +54,11 @@
 
 
 
+// Cleaning up javascript - below this line is goodtimes :)
+//= require skills
+
+
+
 $(document).ready(function(){
     $('.img-zoom').hover(function() {
         $(this).addClass('transition');

@@ -174,3 +174,9 @@ a:hover, a:focus {
   -moz-border-radius: 8px;
   border-radius: 8px;
 }
+
+a.button:hover {
+  i {
+    color: black;
+  }
+}

@@ -10,7 +10,7 @@ module CompaniesHelper
         @str = " "
         if company.orders.blank?
             @str +=  "No Job Orders"
-        elsif company.orders.active.blank?
+        elsif company.orders.active.none?
             @str +=  "No Active Job Orders"
         elsif company.orders.needs_attention.any? 
             @str += "#{pluralize(company.orders.needs_attention.count, 'open job order')}"

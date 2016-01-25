@@ -32,8 +32,8 @@
       <div class="tab-content">
         <!--HOME TAB-->
       <div role="tabpanel" class="tab-pane fade in active" id="home">
-          <div class='col-md-12 bg-white'>
-           <div class='col-md-3 bg-white'>
+          <div class='col-md-12'>
+           <div class='col-md-3'>
                <h4>Contact Info</h4>
                <span class=''><i class="fa fa-envelope-o"></i> 
                <%= @employee.email %></span>
@@ -43,17 +43,17 @@
                <span class=''><i class="fa fa-home"></i> 
                <%= @user.address %>, <%= @user.state %> <%= @user.zipcode %></span>
             </div>
-        <div class='col-md-3 bg-white'>
+        <div class='col-md-3'>
             <h4>Employee Details</h4>
                 <span class=''><i class="fa fa-wrench"></i> <%= @employee.desired_job_type %></span>
                 <span class=''><i class="fa fa-clock-o"></i>  <%= @employee.desired_shift %></span>
                 
         </div>
-        <div class='col-md-3 bg-white'>
+        <div class='col-md-3'>
             <h4>Availablility</h4>
             <%= render 'admin/employees/availability', employee: @employee %>
         </div>
-        <div class='col-md-3 bg-white'>
+        <div class='col-md-3'>
             
             <h4 class=''>Current Job Assignment</h4>
              <% @employee.jobs.active.each do |job| %>
@@ -70,7 +70,7 @@
         
         </div>
         <% if @employee.work_histories.any?  %>
-         <div class='col-md-12 bg-white'>
+         <div class='col-md-12'>
             <h2><%= @employee.first_name %>'s Employment Timeline</h2>
             <%= timeline  @employee.work_history_data, width: "100%", height: "300px"  %>
         </div>
@@ -116,7 +116,7 @@
     </div>
       <!--ACA TAB-->
     <div role="tabpanel" class="tab-pane fade" id="aca">
-        <div class='col-md-12 bg-white'>
+        <div class='col-md-12'>
             <h2 class="text-center">ACA Information  </h2>
         <%= link_to "View ACA Report", aca_admin_employee_path(@employee), class: "btn btn-primary btn-lg" %>
         <h3 class=''>Days since initial start date: <%= @employee.days_from_initial_start %></h3>
@@ -126,7 +126,7 @@
       </div>
       <!--TIMESHEETS TAB-->
       <div role="tabpanel" class="tab-pane fade" id="timesheets">
-        <div class='col-md-12 bg-white'>
+        <div class='col-md-12'>
         <% if @employee.timesheets.any? %>
             <%= render 'admin/timesheets/table', timesheets: @employee.timesheets %>
         <% else %>
@@ -140,7 +140,7 @@
       <% if @current_job %>
       <h3><%= @current_job.title %><small><%= number_to_currency(@current_job.pay_rate) %></small></h3>
         <%= render @current_job %>
-        <div class='col-md-6 bg-white'>
+        <div class='col-md-6'>
             <%= image_tag "http://maps.google.com/maps/api/staticmap?size=250x300&sensor=false&zoom=16&markers=#{@user.latitude}%2C#{@user.longitude}",
                 class: "img-zoom" %>
                     Distance from current job: <%= @user.distance_to(@order.address).round(2) if @order.present?%> miles
@@ -150,7 +150,7 @@
       <% end %>
       </div>
       <div role="tabpanel" class="tab-pane fade" id="shifts">
-        <div class='col-md-12 bg-white'>
+        <div class='col-md-12'>
           <% if @employee.assigned? && @employee.shifts.any? %>
           	<h1>Calendar</h1>
               <%= render 'admin/shifts/calendar', shifts: @employee.shifts %>
@@ -161,10 +161,10 @@
       </div>
       <div role="tabpanel" class="tab-pane fade" id="work_history">
         
-        <div class='col-md-12 bg-white'>
+        <div class='col-md-12'>
             
         <% if @employee.work_histories.any? %>
-         <div class='col-md-12 bg-white'>
+         <div class='col-md-12'>
             <h2><%= @employee.first_name %>'s Employment Timeline</h2>
             <%= timeline  @employee.work_history_data, width: "100%", height: "300px"  %>
         </div>
