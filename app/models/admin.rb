@@ -53,7 +53,7 @@ class Admin < ActiveRecord::Base
   scope :limited,          -> { where(role: "Limited Access")}
 
   before_validation :set_name, :set_username
-  validates :agency_id,  presence: true
+  validates :agency_id, :role, presence: true
   validates_numericality_of :agency_id, allow_nil: true
 
   def phone_number;             agency.phone_number; end

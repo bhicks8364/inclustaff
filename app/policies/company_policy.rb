@@ -10,26 +10,29 @@ class CompanyPolicy < ApplicationPolicy
         else
           scope.all
         end
-      
+
       else
         scope.none
       end
     end
   end
+
   def create?
-    return true if user.account_manager? || user.owner?
+    user.account_manager? || user.owner?
   end
-  
+
   def index?
-    return true if user.admin?
+    user.admin?
   end
- 
+
   def show?
-    return true if user.admin?
+    user.admin?
   end
+
   def update?
     user.admin?
   end
+
   def destroy?
     user.admin? && user.owner?
   end

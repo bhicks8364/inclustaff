@@ -44,13 +44,6 @@ Rails.application.routes.draw do
         patch :mark_as_read
       end
     end
-    resources :admins do
-      member do
-        post :mention
-        post :follow
-
-      end
-    end
     resources :company_admins do
       member do
         post :mention
@@ -79,6 +72,14 @@ Rails.application.routes.draw do
       get  'owner' => 'dashboard#owner'
       get  'account_manager' => 'dashboard#account_manager'
       get  'recruiter' => 'dashboard#recruiter'
+
+      resources :admins do
+        member do
+          post :mention
+          post :follow
+        end
+      end
+
       resources :companies do
         resources :invoices
         resources :timesheets

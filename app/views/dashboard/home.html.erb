@@ -1,9 +1,9 @@
 <div class='col-md-12'>
     <div class='col-md-3'>
-        <%= @current_agency.present? ? image_tag(@current_agency.logo_url, class: "home-logo", alt: "img-#{@current_agency.id}") : "" %> 
+        <%= @current_agency.present? ? image_tag(@current_agency.logo_url, class: "home-logo", alt: "img-#{@current_agency.id}") : "" %>
     </div>
     <div class='col-md-6'><h1 class='metal bold page-header'><%= @current_agency.try(:name) || "IncluStaff" %></h1></div>
-    
+
     <div class='col-md-3'>
         <%= link_to "<h3><i class='fa fa-search fa-fw'></i> Job Search</h3>".html_safe, public_job_board_path, class: "btn btn-primary btn-lg btn-block" %>
     </div>
@@ -18,4 +18,3 @@
     	</div>
     </div>
 </div>
-

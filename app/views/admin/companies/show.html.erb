@@ -1,6 +1,6 @@
 <div class="col-md-12 lightbox">
   <h2><%= @company.name %></h2>
-  
+
   <!-- Nav tabs -->
   <ul class="nav nav-tabs nav-justified" role="tablist">
     <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Contact Information</a></li>
@@ -11,32 +11,32 @@
     <li role="presentation"><a href="#invoices" aria-controls="invoices" role="tab" data-toggle="tab">Invoices</a></li>
     <li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li>
   </ul>
- 
+
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="home">
-    
+
     <div class='col-md-4'>
-    
+
       <% if @company.orders.blank? %>
       <div id="no-orders-alert" class="alert alert-danger" role="alert">
-      
+
       <h5 class='text-center'> <i class="fa fa-exclamation-triangle fa-fw fa-border"></i><%= @company.name %> doesn't have any job orders. <br>
       Please add a new job order below.</h5>
       	<%= link_to "Add Job Order", new_admin_company_order_path(@company), class: 'btn btn-primary' %>
       </div>
       <% end %>
-      
+
       <address class="">
         <%= @company.address %><br>
         <%= @company.city %>, <%= @company.state %> <%= @company.zipcode %><br>
-        <abbr title="Phone">PH:</abbr>  <%= @company.phone_number || "Unavailable"  %> 
+        <abbr title="Phone">PH:</abbr>  <%= @company.phone_number || "Unavailable"  %>
       </address>
       <address class="">
         <strong><%= @company.contact_name %></strong><br>
         <a href="mailto:#"><%= @company.contact_email %></a>
       </address>
      Balance: <%= number_to_currency(@company.balance) %>
-  
+
       </div>
       <div class='col-md-4'>
         <div class='company-contacts'>
@@ -45,7 +45,7 @@
     </div>
       </div>
       <div class='col-md-4'>
-         <h3>Account Manager: <%= @company.current_account_manager.name %></h3>
+        <h3>Account Manager: <% if @company.current_account_manager.present? %><%= @company.current_account_manager.name %><% else %>None<% end %></h3>
         <div class="btn-group">
               <%= link_to(new_admin_company_order_path(@company), class: "btn btn-primary") do %>
             	  <i class='fa fa-plus-square fa-fw'></i> New Job Order
@@ -53,7 +53,7 @@
               <%= link_to(admin_company_orders_path(@company), class: "btn btn-primary") do %>
           		  <i class='fa fa-briefcase fa-fw'></i> Active Orders
           		<% end %>
-            
+
             <div class="btn-group">
               <%= link_to(new_company_admin_registration_path, class: "btn btn-primary") do %>
           		  <i class='fa fa-user-plus fa-fw'></i> Add Company User
@@ -69,15 +69,15 @@
             </div>
         </div>
       </div>
-     
+
 
   </div>
-    
+
   <div role="tabpanel" class="tab-pane fade " id="company-contacts">
-    
-    
+
+
   </div>
-  
+
   <div role="tabpanel" class="tab-pane fade" id="pending-approval">
     <div class='col.md-12'>
       <h3>Pending Approval</h3>
@@ -110,7 +110,7 @@
       <h3>No employees to display.</h3>
       <% end %>
      </div>
-     
+
      <div class='table-responsive'>
        <%= render 'admin/shifts/week_calendar', shifts: @company.shifts.current_week %>
      </div>
@@ -139,7 +139,7 @@
       <% end %>
      </div>
   </div>
- 
+
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
     <div class='col.md-12'>
       <% if @company.timesheets.any? %>

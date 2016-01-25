@@ -1,34 +1,27 @@
 <div class='dark center'>
   <div class="row">
-     
+
     	<div class=" bg-clear center">
     	  <h2>Company Admin Registration</h2>
         <div class='well center'>
-           
-          
-          <%= simple_form_for(@admin, class: 'form-group') do |f| %>
+
+          <%= simple_form_for([:admin, @admin], class: 'form-group') do |f| %>
             <%= f.error_notification %>
-          
+
             <div class="form-inputs">
-              <%= f.input :first_name, required: true, placeholder: "First Name", label: false, autofocus: true%>
+              <%= f.input :first_name, required: true, placeholder: "First Name", label: false, autofocus: true %>
               <%= f.input :last_name, required: true, placeholder: "Last Name", label: false %>
               <%= f.input :email, required: true, placeholder: "Email", label: false %>
-               <%= f.hidden_field :agency_id, :value => @current.id %>
-              
+              <%= f.hidden_field :agency_id, :value => @current.id %>
               <%= f.input :role, required: true, collection: ["Owner", "Account Manager", "Recruiter", "Payroll", "Limited Access"], prompt: "Choose a role", label: false %>
-             
-              
             </div>
-          
+
             <div class="form-actions">
               <%= f.button :submit, "Add Admin" %>
             </div>
           <% end %>
-          
-        
+
         </div>
-    </div>	
+    </div>
   </div>
 </div>
-
-  
