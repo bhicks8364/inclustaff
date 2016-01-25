@@ -1,19 +1,19 @@
 <div class="content" data-behavior="empjob-list">
-    <div class="details" data-behavior="empjob" data-id="<%= job.id %>">
-          <% if job.on_shift? %>
-          <button data-behavior="empjob-out-button_<%= job.id %>" class='btn btn-danger'>
-            <i class='fa fa-sign-out'></i> Clock Out
-          </button>
-          <button data-behavior="empjob-in-button_<%= job.id %>" class='hide-this btn btn-success'>
-            <i class='fa fa-sign-in'></i> Clock In
-          </button>
-        <% else %>
-        <button data-behavior="empjob-out-button_<%= job.id %>" class='hide-this btn btn-danger'>
-            <i class='fa fa-sign-out'></i> Clock Out
-          </button>
-          <button data-behavior="empjob-in-button_<%= job.id %>" class='btn btn-success'>
-            <i class='fa fa-sign-in'></i> Clock In
-          </button>
-          <% end %>
-    </div>
+  <div class="details" data-behavior="empjob" data-id="<%= job.id %>">
+    <% if job.on_shift? %>
+      <button data-behavior="empjob-out-button_<%= job.id %>" class='btn btn-danger'>
+        <i class='fa fa-sign-out'></i> Clock Out
+      </button>
+      <button data-behavior="empjob-in-button_<%= job.id %>" class='hide-this btn btn-success'>
+        <i class='fa fa-sign-in'></i> Clock In
+      </button>
+    <% else %>
+      <button data-behavior="empjob-out-button_<%= job.id %>" class='hide-this btn btn-danger'>
+        <i class='fa fa-sign-out'></i> Clock Out
+      </button>
+      <button data-behavior="empjob-in-button_<%= job.id %>" class='btn btn-success'>
+        <i class='fa fa-sign-in'></i> Clock In
+      </button>
+    <% end %>
+  </div>
 </div>

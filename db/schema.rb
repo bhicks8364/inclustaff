@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160121174011) do
+ActiveRecord::Schema.define(version: 20160125220107) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -254,8 +254,8 @@ ActiveRecord::Schema.define(version: 20160121174011) do
     t.datetime "needed_by"
     t.boolean  "urgent"
     t.boolean  "active"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
     t.string   "title"
     t.datetime "deleted_at"
     t.integer  "manager_id"
@@ -277,12 +277,13 @@ ActiveRecord::Schema.define(version: 20160121174011) do
     t.float    "latitude"
     t.float    "longitude"
     t.string   "aca_type"
-    t.hstore   "education",          default: {}
-    t.hstore   "requirements",       default: {}
+    t.hstore   "education",                 default: {}
+    t.hstore   "requirements",              default: {}
     t.string   "industry"
     t.datetime "published_at"
     t.integer  "published_by"
     t.datetime "expires_at"
+    t.boolean  "mobile_time_clock_enabled", default: false
   end
 
   add_index "orders", ["account_manager_id"], name: "index_orders_on_account_manager_id", using: :btree
@@ -417,5 +418,19 @@ ActiveRecord::Schema.define(version: 20160121174011) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["resume_id"], name: "index_users_on_resume_id", using: :btree
   add_index "users", ["role"], name: "index_users_on_role", using: :btree
+
+  create_table "work_histories", force: :cascade do |t|
+    t.integer "employee_id",                   null: false
+    t.string  "employer_name"
+    t.string  "title"
+    t.date    "start_date"
+    t.date    "end_date"
+    t.text    "description"
+    t.boolean "current",       default: false
+    t.boolean "may_contact",   default: false
+    t.string  "supervisor"
+    t.string  "phone_number"
+    t.string  "pay"
+  end
 
 end

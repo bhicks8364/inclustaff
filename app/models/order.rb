@@ -66,19 +66,19 @@ class Order < ActiveRecord::Base
 
   validates :company_id,  presence: true
   validates :needed_by, presence: true
-  
-  
+
+
     # CALLBACKS
     after_initialize :defaults
     before_validation :set_mark_up, :set_address
     after_save :set_note_skills
     # before_save :set_needed_by, if: :urgent?
-    
+
   #  GEOCODER
   geocoded_by :address
   after_validation :geocode
-    
-    
+
+
     # NESTED ATTRIBUTES
     accepts_nested_attributes_for :jobs
     accepts_nested_attributes_for :skills, reject_if: :all_blank, allow_destroy: true
@@ -100,18 +100,18 @@ class Order < ActiveRecord::Base
     scope :published, -> { needs_attention.where(Order[:published_at].lteq(Time.current))}
     scope :unpublished, -> { needs_attention.where(Order[:published_at].eq(nil))}
     scope :long,    -> { where(NamedFunction.new("LENGTH", [Order[:notes]]).gt(200))}
-    
+
     def defaults
       self.active = true if self.active.nil?
       self.urgent = false if self.urgent.nil?
       self.jobs_count = 0 if self.jobs_count.nil?
       self.aca_type = "Variable-Hour" if aca_type.nil?
       self.requirements = {} if requirements.nil?
-      self.account_manager = company.current_account_manager if account_manager_id.nil?
+      self.account_manager = company.current_account_manager if company.present? && account_manager_id.nil?
     end
-   
+
     def set_mark_up
-      if max_pay.present? 
+      if max_pay.present?
         case max_pay
         when (8..10)
           self.mark_up = 1.5
@@ -126,28 +126,28 @@ class Order < ActiveRecord::Base
         end
       end
     end
-    
+
     def needs_agency_approval?; requirements['agency_approval'] == "Yes"; end
     def needs_company_approval?;  requirements['company_approval'] == "Yes";  end
     def needs_approval?;  needs_agency_approval? || needs_company_approval?;  end
-    
+
     def send_approval_notifications!
       # TODO
       # sends notification to the account manager if needs_agency_approval?
       # send notifications to the manager if needs_company_approval?
     end
-      
+
     def set_address
       self.address = "#{company.address} #{company.city}, #{company.state}" if address.blank?
     end
-    
+
     def self.by_recuriter(admin_id)
         joins(:jobs).where( :jobs => { :recruiter_id => admin_id } )
     end
     def self.with_no_timesheets
       where(active: true)
     end
-    
+
     def pay_range
       "#{min_pay} - #{max_pay}"
     end
@@ -168,59 +168,59 @@ class Order < ActiveRecord::Base
         self.needed_by = Date.today
       end
     end
-    
+
   def needs_attention?
     j = jobs_count
     if number_needed
-      if number_needed > j 
+      if number_needed > j
         true
       else
         false
       end
     end
   end
-  
+
   def filled?
-    if number_needed <= jobs_count 
+    if number_needed <= jobs_count
         true
       else
         false
     end
   end
-  
+
   def open_jobs
     if number_needed != nil && jobs.active != nil
       number_needed - jobs.active.count
 
     end
   end
-  
-    
 
-    
+
+
+
   def self.by_manager(admin_id)
     where(manager_id: admin_id)
   end
-  
+
   def self.by_account_manager(admin_id)
     where(account_manager_id: admin_id)
-  end 
-  
+  end
+
   def title_company
     "#{company.name} - #{title}"
   end
   def to_s
     title
   end
-  
-  
-  
-  
+
+
+
+
   def mark_up_percent
-    (mark_up * 100 - 100).to_i.to_s + "%" 
+    (mark_up * 100 - 100).to_i.to_s + "%"
   end
-  
-  
+
+
   def applications
       Event.where(eventable_id: id, eventable_type: 'Order', action: 'applied')
   end
@@ -237,7 +237,7 @@ class Order < ActiveRecord::Base
   def requested_employees
       @requested_employees ||= Employee.where(last_name: mentions)
   end
-  
+
   def admin_mentions
       @mentions ||= begin
                       if notes.present?
@@ -246,13 +246,13 @@ class Order < ActiveRecord::Base
                       end
                     end
   end
-  
+
   def mentioned_admins
       @mentioned_admins ||= Admin.where(username: admin_mentions)
   end
-  
+
   def keywords
-    
+
       @keywords ||= begin
                       if notes.present?
                       regex = /([\w]+)/
@@ -260,13 +260,13 @@ class Order < ActiveRecord::Base
                       end
                     end
   end
-  
+
   def note_skills
     @note_skills ||= Skill.where(name: keywords).select(:name).distinct
     @all_skills = @note_skills + skills.select(:name).distinct
     @all_skills.uniq
   end
-  
+
   def matching_skills
       @matching_skills ||= Employee.available.tagged_with([keywords], :any => true)
   end
@@ -274,38 +274,38 @@ class Order < ActiveRecord::Base
   def matching_employees
      @matching_employees ||= Employee.available.tagged_with([tag_list], :any => true)
   end
-  
+
   # def with_skills_matching(skills)
   #   include?(request.subdomain)
   # end
-  
-  
+
+
   def set_note_skills
     note_skills.each do |skill|
         self.skills.find_or_create_by(name: skill.name)
     end
   end
-  
-  
+
+
   def self.assign_from_row(row)
     order = Order.where(id: row[:id], company_id: row[:company_id]).first_or_initialize
     order.assign_attributes row.to_hash.slice(:title, :min_pay, :max_pay, :number_needed, :needed_by)
-    
+
     order
   end
-  
+
    # EXPORT TO CSV
   def self.to_csv
     attributes = %w{id agency_id company_id title min_pay max_pay pay_frequency account_manager_id manager_id mark_up title notes number_needed needed_by urgent active dt_req bg_check stwb heavy_lifting shift est_duration}
     CSV.generate(headers: true) do |csv|
       csv << attributes
-      
+
       all.each do |jo|
         csv << jo.attributes.values_at(*attributes)
       end
     end
   end
-  
+
   def with_employee_skills
       tag_list = Order.needs_attention.tag_counts.pluck(:name)
 	    Employee.available.tagged_with(tag_list, :any => true)
@@ -317,11 +317,11 @@ class Order < ActiveRecord::Base
     # a.delete_if { |x| b.include?(x.first) }
     c.to_h
   end
-  def matching_all_requirments 
+  def matching_all_requirments
     skill_list = skills.required.pluck(:name)
     Employee.tagged_with(skill_list, :match_all => true)
   end
-  def matching_any 
+  def matching_any
     Employee.tagged_with(tag_list, :any => true, :wild => true)
   end
 

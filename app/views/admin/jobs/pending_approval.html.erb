@@ -3,15 +3,15 @@
         <div data-behavior="job-state"><h2 class='text-right'><span class='label label-success'><%= @job.state %></span></h2></div>
         <div class='page-header'>
             <h1><%= @job.title_company %></h1>
-            
+
         </div>
         <div class='col-md-4 text-center bg-white'>
-            
+
             <h4><%= number_to_currency(@job.pay_rate) %>/ hr</h4>
         </div>
         <div class='col-md-4 text-center bg-white'>
             <h1><%= @employee.name %></h1>
-            
+
         </div>
         <div class='col-md-4 text-center bg-white'>
             <h4><%= @job.start_date.strftime("%B %e, %Y ") %></h4>
@@ -32,13 +32,13 @@
                         <h4><strong>Interview Notes:</strong></h4>
                         <%= markdownify(@job.description) %>
                         <% if @job.recruiter.present? %>
-                        <h5>Recruiter: <%= link_to @job.recruiter.name, @job.recruiter %></h5>
+                        <h5>Recruiter: <%= link_to @job.recruiter.name, admin_admin_path(@job.recruiter) %></h5>
                         <% end %>
                         <%= link_to(admin_job_path(@job, format: :pdf), class: 'btn btn-primary') do %>
                         <i class="fa fa-download fa-md"></i> Candidate Sheet
                         <% end %>
                     </div>
-                    
+
                     <div class='col-md-4 lightbox'>
                         <div class='col-md-6 bg-white'>
                             <span data-behavior="job-status">
@@ -66,9 +66,9 @@
                           <% end %>
                         <% end %>
                     </div>
-                    
+
                 </div>
-               
+
                 <div role="tabpanel" class="tab-pane fade" id="order-info">
                     <h3>Order Information</h3>
                     <%= render @order %>
@@ -94,7 +94,7 @@
                     </div>
                     <div class='col-md-4 bg-white'>
                         <% if @job.vacation['number_of_days'].present? %>
-                        <h2>Vacation Tracking</h2>  
+                        <h2>Vacation Tracking</h2>
                         <p><%= @employee.first_name %> will earn <strong> <%= @job.vacation['number_of_days'] %> </strong> paid vacation days
                         when he/she has worked
                         <strong><%= @job.vacation['milestone_1'] %> </strong> hours. <br>
@@ -112,19 +112,19 @@
                             <li><i class="fa-li fa fa-calendar-check-o"></i><%= @job.vacation['number_of_days'] %> days</li>
                             <li><i class="fa-li fa fa-calendar-check-o"></i><%= @job.vacation['number_of_days'].to_i * 2 %> days</li>
                             <li><i class="fa-li fa fa-calendar-check-o"></i><%= @job.vacation['number_of_days'].to_i * 3 %> days</li>
-                            </ul> 
+                            </ul>
                         </div>
-                    
+
                         <div class='headline'><span class='label label-success black'>Hours until next milestone: <%= @job.hours_until_vacation %> </span></div>
                         <% else %>
                         <div class='headline'><h3><span class='label label-warning black'>Vacation Tracking Unavailable</span></h3>
                         <%= link_to "Add Vacation Milestones", edit_admin_job_path(@job), class: "btn btn-success" %>
                         </div>
-                        
+
                         <% end %>
                         <div class=''>
                         <% if @job.settings['drive_pay'].present? || @job.settings['ride_pay'].present? %>
-                        <h3>Pay Differentials</h3>  
+                        <h3>Pay Differentials</h3>
                         Drive Pay: <%= @job.settings['drive_pay']  %><br>
                         Ride Pay: <%= @job.settings['ride_pay'] if @job.settings %><br>
                         <% end %>

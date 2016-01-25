@@ -14,40 +14,44 @@ class JobPolicy < ApplicationPolicy
       end
     end
   end
+
   def create?
-    return true if user.admin?
+    user.admin?
   end
-  
+
   def index?
-    return true if user.admin?
-    
+    user.admin?
   end
+
   def clock_in?
     return true if user.owner?
-    user.employee? && record.id == user.employee.current_job.id
-    
+    user.employee? && user.employee.current_job.order.mobile_time_clock_enabled? && record.id == user.employee.current_job.id
   end
+
   def clock_out?
     return true if user.owner?
-    return true if user.employee? && record.id == user.employee.current_job.id
-    
+    user.employee? && user.employee.current_job.order.mobile_time_clock_enabled? && record.id == user.employee.current_job.id
   end
+
   def show?
     return true if user.admin?
     user.employee? && record.employee_id == user.employee.id
   end
+
   def approve?
     user.admin? && user.account_manager? || user.owner?
   end
+
   def cancel?
     user.admin? && user.account_manager? || user.owner?
   end
+
   def update?
     return true if user.admin?
     user.employee? && record.employee_id == user.employee.id
   end
+
   def destroy?
     false
   end
-  
 end

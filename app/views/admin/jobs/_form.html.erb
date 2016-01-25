@@ -1,65 +1,53 @@
-<%= simple_form_for [:admin, @job] do |f| %>
+<%= simple_form_for [:admin, @order, @job] do |f| %>
   <% if @job.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@job.errors.count, "error") %> prohibited this job from being saved:</h2>
 
       <ul>
-      <% @job.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+        <% @job.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
 
-        <h4><strong>Job Information</strong></h4>
- <%= @order.title %> <br> <%= @company.name %>
- <div class='form-group'>
+  <h4><strong>Job Information</strong></h4>
+  <%= @order.title %> <br> <%= @company.name %>
+  <div class='form-group'>
     <%= f.association :recruiter, collection: @current_agency.recruiters.order(:last_name), prompt: "Select Recruiter", label: false %>
-   
-
-   
+    <%= f.association :employee, collection: @current_agency.employees.available, prompt: "Select Employee", label: false %>
 
     <%= f.input :title, placeholder: "Job Title", required: true, label: false %>
     <%= f.input :description, as: :text, placeholder: "Interview Notes", data: {behavior: ''}, input_html: { rows: 10, class: "myatwho" }, label: false %>
+    <%= f.input :start_date, as: :string, input_html: { class: 'datepicker' }, placeholder: "Start date", required: true, label: false %>
+    <%= f.input :pay_rate, as: :decimal, placeholder: "Pay Rate", label: false %>
+  </div>
 
+  <div class='form-inline'>
+    <%= f.input :settings, label: false do %>
+      <%= f.label :drive_pay %>
+      <%= f.text_field :drive_pay, label: "Drive Pay", class: "form-control" %>
+      <%= f.label :ride_pay %>
+      <%= f.text_field :ride_pay, label: "Ride Pay", class: "form-control" %>
+    <% end %>
+  </div>
+  <%= f.input :vacation, class: "form-inline" do %>
+    <%= f.select :number_of_days, [ "1", "2", "3", "4", "5"], class: "form-control" %>
+    <%= f.select :milestone_1, [ "1000", "1500", "2000", "2500", "3000"], class: "form-control" %>
+    <%= f.select :milestone_2, [ "1000", "1500", "2000", "2500", "3000"], class: "form-control" %>
+    <%= f.select :milestone_3, [ "1000", "1500", "2000", "2500", "3000"], class: "form-control" %>
+  <% end %>
 
-        <%= f.input :start_date, as: :string, input_html: { class: 'datepicker' }, placeholder: "Start date", required: true, label: false %>
-
-        <%= f.input :pay_rate, as: :decimal, placeholder: "Pay Rate", label: false %>
-      </div>
-              
-      <div class='form-inline'>
-     <%= f.input :settings, label: false do %>
-        <%= f.label :drive_pay %>
-        <%= f.text_field :drive_pay, label: "Drive Pay", class: "form-control" %>
-        <%= f.label :ride_pay %>
-        <%= f.text_field :ride_pay, label: "Ride Pay", class: "form-control" %>
-      <% end %>
-    </div>
-   <%= f.input :vacation, class: "form-inline" do %>
-        <%= f.select :number_of_days, [ "1", "2", "3", "4", "5"], class: "form-control" %>
-        <%= f.select :milestone_1, [ "1000", "1500", "2000", "2500", "3000"], class: "form-control" %>
-        <%= f.select :milestone_2, [ "1000", "1500", "2000", "2500", "3000"], class: "form-control" %>
-        <%= f.select :milestone_3, [ "1000", "1500", "2000", "2500", "3000"], class: "form-control" %>
-      <% end %>
-
-
-
-
-<div id="job-end-date">
+  <div id="job-end-date">
     <h4><%= f.input :active %></h4>
     <%= f.input :current_state, as: :select, collection: ['Pending Approval', 'Currently Working', 'Assignment Ended', 'Declined by agency', 'Declined by company', 'Declined by candidate', 'Other - requires note'], include_blank: false %>
     <%= f.input :end_date, as: :string, input_html: { class: 'datepicker' }, placeholder: "End date", required: true, label: false %>
-</div>
+  </div>
 
-
-
-   <div class='form-actions'>
-          <%= f.submit "Send for Approval", class: 'btn btn-primary' if @order.needs_approval? %>
-          <%= f.submit "Assign Now", class: 'btn btn-success' if !@order.needs_approval? %>
-        
-      
-    </div>
+  <div class='form-actions'>
+    <%= f.submit "Send for Approval", class: 'btn btn-primary' if @order.needs_approval? %>
+    <%= f.submit "Assign Now", class: 'btn btn-success' if !@order.needs_approval? %>
+  </div>
 
 <% end %>
 

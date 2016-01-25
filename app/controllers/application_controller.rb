@@ -6,14 +6,14 @@ class ApplicationController < ActionController::Base
   # before_action :configure_permitted_parameters, if: :devise_controller?
   # before_action :update_permitted_parameters, if: :devise_controller?
   after_action :verify_authorized, unless: :devise_controller?
-  
+
   # Globally rescue Authorization Errors in controller.
   # Returning 403 Forbidden if permission is denied
-  
+
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-  
+
   before_action :set_current
-  
+
   def set_current
     subdomains = request.subdomains
     @current_agency = Agency.where(subdomain: subdomains).first
@@ -30,25 +30,29 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-      resource
+    root_path
   end
-  
+
   private
   # def not_found
   #   # raise ActionController::RoutingError.new("Subdomain Not Found. >>  Hey now! You shouldn't be here... You must register if you want to be here :) ")
   # end
 
-  
+
   def update_permitted_parameters
     devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:id, :first_name, :last_name, :email, :role, :can_edit, :company_id, :password, :password_confirmation, :current_password, :address, :city, :state, :zipcode) }
   end
-  
+
   def user_not_authorized
     flash[:alert] = "You are not authorized to perform this action."
-    redirect_to(request.referrer || root_path)
+
+    respond_to do |format|
+      format.html { redirect_to(request.referrer || root_path) }
+      format.json { render json: {error: flash[:alert] }, status: 401 }
+    end
   end
   after_filter :user_activity, :admin_activity
-  
+
 
   def user_activity
     current_user.try :touch
@@ -59,6 +63,6 @@ class ApplicationController < ActionController::Base
   def company_admin_activity
     current_company_admin.try :touch
   end
-  
-  
+
+
 end

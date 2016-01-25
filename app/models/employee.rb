@@ -58,7 +58,6 @@ class Employee < ActiveRecord::Base
   delegate :current_sign_in_ip, to: :user
 
   after_save :create_user, if: :has_no_user?
-  before_validation :check_if_assigned
   after_initialize :set_defaults
 
   def available?
@@ -182,7 +181,6 @@ class Employee < ActiveRecord::Base
     self.save
   end
 
-
   def mark_as_assigned!
     if jobs.active.any?
       self.update(assigned: true)
@@ -190,18 +188,10 @@ class Employee < ActiveRecord::Base
       self.update(assigned: false)
     end
   end
+
   def set_defaults
     self.dns = false if dns.nil?
     self.assigned = false if assigned.nil?
-  end
-  # I know theres a way better way to do this..
-  def check_if_assigned
-    if current_job.present?
-      self.assigned = true
-    else
-      self.assigned = false
-    end
-    return true
   end
 
   def unassigned?

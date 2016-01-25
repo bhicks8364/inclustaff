@@ -22,7 +22,7 @@
                     <address class="">
                         <%= @user.address %><br>
                         <%= @user.city %>, <%= @user.state %> <%= @user.zipcode %><br>
-                        <i class="fa fa-phone-square"></i>  <%= @employee.phone_number || "Unavailable"  %> 
+                        <i class="fa fa-phone-square"></i>  <%= @employee.phone_number || "Unavailable"  %>
                     </address>
                     <div class='btn-group'>
                         <%= link_to "Edit Profile", edit_employee_employee_path(@employee), class: 'btn btn-primary' %>
@@ -39,13 +39,13 @@
                          </div>
                       <% else %>
                       <div id='no-skills'>
-                          
+
                       </div>
                        <h3 class="text-center text-info"> You dont have any skills entered. </h3>
                           <blockquote>
                               <p class='bold metal text-success'>Adding your skills to your profile wil help us fit you with the best possible position.</p>
                           </blockquote>
-                          
+
                           <div id='skills' class='center'>
                           </div>
                       <% end %>
@@ -68,28 +68,31 @@
                         </div>
                     </div>
                     <% end %>
-                
+
             </div>
-            
+
             <div role="tabpanel" class="tab-pane fade" id="timesheets">
                  <%= render 'employee/timesheets/table' %>
             </div>
-            
+
             <div role="tabpanel" class="tab-pane fade" id="current-job">
-            <% if @job %>
-            <div class="panel panel-default">
-                <div class="panel-body text-center">
-                <% if @employee.on_shift? || @employee.on_break? %>
-                    <%= link_to "You're Currently Clocked In", employee_shift_path(@employee.current_shift), class: 'btn btn-primary' %>
-                    <h2><strong><%= shift_times(@employee.current_shift)%></strong></h2>
-                <% else %>
-                <h2><%= @job.title %></h2>
-                    <%= render 'employee/jobs/clock', job: @job %>
-                    <%= link_to "New Shift", new_employee_shift_path %>
-                <% end %>
+              <% if @job %>
+                <div class="panel panel-default">
+                  <div class="panel-body text-center">
+                    <% if @job.order.mobile_time_clock_enabled? %>
+                      <% if @employee.on_shift? || @employee.on_break? %>
+                        <%= link_to "You're Currently Clocked In", employee_shift_path(@employee.current_shift), class: 'btn btn-primary' %>
+                        <h2><strong><%= shift_times(@employee.current_shift)%></strong></h2>
+                      <% else %>
+                        <h2><%= @job.title %></h2>
+                        <%= render 'employee/jobs/clock', job: @job %>
+                      <% end %>
+                    <% else %>
+                      See your manager for information on time tracking.
+                    <% end %>
+                  </div>
                 </div>
-            </div>
-            <% else %>
+              <% else %>
             <h2><%= @employee.first_name %> is currently unassigned.</h2>
             <% end %>
             </div>
@@ -131,7 +134,7 @@
             	<%= link_to "View Job Posting", employee_job_board_path, class: 'btn btn-primary' %>
             	<% end %>
             	</div>
-            	
+
             </div>
             <div role="tabpanel" class="tab-pane fade dark" id="jobs-tab">
                 <h2>Jobs</h2>
@@ -143,7 +146,7 @@
             </div>
         </div>
     </div>
-  
-  
-  
+
+
+
 </div>

@@ -1,5 +1,5 @@
 class Admin::JobsController < ApplicationController
-  before_action :set_job, only: [:show, :edit, :update, :destroy, :clock_in, :clock_out, :approve, :cancel]
+  before_action :set_job, only: [:show, :edit, :update, :destroy, :clock_in, :clock_out, :cancel]
   before_action :authenticate_admin!
   layout 'admin_layout'
 
@@ -11,14 +11,14 @@ class Admin::JobsController < ApplicationController
       @jobs = @employee.jobs.active
       authorize @jobs
     else
-     
+
       @jobs = Job.order(created_at: :desc) if @current_agency.present?
       authorize @jobs
     end
-   
+
 
   end
-  
+
   def inactive
     if params[:order_id]
       @order = Order.find(params[:order_id])
@@ -53,26 +53,29 @@ class Admin::JobsController < ApplicationController
       end
     end
   end
-  
+
   def approve
-    if @job.pending_approval?
-      @job.update(active: true, settings: @job.settings.merge({current_state: "Currently Working"}))
-      current_admin.events.create(action: "approved", eventable: @job, user_id: @employee.user_id)
-    elsif !@job.active?
-    # NOT LIKING THIS - maybe should throw an error? An inactive job should always be "pending" or "ended" Create new job if reassigning 
-      @job.update(active: true, settings: @job.settings.merge({current_state: "Currently Working"}))
-      current_admin.events.create(action: "approved", eventable: @job, user_id: @employee.user_id)
-    end
+    # This will throw an error if the job is not pending
+    # Should be creating a new job if reassigning
+    @job = Job.pending_approval.find(params[:id])
+    authorize @job
+    @employee = @job.employee
+
+    @job.update(active: true, settings: @job.settings.merge({current_state: "Currently Working"}))
+    @employee.update(assigned: true)
+    current_admin.events.create(action: "approved", eventable: @job, user_id: @employee.user_id)
+
     respond_to do |format|
       format.json { render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, state: @job.state } }
     end
   end
-  
+
   def cancel
     if @job.active? && @job.shifts.any?
-      @job.update(active: false, end_date: Date.today, settings: @job.settings.merge({current_state: "Assignment Ended"})) 
-      # It'd be nice to have them be required to give a reason when ending an assignment 
-      # Like just a comment and/or choices (hired-in, quit, ncns, laid-off, fired) 
+      @job.update(active: false, end_date: Date.today, settings: @job.settings.merge({current_state: "Assignment Ended"}))
+      @employee.update(assigned: false)
+      # It'd be nice to have them be required to give a reason when ending an assignment
+      # Like just a comment and/or choices (hired-in, quit, ncns, laid-off, fired)
       # ** choices would make employment verifications easier
       current_admin.events.create(action: "canceled", eventable: @job, user_id: @employee.user_id)
       respond_to do |format|
@@ -91,12 +94,12 @@ class Admin::JobsController < ApplicationController
         format.json { render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, state: @job.state } }
       end
     end
-    
+
   end
 
   # GET /jobs/new
   def new
-    
+
     @admin = current_admin
     if params[:order_id]
       @order = Order.find(params[:order_id])
@@ -123,16 +126,16 @@ class Admin::JobsController < ApplicationController
                                   in_ip: current_admin.current_sign_in_ip)
       current_admin.events.create(action: "clocked_in", eventable: @shift, user_id: @shift.employee.user_id)
 
-    
+
       respond_to do |format|
-          format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
+          format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?,
                     state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out, last_out: @job.last_clock_out,
                     in_ip: @shift.in_ip, first_name: @job.employee.first_name, new_count: current_admin.jobs.on_shift.count } }
 
       end
     end
   end
-  
+
   def clock_out
      authorize @job, :clock_out?
     if @job.on_shift? && @job.current_shift.present?
@@ -152,7 +155,7 @@ class Admin::JobsController < ApplicationController
 
   # GET /jobs/1/edit
   def edit
-    
+
     if params[:order_id]
       @order = Order.find(params[:order_id])
       @job = Job.find(params[:id])
@@ -165,8 +168,8 @@ class Admin::JobsController < ApplicationController
       @employee = @job.employee
       @order = @job.order
       @agency = @order.agency
-       
-       
+
+
       authorize @job
     end
    gon.admins = @current_agency.admins
@@ -174,14 +177,13 @@ class Admin::JobsController < ApplicationController
     gon.admins_display = @company.account_managers.map(&:mention_data)
     gon.company_admins_display = @company.admins.map(&:mention_data)
 
-    
+
 
   end
 
   # POST /jobs
   # POST /jobs.json
   def create
-   
     if params[:order_id]
       @order = Order.find(params[:order_id])
       @company = @order.company
@@ -196,13 +198,13 @@ class Admin::JobsController < ApplicationController
       authorize @job
     end
     if sending_for_approval?
-      @job.active = false 
+      @job.active = false
       @job.settings = {current_state: "Pending Approval"}
       current_admin.events.create(action: "presented", eventable: @job)
     else
       @job.settings = @job.settings.merge({current_state: "Currently Working"})
     end
-    
+
     respond_to do |format|
       if @job.save
         mentioned_admins = @job.mentioned_admins if @job.mentioned_admins
@@ -210,7 +212,7 @@ class Admin::JobsController < ApplicationController
           current_admin.events.create(action: "mentioned", eventable: mentioned_admin)
           # @job.send_notifications!
         end
-        
+
         format.html { redirect_to admin_job_path(@job), notice: 'Job was successfully created.' }
         format.json { render :show, status: :created, location: @job }
       else
@@ -226,9 +228,9 @@ class Admin::JobsController < ApplicationController
     authorize @job
     respond_to do |format|
       if @job.update(job_params)
-        
+
         mentioned_admins = @job.mentioned_admins if @job.mentioned_admins
-        
+
         mentioned_admins.each do |mentioned_admin|
           current_admin.events.create(action: "mentioned", eventable: mentioned_admin)
         end
@@ -253,7 +255,7 @@ class Admin::JobsController < ApplicationController
   end
 
   private
-  
+
   def sending_for_approval?
     params[:commit] == "Send for Approval"
   end
@@ -266,16 +268,16 @@ class Admin::JobsController < ApplicationController
       @agency = @order.agency
       @company = @job.company
     end
-    
+
     def pundit_user
       current_admin
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def job_params
-      params.require(:job).permit(:order, :recruiter_id, :title, :active, :description, 
+      params.require(:job).permit(:order, :recruiter_id, :title, :active, :description,
       :start_date, :pay_rate, :end_date, :order_id, :employee_id, :drive_pay, :ride_pay, :current_state,
       :number_of_days, :milestone_1, :milestone_2, :milestone_3)
     end
-    
+
 end
