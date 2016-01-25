@@ -4,19 +4,26 @@ class SubdomainConstraint
     request.subdomain.present? && !subdomains.include?(request.subdomain)
   end
 end
+
 Rails.application.routes.draw do
-  
-  root 'dashboard#home'
-  get 'features' => 'dashboard#features'
-  get 'contact' => 'dashboard#contact'
-  get 'about' => 'dashboard#about'
-  
+  root to: 'dashboard#home'
+
+  controller :dashboard do
+    get :features
+    get :contact
+    get :about
+  end
+
   resources :agencies
   resources :inquiries
-  
+
   constraints SubdomainConstraint do
-    get  'sign_in' => 'dashboard#sign_in_page'  
-    get  'public_job_board' => 'dashboard#public_job_board'
+    devise_for :admins, controllers: {registrations: 'admins/registrations'}
+    devise_for :company_admins, controllers: {registrations: 'company_admins/registrations'}
+    devise_for :users, controllers: {registrations: 'users/registrations'}
+
+    get 'sign_in' => 'dashboard#sign_in_page'
+    get 'public_job_board' => 'dashboard#public_job_board'
     # TAGS
     get 'tags' => 'admin/dashboard#all_tags'
     get 'tags/:tag', to: 'admin/dashboard#tag', as: :tag
@@ -27,14 +34,12 @@ Rails.application.routes.draw do
     get 'recruiter_ranking', to: 'charts#recruiter_ranking'
     get 'order_fill_time', to: 'charts#order_fill_time'
     get 'current_weeks_billing', to: 'charts#current_weeks_billing'
-    devise_for :admins, controllers: {registrations: 'admins/registrations'}
-    devise_for :company_admins, controllers: {registrations: 'company_admins/registrations'}
-    devise_for :users, controllers: {registrations: 'users/registrations'}
+
     resources :comments do
       collection do
-      post :mark_all_read
-      match 'search' => 'comments#search', via: [:get, :post], as: :search
-    end
+        post :mark_all_read
+        match 'search' => 'comments#search', via: [:get, :post], as: :search
+      end
       member do
         patch :mark_as_read
       end
@@ -43,21 +48,21 @@ Rails.application.routes.draw do
       member do
         post :mention
         post :follow
-        
+
       end
     end
     resources :company_admins do
       member do
         post :mention
         post :follow
-        
+
       end
     end
     resources :users do
       collection do
         post :import
         get :dns_list
-        
+
       end
       member do
         post :follow
@@ -65,7 +70,7 @@ Rails.application.routes.draw do
         patch :update_as_available
       end
     end
-    
+
     # ADMIN ----> /admin
     namespace :admin do
       get  'agency_access' => 'dashboard#agency_view'
@@ -78,25 +83,25 @@ Rails.application.routes.draw do
         resources :invoices
         resources :timesheets
         resources :orders
-        
+
         collection do
           post 'import'
         end
-        
+
       end
       resources :invoices do
         member do
           patch 'mark_as_paid'
         end
       end
-      
+
       resources :timesheets do
         resources :comments
         collection do
           get 'past'
           get 'last_week'
         end
-        
+
       end
       resources :employees do
         member do
@@ -107,12 +112,12 @@ Rails.application.routes.draw do
           get 'autocomplete'
           post 'import'
         end
-        
+
         resources :skills
         resources :shifts
         resources :work_histories
       end
-      
+
       resources :orders do
         collection do
           post 'import'
@@ -146,8 +151,8 @@ Rails.application.routes.draw do
           patch 'cancel'
         end
       end
-      
-      
+
+
       resources :shifts do
         member do
           patch 'clock_out'
@@ -156,10 +161,10 @@ Rails.application.routes.draw do
           patch 'remove_breaks'
         end
       end
-      
+
     end
     # END ADMIN
-    
+
     # COMPANY_ADMIN ---> /company
     namespace :company do
       get  'dashboard' => 'dashboard#home'
@@ -175,7 +180,7 @@ Rails.application.routes.draw do
           post 'verify_code'
           patch 'clock_in'
           patch 'clock_out'
-          
+
         end
       end
       resources :timesheets do
@@ -184,12 +189,12 @@ Rails.application.routes.draw do
         end
         resources :comments
       end
-      resources :invoices do 
+      resources :invoices do
         member do
           patch 'mark_as_paid'
         end
       end
-      resources :shifts do 
+      resources :shifts do
         member do
           patch 'clock_out'
           patch 'break_start'
@@ -199,7 +204,7 @@ Rails.application.routes.draw do
       end
     end
     # END COMPANY_ADMIN
-    
+
     # EMPLOYEE ---> /employee
     namespace :employee do
       get  'timeclock', to: 'dashboard#timeclock'
@@ -213,16 +218,16 @@ Rails.application.routes.draw do
           patch :apply
         end
       end
-      
+
       resources :jobs do
         member do
           patch 'clock_in'
           patch 'clock_out'
         end
       end
-      
+
       resources :timesheets
-      
+
       resources :shifts do
         member do
           patch 'clock_out'
@@ -231,12 +236,11 @@ Rails.application.routes.draw do
         end
       end
     end
-   # END EMPLOYEE
-    
-    
-    
-    resources :comments 
-    
+    # END EMPLOYEE
+
+    resources :comments
+    resources :work_histories
+
     resources :events do
       member do
         patch :mark_as_read
@@ -245,7 +249,7 @@ Rails.application.routes.draw do
         post :mark_all_as_read
       end
     end
-    resources :work_histories
+
     resources :skills do
       collection do
         get 'autocomplete'
@@ -253,26 +257,21 @@ Rails.application.routes.draw do
         post 'update_all'
       end
     end
+
     get 'comment_search' => 'comments#search'
     get 'orders' => 'orders#all'
     get 'archived_jobs' => 'jobs#archived'
-    
-    
-    
-    
-    
-    
   end
   # END SUBDOMAIN CONTRAINT
 
-  
 
-  
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  
+
 
   # Example of regular route:
 

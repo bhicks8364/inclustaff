@@ -3,7 +3,7 @@ ruby "2.2.4"
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.1'
+gem 'rails', '~> 4.2.1'
 # USER AUTHENICATIN
 gem "devise"
 # USER AUTHORIZATION
@@ -145,16 +145,6 @@ group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end
-
-
-
-# STUFF I PROBABLY DONT EVEN NEED {ANGULARJS TEST APP-THING & FULLCALENDAR}
-gem 'fullcalendar-rails'
-gem 'momentjs-rails'
-gem 'angularjs-rails'
-gem 'active_model_serializers'
-gem 'angular-rails-templates'
-gem 'bower-rails'
 
 # ****TO-DO -> NEED TO FIGURE OUT WHAT I'M DOING FOR SEARCHING
 # RANSACK SEARCH

@@ -11,29 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160104132352) do
+ActiveRecord::Schema.define(version: 20160121174011) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "hstore"
   enable_extension "uuid-ossp"
-
-  create_table "activities", force: :cascade do |t|
-    t.integer  "trackable_id"
-    t.string   "trackable_type"
-    t.integer  "owner_id"
-    t.string   "owner_type"
-    t.string   "key"
-    t.text     "parameters"
-    t.integer  "recipient_id"
-    t.string   "recipient_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "activities", ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type", using: :btree
-  add_index "activities", ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type", using: :btree
-  add_index "activities", ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type", using: :btree
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -309,17 +292,6 @@ ActiveRecord::Schema.define(version: 20160104132352) do
   add_index "orders", ["manager_id"], name: "index_orders_on_manager_id", using: :btree
   add_index "orders", ["published_by"], name: "index_orders_on_published_by", using: :btree
 
-  create_table "resumes", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "employee_id"
-    t.text     "body"
-    t.boolean  "active",      default: true
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-  end
-
-  add_index "resumes", ["employee_id"], name: "index_resumes_on_employee_id", using: :btree
-
   create_table "shifts", force: :cascade do |t|
     t.datetime "time_in"
     t.datetime "time_out"
@@ -436,6 +408,7 @@ ActiveRecord::Schema.define(version: 20160104132352) do
     t.string   "name"
     t.float    "latitude"
     t.float    "longitude"
+    t.date     "start_date"
   end
 
   add_index "users", ["agency_id"], name: "index_users_on_agency_id", using: :btree
@@ -444,23 +417,5 @@ ActiveRecord::Schema.define(version: 20160104132352) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["resume_id"], name: "index_users_on_resume_id", using: :btree
   add_index "users", ["role"], name: "index_users_on_role", using: :btree
-
-  create_table "work_histories", force: :cascade do |t|
-    t.string   "employer_name"
-    t.date     "start_date"
-    t.date     "end_date"
-    t.string   "title"
-    t.integer  "employee_id"
-    t.text     "description"
-    t.boolean  "current"
-    t.boolean  "may_contact"
-    t.string   "supervisor"
-    t.string   "phone_number"
-    t.string   "pay"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-  end
-
-  add_index "work_histories", ["employee_id"], name: "index_work_histories_on_employee_id", using: :btree
 
 end

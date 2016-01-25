@@ -9,6 +9,20 @@ require 'devise'
 
 RSpec.configure do |config|
   config.include Devise::TestHelpers, :type => :controller
+
+  config.use_transactional_fixtures = false
+
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
 end
 # Add additional requires below this line. Rails is not loaded until this point!
 

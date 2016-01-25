@@ -1,11 +1,9 @@
 class AddHstore < ActiveRecord::Migration
-
-  def change
-   
-    add_column :jobs, :settings, :hstore
-    add_column :timesheets, :adjustments, :hstore
-    
+  def up
+    enable_extension :hstore
   end
 
-
+  def down
+    disable_extension :hstore
+  end
 end

@@ -31,7 +31,7 @@ class Employee < ActiveRecord::Base
   has_many :events, :through => :user
   has_many :work_histories
   has_one :agency, through: :user
-  has_many :shifts, :through => :jobs, dependent: :destroy
+  has_many :shifts, through: :jobs, dependent: :destroy
   has_many :jobs, dependent: :destroy
   has_many :orders, :through => :jobs
   has_many :companies, :through => :orders
@@ -40,15 +40,15 @@ class Employee < ActiveRecord::Base
   has_many :comments, as: :commentable
   has_many :timesheets, :through => :jobs
   attachment :resume, extension: ["pdf", "doc", "docx"]
-  
+
   accepts_nested_attributes_for :jobs
   accepts_nested_attributes_for :user
   accepts_nested_attributes_for :skills, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :work_histories, reject_if: :all_blank, allow_destroy: true
-  
+
   # This isnt working right. Think I should use arrays for this or maybe a new model all together. idk
   store_accessor :availablity, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday
- 
+
   delegate :last_clock_in, to: :current_job
   delegate :last_clock_out, to: :current_job
   delegate :current_shift, to: :current_job
@@ -56,11 +56,11 @@ class Employee < ActiveRecord::Base
   delegate :recruiter, to: :current_job
   delegate :code, to: :user
   delegate :current_sign_in_ip, to: :user
- 
+
   after_save :create_user, if: :has_no_user?
   before_validation :check_if_assigned
   after_initialize :set_defaults
-  
+
   def available?
     current_job.nil? && dns == false
   end
@@ -78,10 +78,10 @@ class Employee < ActiveRecord::Base
       current_job.manager.present? ? current_job.manager : current_job.company.admins.first
     end
   end
-  
 
 
-  
+
+
   # VALIDATIONS
   # validates :first_name,  presence: true, length: { maximum: 20 }
   # validates :last_name,  presence: true, length: { maximum: 20 }
@@ -91,14 +91,14 @@ class Employee < ActiveRecord::Base
   # validates :email, presence: true, length: { maximum: 255 },
   #                 format: { with: VALID_EMAIL_REGEX },
   #                 uniqueness: { case_sensitive: false }
-  
+
   # SCOPES
   scope :with_late_timesheets, -> { joins(:timesheets).merge(Timesheet.needing_approval)}
   scope :with_active_jobs, -> { joins(:jobs).merge(Job.active)}
   scope :worked_this_year, -> { joins(:shifts).merge(Shift.this_year)}
   scope :with_inactive_jobs, -> { joins(:jobs).merge(Job.inactive)}
-  scope :on_shift, -> { joins(:shifts).merge(Shift.clocked_in)} 
-  scope :at_work, -> { joins(:shifts).merge(Shift.at_work)} 
+  scope :on_shift, -> { joins(:shifts).merge(Shift.clocked_in)}
+  scope :at_work, -> { joins(:shifts).merge(Shift.at_work)}
   scope :off_shift, -> { joins(:current_shift).merge(Shift.clocked_out)}
   scope :with_current_timesheet, -> { joins(:timesheets).merge(Timesheet.this_week)}
   scope :on_break, -> { joins(:shifts).merge(Shift.on_break)}
@@ -118,7 +118,7 @@ class Employee < ActiveRecord::Base
   def initial_start_date
     if shifts.any?
       shifts.order(:time_in).first.time_in
-   
+
     end
   end
   def days_from_initial_start
@@ -137,12 +137,12 @@ class Employee < ActiveRecord::Base
       (@average.sum / timesheets.count).round(2)
     end
   end
-  
+
   def year_report
     shifts.group_by_week(:time_in, range: initial_start_date...Time.current).sum(:time_worked)
   end
-    
-  
+
+
   def current_status
     shifts.any? ? shifts.last.state.humanize : "No Shifts"
   end
@@ -158,9 +158,9 @@ class Employee < ActiveRecord::Base
   def current_report
     shifts.group_by_year(:time_in, range: initial_start_date...Time.current).sum(:time_worked)
   end
-  
 
-  
+
+
   def current_timesheet
     if timesheets.current_week.any?
       timesheets.current_week.last
@@ -168,7 +168,7 @@ class Employee < ActiveRecord::Base
       []
     end
   end
-  
+
   def work_tags
     @work_tags ||= work_histories.map(&:tag_list).flatten
   end
@@ -181,15 +181,15 @@ class Employee < ActiveRecord::Base
     self.tag_list.add(work_tags)
     self.save
   end
-  
- 
+
+
   def mark_as_assigned!
     if jobs.active.any?
       self.update(assigned: true)
     else
       self.update(assigned: false)
     end
-  end 
+  end
   def set_defaults
     self.dns = false if dns.nil?
     self.assigned = false if assigned.nil?
@@ -203,7 +203,7 @@ class Employee < ActiveRecord::Base
     end
     return true
   end
-  
+
   def unassigned?
     assigned == false
   end
@@ -221,21 +221,21 @@ class Employee < ActiveRecord::Base
   def clocked_in?
     shifts.clocked_in.any?
   end
-  
+
   def pay_rate
     current_job.pay_rate
   end
 
   def name; "#{first_name} #{last_name}"; end
-  
+
   def create_user
     new_code = first_name[0,1] + last_name[0,1] + ssn + rand(1000..9999).to_s
     self.user = User.create(employee_id: id, first_name: first_name,
-                      last_name: last_name, email: email, 
+                      last_name: last_name, email: email,
                       password: new_code, password_confirmation: new_code, code: new_code)
   end
-  
-    
+
+
   def ytd_gross_pay
     if timesheets.any?
       timesheets.sum(:gross_pay)
@@ -243,7 +243,7 @@ class Employee < ActiveRecord::Base
       0
     end
   end
-    
+
   def current_job_hours
     if current_job.present?
       current_job.shifts.sum(:time_worked)
@@ -251,7 +251,7 @@ class Employee < ActiveRecord::Base
       0
     end
   end
-    
+
   def total_all_hours
       shifts.sum(:time_worked)
   end
@@ -261,24 +261,22 @@ class Employee < ActiveRecord::Base
   # def matching_employees
   #   @matching_employees ||= Employee.unassigned.tagged_with([tag_list], :any => true)
   # end
-  
+
       # EXPORT TO CSV
   def self.assign_from_row(row)
       employee = Employee.where(email: row[:email]).first_or_initialize
       employee.assign_attributes row.to_hash.slice(:first_name, :last_name, :user_id, :ssn, :desired_shift, :desired_job_type, :email, :phone_number)
       employee
   end
-  
+
   def self.to_csv
     attributes = %w{id last_name first_name email ssn phone_number desired_job_type desired_shift user_id}
     CSV.generate(headers: true) do |csv|
       csv << attributes
-      
+
       all.each do |employee|
         csv << employee.attributes.values_at(*attributes)
       end
     end
   end
-
-    
 end

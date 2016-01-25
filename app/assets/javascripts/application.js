@@ -40,8 +40,6 @@
 //= require orders
 //= require employees
 
-
-
 //= require chartkick
 
 //= require charts
@@ -52,19 +50,16 @@
 
 //= require pending_approval
 
-
-
 $(document).ready(function(){
-    $('.img-zoom').hover(function() {
-        $(this).addClass('transition');
-        
-    
-    }, function() {
-        $(this).removeClass('transition');
-    });
-    $('.img-zoom-big').hover(function() {
-        $(this).addClass('transition');
-    }, function() {
-        $(this).removeClass('transition');
-    });
+  $('.img-zoom').hover(function() {
+    $(this).addClass('transition');
+  }, function() {
+    $(this).removeClass('transition');
+  });
+
+  $('.img-zoom-big').hover(function() {
+    $(this).addClass('transition');
+  }, function() {
+    $(this).removeClass('transition');
+  });
 });

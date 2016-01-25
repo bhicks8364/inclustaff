@@ -35,7 +35,7 @@ class Shift < ActiveRecord::Base
   include ArelHelpers::ArelTable
   include Arel::Nodes
   acts_as_paranoid
-  
+
   belongs_to :job
   belongs_to :employee
   belongs_to :timesheet, counter_cache: true
@@ -44,7 +44,7 @@ class Shift < ActiveRecord::Base
   has_many :comments, as: :commentable
   has_many :events, as: :eventable
   accepts_nested_attributes_for :job
-  
+
   # GEOCODER
   geocoded_by :in_ip
   after_validation :geocode
@@ -56,10 +56,10 @@ class Shift < ActiveRecord::Base
   delegate :account_manager, to: :job
   delegate :code, to: :employee
   delegate :week_ending, to: :timesheet
-  
+
   validates :job_id, presence: true
   validates :time_in, presence: true
-  
+
   scope :with_recent_comments,    -> { joins(:comments).merge(Comment.payroll_week)}
   scope :with_break,    -> { where.not(breaks: [])}
   scope :with_no_break, -> { where(breaks: [])}
@@ -71,7 +71,7 @@ class Shift < ActiveRecord::Base
   scope :short_shifts,  -> { where('time_worked > 4') }
   scope :over_8,        -> { where('time_worked > 8') }
   scope :past, -> { where(Shift[:time_in].lteq(Date.yesterday))}
-  
+
   def self.worked_before(date)
     where(Shift[:time_in].lteq(date))
   end
@@ -82,8 +82,8 @@ class Shift < ActiveRecord::Base
     where(Shift[:time_in].gteq(date1)
     .and(Shift[:time_in].lteq(date2)))
   end
-  
-  
+
+
   # scope :last_week,     -> { where(week: Date.today.cweek - 1)}
   scope :last_week, -> {
           start = Time.current.beginning_of_week - 1.week
@@ -115,7 +115,7 @@ class Shift < ActiveRecord::Base
   before_save :set_week, :set_timesheet, :calculate_break, :reg_earnings
   after_initialize :set_defaults, if: :new_record?
   after_initialize :set_pay
-  
+
   def clocked_in?; state == "Clocked In"; end
   def clocked_out?; state == "Clocked Out"; end
   def on_break?; state == "On Break"; end
@@ -126,20 +126,20 @@ class Shift < ActiveRecord::Base
   def past?; time_in < Time.current - 12.hours; end
   def calculate_break
     if clocked_in? && breaks.count.even?
-      @breaks = breaks 
+      @breaks = breaks
       @break_times = @breaks.map(&:to_datetime)
       @durations = []
-      @break_times.in_groups_of(2) do |group| 
+      @break_times.in_groups_of(2) do |group|
                       @durations  << time_diff(group[0], group[1])
                   end
-     
-      self.break_duration = @durations.sum 
-    else 
-      # This should throw an error because theyre still on break. 
+
+      self.break_duration = @durations.sum
+    else
+      # This should throw an error because theyre still on break.
       # Gotta clock out first. Maybe I should use AASM for this?? idk
     end
   end
-  
+
   def self.report_by_month
     group_by_month(:time_in).sum(:time_worked)
   end
@@ -170,15 +170,15 @@ class Shift < ActiveRecord::Base
     self.break_duration = 0 if break_duration.nil?
   end
   def set_defaults
-      # self.employee = job.employee if employee.nil? 
+      # self.employee = job.employee if employee.nil?
       # self.in_ip = employee.current_sign_in_ip if in_ip.nil?
       self.break_out = [] if break_out.nil?
       self.break_in = [] if break_in.nil?
       self.breaks = [] if breaks.nil?
-      
-     
+
+
   end
-  
+
   def set_timesheet
       timesheet = Timesheet.find_or_create_by(job_id: job_id, week: week)
       self.timesheet = timesheet
@@ -187,20 +187,20 @@ class Shift < ActiveRecord::Base
   def clock_in!
     if job.off_shift?
       self.job.shifts.create(
-          time_in: Time.current, 
-          time_out: nil, 
+          time_in: Time.current,
+          time_out: nil,
           week: Date.today.cweek,
           state: "Clocked In",
           in_ip: "admin-clock-in",
           out_ip: nil)
     end
   end
-  
+
   def clock_out!
       update(time_out: Time.current,
                   state: "Clocked Out")
   end
-  
+
   def self.clock_out_all!
       Shift.clocked_in.each {|s| s.update(time_out: Time.current, state: "Clocked Out") }
   end
@@ -212,7 +212,7 @@ class Shift < ActiveRecord::Base
           time_diff(time_in, time_out)
       end
   end
-  
+
   def pay_time
       if paid_breaks == false && break_duration > 0.01
           hours_worked - break_duration
@@ -220,7 +220,7 @@ class Shift < ActiveRecord::Base
           hours_worked
       end
   end
-  
+
   def reg_earnings
       @payable_hours = pay_time
       self.earnings = pay_rate * @payable_hours
@@ -232,19 +232,19 @@ class Shift < ActiveRecord::Base
     else
       self.week = time_out.beginning_of_week.to_datetime.cweek
     end
-    
+
   end
 
   def update_timesheet!
       timesheet.save
   end
-  
+
   def delete_timesheet
     if timesheet.shifts.count.zero?
       timesheet.destroy
     end
   end
-  
+
   def with_paid_breaks
     paid_breaks = hours_worked * pay_rate
     paid_breaks.round(2)
@@ -261,9 +261,9 @@ class Shift < ActiveRecord::Base
       time_in.stamp("Saturday, 12/18")
     end
   end
-  
+
   private
-  
+
   def time_diff(start_time, end_time)
       TimeDifference.between(start_time, end_time).in_hours
   end

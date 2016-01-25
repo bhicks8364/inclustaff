@@ -52,7 +52,7 @@ class User < ActiveRecord::Base
   validates :agency_id,  presence: true
   validates :role,  presence: true
   validates :code, uniqueness: true
-  
+
   # GEOCODER
   geocoded_by :fulladdress
   after_validation :geocode
@@ -62,19 +62,19 @@ class User < ActiveRecord::Base
   # devise :database_authenticatable, :authentication_keys => [:code]
   devise :database_authenticatable, :registerable,
         :recoverable, :rememberable, :trackable, :validatable
-  
+
   scope :unassigned, -> { joins(:employee).merge(Employee.unassigned)}
   scope :available, -> { joins(:employee).merge(Employee.available)}
   scope :ordered_by_last_name, -> { order(last_name: :asc) }
   scope :ordered_by_check_in, -> { order(checked_in_at: :desc) }
-  
+
   before_validation do
     self.role = "Employee"
     self.name = "#{first_name} #{last_name}"
   end
   before_validation :set_code, :set_role
   after_create :set_employee, if: :has_no_employee?
-  
+
   def has_no_employee?
     employee.nil?
   end
@@ -84,13 +84,13 @@ class User < ActiveRecord::Base
   def owner?
     false
   end
-  
-  
+
+
   def set_role
     # Maybe this should change depending on if they have ever worked for the agency or if theyre just a candidate
       self.role = "Employee"
   end
-  
+
   def to_param
     "#{id}-#{name.parameterize }"
   end
@@ -104,7 +104,7 @@ class User < ActiveRecord::Base
   scope :assigned, -> { joins(:employee).merge(Employee.with_active_jobs)}
   scope :online, -> { where("updated_at > ?", 10.minutes.ago) }
 
-  
+
   def set_check_in!
     if checked_in_at.nil?
       self.update(checked_in_at: created_at)
@@ -116,7 +116,7 @@ class User < ActiveRecord::Base
   def assigned?
     employee.assigned?
   end
-  
+
   def reset_code!
     new_code = last_name.upcase[0,4] + rand(1000..9999).to_s
     self.update(code: new_code)
@@ -135,8 +135,8 @@ class User < ActiveRecord::Base
     self.employee_id = employee.id
   end
 
-  
-  
+
+
   def set_employee
     self.employee = Employee.find_or_create_by(email: self.email) do |employee|
       employee.user_id = self.id
@@ -145,25 +145,25 @@ class User < ActiveRecord::Base
       employee.ssn = 1234
      end
   end
-   # IMPORT TO CSV   
+   # IMPORT TO CSV
   def self.assign_from_row(row)
     user = User.where(email: row[:email]).first_or_initialize
     user.assign_attributes row.to_hash.slice(:first_name, :last_name, :agency_id, :email, :code, :role, :password, :password_confirmation, :address, :city, :state, :zipcode)
     user
   end
-  
+
    # EXPORT TO CSV
   def self.to_csv
     attributes = %w{id last_name first_name email code role fulladdress address city state zipcode}
     CSV.generate(headers: true) do |csv|
       csv << attributes
-      
+
       all.each do |user|
         csv << user.attributes.values_at(*attributes)
       end
     end
   end
-    
+
   def applied_to(order_id)
     if Event.where(user_id: self.id, eventable_id: order_id, action: 'applied').any?
       true
@@ -171,5 +171,4 @@ class User < ActiveRecord::Base
       false
     end
   end
-        
 end

@@ -1,20 +1,20 @@
- 
+
 <div class='col-md-12 metal'>
     <h1><%= @admin.name %></h1>
-    <h3><%= @current_agency.orders.with_active_jobs.average(:mark_up).round(2) %></h3>
+    <h3><%= @current_agency.orders.with_active_jobs.average(:mark_up).to_i.round(2) %></h3>
     <div class='col-md-2'>
          <% if @admin.online? %> <%= image_tag("user-green.png", class: 'online-icon') %> <% end %>
         <p class='lead'>
             <%= @admin.role %>
         <%= @admin.email %>
         </p>
-     
+
         <%= @admin.latitude %>
         <%= @admin.longitude %>
         <br>
         <%= @admin.last_sign_in_at.present? ? @admin.last_sign_in_at.stamp("11/12 at 11:15am") : "Yet to sign in" %>
     </div>
-    
+
      <div class='col-md-10'>
          <%= render "admin/charts/owner_charts" if @admin.owner? %>
          <%= render "admin/charts/account_manager_charts", admin: @admin if @admin.account_manager? %>

@@ -32,11 +32,12 @@
 class Admin < ActiveRecord::Base
   include ArelHelpers::ArelTable
   include ArelHelpers::JoinAssociation
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
+
   geocoded_by :current_sign_in_ip
   after_validation :geocode
-  
+
   belongs_to :agency
   has_many :events
   has_many :eventables, :through => :events
@@ -50,11 +51,11 @@ class Admin < ActiveRecord::Base
   scope :hr,               -> { where(role: "HR")}
   scope :recruiters,       -> { where(role: "Recruiter")}
   scope :limited,          -> { where(role: "Limited Access")}
-         
+
   before_validation :set_name, :set_username
   validates :agency_id,  presence: true
   validates_numericality_of :agency_id, allow_nil: true
-    
+
   def phone_number;             agency.phone_number; end
   def to_s;             name; end
   def name_role;             "#{name} #{role}"; end
@@ -69,14 +70,14 @@ class Admin < ActiveRecord::Base
   def admin?;         true; end
   def employee?;         false; end
   def mention_data; {name: "#{name}", content: "#{role}"}; end
-    
-  def set_name             
+
+  def set_name
     self.name = "#{first_name} #{last_name}"
-  end  
+  end
   def online?
     updated_at > 10.minutes.ago
   end
-  
+
   def timesheets
     if recruiter?
       Timesheet.by_recruiter(id)
@@ -86,7 +87,7 @@ class Admin < ActiveRecord::Base
       Timesheet.all
     end
   end
-  
+
   def jobs
     if recruiter?
       recruiter_jobs
@@ -126,7 +127,7 @@ class Admin < ActiveRecord::Base
   def messages
       Comment.by_recipient(id, "Admin")
   end
-  
+
   def current_billing
     if timesheets.any?
       timesheets.current_week.sum(:total_bill)
@@ -134,7 +135,7 @@ class Admin < ActiveRecord::Base
       0.00
     end
   end
-  
+
   def last_week_billing
     if timesheets.any?
       timesheets.last_week.sum(:total_bill)
@@ -142,7 +143,7 @@ class Admin < ActiveRecord::Base
       0.00
     end
   end
-  
+
   def billing
     if timesheets.any?
       timesheets.sum(:total_bill)
@@ -154,7 +155,7 @@ class Admin < ActiveRecord::Base
   def billing_difference
     current_billing - last_week_billing
   end
-  
+
   def current_commission
     if timesheets.current_week.any?
       pay = timesheets.current_week.sum(:gross_pay)
@@ -164,12 +165,11 @@ class Admin < ActiveRecord::Base
       0.00
     end
   end
-  
-         
+
   def set_username
     self.username = name.gsub(/\s(.)/) {|e| $1.upcase}
   end
-  
+
   def self.sorted_by_current_billing
     Admin.all.sort_by(&:current_billing).reverse!
   end
@@ -178,6 +178,5 @@ class Admin < ActiveRecord::Base
   end
   def self.sorted_by_last_week_billing
     Admin.all.sort_by(&:last_week_billing).reverse!
-  end    
-
+  end
 end
