@@ -1,18 +1,22 @@
-<%= render 'employee/orders/open_table' %>
-<div class="panel panel-default">
-    <div class="panel-body">
-        <% if @user.events.any? %>
-        <h3> Your Applications</h3>
-        <div class='list-group'>
-        <% @user.events.applications.each do |event| %>
-            <%= render partial: "events/activities/employee_applied", locals: {event: event} %>
-        <% end %>
+<div class='col-md-4'>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <% if @user.events.any? %>
+            <h3> Your Applications</h3>
+            <div class='list-group'>
+            <% @user.events.applications.each do |event| %>
+                <%= render partial: "events/activities/employee_applied", locals: {event: event} %>
+            <% end %>
+            </div>
+            
+            <% else %>
+            <div class='text-center'>
+            <h3 class=''> You haven't applied to any jobs yet.</h3>
+            </div>
+            <% end %>
         </div>
-        <% else %>
-        <div class='text-center'>
-        <h3 class=''> You haven't applied to any jobs yet.</h3>
-        <%= link_to "View Job Posting", employee_job_board_path, class: 'btn btn-primary' %>
-        </div>
-        <% end %>
     </div>
+</div>
+<div class='col-md-8'>
+    <%= render 'employee/orders/open_table' %>
 </div>

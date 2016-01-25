@@ -96,7 +96,7 @@ class DashboardController < ApplicationController
 
   end
   def public_job_board
-    @orders = @current_agency.orders.published
+    @orders = @current_agency.orders.published.order(published_at: :asc).limit(10)
     skip_authorization
   end
   

@@ -60,6 +60,14 @@
                 <p>Measurement Period: <%= @agency.preferences['aca_measurement_period'] %></p>
                 <p>Administrative Period: <%= @agency.preferences['aca_administrative_period'] %></p>
                 <p>Stability Period: <%= @agency.preferences['aca_stability_period'] %></p>
+                <h2>Weekly Sales Goal</h2>
+                <p class='lead'><%= number_to_currency(@agency.weekly_sales_goal) %></p>
+                <h3><%= number_to_percentage(@agency.percent_to_sales_goal, precision: 2)%> to current goal</h3>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<%= @agency.percent_to_sales_goal %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= number_to_percentage(@agency.percent_to_sales_goal, precision: 2)%>">
+                    <span class="sr-only"><%= number_to_percentage(@agency.percent_to_sales_goal, precision: 2)%> Complete (success)</span>
+                  </div>
+                </div>
             <%  if policy(@agency).update? %>
                     <%= link_to(edit_agency_path(@agency), class: 'btn btn-primary') do %>
             	      <i class='fa fa-pencil fa-fw'></i>

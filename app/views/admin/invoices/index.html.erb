@@ -1,9 +1,10 @@
-<h1 class='black'> Invoices for <strong><%= @company.present? ? @company.name : @current_agency.name %></strong></h1>
+<div class='col-md-12 lightbox-long'>
+  <h1 class='black'> Invoices for <strong><%= @company.present? ? @company.name : @current_agency.name %></strong></h1>
 <div class='col-md-3'>
   <h2><strong>Unpaid</strong></h2>
   <div class='scroll500'>
   <% if @company.present? %>
-  <% @invoices.each do |invoice| %>
+  <% @invoices.unpaid.each do |invoice| %>
     <%= inv_timesheets_collaspe(invoice) %><br>
     <div class='black collapse' id="collapseInv_<%=invoice.id%>">
        <%= render 'admin/invoices/invoice', invoice: invoice %>
@@ -40,7 +41,7 @@
   </thead>
 
   <tbody>
-    <% @invoices.order(week: :desc).each do |invoice| %>
+    <% @invoices.order(date_paid: :desc).each do |invoice| %>
     
     
       <tr>
@@ -59,4 +60,6 @@
 </div>
 <br>
 <%= link_to 'Back', admin_company_invoices_path(@company), class: "btn btn-primary" if @company.present? %>
+</div>
+
 </div>

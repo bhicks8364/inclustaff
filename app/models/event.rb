@@ -59,6 +59,10 @@ class Event < ActiveRecord::Base
           start = Date.yesterday.beginning_of_day
           ending = Date.today.beginning_of_day
           where(created_at: start..ending)}
+    scope :past_2_weeks,  -> {
+          start = Time.current.beginning_of_week - 7.days
+          ending = start.end_of_week 
+          where(created_at: start..ending)}
     def self.happened_before(date)
       where(Event[:created_at].lteq(date))
     end

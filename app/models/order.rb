@@ -210,7 +210,7 @@ class Order < ActiveRecord::Base
     "#{company.name} - #{title}"
   end
   def to_s
-    title_company
+    title
   end
   
   

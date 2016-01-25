@@ -354,20 +354,25 @@ h1, h2, h3, h4, h5, h6 {
 
 // TABS
 
-#content-wrapper > div > ul > li {
-    background: rgba(0, 0, 0, 0.65);
+// #content-wrapper > div > ul > li {
+//     background: rgba(0, 0, 0, 0.65);
     
     
-}
-#content-wrapper > div > ul {
-    background: rgba(0, 0, 0, 0.65);
+// }
+// #content-wrapper > div > ul {
+//     background: rgba(0, 0, 0, 0.65);
     
-}
+// }
 
 
 .lightbox {
     background: rgba(255, 255, 255, 0.25);
     padding: 10px;
+}
+.lightbox-long {
+    background: rgba(255, 255, 255, 0.25);
+    padding: 10px;
+    height: 100%;
 }
 .green {
     color: green;

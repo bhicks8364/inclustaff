@@ -68,7 +68,7 @@
 					<hr>
 					<h3 class='bold'>Last Week</h3>
 					<div class='list-group'>	
-					<%= link_to(past_admin_timesheets_path, class: "btn btn-primary btn-lg btn-block") do %>
+					<%= link_to(last_week_admin_timesheets_path, class: "btn btn-primary btn-lg btn-block") do %>
 						<span class="label-fill"><%= @timesheets.last_week.approved.try(:count) %> Approved </span>
 						<span class="label-fill"><%= @timesheets.last_week.pending.try(:count) %> Pending </span>
 					<% end %>

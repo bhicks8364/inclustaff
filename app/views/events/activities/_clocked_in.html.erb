@@ -2,7 +2,8 @@
 <i class="fa fa-clock-o fa-fw"></i>
 	<%= event.admin.try(:first_name) if !current_page?('/admins/:id') %>
 	<%= event.company_admin.try(:first_name) if !current_page?('/company_admins/:id') %>
-    <strong>	<%= event.action.humanize.downcase %></strong> <%=  signed_in_link_to event.eventable.name, event.eventable %>
+    <strong>	<%= event.action.humanize.downcase %></strong>
+    <%=  signed_in_link_to event.eventable.name, event.eventable if event.eventable.present? %>
 		<span class='label label-success black pull-right'>
 		    <%= event.created_at.stamp('11/13 at 8:30am') %>
 		</span>

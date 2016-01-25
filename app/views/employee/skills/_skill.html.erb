@@ -1,9 +1,11 @@
-<% if skill.required? %>
-<i class='fa fa-star'></i><% else %>
-<i class='fa fa-star-o'></i>
-<% end %>
-
-<strong><%= skill.name %></strong>
+<%= div_for skill do %>
+    <% if skill.job_order? && skill.required? %>
+    <i class='fa fa-star'></i><% elsif skill.job_order? %>
+    <i class='fa fa-star-o'></i>
+    <% end %>
+    
+    <strong><%= skill.name %></strong>
    
+<% end %>
 
 

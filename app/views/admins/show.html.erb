@@ -1,7 +1,5 @@
-
-<div class='col-md-12 metal'>
+<div class='col-md-12 metal lightbox-long'>
     <h1><%= @admin.name %></h1>
-    <h3><%= @current_agency.orders.with_active_jobs.average(:mark_up).to_i.round(2) %></h3>
     <div class='col-md-2'>
          <% if @admin.online? %> <%= image_tag("user-green.png", class: 'online-icon') %> <% end %>
         <p class='lead'>
@@ -16,10 +14,22 @@
     </div>
 
      <div class='col-md-10'>
+ 	<% if @current_agency.companies.blank? %>
+   	    <h2 class=''>Getting Started</h2>
+   		<div class='col-md-4'>
+   			<div id="no-companies-alert" class="alert alert-danger text-center" role="alert">
+				<h5 class='text-center'> <i class="fa fa-exclamation-triangle fa-fw fa-border"></i>
+				There are currently no companies.</h5>
+				<p class=''>Please add a new company below.</p>
+				<%= link_to "New Company", new_admin_company_path, class: 'btn btn-success' %>
+		  	</div>
+   		</div>
+   	<% else %>
          <%= render "admin/charts/owner_charts" if @admin.owner? %>
          <%= render "admin/charts/account_manager_charts", admin: @admin if @admin.account_manager? %>
          <%= render "admin/charts/recruiter_charts", recruiter: @admin if @admin.recruiter? %>
          <%= render "admin/charts/payroll_charts", admin: @admin if @admin.payroll? %>
+    <% end %>
      </div>
      <div class='col-md-10'>
         <%= render 'infoboxes'  %>

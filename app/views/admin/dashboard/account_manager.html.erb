@@ -1,17 +1,17 @@
-<div class="col-md-12 lightbox">
+<div class="col-md-12 lightbox-long">
 	<div class='pull-right'><%= render 'admin/orders/search' %></div>
 	<h1 class='page-header text-center'>Sales Dashboard</h1>
 	
-	<div class="col-md-4 bg-white">
+	<div class="col-md-4">
 			<h2>Pending Approval</h2>
 				<%= render 'admin/jobs/pending_list', jobs: @current_admin.jobs.pending_approval %>
 		</div>
 	
-	<div class='col-md-6 bg-white'>
+	<div class='col-md-6'>
 		<h2>Companies with Open Job Orders</h2>
 		<%= render 'admin/shared/company_collapse', companies: @current_admin.companies.with_open_orders.includes(:orders).distinct.order(:name) %>
 	</div>
-	<div class='col-md-2 lightbox'>
+	<div class='col-md-2 '>
 		<%= render "admin/shared/alerts/open_orders", orders: @current_admin.job_orders %>
 	</div>
 	<div class='row'>

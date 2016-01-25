@@ -1,5 +1,5 @@
 <% if @comment.valid? %>
-$("<%= escape_javascript(render @comment) %>").appendTo("#<%=@comment.commentable_type.downcase%>_<%=@comment.commentable_id%>");
+$("<%= escape_javascript(render @comment) %>").appendTo("#comment-list");
 $("#comment_body").val('');
 <% else %>
 alert("Cannot leave a blank comment");

@@ -1,13 +1,13 @@
-<div class='col-md-12 lighterbox'>
+<div class='col-md-12'>
     <div class=''>
         <%= render 'users_sign_in' %>
     </div>
     <h1 class='metal bold page-header'><%= @current_agency.name %> <small> Current Positions</small></h1>
     
-    <div class='col-md-12 lightbox'>
+    <div class=''>
     
-        <div class=''>
-            <table class='table inv_datatable'>
+        <div class='table-responsive'>
+            <table class='table table-hover'>
                 <thead>
                     <tr>
                     <th>Posting Date</th>
@@ -19,10 +19,11 @@
                 <tbody>
                     <% @orders.each do |order| %>
                     <tr>
+                        <td><%= order.published_at.stamp("11-12-2015") %> </td>
                         <td><%= order.title %></td>
                         <td><%= order.location %></td>
                         <td><%= pay_range(order) %></td>
-                        <td class='text-center'><%= order.published_at.stamp("11-12-15") %> %></td>
+                        
                     </tr>
                     <% end %>
                 </tbody>

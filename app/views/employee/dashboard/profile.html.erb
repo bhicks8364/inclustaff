@@ -1,4 +1,4 @@
-<div class='col-md-12 lightbox'>
+<div class='col-md-12 lightbox-long'>
 <!--NAV TABS-->
     <div id='profile-nav' class=''>
         <!-- Nav tabs -->
@@ -7,7 +7,7 @@
         <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
         <li role="presentation"><a href="#work_history" aria-controls="work_history" role="tab" data-toggle="tab">Work History</a></li>
         <li role="presentation"><a href="#applications-tab" aria-controls="applications" role="tab" data-toggle="tab">Applications</a></li>
-        <li role="presentation"><a href="#jobs-tab" aria-controls="jobs" role="tab" data-toggle="tab">Jobs</a></li>
+        <% if @employee.jobs.any? %><li role="presentation"><a href="#jobs-tab" aria-controls="jobs" role="tab" data-toggle="tab">Jobs</a></li><% end %>
         <% if @employee.assigned? %>
         <li role="presentation"><a href="#current-job" aria-controls="current-job" role="tab" data-toggle="tab">Current Job</a></li>
         <li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li>
@@ -16,30 +16,21 @@
         </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane fade in active" id="home">
-                <div class='col-md-6 bg-white'>
-                    <%= render 'users/user', user: @user %>
-                    <%= render 'employee/employees/availability', employee: @employee %>
-                </div>
-                <div class='col-md-6 bg-white'>
+                <div class='col-md-6'>
+                    <h2><%= @employee.name %></h2>
+                   Address
+                    <address class="">
+                        <%= @user.address %><br>
+                        <%= @user.city %>, <%= @user.state %> <%= @user.zipcode %><br>
+                        <i class="fa fa-phone-square"></i>  <%= @employee.phone_number || "Unavailable"  %> 
+                    </address>
                     <div class='btn-group'>
                         <%= link_to "Edit Profile", edit_employee_employee_path(@employee), class: 'btn btn-primary' %>
                         <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
                     </div>
                 </div>
-            </div>
-            <div role="tabpanel" class="tab-pane fade" id="profile">
-                <div class="col-md-6 bg-white">
-                    <% if @employee.matching_orders.any? %>
-                	<h2 class="text-center">Suggested Positions </h2>
-                    <div class='list-group'>
-                      <% @employee.matching_orders.each do |order| %>
-                          <%= render 'employee/orders/order', order: order %>
-                      <% end %>
-                    </div>
-                    <% end %>
-                </div>
-                <div class='col-md-6 bg-white'>
-                    <% if @employee.skills.any? %>
+                <div class='col-md-6'>
+                    <% if @employee.skills.count > 1 %>
                        <h4 class='text-center'>Skills</h4>
                         <div id='skills' class='center'>
                           <% @employee.skills.each do |skill| %>
@@ -47,14 +38,37 @@
                           <% end %>
                          </div>
                       <% else %>
-                       <h4 id='no-skills' class="center"><%= @employee.first_name %> has no skills entered.</h4>
+                      <div id='no-skills'>
+                          
+                      </div>
+                       <h3 class="text-center text-info"> You dont have any skills entered. </h3>
+                          <blockquote>
+                              <p class='bold metal text-success'>Adding your skills to your profile wil help us fit you with the best possible position.</p>
+                          </blockquote>
+                          
                           <div id='skills' class='center'>
                           </div>
                       <% end %>
-                    <div class='form-inline'>
+                    <div class='form-inline center'>
                         <%= render partial: "employee/skills/form", locals: {skillable: @employee} %>
                     </div>
                 </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="profile">
+                    <div class="col-md-6">
+                        <%= render 'employee/employees/availability', employee: @employee %>
+                    </div>
+                    <% if @employee.matching_orders.any? %>
+                    <div class="col-md-6">
+                    	<h2 class="text-center">Suggested Positions </h2>
+                        <div class='list-group'>
+                          <% @employee.matching_orders.each do |order| %>
+                              <%= render 'employee/orders/order', order: order %>
+                          <% end %>
+                        </div>
+                    </div>
+                    <% end %>
+                
             </div>
             
             <div role="tabpanel" class="tab-pane fade" id="timesheets">
@@ -67,43 +81,43 @@
                 <div class="panel-body text-center">
                 <% if @employee.on_shift? || @employee.on_break? %>
                     <%= link_to "You're Currently Clocked In", employee_shift_path(@employee.current_shift), class: 'btn btn-primary' %>
-                    <h3><strong><%= shift_times(@employee.current_shift)%></strong></h3>
+                    <h2><strong><%= shift_times(@employee.current_shift)%></strong></h2>
                 <% else %>
-                <h3><%= @job.title %></h3>
+                <h2><%= @job.title %></h2>
                     <%= render 'employee/jobs/clock', job: @job %>
                     <%= link_to "New Shift", new_employee_shift_path %>
                 <% end %>
                 </div>
             </div>
             <% else %>
-            <h3><%= @employee.first_name %> is currently unassigned.</h3>
+            <h2><%= @employee.first_name %> is currently unassigned.</h2>
             <% end %>
             </div>
             <div role="tabpanel" class="tab-pane fade" id="shifts">
             <% if @employee.assigned? && @employee.shifts.any? %>
                 <%= render 'employee/shifts/shift_calendar' %>
             <% elsif @employee.unassigned? %>
-            <h3> <%= @employee.first_name %> is currently unassigned.</h3>
+            <h2> <%= @employee.first_name %> is currently unassigned.</h2>
             <% end %>
             </div>
             <div role="tabpanel" class="tab-pane fade" id="work_history">
-            <div class='col-md-12 bg-white'>
+            <div class='col-md-12'>
                 <% if @employee.work_histories.any? %>
-                 <h3>Work History</h3>
+                 <h2>Work History</h2>
                     <div class='table-responsive'>
                         <%= render 'employee/work_histories/table' %>
                     </div>
                 <% else %>
-                 <h3>No work history to show.</h3>
-                    <p>Adding your work history makes it easier to match you with right position.</p>
+                 <h2>No work history to show.</h2>
+                    <p class='lead text-info'>Adding your work history makes it easier to match you with right position.</p>
                 <% end %>
                 <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
             </div>
             </div>
             <div role="tabpanel" class="tab-pane fade dark" id="applications-tab">
-              <div class='col-md-12 bg-white'>
+              <div class='col-md-12'>
               <% if @user.events.any? %>
-                <h3> Your Applications</h3>
+                <h2> Your Applications</h2>
                 <div class='list-group'>
             		<% @user.events.applications.each do |event| %>
             		  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
@@ -112,7 +126,7 @@
             		<% end %>
             	</div>
             	<% else %>
-            	    <h3 class='text-center'> You haven't applied to any jobs yet.</h3>
+            	    <h2 class='text-center'> You haven't applied to any jobs yet.</h2>
             	    <br>
             	<%= link_to "View Job Posting", employee_job_board_path, class: 'btn btn-primary' %>
             	<% end %>
@@ -120,7 +134,7 @@
             	
             </div>
             <div role="tabpanel" class="tab-pane fade dark" id="jobs-tab">
-                <h3>Jobs</h3>
+                <h2>Jobs</h2>
                 <div class='list-group'>
             		<% @employee.jobs.each do |job| %>
             		  <%= job.title %> - <%= job.state %>

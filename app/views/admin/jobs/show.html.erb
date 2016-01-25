@@ -20,13 +20,6 @@
        
        </div>
        
-     
-       
-       
-       
-       
-   
-      
    
 <div class="row">
   <div class='col-md-12'>
@@ -46,7 +39,7 @@
   
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="job">
-    <div class='col-md-4 bg-white'>
+    <div class='col-md-4'>
     <h4><strong>Interview Notes:</strong></h4>
           <%= markdownify(@job.description) %>
          <% if @job.recruiter.present? %>
@@ -66,7 +59,7 @@
         <% end %>
             
          </div>
-      <div class='col-md-4 bg-white'>
+      <div class='col-md-4'>
         <% if @job.vacation['number_of_days'].present? %>
     
         <h2>Vacation Tracking</h2>  
@@ -122,16 +115,19 @@
   </div>
   <div role="tabpanel" class="tab-pane fade" id="comments-tab">
      <div class='col-md-12'>
-         <div id='comment-list'>
-            <% @job.comments.each do |comment| %>
-                <%= render 'comments/comment', comment: comment %>
-            <% end %>
-          <%= render partial: "comments/form", locals: {commentable: @job} %>
+         <div class='col-md-6'>
+            <h2>Comments</h2>
+            <div data-behavior='comment-list' class='scroll300' id='comment-list'>
+                <% @job.comments.unread.order(created_at: :desc).each do |comment| %>
+                    <%= render 'comments/comment', comment: comment %>
+                <% end %>
+            </div>
+            <%= render partial: "comments/form", locals: {commentable: @job} %>
          </div>
       </div>
   </div>
      <div role="tabpanel" class="tab-pane fade" id="settings">
-     <div class='col-md-6 bg-white'>
+     <div class='col-md-6'>
        
               
                 <div>
@@ -153,7 +149,7 @@
                         </span>
             </div>
         </div>
-     <div class='col-md-6 bg-white'>
+     <div class='col-md-6'>
       <h3 class='text-center'>Recent Activity</h3>
       <% @job.events.each do |event| %>
         <% if lookup_context.template_exists?(event.action, "events/activities", true) %>

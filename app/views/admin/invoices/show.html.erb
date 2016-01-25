@@ -1,5 +1,13 @@
  
-<div class='col-md-12 bg-white'>
+<div class='col-md-12 lightbox-long'>
+  <div class='btn-group'>
+  <% if @invoice.unpaid? %>
+  <%= link_to 'Mark As Paid', mark_as_paid_admin_invoice_path(@invoice), method: :patch, remote: true, id: 'pay-button', class: 'btn btn-primary' %>
+  <% end %>
+    <%= link_to 'Edit', edit_admin_company_invoice_path(@company, @invoice), class: 'btn btn-primary' %>
+  <%= link_to 'Back', admin_company_invoices_path(@company), class: 'btn btn-primary' %>
+  <%= link_to "All Company Invoices", admin_company_invoices_path(@invoice.company), class: 'btn btn-primary' %>
+</div>
   <p class='text-right text-muted'><i>Invoice for staffing services provided by <%= @invoice.agency.name%></i></p>
 
   <h4 id='example'>
@@ -8,7 +16,7 @@
   <h3 class=''>
       <%= link_to @invoice.company.name, admin_company_path(@invoice.company) %>
     </h3>
-  <div class='col-md-8'>
+  <div class='col-md-6'>
    
    
     <h2  class='text-center'> 
@@ -37,7 +45,7 @@
    
   
   <p class='lead'>
-    <strong>Amt paid:</strong>
+    <strong>Amount paid:</strong>
     <span id='amt-paid'>
       <%= number_to_currency(@invoice.amt_paid) %>
     </span>
@@ -46,7 +54,7 @@
 </p>
 
   </div>
-  <div class='list-group col-md-4'>
+  <div class='list-group col-md-6'>
     <h3 class='text-center'>
       Timesheets
     </h3>
@@ -75,12 +83,4 @@
 
 
 
-</div>
-<div class='btn-group'>
-  <% if @invoice.unpaid? %>
-  <%= link_to 'Mark As Paid', mark_as_paid_admin_invoice_path(@invoice), method: :patch, remote: true, id: 'pay-button', class: 'btn btn-primary' %>
-  <% end %>
-    <%= link_to 'Edit', edit_admin_company_invoice_path(@company, @invoice), class: 'btn btn-primary' %>
-  <%= link_to 'Back', admin_company_invoices_path(@company), class: 'btn btn-primary' %>
-  <%= link_to "All Company Invoices", admin_company_invoices_path(@invoice.company), class: 'btn btn-primary' %>
 </div>
