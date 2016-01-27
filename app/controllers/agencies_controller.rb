@@ -48,14 +48,11 @@ class AgenciesController < ApplicationController
     @agency = Agency.new(agency_params)
     @agency.free_trial = true
     
-    # @agency.admin_id = @agency.admins.first
-    # @agency.admins.
     skip_authorization
     
     respond_to do |format|
       if @agency.save
     
-        # sign_in(@agency.admins.first)
         format.html { redirect_to root_url(subdomain: @agency.subdomain), notice: 'Welcome to IncluStaff!!' }
         format.json { render :show, status: :created, location: @agency }
       else

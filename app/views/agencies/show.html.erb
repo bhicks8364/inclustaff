@@ -1,10 +1,8 @@
 <div class='col-md-12 lightbox'>
     <% if @agency.admins.count == 1 && admin_signed_in? %>
-    <h1>Welcome to IncluStaff, <%= @agency.name %>!</h1>
-    <% if current_admin.id == @agency.admins.first.id %>
-    <h1>Yup</h1>
-    <% end %>
-    
+    <h1 class='page-header'>Welcome to IncluStaff, <%= @agency.name %>!</h1>
+   
+    YOU'RE NEW!
     
     
     <% end %>
@@ -48,9 +46,13 @@
          <h1 class='text-center'><%= @agency.name %></h1>
             <div class='col-md-3 bg-white'>
                 <%= image_tag(@agency.logo_url, class: "img-zoom", alt: "img-#{@agency.id}")%> 
-                <p> Name: <strong><%= link_to @agency.contact.name, @agency.contact %></strong><br>
+                <% if @agency.contact.present? %>
+                <p> Name: <strong><%= link_to @agency.contact.name, admin_admin_path(@agency.contact) %></strong><br>
                  Email: <strong><%= @agency.contact.email%></strong>
                 </p>
+                <% else %>
+                <p>No agency contact available.</p>
+                <% end %>
                 <address class='white'>
                  <%= @agency.address %><br>
                   <%= @agency.city %>, <%= @agency.state %> <%= @agency.zipcode %><br>
@@ -79,19 +81,19 @@
                 <h3>Owners</h3>
             <div class='scroll300'>
                 <% @agency.admins.owners.each do |admin| %>
-                    <%=link_to admin.name, admin %> - <small><%= admin.role %></small><br>
+                    <%=link_to admin.name, admin_admin_path(admin) %> - <small><%= admin.role %></small><br>
                 <% end %>
             </div>
             <h3>Account Managers</h3>
             <div class='scroll300'>
                 <% @agency.admins.account_managers.each do |admin| %>
-                    <%=link_to admin.name, admin %> - <small><%= admin.role %></small><br>
+                    <%=link_to admin.name, admin_admin_path(admin) %> - <small><%= admin.role %></small><br>
                 <% end %>
             </div>
             <h3>Recruiters</h3>
             <div class='scroll300'>
                 <% @agency.admins.recruiters.each do |admin| %>
-                    <%=link_to admin.name, admin %> - <small><%= admin.role %></small><br>
+                    <%=link_to admin.name, admin_admin_path(admin) %> - <small><%= admin.role %></small><br>
                 <% end %>
             </div>
             <h3>Payroll</h3>
