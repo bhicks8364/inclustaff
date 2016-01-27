@@ -53,8 +53,7 @@
                 <h3><strong><%= shift_times(@employee.current_shift)%></strong></h3>
             <% else %>
             <h3><%= @job.title %></h3>
-                <%= render 'employee/jobs/clock', job: @job %>
-                <%= link_to "New Shift", new_employee_shift_path %>
+                <%= render 'employee/jobs/clock', job: @job if policy(@job).clock_in? %>
             <% end %>
             </div>
         </div>

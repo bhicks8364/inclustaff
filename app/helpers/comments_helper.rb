@@ -16,7 +16,7 @@ module CommentsHelper
         elsif @account_manager.present?
             "#{role_tag(@account_manager)}".html_safe
         else
-            "No notifications were sent."
+            ""
         end
     end
     def selected_recipient(recipient_type, recipient_id)

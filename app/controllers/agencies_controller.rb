@@ -66,8 +66,8 @@ class AgenciesController < ApplicationController
   # PATCH/PUT /agencies/1.json
   def update
     @contact = @agency.contact
-    @agency.contact_email = @contact.email
-    @agency.contact_name = @contact.name
+    @agency.contact_email = @contact.email if @contact.present?
+    @agency.contact_name = @contact.name if @contact.present?
     # authorize @agency
     respond_to do |format|
       if @agency.update(agency_params)

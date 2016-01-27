@@ -1,4 +1,5 @@
 <div class="col-md-12">
+	<h2 class='text-right metal bold'>  <span class='label label-success black'>Sales Goal &nbsp;<%= number_to_currency(@current_agency.weekly_sales_goal) %></span></h2>
 	<h1 class='page-header white'>Owner Dashboard</h1>
 	<div class="tabs-wrapper">
 		<div class="clearfix">
@@ -14,6 +15,7 @@
 		<div class="tab-content">
 			<div class="tab-pane fade in active" id="tab-home">
 				<div class='col-md-12'>
+					
 				<% if @current_agency.companies.blank? %>
 	       		<h2 class=''>Getting Started</h2>
 	       			<div class='col-md-4'>
@@ -27,7 +29,30 @@
 	       			<% end %>
 
 
-			  		<div class='col-md-4'>
+	       			<div class='col-md-8'>
+	       				
+		                <h3 class='text-center'>Sales progress for this week <span class='label label-success pull-right'> <%= number_to_currency(@current_agency.current_billing) %></span></h3>
+		                <div class="progress">
+		                  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<%= @current_agency.percent_to_sales_goal %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= number_to_percentage(@current_agency.percent_to_sales_goal, precision: 2)%>">
+		                    <span class="black"><%= number_to_percentage(@current_agency.percent_to_sales_goal, precision: 2)%> </span>
+		                  </div>
+		                </div>
+		                
+	       			</div>
+	       			
+	 			</div>
+			</div>
+			<div class="tab-pane fade in" id="tab-orders">
+				<div class='col-md-12'>
+				<% if @current_agency.orders %>
+					<div class="col-md-2">
+						<%= render "admin/shared/alerts/open_orders", orders: @current_agency.orders %>
+					</div>
+					<div class="col-md-10">
+						<%= render 'admin/orders/table', orders: @current_agency.orders.needs_attention.order(:needed_by) %>
+					</div>
+					<div class='col-md-10'>
+							<h3 class='text-center'>Job Orders by Company</h3>
 	       				<div class='list-group'>
        					<% @current_agency.companies.includes(:orders => :jobs).order(:name).each do |company| %>
 	       					<li class='list-group-item'><h4 class="list-group-item-heading">
@@ -39,30 +64,6 @@
 	       				<% end %>
 	       				</div>
 	       			</div>
-	       			<div class='col-md-4'>
-	       				<h2>Weekly Sales Goal</h2>
-                <p class='lead'><%= number_to_currency(@current_agency.weekly_sales_goal) %></p>
-                <h3>Sales progress for this week</h3>
-                <div class="progress">
-                  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<%= @current_agency.percent_to_sales_goal %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= number_to_percentage(@current_agency.percent_to_sales_goal, precision: 2)%>">
-                    <span class="black"><%= number_to_percentage(@current_agency.percent_to_sales_goal, precision: 2)%> </span>
-                  </div>
-                </div>
-                <p class='lead'> Current Billing: <%= number_to_currency(@current_agency.current_billing) %></p>
-	       			</div>
-
-	 			</div>
-			</div>
-			<div class="tab-pane fade in" id="tab-orders">
-				<div class='col-md-12'>
-				<% if @current_agency.orders %>
-					<h3 class='text-center'>Open Job Orders</h3>
-					<div class="col-md-2">
-						<%= render "admin/shared/alerts/open_orders", orders: @current_agency.orders %>
-					</div>
-					<div class="col-md-10">
-						<%= render 'admin/orders/table', orders: @current_agency.orders.needs_attention.order(:needed_by) %>
-					</div>
 
 				<% else %>
 					<h3 class='text-center'>No Job Orders</h3>

@@ -68,7 +68,7 @@
 	
 	<%= f.input :est_duration, as: :radio_buttons,	collection: [ "Temp-to-Hire", "Direct-Hire", "Temporary", "Payroll"] %>
 	</div>
-	
+	<%= f.input :mobile_time_clock_enabled, as: :boolean, inline_label: "Do you want to enable mobile time clocks for these employees?", input_html: {class: 'boolean'}   %>
 	
 
 	<%= f.button :submit %>

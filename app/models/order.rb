@@ -170,22 +170,23 @@ class Order < ActiveRecord::Base
     end
 
   def needs_attention?
-    j = jobs_count
-    if number_needed
-      if number_needed > j
-        true
-      else
-        false
-      end
-    end
+    number_needed > jobs.active.count
+    # j = jobs.active.count
+    # if number_needed
+    #   if number_needed > j
+    #     true
+    #   else
+    #     false
+    #   end
+    # end
   end
 
   def filled?
-    if number_needed <= jobs_count
-        true
-      else
-        false
-    end
+    open_jobs == 0
+  end
+  
+  def has_pending_jobs?
+    jobs.pending_approval.any?
   end
 
   def open_jobs

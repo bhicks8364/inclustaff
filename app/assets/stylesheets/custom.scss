@@ -1,14 +1,5 @@
-// .conversation-body {
-//     background: rgba(0, 0, 0, 0.5);
-//     font-size: 0.875em;
-//     width: auto;
-//     margin-left: 60px;
-//     // padding: 8px 10px;
-//     position: relative;
-// }
-// .conversation-item.item-right .conversation-body {
-//   background: rgba(0, 0, 0, 0.5);
-// }
+$font-stack:    Helvetica, sans-serif;
+$primary-color: #333;
 
 // BUTTONS
 
@@ -34,15 +25,6 @@
 //   border:none;
 // }
 
-
-.notes {
-  height: auto;
-  width: 100%;
-  min-width: 100%;
-}
-.white {
-  // color: white;
-}
 .btn.fill { 
   margin:2px;
 }
@@ -50,14 +32,14 @@
   color: black;
 }
 .btn.btn-danger {
-  padding: 5px;
+  // padding: 5px;
 }
 .btn {
   -webkit-border-radius: 4px;
 }
 .btn-success { 
   color: black;
-  font-weight: bold;
+  // font-weight: bold;
 }
 a {
   text-decoration: none;
@@ -179,4 +161,8 @@ a.button:hover {
   i {
     color: black;
   }
+}
+
+.gold {
+  color: gold;
 }

@@ -22,7 +22,7 @@ class Admin::AdminsController < ApplicationController
     @admin.password_confirmation = "password"
 
     if @admin.save
-      redirect_to admin_admins_path, notice: 'You are just added ' + "#{@admin.name}"
+      redirect_to admin_admins_path, notice: 'You just added ' + "#{@admin.name}" + "as a #{@admin.role}"
     else
       redirect_to admin_admins_path, notice: 'Unable to add admin'
     end

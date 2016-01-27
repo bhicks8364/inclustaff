@@ -27,13 +27,13 @@
             <%= on_break_for(@shift) %>
             Total Break Time: <%= (@shift.break_duration).round(2) %>
             <div class=''>
-                <%= render 'employee/jobs/clock', job: @job %>
+                <%= render 'employee/jobs/clock', job: @job if policy(@job).clock_in? %>
             </div>
             <div id='shift-break-times'>
             </div>
             <div class=''>
         	</div>
-        	<%= render 'list', shift: @shift %>
+        	<%= render 'list', shift: @shift  %>
         </div>
         <div class='col-md-6'> 
             <dl class="dl-horizontal">

@@ -1,11 +1,12 @@
 <div class=''>
         <h4 class=''><%= link_to employee.name, admin_employee_path(employee) %></h4>
-       <%= emp_popover(employee) %>
+       <span class='pull-right'><%= emp_popover(employee) %></span>
         <% if employee.work_histories.any? %>
-            <h6>
-                <%= link_to "Most Recent Position:", admin_employee_work_histories_path(employee) %>
-                <span class='label label-info black'> <%= employee.work_histories.any? ? employee.work_histories.last.try(:title_pay) : "Unavailable" %></span>
-            </h6>
+            <h4> Most Recent Position
+                <%= link_to admin_employee_work_histories_path(employee), class: "button" do %>
+               <span class='label label-info black'> <%= employee.work_histories.any? ? employee.work_histories.last.try(:title_pay) : "None" %></span>
+                <% end %>
+            </h4>
         <% end %>
        <span class='label label-danger pull-right'><%= employee.created_at.strftime("%B %e, %Y") %></span>
         <p class='list-group-item-text'> <small><%= employee.try(:email) || "Email Unavailable" %></small></p>

@@ -8,7 +8,7 @@
     <div class='text-right'>
         
     <% if comment.admin.present? %>
-    <small><%= link_to comment.admin.name, comment.admin %> </small>
+    <small><%= link_to comment.admin.name, admin_admin_path(comment.admin) %> </small>
     <% end %>
     <% if comment.company_admin.present? %>
     <small><%= link_to comment.company_admin.name, comment.company_admin %> </small>

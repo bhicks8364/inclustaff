@@ -30,27 +30,21 @@ class Admin::JobsController < ApplicationController
   end
 
   def show
-    if @job.pending_approval?
-      render "pending_approval"
-    elsif @job.declined?
-      render "declined"
-    else
-      @timesheet = @job.current_timesheet if @job.current_timesheet.present?
-      @shift = @job.shifts.last if @job.shifts.any?
-      @timesheets = @job.timesheets if @job.timesheets.any?
-      @last_week_timesheets =  @job.timesheets.last_week
-      @skills = @job.employee.skills
-      # @order_skills = @job.order.skills
-      respond_to do |format|
-        format.html
-        format.json
-        format.pdf {
-          send_data @job.candidate_sheet.render,
-            filename: "#{@job.title_company}-#{@employee.name}-candidate-sheet.pdf",
-            type: "application/pdf",
-            disposition: :inline
-        }
-      end
+    @timesheet = @job.current_timesheet if @job.current_timesheet.present?
+    @shift = @job.shifts.last if @job.shifts.any?
+    @timesheets = @job.timesheets if @job.timesheets.any?
+    @last_week_timesheets =  @job.timesheets.last_week
+    @skills = @job.employee.skills
+
+    respond_to do |format|
+      format.html
+      format.json
+      format.pdf {
+        send_data @job.candidate_sheet.render,
+          filename: "#{@job.title_company}-#{@employee.name}-candidate-sheet.pdf",
+          type: "application/pdf",
+          disposition: :inline
+      }
     end
   end
 

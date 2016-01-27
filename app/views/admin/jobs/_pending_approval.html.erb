@@ -5,15 +5,15 @@
             <h1><%= @job.title_company %></h1>
 
         </div>
-        <div class='col-md-4 text-center bg-white'>
+        <div class='col-md-4 text-center'>
 
             <h4><%= number_to_currency(@job.pay_rate) %>/ hr</h4>
         </div>
-        <div class='col-md-4 text-center bg-white'>
+        <div class='col-md-4 text-center'>
             <h1><%= @employee.name %></h1>
 
         </div>
-        <div class='col-md-4 text-center bg-white'>
+        <div class='col-md-4 text-center'>
             <h4><%= @job.start_date.strftime("%B %e, %Y ") %></h4>
         </div>
         <div class="row">
@@ -28,7 +28,7 @@
                 </ul>
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane fade in active" id="job">
-                    <div class='col-md-4 bg-white'>
+                    <div class='col-md-4'>
                         <h4><strong>Interview Notes:</strong></h4>
                         <%= markdownify(@job.description) %>
                         <% if @job.recruiter.present? %>
@@ -39,17 +39,15 @@
                         <% end %>
                     </div>
 
-                    <div class='col-md-4 lightbox'>
-                        <div class='col-md-6 bg-white'>
+                    <div class='col-md-4 '>
+                        <div class=''>
                             <span data-behavior="job-status">
                                  <h2><%= @job.status %></h2>
                             </span>
                             <span data-behavior="job-state">
                                 <h2><%= @job.state %></h2>
                             </span>
-                            <span data-behavior="job-end-date">
-                                <h2><%= @job.end_date.present? ? @job.end_date.stamp("11/13/16") : @job.state %></h2>
-                            </span>
+                           
                             <div class='btn-group'>
                                 <button type='button' class='btn btn-danger' data-behavior='active-job-cancel'>Decline </button>
                                 <% if @employee.available? %>
@@ -58,7 +56,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class='col-md-4 bg-white'>
+                    <div class='col-md-4'>
                         <h3 class='text-center'>Recent Activity</h3>
                         <% @job.events.each do |event| %>
                           <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
@@ -71,7 +69,15 @@
 
                 <div role="tabpanel" class="tab-pane fade" id="order-info">
                     <h3>Order Information</h3>
-                    <%= render @order %>
+                    <div class='col-md-12'>
+                        <div class='col-md-6'>
+                            <%= markdownify(@order.notes) %>
+                            
+                        </div>
+                        <div class='col-md-6'>
+                            
+                        </div>
+                    </div>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="comments-tab">
                     <div class='col-md-12'>
@@ -84,7 +90,7 @@
                     </div>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="settings">
-                    <div class='col-md-6 bg-white'>
+                    <div class='col-md-6'>
                         <% if @job.mentioned_admins.any? %>
                         <strong>Mentioned Admins</strong>
                             <% @job.mentioned_admins.each do |admin|%>
@@ -92,7 +98,7 @@
                             <% end %>
                         <% end %>
                     </div>
-                    <div class='col-md-4 bg-white'>
+                    <div class='col-md-4'>
                         <% if @job.vacation['number_of_days'].present? %>
                         <h2>Vacation Tracking</h2>
                         <p><%= @employee.first_name %> will earn <strong> <%= @job.vacation['number_of_days'] %> </strong> paid vacation days

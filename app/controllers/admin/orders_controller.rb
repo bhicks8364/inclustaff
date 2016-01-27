@@ -12,10 +12,10 @@ class Admin::OrdersController < ApplicationController
     
     if params[:company_id]
       @company = Company.find(params[:company_id])
-      @orders = @company.orders.needs_attention
+      @orders = @company.orders
      
     else
-      @q_orders = Order.includes(:company, :jobs).needs_attention.ransack(params[:q]) 
+      @q_orders = Order.includes(:company, :jobs).ransack(params[:q]) 
       @orders = @q_orders.result(distinct: true).paginate(page: params[:page], per_page: 25)
       # @orders = Order.includes(:jobs).active.order(created_at: :desc) 
     end
@@ -199,7 +199,7 @@ class Admin::OrdersController < ApplicationController
       params.require(:order).permit(:id, :address, :min_pay, :max_pay, :pay_frequency, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title, :notes, 
       :number_needed, :needed_by, :urgent, :active, :dt_req, :bg_check, :stwb, :heavy_lifting, :shift, :est_duration, :tag_list, :aca_type,
       :education, :industry, :years_of_experience, :certifications, :requirement_1, :requirement_2, :requirement_3, :requirement_4, 
-      :published_at, :published_by, :expires_at, :company_approval, :agency_approval,
+      :published_at, :published_by, :expires_at, :company_approval, :agency_approval, :mobile_time_clock_enabled,
       jobs_attributes: [:order_id, :title, :description, :start_date, :id, :employee_id, :active], 
       skills_attributes: [:id, :skillable_type, :skillable_id, :name, :required, :_destroy])
     end
