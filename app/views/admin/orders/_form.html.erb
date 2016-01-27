@@ -48,7 +48,7 @@
 	<%= f.input :published_at, as: :string, input_html: {class: 'datepicker'}  %>
 	<%= f.input :expires_at, as: :string, input_html: {class: 'datepicker'} %>
 	<%= f.input :bg_check, collection: [ "None Required", "Yes - No Felonies", "Yes - Case by case"], label: "Background Check" %>
-	<div class='col-md-4'>
+	<div class=''>
 		<div class='form-group'>
 			<%= f.association :account_manager, collection: @current_agency.admins.account_managers.order(:last_name), prompt: "Select Account Manager" if @current_admin.role != "Account Manager" %>
 			<%= f.association :manager, collection: @company.admins.order(:last_name), prompt: "Select Company Manager" if @company.present? %>
@@ -56,11 +56,11 @@
 			<%= f.input :company_approval, as: :select,	collection: [ "Yes", "No"], label: "Company approval needed?", include_blank: false %>
 		</div>
 	</div>
-	<div class='col-md-4'>
+	<div class=''>
 		<%= f.input :years_of_experience, as: :select, collection: 0..25 %>
 		<%= f.input :certifications %>
 	</div>
-	<div class='col-md-4'>
+	<div class=''>
 	<%= f.input :stwb, as: :boolean, inline_label: "Do they need steel-toe workboots?", input_html: {class: 'boolean'}   %>
 	<%= f.input :heavy_lifting, as: :boolean, inline_label: "Does this position require heavy lifting? (50 lbs +)", input_html: {class: 'boolean'}   %> 
 
