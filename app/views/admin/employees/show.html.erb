@@ -135,9 +135,9 @@
       <!--CURRENT JOB TAB-->
       <div role="tabpanel" class="tab-pane fade" id="current-job">
         
-      <% if @current_job %>
-      <h3><%= @current_job.title %><small><%= number_to_currency(@current_job.pay_rate) %></small></h3>
-        <%= render @current_job %>
+      <% if @employee.current_job %>
+      <h3><%= @employee.current_job.title %><small><%= number_to_currency(@employee.current_job.pay_rate) %></small></h3>
+        <%= render "admin/jobs/clock", job: @employee.current_job %>
         <div class='col-md-6'>
             <%= image_tag "http://maps.google.com/maps/api/staticmap?size=250x300&sensor=false&zoom=16&markers=#{@user.latitude}%2C#{@user.longitude}",
                 class: "img-zoom" %>

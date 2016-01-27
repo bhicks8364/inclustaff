@@ -79,7 +79,7 @@ class UsersController < ApplicationController
         @timesheets = @employee.timesheets
         @work_histories = @employee.work_histories.order(end_date: :desc)
         @skills = @employee.skills
-        if @user.assigned? && admin_signed_in?
+        if @employee.assigned? && admin_signed_in?
             render "admin/employees/show"
         end
         @job = @user.current_job

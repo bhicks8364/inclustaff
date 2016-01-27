@@ -33,9 +33,9 @@ class Admin::AdminsController < ApplicationController
     @admin = Admin.find(params[:id])
     @event = current_admin.events.create(action: "followed", eventable: @admin)
     if @event.save
-      redirect_to admins_path, notice: 'You are now following ' + "#{@admin.name}"
+      redirect_to admin_admins_path, notice: 'You are now following ' + "#{@admin.name}"
     else
-      redirect_to admins_path, notice: 'Unable to follow ' + "#{@admin.name}"
+      redirect_to admin_admins_path, notice: 'Unable to follow ' + "#{@admin.name}"
     end
     skip_authorization
   end
