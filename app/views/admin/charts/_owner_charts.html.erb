@@ -1,5 +1,7 @@
 <div class='col-md-12'>
-   <h3>Average Mark-Up: <%= @current_agency.orders.with_active_jobs.average(:mark_up).round(2) %></h3>
+    <% if @current_agency.orders.with_active_jobs.any? %>
+       <h3>Average Mark-Up: <%= @current_agency.orders.with_active_jobs.average(:mark_up).round(2) %></h3>
+    <% end %>
     
     <%= column_chart @current_agency.companies.order('name').map{|company|
         {name: company.name, data: company.invoices.group_by_month('created_at', range: 2.months.ago.midnight..Time.current, format: "%B").sum(:total)}
