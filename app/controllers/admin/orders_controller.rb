@@ -8,11 +8,14 @@ class Admin::OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
+    @q = Order.includes(:company, :jobs).active.order(needed_by: :desc).ransack(params[:q]) if @current_admin.owner? || @current_admin.payroll?
+    @q = Order.includes(:company).needs_attention.order(needed_by: :desc).ransack(params[:q]) if @current_admin.recruiter?
+    @q = Order.includes(:company).needs_attention.order(needed_by: :desc).ransack(params[:q]) if @q.nil?
     @import = Order::Import.new
     
     if params[:company_id]
       @company = Company.find(params[:company_id])
-      @orders = @company.orders
+      @orders = @company.orders.paginate(page: params[:page], per_page: 25)
      
     else
       @q_orders = Order.includes(:company, :jobs).ransack(params[:q]) 

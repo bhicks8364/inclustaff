@@ -1,21 +1,22 @@
 <%= link_to "Send a Message", new_comment_path, class: "btn btn-success pull-right" %>
-<div class='col-md-12'>
+ <%= render 'search' %>
+<div class='col-md-12'  data-behavior='comment-list'>
+   
     <div class='col-md-6'>
-        
-        <div data-behavior='comment-list' class='scroll600'>
-            <h2>Unread Comments	<span class="badge" data-behavior='comments-count'>
+        <h2>Unread Comments	<span class="badge" data-behavior='comments-count'>
         		<%=  @comments.unread.count %>
         </span></h2>
+        <div id='unread' class=''>
+            
         		
             <% @comments.unread.order(created_at: :asc).each do |comment| %>
                     <%= render 'comment', comment: comment %>
-                    <%= render partial: "comments/form", locals: {commentable: comment.commentable} %>
             <% end %>
         </div>
     </div>
     <div class='col-md-6'>
-        <h2>Old Comments</h2>
-        <div data-behavior='read-comment-list' class='scroll300'>
+        <h2>Archived Comments</h2>
+        <div data-behavior='read-comment-list' class=''>
             <% @comments.read.limit(20).order(read_at: :desc).each do |comment| %>
                 <%= render 'comment', comment: comment %>
                 

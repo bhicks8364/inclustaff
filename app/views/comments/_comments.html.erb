@@ -1,21 +1,26 @@
-
-<% commentable.comments.each do |comment| %>
-  <div id='comment-list' class="well well-sm">
-   <p>
-         <%= comment.body %>
-    </p>
-    <div class='text-right'>
+<div class='col-md-12' data-behavior='comment-list'>
+    
+  <div class='col-md-6'>
+     
+       <h2>Unread Comments	<span class="badge" data-behavior='comments-count'>        		<%=  comments.unread.count %>        </span></h2>
+        <div class='scroll600' id='unread'>
+             <% if comments.unread.any? %>
+            <% comments.unread.order(created_at: :asc).each do |comment| %>
+                    <%= render 'comments/comment', comment: comment %>
+            <% end %>
+            <% else %>
+				No messages to show.
+			<% end %>
+        </div>
         
-    <small>
-        <%= comment.admin.try(:name) %>
-        <%= comment.company_admin.try(:name) %>
-        <%= comment.user.try(:name) %>
-    </small>
-    
-    <%= link_to "<i class='fa fa-trash-o fa-red'></i>".html_safe, admin_job_comment_path(commentable, comment), method: :delete, 
-                                                    data: { confirm: 'Are you sure?' }, class: 'red' if admin_signed_in? %>
-    
     </div>
-    
-  </div>
-<% end %>
+    <div class='col-md-6'>
+        <h2>Old Comments</h2>
+        <div data-behavior='read-comment-list' class='scroll300'>
+            <% comments.read.limit(20).order(read_at: :desc).distinct.each do |comment| %>
+                <%= render 'comments/comment', comment: comment %>
+                
+        <% end %>
+        </div>
+    </div>
+</div>

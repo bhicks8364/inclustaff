@@ -23,10 +23,11 @@ class ApplicationController < ActionController::Base
     @newly_added = @current_agency.employees.newly_added.order(created_at: :desc) if @current_agency.present?
     @newly_added = @current_company.employees.newly_added.order(created_at: :desc) if @current_company.present?
     @on_shift = @current_company.jobs.on_shift.order(time_in: :asc) if @current_company.present?
-
+    @new_starts = @current_agency.employees.new_starts.order(created_at: :desc) if @current_agency.present?
+    @new_starts = @current_company.employees.new_starts.order(created_at: :desc) if @current_company.present?
     @current = @current_user || @current_admin || @current_company_admin
     @signed_in = @current
-    @q = @current_agency.orders.includes(:company, :jobs).active.ransack(params[:q]) if admin_signed_in?
+    
   end
 
   def after_sign_in_path_for(resource)

@@ -170,15 +170,7 @@ class Order < ActiveRecord::Base
     end
 
   def needs_attention?
-    number_needed > jobs.active.count
-    # j = jobs.active.count
-    # if number_needed
-    #   if number_needed > j
-    #     true
-    #   else
-    #     false
-    #   end
-    # end
+    active? && number_needed > jobs.active.count
   end
 
   def filled?

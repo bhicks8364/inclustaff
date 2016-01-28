@@ -5,7 +5,6 @@
       <span class="sr-only">Toggle Dropdown</span>
     </button>
     <ul class="dropdown-menu">
-      <li><%= link_to "<i class='fa fa-building' data-toggle='tooltip' data-placement='right' title='View Company'></i> &nbsp; #{@order.company.name}".html_safe, @order.account_manager, class: "" %></li>
       <li role="separator" class="divider"></li>
       <% if policy(@order).update? %><li><%= link_to "<i class='fa fa-pencil' data-toggle='tooltip' data-placement='right' title='Edit Order'></i>&nbsp; Edit".html_safe, edit_company_order_path(@order), class: "" %></li><% end %>
       <% if policy(@order).destroy? %><li><%= link_to "<i class='fa fa-trash' data-toggle='tooltip' data-placement='right' title='Delete Order'></i>&nbsp; Delete".html_safe, company_order_path(@order), method: :delete, data: { confirm: 'Are you sure?' }, class: "" %></li><% end %>
@@ -111,7 +110,7 @@
      <%= render "company/jobs/active", active_jobs: @jobs.active %>
         
       <% else %>
-      <h3>No inactive jobs to display.</h3>
+      <h3>No active jobs to display.</h3>
         
       <% end %>
       </div>
@@ -134,6 +133,9 @@
   <!--APPLICATIONS TAB-->
     <div role="tabpanel" class="tab-pane fade" id="presented">
         <h1>Placeholder for Presented Candidates</h1>
+        <% @order.jobs.pending_approval.each do |job| %>
+        <%= job.name_title %><br>
+        <% end %>
       </div>
       
     </div>

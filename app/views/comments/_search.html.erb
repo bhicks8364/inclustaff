@@ -1,4 +1,4 @@
-<%= search_form_for @q_comments, class: 'col-md-3 well form-inline', url: search_comments_path,
+<%= search_form_for @q, class: 'col-md-3 well form-inline', url: search_comments_path,
                         html: { method: :post } do |f| %>
 
   <%= f.search_field :body_cont, class: 'form-control', placeholder: "Search..." %>

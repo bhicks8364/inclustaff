@@ -1,25 +1,29 @@
 <div class="btn-toolbar" role="toolbar" aria-label="...">
   <div class="btn-group" role="group" aria-label="...">
-    <%= link_to(admin_timesheet_path(timesheet), class: "table-link" ) do %>
-					<span class="fa-stack">
-						<i class="fa fa-square fa-stack-3x fa-inverse"></i>
-						<i class="fa fa-folder-open fa-stack-1x "></i>
-					</span>
-				<% end %>
+  	
+
 				
-				<%= link_to(edit_admin_timesheet_path(timesheet), class: "table-link" ) do %>
-					<span class="fa-stack">
-						<i class="fa fa-square fa-stack-3x fa-inverse"></i>
-						<i class="fa fa-pencil fa-stack-1x "></i>
-					</span>
+				<%= link_to(edit_company_timesheet_path(timesheet), class: "button" ) do %>
+						<i class="fa fa-edit fa-fw "></i>
 				<% end %>
 
-				<%= link_to(admin_timesheet_path(timesheet), method: :delete, data: { confirm: 'Are you sure?' }) do %>
-					<span class="fa-stack">
-						<i class="fa fa-square fa-stack-3x fa-inverse"></i>
-						<i class="fa fa-trash-o fa-stack-1x "></i>
-					</span>
+			
+				<%= link_to(company_timesheet_path(timesheet, format: :pdf), class: "button") do %>
+				
+					  <i class="fa fa-download fa-fw"></i>
+				
+					
+				
 				<% end %>
-  </div>
-  
+ 
+  			<a class='button' data-behavior="company-timesheet-toggle" >
+				<span data-behavior="approve-button" >
+		          <% if timesheet.approved? %>
+					  <i class="fa fa-times fa-fw"></i>
+		          <% else %>
+					  <i class="fa fa-check fa-fw"></i>
+		          <% end %>
+			    </span>
+			</a>
+    </div>
 </div>

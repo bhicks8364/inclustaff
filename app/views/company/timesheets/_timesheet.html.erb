@@ -1,6 +1,10 @@
 
-<div class="lightbox timesheet" data-behavior="timesheet" data-id="<%= timesheet.id %>">
-  	<span data-behavior='timesheet-state'>
+<div class="col-md-12 lighterbox timesheet metal" data-behavior="timesheet" data-id="<%= timesheet.id %>">
+		<%= link_to(company_timesheet_path(timesheet), class: '') do %>
+			<i class="fa fa-calendar-times-o fa-1x"></i>
+			<%= timesheet.week_begin %>  -  <%= timesheet.week_ending %>
+		<% end %>
+  	<span class='pull-right text-success' data-behavior='timesheet-state'>
 		  <%= timesheet.state.titleize %>
 		</span>
 	<div class="conversation-user">
@@ -9,102 +13,33 @@
 		<h4 class='text-left'>
 			<%= timesheet.employee.name %>
 		
-				<i class="fa fa-calendar-check-o fa-1x"></i>
-				<%= timesheet.state.upcase %>
-		
 		</h4>
 		<% else %>
-		<h4 class='text-left'>
-			<%= timesheet.employee.name %> <%=timesheet.job.title %>
-			<i class="fa fa-calendar-times-o fa-1x"></i>
-			<%= timesheet.state.upcase %>
+		<h4 class='text-left bold'>
+			<%= timesheet.employee.name %> <small><%=timesheet.job.title %></small>
+			
 		</h4>
 		<% end %>
 	</div>
-	<div class="conversation-body blue-wave">
+	<div class="col-md-12 pad <%= timesheet.approved? ? 'bg-success' : 'bg-info' %>" data-behavior="timesheet-bg">
 
-		<div class="col-md-4 col-sm-6 col-xs-6">
-			
-		<%= link_to(company_timesheet_path(timesheet), class: '') do %>
-		<i class="fa fa-calendar-times-o fa-1x"></i>
-		<%= timesheet.week_begin %>  -  <%= timesheet.week_ending %>
+		<div class="col-md-6 col-sm-6 col-xs-6">
+			<p class=''>		<strong>	Regular Hours:	<%= timesheet.reg_hours.round(2) %></strong>        </p>
+			<p class=''>		<strong>	Overtime Hours:	<%= timesheet.ot_hours.round(2) %></strong>			</p>
+		</div>
+		<div class="col-md-6">
+			<p class=''><strong>	Gross Pay:	<%= number_to_currency(timesheet.gross_pay) %></strong>
+        </p>
+			<p class=''>	<strong>	Total Bill:	<%= number_to_currency(timesheet.total_bill) %></strong>	</p>
+		</div>
 		
 	
-		<% end %>
-		
-				<h5> <%= timesheet.company.name %> </h5>
-		</div>
-		<div class=" col-md-4 col-sm-4">
-			<span class='text-center'>
-				<strong>	Regular Hours:	<%= timesheet.reg_hours.round(2) %></strong>
-        <br>
-					<strong>	Overtime Hours:	<%= timesheet.ot_hours.round(2) %></strong>
-			</span>
-		</div>
-		<div class="col-md-4">
-			<span class='text-center'>
-				<strong>	Gross Pay:	<%= number_to_currency(timesheet.gross_pay) %></strong>
-        <br>
-					<strong>	Total Bill:	<%= number_to_currency(timesheet.total_bill) %></strong>
-			</span>
-		</div>
-		
-		
-		
-			<div id='timesheet-tools' class="btn-toolbar" role="toolbar" aria-label="">
-				<div class='btn-group' role='group'>
-					
-					<%= link_to(company_timesheet_path(timesheet), data: {toggle: "tooltip", placement: "top", title: "View Timesheet"}, class: "" ) do %>
-					<span class="fa-stack fa-lg">
-					  <i class="fa fa-square-o fa-stack-2x"></i>
-					  <i class="fa fa-clock-o fa-stack-1x"></i>
-					</span>
-				
-					<% end %>
-			
-			<%= link_to(company_job_path(timesheet.job), data: {toggle: "tooltip", placement: "top", title: "View Job"}, class: "" ) do %>
-				<span class="fa-stack fa-lg">
-					  <i class="fa fa-square-o fa-stack-2x"></i>
-					  <i class="fa fa-briefcase fa-stack-1x"></i>
-					</span>
-			<% end %>
-
-			<%= link_to(company_timesheet_path(timesheet), method: :delete, data: {toggle: "tooltip", placement: "top", title: "Delete Timesheet", confirm: 'Are you sure?' }) do %>
-					<span class="fa-stack fa-lg">
-					  <i class="fa fa-square-o fa-stack-2x"></i>
-					  <i class="fa fa-trash fa-stack-1x"></i>
-					</span>
-
-			<% end %>
-		<a class='' data-behavior="company-timesheet-toggle" data-toggle="tooltip" data-placement="left" title="Approve">
-			<span class="fa-stack fa-lg" data-behavior="approve-button">
-		          <% if timesheet.approved? %>
-    					  <i class="fa fa-square-o fa-stack-2x"></i>
-    					  <i class="fa fa-times fa-stack-1x"></i>
-		          <% else %>
-		          	<i class="fa fa-square-o fa-stack-2x"></i>
-			          <i class="fa fa-check fa-stack-1x"></i>
-		          <% end %>
-		    </span>
-		</a>
-		<%= link_to(company_timesheet_path(timesheet, format: :pdf)) do %>
-					<span class="fa-stack fa-lg">
-					  <i class="fa fa-square-o fa-stack-2x"></i>
-					  <i class="fa fa-download fa-stack-1x"></i>
-					</span>
-					
-				
-				<% end %>
-				</div>
-				
-				
-			</div>
-			
+			<% if timesheet.approved? %>
 				<p class='text-right' data-behavior='user-approved'>
 					<small> Approved by: <%= timesheet.user_approved %></small>
 				</p>
-				
+			<% end %>
 		</div>
-			
-</div>
+			<%= render 'company/timesheets/tool_buttons', timesheet: timesheet %>
+	</div>	
 	

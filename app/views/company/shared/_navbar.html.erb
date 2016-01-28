@@ -22,9 +22,10 @@
 			  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= @current_company_admin.role %> Toolbox <span class="caret"></span></a>
 			  <ul class="dropdown-menu">
 			    <%= render "company/shared/owner_links" if current_company_admin.owner? %>
+			    <%= render "company/shared/manager_links" if current_company_admin.manager? %>
 			    <li role="separator" class="divider"></li>
 			    <li><%= link_to @current_company_admin.name, @current_company_admin %></li>
-			    <li><%= link_to "<i class='fa fa-power-off'></i> Sign Out".html_safe, destroy_admin_session_path, method: :delete  %></li>
+			    <li><%= link_to "<i class='fa fa-power-off'></i> Sign Out".html_safe, destroy_company_admin_session_path, method: :delete  %></li>
 			  </ul>
 			</li>
 		</ul>

@@ -62,12 +62,15 @@ class CompanyAdmin < ActiveRecord::Base
   def set_name;   self.name = "#{first_name} #{last_name}"; end
   def to_s; name; end
   def owner?;           role == "Owner";  end
+  def payroll?;           role == "HR";  end
+  def manager?; role == "Manager"; end
   def recruiter?;           false;  end
   def account_manager?;           false;  end
   def hr?;           role == "HR";  end
   def timeclock?;           role == "Timeclock";  end
-  # TODO -> dont think admin? should return true for company_admin... Clashing with policies - shared controllers
-  def admin?;           true;  end
+  def company_admin?;           true;  end
+  def admin?;           false;  end
+  def employee?;           false;  end
   def online?
     updated_at > 10.minutes.ago
   end

@@ -12,7 +12,7 @@
   <tbody>
     <% @shifts.order(:time_in).reverse_order.each do |shift| %>
         <tr>
-        <td><%= link_to shift.time_in.strftime("%x"), company_shift_path(shift) %></td>
+        <td><%= link_to shift.time_in.stamp("Monday 11/2"), company_shift_path(shift) %></td>
         <td><%= shift.time_in.strftime("%I:%M %p") %> - <%= shift.clocked_out? ? shift.time_out.strftime("%I:%M %p") : "Clocked In" %></td>
         <td><%= shift.time_worked %></td>
         <td><%= number_to_currency(shift.pay_rate) %></td>

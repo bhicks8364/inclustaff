@@ -14,19 +14,15 @@
 
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="home">
-
-    <div class='col-md-4'>
-
+    <div class='col-md-3'>
       <% if @company.orders.blank? %>
       <div id="no-orders-alert" class="alert alert-danger" role="alert">
-
       <h5 class='text-center'> <i class="fa fa-exclamation-triangle fa-fw fa-border"></i><%= @company.name %> doesn't have any job orders. <br>
       Please add a new job order below.</h5>
       	<%= link_to "Add Job Order", new_admin_company_order_path(@company), class: 'btn btn-primary' %>
       </div>
       <% end %>
-
-      <address class="half">
+      <address class="">
         <%= @company.address %><br>
         <%= @company.city %>, <%= @company.state %> <%= @company.zipcode %><br>
         <abbr title="Phone">PH:</abbr>  <%= @company.phone_number || "Unavailable"  %>
@@ -35,30 +31,49 @@
         <strong><%= @company.contact_name %></strong><br>
         <a href="mailto:#"><%= @company.contact_email %></a>
       </address>
-     
-
       </div>
      
-      <div class='col-md-8'>
+      <div class='col-md-6'>
         <h3>Account Manager: <% if @company.current_account_manager.present? %><%= @company.current_account_manager.name %><% else %>None<% end %></h3>
-        <div class="btn-group">
-              <%= link_to(new_admin_company_order_path(@company), class: "btn btn-primary") do %>
-            	  <i class='fa fa-plus-square fa-fw'></i> New Job Order
-            	<% end %>
-              <%= link_to(admin_company_orders_path(@company), class: "btn btn-primary") do %>
-          		  <i class='fa fa-briefcase fa-fw'></i> Active Orders
-          		<% end %>
-
-              <%= link_to(new_company_admin_registration_path, class: "btn btn-primary") do %>
-          		  <i class='fa fa-user-plus fa-fw'></i> Add Company User
-          		<% end %>
-              <%= link_to(admin_company_timesheets_path(@company), class: "btn btn-primary") do %>
+        
+        
+        <div class="btn-group" role="group" aria-label="...">
+         
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Job Orders
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><%= link_to "<i class='fa fa-plus-square fa-fw'></i> &nbsp; New Job Order".html_safe, new_admin_company_order_path(@company), class: "button" %></li>
+              <li><%= link_to "<i class='fa fa-briefcase fa-fw'></i> &nbsp; Active Orders".html_safe, admin_company_orders_path(@company), class: "button" %></li>
+            </ul>
+          </div>
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              More
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><%= link_to "<i class='fa fa-user-plus fa-fw'></i> &nbsp; Add Company Admin".html_safe, new_company_admin_registration_path, class: "button" %></li>
+              <li> <%= link_to(admin_company_timesheets_path(@company), class: "") do %>
               			<i class='fa fa-clock-o fa-fw'></i> Timesheets
-              <% end %>
-              <%= link_to(admin_company_invoices_path(@company), class: "btn btn-primary") do %>
+              <% end %></li>
+              <li><%= link_to(admin_company_invoices_path(@company), class: "") do %>
               			<i class='fa fa-usd fa-fw'></i> Invoices
-              <% end %>
+              <% end %></li>
+            </ul>
+          </div>
         </div>
+        
+        
+        
+        
+      </div>
+      <div class='col-md-3 bg-success'>
+       <% @company.skills.each do |skill| %>
+         <%= link_to skill.name, skill, class: "button" %><br>
+       <% end %>
       </div>
   </div>
 
@@ -78,22 +93,25 @@
     </div>
   </div>
   <div role="tabpanel" class="tab-pane fade" id="profile">
-     <div class='col.md-12'>
-       <h3>Current Job Orders</h3>
-       <ul class='fa-ul'>     <% @company.orders.active.each do |order| %>
+    <div class='col-md-12'>
+      <div class='col-md-6'>
+        <h3>Current Job Orders</h3>
+        <ul class='fa-ul'>     <% @company.orders.active.each do |order| %>
           <li class=''>        <%= link_to title_count(order), admin_company_order_path(@company, order) %>  
           <p class=''>
             <%= status_msg(order) %>
             <%= link_to "<i class='fa fa-pencil'></i>".html_safe, edit_admin_company_order_path(@company, order), class: "pull-right" %>
           </p>
-          
           </li>
-        <% end %>  </ul>
-     </div>
+        <% end %>  
+        </ul>
+      </div>
+      
       <%= link_to(edit_admin_company_path(@company), class: "btn btn-primary") do %>
 				<i class='fa fa-pencil'></i>
 					Edit Company
 				<% end %>
+		</div>
   </div>
   <div role="tabpanel" class="tab-pane fade" id="employees">
      <div class='col-md-6'>

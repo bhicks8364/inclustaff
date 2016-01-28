@@ -1,6 +1,14 @@
-<% if current_page?(controller: 'shifts', action: 'index') %>
-      <%= link_to shift.employee.last_name, admin_shift_path(shift) %>
-      <% else %>
-      <%= link_to shift.employee.name, admin_shift_path(shift) %>
-      <% end %><br>
-<%= shift.time_in.stamp("3:00 AM") %> - <%= shift.time_out? ? shift.time_out.stamp("3:00 AM") : shift.state %>
+
+<% if current_page?(controller: 'company/shifts', action: 'index') %>
+      <%= link_to shift_times(shift), company_shift_path(shift), class: 'black' %>
+<% elsif current_page?(controller: 'company/employees', action: 'show') %>
+      <%= link_to shift_times(shift), company_shift_path(shift), class: 'black' %>
+<% else %>
+      <%= link_to company_shift_path(shift), class: 'black small' do %>
+            <span class='label label-success'><%= shift_times(shift) %></span>
+      <% end %>
+<% end %>
+<br>
+Total: <%= shift.time_worked.round(2) %> hours
+<br>
+Pay: <%= number_to_currency(shift.earnings) %>

@@ -1,14 +1,17 @@
 <div class="">
 
-	<%= month_calendar(attribute: :time_in, events: @shifts) do |date, shifts| %>
+	<%= month_calendar(attribute: :time_in, events: shifts) do |date, shifts| %>
 	
   <div class='cal-date'><%= date %></div>
 
   <% shifts.each do |shift| %>
-    <div class='center transbox'>
-      
+    <div class=''>
+      <%= shift_collaspe(shift) %>
+       <div class='black collapse' id="collapseShift_<%=shift.id%>">
+           <%= render 'company/shifts/shift', shift: shift %>
+        </div>
       <div class=''>
-        <%= render 'admin/shifts/shift', shift: shift %>
+        
 
       </div>
       

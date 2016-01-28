@@ -1,5 +1,5 @@
 class Admin::AdminsController < ApplicationController
-  # before_filter :authenticate_admin!
+  before_filter :authenticate_admin!
   layout 'admin_layout'
 
   def index
@@ -81,4 +81,5 @@ class Admin::AdminsController < ApplicationController
   def admin_params
     params.require(:admin).permit(:first_name, :last_name, :email, :username, :role, :company_id, :agency_id, :password, :password_confirmation)
   end
+  
 end

@@ -29,6 +29,7 @@ class Company < ActiveRecord::Base
     has_many :payroll_admins, -> { where role: "Payroll" }, through: :agency, class_name: "Admin"
     has_many :invoices
     has_many :orders, dependent: :destroy
+    has_many :skills, through: :orders
     has_many :jobs, through: :orders
     has_many :employees, through: :jobs
     has_many :shifts, through: :jobs

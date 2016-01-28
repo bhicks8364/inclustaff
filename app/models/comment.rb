@@ -28,9 +28,9 @@ class Comment < ActiveRecord::Base
     include ArelHelpers::ArelTable
     include Arel::Nodes
     validates :body, presence: true, length: { minimum: 1 }
-    # validates :commentable_type, :commentable_id, presence: true
+    validates :commentable_type, :commentable_id, presence: true
     # after_create :create_event
-    
+    before_validation :set_commentable
     store_accessor :notify, :recruiter, :account_manager
     
     scope :unread, -> { where(read_at: nil)}
@@ -83,6 +83,14 @@ class Comment < ActiveRecord::Base
     end
     def self.by_recipient(recipient_id, recipient_type)
        where(recipient_id: recipient_id, recipient_type: recipient_type)
+    end
+    
+    def set_commentable
+      if commentable_id.nil? && recruiter.present?
+        self.commentable = recruiter
+      elsif commentable_id.nil? && account_manager.present?
+        self.commentable = account_manager
+      end
     end
     def unread?
       read_at == nil

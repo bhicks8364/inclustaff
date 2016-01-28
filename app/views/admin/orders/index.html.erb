@@ -8,8 +8,8 @@
 	<div class="col-md-10">
 		<%= render 'admin/orders/table', orders: @orders %>
 			<%= will_paginate @orders %>
-			<hr>
-			<div id="map" style='width: 400px; height: 400px;'></div>
+			
+			
 	</div>
 		<div class='col-md-2'>
 			<%= render 'admin/shared/alerts/open_orders', orders: @orders %>
@@ -31,6 +31,9 @@
 				<% end %>
 		  	</div>
 		</div>
+		<div class='col-md-12'>
+			<div id="map" style='width: 400px; height: 400px;'></div>
+		</div>
 
 
 
@@ -45,7 +48,7 @@ handler = Gmaps.build('Google');
 handler.buildMap({
     provider: {
       disableDefaultUI: true,
-      zoom: 4
+      zoom: 2
       // pass in other Google Maps API options here
     },
     internal: {
