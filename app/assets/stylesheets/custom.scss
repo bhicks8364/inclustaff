@@ -1,5 +1,5 @@
 $font-stack:    Helvetica, sans-serif;
-$primary-color: #333;
+$primary-color: rgba(0, 0, 0, 0.15);
 
 // BUTTONS
 
@@ -169,4 +169,19 @@ a.button:hover {
 #map {
   border: solid 3px black;
   margin: auto;
+}
+
+.pricing {
+  
+  padding: 15px;
+  background-color: #ccc;
+  margin: 5px;
+  max-width: 50%;
+}
+.inquiry-form {
+  // border: solid 3px black;
+  padding: 10px;
+  max-width: 70%;
+  margin: auto;
+  background-color: $primary-color;
 }

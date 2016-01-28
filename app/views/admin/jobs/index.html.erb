@@ -1,16 +1,16 @@
-<div class='col-md-12 lightbox'>
-    <div class='row'>
-        <div class='col-md-4 bg-white'>
+<div class='col-md-12 lightbox-long'>
+        <div class='col-md-3'>
             <%= render 'admin/jobs/pending_list', jobs: @jobs.inactive %>
         </div>
-    </div>
-    <div class='col-md-8 bg-white'>
+    <div class='col-md-9'>
         <% if @jobs.active.any? %>
         
     <h1>All Active Jobs</h1>
     <%= render 'admin/jobs/table', jobs: @jobs.active %>
     <% else %>
-    No jobs to display.
+   <h1 class='page-header'>
+        No active jobs to display.
+   </h1>
     <% end %>
     
     

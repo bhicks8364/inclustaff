@@ -58,7 +58,10 @@ class CompanyAdmin < ActiveRecord::Base
   scope :hr, -> { where(role: "HR")}
   scope :limited, -> { where(role: "Limited Access")}
   scope :timclocks, -> { where(role: "Timeclock")}
-  
+  scope :current_week, -> {
+          start = Time.current.beginning_of_week
+          ending = start.end_of_week
+          where(updated_at: start..ending)}
   def set_name;   self.name = "#{first_name} #{last_name}"; end
   def to_s; name; end
   def owner?;           role == "Owner";  end

@@ -51,7 +51,10 @@ class Admin < ActiveRecord::Base
   scope :hr,               -> { where(role: "HR")}
   scope :recruiters,       -> { where(role: "Recruiter")}
   scope :limited,          -> { where(role: "Limited Access")}
-
+  scope :current_week, -> {
+          start = Time.current.beginning_of_week
+          ending = start.end_of_week
+          where(updated_at: start..ending)}
   before_validation :set_name, :set_username
   validates :agency_id, :role, :first_name, :last_name, presence: true
   validates_numericality_of :agency_id, allow_nil: true
