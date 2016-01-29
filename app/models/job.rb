@@ -141,16 +141,10 @@ class Job < ActiveRecord::Base
     end
 
     def status
-        if pending_approval?
-            "Pending Approval"
-        elsif !active?
-            "Inactive"
-        elsif shifts.any?
+        if shifts.any?
             shifts.last.state
-        elsif shifts.blank?
-            "No shifts yet"
         else
-            "SOMETHING WRONG HERE"
+            state
         end
     end
 
@@ -346,12 +340,12 @@ class Job < ActiveRecord::Base
     def candidate_sheet
         Receipts::Receipt.new(
           id: id,
-          message: "Candidate Sheet: #{employee.name} - #{title_company}",
+          message: "#{recruiter.name} is presenting #{employee.name} for a position at #{company.name} ",
           company: {
             name: "#{company.name}",
             address: "#{company.address}",
             email: "#{company.contact_email}",
-            logo: Rails.root.join("app/assets/images/user-profile-1.png")
+            logo: Rails.root.join("app/assets/images/achievement1.png")
           },
 
           line_items: [

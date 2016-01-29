@@ -5,8 +5,7 @@
 			<li class="active"><a href="#tab-users" data-toggle="tab">Employees</a></li>
 			<li><a href="#tab-products" data-toggle="tab">Timesheets</a></li>
 			<li><a href="#tab-todo" data-toggle="tab">Open Orders</a></li>
-			<li><a href="#tab-messages" data-toggle="tab">New Messages</a></li>
-			<li><a href="#tab-archived" data-toggle="tab">Archived</a></li>
+			<li><a href="#tab-archived" data-toggle="tab">Messages</a></li>
 		</ul>
 	</div>
 	<div class="tab-content">
@@ -46,23 +45,14 @@
 		             <%= skills_popover(order.skills) %> <%= order.title %><br>
 			<% end %>
 		</div>
-		<div class="tab-pane fade" id="tab-messages" data-behavior="comment-list">
-			<% if company.job_comments.unread.any? %>
-				<% company.job_comments.unread.each do |comment| %>
-			             <%= render 'comments/comment', comment: comment %>
-				<% end %>
-			<% else %>
-				No new messages.
-			<% end %>
-		</div>
-		<div class="tab-pane fade" id="tab-archived" data-behavior="comment-list">
-			<% if company.job_comments.read.any? %>
-				<% company.job_comments.read.each do |comment| %>
-			             <%= render 'comments/comment', comment: comment %>
-				<% end %>
-			<% else %>
-				No messages to show.
-			<% end %>
+	
+		<div class="tab-pane fade" id="tab-archived" >
+			<div class='col-md-12'>
+			    <%= render 'comments/comments', comments: company.job_comments %>
+			
+		        
+			
+			</div>
 		</div>
 	</div>
 </div>

@@ -21,7 +21,7 @@ class EmployeesControllerTest < ActionController::TestCase
       post :create, employee: { first_name: @employee.first_name, last_name: @employee.last_name }
     end
 
-    assert_redirected_to employee_path(assigns(:employee))
+    assert_redirected_to admin_employee_path(assigns(:employee))
   end
 
   test "should show employee" do
@@ -36,7 +36,7 @@ class EmployeesControllerTest < ActionController::TestCase
 
   test "should update employee" do
     patch :update, id: @employee, employee: { first_name: @employee.first_name, last_name: @employee.last_name }
-    assert_redirected_to employee_path(assigns(:employee))
+    assert_redirected_to admin_admin_employee_path(assigns(:employee))
   end
 
   test "should destroy employee" do
@@ -44,6 +44,6 @@ class EmployeesControllerTest < ActionController::TestCase
       delete :destroy, id: @employee
     end
 
-    assert_redirected_to employees_path
+    assert_redirected_to admin_employees_path
   end
 end

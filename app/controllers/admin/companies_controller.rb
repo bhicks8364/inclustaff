@@ -5,11 +5,12 @@ class Admin::CompaniesController < ApplicationController
   # GET /companies
   # GET /companies.json
   def index
-    @companies = @current_admin.companies.distinct
+    @companies = @current_agency.companies.distinct
     @top_billing = Company.ordered_by_current_bill
     
     @import = Company::Import.new
-    authorize @companies
+    # authorize @companies
+    skip_authorization
     respond_to do |format|
       format.html
       format.csv { send_data @companies.to_csv, filename: "companies-export-#{Time.now}-inclustaff.csv" }
@@ -48,12 +49,12 @@ class Admin::CompaniesController < ApplicationController
     authorize @company
   end
   def import
+      @companies = @current_agency.companies.distinct
       @import  = Company::Import.new(company_import_params)
       
       if @import.save
           redirect_to admin_companies_path, notice: "Imported #{@import_count} companines."
       else
-          @companys = Company.all
           render action: :index, notice: "There were errors with your CSV file."
       end
       skip_authorization

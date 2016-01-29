@@ -1,4 +1,4 @@
-<% if @user.online? %> <%= image_tag("user-green.png", class: 'online-icon') %> <% end %>
+
 <div class='col-md-12 lightbox'>
     
   <div class="page-header">
@@ -28,14 +28,22 @@
   </ul>
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane fade in active" id="home">
-        <div class='col-md-12 bg-white'>
-            <%= render @user %>
+        <div class='col-md-12 pad'>
             <div class='col-md-4'>
-                <div class='list-group'>
-                    <% @current_agency.orders.needs_attention.near(@user.fulladdress).limit(3).try(:each) do |order| %>
-                        <li><%= link_to order.title, admin_order_path(order) %> (<%= order.distance.round(2) %> miles) <%= order.address %></li>
-                    <% end %>
-                </div>
+                <% if @user.online? %> <%= image_tag("user-green.png", class: 'online-icon') %> <% end %>
+                <%= render @user %>
+            </div>
+            
+            <div class='col-md-4'>
+                <% if @employee.assigned? %>
+                <%= render 'employee/jobs/job', job: @job if user_signed_in? %>
+                <%= render 'admin/jobs/job', job: @job if admin_signed_in? %>
+                <% else %>
+                <p class='lead bold'><%= @employee.first_name %> is currently unassigned. </p>
+                <% end %>
+            </div>
+            <div class='col-md-4'>
+                
                 <h2>Tags</h2>
                 <%= highlight(@employee.tag_list.to_s, ActsAsTaggableOn::Tag.all.map(&:name), highlighter: '<a href="/tags?tag=\1">\1</a>') %>
             </div>
@@ -45,44 +53,33 @@
                 <%= timeline  @employee.work_history_data, width: "100%", height: "300px" %>
             </div>
             <% end %>
-            <%= link_to "Edit", edit_admin_employee_path(@employee) %>
         </div>
    
-        <% if @employee.assigned? %>
-        <%= render 'employee/jobs/job', job: @job if user_signed_in? %>
-        <%= render 'admin/jobs/job', job: @job if admin_signed_in? %>
-        <% else %>
-        <%= @employee.first_name %> is currently unassigned. 
-        <% end %>
+        
   </div>
   <div role="tabpanel" class="tab-pane fade" id="positions">
-      <div class="col-md-12 bg-white">
+      <div class="col-md-12">
+          <h3>Suggested Positions</h3>
           <%= render 'admin/orders/table', orders: @employee.matching_orders if admin_signed_in? %>
           <%= render 'employee/orders/open_table', orders: @employee.matching_orders if user_signed_in? %>
+          <h3>Nearby Positions</h3>
+        <div class='list-group'>
+            <% @current_agency.orders.needs_attention.near(@user.fulladdress).limit(3).try(:each) do |order| %>
+                <li><%= link_to order.title, admin_order_path(order) %> (<%= order.distance.round(2) %> miles) <%= order.address %></li>
+            <% end %>
+        </div>
       </div>
+      
       
   </div>
   <div role="tabpanel" class="tab-pane fade" id="profile">
-     <div class="col-md-4 bg-white">
+     <div class="col-md-6">
          <%= image_tag "http://maps.google.com/maps/api/staticmap?size=250x300&sensor=false&zoom=16&markers=#{@user.latitude}%2C#{@user.longitude}",
                     class: "img-zoom" %>
      </div>
    
    
-    <div class="col-md-6 bg-white">
-    	<h2 class="text-center">Suggested Positions </h2>
-      
-        <div class='list-group'>
-            
-          <% @employee.matching_orders.each do |order| %>
-              <% if user_signed_in? %>
-                 <%= render 'employee/orders/order', order: order %>
-                 <% elsif admin_signed_in? %>
-                 <%= render 'admin/orders/order', order: order %>
-             <% end %>
-          <% end %>
-        </div>
-    </div>
+   
     <div class='col-md-6'>
         <% if @skills.any? %>
      

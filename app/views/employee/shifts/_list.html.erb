@@ -12,6 +12,7 @@
 		      <% end %>
 		</ul> 
 	</div>
+	<% if policy(@job).clock_in? %>
 	<div class='break-list'>
 	<% if shift.on_break? %>
 	       <%= link_to "<i class='fa fa-history'></i> Start Break".html_safe, break_start_employee_shift_path(shift), method: :patch, remote: true, class: 'btn btn-success hide-this', id: 'start-break-btn' %>
@@ -20,4 +21,5 @@
 	      <%= link_to "<i class='fa fa-history'></i> Start Break".html_safe, break_start_employee_shift_path(shift), method: :patch, remote: true, class: 'btn btn-success', id: 'start-break-btn' %>
 	    <% end %>
 	</div>
+	<% end %>
 </div>

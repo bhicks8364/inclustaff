@@ -108,7 +108,7 @@ class Employee < ActiveRecord::Base
   scope :first_mondays, -> { where("availability -> 'monday' = '1st shift'") }
   scope :first_tuesdays, -> { where("availability -> 'tuesday' = '1st shift'") }
   scope :third_tuesdays, -> { where("availability -> 'tuesday' = '3rd shift'") }
-  scope :new_start, -> { joins(:jobs).where(Job[:start_date].gteq(Date.today.beginning_of_week)) }
+  scope :new_starts, -> { joins(:jobs).where(Job[:start_date].gteq(Date.today.beginning_of_week)) }
   scope :newly_added, -> { where("employees.created_at >= ?", 3.days.ago) }
 
   def company

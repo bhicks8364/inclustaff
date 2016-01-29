@@ -34,14 +34,14 @@ class Timesheet
 
   handleToggleSuccess: (data) =>
     if data.approved
-      @item.removeClass('item-left').addClass('item-right')
-      @item.find("[data-behavior='approve-button']").html "<i class='fa fa-square-o fa-stack-2x'></i> <i class='fa fa-times fa-stack-1x'></i>"
+      $("[data-behavior='timesheet-bg']").removeClass('bg-info').addClass('bg-success')
+      @item.find("[data-behavior='approve-button']").html "<i class='fa fa-times fa-fw'></i>"
       @item.prependTo("#approved");
       @item.find("[data-behavior='user-approved']").html "<small>Approved by: #{data.user_approved}</small>"
       @item.find("[data-behavior='timesheet-state']").html "#{data.state}"
     else
-      @item.removeClass('item-right').addClass('item-left')
-      @item.find("[data-behavior='approve-button']").html "<i class='fa fa-square-o fa-stack-2x '></i>  <i class='fa fa-check fa-stack-1x'></i>"
+      $("[data-behavior='timesheet-bg']").removeClass('bg-success').addClass('bg-info')
+      @item.find("[data-behavior='approve-button']").html "<i class='fa fa-check fa-fw'></i>"
       @item.prependTo("#pending");
       @item.find("[data-behavior='user-approved']").html ""
       @item.find("[data-behavior='timesheet-state']").html "#{data.state}"

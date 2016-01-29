@@ -14,7 +14,6 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require refile
-//= require jquery-ui
 //= require jquery-ui/datepicker
 //= require jquery.atwho
 //= require dataTables/jquery.dataTables
@@ -22,36 +21,31 @@
 //= require cocoon
 
 
-//= require timesheets
-//= require shifts
-//= require startshift
-//= require jobs
-//= require company_jobs
-//= require timeclock
-//= require emp_jobs
-//= require autocomplete
-//= require datatables
-//= require forms
-//= require invoices
-//= require at_mentions
-//= require comments
-//= require messages
-//= require practice
-//= require orders
-//= require employees
+
 
 //= require chartkick
-
-//= require charts
 //= require popovers
 //= require tooltips
 //= require underscore
 //= require gmaps/google
 
-//= require pending_approval
+//= require autocomplete
+//= require at_mentions
+//= require messages
 
-// Cleaning up javascript - below this line is goodtimes :)
-//= require skills
+//= require forms
+//= require datatables
+//= require comments
+//= require events
+//= require invoices
+//= require timesheets
+//= require shifts
+//= require startshift
+//= require jobs
+//= require pending_approval
+//= require emp_jobs
+//= require company_jobs
+
 
 $(document).ready(function(){
   $('.img-zoom').hover(function() {

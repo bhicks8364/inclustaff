@@ -97,6 +97,10 @@ class Agency < ActiveRecord::Base
     def last_week_billing
         timesheets.last_week.sum(:total_bill)
     end
+    
+    def billable_users
+        admins.current_week.count + company_admins.current_week.count + timesheets.current_week.count
+    end
   
     private
     def create_tenant

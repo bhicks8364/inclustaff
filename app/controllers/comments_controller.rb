@@ -1,14 +1,15 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:show, :edit, :update, :destroy, :mark_as_read]
-  before_action :skip
+  before_action :authenticate_admin!
   layout :determine_layout
   def index
     @comments = Comment.all
     @q = Comment.includes(:commentable).ransack(params[:q]) 
     if params[:q].present?
-      @searched = @q.result(distinct: true).paginate(page: params[:page], per_page: 5)
+      @comments = @q.result(distinct: true).paginate(page: params[:page], per_page: 5)
     end
     gon.comments = Comment.unread
+    skip_authorization
     # @notifications = Comment.where(recipient: current_user).unread
     # @notifications = Comment.where(recipient: @signed_in).unread
     
@@ -27,16 +28,18 @@ class CommentsController < ApplicationController
     gon.commentable = @comment.commentable
   end
   def create
-    @comment = Comment.new comment_params
+    @comment = Comment.new(comment_params)
     @comment.user = current_user if user_signed_in?
     @comment.admin = current_admin if admin_signed_in?
     @comment.company_admin = current_company_admin if company_admin_signed_in?
-    @comment.save
     respond_to do |format|
-     
-      format.js 
-      format.html { redirect_to comments_url, notice: 'Comment was successfully created.' }
-      format.json { head :no_content }
+      if @comment.save
+        format.html { redirect_to @comment, notice: 'Comment was successfully created.' }
+        format.json { render :show, status: :created, location: @comment }
+      else
+        format.html { render :new }
+        format.json { render json: @comment.errors, status: :unprocessable_entity }
+      end
 
     end
     
@@ -69,10 +72,12 @@ class CommentsController < ApplicationController
     @new_count = Comment.unread.count
     render json: { id: @comment.id, read: @comment.read?, new_count: @new_count,
                     body: @comment.body, commentable: @comment.commentable, state: @comment.state}
+                    skip_authorization
   end
   def mark_all_read
     @comments = Comment.unread
     @comments.update_all(read_at: Time.zone.now)
+    skip_authorization
     render json: {success: true}
   end
   
@@ -104,7 +109,7 @@ class CommentsController < ApplicationController
       skip_authorization
     end
     def comment_params
-      params.require(:comment).permit(:body, :commentable_id, :commentable_type, :recruiter, :account_manager, :admin_id, :read_at, :company_admin_id, :user_id, :recipient_id, :recipient_type)
+      params.require(:comment).permit(:body, :commentable_id, :commentable_type, :recruiter, :account_manager, :admin_id, :read_at, :company_admin_id, :user_id, :recipient_id, :recipient_type, :account_manager, :recruiter)
     end
   def determine_layout
     current_admin ? "admin_layout" : "application"

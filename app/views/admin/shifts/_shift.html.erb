@@ -4,7 +4,7 @@
       <%= link_to shift_times(shift), admin_shift_path(shift), class: 'black' %>
 <% else %>
       <%= link_to admin_shift_path(shift), class: 'black small' do %>
-            <span class='label'><%= shift_times(shift) %></span>
+            <span class='label label-success'><%= shift_times(shift) %></span>
       <% end %>
 <% end %>
 <br>

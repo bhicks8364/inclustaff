@@ -61,7 +61,7 @@ class Order < ActiveRecord::Base
   store_accessor :requirements, :agency_approval, :company_approval, :years_of_experience, :certifications, :requirement_1, :requirement_2, :requirement_3, :requirement_4
   # VALIDATIONS
   validates_associated :company
-  validates :title,  presence: true
+  validates :title, :number_needed,  presence: true
   validates :mark_up, :min_pay, :max_pay, :account_manager_id,  presence: true
 
   validates :company_id,  presence: true
@@ -170,22 +170,15 @@ class Order < ActiveRecord::Base
     end
 
   def needs_attention?
-    j = jobs_count
-    if number_needed
-      if number_needed > j
-        true
-      else
-        false
-      end
-    end
+    active? && number_needed > jobs.active.count
   end
 
   def filled?
-    if number_needed <= jobs_count
-        true
-      else
-        false
-    end
+    open_jobs == 0
+  end
+  
+  def has_pending_jobs?
+    jobs.pending_approval.any?
   end
 
   def open_jobs
@@ -289,7 +282,7 @@ class Order < ActiveRecord::Base
 
   def self.assign_from_row(row)
     order = Order.where(id: row[:id], company_id: row[:company_id]).first_or_initialize
-    order.assign_attributes row.to_hash.slice(:title, :min_pay, :max_pay, :number_needed, :needed_by)
+    order.assign_attributes row.to_hash.slice(:title, :min_pay, :max_pay, :number_needed, :needed_by, :notes, :est_duration)
 
     order
   end

@@ -1,5 +1,6 @@
 <div class="col-lg-12 lightbox">
 	<h1 class="page-header">Admins</h1>
+	<%= link_to "New Admin Account", new_admin_admin_path, class: 'btn btn-success pull-right' %>
 	<div class="clearfix">
 		<div class="table-responsive">
 			<table id='' class="table table-bordered inv_datatable">
@@ -14,11 +15,13 @@
 				<tbody>
 					<%= content_tag_for(:tr, @admins) do |admin| %>
 						<td>
-						    <%= link_to(follow_admin_admin_path(admin), method: :post, class: "table-link") do %>
+							<% if !current_admin.is_following?(admin) && current_admin.id != admin.id %>
+						    <%= link_to(follow_admin_admin_path(admin), method: :post, class: "table-link") do  %>
 								<span class="fa-stack">
 									<i class="fa fa-square fa-stack-2x"></i>
 									<i class="fa fa-bookmark-o fa-stack-1x fa-inverse"></i>
 								</span>
+							<% end %>
 							<% end %>
 
 							<%= link_to admin.name, admin_admin_path(admin), class: "admin-link" %><br>

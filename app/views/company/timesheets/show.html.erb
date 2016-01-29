@@ -1,64 +1,64 @@
-<div class='col-md-12'>
-
+<div class='col-md-12 lightbox-long metal'>
+   <h1 class='page-header'>
+     <%= @employee.name %>
+   </h1>
+  <div class='btn-group'>
     <%= link_to(company_timesheet_path(@timesheet, format: :pdf), class: 'btn btn-primary') do %>
-  					<i class="fa fa-download fa-md"></i> Download PDF
-  				
-  				<% end %>
-  		
-          <%= link_to 'All Timesheets', company_jobs_path(@job), class: 'btn btn-primary' %>
+    <i class="fa fa-download fa-md"></i> Download PDF
+    <% end %>
+    <%= link_to 'All Timesheets', company_jobs_path(@job), class: 'btn btn-primary' %>
+  </div>
   
-<div class='col-md-12'>
-  <h3>For the week of:<strong><br>
-        <%= @timesheet.week_begin %>
-          - 
-        <%= @timesheet.week_ending %>
-      </strong></h3>
-  <div class='col-md-3 well well-sm'>
-    <strong>Regular hours:</strong>
-    <%= @timesheet.reg_hours.round(2) %>
-  </div>
-  <div class='col-md-3 well well-sm'>
-    <strong>Overtime hours:</strong>
-    <%= @timesheet.ot_hours.round(2) %>
-  </div>
-    <div class='col-md-3 well well-sm'>
-           <strong>Gross pay:</strong>
+ 
+  <div class='col-md-12' data-behavior="timesheet-bg">
+    <h3 class='page-header'>For the week of:<strong>
+    <%= @timesheet.week_begin %>
+    - 
+    <%= @timesheet.week_ending %>
+    </strong></h3>
+    <div class='col-md-3'>
+      <p class='lead'>
+        <strong>Regular hours:</strong>
+      <%= @timesheet.reg_hours.round(2) %>
+      </p>
+    </div>
+    <div class='col-md-3'>
+      <p class='lead'>
+        <strong>Overtime hours:</strong>
+        <%= @timesheet.ot_hours.round(2) %>
+      </p>
+    
+    </div>
+    <div class='col-md-3'>
+      <p class='lead'>
+        <strong>Gross pay:</strong>
         <%= number_to_currency(@timesheet.gross_pay) %>
-      </div>
-      <div class='col-md-3 well well-sm'>
-           <strong>Total bill:</strong>
-        <%= number_to_currency(@timesheet.total_bill) %>
-      </div>
+      </p>
       
-</div>
- <div class='col-md-6'>
-<div class='' data-behavior="timesheet-list">
-    
-  <%= render @timesheet %>
-  
+    </div>
+    <div class='col-md-3'>
+      <p class='lead'>
+        <strong>Total bill:</strong>
+        <%= number_to_currency(@timesheet.total_bill) %>
+      </p>
+      
+    </div>
   </div>
-  <div id='comment-list'>
-            <% @timesheet.comments.each do |comment| %>
-            
-                <%= render 'comments/comment', comment: comment %>
-            <% end %>
-        
-        
-          <%= render partial: "comments/form", locals: {commentable: @timesheet} %>
-         </div>
-
-        
-    
+  <div class="col-md-12">
+    <div class='col-md-6'>
+      <div class='' data-behavior="timesheet-list">
+      <%= render @timesheet %>
       </div>
-
-
-<div class='col-md-6'>
-  <h3> Shifts</h3>
-   <%= render 'company/shifts/table' %>
-</div>
-
-
-
-
+    </div>
+    
+    <div class='col-md-6'>
+      <h3> Shifts</h3>
+      <%= render 'company/shifts/table' %>
+    </div>
+  </div>
+  <hr>
+  <div class='col-md-12 well'>
+    <%= render 'comments/comments', comments: @timesheet.comments %>
+  </div>
 </div>
 

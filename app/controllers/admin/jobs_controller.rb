@@ -6,17 +6,23 @@ class Admin::JobsController < ApplicationController
 
 
   def index
+    
     if params[:employee_id]
       @employee = Employee.find(params[:employee_id])
       @jobs = @employee.jobs.active
-      authorize @jobs
     else
 
-      @jobs = Job.order(created_at: :desc) if @current_agency.present?
+      @q = Job.includes(:employee).order(created_at: :desc).ransack(params[:q])  if @current_agency.present?
+      if params[:q].present?
+        @jobs = @q.result(distinct: true).paginate(page: params[:page], per_page: 5)
+      else
+        @jobs = Job.includes(:employee)
+      end
       authorize @jobs
     end
+    
 
-
+    
   end
 
   def inactive
@@ -30,27 +36,21 @@ class Admin::JobsController < ApplicationController
   end
 
   def show
-    if @job.pending_approval?
-      render "pending_approval"
-    elsif @job.declined?
-      render "declined"
-    else
-      @timesheet = @job.current_timesheet if @job.current_timesheet.present?
-      @shift = @job.shifts.last if @job.shifts.any?
-      @timesheets = @job.timesheets if @job.timesheets.any?
-      @last_week_timesheets =  @job.timesheets.last_week
-      @skills = @job.employee.skills
-      # @order_skills = @job.order.skills
-      respond_to do |format|
-        format.html
-        format.json
-        format.pdf {
-          send_data @job.candidate_sheet.render,
-            filename: "#{@job.title_company}-#{@employee.name}-candidate-sheet.pdf",
-            type: "application/pdf",
-            disposition: :inline
-        }
-      end
+    @timesheet = @job.current_timesheet if @job.current_timesheet.present?
+    @shift = @job.shifts.last if @job.shifts.any?
+    @timesheets = @job.timesheets if @job.timesheets.any?
+    @last_week_timesheets =  @job.timesheets.last_week
+    @skills = @job.employee.skills
+
+    respond_to do |format|
+      format.html
+      format.json
+      format.pdf {
+        send_data @job.candidate_sheet.render,
+          filename: "#{@job.title_company}-#{@employee.name}-candidate-sheet.pdf",
+          type: "application/pdf",
+          disposition: :inline
+      }
     end
   end
 

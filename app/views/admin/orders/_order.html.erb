@@ -2,26 +2,16 @@
 <div class=''><%= link_to title_for(order), admin_order_path(order), class: 'black' %> <span class='pull-right'><%= status_tag(order)%></span> 
 <%= heavy_lifting(order) %>
 </div>
-
-<%= tag_popover(order) if order.tags.any?  %>
-
-   <%= info_popover(order) if order.account_manager.present?%>
+<span class='pull-right'><%= skills_popover(order.skills) if order.skills.any?%></span>
+<p class='text-left'><%= number_to_currency(order.min_pay) %> -  <%= number_to_currency(order.max_pay) %></p>
 
  <span class='label label-info black pull-right'>Open: <%= order.open_jobs %> </span>
-   <%= order_skills_popover(order) if order.skills.any?%>
-    <% if order.matching_employees.any? %>
-    <span class=''>
-      <%= matching_emp_popover(order) %>
+   
+      <%= matching_emp_popover(order) if order.matching_employees.any? %>
      
-      </span>
-    <% end %>
-  
     <span class='label label-info black pull-left'><%= order.needed_by? ? order.needed_by.stamp("Mon 11/12") : "n/a" %> </span>
-        <%= number_to_currency(order.min_pay) %> -  <%= number_to_currency(order.max_pay) %>
-   <%= link_to admin_order_path(order), class: 'black' do %>
+        
 
-          
-      <% end %>
     
 <% end %>      
 

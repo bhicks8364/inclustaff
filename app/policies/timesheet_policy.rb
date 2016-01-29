@@ -18,10 +18,10 @@ class TimesheetPolicy < ApplicationPolicy
     user.present?
   end
   def approve?
-    user.admin?
+    user.admin? || user.company_admin?
   end
   def show?
-    return true if user.admin?
+    return true if user.admin? || user.company_admin?
     user.employee? && record.job_id == user.employee.current_job.id
   end
   def update?

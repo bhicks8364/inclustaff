@@ -48,14 +48,11 @@ class AgenciesController < ApplicationController
     @agency = Agency.new(agency_params)
     @agency.free_trial = true
     
-    # @agency.admin_id = @agency.admins.first
-    # @agency.admins.
     skip_authorization
     
     respond_to do |format|
       if @agency.save
     
-        # sign_in(@agency.admins.first)
         format.html { redirect_to root_url(subdomain: @agency.subdomain), notice: 'Welcome to IncluStaff!!' }
         format.json { render :show, status: :created, location: @agency }
       else
@@ -69,8 +66,8 @@ class AgenciesController < ApplicationController
   # PATCH/PUT /agencies/1.json
   def update
     @contact = @agency.contact
-    @agency.contact_email = @contact.email
-    @agency.contact_name = @contact.name
+    @agency.contact_email = @contact.email if @contact.present?
+    @agency.contact_name = @contact.name if @contact.present?
     # authorize @agency
     respond_to do |format|
       if @agency.update(agency_params)

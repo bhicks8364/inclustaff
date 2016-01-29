@@ -6,19 +6,19 @@ module OrdersHelper
         data-content='#{ order.skills.any? ? order.skills.map {|p| p.name.titleize}.join(', ') : order.tag_list }'></i></span>".html_safe
     end
     def status_msg(order)
+        @str = ""
         if order.overdue? 
-          "Overdue " + "  #{order.needed_by.stamp("11/12/2015")}"
+            @str += "Overdue " + "  #{order.needed_by.stamp("11/12/2015")}"
         elsif order.priority?
-          "Priority " + "    #{order.needed_by.stamp("11/12/2015")}"
+            @str += "Priority " + "    #{order.needed_by.stamp("11/12/2015")}"
         elsif order.needs_attention? && order.needed_by.present?
-          "Open " + "  #{order.needed_by.stamp("11/12/2015")}"
-        elsif order.needs_attention? && !order.needed_by.present?
-            "OPEN - No fill date."
+            @str += "Open " + "  #{order.needed_by.stamp("11/12/2015")}"
         elsif order.filled?
-            "Filled in " + "#{distance_of_time_in_words(order.created_at, order.jobs.last.try(:created_at), include_seconds: true)}"
-        else
-            "wtf"
+            @str += "Filled in " + "#{distance_of_time_in_words(order.created_at, order.jobs.last.try(:created_at), include_seconds: true)}"
+        elsif order.has_pending_jobs?
+            @str += "<p class='green'><strong>Open</strong></p> " + " #{pluralize(order.jobs.pending_approval.count, 'placement')} pending" + "  #{order.needed_by.stamp("11/12/2015")}"
         end
+        @str.html_safe
     end
     
     def info_popover(order)
@@ -63,11 +63,11 @@ module OrdersHelper
     end
     def stwb(order)
         if order.stwb?
-            "<i class='fa fa-asterick fa-fw' data-toggle='tooltip' data-placement='right' title='Steel Toe Workboots required'></i>".html_safe
+            "<i class='fa fa-certificate fa-fw' data-toggle='tooltip' data-placement='right' title='Steel Toe Workboots required'></i>".html_safe
         end
     end
     def title_count(order)
-        "<strong>#{order.title}</strong> (#{number_to_currency(order.min_pay)} - #{number_to_currency(order.min_pay)}) #{order.open_jobs}".html_safe
+        "<span class=''><strong>#{order.title}</strong></span> (#{number_to_currency(order.min_pay)} - #{number_to_currency(order.max_pay)}) #{pluralize(order.open_jobs, "open jobs")}".html_safe
     end
     def pay_range(order)
       "#{number_to_currency(order.min_pay)} - #{number_to_currency(order.max_pay)}"

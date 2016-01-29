@@ -1,5 +1,5 @@
 class Admin::AdminsController < ApplicationController
-  # before_filter :authenticate_admin!
+  before_filter :authenticate_admin!
   layout 'admin_layout'
 
   def index
@@ -22,7 +22,7 @@ class Admin::AdminsController < ApplicationController
     @admin.password_confirmation = "password"
 
     if @admin.save
-      redirect_to admin_admins_path, notice: 'You are just added ' + "#{@admin.name}"
+      redirect_to admin_admins_path, notice: 'You just added ' + "#{@admin.name}" + "as a #{@admin.role}"
     else
       redirect_to admin_admins_path, notice: 'Unable to add admin'
     end
@@ -33,9 +33,9 @@ class Admin::AdminsController < ApplicationController
     @admin = Admin.find(params[:id])
     @event = current_admin.events.create(action: "followed", eventable: @admin)
     if @event.save
-      redirect_to admins_path, notice: 'You are now following ' + "#{@admin.name}"
+      redirect_to admin_admins_path, notice: 'You are now following ' + "#{@admin.name}"
     else
-      redirect_to admins_path, notice: 'Unable to follow ' + "#{@admin.name}"
+      redirect_to admin_admins_path, notice: 'Unable to follow ' + "#{@admin.name}"
     end
     skip_authorization
   end
@@ -81,4 +81,5 @@ class Admin::AdminsController < ApplicationController
   def admin_params
     params.require(:admin).permit(:first_name, :last_name, :email, :username, :role, :company_id, :agency_id, :password, :password_confirmation)
   end
+  
 end

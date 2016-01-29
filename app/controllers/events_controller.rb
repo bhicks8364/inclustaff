@@ -24,7 +24,10 @@ class EventsController < ApplicationController
     # else
     # @events = Event.none
     # end
-    
+    if company_admin_signed_in?
+      render 'company/dashboard/events'
+    end
+      
    
     skip_authorization
   end
@@ -120,6 +123,14 @@ class EventsController < ApplicationController
     
     private
       def determine_layout
-        current_admin ? "admin_layout" : "application"
+        if admin_signed_in?
+          "admin_layout"
+        elsif company_admin_signed_in?
+          "company_layout"
+        elsif user_signed_in?
+          "employee"
+        else
+            "application"
+        end
       end
 end

@@ -3,11 +3,12 @@ class DashboardController < ApplicationController
   layout :determine_layout
   
   def home
+    @inquiry = Inquiry.new
     @orders = @current_agency.orders.all.paginate(page: params[:page], per_page: 15) if admin_signed_in?
     #ROOT LANDING PAGE - NO SUBDOMAIN && NO ONE IS SIGNED IN
     if @current_agency.nil? && signed_in? == false
       render 'mainpage'
-      @inquiry = Inquiry.new
+      
     end
     
     #WITH SUBDOMAIN
@@ -113,7 +114,7 @@ class DashboardController < ApplicationController
 
   
   private
-      def determine_layout
+    def determine_layout
       if admin_signed_in?
         "admin_layout"
       elsif company_admin_signed_in?

@@ -23,10 +23,10 @@
 	
 	<div class="col-md-4">
 		<div class='center'>
-			<% if @newly_added.any? %>
+			<% if @new_starts.any? %>
 			<h3> <i class="fa fa-users fa-fw"></i> &nbsp; New Employees</h3>
 			<div class="list-group">
-				<% @newly_added.limit(3).each do |employee| %>
+				<% @new_starts.limit(3).each do |employee| %>
 			<%= link_to "<i class='fa fa-user fa-fw'></i> &nbsp; #{employee.name}".html_safe, admin_employee_path(employee), class: "list-group-item list-group-item-info" %>
 			<% end %>
 			</div>	

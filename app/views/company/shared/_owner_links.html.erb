@@ -9,7 +9,7 @@
 <li><%= link_to "<i class='fa fa-money'></i> Invoices".html_safe, company_invoices_path %></li>
 <li><%= link_to "<i class='fa fa-users'></i> Company Users".html_safe, company_admins_path %></li>
 <li><%= link_to "<i class='fa fa-commenting'></i> Messages".html_safe, comments_path %></li>
+<li><%= link_to "<i class='fa fa-comment'></i> Notifications".html_safe, events_path %></li>
 <li><%= link_to "<i class='fa fa-briefcase'></i> Jobs".html_safe, company_jobs_path %></li>
-<li><%= link_to "<i class='fa fa-list'></i> Candidate List".html_safe, users_path %></li>
 <li role="separator" class="divider"></li>
 <%= link_to "Clock Out All", clock_out_all_company_jobs_path, method: :patch, class: 'btn btn-primary' if @on_shift.any? %>

@@ -35,8 +35,10 @@ one:
   time_in: 2015-07-21 17:51:28
   time_out: 2015-07-21 17:51:28
   employee_id: 1
+  pay_rate: 8.50
 
 two:
   time_in: 2015-07-21 17:51:28
   time_out: 2015-07-21 17:51:28
   employee_id: 1
+  pay_rate: 8.50
