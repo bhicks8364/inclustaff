@@ -1,25 +1,28 @@
-	<div class='col-md-12'>
-    <% Calendar.new events: @company.shifts do |date, shifts| %>
-  <%= date %>
-
-  <% shifts.each do |shift| %>
-    <div>
-      <%= shift.name %>
-    </div>
-  <% end %>
-<% end %>
-  </div>
 <div class='col-md-12'>
-    <h2 class='page-header white'> Welcome, <%= current_company_admin.name %>!</h2>
- 
-	<div class='col-md-3'>
-	    <%= render 'company/shifts/one_day_calendar', shifts: @shifts if @shifts.present? %>
-	   
-	</div>
-	<div class='col-md-9'>
-		<h2 class='white'>  <%= pluralize( @current_company_admin.company.invoices.unpaid.count, 'unpaid invoice') %></h2>
-	        <%= render "company/invoices/calendar" %>
-	    
+  	<div class='col-md-6'>
+  	  <h1 class='page-header'><%= @company.name %></h1>
+      <% Calendar.new events: @company.shifts do |date, shifts| %>
+    <%= date %>
+  
+    <% shifts.each do |shift| %>
+      <div>
+        <%= shift.name %>
+      </div>
+    <% end %>
+  <% end %>
     </div>
-	
+  <div class='col-md-6'>
+      <h2 class='page-header white'> Welcome, <%= current_company_admin.name %>!</h2>
+   
+  	<div class='col-md-3'>
+  	    <%= render 'company/shifts/one_day_calendar', shifts: @shifts if @shifts.present? %>
+  	   
+  	</div>
+  	<div class='col-md-9'>
+  		<h2 class='white'>  <%= pluralize( @current_company_admin.company.invoices.unpaid.count, 'unpaid invoice') %></h2>
+  	        <%= render "company/invoices/calendar" %>
+  	    
+      </div>
+  	
+  </div>
 </div>

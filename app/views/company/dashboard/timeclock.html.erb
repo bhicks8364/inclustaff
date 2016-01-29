@@ -6,7 +6,7 @@
         <div data-behavior="job" data-id="<%= job.id %>">
         <%= job.employee.code %>
         
-        <h4><%= job.title %></h4>
+        <h4><%= link_to job.title, company_job_path(job) %></h4>
         
         <span id='verified'></span>
             <%= render 'clock', job: job %>
