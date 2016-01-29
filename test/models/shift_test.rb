@@ -25,6 +25,12 @@
 #  longitude      :float
 #  week           :date
 #
+# Indexes
+#
+#  index_shifts_on_deleted_at    (deleted_at)
+#  index_shifts_on_job_id        (job_id)
+#  index_shifts_on_timesheet_id  (timesheet_id)
+#
 
 require 'test_helper'
 

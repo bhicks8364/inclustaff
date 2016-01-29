@@ -19,6 +19,13 @@
 #  availability     :hstore
 #  dns              :boolean          default(FALSE)
 #
+# Indexes
+#
+#  index_employees_on_availability  (availability)
+#  index_employees_on_deleted_at    (deleted_at)
+#  index_employees_on_email         (email)
+#  index_employees_on_user_id       (user_id)
+#
 
 FactoryGirl.define do
  	factory :employee do

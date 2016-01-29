@@ -31,6 +31,13 @@
 #  latitude               :float
 #  longitude              :float
 #
+# Indexes
+#
+#  index_company_admins_on_confirmation_token    (confirmation_token) UNIQUE
+#  index_company_admins_on_email                 (email) UNIQUE
+#  index_company_admins_on_reset_password_token  (reset_password_token) UNIQUE
+#  index_company_admins_on_unlock_token          (unlock_token) UNIQUE
+#
 
 class CompanyAdmin < ActiveRecord::Base
   belongs_to :company

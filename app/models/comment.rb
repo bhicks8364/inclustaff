@@ -18,6 +18,17 @@
 #  read_at          :datetime
 #  notify           :hstore           default({})
 #
+# Indexes
+#
+#  index_comments_on_action            (action)
+#  index_comments_on_admin_id          (admin_id)
+#  index_comments_on_commentable_id    (commentable_id)
+#  index_comments_on_commentable_type  (commentable_type)
+#  index_comments_on_company_admin_id  (company_admin_id)
+#  index_comments_on_recipient_id      (recipient_id)
+#  index_comments_on_recipient_type    (recipient_type)
+#  index_comments_on_user_id           (user_id)
+#
 
 class Comment < ActiveRecord::Base
     belongs_to :commentable, polymorphic: true

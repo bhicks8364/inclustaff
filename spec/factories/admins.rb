@@ -28,6 +28,14 @@
 #  latitude               :float
 #  longitude              :float
 #
+# Indexes
+#
+#  index_admins_on_company_id            (company_id)
+#  index_admins_on_email                 (email) UNIQUE
+#  index_admins_on_reset_password_token  (reset_password_token) UNIQUE
+#  index_admins_on_role                  (role)
+#  index_admins_on_unlock_token          (unlock_token) UNIQUE
+#
 
 FactoryGirl.define do
   factory :admin do

@@ -41,3 +41,12 @@
 #  expires_at                :datetime
 #  mobile_time_clock_enabled :boolean          default(FALSE)
 #
+# Indexes
+#
+#  index_orders_on_account_manager_id  (account_manager_id)
+#  index_orders_on_agency_id           (agency_id)
+#  index_orders_on_deleted_at          (deleted_at)
+#  index_orders_on_industry            (industry)
+#  index_orders_on_manager_id          (manager_id)
+#  index_orders_on_published_by        (published_by)
+#

@@ -20,6 +20,13 @@
 #  total_hours      :decimal(, )
 #  week             :date
 #
+# Indexes
+#
+#  index_timesheets_on_approved_by_type  (approved_by_type)
+#  index_timesheets_on_deleted_at        (deleted_at)
+#  index_timesheets_on_invoice_id        (invoice_id)
+#  index_timesheets_on_job_id            (job_id)
+#
 
 require 'test_helper'
 

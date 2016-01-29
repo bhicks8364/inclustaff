@@ -19,6 +19,12 @@
 #  admin_id      :integer
 #  preferences   :hstore           default({})
 #
+# Indexes
+#
+#  index_companies_on_admin_id   (admin_id)
+#  index_companies_on_agency_id  (agency_id)
+#  index_companies_on_user_id    (user_id)
+#
 
 require 'test_helper'
 

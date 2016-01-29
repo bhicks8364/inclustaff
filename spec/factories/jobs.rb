@@ -20,6 +20,12 @@
 #  pay_types        :text             is an Array
 #  vacation         :hstore
 #
+# Indexes
+#
+#  index_jobs_on_deleted_at    (deleted_at)
+#  index_jobs_on_pay_types     (pay_types)
+#  index_jobs_on_recruiter_id  (recruiter_id)
+#
 
 FactoryGirl.define do
  	factory :job do

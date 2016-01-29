@@ -14,6 +14,11 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
+# Indexes
+#
+#  index_invoices_on_agency_id   (agency_id)
+#  index_invoices_on_company_id  (company_id)
+#
 
 FactoryGirl.define do
   factory :invoice do
