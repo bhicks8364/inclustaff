@@ -1,6 +1,6 @@
 <div class='col-md-12 lightbox'> 
   <div class="btn-group pull-right">
-    <% if policy(Job).create? && @order.needs_attention? && !@order.needs_approval? %>
+    <% if policy(Job).create? && @order.needs_attention? %>
           <%= link_to 'Make a placement', new_admin_order_job_path(@order), class: "btn btn-primary" %>
         <% end %>
     <button type="button" class="btn btn-primary black dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -101,7 +101,33 @@
         <strong>Assignment Type</strong>
         <%= @order.est_duration %>
         </p>
-        
+        <div class='center'>
+         <table class="table">
+            <tr>
+              <th> Agency Approval?</th>
+              <th>Company Approval? </th>
+            </tr>
+            <tr>
+              <td>
+                <%= @order.requirements['agency_approval'] %>
+              </td>
+              <td>
+               <%= @order.requirements['company_approval'] %>
+              </td>
+            </tr>
+          </table>
+       </div>
+       <div class='center'>
+          <% if @order.skills.count < 1 %>
+             <h4 id='no-skills' class="text-center">This job order has no skills entered.</h4>
+            <% end %>
+              <div  id='skills' class=''>
+                <%= render @order.skills %>
+              </div>
+          <div class='form-group'>
+            <%= render partial: "admin/skills/form", locals: {skillable: @order} %>
+          </div>
+       </div>
      
         
       </div>
@@ -112,33 +138,7 @@
         </div>
       </div>
      
-     <div class='col-md-6'>
-        <% if @order.skills.count < 1 %>
-           <h4 id='no-skills' class="text-center">This job order has no skills entered.</h4>
-          <% end %>
-            <div  id='skills' class=''>
-              <%= render @order.skills %>
-            </div>
-        <div class='form-group'>
-          <%= render partial: "admin/skills/form", locals: {skillable: @order} %>
-        </div>
-     </div>
-     <div class='col-md-4'>
-       <table class="table">
-          <tr>
-            <th> Agency Approval?</th>
-            <th>Company Approval? </th>
-          </tr>
-          <tr>
-            <td>
-              <%= @order.requirements['agency_approval'] %>
-            </td>
-            <td>
-             <%= @order.requirements['company_approval'] %>
-            </td>
-          </tr>
-        </table>
-     </div>
+     
   </div>
   <!--MATCHING CANDIDATES TAB-->
   <div role="tabpanel" class="tab-pane fade" id="matches">

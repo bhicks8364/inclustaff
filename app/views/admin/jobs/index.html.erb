@@ -1,4 +1,9 @@
 <div class='col-md-12 lightbox-long'>
+    <%= search_form_for [:admin, @q], class: 'form-inline' do |f| %>
+  <%= f.search_field :employee_last_name_or_employee_first_name_cont , class: 'form-control', placeholder: "Search by name"%>
+  <%= f.submit %>
+  <%= link_to 'Clear Search', admin_jobs_path, class: 'btn btn-primary btn-sm' %>
+<% end %>
         <div class='col-md-3'>
             <%= render 'admin/jobs/pending_list', jobs: @jobs.inactive %>
         </div>

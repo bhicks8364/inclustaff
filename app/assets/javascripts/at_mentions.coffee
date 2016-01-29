@@ -1,10 +1,5 @@
 jQuery ->
-  # $('.myatwho').atwho(
-  #   at: "@",
-  #   displayTpl: "<li> ${name} </li>",
-  #   insertTpl: ":${name}:",
-  #   'data': "/company_admins.json"
-  # )
+
   $('.myatwho').atwho(
     at: '@'
     displayTpl: '<li>${name}  <small> ${content}</small></li>'

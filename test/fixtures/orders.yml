@@ -43,8 +43,8 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  belong_to: 
-  pay_range: MyString
+  company_id: 1
+  min_pay: 8.10
   notes: MyText
   number_needed: 1
   needed_by: 2015-07-21 20:41:11
@@ -52,8 +52,8 @@ one:
   active: false
 
 two:
-  belong_to: 
-  pay_range: MyString
+  company_id: 1
+  min_pay: 8.10
   notes: MyText
   number_needed: 1
   needed_by: 2015-07-21 20:41:11

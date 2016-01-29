@@ -1,74 +1,106 @@
-<div class="panel panel-default">
+<div class="col-md-12 ">
   
-  <div class="panel-body">
-    <%= simple_form_for [:admin, @company, @order], html: { class: 'form-horizontal' } do |f| %>
+  <div class="">
+    <%= simple_form_for [:admin, @company, @order], html: { class: 'form' } do |f| %>
 	<%= f.error_notification %>
 	<% if @company.nil? %>
-		<%= f.association :company, collection: @current_admin.companies.distinct, prompt: "Choose a Company"  %>
+		<%= f.association :company, as: :select, collection: @current_admin.companies.distinct, prompt: "Choose a company"  %>
 	<% end %>
-	<div class='form-group'>
-	
-		<%= f.input :industry, as: :select, collection: [ "Manufacturing", "General Labor", "Office", "IT", "Retail", "Logistics", "Warehouse", "Medical", "Food Service"], prompt: "Select an industry", label: false  %>
-		<%= f.input :title, placeholder: "Job Title"  %>
-		<%= f.input :address, label: "Jobsite Location", value: @company.address if @company.present?  %>
-	</div>
-
-
-	
-	<div class='col-md-6'>
-		<%= f.input :aca_type, collection: ["Variable-Hour", "Full-Time", "Part-Time"], include_blank: false %>
-		<%= f.input :urgent, as: :boolean %>
-	</div>
-	
-	<div class='col-md-6'>
-		<%= f.input :number_needed, as: :select, collection: 1..30, label: "How many people are needed?", include_blank: false  %>
-		<%= f.input :needed_by, as: :string, input_html: {class: 'datepicker'}, placeholder: "When would you like them to start?", label: false  %>
-	</div>
-	
-	
-	<%= f.input :shift, as: :select,
-	collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible"], 
-	label: "Select shift needed", include_blank: false %>
-	
-	<div class='form-group'>
-		<div class="input-group">
-	        <div class="input-group-addon">$</div>
-	                  <%= f.input :min_pay, as: :decimal, input_html: { class: 'form-control'}, placeholder: "Minimum pay", label: false %>
-	        <div class="input-group-addon">per hour</div>
-	    </div>
-	    <div class="input-group">
-	        <div class="input-group-addon">$</div>
-	                  <%= f.input :max_pay, as: :decimal, input_html: { class: 'form-control'}, placeholder: "Maximum pay", label: false %>
-	        <div class="input-group-addon">per hour</div>
-	    </div>
-	</div>
-	   
-	
-	<%= f.input :notes, as: :text, label: "Job Description", placeholder: "Please list desired skills, qualifications, etc...", input_html: {data: { behavior: "autocomplete_order_notes" }, rows: 8 } %>
-	<%= f.input :published_at, as: :string, input_html: {class: 'datepicker'}  %>
-	<%= f.input :expires_at, as: :string, input_html: {class: 'datepicker'} %>
-	<%= f.input :bg_check, collection: [ "None Required", "Yes - No Felonies", "Yes - Case by case"], label: "Background Check" %>
-	<div class=''>
+	<%= f.label :industry %>
+			<%= f.input_field :industry, as: :select,
+			collection: [ "Manufacturing", "General Labor", "Office", "Sales", "IT", "Retail", "Logistics", "Warehouse", "Medical", "Food Service"], label: false,
+			prompt: "Select an industry"  %>
+	<div class='col-md-3'>
 		<div class='form-group'>
-			<%= f.association :account_manager, collection: @current_agency.admins.account_managers.order(:last_name), prompt: "Select Account Manager" if @current_admin.role != "Account Manager" %>
-			<%= f.association :manager, collection: @company.admins.order(:last_name), prompt: "Select Company Manager" if @company.present? %>
-			<%= f.input :agency_approval, as: :select,	collection: [ "Yes", "No"], label: "Agency approval needed?", include_blank: false %>
-			<%= f.input :company_approval, as: :select,	collection: [ "Yes", "No"], label: "Company approval needed?", include_blank: false %>
+			
+			
+		</div>
+		<%= f.input :aca_type, collection: ["Variable-Hour", "Full-Time", "Part-Time"], include_blank: false %>
+		<%= f.input :est_duration, as: :select,	collection: [ "Temp-to-Hire", "Direct-Hire", "Temporary", "Payroll"], include_blank: false %>
+		<%= f.input :stwb, as: :select, inline_label: "Do they need steel-toe workboots?", input_html: {class: 'boolean'}   %>
+		<%= f.input :heavy_lifting, as: :select, inline_label: "Does this position require heavy lifting? (50 lbs +)", input_html: {class: 'boolean'}   %> 
+		<%= f.input :bg_check, collection: [ "None Required", "Yes - No Felonies", "Yes - Case by case"], label: "Background Check" %>
+		<%= f.input :dt_req, as: :select, label: "Drug Test", collection: [ "None Required", "Yes - 5 panel screen", "Yes - 10 panel screen"], selected: "None Required" %>
+		
+		<div class='form-group'>
+			<%= f.input :years_of_experience, as: :select, collection: 0..25, label: "Minimum years of experience" %>
+			<%= f.input :certifications, placeholder: "Required Certifications, if any." %>
+			<%= f.input :mobile_time_clock_enabled, as: :boolean, inline_label: "Do you want to enable mobile time clocks for these employees?", input_html: {class: 'boolean'}   %>
 		</div>
 	</div>
-	<div class=''>
-		<%= f.input :years_of_experience, as: :select, collection: 0..25 %>
-		<%= f.input :certifications %>
-	</div>
-	<div class=''>
-	<%= f.input :stwb, as: :boolean, inline_label: "Do they need steel-toe workboots?", input_html: {class: 'boolean'}   %>
-	<%= f.input :heavy_lifting, as: :boolean, inline_label: "Does this position require heavy lifting? (50 lbs +)", input_html: {class: 'boolean'}   %> 
-
-	<%= f.input :dt_req, as: :radio_buttons, label: "Drug Test", collection: [ "None Required", "Yes - 5 panel screen", "Yes - 10 panel screen"], selected: "None Required" %>
+		
+		
 	
-	<%= f.input :est_duration, as: :radio_buttons,	collection: [ "Temp-to-Hire", "Direct-Hire", "Temporary", "Payroll"] %>
+	<div class='col-md-9'>
+		<%= f.input :title, placeholder: "Job Title"  %>
+		<%= f.input :address, hint: "We filled in the company address for you, but you can change it if main job site it at a different location.", label: "Jobsite Location", value: @company.address if @company.present?  %>
+		<div class='col-md-6'>
+			<%= f.input :number_needed, as: :select, label: "How many positions?", collection: 1..30, prompt: "How many people are needed?", include_blank: false  %>
+		</div>
+		<div class='col-md-6'>
+			<div class='col-md-6'>
+				<%= f.input :shift, as: :select,
+				collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible"], 
+				label: "Select shift needed", include_blank: false %>
+			</div>
+		</div>
+		<div class='col-md-12'>
+			<div class='form-inline'>
+				<div class="input-group">
+					<span class="input-group-addon"><i class='fa fa-usd'></i></span>
+						<%= f.input :min_pay, label: false, :input_html => {value: 8.10 } %>
+					<span class="input-group-addon">/hr</span>
+				</div>
+		
+				<div class="input-group">
+					<span class="input-group-addon"><i class='fa fa-usd'></i></span>
+						<%= f.input :max_pay, label: false, :input_html => {class: "form-control" } %>
+					<span class="input-group-addon">/hr</span>
+				</div>
+			</div>
+		</div>
+	
+		
+		<div class='form-inline'>
+			<%= f.input :needed_by, default: Date.tomorrow, as: :date, end_year: Date.today.year + 1, start_year: Date.today.year, order: [:month, :day, :year], wrapper_html: {class: ""}, label: "Start date" %>
+		</div>
+		
+		
+		
+		
 	</div>
-	<%= f.input :mobile_time_clock_enabled, as: :boolean, inline_label: "Do you want to enable mobile time clocks for these employees?", input_html: {class: 'boolean'}   %>
+		
+	
+		<div class='form-group col-md-9'>
+			<%= f.input :notes, as: :text, label: "Job Description", placeholder: "Please list desired skills, qualifications, etc...", input_html: {id: "autocomplete", data: { behavior: "autocomplete_order_notes" }, rows: 12 } %>
+			
+		
+		<div class='col-md-12'>
+			<div class='form-group col-md-6'>
+				<%= f.association :account_manager, collection: @current_agency.admins.account_managers.order(:last_name), prompt: "Select Account Manager" if @current_admin.role != "Account Manager" %>
+				<%= f.association :manager, collection: @company.admins.order(:last_name), prompt: "Select Company Manager" if @company.present? %>
+			</div>
+	
+			<div class='form-group col-md-6'>
+					<%= f.input :agency_approval, as: :select,	collection: [ "Yes", "No"], label: "Agency approval needed?", include_blank: false %>
+					<%= f.input :company_approval, as: :select,	collection: [ "Yes", "No"], label: "Company approval needed?", include_blank: false %>
+				</div>
+		</div>
+		
+	<div class='form-group'>
+		<div class='col-md-6'>
+			<div class='form-inline'>
+				<%= f.input :published_at, wrapper_html: {class: ""}, default: Date.today, as: :date, end_year: Date.today.year + 1, start_year: Date.today.year, order: [:month, :day, :year], wrapper_html: {class: ""}, label: "Do you want to make this posting public?" %>  
+			</div>
+		</div>
+		<div class='col-md-6'>
+			<div class='form-inline'>
+				<%= f.input :expires_at, wrapper_html: {class: ""}, default: Date.today + 14.days, as: :date, end_year: Date.today.year + 1, start_year: Date.today.year, order: [:month, :day, :year], wrapper_html: {class: ""}, label: "When should this post expire from public view?" %>  
+			</div>
+		</div>
+	</div>
+	</div>
+	
 	
 
 	<%= f.button :submit %>

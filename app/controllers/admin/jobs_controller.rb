@@ -6,17 +6,23 @@ class Admin::JobsController < ApplicationController
 
 
   def index
+    
     if params[:employee_id]
       @employee = Employee.find(params[:employee_id])
       @jobs = @employee.jobs.active
-      authorize @jobs
     else
 
-      @jobs = Job.order(created_at: :desc) if @current_agency.present?
+      @q = Job.includes(:employee).order(created_at: :desc).ransack(params[:q])  if @current_agency.present?
+      if params[:q].present?
+        @jobs = @q.result(distinct: true).paginate(page: params[:page], per_page: 5)
+      else
+        @jobs = Job.includes(:employee)
+      end
       authorize @jobs
     end
+    
 
-
+    
   end
 
   def inactive

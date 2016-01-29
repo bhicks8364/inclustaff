@@ -46,32 +46,20 @@ body {
   // font-family: 'Titillium Web', Geneva, sans-serif;
   padding-top: 70px;
   height: 100%;
-
-  // background-color: #e3e4e4;
-  // background: transparent;
-  background: url(light_bg.png) no-repeat center center fixed;
-  // background-color: rgba(255, 255, 255, 0.8);
+  background: transparent;
   // background-image:
-  //       linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)),
-  //       url(colorful-triangles-background.jpg) no-repeat center center fixed;
-  //       // url(InclusStaff-twitter-cover.png) no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  // background: url(autumn_blur.jpg) no-repeat center center fixed;
+  //       // linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+  //       url(InclusStaff-linkedin-cover.png)  no-repeat center center fixed;
+  // background-image:
+  //       // linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+  //       url(InclusStaff-linkedin-cover.png)  no-repeat center center fixed;
 }
 #main-wrapper {
   margin-top: -20px;
   padding-top: 15px;
-  margin-bottom: 70px;
+  // margin-bottom: 70px;
+  
 }
-
-
-.dataTables_wrapper > label {
-  color: black;
-}
-
 
 #logo > img {
     // max-height: 45px;
@@ -87,22 +75,6 @@ body {
   display: none;
 }
 
-
-div.transbox {
-  margin: 10px;
-  // background-color: #ffffff;
-  background-color: rgba(0, 0, 0, 0.82);
-  // opacity:0.6;
-  // filter:alpha(opacity=60); /* For IE8 and earlier */
-  max-width: 100%;
-  padding: 2px;
-  color: white;
-}
-
-.light-5 {
-  background-color: rgba(87, 105, 113, 0.62);
-  color: white;
-}
 
 .scroll300 {
   max-height: 300px;
@@ -120,8 +92,13 @@ div.transbox {
   max-height: 800px;
   overflow: auto;
 }
+
+
+// ///////////////////////////////////////
+// BUTTONS
 .btn.btn-primary {
   background-color: rgba(21, 19, 24, 0.86);
+  color: white;
 }
 .btn.btn-primary:hover {
   background-color: rgba(21, 19, 24, 0.16);
@@ -130,6 +107,28 @@ div.transbox {
 
 .color {
   background-color: rgba(21, 19, 24, 0.56);
+}
+
+// ///////////////////////////////////////
+// NAVBAR
+.navbar.navbar-default {
+  // border: none;
+  font-family: 'Titillium Web', Geneva, sans-serif;
+  // background-color: rgb(230, 230, 230);
+  height: 65px;
+  // font-height: 2em;
+  .container {
+    margin-top: 10px;
+  }
+  // margin-bottom: 1px;
+}
+.navbar-brand {
+    float: left;
+    padding: 15px 15px;
+    font-size: 28px;
+    line-height: 20px;
+    height: 50px;
+    margin-right: 25px;
 }
 .nav-tabs > li > a {
     background-color: rgba(17, 17, 17, 0.77);
@@ -141,51 +140,35 @@ div.transbox {
     color: black;
 
 }
-.navbar.navbar-default {
-  border: none;
-  font-family: 'Titillium Web', Geneva, sans-serif;
-  // background-color: rgb(230, 230, 230);
-  // height: 75px;
-  // margin-bottom: 1px;
+
+#nav-logo {
+  font-weight: bold;
 }
 .pad {
   padding: 8px;
 }
-.tab-pane {
+.tab-content {
   padding-top: 10px;
+  
 }
 h1 {
   font-family: 'Titillium Web', Geneva, sans-serif;
 }
 
-.embed-container {
-  position: relative;
-  padding-bottom: 56.25%;
-  padding-top: 30px;
-  height: 0;
-  overflow: hidden;
-  width: 100%;
-  height: auto;
-  margin-bottom: 12px;
-}
 
-.embed-container iframe,
-.embed-container object,
-.embed-container embed {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-}
-.footer {
-  margin-bottom: 0px;
-  margin-top: 10px;
-}
-.navbar-static-bottom {
-    border-radius: 0;
-    z-index: 1000;
-    border-width: 0 0 1px;
-    padding-right: 0;
-    padding-left: 0;
-    margin: 20px 0 0;
-}
+
+
+
+// JUST NOT DEALING WITH THE FOOTER ATM
+// .footer {
+//   margin-bottom: 0px;
+//   margin-top: 10px;
+// }
+// .navbar-static-bottom {
+//     border-radius: 0;
+//     z-index: 1000;
+//     border-width: 0 0 1px;
+//     padding-right: 0;
+//     padding-left: 0;
+//     margin: 20px 0 0;
+// }

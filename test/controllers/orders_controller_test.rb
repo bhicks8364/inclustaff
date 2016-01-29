@@ -21,7 +21,7 @@ class OrdersControllerTest < ActionController::TestCase
       post :create, order: { active: @order.active, belong_to: @order.belong_to, needed_by: @order.needed_by, notes: @order.notes, number_needed: @order.number_needed, pay_range: @order.pay_range, urgent: @order.urgent }
     end
 
-    assert_redirected_to order_path(assigns(:order))
+    assert_redirected_to admin_order_path(assigns(:order))
   end
 
   test "should show order" do
@@ -36,7 +36,7 @@ class OrdersControllerTest < ActionController::TestCase
 
   test "should update order" do
     patch :update, id: @order, order: { active: @order.active, belong_to: @order.belong_to, needed_by: @order.needed_by, notes: @order.notes, number_needed: @order.number_needed, pay_range: @order.pay_range, urgent: @order.urgent }
-    assert_redirected_to order_path(assigns(:order))
+    assert_redirected_to admin_order_path(assigns(:order))
   end
 
   test "should destroy order" do
@@ -44,6 +44,6 @@ class OrdersControllerTest < ActionController::TestCase
       delete :destroy, id: @order
     end
 
-    assert_redirected_to orders_path
+    assert_redirected_to admin_orders_path
   end
 end

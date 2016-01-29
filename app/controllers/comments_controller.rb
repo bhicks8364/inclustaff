@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:show, :edit, :update, :destroy, :mark_as_read]
-  before_action :skip
+  before_action :authenticate_admin!
   layout :determine_layout
   def index
     @comments = Comment.all
@@ -9,6 +9,7 @@ class CommentsController < ApplicationController
       @comments = @q.result(distinct: true).paginate(page: params[:page], per_page: 5)
     end
     gon.comments = Comment.unread
+    skip_authorization
     # @notifications = Comment.where(recipient: current_user).unread
     # @notifications = Comment.where(recipient: @signed_in).unread
     
@@ -71,10 +72,12 @@ class CommentsController < ApplicationController
     @new_count = Comment.unread.count
     render json: { id: @comment.id, read: @comment.read?, new_count: @new_count,
                     body: @comment.body, commentable: @comment.commentable, state: @comment.state}
+                    skip_authorization
   end
   def mark_all_read
     @comments = Comment.unread
     @comments.update_all(read_at: Time.zone.now)
+    skip_authorization
     render json: {success: true}
   end
   

@@ -97,7 +97,7 @@
             <h3>Payroll</h3>
             <div class='scroll300'>
                 <% @agency.admins.payroll_admins.each do |admin| %>
-                    <%=link_to admin.name, admin %> - <small><%= admin.role %></small><br>
+                    <%=link_to admin.name, admin_admin_path(admin) %> - <small><%= admin.role %></small><br>
                 <% end %>
             </div>
             

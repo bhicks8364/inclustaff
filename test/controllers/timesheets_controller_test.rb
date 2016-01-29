@@ -21,7 +21,7 @@ class TimesheetsControllerTest < ActionController::TestCase
       post :create, timesheet: { gross_pay: @timesheet.gross_pay, job_id: @timesheet.job_id, ot_hours: @timesheet.ot_hours, reg_hours: @timesheet.reg_hours, week: @timesheet.week }
     end
 
-    assert_redirected_to timesheet_path(assigns(:timesheet))
+    assert_redirected_to admin_timesheet_path(assigns(:timesheet))
   end
 
   test "should show timesheet" do
@@ -36,7 +36,7 @@ class TimesheetsControllerTest < ActionController::TestCase
 
   test "should update timesheet" do
     patch :update, id: @timesheet, timesheet: { gross_pay: @timesheet.gross_pay, job_id: @timesheet.job_id, ot_hours: @timesheet.ot_hours, reg_hours: @timesheet.reg_hours, week: @timesheet.week }
-    assert_redirected_to timesheet_path(assigns(:timesheet))
+    assert_redirected_to admin_timesheet_path(assigns(:timesheet))
   end
 
   test "should destroy timesheet" do
@@ -44,6 +44,6 @@ class TimesheetsControllerTest < ActionController::TestCase
       delete :destroy, id: @timesheet
     end
 
-    assert_redirected_to timesheets_path
+    assert_redirected_to admin_timesheets_path
   end
 end

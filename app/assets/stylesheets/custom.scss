@@ -3,21 +3,21 @@ $primary-color: rgba(0, 0, 0, 0.15);
 
 // BUTTONS
 
-.btn-sm { 
-  padding:2px;
-}
-.btn-primary {
-  color: #fff;
-  background-color: rgba(34, 69, 63, 0.75);
-  border:none;
-  /* border-color: #357ebd; */
-}
-.btn-primary:hover {
-  color: #fff;
-  background-color: rgba(0, 0, 0, 0.87);;
-  border:none;
-  /* border-color: #357ebd; */
-}
+// .btn-sm { 
+//   padding:2px;
+// }
+// .btn-primary {
+//   color: #fff;
+//   background-color: rgba(34, 69, 63, 0.75);
+//   border:none;
+//   /* border-color: #357ebd; */
+// }
+// .btn-primary:hover {
+//   color: #fff;
+//   background-color: rgba(0, 0, 0, 0.87);;
+//   border:none;
+//   /* border-color: #357ebd; */
+// }
 
 // .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .btn-primary.dropdown-toggle {
 //   color: #fff;
@@ -25,22 +25,22 @@ $primary-color: rgba(0, 0, 0, 0.15);
 //   border:none;
 // }
 
-.btn.fill { 
-  margin:2px;
-}
-.badge.badge-success { 
-  color: black;
-}
-.btn.btn-danger {
-  // padding: 5px;
-}
-.btn {
-  -webkit-border-radius: 4px;
-}
-.btn-success { 
-  color: black;
-  // font-weight: bold;
-}
+// .btn.fill { 
+//   margin:2px;
+// }
+// .badge.badge-success { 
+//   color: black;
+// }
+// .btn.btn-danger {
+//   // padding: 5px;
+// }
+// .btn {
+//   -webkit-border-radius: 4px;
+// }
+// .btn-success { 
+//   color: black;
+//   // font-weight: bold;
+// }
 a {
   text-decoration: none;
 }
@@ -125,25 +125,25 @@ h3 {
     box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.15);
     /* border-bottom: 1px solid rgb(238, 238, 238); */
 }
-a:hover, a:focus {
-  color: #2a6496;
-  text-decoration: none; 
-  cursor: pointer;
-}
-.img-zoom {
-    max-width: 100%;
-    -webkit-transition: all .2s ease-in-out;
-    -moz-transition: all .2s ease-in-out;
-    -o-transition: all .2s ease-in-out;
-    -ms-transition: all .2s ease-in-out;
-}
+// a:hover, a:focus {
+//   color: #2a6496;
+//   text-decoration: none; 
+//   cursor: pointer;
+// }
+// .img-zoom {
+//     max-width: 100%;
+//     -webkit-transition: all .2s ease-in-out;
+//     -moz-transition: all .2s ease-in-out;
+//     -o-transition: all .2s ease-in-out;
+//     -ms-transition: all .2s ease-in-out;
+// }
 
-.transition {
-    -webkit-transform: scale(2); 
-    -moz-transform: scale(2);
-    -o-transform: scale(2);
-    transform: scale(2);
-}
+// .transition {
+//     -webkit-transform: scale(2); 
+//     -moz-transform: scale(2);
+//     -o-transform: scale(2);
+//     transform: scale(2);
+// }
 
 .bottom {
   margin-bottom: 12px;
@@ -177,11 +177,4 @@ a.button:hover {
   background-color: #ccc;
   margin: 5px;
   max-width: 50%;
-}
-.inquiry-form {
-  // border: solid 3px black;
-  padding: 10px;
-  max-width: 70%;
-  margin: auto;
-  background-color: $primary-color;
 }
