@@ -3,7 +3,6 @@
 # Table name: timesheets
 #
 #  id               :integer          not null, primary key
-#  week             :integer
 #  job_id           :integer
 #  reg_hours        :decimal(, )
 #  ot_hours         :decimal(, )
@@ -19,6 +18,7 @@
 #  adjustments      :hstore
 #  approved_by_type :string
 #  total_hours      :decimal(, )
+#  week             :date
 #
 
 require 'test_helper'

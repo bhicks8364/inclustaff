@@ -16,17 +16,14 @@
 #  deleted_at     :datetime
 #  in_ip          :string
 #  out_ip         :string
-#  week           :integer
 #  note           :text
 #  needs_adj      :boolean
 #  break_duration :decimal(, )
-#  breaks         :text             is an Array
-#  break_in       :datetime         is an Array
-#  break_out      :datetime         is an Array
 #  paid_breaks    :boolean          default(FALSE)
 #  pay_rate       :decimal(, )
 #  latitude       :float
 #  longitude      :float
+#  week           :date
 #
 
 class Shift < ActiveRecord::Base
@@ -40,7 +37,9 @@ class Shift < ActiveRecord::Base
   belongs_to :employee
   belongs_to :timesheet, counter_cache: true
   has_one :employee, through: :job
+  has_one :current_break, ->{ where(time_out: nil).where.not(time_in: nil) }, class_name: "Break"
   belongs_to :company, class_name: "Company", foreign_key: "company_id"
+  has_many :breaks
   has_many :comments, as: :commentable
   has_many :events, as: :eventable
   accepts_nested_attributes_for :job
@@ -72,6 +71,11 @@ class Shift < ActiveRecord::Base
   scope :over_8,        -> { where('time_worked > 8') }
   scope :past, -> { where(Shift[:time_in].lteq(Date.yesterday))}
 
+  after_save :update_timesheet!
+  before_save :set_week, :set_timesheet, :calculate_break, :reg_earnings
+  after_initialize :set_defaults, if: :new_record?
+  after_initialize :set_pay
+
   def self.worked_before(date)
     where(Shift[:time_in].lteq(date))
   end
@@ -82,7 +86,6 @@ class Shift < ActiveRecord::Base
     where(Shift[:time_in].gteq(date1)
       .and(Shift[:time_in].lteq(date2)))
   end
-
 
   # scope :last_week,     -> { where(week: Date.today.cweek - 1)}
   scope :last_week, -> {
@@ -111,10 +114,6 @@ class Shift < ActiveRecord::Base
     where(time_out: start..ending)}
   STARTING = Date.yesterday.beginning_of_day
   ENDING = Date.today.beginning_of_day
-  after_save :update_timesheet!
-  before_save :set_week, :set_timesheet, :calculate_break, :reg_earnings
-  after_initialize :set_defaults, if: :new_record?
-  after_initialize :set_pay
 
   def clocked_in?; state == "Clocked In"; end
   def clocked_out?; state == "Clocked Out"; end
@@ -125,15 +124,8 @@ class Shift < ActiveRecord::Base
   def took_a_break?; breaks.any?; end
   def past?; time_in < Time.current - 12.hours; end
   def calculate_break
-    if clocked_in? && breaks.count.even?
-      @breaks = breaks
-      @break_times = @breaks.map(&:to_datetime)
-      @durations = []
-      @break_times.in_groups_of(2) do |group|
-        @durations  << time_diff(group[0], group[1])
-      end
-
-      self.break_duration = @durations.sum
+    if clocked_in?
+      self.break_duration = breaks.sum(:duration)
     else
       # This should throw an error because theyre still on break.
       # Gotta clock out first. Maybe I should use AASM for this?? idk
@@ -222,6 +214,11 @@ class Shift < ActiveRecord::Base
     self.time_worked = @payable_hours
   end
 
+  # IMPORTANT: This actually sets the timesheet initially to the current week,
+  # if you clock out on a different week, your timesheet switches to next week's
+  # because you'll get paid in the next period
+  #
+  # This works because we call this method on before_save EVERY time. Be careful changing this.
   def set_week
     self.week = time_out.nil? ? time_in.beginning_of_week : time_out.beginning_of_week
   end

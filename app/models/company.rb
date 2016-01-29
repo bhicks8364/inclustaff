@@ -44,23 +44,23 @@ class Company < ActiveRecord::Base
     has_many :job_comments, through: :jobs, source: 'comments'
     has_many :timesheet_comments, through: :timesheets, source: 'comments'
     has_many :shift_comments, through: :shifts, source: 'comments'
-    
-    scope :with_pending_jobs, -> { joins(:orders => :jobs).merge(Job.pending_approval)} 
-    scope :with_open_orders, -> { joins(:orders).merge(Order.needs_attention)} 
+
+    scope :with_pending_jobs, -> { joins(:orders => :jobs).merge(Job.pending_approval)}
+    scope :with_open_orders, -> { joins(:orders).merge(Order.needs_attention)}
     scope :with_balance, -> { where(Company[:balance].gt(0).and(Company[:balance].not_eq(nil))) }
     scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.current_week)}
     scope :ordered_by_current_bill, -> { includes(:current_timesheets).order('timesheets.total_bill') }
-    
+
     store_accessor :preferences, :current_account_manager
-    
+
     accepts_nested_attributes_for :orders
     def comments
       timesheet_comments + job_comments + shift_comments
     end
-    
+
     after_create :send_notification_email
     after_create :create_company_admin
-    
+
     validates :name,  presence: true, length: { maximum: 50 }
     validates :agency_id,  presence: true
     validates :contact_name,  presence: true, length: { maximum: 20 }
@@ -68,8 +68,8 @@ class Company < ActiveRecord::Base
     validates :contact_email, presence: true, length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
-                    
-                    
+
+
     def create_company_admin
       new_name = contact_name.split()
       self.admins.find_or_create_by(email: contact_email) do |admin|
@@ -84,7 +84,7 @@ class Company < ActiveRecord::Base
      def send_notification_email
        NotificationMailer.new_company(self).deliver_later
      end
-     
+
     def to_s; name; end
     def owner
       admins.where(role: "Owner").first || admins.first
@@ -94,7 +94,7 @@ class Company < ActiveRecord::Base
           orders.last.agency
       end
     end
-    
+
     def current_account_manager
       if preferences['current_account_manager'].present?
         Admin.find(preferences['current_account_manager'])
@@ -110,7 +110,7 @@ class Company < ActiveRecord::Base
     def self.by_recruiter(admin_id)
         joins(:orders => :jobs).where(jobs: { recruiter_id: admin_id })
     end
- 
+
     def current_payroll_cost
        timesheets.current_week.sum(:gross_pay)
     end
@@ -125,24 +125,24 @@ class Company < ActiveRecord::Base
         cost = timesheets.current_week.sum(:total_bill)
         update(balance: cost)
     end
-    
+
     # IMPORT TO CSV
     def self.assign_from_row(row)
         company = Company.where(name: row[:name]).first_or_initialize
         company.assign_attributes row.to_hash.slice(:name, :address, :city, :state, :zipcode, :contact_name, :contact_email, :admin_id, :agency_id, :phone_number)
         company
     end
-    
+
     # EXPORT TO CSV
     def self.to_csv
       attributes = %w{id name address city state contact_name contact_email balance phone_number admin_id agency_id}
       CSV.generate(headers: true) do |csv|
         csv << attributes
-        
+
         all.each do |company|
           csv << attributes.map{ |attr| company.send(attr) }
         end
       end
     end
-    
+
 end

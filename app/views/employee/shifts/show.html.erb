@@ -4,7 +4,7 @@
     <hr>
     <h1 class="text-center">
         <span id='shift-sym'><%= shift_sym(@shift) %></span>
-        <%= link_to @employee.name, employee_employee_path(@employee) %>  
+        <%= link_to @employee.name, employee_employee_path(@employee) %>
     </h1>
     <h3>Total Earnings: <%= number_to_currency(@shift.earnings) %> </h3>
 </div>
@@ -35,10 +35,10 @@
         	</div>
         	<%= render 'list', shift: @shift  %>
         </div>
-        <div class='col-md-6'> 
+        <div class='col-md-6'>
             <dl class="dl-horizontal">
               <dt>Company</dt>
-              <dd><%= @company.name %></dd>
+              <dd><%= @job.company.name %></dd>
               <dt>Job Title</dt>
               <dd><%= @job.title %></dd>
               <dt>Pay Rate</dt>
@@ -48,11 +48,11 @@
               <dt>Recruiter</dt>
               <dd><%= @job.recruiter.name %></dd>
               <dt>Company Manager</dt>
-              <dd><%= @order.manager.try(:name) || "Unavailable" %></dd>
+              <dd><%= @job.order.manager.try(:name) || "Unavailable" %></dd>
             </dl>
         </div>
         <div class='col-md-6'>
-            
+
             <table class="table">
                 <tr>
                   <td class=""> <strong>Total Hours</strong></td>
@@ -132,11 +132,11 @@
 </div>
 
 
-         
-            
-            
-        
-        
-        
 
-    
+
+
+
+
+
+
+

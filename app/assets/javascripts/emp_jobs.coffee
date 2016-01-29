@@ -16,8 +16,8 @@ class Job
 
   handleIn: =>
     $.ajax(
-      url: "/employee/jobs/#{@id}/clock_in",
-      method: "PATCH"
+      url: "/employee/shifts/clock_in",
+      method: "POST"
       dataType: "JSON"
       success: @handleInSuccess
     )
@@ -42,7 +42,7 @@ class Job
 
   handleOut: =>
     $.ajax(
-      url: "/employee/jobs/#{@id}/clock_out",
+      url: "/employee/shifts/clock_out",
       method: "PATCH"
       dataType: "JSON"
       success: @handleOutSuccess
@@ -50,28 +50,21 @@ class Job
 
   handleOutSuccess: (data) =>
     if data.clocked_out
+      window.location = "/"
 
       #@item.find(".shift-item").hide()
-      $("[data-behavior='empjob-out-button_#{@id}']").hide()
-      $("[data-behavior='empjob-in-button_#{@id}']").show()
+      #$("[data-behavior='empjob-out-button_#{@id}']").hide()
+      #$("[data-behavior='empjob-in-button_#{@id}']").show()
       #@item.find("[data-behavior='empjob-in-button']").show()
-      @item.find("[data-behavior='emptime-in']").html "<p><strong> In:</strong> #{data.time_in}</p>"
-      @item.find("[data-behavior='emptime-out']").html "<p><strong> Out:</strong> #{data.time_out}</p>"
+      #@item.find("[data-behavior='emptime-in']").html "<p><strong> In:</strong> #{data.time_in}</p>"
+      #@item.find("[data-behavior='emptime-out']").html "<p><strong> Out:</strong> #{data.time_out}</p>"
 
-      @item.find("[data-behavior='empshift-state']").html "<strong>You are now clocked out.</strong><br>"
-      console.log data.state
-      console.log data.time_in
-      console.log data.time_out
+      #@item.find("[data-behavior='empshift-state']").html "<strong>You are now clocked out.</strong><br>"
 
     else
       alert("Uh-Oh! Something went wrong! #{data.time_out} - #{data.state}")
       console.log data.time_in
       console.log data.time_out
-
-
-
-
-
 
 jQuery ->
   new JobList $("[data-behavior='empjob-list']")

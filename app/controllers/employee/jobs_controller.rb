@@ -27,44 +27,6 @@ class Employee::JobsController < ApplicationController
 
   end
 
-  # GET /jobs/new
-
-
-  def clock_in
-    authorize @job, :clock_in?
-    if @job.off_shift?
-      @shift = @job.shifts.create(time_in: Time.current, week: Date.today.beginning_of_week.cweek,
-                                  state: "Clocked In",
-                                  in_ip: current_user.current_sign_in_ip)
-      # current_user.events.create(action: "clocked_in", eventable: @shift.employee)
-
-
-      respond_to do |format|
-          format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?,
-                    state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out, last_out: @job.last_clock_out,
-                    in_ip: @shift.in_ip, first_name: @job.employee.first_name } }
-
-      end
-    end
-  end
-
-  def clock_out
-     authorize @job, :clock_out?
-    if @job.on_shift? && @job.current_shift.present?
-        @shift = @job.current_shift
-        @shift.update(time_out: Time.current,
-                        state: "Clocked Out",
-                        out_ip: current_user.current_sign_in_ip, week: Date.today.beginning_of_week.cweek )
-        # current_user.events.create(action: "clocked_out", eventable: @shift.employee)
-      respond_to do |format|
-          format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?,
-                    state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out.strftime("%l:%M%P"),
-                    in_ip: @shift.in_ip, first_name: @job.employee.first_name } }
-
-      end
-    end
-  end
-
   # GET /jobs/1/edit
   def edit
 
@@ -83,11 +45,6 @@ class Employee::JobsController < ApplicationController
 
       authorize @job
     end
-
-
-
-
-
   end
 
   # POST /jobs

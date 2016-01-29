@@ -16,7 +16,7 @@
 #  resume_id        :string
 #  desired_job_type :string
 #  desired_shift    :string
-#  availablity      :hstore
+#  availability     :hstore
 #  dns              :boolean          default(FALSE)
 #
 

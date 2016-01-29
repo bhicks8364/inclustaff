@@ -3,7 +3,6 @@
 # Table name: timesheets
 #
 #  id               :integer          not null, primary key
-#  week             :integer
 #  job_id           :integer
 #  reg_hours        :decimal(, )
 #  ot_hours         :decimal(, )
@@ -19,6 +18,7 @@
 #  adjustments      :hstore
 #  approved_by_type :string
 #  total_hours      :decimal(, )
+#  week             :date
 #
 
 class Timesheet < ActiveRecord::Base
@@ -252,10 +252,15 @@ class Timesheet < ActiveRecord::Base
   def week_ending
     shifts.any? ? shifts.last.time_in.end_of_week.stamp("11/22/2015") : Date.today.end_of_week.stamp("11/22/2015")
   end
-  def week_begin
-    shifts.any? ? shifts.last.time_in.beginning_of_week.stamp("11/22/2015") : Date.today.beginning_of_week.stamp("11/22/2015")
 
+  def week_begin
+    if shifts.any?
+      shifts.last.time_in.beginning_of_week.stamp("11/22/2015")
+    else
+      Date.today.beginning_of_week.stamp("11/22/2015")
+    end
   end
+
   def time_frame
     "#{week_begin} - #{week_ending}"
   end

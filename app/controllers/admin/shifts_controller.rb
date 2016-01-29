@@ -3,6 +3,7 @@ class Admin::ShiftsController < ApplicationController
   before_action :authenticate_admin!
   before_action :set_admin
   layout "admin_layout"
+
   def index
     Chronic.time_class = Time.zone
     @start_time = Chronic.parse(params[:date1])
@@ -20,7 +21,7 @@ class Admin::ShiftsController < ApplicationController
     # gon.shifts = @shifts
     authorize @shifts
   end
-  
+
   def show
     @employee = @shift.employee
     @job = @shift.job
@@ -28,7 +29,7 @@ class Admin::ShiftsController < ApplicationController
     @company = @job.company
     @timesheet = @shift.timesheet
     gon.shift = @shift
-    
+
   end
 
   def new
@@ -40,14 +41,12 @@ class Admin::ShiftsController < ApplicationController
     authorize @shift
   end
 
-
   # GET /shifts/1/edit
   def edit
     @job = @shift.job
     @employee = @shift.employee
-    
   end
-  
+
   def break_start
     @shift = Shift.find(params[:id])
       # @shift.breaks ||= []
@@ -58,6 +57,7 @@ class Admin::ShiftsController < ApplicationController
       @shift.save
     skip_authorization
   end
+
   def break_end
     @shift = Shift.find(params[:id])
     if @shift.on_break?
@@ -67,10 +67,11 @@ class Admin::ShiftsController < ApplicationController
       @shift.break_in << Time.current
       @shift.state = 'Clocked In'
       @shift.save
-      
+
     end
     skip_authorization
   end
+
   # THIS DOESNT WORK
   def remove_breaks
     @shift = Shift.find(params[:id])
@@ -99,7 +100,7 @@ class Admin::ShiftsController < ApplicationController
       end
     end
   end
-  
+
   def clock_out
     @shift = Shift.find(params[:id])
     @employee = @shift.employee
@@ -109,29 +110,29 @@ class Admin::ShiftsController < ApplicationController
           time_out: Time.current,
           state: "Clocked Out",
           week: Date.today.cweek )
-      
+
       respond_to do |format|
         if @shift.update
-          
+
           current_admin.events.create(action: "clocked_in", eventable: @shift, user_id: @shift.employee.user_id)
-  
-          
-          format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
+
+
+          format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?,
                       state: @shift.state, time_out: @shift.time_out.strftime("%l:%M%P"),
                       out_ip: @shift.out_ip, time_in: @shift.time_in.strftime("%l:%M%P"),
                       in_ip: @shift.in_ip } }
-    
+
         else
-  
+
           format.html { render :edit }
           format.json { render json: @shift.errors, status: :unprocessable_entity }
-          
-          
+
+
         end
       end
     end
   end
-  
+
   def clock_in
     @shift = Shift.find(params[:id])
     @job = @shift.job
@@ -142,32 +143,32 @@ class Admin::ShiftsController < ApplicationController
         respond_to do |format|
           if @shift.save
             current_admin.events.create(action: "clocked_out", eventable: @shift, user_id: @shift.employee.user_id)
-            
-            format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
+
+            format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?,
                         state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out,
                         in_ip: @shift.in_ip } }
-      
+
           else
-    
+
             format.html { render :new }
             format.json { render json: @shift.errors, status: :unprocessable_entity }
-            
-            
+
+
           end
-          
+
         end
       end
   end
 
-  
-  
+
+
   def clock_out_all
     @shifts = @company_admin.shifts.clocked_in
     @shifts.each { |shift| shift.update(time_out: Time.current,
                       state: "Clocked Out",
                       out_ip: @company_admin.last_name + "-admin")}
     respond_to do |format|
-        format.js 
+        format.js
     end
   end
 
@@ -194,7 +195,7 @@ class Admin::ShiftsController < ApplicationController
   # DELETE /shifts/1
   # DELETE /shifts/1.json
   def destroy
-   
+
 
     @shift.destroy
     respond_to do |format|
@@ -204,17 +205,17 @@ class Admin::ShiftsController < ApplicationController
   end
 
   private
-  
+
     def pundit_user
       current_admin
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_shift
       @shift = Shift.find(params[:id])
-      
+
       authorize @shift
     end
-    
+
     def set_admin
      @current_admin = current_admin
       if @current_admin.agency?
@@ -222,8 +223,6 @@ class Admin::ShiftsController < ApplicationController
       elsif @current_admin.company?
         @company_admin = @current_admin
       end
-      
-      
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
