@@ -80,35 +80,35 @@ class Shift < ActiveRecord::Base
   end
   def self.occurring_between(date1, date2)
     where(Shift[:time_in].gteq(date1)
-    .and(Shift[:time_in].lteq(date2)))
+      .and(Shift[:time_in].lteq(date2)))
   end
 
 
   # scope :last_week,     -> { where(week: Date.today.cweek - 1)}
   scope :last_week, -> {
-          start = Time.current.beginning_of_week - 1.week
-          ending = start.end_of_week
-          where(time_in: start..ending)}
+    start = Time.current.beginning_of_week - 1.week
+    ending = start.end_of_week
+    where(time_in: start..ending)}
   scope :payroll_week,  -> {
-          start = Time.current.beginning_of_week
-          ending = start.end_of_week + 7.days
-          where(time_in: start..ending)}
+    start = Time.current.beginning_of_week
+    ending = start.end_of_week + 7.days
+    where(time_in: start..ending)}
   scope :current_week, -> {
-          start = Time.current.beginning_of_week
-          ending = start.end_of_week
-          where(time_in: start..ending)}
+    start = Time.current.beginning_of_week
+    ending = start.end_of_week
+    where(time_in: start..ending)}
   scope :today, -> {
-          start = Date.today.beginning_of_day
-          ending = Date.today.end_of_day
-          where(time_in: start..ending)}
+    start = Date.today.beginning_of_day
+    ending = Date.today.end_of_day
+    where(time_in: start..ending)}
   scope :yesterday, -> {
-          start = Date.yesterday.beginning_of_day
-          ending = Date.today.beginning_of_day
-          where(time_in: start..ending)}
+    start = Date.yesterday.beginning_of_day
+    ending = Date.today.beginning_of_day
+    where(time_in: start..ending)}
   scope :this_year, -> {
-          start = Date.today.beginning_of_year.beginning_of_day
-          ending = Time.current
-          where(time_out: start..ending)}
+    start = Date.today.beginning_of_year.beginning_of_day
+    ending = Time.current
+    where(time_out: start..ending)}
   STARTING = Date.yesterday.beginning_of_day
   ENDING = Date.today.beginning_of_day
   after_save :update_timesheet!
@@ -130,14 +130,18 @@ class Shift < ActiveRecord::Base
       @break_times = @breaks.map(&:to_datetime)
       @durations = []
       @break_times.in_groups_of(2) do |group|
-                      @durations  << time_diff(group[0], group[1])
-                  end
+        @durations  << time_diff(group[0], group[1])
+      end
 
       self.break_duration = @durations.sum
     else
       # This should throw an error because theyre still on break.
       # Gotta clock out first. Maybe I should use AASM for this?? idk
     end
+  end
+
+  def self.clock_out_all!
+    Shift.clocked_in.each {|s| s.update(time_out: Time.current, state: "Clocked Out") }
   end
 
   def self.report_by_month
@@ -155,6 +159,7 @@ class Shift < ActiveRecord::Base
   def self.current_week_report
     Shift.group_by_week(:time_in, range: 2.months.ago.midnight...Time.current).sum(:time_worked)
   end
+
   def remove_all_breaks!
     state = (time_out > time_in) ? "Clocked Out" : "Clocked In"
     update(
@@ -163,97 +168,87 @@ class Shift < ActiveRecord::Base
       break_out:     [],
       break_duration: 0,
       state:       state
-      )
+    )
   end
+
   def set_pay
     self.pay_rate = job.pay_rate if pay_rate.nil?
     self.break_duration = 0 if break_duration.nil?
   end
+
   def set_defaults
-      # self.employee = job.employee if employee.nil?
-      # self.in_ip = employee.current_sign_in_ip if in_ip.nil?
-      self.break_out = [] if break_out.nil?
-      self.break_in = [] if break_in.nil?
-      self.breaks = [] if breaks.nil?
-
-
-  end
-
-  def set_timesheet
-      timesheet = Timesheet.find_or_create_by(job_id: job_id, week: week)
-      self.timesheet = timesheet
+    # self.employee = job.employee if employee.nil?
+    # self.in_ip = employee.current_sign_in_ip if in_ip.nil?
+    self.break_out = [] if break_out.nil?
+    self.break_in = [] if break_in.nil?
+    self.breaks = [] if breaks.nil?
   end
 
   def clock_in!
     if job.off_shift?
       self.job.shifts.create(
-          time_in: Time.current,
-          time_out: nil,
-          week: Date.today.cweek,
-          state: "Clocked In",
-          in_ip: "admin-clock-in",
-          out_ip: nil)
+        time_in: Time.current,
+        time_out: nil,
+        week: Date.today.cweek,
+        state: "Clocked In",
+        in_ip: "admin-clock-in",
+        out_ip: nil)
     end
   end
 
   def clock_out!
-      update(time_out: Time.current,
-                  state: "Clocked Out")
-  end
-
-  def self.clock_out_all!
-      Shift.clocked_in.each {|s| s.update(time_out: Time.current, state: "Clocked Out") }
+    update(time_out: Time.current, state: "Clocked Out")
   end
 
   def hours_worked
-      if clocked_in? || on_break?
-          time_diff(time_in, Time.current)
-      elsif clocked_out?
-          time_diff(time_in, time_out)
-      end
+    if clocked_in? || on_break?
+      time_diff(time_in, Time.current)
+    elsif clocked_out?
+      time_diff(time_in, time_out)
+    end
   end
 
   def pay_time
-      if paid_breaks == false && break_duration > 0.01
-          hours_worked - break_duration
-      else
-          hours_worked
-      end
+    if paid_breaks == false && break_duration > 0.01
+      hours_worked - break_duration
+    else
+      hours_worked
+    end
   end
 
   def reg_earnings
-      @payable_hours = pay_time
-      self.earnings = pay_rate * @payable_hours
-      self.time_worked = @payable_hours
+    @payable_hours = pay_time
+    self.earnings = pay_rate * @payable_hours
+    self.time_worked = @payable_hours
   end
-  def set_week
-    if time_out.nil?
-      self.week = time_in.beginning_of_week.to_datetime.cweek
-    else
-      self.week = time_out.beginning_of_week.to_datetime.cweek
-    end
 
+  def set_week
+    self.week = time_out.nil? ? time_in.beginning_of_week : time_out.beginning_of_week
+  end
+
+  def set_timesheet
+    self.timesheet = Timesheet.find_or_create_by(job_id: job_id, week: week)
   end
 
   def update_timesheet!
-      timesheet.save
+    timesheet.save
   end
 
   def delete_timesheet
-    if timesheet.shifts.count.zero?
-      timesheet.destroy
-    end
+    timesheet.destroy if timesheet.shifts.count.zero?
   end
 
   def with_paid_breaks
     paid_breaks = hours_worked * pay_rate
     paid_breaks.round(2)
   end
+
   def with_unpaid_breaks
     @break_duration ||= break_duration? ? break_duration : 0
     unpaid_breaks = (hours_worked - @break_duration) * pay_rate
     unpaid_breaks.round(2)
   end
+
   def work_date
     if time_in > Time.current.beginning_of_day
       "Today, " + time_in.stamp("12/18")
@@ -265,7 +260,6 @@ class Shift < ActiveRecord::Base
   private
 
   def time_diff(start_time, end_time)
-      TimeDifference.between(start_time, end_time).in_hours
+    TimeDifference.between(start_time, end_time).in_hours
   end
-
 end

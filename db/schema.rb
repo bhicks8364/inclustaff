@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160125220107) do
+ActiveRecord::Schema.define(version: 20160129173647) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -171,11 +171,11 @@ ActiveRecord::Schema.define(version: 20160125220107) do
     t.string   "resume_id"
     t.string   "desired_job_type"
     t.string   "desired_shift"
-    t.hstore   "availablity"
+    t.hstore   "availability"
     t.boolean  "dns",              default: false
   end
 
-  add_index "employees", ["availablity"], name: "index_employees_on_availablity", using: :btree
+  add_index "employees", ["availability"], name: "index_employees_on_availability", using: :btree
   add_index "employees", ["deleted_at"], name: "index_employees_on_deleted_at", using: :btree
   add_index "employees", ["email"], name: "index_employees_on_email", using: :btree
   add_index "employees", ["user_id"], name: "index_employees_on_user_id", using: :btree
@@ -307,7 +307,6 @@ ActiveRecord::Schema.define(version: 20160125220107) do
     t.datetime "deleted_at"
     t.string   "in_ip"
     t.string   "out_ip"
-    t.integer  "week"
     t.text     "note"
     t.boolean  "needs_adj"
     t.decimal  "break_duration"
@@ -318,13 +317,13 @@ ActiveRecord::Schema.define(version: 20160125220107) do
     t.decimal  "pay_rate"
     t.float    "latitude"
     t.float    "longitude"
+    t.date     "week"
   end
 
   add_index "shifts", ["breaks"], name: "index_shifts_on_breaks", using: :btree
   add_index "shifts", ["deleted_at"], name: "index_shifts_on_deleted_at", using: :btree
   add_index "shifts", ["job_id"], name: "index_shifts_on_job_id", using: :btree
   add_index "shifts", ["timesheet_id"], name: "index_shifts_on_timesheet_id", using: :btree
-  add_index "shifts", ["week"], name: "index_shifts_on_week", using: :btree
 
   create_table "skills", force: :cascade do |t|
     t.string   "name"
@@ -356,7 +355,6 @@ ActiveRecord::Schema.define(version: 20160125220107) do
   add_index "tags", ["name"], name: "index_tags_on_name", unique: true, using: :btree
 
   create_table "timesheets", force: :cascade do |t|
-    t.integer  "week"
     t.integer  "job_id"
     t.decimal  "reg_hours"
     t.decimal  "ot_hours"
@@ -372,6 +370,7 @@ ActiveRecord::Schema.define(version: 20160125220107) do
     t.hstore   "adjustments"
     t.string   "approved_by_type"
     t.decimal  "total_hours"
+    t.date     "week"
   end
 
   add_index "timesheets", ["approved_by_type"], name: "index_timesheets_on_approved_by_type", using: :btree
