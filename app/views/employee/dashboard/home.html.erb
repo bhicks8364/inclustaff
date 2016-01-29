@@ -1,86 +1,87 @@
 <div class='col-md-12 lightbox-long'>
-    <% if @employee.assigned? %>
-   <div class="col-md-4">
-        <div class="panel panel-default">
-          <div class="panel-body">
-              <h2><%= @user.name %></h2>
-            <%= user_email(@user) %>
-          
-            <%= render 'users/user', user: @user %>
-            <div class='btn-group'>
-                <%= link_to "Edit Profile", edit_employee_employee_path(@employee), class: 'btn btn-primary' %>
-                <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' if @employee.unassigned? %>
-                <%= link_to "View Job Posting", employee_job_board_path, class: 'btn btn-primary' if @employee.unassigned? %>
-            </div>
-             
-            <div class=''>
-                <h2 class='text-center'><%= @job.title %></h2>
-                <dl class="">
-                  <dt>Company Name</dt>
-                  <dd><%= @company.name %></dd>
-                  <dt>Total Hours</dt>
-                  <dd><%= @job.total_hours.round(2) %></dd>
-                  <dt>Start Date</dt>
-                  <dd><%= @job.first_day.stamp("December 18, 2015") %></dd>
-                  <dt>Recruiter</dt>
-                  <dd><%= @job.recruiter.present? ? @job.recruiter.name : "Recruiter unavailable" %></dd>
-                </dl>
-            </div>
-            <h4>Job Description:</h4>
-                <div class='scroll400'>
-                    
-                    <%= markdownify(@job.order.notes) %>
-                </div>
-          </div>
-        </div>
-   </div>
-   
-   <div class="col-md-4">
-        <div class="panel panel-default">
-           
-          <div class="panel-body">
-            <h2 class='text-center'>This week</h2>
-            <%= render "employee/timesheets/timesheet", timesheet: @employee.current_timesheet if @employee.current_timesheet.present? %>
-          </div>
-          
-        </div>
-   </div>
-   <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-body text-center">
-            <% if @employee.on_shift? || @employee.on_break? %>
-                <%= link_to "You're Currently Clocked In", employee_shift_path(@employee.current_shift), class: 'btn btn-primary' %>
-                <h3><strong><%= shift_times(@employee.current_shift)%></strong></h3>
-            <% else %>
-            <h3><%= @job.title %></h3>
-                <%= render 'employee/jobs/clock', job: @job if policy(@job).clock_in? %>
-            <% end %>
-            </div>
-        </div>
-   </div>
-   <% else %>
-    <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                  <h2><%= @user.name %></h2>
-                <%= user_email(@user) %>
-              
-                <%= render 'users/user', user: @user %>
-                
-            </div>
-        </div>
-        <div class='btn-group'>
+  <% if @employee.assigned? %>
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <h2><%= @user.name %></h2>
+          <%= user_email(@user) %>
+
+          <%= render 'users/user', user: @user %>
+
+          <div class='btn-group'>
             <%= link_to "Edit Profile", edit_employee_employee_path(@employee), class: 'btn btn-primary' %>
             <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' if @employee.unassigned? %>
             <%= link_to "View Job Posting", employee_job_board_path, class: 'btn btn-primary' if @employee.unassigned? %>
+          </div>
+
+          <div class=''>
+            <h2 class='text-center'><%= @job.title %></h2>
+            <dl class="">
+              <dt>Company Name</dt>
+              <dd><%= @company.name %></dd>
+              <dt>Total Hours</dt>
+              <dd><%= @job.total_hours.round(2) %></dd>
+              <dt>Start Date</dt>
+              <dd><%= @job.first_day.stamp("December 18, 2015") %></dd>
+              <dt>Recruiter</dt>
+              <dd><%= @job.recruiter.present? ? @job.recruiter.name : "Recruiter unavailable" %></dd>
+            </dl>
+          </div>
+          <h4>Job Description:</h4>
+          <div class='scroll400'>
+
+            <%= markdownify(@job.order.notes) %>
+          </div>
         </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="panel panel-default">
+
+        <div class="panel-body">
+          <h2 class='text-center'>This week</h2>
+          <%= render "employee/timesheets/timesheet", timesheet: @employee.current_timesheet if @employee.current_timesheet.present? %>
+        </div>
+
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-body text-center">
+          <% if @employee.on_shift? || @employee.on_break? %>
+            <%= link_to "You're Currently Clocked In", employee_shift_path(@employee.current_shift), class: 'btn btn-primary' %>
+            <h3><strong><%= shift_times(@employee.current_shift)%></strong></h3>
+          <% else %>
+            <h3><%= @job.title %></h3>
+            <%= render 'employee/jobs/clock', job: @job if policy(@job).clock_in? %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <h2><%= @user.name %></h2>
+          <%= user_email(@user) %>
+
+          <%= render 'users/user', user: @user %>
+
+        </div>
+      </div>
+      <div class='btn-group'>
+        <%= link_to "Edit Profile", edit_employee_employee_path(@employee), class: 'btn btn-primary' %>
+        <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' if @employee.unassigned? %>
+        <%= link_to "View Job Posting", employee_job_board_path, class: 'btn btn-primary' if @employee.unassigned? %>
+      </div>
     </div>
     <div class="col-md-6">
-        <% if @employee.availablity.present? %>
+      <% if @employee.availability.present? %>
         <%= render 'employee/employees/availability', employee: @employee %>
-        <% else %>
-            <%= link_to "Enter Availability", edit_employee_employee_path(@employee), class: 'btn btn-primary' %>
-        <% end %>
+      <% else %>
+        <%= link_to "Enter Availability", edit_employee_employee_path(@employee), class: 'btn btn-primary' %>
+      <% end %>
     </div>
-   <% end %>
+  <% end %>
 </div>

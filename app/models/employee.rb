@@ -47,7 +47,7 @@ class Employee < ActiveRecord::Base
   accepts_nested_attributes_for :work_histories, reject_if: :all_blank, allow_destroy: true
 
   # This isnt working right. Think I should use arrays for this or maybe a new model all together. idk
-  store_accessor :availablity, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday
+  store_accessor :availability, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday
 
   delegate :last_clock_in, to: :current_job
   delegate :last_clock_out, to: :current_job
@@ -105,9 +105,9 @@ class Employee < ActiveRecord::Base
   scope :unassigned, -> { where(assigned: false) }
   scope :available, -> { unassigned.where(dns: false) }
   scope :assigned, -> { where(assigned: true) }
-  scope :first_mondays, -> { where("availablity -> 'monday' = '1st shift'") }
-  scope :first_tuesdays, -> { where("availablity -> 'tuesday' = '1st shift'") }
-  scope :third_tuesdays, -> { where("availablity -> 'tuesday' = '3rd shift'") }
+  scope :first_mondays, -> { where("availability -> 'monday' = '1st shift'") }
+  scope :first_tuesdays, -> { where("availability -> 'tuesday' = '1st shift'") }
+  scope :third_tuesdays, -> { where("availability -> 'tuesday' = '3rd shift'") }
   scope :new_starts, -> { joins(:jobs).where(Job[:start_date].gteq(Date.today.beginning_of_week)) }
   scope :newly_added, -> { where("employees.created_at >= ?", 3.days.ago) }
 
