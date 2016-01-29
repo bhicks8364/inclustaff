@@ -1,131 +1,84 @@
 class Employee::ShiftsController < ApplicationController
-  before_action :set_shift, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :set_employee
+  before_action :set_job
   layout 'employee'
-  # GET /shifts
-  # GET /shifts.json
-  def index
-    
-    @shifts = @employee.shifts
-    
-  end
-
 
   def show
-    @job = @employee.current_job
-    @order = @job.order
-    @company = @order.company
+    @shift = @job.shifts.find(params[:id])
   end
 
-  # GET /shifts/new
-  def new
-      @job = @employee.current_job
-      @shift = @job.shifts.new
-  end
+  def clock_in
+    authorize @job, :clock_in?
 
+    if @job.off_shift?
+      @shift = @job.shifts.create(
+        time_in: Time.current,
+        week: Date.today.beginning_of_week,
+        state: "Clocked In",
+        in_ip: current_user.current_sign_in_ip
+      )
 
-  # GET /shifts/1/edit
-  def edit
-    @job = @shift.job
+      # current_user.events.create(action: "clocked_in", eventable: @shift.employee)
 
-  end
-
-  def create
-    @current_job = @employee.current_job
-
-    @shift = Shift.new(job_id: @current_job.id, 
-                            employee_id: @employee.id,
-                            time_in: Time.current,
-                            earnings: 0.00,
-                            week: Date.today.cweek,
-                            state: "Clocked In",
-                            in_ip: @current_user.current_sign_in_ip)
-
-
-    respond_to do |format|
-      if @shift.save
-        format.html { redirect_to shifts_path(@shift), notice: 'Shift was successfully created.' }
-        format.json { render :show, status: :created, location: @shift }
-      else
-        format.html { render :new }
-        format.json { render json: @shift.errors, status: :unprocessable_entity }
+      respond_to do |format|
+          format.json {
+            render json: {
+              id: @shift.id,
+              clocked_in: @shift.clocked_in?,
+              clocked_out: @shift.clocked_out?,
+              state: @shift.state,
+              time_in: @shift.time_in.strftime("%l:%M%P"),
+              time_out: @shift.time_out,
+              last_out: @job.last_clock_out,
+              in_ip: @shift.in_ip,
+              first_name: @job.employee.first_name
+            }
+          }
       end
     end
   end
-  
+
   def clock_out
-    sleep 2
-    
-    @shift = Shift.find(params[:id])
-    @shift.update(time_out: Time.current,
-                    state: "clocked_out",
-                    out_ip: @current_user.current_sign_in_ip)
-    
-  end
-  
-  def break_start
-    @shift = Shift.find(params[:id])
-      @shift.breaks ||= []
-      @shift.break_out ||= []
-      @shift.breaks << Time.current
-      @shift.break_out << Time.current
-      @shift.state = 'On Break'
-      @shift.save
-    skip_authorization
-  end
-  def break_end
-    @shift = Shift.find(params[:id])
-    if @shift.on_break?
-      @shift.breaks ||= []
-      @shift.break_in ||= []
-      @shift.breaks << Time.current
-      @shift.break_in << Time.current
-      @shift.state = 'Clocked In'
-      @shift.save
-    end
-    skip_authorization
-  end
-    
+    authorize @job, :clock_out?
 
+    if @job.on_shift? && @job.current_shift.present?
+      @shift = @job.current_shift
+      @shift.update(
+        time_out: Time.current,
+        state: "Clocked Out",
+        out_ip: current_user.current_sign_in_ip,
+        week: Date.today.beginning_of_week
+      )
 
-  # PATCH/PUT /shifts/1
-  # PATCH/PUT /shifts/1.json
-  def update
-    @job = @shift.job
+      # current_user.events.create(action: "clocked_out", eventable: @shift.employee)
 
-    respond_to do |format|
-      if @shift.update(shift_params)
-        format.html { redirect_to @shift, notice: 'Shift was successfully updated.' }
-        format.json { render :show, status: :ok, location: @shift }
-      else
-        format.html { render :edit }
-        format.json { render json: @shift.errors, status: :unprocessable_entity }
+      respond_to do |format|
+          format.json {
+            render json: {
+              id: @shift.id,
+              clocked_in: @shift.clocked_in?,
+              clocked_out: @shift.clocked_out?,
+              state: @shift.state,
+              time_in: @shift.time_in.strftime("%l:%M%P"),
+              time_out: @shift.time_out.strftime("%l:%M%P"),
+              in_ip: @shift.in_ip,
+              first_name: @job.employee.first_name
+            }
+          }
       end
-    end
-  end
-
-  # DELETE /shifts/1
-  # DELETE /shifts/1.json
-  def destroy
-
-    @shift.destroy
-    respond_to do |format|
-      format.html { redirect_to employee_path(@employee), notice: 'Shift was successfully destroyed.' }
-      format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_shift
-      @shift = Shift.find(params[:id])
-    end
-    
     def set_employee
       @current_user = current_user if user_signed_in?
       @employee = @current_user.employee
       skip_authorization
+    end
+
+    def set_job
+      @job = @employee.current_job
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

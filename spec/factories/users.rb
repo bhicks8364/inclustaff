@@ -32,6 +32,7 @@
 #  name                   :string
 #  latitude               :float
 #  longitude              :float
+#  start_date             :date
 #
 
 FactoryGirl.define do

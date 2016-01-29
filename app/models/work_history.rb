@@ -3,25 +3,19 @@
 # Table name: work_histories
 #
 #  id            :integer          not null, primary key
+#  employee_id   :integer          not null
 #  employer_name :string
+#  title         :string
 #  start_date    :date
 #  end_date      :date
-#  title         :string
-#  employee_id   :integer
 #  description   :text
-#  current       :boolean
-#  may_contact   :boolean
+#  current       :boolean          default(FALSE)
+#  may_contact   :boolean          default(FALSE)
 #  supervisor    :string
 #  phone_number  :string
 #  pay           :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
 #
-### TO-DO 
-# =>ADD :verified (for reference checks)
-# =>
-#
-#
+
 class WorkHistory < ActiveRecord::Base
     belongs_to :employee
     include ArelHelpers::ArelTable

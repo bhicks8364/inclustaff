@@ -196,11 +196,11 @@ Rails.application.routes.draw do
         end
       end
       resources :shifts do
-        member do
-          patch 'clock_out'
-          patch 'break_start'
-          patch 'break_end'
-          patch 'remove_breaks'
+        resources :breaks, module: :shifts do
+          collection do
+            post :start
+            patch :stop
+          end
         end
       end
     end
@@ -212,6 +212,7 @@ Rails.application.routes.draw do
       get  'home', to: 'dashboard#home'
       get  'job_board', to: 'dashboard#jobs'
       get  'profile', to: 'dashboard#profile'
+
       resources :employees, only: [:show, :edit, :update]
       resources :work_histories
       resources :orders do
@@ -220,22 +221,24 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :jobs do
-        member do
-          patch 'clock_in'
-          patch 'clock_out'
+      resources :jobs
+
+      # Used for the current job
+      resources :shifts do
+        collection do
+          post :clock_in
+          patch :clock_out
+        end
+
+        resources :breaks, module: :shifts do
+          collection do
+            post :start
+            patch :stop
+          end
         end
       end
 
       resources :timesheets
-
-      resources :shifts do
-        member do
-          patch 'clock_out'
-          patch 'break_start'
-          patch 'break_end'
-        end
-      end
     end
     # END EMPLOYEE
 

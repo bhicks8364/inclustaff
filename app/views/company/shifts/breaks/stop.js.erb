@@ -1,0 +1,2 @@
+$(".break-actions").html("<%=j link_to "<i class='fa fa-clock-o'></i> Start Break".html_safe, start_company_shift_breaks_path(@shift), remote: true, method: :post %>");
+$("#shift-times").html("<%=j shift_times(@shift) %>");

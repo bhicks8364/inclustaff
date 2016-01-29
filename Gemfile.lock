@@ -124,12 +124,8 @@ GEM
     docusign_rest (0.1.1)
       json
       multipart-post (>= 1.2)
-    docx (0.2.07)
-      nokogiri (~> 1.5)
-      rubyzip (~> 1.1.6)
     domain_name (0.5.25)
       unf (>= 0.0.5, < 1.0.0)
-    engtagger (0.2.0)
     erubis (2.7.0)
     excon (0.45.4)
     execjs (2.6.0)
@@ -221,10 +217,6 @@ GEM
       ttfunk (~> 1.4.0)
     prawn-table (0.2.2)
       prawn (>= 1.3.0, < 3.0.0)
-    presume (0.0.4)
-      docx
-      engtagger
-      ruby-stemmer
     pundit (1.0.1)
       activesupport (>= 3.0.0)
     rack (1.6.4)
@@ -298,8 +290,6 @@ GEM
       rspec-mocks (~> 3.4.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
-    ruby-stemmer (0.9.6)
-    rubyzip (1.1.7)
     sanitize (3.0.4)
       crass (~> 0.2.0)
       nokogiri (>= 1.4.4)
@@ -411,7 +401,6 @@ DEPENDENCIES
   paranoia (~> 2.1.0)
   pg
   populator
-  presume (~> 0.0.4)
   pundit (~> 1.0.1)
   rails (~> 4.2.1)
   rails_12factor
@@ -434,3 +423,6 @@ DEPENDENCIES
   underscore-rails
   web-console (~> 2.0)
   will_paginate (~> 3.0.6)
+
+BUNDLED WITH
+   1.11.2

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160129173647) do
+ActiveRecord::Schema.define(version: 20160129213318) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -73,6 +73,16 @@ ActiveRecord::Schema.define(version: 20160129173647) do
   add_index "agencies", ["admin_id"], name: "index_agencies_on_admin_id", using: :btree
   add_index "agencies", ["contact_id"], name: "index_agencies_on_contact_id", using: :btree
   add_index "agencies", ["subdomain"], name: "index_agencies_on_subdomain", using: :btree
+
+  create_table "breaks", force: :cascade do |t|
+    t.integer  "shift_id"
+    t.datetime "time_in"
+    t.datetime "time_out"
+    t.decimal  "duration"
+    t.boolean  "paid"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "comments", force: :cascade do |t|
     t.string   "commentable_type"
@@ -310,9 +320,6 @@ ActiveRecord::Schema.define(version: 20160129173647) do
     t.text     "note"
     t.boolean  "needs_adj"
     t.decimal  "break_duration"
-    t.text     "breaks",                                      array: true
-    t.datetime "break_in",                                    array: true
-    t.datetime "break_out",                                   array: true
     t.boolean  "paid_breaks",    default: false
     t.decimal  "pay_rate"
     t.float    "latitude"
@@ -320,7 +327,6 @@ ActiveRecord::Schema.define(version: 20160129173647) do
     t.date     "week"
   end
 
-  add_index "shifts", ["breaks"], name: "index_shifts_on_breaks", using: :btree
   add_index "shifts", ["deleted_at"], name: "index_shifts_on_deleted_at", using: :btree
   add_index "shifts", ["job_id"], name: "index_shifts_on_job_id", using: :btree
   add_index "shifts", ["timesheet_id"], name: "index_shifts_on_timesheet_id", using: :btree

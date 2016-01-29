@@ -19,3 +19,4 @@ elasticsearch-1.7.1.tar.gz
 /log/*
 !/log/.keep
 /tmp
+.byebug_history

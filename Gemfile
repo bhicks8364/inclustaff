@@ -89,9 +89,6 @@ gem "cocoon"
 # SOFT DELETE
 gem 'paranoia', '~> 2.1.0'
 
-# RESUME PARSER
-gem 'presume', '~> 0.0.4'
-
 # FILE UPLOADING
 gem 'refile', '~> 0.5.5', require: ['refile/rails', 'refile/image_processing']
 gem 'refile-mini_magick'

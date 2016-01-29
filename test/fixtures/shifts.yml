@@ -16,17 +16,14 @@
 #  deleted_at     :datetime
 #  in_ip          :string
 #  out_ip         :string
-#  week           :integer
 #  note           :text
 #  needs_adj      :boolean
 #  break_duration :decimal(, )
-#  breaks         :text             is an Array
-#  break_in       :datetime         is an Array
-#  break_out      :datetime         is an Array
 #  paid_breaks    :boolean          default(FALSE)
 #  pay_rate       :decimal(, )
 #  latitude       :float
 #  longitude      :float
+#  week           :date
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
