@@ -4,7 +4,7 @@
         <br>
       <% shifts.each do |shift| %>
           <%= shift_collaspe(shift) %><br>
-           <div class='bg-dark collapse white' id="collapseShift_<%=shift.id%>">
+           <div class='collapse' id="collapseShift_<%=shift.id%>">
               <%=link_to shift.employee.name, admin_employee_path(shift.employee), class: "white" %><br>
                <small><%= shift_times(shift) %></small><br>
                <small><%= link_to "#{shift.hours_worked.round(2)} hours", admin_shift_path(shift), class: "white" %></small>

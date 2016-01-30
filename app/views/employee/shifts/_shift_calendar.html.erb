@@ -3,12 +3,13 @@
   <p class="text-right"><%= date.strftime("%m/%d/%y") %></p>
 
   <% shifts.each do |shift| %>
-    <div id="calendar-shift">
-      <p class:"bg-success"><%= link_to shift.employee.name, employee_shift_path(shift) %>
-     <br><%= shift_times(shift) %></p>
-     <p class="hours-worked"><% if shift.clocked_out? %> <%= shift.time_worked %> hours <% end %> </p>
-      
-    </div>
-  <% end %>
+          <%= shift_collaspe(shift) %>
+            <div class='collapse' id="collapseShift_<%=shift.id%>">
+              <small>
+                <%=link_to shift_times(shift), employee_timesheet_path(shift.timesheet), class: "" %>
+              </small><br>
+               <small><%= link_to "#{shift.hours_worked.round(2)} hours", admin_shift_path(shift), class: "white" %></small>
+            </div>
+      <% end %>
 <% end %>
 </div>

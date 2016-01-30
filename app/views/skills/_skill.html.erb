@@ -1,19 +1,10 @@
-<% if skill.job_order? %>
-	<%= link_to(admin_order_path(skill.skillable), class: 'list-group-item list-group-item-success') do %>
- 		<p class="list-group-item-heading"><%= skill.name %></p>
-    	<p class="list-group-item-text">
-    		<%= skill.skillable.try(:title_company) %>
-    	</p>   	
- 		   
-	<% end %>
-<% elsif skill.employee? %>
-	<%= link_to(admin_employee_path(skill.skillable), class: 'list-group-item list-group-item-info') do %>
-	<p class="list-group-item-heading"<%= skill.name %></p>
-    <p class="list-group-item-text"><%= skill.skillable.try(:name) %></p>
- 		   	
- 		 
-	<% end %>
-
-
-
+<%= div_for skill do %>
+    <% if skill.job_order? && skill.required? %>
+    <i class='fa fa-star'></i><% elsif skill.job_order? %>
+    <i class='fa fa-star-o'></i>
+    <% end %>
+    
+    <strong><%= skill.name %></strong>
+    <%= link_to "<i class='fa fa-trash-o red pull-right'></i>".html_safe, skill, method: :delete, remote: true %>
+   
 <% end %>

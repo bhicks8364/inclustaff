@@ -5,7 +5,6 @@
     <% end %>
     
     <strong><%= skill.name %></strong>
-   
+   <%= link_to "<i class='fa fa-trash-o red pull-right'></i>".html_safe, skill, method: :delete, remote: true  if skill.employee? %>
+
 <% end %>
-
-

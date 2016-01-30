@@ -19,18 +19,16 @@ module ShiftsHelper
 
 
     def on_break_for(shift)
-      tense1 = shift.today? ? "have" : "did"
-      tense2 = shift.today? ? "taken" : "take"
       name = user_signed_in? ? "You" : "#{shift.employee.first_name}"
-
+    
       if shift.on_break?
-        "<h3>  #{name} #{tense1} been on break for  #{distance_of_time_in_words(shift.breaks.last.time_in, Time.current, include_seconds: true)} </h3>".html_safe
+        "<h3> #{name} #{user_signed_in? ? 'have' : 'has' } been on break for  #{distance_of_time_in_words(shift.breaks.last.time_in, Time.current, include_seconds: true)} </h3>".html_safe
       #TODO: If there are any completed breaks, do this
       elsif shift.breaks.any?
-      "<h3>  #{name} #{tense1} been on break for  #{distance_of_time_in_words(shift.breaks.last.time_in, shift.breaks.last.time_out, include_seconds: true)} </h3>".html_safe
+      "<h3>  #{name} took a break for  #{distance_of_time_in_words(shift.breaks.first.time_in, shift.breaks.last.try(:time_out) || Time.current , include_seconds: true)} </h3>".html_safe
         
-      elsif !shift.took_a_break?
-      "<h3>  #{name} #{tense1} not #{tense2} a break. </h3>".html_safe
+      elsif !shift.took_a_break? && shift.today?
+      "<h3>  #{name} did not a break. </h3>".html_safe
       end
     end
     def break_times_for(shift)
@@ -56,7 +54,7 @@ module ShiftsHelper
       elsif shift.clocked_in?
         "<i class='fa fa-cog fa-spin'></i>".html_safe
       else
-        "<i class='fa fa-user'></i>".html_safe
+        "<i class='fa fa-cog'></i>".html_safe
       end
     end
     def breaks_collaspe(shift)
@@ -70,8 +68,9 @@ module ShiftsHelper
       </a>".html_safe
     end
     def shift_collaspe(shift)
-      "<a class='black' role='button' data-toggle='collapse' href='#collapseShift_#{shift.id}' aria-expanded='false' aria-controls='collapseShift_#{shift.id}'>
-        #{shift_sym(shift)} <small>#{truncate(shift.employee.name)}</small>
+      title = user_signed_in? ? "#{number_to_currency(shift.earnings)}" : "#{shift.employee.name}"
+      "<a class='button' role='button' data-toggle='collapse' href='#collapseShift_#{shift.id}' aria-expanded='false' aria-controls='collapseShift_#{shift.id}'>
+        #{shift_sym(shift)} <small>#{truncate(title)}</small>
       </a>".html_safe
     end
 

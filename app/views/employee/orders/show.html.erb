@@ -19,9 +19,6 @@
     <h4>Open positions: <%= @order.open_jobs %></h4>
 
   <h1><%= @order.active ? "" : "Inactive" %></h1>
- 
-  
-
   
    
   <div class='dark col-md-8'>
@@ -76,7 +73,7 @@
            <h4 id='no-skills' class="center">This job order has no skills entered.</h4>
           <% end %>
             <div  id='skills' class=''>
-              <%= render @order.skills %>
+              <%= render partial: "employee/skills/skill", collection: @order.skills %>
              
             </div>
      
