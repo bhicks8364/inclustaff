@@ -48,7 +48,7 @@ class Timesheet < ActiveRecord::Base
   delegate :name_title, :mark_up, :pay_rate, :bill_rate, :ot_rate, :agency, :company, :manager, :recruiter, :current_shift, :account_manager, to: :job
 
   before_save :total_timesheet, if: :clocked_out?
-  after_initialize :defaults
+  before_create :defaults
 
   after_save :update_company_balance!, if: :has_a_job?
   before_create :set_job, unless: :has_a_job?
@@ -142,6 +142,7 @@ class Timesheet < ActiveRecord::Base
     self.week = Date.today if week.nil?
     self.reg_hours = 0 if reg_hours.nil?
     self.ot_hours = 0 if ot_hours.nil?
+    self.gross_pay = 0 if gross_pay.nil?
   end
 
   def total_hours

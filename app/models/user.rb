@@ -113,7 +113,10 @@ class User < ActiveRecord::Base
   scope :available, -> { joins(:employee).merge(Employee.available)}
   scope :assigned, -> { joins(:employee).merge(Employee.with_active_jobs)}
   scope :online, -> { where("updated_at > ?", 10.minutes.ago) }
-
+  
+  def company_admin?;           false;  end
+  def admin?;           false;  end
+  def employee?;           true;  end
 
   def set_check_in!
     if checked_in_at.nil?
