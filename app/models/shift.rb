@@ -136,6 +136,7 @@ class Shift < ActiveRecord::Base
       # Gotta clock out first. Maybe I should use AASM for this?? idk
     end
   end
+  def today?; time_in > Time.current.beginning_of_day; end
 
   def self.clock_out_all!
     Shift.clocked_in.each {|s| s.update(time_out: Time.current, state: "Clocked Out") }
@@ -180,8 +181,11 @@ class Shift < ActiveRecord::Base
   end
 
   def hours_worked
-    if clocked_in? || on_break?
+    if clocked_in?
       time_diff(time_in, Time.current)
+    elsif on_break?
+      time = paid_breaks? ? Time.current : current_break.time_in
+      time_diff(time_in, time)
     elsif clocked_out?
       time_diff(time_in, time_out)
     end
@@ -230,9 +234,13 @@ class Shift < ActiveRecord::Base
   end
 
   def with_unpaid_breaks
-    @break_duration ||= break_duration? ? break_duration : 0
-    unpaid_breaks = (hours_worked - @break_duration) * pay_rate
-    unpaid_breaks.round(2)
+    if break_duration > 0.01 
+      unpaid_breaks = (hours_worked - break_duration) * pay_rate
+      unpaid_breaks.round(2)
+    else
+      unpaid_breaks = hours_worked * pay_rate
+      unpaid_breaks.round(2)
+    end
   end
 
   def work_date

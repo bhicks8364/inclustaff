@@ -25,8 +25,6 @@
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="home">
         <div class='col-md-6'> 
-            <%= render 'admin/jobs/clock', job: @job %>
-            <hr>
             <dl class="dl-horizontal">
               <dt>Company</dt>
               <dd><%= @company.name %></dd>
@@ -51,7 +49,7 @@
                 </tr>
                 <tr>
                   <td class=""><%= @shift.hours_worked %></td>
-                  <td class=""><%= number_to_currency(@shift.earnings) %></td>
+                  <td class=""><%= @shift.paid_breaks? ? number_to_currency(@shift.with_paid_breaks) : number_to_currency(@shift.with_unpaid_breaks) %></td>
                 </tr>
                 <tr>
                   <td class="">Break type: <%= @shift.paid_breaks? ? "PAID" : "UNPAID" %></td>
@@ -88,11 +86,11 @@
         </div>
     </div>
     <div role="tabpanel" class="tab-pane" id="break">
-        <div class="col-md-6 white ">
+        <div class="col-md-12 ">
+            <h2>Break Details</h2>
             <div id='shift-break-times'>
             </div>
             <div class=''>
-                <h4>Break Details</h4>
                 <%= on_break_for(@shift) %>
         		<% if @shift.paid_breaks? %>
         			<h4> PAID BREAKS </h4>

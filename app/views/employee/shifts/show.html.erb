@@ -3,10 +3,14 @@
     <h3 class='text-center'><span class='' id='shift-times'><%= shift_times(@shift) %></span></h3>
     <hr>
     <h1 class="text-center">
+        <%=@shift.paid_breaks? %>
+        paid: <%=number_to_currency(@shift.with_paid_breaks)%> <br>
+        unpaid: <%=number_to_currency(@shift.with_unpaid_breaks)%> <br>
+        earnings: <%=number_to_currency(@shift.earnings)%> <br>
         <span id='shift-sym'><%= shift_sym(@shift) %></span>
         <%= link_to @employee.name, employee_employee_path(@employee) %>
     </h1>
-    <h3>Total Earnings: <%= number_to_currency(@shift.earnings) %> </h3>
+    <h3>Total Earnings: <%= @shift.paid_breaks? ? number_to_currency(@shift.with_paid_breaks) : number_to_currency(@shift.with_unpaid_breaks) %> </h3>
 </div>
 <div class='col-md-8 lightbox'>
 <% if @shift.past? %>

@@ -48,7 +48,7 @@
       <div class="panel panel-default">
         <div class="panel-body text-center">
           <% if @employee.on_shift? || @employee.on_break? %>
-            <%= link_to "You're Currently Clocked In", employee_shift_path(@employee.current_shift), class: 'btn btn-primary' %>
+            <%= link_to "You're Currently #{@employee.current_shift.state.titleize}", employee_shift_path(@employee.current_shift), class: 'btn btn-primary' %>
             <h3><strong><%= shift_times(@employee.current_shift)%></strong></h3>
           <% else %>
             <h3><%= @job.title %></h3>

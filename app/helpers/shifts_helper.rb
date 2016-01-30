@@ -19,14 +19,18 @@ module ShiftsHelper
 
 
     def on_break_for(shift)
+      tense1 = shift.today? ? "have" : "did"
+      tense2 = shift.today? ? "taken" : "take"
+      name = user_signed_in? ? "You" : "#{shift.employee.first_name}"
 
       if shift.on_break?
-        "<h3>  #{shift.employee.first_name}  has been on break for  #{distance_of_time_in_words(shift.breaks.last.time_in, Time.current, include_seconds: true)} </h3>".html_safe
+        "<h3>  #{name} #{tense1} been on break for  #{distance_of_time_in_words(shift.breaks.last.time_in, Time.current, include_seconds: true)} </h3>".html_safe
       #TODO: If there are any completed breaks, do this
-      #elsif shift.breaks.count >= 2
-      #"<h4>  #{shift.employee.first_name}  took a break for   #{distance_of_time_in_words(shift.breaks[0], shift.breaks[1]) } </h4>".html_safe
+      elsif shift.breaks.any?
+      "<h3>  #{name} #{tense1} been on break for  #{distance_of_time_in_words(shift.breaks.last.time_in, shift.breaks.last.time_out, include_seconds: true)} </h3>".html_safe
+        
       elsif !shift.took_a_break?
-      "<h4>  #{shift.employee.first_name}  has not taken a break. </h4>".html_safe
+      "<h3>  #{name} #{tense1} not #{tense2} a break. </h3>".html_safe
       end
     end
     def break_times_for(shift)

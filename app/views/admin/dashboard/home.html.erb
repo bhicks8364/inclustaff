@@ -17,7 +17,7 @@
     
       </div>
       <div class="btn-group" role="group">
-      <%= link_to(@current_admin, class: "btn btn-primary") do %>
+      <%= link_to(admin_admin_path(@current_admin), class: "btn btn-primary") do %>
     							<i class='fa fa-user'></i>
     
     								<span>Admin Home</span>
@@ -113,7 +113,7 @@
     
     
       <% @current_agency.admins.order(:last_name).each do |admin| %>
-				<%= link_to(admin_path(admin), class: "list-group-item list-group-item-success") do %>
+				<%= link_to(admin_admin_path(admin), class: "list-group-item list-group-item-success") do %>
 			       <div data-behavior="admin" data-id="<%= admin.id %>" class=''>
 			       
 			      <strong> <%= admin.name %></strong>

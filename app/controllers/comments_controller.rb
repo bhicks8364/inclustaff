@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:show, :edit, :update, :destroy, :mark_as_read]
-  before_action :authenticate_admin!
+  # before_action :authenticate_admin!
   layout :determine_layout
   def index
     @comments = Comment.all
@@ -32,6 +32,7 @@ class CommentsController < ApplicationController
     @comment.user = current_user if user_signed_in?
     @comment.admin = current_admin if admin_signed_in?
     @comment.company_admin = current_company_admin if company_admin_signed_in?
+    skip_authorization
     respond_to do |format|
       if @comment.save
         format.html { redirect_to @comment, notice: 'Comment was successfully created.' }

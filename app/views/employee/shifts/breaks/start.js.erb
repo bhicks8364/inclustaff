@@ -1,2 +1,3 @@
 $(".break-actions").html("<%=j link_to "<i class='fa fa-clock-o'></i> End Break".html_safe, stop_employee_shift_breaks_path(@shift), remote: true, method: :patch %>");
 $("#shift-times").html("<%=j shift_times(@shift) %>");
+$("#shift-sym").html("<%=j shift_sym(@shift) %>");
