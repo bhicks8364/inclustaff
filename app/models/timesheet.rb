@@ -52,6 +52,7 @@ class Timesheet < ActiveRecord::Base
 
   after_save :update_company_balance!, if: :has_a_job?
   before_create :set_job, unless: :has_a_job?
+  # I dont think setting the invoice has to happen before_save. Maybe just before create?
   before_save :set_invoice, unless: :has_invoice?
   after_save :update_invoice!, if: :has_invoice?
 
@@ -138,7 +139,7 @@ class Timesheet < ActiveRecord::Base
 
   def defaults
     self.state = "pending" if state.nil?
-    self.week = Date.today.cweek if week.nil?
+    self.week = Date.today if week.nil?
     self.reg_hours = 0 if reg_hours.nil?
     self.ot_hours = 0 if ot_hours.nil?
   end

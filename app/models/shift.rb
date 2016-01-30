@@ -79,7 +79,6 @@ class Shift < ActiveRecord::Base
 
   after_save :update_timesheet!
   before_save :set_week, :set_timesheet, :calculate_break, :reg_earnings
-  after_initialize :set_defaults, if: :new_record?
   after_initialize :set_pay
 
   def self.worked_before(date)
@@ -158,31 +157,13 @@ class Shift < ActiveRecord::Base
     Shift.group_by_week(:time_in, range: 2.months.ago.midnight...Time.current).sum(:time_worked)
   end
 
-  def remove_all_breaks!
-    state = (time_out > time_in) ? "Clocked Out" : "Clocked In"
-    update(
-      breaks:        [],
-      break_in:      [],
-      break_out:     [],
-      break_duration: 0,
-      state:       state
-    )
-  end
-
   def set_pay
     self.pay_rate = job.pay_rate if pay_rate.nil?
     self.break_duration = 0 if break_duration.nil?
   end
 
-  def set_defaults
-    # self.employee = job.employee if employee.nil?
-    # self.in_ip = employee.current_sign_in_ip if in_ip.nil?
-    self.break_out = [] if break_out.nil?
-    self.break_in = [] if break_in.nil?
-    self.breaks = [] if breaks.nil?
-  end
-
   def clock_in!
+    # This just needs taken out it think...
     if job.off_shift?
       self.job.shifts.create(
         time_in: Time.current,
@@ -238,7 +219,9 @@ class Shift < ActiveRecord::Base
   end
 
   def delete_timesheet
-    timesheet.destroy if timesheet.shifts.count.zero?
+    if timesheet.shifts.count == 1
+      timesheet.destroy
+    end
   end
 
   def with_paid_breaks

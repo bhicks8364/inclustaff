@@ -33,11 +33,11 @@ class Job < ActiveRecord::Base
     has_many :timesheets
     has_many :shifts
     has_one :current_shift,-> { where.not(state: "Clocked Out") }, class_name: 'Shift'
-    has_one :current_timesheet,-> { where week: Date.today.cweek  }, class_name: 'Timesheet'
+    has_one :current_timesheet,-> { where(Timesheet[:week].eq(Date.today.beginning_of_week))  }, class_name: 'Timesheet'
     belongs_to :recruiter, class_name: "Admin", foreign_key: "recruiter_id"
     has_many :comments, as: :commentable
     has_many :events, as: :eventable
-
+    
     accepts_nested_attributes_for :employee
 
     delegate :manager, to: :order
