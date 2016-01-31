@@ -58,6 +58,7 @@ class WorkHistory < ActiveRecord::Base
     def set_employee_tags
         employee.set_work_tags!
     end
+ 
     
     private
     def not_current?

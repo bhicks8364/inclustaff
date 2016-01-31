@@ -130,7 +130,7 @@ class UsersController < ApplicationController
     private
     
     def user_import_params
-        params.require(:user_import).permit(:file)
+        params.require(:user_import).permit(:file, :agency_id)
     end
 
     def user_params

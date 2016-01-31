@@ -99,7 +99,9 @@ class Admin::JobsController < ApplicationController
 
   # GET /jobs/new
   def new
-
+    if @current_agency.admins.recruiters.count == 0
+      redirect_to new_admin_admin_path, notice: "Please add a recruiter before making a placement."
+    end
     @admin = current_admin
     if params[:order_id]
       @order = Order.find(params[:order_id])

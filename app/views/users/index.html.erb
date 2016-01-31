@@ -1,7 +1,8 @@
 <div class='col-md-12 lightbox '>
+	<h1 class='page-header'>Available Candidate</h1>
 <%= link_to "<i class='fa fa-user-plus fa-1x fa-fw pull-left'></i> Add Employee".html_safe, new_user_registration_path, class: 'btn btn-primary pull-right' %>
 	
-		<div class=" col-md-8 ">
+		<div class="col-md-8 ">
 			<div class="table-responsive">
 				<table id='' class="table">
 					<thead>
@@ -43,8 +44,8 @@
 			</div>
 			
 		</div>
-		<div class='col-md-4'>
-			<%= link_to 'DNS List', dns_list_users_path, class: 'btn btn-danger' %>
+		<div class='col-md-4 well'>
+			
 			<%= form_for @import, url: import_users_path, multipart: true do |f| %>
 				
 				<% if @import.errors.full_messages.each do |msg| %>
@@ -53,20 +54,24 @@
 						<% end %>
 					</div>
 				<% end %>
-		
+				<p>last_name	first_name	email	address	city	state	zipcode</p>
+					<%= f.hidden_field :agency_id, value: @current_agency.id %>
 				<%= f.file_field :file %>
 					<%= f.submit "Upload" %>
 				<% end %>
-		
+			</div>
+		<div class='col-md-4'>
 			<%= link_to(users_path(@users, format: :csv), class: 'btn btn-primary') do %>
 		  		<i class="fa fa-file-excel-o fa-lg"></i> Export CSV
 		  	<% end %>
+		  	<%= link_to 'DNS List', dns_list_users_path, class: 'btn btn-danger' %>
 		</div>
 		
 
-</div>
-<div style='width: 800px;'>
+<div class='col-md-8' style='width: 500px;'>
   <div id="map" style='width: 800px; height: 400px;'></div>
+</div>
+
 </div>
 <script type='text/javascript'>
 handler = Gmaps.build('Google');

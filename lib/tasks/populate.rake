@@ -8,7 +8,7 @@ namespace :db do
 		def range (min, max)
 	    	rand * (max-min) + min
 		end
-		Apartment::Tenant.switch!('orbie')
+		Apartment::Tenant.switch!('demoo')
 		Company.populate 3 do |company|
 			company.name = FFaker::Company.name
 			company.city = FFaker::Address.city
@@ -16,26 +16,26 @@ namespace :db do
 			company.zipcode = FFaker::AddressUS.zip_code
 			company.address = FFaker::AddressUS.street_address
 			company.phone_number = FFaker::PhoneNumber.phone_number
-			company.agency_id = 23
+			company.agency_id = 3
 			company.contact_name = Faker::Name.name
 			company.contact_email = Faker::Internet.safe_email
-			Order.populate(1...3) do |order|
-				order.company_id = company.id
-				order.agency_id = 23
-				order.needed_by = Faker::Date.forward(14)
-				order.title = FFaker::Company.position
-				order.notes = FFaker::HealthcareIpsum.paragraph
-				order.number_needed = 1..4
-				order.pay_range = [ "$8.10 - $10.00","$10.00 - $12.00","$12.00 - $15.00", "$15.00 - $18.00", "$18.00 - $22.00", "$22.00 +  "]
-				order.est_duration = [ "Temp-to-Hire", "Direct-Hire", "Temporary"]
-				order.dt_req = [ "None Required", "Yes - 5 panel screen", "Yes - 10 panel screen"]
-				order.bg_check = [ "None Required", "Yes - No Felonies", "Yes - Case by case"]
-				order.shift = [ "1st shift", "2nd shift", "3rd shift", "Flexible"]
-				order.stwb = [true, false]
-				order.heavy_lifting = [true, false]
-				order.active = true
-				order.urgent =  [true, false]
-			end
+			# Order.populate(1...3) do |order|
+			# 	order.company_id = company.id
+			# 	order.agency_id = 3
+			# 	order.needed_by = Faker::Date.forward(14)
+			# 	order.title = FFaker::Company.position
+			# 	order.notes = FFaker::HealthcareIpsum.paragraph
+			# 	order.number_needed = 1..4
+			# 	order.pay_range = [ "$8.10 - $10.00","$10.00 - $12.00","$12.00 - $15.00", "$15.00 - $18.00", "$18.00 - $22.00", "$22.00 +  "]
+			# 	order.est_duration = [ "Temp-to-Hire", "Direct-Hire", "Temporary"]
+			# 	order.dt_req = [ "None Required", "Yes - 5 panel screen", "Yes - 10 panel screen"]
+			# 	order.bg_check = [ "None Required", "Yes - No Felonies", "Yes - Case by case"]
+			# 	order.shift = [ "1st shift", "2nd shift", "3rd shift", "Flexible"]
+			# 	order.stwb = [true, false]
+			# 	order.heavy_lifting = [true, false]
+			# 	order.active = true
+			# 	order.urgent =  [true, false]
+			# end
 			
 		end
 	  puts 'All done!!!'
@@ -72,12 +72,12 @@ namespace :db do
 	require 'populator'
 	require 'ffaker'
 	password = "password"
-	Apartment::Tenant.switch!('vector')
+	Apartment::Tenant.switch!('demoo')
 	  User.populate 50 do |user|
-	  	user.agency_id = 21
+	  	user.agency_id = 3
 		user.first_name = FFaker::Name.first_name
 		user.last_name = FFaker::Name.last_name
-		user.email = FFaker::Internet.email
+		user.email = FFaker::Internet.free_email
 		user.city = FFaker::Address.city
 		user.state = FFaker::AddressUS.state
 		user.zipcode = FFaker::AddressUS.zip_code

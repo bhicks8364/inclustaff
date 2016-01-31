@@ -159,12 +159,14 @@ class User < ActiveRecord::Base
      end
   end
    # IMPORT TO CSV
-  def self.assign_from_row(row)
+  def self.assign_from_row(row, agency_id)
+    
     user = User.where(email: row[:email]).first_or_initialize
     user.assign_attributes row.to_hash.slice(:first_name, :last_name, :agency_id, :email, :code, :role, :address, :city, :state, :zipcode)
     user.password = "password"
     user.password_confirmation = "password"
-    
+    user.agency_id = agency_id
+    user
   end
 
    # EXPORT TO CSV
