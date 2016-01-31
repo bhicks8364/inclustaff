@@ -75,6 +75,9 @@ class Admin::OrdersController < ApplicationController
 
   # GET /orders/new
   def new
+    if @current_agency.admins.account_managers.count == 0
+      redirect_to new_admin_admin_path, notice: "Please add an account manager before addming job orders."
+    end
     if params[:company_id]
     @company = Company.find(params[:company_id])
     @account_managers = @company.account_managers

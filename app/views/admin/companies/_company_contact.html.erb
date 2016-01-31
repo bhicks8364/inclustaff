@@ -1,20 +1,19 @@
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Company Information</button>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Company Information</button>
 
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content dark">
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content well">
       
           <h4><%= link_to company.name, admin_company_path(company) %></h4>
           <%= company.address %><br>
           <%= company.city %>, <%= company.state %> <%= company.zipcode %><br>
           <%= company.phone_number %>
-        
-                  <address>
-          <strong><%= company.contact_name %></strong><br>
-         <%= company.contact_email %>
          <hr>
-         Account Manager: <%= company.account_managers.first %>
+         Company Contact<br>
+          <strong><%= link_to company.contact.name, company.contact if company.contact.present? %></strong><br>
+         <%= company.contact_email %>
         
+        <p class=''> Account Manager: <%= link_to company.current_account_manager.name, admin_admin_path(company.current_account_manager) %> </p>
     </div>
   </div>
 </div>

@@ -12,9 +12,9 @@
 		<div class="tab-pane fade in active" id="tab-users">
 		<h2>	Job Orders I Manage</h2>
 			<% @company_admin.managed_orders.each do |order| %>
-	           <%= order.id%>   <%= info_popover(order) %> <%= order.title %><br>
+	           <%= order.id%>   <%= info_popover(order) %> <%= signed_in_link_to order.title, order %><br>
 	          <% order.jobs.each do |job| %>
-	          	<%= job.status %><br>
+	          	<%= signed_in_link_to job.status, job %><br>
 	          <% end %>
 	        <% end %>
 			<% if company.employees.any? %>

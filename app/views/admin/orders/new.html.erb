@@ -2,8 +2,10 @@
 <h3 class='text-center'>New Job Order</h3>
       
     <% if @company.present? %>
-        <h4><strong><%= link_to @company.name, admin_company_path(@company) %></strong></h4>
-    <%= render 'admin/companies/company_contact', company: @company %>
+        <h2 class='text-center'><strong><%= link_to @company.name, admin_company_path(@company) %></strong></h2>
+    <div class='text-center'>
+        <%= render 'admin/companies/company_contact', company: @company %>
+    </div>
     <%end%>
 
         

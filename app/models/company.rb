@@ -87,6 +87,10 @@ class Company < ActiveRecord::Base
         admin.password_confirmation = "password"
       end
     end
+    
+    def contact
+      CompanyAdmin.where(email: contact_email).first
+    end
      def send_notification_email
        NotificationMailer.new_company(self).deliver_later
      end

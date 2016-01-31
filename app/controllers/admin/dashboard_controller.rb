@@ -24,6 +24,7 @@ class Admin::DashboardController < ApplicationController
     end
     def account_manager
         @orders = Order.all.paginate(page: params[:page], per_page: 15)
+        @q = @orders.ransack(params[:q])
         skip_authorization
     end
     

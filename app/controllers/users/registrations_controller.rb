@@ -1,7 +1,8 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 before_filter :configure_sign_up_params, only: [:create]
 # before_filter :configure_account_update_params, only: [:update]
-
+  layout :determine_layout
+  
 
   def new
     if admin_signed_in?
@@ -66,6 +67,18 @@ before_filter :configure_sign_up_params, only: [:create]
     elsif signed_in? == false
       sign_in(resource)
       root_path
+    end
+  end
+  
+  def determine_layout
+    if admin_signed_in?
+      "admin_layout"
+    elsif company_admin_signed_in?
+      "company_layout"
+    elsif user_signed_in?
+      "employee"
+    else
+        "application"
     end
   end
   
