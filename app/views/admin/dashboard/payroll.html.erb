@@ -1,6 +1,7 @@
 
 
 <div class="col-md-12 lightbox">
+	<%= render 'admin/shared/welcome/payroll_dashboard' if @current_admin.sign_in_count == 1 || @current_agency.subdomain == "demo" %> 
 	<h1 class='page-header white'>Payroll Dashboard</h1>
 	<div class="tabs-wrapper">
 		<div class="clearfix">
