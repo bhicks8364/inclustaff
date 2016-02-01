@@ -38,6 +38,9 @@
 </div>
     </div>    
 <div class=' '>
+    <% @work_history.listed_skills.each do |skill| %>
+        <%= skill.name %>
+    <% end %>
             <strong>Duties / Responsibilities</strong><br>
            <%= highlight(@work_history.description, Skill.job_order.map(&:name), highlighter: '<a href="/tags?tag=\1">\1</a>') %>
        </div>

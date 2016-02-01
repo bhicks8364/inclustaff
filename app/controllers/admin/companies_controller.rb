@@ -44,7 +44,9 @@ class Admin::CompaniesController < ApplicationController
 
   # GET /companies/new
   def new
-    
+    if @current_agency.admins.account_managers.count == 0
+      redirect_to new_admin_admin_path, notice: "Please add an account manager before adding a company."
+    end
     @company = @current_agency.companies.new
     authorize @company
   end

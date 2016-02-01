@@ -1,8 +1,6 @@
-<div class='col-md-12 lightbox'>
-
-  <h1 class='page-header'>Recruiting Dashboard</h1>
+<div class='col-md-12 lightbox-long'>
+<%= render 'admin/shared/welcome/recruiter_dashboard' if @current_admin.sign_in_count == 1 || @current_agency.subdomain == "demo" %> 
   <div class='pull-right'><%= render 'admin/orders/search' %></div>
-  	<h2><%= @current_admin.username %></h2>
   <div class="col-md-12">
 				<div class="tabs-wrapper">
 					<div class="clearfix">
@@ -19,28 +17,49 @@
 					
 					<div class="tab-content">
 						<div class="tab-pane fade in active" id="tab-home">
-							<div class='col-md-12'>
-								<div class="col-md-6 lightbox">
-									<h2 class=''>Recent Candidate Activity</h2>
-								<% Event.looking_for_work.order(:created_at).each do |event| %>
+							<div class='col-md-12 metal well well-sm'>
+								 <h2>Recent Activity</h2>
+								<div class="col-md-4">
+									<h3 class='text-info'>Looking for work</h3>
+									<% if Event.looking_for_work.any? %>
+								<% Event.looking_for_work.order(:created_at).limit(10).each do |event| %>
 					              <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
 					                <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
 					              <% end %>
 					            <% end %>
+					            <% else %>
+					            	<p class='lead bold'>No candidates to show.</p>
+					            	
+					            <% end %>
+					            
 								</div>
-								<div class="col-md-6 lightbox">
-									<h2 class=''>Recent Job Approvals</h2>
-								<% Event.job_approvals.order(:created_at).each do |event| %>
+								<div class="col-md-4">
+									<h3 class='text-success'>Job Approvals</h3>
+									<% if Event.job_approvals.any? %>
+								<% Event.job_approvals.order(:created_at).limit(10).each do |event| %>
 					              <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
 					                <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
 					              <% end %>
 					            <% end %>
-					            <hr>
-					            <h2 class=''>Recent Job Declines</h2>
-								<% Event.job_rejections.order(:created_at).each do |event| %>
+					            <br>
+					            <% else %>
+					            	<p class='lead bold'>No recent approvals.</p>
+					            
+					            <% end %>
+					            	
+					            </div>
+					            <div class="col-md-4">
+					            <h3 class='text-danger'>Job Declines</h3>
+					            <% if Event.job_rejections.any? %>
+								<% Event.job_rejections.order(:created_at).limit(10).each do |event| %>
 					              <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
 					                <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
 					              <% end %>
+					            <% end %>
+					            
+					            <% else %>
+					            	<p class='lead bold'>No recent declines.</p>
+					            
 					            <% end %>
 								</div>
 								

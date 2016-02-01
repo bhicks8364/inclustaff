@@ -1,4 +1,5 @@
 <div class='col-md-12 lightbox '>
+	<%= render 'admin/shared/welcome/candidates' if @current_admin.sign_in_count == 1 || @current_agency.subdomain == "demo" %> 
 	<h1 class='page-header'>Available Candidate</h1>
 <%= link_to "<i class='fa fa-user-plus fa-1x fa-fw pull-left'></i> Add Employee".html_safe, new_user_registration_path, class: 'btn btn-primary pull-right' %>
 	
@@ -17,7 +18,7 @@
 						<%= content_tag_for(:tr, @users) do |user| %>
 						<td>
 						
-								<%= link_to "<i class='fa fa-star'></i>".html_safe, follow_user_path(user), method: :post, class: "table-link" if !current_admin.is_following?(user) %>
+								<%= link_to "<i class='fa fa-star'></i>".html_safe, follow_user_path(user), method: :post, class: "button" if !current_admin.is_following?(user) %>
 						</td>
 							<td>
 								<%= link_to user.name, user, class: "user-link black" %>

@@ -6,7 +6,7 @@
 		<%= f.association :company, as: :select, collection: @current_admin.companies.distinct, label: false, prompt: "Choose a company" if @company.nil? %>
 		<%= f.input :industry, as: :select,	collection: [ "Manufacturing", "General Labor", "Office", "Sales", "IT", "Retail", "Logistics", "Warehouse", "Medical", "Food Service"], label: false,	prompt: "Select an industry"  %>
 		<%= f.input :title, placeholder: "Job Title", label: false  %>
-		<%= f.input :address, hint: "We filled in the company address for you, but you can change it if main job site it at a different location.", label: "Jobsite Location", value: @company.address if @company.present?  %>
+		<%= f.input :address, placeholder: "You can leave this blank if same as company address.", label: "Jobsite Location" %>
 		<div class='form-group text-center'>
 			<p class='lead'>When do you need them to start?</p>
 			<%= f.input :needed_by, default: Date.tomorrow, as: :date, end_year: Date.today.year + 1, start_year: Date.today.year, order: [:month, :day, :year], wrapper_html: {class: "form-inline"}, label: false %>

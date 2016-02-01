@@ -1,4 +1,5 @@
 <div class="col-md-12">
+	<%= render 'admin/shared/welcome/agency_setup' if @current_admin.sign_in_count == 1 || @current_agency.subdomain == "demo" %> 
 	<h2 class='text-right metal bold'>  <span class='label label-success black'>Sales Goal &nbsp;<%= number_to_currency(@current_agency.weekly_sales_goal) %></span></h2>
 	<h1 class='page-header white'>Owner Dashboard</h1>
 	<div class="tabs-wrapper">

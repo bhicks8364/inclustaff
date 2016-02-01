@@ -3,14 +3,17 @@ class DashboardController < ApplicationController
   layout :determine_layout
   
   def home
+    
     @inquiry = Inquiry.new
-    @orders = @current_agency.orders.all.paginate(page: params[:page], per_page: 15) if admin_signed_in?
+    @orders = @current_agency.orders.all.paginate(page: params[:page], per_page: 15) if admin_signed_in? 
     #ROOT LANDING PAGE - NO SUBDOMAIN && NO ONE IS SIGNED IN
     if @current_agency.nil? && signed_in? == false
       render 'mainpage'
       
     end
-    
+    if @current_agency.present? && @current_agency.subdomain == "demo" && !signed_in?
+      render 'demo_page'
+    end
     #WITH SUBDOMAIN
     #ROOT FOR WHEN A SUBDOMAIN IS PRESENT && NO ONE IS SIGNED IN
     if @current_agency.present? && signed_in? == false
@@ -19,6 +22,7 @@ class DashboardController < ApplicationController
     #ROOT FOR ADMIN DASHBOARDS IF SIGNED IN
     if admin_signed_in? && @current_agency.present?
       # ROUTE TO DASHBOARD BASED ON ROLE
+      @candidates = User.available
         if current_admin.owner?
           render 'admin/dashboard/owner'
         elsif current_admin.account_manager?
@@ -26,7 +30,7 @@ class DashboardController < ApplicationController
         elsif current_admin.recruiter?
         @q = Order.includes(:company, :jobs).needs_attention.ransack(params[:q]) 
         @jobs = current_admin.jobs.active.paginate(page: params[:page], per_page: 15)
-         @timesheets = Timesheet.by_recuriter(current_admin.id)
+         @timesheets = Timesheet.by_recruiter(current_admin.id)
          
          @orders = Order.needs_attention.order(:needed_by).paginate(page: params[:page], per_page: 15)
           render 'admin/dashboard/recruiter'

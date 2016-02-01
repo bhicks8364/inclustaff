@@ -1,5 +1,23 @@
 <div class='col-md-12 lightbox'>
   <div class='center form'>
+      	   <% if @current_agency.subdomain == "demo" %>
+<h2>Demo Log in</h2>
+
+<div class=' well'>
+  <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <div class="form-group">
+    <p class='metal lead bold'>Select which role you want to sign in as.</p>
+    <%= f.input :email, as: :select, collection: @current_agency.company_admins, label_method: :role, value_method: :email, required: false, include_blank: false, label: false  %>
+    <%= f.hidden_field :password, required: false, value: "password" %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, "Try it out", class: 'btn btn-success' %>
+  </div>
+<% end %>
+</div>
+
+<%else%>
     <h2>Client Sign In</h2>
     
     <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
@@ -15,5 +33,6 @@
     <% end %>
     
     <%= render "devise/shared/links" %>
+  <% end %>
 </div>
 </div>
