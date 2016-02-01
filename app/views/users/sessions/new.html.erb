@@ -3,12 +3,25 @@
     <div class="col-md-3"></div>
   	<div class="col-md-6">
   	   <% if @current_agency.subdomain == "demo" %>
-<h2>Demo Log in</h2>
-
-<div class=' text-center well'>
+<h2 class='text-center'>Select who you would like to sign in as.</h2>
+<div class='col-md-6 text-center well'>
+  <h3>Potential Candidate</h3>
   <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
   <div class="form-group">
-    <%= f.hidden_field :email, value: @current_agency.users.last.email, required: false %>
+    <%= f.hidden_field :email, value: @current_agency.users.available.last.email, required: false %>
+    <%= f.hidden_field :password, required: false, value: "password" %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, "Start Candidate Demo", class: 'btn btn-success' %>
+  </div>
+<% end %>
+</div>
+<div class='col-md-6 text-center well'>
+  <h3>Working Employee</h3>
+  <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <div class="form-group">
+    <%= f.hidden_field :email, value: @current_agency.users.assigned.last.email, required: false %>
     <%= f.hidden_field :password, required: false, value: "password" %>
   </div>
 

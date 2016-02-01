@@ -27,6 +27,7 @@
 				<% end %>
 		
 				<%= f.file_field :file %>
+				<%= f.hidden_field :company_id, value: @company.id if @company.present? %>
 					<%= f.submit "Upload" %>
 				<% end %>
 		  	</div>

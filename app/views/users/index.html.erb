@@ -21,13 +21,13 @@
 								<%= link_to "<i class='fa fa-star'></i>".html_safe, follow_user_path(user), method: :post, class: "button" if !current_admin.is_following?(user) %>
 						</td>
 							<td>
-								<%= link_to user.name, user, class: "user-link black" %>
+								<%= link_to user.name, user, class: "button" %>
 							</td>
 						
 							<td>
 								<%= user.fulladdress %>
 							</td>
-							<td>
+							<td id='<%=user.id%>-updated-available-at-icon'>
 								<%= check_in(user) %>
 							</td>
 						<% end %>

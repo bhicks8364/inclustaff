@@ -1,47 +1,42 @@
 <div class='col-md-12 '>
-<div class=''>
-<div class='table-responsive'>
-<h1 class='black'><%= @company.name %>'s Invoices</h1>
-
-<table class='table table-bordered lightbox'>
-  <thead>
-    <tr>
-      <th></th>
-      <th></th>
-      <th>Week</th>
-      <th>Due by</th>
-      <th>Total</th>
-      <th>Amt paid</th>
-      <th>Paid on</th>
-      <th>Balance</th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody data-behavior='invoice-list'>
-    <% @invoices.order(created_at: :desc).each do |invoice| %>
-      <tr data-behavior='invoice' data-id='<%= invoice.id %>'>
-        <td data-behavior='invoice-state'></td>
-        <td>
-            <%= invoice.paid? ? "<span class=''><i class='fa fa-check-square-o fa-lg'></i></span>".html_safe : "<span class='b' data-behavior='company-invoice-toggle'><i class='fa fa-square-o fa-lg'></i></span>".html_safe %>
-        </td>
-        <td data-behavior='invoice-state'><%= invoice.paid? ? "<i class='fa fa-check-square-o fa-lg'></i>".html_safe : "<i class='fa fa-square-o fa-lg'></i>".html_safe %></td>
-        <td data-behavior='pay-button'><%= link_to invoice.week_ending, company_invoice_path(invoice), class: "black" %></td>
-        <td><%= invoice.due_by.stamp('11/12/2013') %></td>
-        <td><%= number_to_currency(invoice.total) %></td>
-        <td><%= number_to_currency(invoice.amt_paid) %></td>
-        <td data-behavior='date-paid'><%= invoice.paid_on %></td>
-        <td><%= number_to_currency(invoice.balance) %></td>
-        <td><%= link_to '<i class="fa fa-file fa-1x "></i>'.html_safe, admin_invoice_path(invoice), class: 'btn btn-tiny' %></td>
-        <td><%= link_to '<i class="fa fa-pencil fa-1x "></i>'.html_safe, edit_admin_invoice_path(invoice), class: 'btn btn-tiny' %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-</div>
-<br>
-<%= link_to 'View All Invoices', admin_invoices_path, class: "btn btn-primary" %>
-</div>
+  <h1 class='black'><%= @company.name %>'s Invoices</h1>
+  <div class='table-responsive'>
+    <table class='table table-bordered'>
+      <thead>
+        <tr>
+          <th></th>
+          <th></th>
+          <th>Week</th>
+          <th>Due by</th>
+          <th>Total</th>
+          <th>Amt paid</th>
+          <th>Paid on</th>
+          <th>Balance</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+    
+      <tbody data-behavior='invoice-list'>
+        <% @invoices.order(created_at: :desc).each do |invoice| %>
+          <tr data-behavior='invoice' data-id='<%= invoice.id %>'>
+            <td data-behavior='invoice-state'></td>
+            <td>
+                <%= invoice.paid? ? "<span class=''><i class='fa fa-check-square-o fa-lg'></i></span>".html_safe : "<span class='b' data-behavior='company-invoice-toggle'><i class='fa fa-square-o fa-lg'></i></span>".html_safe %>
+            </td>
+            <td data-behavior='invoice-state'><%= invoice.paid? ? "<i class='fa fa-check-square-o fa-lg'></i>".html_safe : "<i class='fa fa-square-o fa-lg'></i>".html_safe %></td>
+            <td data-behavior='pay-button'><%= link_to invoice.week_ending, company_invoice_path(invoice), class: "black" %></td>
+            <td><%= invoice.due_by.stamp('11/12/2013') %></td>
+            <td><%= number_to_currency(invoice.total) %></td>
+            <td><%= number_to_currency(invoice.amt_paid) %></td>
+            <td data-behavior='date-paid'><%= invoice.paid_on %></td>
+            <td><%= number_to_currency(invoice.balance) %></td>
+            <td><%= link_to '<i class="fa fa-file fa-1x "></i>'.html_safe, admin_invoice_path(invoice), class: 'btn btn-tiny' %></td>
+            <td><%= link_to '<i class="fa fa-pencil fa-1x "></i>'.html_safe, edit_admin_invoice_path(invoice), class: 'btn btn-tiny' %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>
 

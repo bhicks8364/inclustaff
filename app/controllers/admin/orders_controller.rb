@@ -8,9 +8,8 @@ class Admin::OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
-    @q = Order.includes(:company, :jobs).active.order(needed_by: :desc).ransack(params[:q]) if @current_admin.owner? || @current_admin.payroll?
-    @q = Order.includes(:company).needs_attention.order(needed_by: :desc).ransack(params[:q]) if @current_admin.recruiter?
-    @q = Order.includes(:company).needs_attention.order(needed_by: :desc).ransack(params[:q]) if @q.nil?
+    @q = Order.includes(:company).active.order(needed_by: :desc).ransack(params[:q]) if @current_admin.owner? || @current_admin.payroll?
+    @q = Order.includes(:company).order(needed_by: :desc).ransack(params[:q]) if @current_admin.recruiter?
     @import = Order::Import.new
     
     if params[:company_id]
@@ -18,7 +17,7 @@ class Admin::OrdersController < ApplicationController
       @orders = @company.orders.paginate(page: params[:page], per_page: 25)
      
     else
-      @q_orders = Order.includes(:company, :jobs).ransack(params[:q]) 
+      @q_orders = Order.includes(:company).ransack(params[:q]) 
       @orders = @q_orders.result(distinct: true).paginate(page: params[:page], per_page: 25)
       # @orders = Order.includes(:jobs).active.order(created_at: :desc) 
     end
@@ -45,7 +44,7 @@ class Admin::OrdersController < ApplicationController
   end
   
   def search
-    @q = Order.includes(:company, :jobs).active.order(needed_by: :desc).ransack(params[:q]) if @current_admin.owner? || @current_admin.payroll?
+    @q = Order.includes(:company).active.order(needed_by: :desc).ransack(params[:q]) if @current_admin.owner? || @current_admin.payroll?
     @q = Order.includes(:company).needs_attention.order(needed_by: :desc).ransack(params[:q]) if @current_admin.recruiter?
     @q = Order.includes(:company).needs_attention.order(needed_by: :desc).ransack(params[:q]) if @q.nil?
     
@@ -196,7 +195,7 @@ class Admin::OrdersController < ApplicationController
       @order = Order.includes(:skills).find(params[:id])
     end
     def order_import_params
-        params.require(:order_import).permit(:file)
+        params.require(:order_import).permit(:file, :company_id)
     end
 
 

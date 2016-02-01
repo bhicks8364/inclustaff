@@ -28,7 +28,7 @@ module ShiftsHelper
       "<h3>  #{name} took a break for  #{distance_of_time_in_words(shift.breaks.first.time_in, shift.breaks.last.try(:time_out) || Time.current , include_seconds: true)} </h3>".html_safe
         
       elsif !shift.took_a_break? && shift.today?
-      "<h3>  #{name} did not a break. </h3>".html_safe
+      "<h3>  #{name} did not take a break. </h3>".html_safe
       end
     end
     def break_times_for(shift)

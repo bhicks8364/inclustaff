@@ -76,7 +76,7 @@ class User < ActiveRecord::Base
   scope :unassigned, -> { joins(:employee).merge(Employee.unassigned)}
   scope :available, -> { joins(:employee).merge(Employee.available)}
   scope :ordered_by_last_name, -> { order(last_name: :asc) }
-  scope :ordered_by_check_in, -> { order(checked_in_at: :desc) }
+  scope :ordered_by_check_in, -> { order(checked_in_at: :asc) }
 
   before_validation do
     self.role = "Employee"

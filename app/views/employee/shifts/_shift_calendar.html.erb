@@ -8,7 +8,7 @@
               <small>
                 <%=link_to shift_times(shift), employee_timesheet_path(shift.timesheet), class: "" %>
               </small><br>
-               <small><%= link_to "#{shift.hours_worked.round(2)} hours", admin_shift_path(shift), class: "white" %></small>
+               <small><%= link_to "#{shift.hours_worked.round(2)} hours", employee_shift_path(shift), class: "white" %></small>
             </div>
       <% end %>
 <% end %>

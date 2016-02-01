@@ -21,7 +21,7 @@
           <% if @company.nil? %><td> <%= link_to order.company.name, admin_company_path(order.company) %></td><%end %>
           <td><%= order.needed_by.stamp('Mon 11/12') %>  </td>
           <td> <%= order.industry %></td>
-          <td><%= link_to title_for(order), admin_order_path(order) %></td>
+          <td><%= link_to title_for(order), admin_order_path(order), class: "button" %></td>
           <td><%= pay_range(order) %></td>
           <td><%= order.open_jobs %></td>
           <td class='text-center'><% if order.needs_attention? %><%= link_to "<i class='fa fa-user-plus fa-lg'></i>".html_safe, new_admin_order_job_path(order) %>

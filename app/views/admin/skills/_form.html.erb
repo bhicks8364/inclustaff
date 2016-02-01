@@ -3,7 +3,7 @@
   <%= f.error_notification %>
 
   
-    <%= f.input :name, label: false, autofocus: true, placeholder: "Type # for suggestions", input_html: {data: { behavior: "autocomplete_skills" }} %>
+    <%= f.input :name, label: false, placeholder: "Type # for suggestions", input_html: {id: "autocomplete"}%>
     <% if skillable.class.to_s == "Order" %>
        <%= f.input :required, label: 'Is this a requirement?' %>
     <% end %>

@@ -4,9 +4,9 @@
     <%= render 'form' %>
 
 <div class='btn-group'>
-    <%= link_to 'Show', admin_company_order_path(@company, @order), class: "btn btn-primary" %> 
-    <%= link_to 'Back', admin_company_orders_path(@company), class: "btn btn-primary" %>
-    <%= link_to 'Delete', admin_company_order_path(@company, @order), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+    <%= link_to 'View Job Order', admin_company_order_path(@company, @order), class: "btn btn-primary" %> 
+    <%= link_to 'View Company', admin_company_orders_path(@company), class: "btn btn-primary" %>
+    <%= link_to 'Account Manager', admin_admin_path(@company.current_account_manager), class: "btn btn-primary" %>
 </div>
 
 </div>

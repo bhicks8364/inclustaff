@@ -32,19 +32,19 @@
   
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="job">
-      <div class='col-md-6 bg-white'>
-          <h3 class='text-center'>Vacation Tracking</h3>
-          <% if @job.settings['min_hours_for_vac'].present? %>
-           <p>Minimum Hours for Vacation: <%= @job.settings['min_hours_for_vac'] %></p>
-           <% else %>
-           <p>Please contact your recruiter, <%= @job.recruiter.name %> at <%= @job.recruiter.email %> for information about earning paid vacation days.</p>
-           <% end %>
-      </div>
-      <div class='col-md-6 bg-white'>
       
+      <div class='col-md-6 well'>
+       <h3 class='text-center'>Job Description</h3>
         <%= markdownify(@order.notes) %>
      </div>
-     <div class='col-md-3'>
+     <div class='col-md-6 well'>
+          <h3 class='text-center'>Vacation Tracking</h3>
+          <% if @job.settings['min_hours_for_vac'].present? %>
+           <p class='lead'>Minimum Hours for Vacation: <%= @job.settings['min_hours_for_vac'] %></p>
+           <% else %>
+           <p class='metal bold'>Please contact <% if @job.recruiter.present? %> your recruiter, <%= @job.recruiter.name %> at <%= @job.recruiter.email %><% else %><%= @current_agency.name %><% end %> for information about earning paid vacation days.</p>
+           <% end %>
+      <hr>
       <% if @job.settings['drive_pay'].present? || @job.settings['drive_pay'].present? %>
       Drive Pay: <%= @job.settings['drive_pay'] if @job.settings %><br>
       Ride Pay: <%= @job.settings['ride_pay'] if @job.settings %><br>
@@ -53,7 +53,7 @@
      </div>
      <div class='btn-group'>
         <%= link_to(employee_job_path(@job, format: :pdf), class: 'btn btn-primary') do %>
-            <i class="fa fa-download fa-md"></i> Candidate Sheet
+            <i class="fa fa-download fa-lg"></i> Employment Verifcation Sheet
         <% end %>
      </div>
   </div>

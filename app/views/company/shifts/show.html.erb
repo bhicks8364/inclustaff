@@ -37,7 +37,7 @@
         </dl>
         <dl class="dl-horizontal">
           <dt>Recruiter</dt>
-          <dd><%= @job.recruiter.name %></dd>
+          <dd><%= @job.recruiter.try(:name) || "Unavailable" %></dd>
           <dt>Account Manager</dt>
           <dd><%= @order.account_manager.try(:name) %></dd>
         </dl>

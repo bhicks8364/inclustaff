@@ -14,8 +14,10 @@
       <% if policy(@order).destroy? %><li><%= link_to "<i class='fa fa-trash' data-toggle='tooltip' data-placement='right' title='Delete Order'></i>&nbsp; Delete".html_safe, admin_order_path(@order), method: :delete, data: { confirm: 'Are you sure?' }, class: "" %></li><% end %>
     </ul>
   </div>
-   <h1 class=''> <%= title_for(@order) %> <br><small><%= link_to @company.name, admin_company_path(@company), class: "text-muted" %></small> </h1>
-    <h3 class='text-right'></h3>
+   <h1 class='text-muted'> <%= link_to @company.name, admin_company_path(@company), class: "button" %> </h1>
+    <h3 class='text-right'>
+          <%= @order.address %> <%= render "order_map", order: @order %>
+        </h3>
   <div class='col-md-2'>
     <div class=''>
       <h3 class='text-center'><%= lg_status_tag(@order) %> <%= status_msg(@order) %></h3>
@@ -26,6 +28,7 @@
       </p>
        
       <p class='lead'><strong>ACA Type:</strong> <br><%= @order.aca_type %></p>
+       
       <div class=''>
          <strong>Tags</strong>
          <p><%= highlight(@order.tag_list.to_s, @order.tag_list, highlighter: '<a href="/tags?tag=\1">\1</a>') %></p>
@@ -52,7 +55,7 @@
     </div>
     <strong>Mark Up </strong>
     <%= @order.mark_up_percent %>
-    
+   
   </div>
  
 
@@ -78,11 +81,15 @@
   
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane fade in active" id="order">
-      
+       <div class='col-md-12'>
+     <h3 class='metal bold text-warning'> <span class='pull-left'><%= @order.requirements['agency_approval'] ? "Requires Agency Approval" : "" %></span>
+      <span class='pull-right'> <%= @order.requirements['company_approval'] ? "Requires Company Approval" : "" %></span>
+     </h3>
+     
+           
+     </div>
       <div class='col-md-4'>
-        <p class='bold'>
-          <%= @order.address %> <%= render "order_map", order: @order %>
-        </p>
+        
         <h3><strong><%= @order.shift %></strong> </h3>
         <p class='lead'>
           <%= pay_range(@order) %>        
@@ -101,22 +108,8 @@
         <strong>Assignment Type</strong>
         <%= @order.est_duration %>
         </p>
-        <div class='center'>
-         <table class="table">
-            <tr>
-              <th> Agency Approval?</th>
-              <th>Company Approval? </th>
-            </tr>
-            <tr>
-              <td>
-                <%= @order.requirements['agency_approval'] %>
-              </td>
-              <td>
-               <%= @order.requirements['company_approval'] %>
-              </td>
-            </tr>
-          </table>
-       </div>
+        <p class='lead'><strong>Requirements:</strong> <br><%= @order.requirements['certifications'] %></p>
+        
        <div class='center'>
           <% if @order.skills.count < 1 %>
              <h4 id='no-skills' class="text-center">This job order has no skills entered.</h4>
@@ -132,7 +125,7 @@
         
       </div>
       <div class='col-md-8'>
-        <h2>Job Description</h2>
+        <h2><%=  @order.title %></h2>
         <div class='well well-sm'>
           <%= markdownify(@order.notes) %>
         </div>

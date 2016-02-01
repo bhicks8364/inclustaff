@@ -290,10 +290,14 @@ class Order < ActiveRecord::Base
   end
 
 
-  def self.assign_from_row(row)
-    order = Order.where(id: row[:id], company_id: row[:company_id]).first_or_initialize
+  def self.assign_from_row(row, company_id)
+    company = Company.find(company_id)
+    if company.present?
+      order = company.orders.new
+    else
+      order = Order.where(id: row[:id], company_id: row[:company_id]).first_or_initialize
+    end
     order.assign_attributes row.to_hash.slice(:title, :min_pay, :max_pay, :number_needed, :needed_by, :notes, :est_duration)
-
     order
   end
 

@@ -3,12 +3,9 @@
     <h3 class='text-center'><span class='' id='shift-times'><%= shift_times(@shift) %></span></h3>
     <hr>
     <h1 class="text-center">
-        <%=@shift.paid_breaks? %>
-        paid: <%=number_to_currency(@shift.with_paid_breaks)%> <br>
-        unpaid: <%=number_to_currency(@shift.with_unpaid_breaks)%> <br>
-        earnings: <%=number_to_currency(@shift.earnings)%> <br>
+       
         <span id='shift-sym'><%= shift_sym(@shift) %></span>
-        <%= link_to @employee.name, employee_employee_path(@employee) %>
+        <%= link_to @job.title, employee_job_path(@job) %>
     </h1>
     <h3>Total Earnings: <%= @shift.paid_breaks? ? number_to_currency(@shift.with_paid_breaks) : number_to_currency(@shift.with_unpaid_breaks) %> </h3>
 </div>
@@ -31,7 +28,7 @@
             <%= on_break_for(@shift) %>
             Total Break Time: <%= (@shift.break_duration).round(2) %>
             <div class=''>
-                <%= render 'employee/jobs/clock', job: @job if policy(@job).clock_in? %>
+                <%= render 'employee/jobs/clock', job: @job if policy(@job).clock_in? && !@shift.clocked_out? %>
             </div>
             <div id='shift-break-times'>
             </div>
@@ -50,7 +47,7 @@
             </dl>
             <dl class="dl-horizontal">
               <dt>Recruiter</dt>
-              <dd><%= @job.recruiter.name %></dd>
+              <dd><%= @job.recruiter.try(:name) || "Unavailable" %></dd>
               <dt>Company Manager</dt>
               <dd><%= @job.order.manager.try(:name) || "Unavailable" %></dd>
             </dl>
