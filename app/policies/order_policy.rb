@@ -16,12 +16,13 @@ class OrderPolicy < ApplicationPolicy
       end
     end
   end
+  
   def create?
-    return true if user.account_manager? || user.owner?
+    user.account_manager? || user.owner?
   end
   
   def index?
-    return true if user.admin?
+    user.account_manager? || user.owner? || user.payroll?
   end
   def search?
     index?
@@ -29,15 +30,15 @@ class OrderPolicy < ApplicationPolicy
   
 
   def show?
-    return true if user.admin?
+    return true if user.admin? || user.owner? || user.payroll?
     user.employee? && record.employee_id == user.employee.id
   end
   def update?
     # return true if user.account_manager? || user.owner?
-    return true if user.admin?
+    return true if user.admin? || user.owner? || user.payroll?
     user.employee? && record.employee_id == user.employee.id
   end
   def destroy?
-    return true if user.admin? && user.owner?
+   user.admin? || user.company_admin?
   end
 end

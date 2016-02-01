@@ -26,7 +26,9 @@ class DashboardController < ApplicationController
         if current_admin.owner?
           render 'admin/dashboard/owner'
         elsif current_admin.account_manager?
+        @q = Order.includes(:company, :jobs).ransack(params[:q]) 
           render 'admin/dashboard/account_manager'
+          
         elsif current_admin.recruiter?
         @q = Order.includes(:company, :jobs).needs_attention.ransack(params[:q]) 
         @jobs = current_admin.jobs.active.paginate(page: params[:page], per_page: 15)

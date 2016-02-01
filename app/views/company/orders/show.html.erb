@@ -13,7 +13,7 @@
    <h1 class=''> <%= title_for(@order) %> <small><%= @order.address %> <%= render "order_map", order: @order %></small> </h1>
   <div class='col-md-2'>
     <div class=''>
-      <h3><%= status_msg(@order) %></h3>
+      <h3><%= lg_status_tag(@order) %></h3>
        <strong>Shift:</strong>
       <%= @order.shift %> <br>
       <strong>Pay Range:</strong><br>
@@ -86,11 +86,10 @@
       <p><%= @order.requested_employees.map {|p| p.name.titleize}.join(", ") %></p>
      
       
-   </div>
-   <div class='col-md-3'>
+   
      <strong>Tags</strong>
       
-     <p><%= highlight(@order.tag_list.to_s, @order.tag_list, highlighter: '<a href="/tags?tag=\1">\1</a>') %></p>
+     <p><%= @order.tag_list %></p>
    </div>
    
   </div>

@@ -62,7 +62,6 @@
       <div class="panel panel-default">
         <div class="panel-body">
           <h2><%= @user.name %></h2>
-          <%= user_email(@user) %>
 
           <%= render 'users/user', user: @user %>
 
@@ -78,7 +77,7 @@
       <% if @employee.availability.present? %>
         <%= render 'employee/employees/availability', employee: @employee %>
       <% else %>
-        <%= link_to "Enter Availability", edit_employee_employee_path(@employee), class: 'btn btn-primary' %>
+        <%= link_to "Enter Availability", edit_employee_employee_path(@employee), class: 'btn btn-success btn-lg pulse' %>
       <% end %>
     </div>
   <% end %>

@@ -1,52 +1,33 @@
 <div class="table-responsive">
-  <table id="timesheets" class="table" cellspacing="0.5" width="85%%">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Company</th>
-      <th>Title</th>
-      <th>Pay Range</th>
-      <th>Open </th>
-      <th>Urgent</th>
-      <th>Start Date</th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @orders.active.each do |order| %>
+  <table class="table table-bordered" >
+    <thead>
       <tr>
-        <td><% if order.needs_attention? %> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            <% else %>
-        <span class="glyphicon glyphicon-check" aria-hidden="true"></span> 
-            <% end %>
-        </td>
-        <td><%= link_to order.company_name, order.company %></td>
-        <td><%= link_to order.title, order %></td>
-        <td><%= order.pay_range %></td>
-        <td><%= order.number_needed - order.jobs.active.count %></td>
-        <td><%= order.urgent %></td>
-        <td><%= order.needed_by.strftime("%B %e, %Y") %></td>
-        <td><%= order.urgent %></td>
-        <td><%= link_to "<span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>".html_safe, edit_company_order_path(order.company, order), class: "btn btn-default" %></td>
-        <td><%= link_to "<span class='glyphicon glyphicon-trash' aria-hidden='true'></span>".html_safe, company_order_path(order.company, order), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-default" %></td>
+        <th></th>
+        <th>Title</th>
+        <th>Pay Range</th>
+        <th>Open </th>
+        <th>Urgent</th>
+        <th>Needed by</th>
+        <th></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Order', new_order_path, class: "btn btn-default" %>
-
-
-
-
-
-
-
-
-  </div>
-</div>
+    </thead>
+  
+    <tbody>
+      <% orders.each do |order| %>
+        <tr>
+          <td class='text-center'><%= status_tag(order) %>
+          </td>
+          <td><%= link_to order.title, company_order_path(order) %></td>
+          <td><%= pay_range(order) %></td>
+          <td><%= order.open_jobs %></td>
+          <td><%= order.urgent %></td>
+          <td><%= order.needed_by.stamp("Monday 11/2") %></td>
+          <td class='text-center'>
+            <%= link_to "<span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>".html_safe, edit_company_order_path(order), class: "button" %>
+         <%= link_to "<span class='glyphicon glyphicon-trash' aria-hidden='true'></span>".html_safe, 
+          company_order_path(order), method: :delete, data: { confirm: 'Are you sure?' }, class: "button" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>

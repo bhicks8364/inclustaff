@@ -28,12 +28,7 @@
 								<%= user.fulladdress %>
 							</td>
 							<td>
-								<small>
-									<span class='text-center' id='<%=user.id%>-updated-available-at'> 
-									<%= user.checked_in_at.present? ? "#{time_ago_in_words(user.checked_in_at)} ago" : "Never" %>
-									</span>
-								</small>
-									<%= link_to "<i class='fa fa-bullseye black'></i>".html_safe, update_as_available_user_path(user), method: :patch, remote: true %>
+								<%= check_in(user) %>
 							</td>
 						<% end %>
 					

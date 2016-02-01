@@ -1,4 +1,5 @@
-<div class='col-md-12 main-box'>
-  <%= render @orders %>
+<div class='col-md-12 lightbox-long'>
+  <%= render 'company/orders/table', orders: @orders %>
+  <hr>
   <%= link_to 'New Order', new_company_order_path, class: "btn btn-default" %>
 </div>

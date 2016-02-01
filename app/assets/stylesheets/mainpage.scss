@@ -197,18 +197,18 @@ input.file-field {
     // border: 1px solid black;
     // width: 400px;
     // height: 100px;
-    -webkit-animation: mymove 1s infinite; /* Chrome, Safari, Opera */
-    animation: mymove 1s infinite;
+    -webkit-animation: mymove 1s 3; /* Chrome, Safari, Opera */
+    animation: mymove 1s 3;
 }
 
 /* Chrome, Safari, Opera */
 @-webkit-keyframes mymove {
-    50% {font-size: 20px;}
+    50% {font-size: 30px;}
 }
 
 /* Standard syntax */
 @keyframes mymove {
-    50% {font-size: 20px;}
+    50% {font-size: 30px;}
 }
 .rainbow {
     // width: 100px;

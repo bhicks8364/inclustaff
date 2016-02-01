@@ -1,4 +1,5 @@
 <div class='col-md-12'>
+  <h2 class='page-header white'> Welcome, <%= current_company_admin.name %>!</h2>
   	<div class='col-md-6'>
   	  <h1 class='page-header'><%= @company.name %></h1>
       <% Calendar.new events: @company.shifts do |date, shifts| %>
@@ -11,18 +12,18 @@
     <% end %>
   <% end %>
     </div>
-  <div class='col-md-6'>
-      <h2 class='page-header white'> Welcome, <%= current_company_admin.name %>!</h2>
+  <div class='col-md-6 text-center'>
+      <%= link_to "<i class='fa fa-plus-square'></i> New Job Order".html_safe, new_company_order_path, class: "btn btn-primary btn-lg" %>
+      <%= link_to "<i class='fa fa-clock-o'></i> Timeclock".html_safe, company_timeclock_path, class: "btn btn-primary btn-lg" %>
    
-  	<div class='col-md-3'>
+  </div>
+  <div class='col-md-3'>
   	    <%= render 'company/shifts/one_day_calendar', shifts: @shifts if @shifts.present? %>
   	   
   	</div>
-  	<div class='col-md-9'>
+  <div class='col-md-9'>
   		<h2 class='white'>  <%= pluralize( @current_company_admin.company.invoices.unpaid.count, 'unpaid invoice') %></h2>
   	        <%= render "company/invoices/calendar" %>
   	    
       </div>
-  	
-  </div>
 </div>

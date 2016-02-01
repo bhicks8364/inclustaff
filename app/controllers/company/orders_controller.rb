@@ -60,7 +60,7 @@ class Company::OrdersController < ApplicationController
     @order.destroy
     
     respond_to do |format|
-      format.html { redirect_to company_orders_path(@company), notice: 'Order was successfully destroyed.' }
+      format.html { redirect_to company_orders_path, notice: 'Order was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -82,8 +82,11 @@ class Company::OrdersController < ApplicationController
     end
 
     def order_params
-      params.require(:order).permit(:id, :min_pay, :max_pay, :pay_frequency, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title, :notes, :number_needed, :needed_by, 
-      :mobile_time_clock_enabled, :urgent, :active, :dt_req, :bg_check, :stwb, :heavy_lifting, :shift, :est_duration, :tag_list, 
-      jobs_attributes: [:order_id, :title, :description, :start_date, :id, :employee_id, :active], skills_attributes: [:id, :skillable_type, :skillable_id, :name, :required, :_destroy])
+      params.require(:order).permit(:id, :address, :min_pay, :max_pay, :pay_frequency, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title, :notes, 
+      :number_needed, :needed_by, :urgent, :active, :dt_req, :bg_check, :stwb, :heavy_lifting, :shift, :est_duration, :tag_list, :aca_type,
+      :education, :industry, :years_of_experience, :certifications, :requirement_1, :requirement_2, :requirement_3, :requirement_4, 
+      :published_at, :published_by, :expires_at, :company_approval, :agency_approval, :mobile_time_clock_enabled,
+      jobs_attributes: [:order_id, :title, :description, :start_date, :id, :employee_id, :active], 
+      skills_attributes: [:id, :skillable_type, :skillable_id, :name, :required, :_destroy])
     end
 end
