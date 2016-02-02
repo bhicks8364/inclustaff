@@ -163,10 +163,10 @@ class Company::ShiftsController < ApplicationController
   # PATCH/PUT /shifts/1
   # PATCH/PUT /shifts/1.json
   def update
-    @job = @shift.job
-    @employee = @shift.employee
-    time = @shift.time_out || @shift.time_in
-    @shift.week = time.to_datetime.cweek
+    # @job = @shift.job
+    # @employee = @shift.employee
+    # time = @shift.time_out || @shift.time_in
+    # @shift.week = time.to_datetime
 
     respond_to do |format|
       if @shift.update(shift_params)
@@ -186,7 +186,7 @@ class Company::ShiftsController < ApplicationController
 
     @shift.destroy
     respond_to do |format|
-      format.html { redirect_to admin_dashboard_path, notice: 'Shift was successfully destroyed.' }
+      format.html { redirect_to root_path, notice: 'Shift was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

@@ -177,9 +177,9 @@ class Admin::ShiftsController < ApplicationController
   # PATCH/PUT /shifts/1.json
   def update
     # @job = @shift.job
-    # @employee = @shift.employee
-    time = @shift.time_out || @shift.time_in
-    @shift.week = time.to_datetime.cweek
+    # # @employee = @shift.employee
+    # time = @shift.time_out || @shift.time_in
+    # @shift.week = time.to_date
 
     respond_to do |format|
       if @shift.update(shift_params)

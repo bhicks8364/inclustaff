@@ -29,7 +29,8 @@
 		
 		
 		<li class="item-footer">
-			<%= link_to "View all timesheets", company_timesheets_path %>
+			<%= link_to "Clock Out All", clock_out_all_company_jobs_path, method: :patch, class: '' if @on_shift.any? %>
+			
 		</li>
 	</ul>
 </li>

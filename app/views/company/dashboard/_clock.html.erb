@@ -1,15 +1,12 @@
 
-        <span data-behavior='shift-state'>
+        <p data-behavior='shift-state'>
              <strong> <%= link_to job.employee.first_name, company_job_path(job), class: 'white' %>
              is currently <%= job.on_shift? ? "clocked in" : "clocked out" %></strong>
-        </span>
+        </p>
         
            <% if job.on_shift? %>
           
-             <span data-behavior="time-in">
-                  <small><strong> In:</strong> <%= job.current_shift.time_in.strftime("%l:%M%P") %></small>
-            </span>
-            <br>
+            
             <button data-behavior="job-out-button_<%= job.id %>" class='btn btn-danger'>
                 <i class='fa fa-sign-out'></i> Clock Out
             </button>
@@ -17,15 +14,11 @@
           <button data-behavior="job-in-button_<%= job.id %>" class='hide-this btn btn-success'>
             <i class='fa fa-sign-in'></i> Clock In
           </button>
-           <span data-behavior="time-out">
-              </span>
+           
 
         <% else %>
         <br><button class='btn btn-info black' data-behavior="code-button_<%= job.id %>">Enter Code</button>
-        <br>
-        <span data-behavior="time-in">
-          
-        </span>
+     
           <button data-behavior="job-in-button_<%= job.id %>" class='hide-this btn btn-success'>
             <i class='fa fa-sign-in'></i> Clock In
           </button>
@@ -33,7 +26,4 @@
             <i class='fa fa-sign-out'></i> Clock Out
           </button>
 
-        <span data-behavior="time-out">
-          
-        </span>
       <% end %>
