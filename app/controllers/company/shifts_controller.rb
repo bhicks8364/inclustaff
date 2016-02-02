@@ -6,9 +6,7 @@ class Company::ShiftsController < ApplicationController
 
   def index
     @jobs = @company_admin.company.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 5).order('id DESC') if @company_admin.present?
-    @jobs = @agency_admin.agency.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 5).order('id DESC') if @agency_admin.present?
-    @shifts = @current_agency.shifts
-
+      @shifts = @company.shifts
     # gon.shifts = @shifts
     authorize @shifts
   end

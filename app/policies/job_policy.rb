@@ -20,7 +20,7 @@ class JobPolicy < ApplicationPolicy
   end
 
   def index?
-    user.admin?
+    user.admin? || user.company_admin?
   end
 
   def clock_in?

@@ -158,6 +158,7 @@ class Admin::OrdersController < ApplicationController
   # PATCH/PUT /orders/1
   # PATCH/PUT /orders/1.json
   def update
+    @order.agency = @current_agency
     authorize @order
     @company = @order.company
 

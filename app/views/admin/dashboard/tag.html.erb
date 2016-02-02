@@ -1,26 +1,26 @@
 <div class='col-md-12 lightbox-long'>
     <p class='text-right'>Today is <%= time_tag(Time.current) %>.</p>
-   <h1 class='text-center'> <%= @current_agency.orders.needs_attention.count %> open job orders &
-   <%= @current_agency.employees.available.count %> available employees.
+   <h1 class='text-center'> <%= @orders.count %> open job orders &
+   <%= @employees.count %> available employees.
    </h1>
     <div class='col-md-3'>
+           
+         <%= render 'admin/infoboxes/taggings' %>
+    </div>
        
-     <%= render 'admin/infoboxes/taggings' %>
-</div>
-   
 
        
 
     <div class='col-md-4'>
     <h4>Open Job Order</h4>
-    <%= div_for(@orders.needs_attention) do |order| %>
+    <%= div_for(@orders) do |order| %>
         <%= render order %>
     <% end %>
     </div>
 
     <div class='col-md-4'>
         <h4>Available Employees</h4>
-        <%= div_for(@employees.available) do |employee| %>
+        <%= div_for(@employees) do |employee| %>
             <%= render employee %>
         <% end %>
     </div>

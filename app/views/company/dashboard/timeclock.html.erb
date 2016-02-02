@@ -1,7 +1,8 @@
 <div class='col-md-12 lightbox' data-behavior="company-job-list">
     <h1><%= @company.name %>'s Timeclock</h1>
- <h2>Current Employees</h2>
+   
     <div class='col-md-6'>
+         <h2>Current Employees</h2>
         <%= div_for(@company.jobs.each, class: 'clocked-in-sm') do |job| %>
         <div data-behavior="job" data-id="<%= job.id %>">
         <%= job.employee.code %>
@@ -17,9 +18,3 @@
    
    
 </div>
-<%= div_for(@orders.each, class: 'clocked-in-sm') do |order| %>
-    <div data-behavior="job" data-id="<%= order.id %>">
-        <%= order.title %>
-       
-    </div>
-<% end %>

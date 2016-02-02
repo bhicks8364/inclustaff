@@ -137,8 +137,8 @@ class Order < ActiveRecord::Base
       end
     end
 
-    def needs_agency_approval?; requirements['agency_approval'] == "Yes"; end
-    def needs_company_approval?;  requirements['company_approval'] == "Yes";  end
+    def needs_agency_approval?; requirements['agency_approval'] == "true"; end
+    def needs_company_approval?;  requirements['company_approval'] == "true";  end
     def needs_approval?;  needs_agency_approval? || needs_company_approval?;  end
 
     def send_approval_notifications!
@@ -326,10 +326,10 @@ class Order < ActiveRecord::Base
   end
   def matching_all_requirments
     skill_list = skills.required.pluck(:name)
-    Employee.tagged_with(skill_list, :match_all => true)
+    Employee.available.tagged_with(skill_list, :match_all => true)
   end
   def matching_any
-    Employee.tagged_with(tag_list, :any => true, :wild => true)
+    Employee.available.tagged_with(tag_list, :any => true, :wild => true)
   end
 
 

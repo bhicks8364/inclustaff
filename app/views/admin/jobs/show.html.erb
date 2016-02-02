@@ -53,10 +53,9 @@
             <% end %>
        </div>
 
-        <div class='col-md-4 lightbox'>
+        <div class='col-md-4 well'>
             <% if @job.active? %>
         <h4><%= @job.title %><small><%= number_to_currency(@job.pay_rate) %></small></h4>
-          <%= render @job %>
           <% else %>
           <h3> This position is currently inactive.</h3>
         <% end %>
@@ -106,15 +105,22 @@
 
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
     <h3>Timesheets</h3>
+    <div class='col-md-10'>
+      
       <%= render @timesheet if @job.current_timesheet.present? %>
-    <%= link_to "Timesheets", admin_job_timesheets_path(@job), class: "btn btn-success" %>
-    <%= link_to "Past Timesheets", past_admin_job_timesheets_path(@job), class: "btn btn-success" %>
+    </div>
+    <div class='col-md-2'>
+      <%= link_to "Timesheets", admin_job_timesheets_path(@job), class: "btn btn-success" %>
+      <%= link_to "Past Timesheets", past_admin_job_timesheets_path(@job), class: "btn btn-success" %>
+    </div>
+    
   </div>
 
   <div role="tabpanel" class="tab-pane fade" id="order-info">
-     <h3>
-     Order Information</h3>
-     <%= render @order %>
+     <h3>  Order Information</h3>
+     <div class='well'>
+       <%= markdownify(@order.notes) %>
+     </div>
   </div>
   <div role="tabpanel" class="tab-pane fade" id="comments-tab">
      <div class='col-md-12'>

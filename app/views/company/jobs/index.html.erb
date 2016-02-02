@@ -2,7 +2,7 @@
   <% if @jobs %>
   <h1>Active Jobs <small><%= @company.name %></small></h1>
   <div id="" class="table-responsive">
-    <table id="" class="table" cellspacing="0.5" width="85%">
+    <table id="" class="table table-bordered">
     <thead>
       <tr>
      
@@ -13,8 +13,7 @@
         <th>Pay rate</th>
         <th>Hours this week</th>
         <th>Pay this week</th>
-        <th>End date</th>
-        <th></th>
+        <th>Total Hours</th>
 
       </tr>
     </thead>
@@ -22,20 +21,18 @@
     <tbody>
       <% @jobs.each do |job| %>
       <% if job.on_shift? %>
-          <tr class="clocked_in">
+          <tr class="bg-success">
         <% else %>
-          <tr class="clocked_out">
+          <tr class="bg-info">
         <% end %>
-          <td><%= job.status %></td>
-          <td><%= job.employee.name %></td>
-          <td><%= link_to job.order.title, company_order_path(job.order) %></td>
+          <td><%= link_to job.status, company_job_path(job), class: "black button" %></td>
+          <td><%= link_to job.employee.name, company_job_path(job), class: "black button bold" %></td>
+          <td><%= link_to job.title, company_job_path(job), class: "black button" %></td>
           <td><%= job.start_date.strftime("%B %e, %Y") %></td>
           <td><%= number_to_currency(job.pay_rate) %></td>
           <td><%= job.current_week_hours %></td>
           <td><%= number_to_currency(job.current_week_pay) %></td>
-          <td><% if job.end_date.nil? %><%= job.active? ? "Active" : "Terminated" %><% else %><%=job.end_date.strftime("%B %e, %Y") %><% end %> </td>
-          <td><%= link_to "<span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span>     View".html_safe, company_job_path(job), class: "btn btn-default btn-sm" %></td>
-         
+          <td><%= job.total_hours.round(2) %></td>
         </tr>
       <% end %>
     </tbody>

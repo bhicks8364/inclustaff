@@ -131,9 +131,9 @@
   
   <!--APPLICATIONS TAB-->
     <div role="tabpanel" class="tab-pane fade" id="presented">
-        <h1>Placeholder for Presented Candidates</h1>
+        <h1>Presented Candidates</h1>
         <% @order.jobs.pending_approval.each do |job| %>
-        <%= job.name_title %><br>
+        <%= link_to job.name_title, company_job_path(job) %><br>
         <% end %>
       </div>
       

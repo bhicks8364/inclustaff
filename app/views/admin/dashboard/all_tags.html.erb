@@ -1,22 +1,19 @@
 <div class='col-md-12 lightbox-long'>
-  <h1 class='text-center'> <%= @current_agency.orders.needs_attention.count %> open job orders &
-   <%= @current_agency.employees.available.count %> available employees.
+  <h1 class='text-center'> <%= @orders.count %> open job orders &
+   <%= @employees.count %> available employees.
    </h1>
     <div class='col-md-4'>
         <%= render 'admin/infoboxes/taggings' %>
     </div>
-     <div class='col-md-8'>
-        <h4 class='text-center'>Job Orders by Fill Date</h4>
-       <%= line_chart @orders.needs_attention.group_by_day(:needed_by).count %>
-    </div>
-    <div class='col-md-4'>
+     
+    <div class='col-md-4 well'>
     <h4>Open Job Orders</h4>
     <%= div_for(@orders.needs_attention) do |order| %>
     <%= render order %>
     <% end %>
 </div>
 
-    <div class='col-md-4'>
+    <div class='col-md-4 well'>
         <h4>Available Employees</h4>
         <%= div_for(@employees.available) do |employee| %>
         <%= render employee %>

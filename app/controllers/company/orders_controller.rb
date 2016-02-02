@@ -44,7 +44,7 @@ class Company::OrdersController < ApplicationController
   end
 
   def update
-
+      @order.agency = @current_agency
     respond_to do |format|
       if @order.update(order_params)
         format.html { redirect_to company_order_path(@order), notice: 'Order was successfully updated.' }

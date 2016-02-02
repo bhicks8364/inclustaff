@@ -22,10 +22,12 @@ class CommentsController < ApplicationController
   end
   def new
     @comment = Comment.new
+    skip_authorization
   end
   def show
     gon.comment = @comment
     gon.commentable = @comment.commentable
+    skip_authorization
   end
   def create
     @comment = Comment.new(comment_params)
@@ -105,6 +107,7 @@ class CommentsController < ApplicationController
         :recipient_name => name,
         :recipient_type => @comment.recipient_type
       })
+      skip_authorization
     end
     def skip
       skip_authorization

@@ -30,11 +30,11 @@ class Admin::DashboardController < ApplicationController
     
     def tag
       if params[:tag]
-        @orders = Order.needs_attention.tagged_with(params[:tag])
-        @employees = Employee.unassigned.tagged_with(params[:tag])
+        @orders = @current_agency.orders.needs_attention.tagged_with(params[:tag])
+        @employees = @current_agency.employees.available.tagged_with(params[:tag])
       else
-        @orders = Order.needs_attention
-        @employees = Employee.unassigned
+        @orders = @current_agency.orders.needs_attention
+        @employees = @current_agency.employees.available
       end
       skip_authorization
     end

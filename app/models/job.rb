@@ -49,6 +49,7 @@ class Job < ActiveRecord::Base
 
     include ArelHelpers::ArelTable
     include ArelHelpers::JoinAssociation
+    include Arel::Nodes
 
 
         # setup settings
@@ -80,6 +81,7 @@ class Job < ActiveRecord::Base
     # scope :with_ride_pay, -> { where("settings ? :key", :key => 'ride_pay')}
     # scope :with_pay, -> { where("settings ? :key", :key => 'pay_rate')}
     # scope :with_drive_pay, -> { where("settings ? :key", :key => 'drive_pay')}
+    scope :with_notes,    -> { where(NamedFunction.new("LENGTH", [Job[:description]]).gt(2))}
     scope :active, -> { where(active: true)}
     scope :with_employee, ->  { includes(:employee) }
     scope :have_ended, -> { where(Job[:end_date].not_eq(nil)) }

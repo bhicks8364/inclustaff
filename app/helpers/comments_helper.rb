@@ -1,10 +1,11 @@
 module CommentsHelper
     def link_to_commentable(comment, options = {})
         name = "View #{comment.commentable_type}" 
-        id = comment.commentable_id
-        controller = "#{comment.commentable_type.downcase.pluralize}"
-        path = @signed_in.class.to_s.downcase + "/" + controller
-        link_to name, { controller: path, action: 'show', id: id}, options
+        signed_in_link_to name, comment.commentable
+        # id = comment.commentable_id
+        # controller = "#{comment.commentable_type.downcase.pluralize}"
+        # path = @signed_in.class.to_s.downcase + "/" + controller
+        # link_to name, { controller: path, action: 'show', id: id}, options
     end
     def notify(comment)
         @recruiter = comment.recruiter if comment.account_manager.present?
