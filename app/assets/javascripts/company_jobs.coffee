@@ -78,15 +78,12 @@ class Job
       $("#in-job-#{@id}").hide()
       $("[data-behavior='code-button_#{@id}']").show()
       $("#clocked-in-count").text "#{data.new_count}"
-      #@item.find("[data-behavior='job-in-button']").show()
+      $(".break-actions").hide()
       @item.find("[data-behavior='time-in']").html "<small><strong> In:</strong> #{data.time_in}</small>"
       @item.find("[data-behavior='time-out']").html "<small><strong> Out:</strong> #{data.time_out}</small>"
       @item.find("[data-behavior='shift-state']").html "<strong>#{data.first_name} is now clocked out.</strong><br>"
       if data.new_count == 0
         $("#clocked-in-nav").hide()
-      console.log data.state
-      console.log data.time_in
-      console.log data.time_out
       
     else
       alert("Uh-Oh! Something went wrong! #{data.time_out} - #{data.state}")

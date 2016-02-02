@@ -5,24 +5,24 @@ class DashboardController < ApplicationController
   def home
     
     @inquiry = Inquiry.new
-    @orders = @current_agency.orders.all.paginate(page: params[:page], per_page: 15) if admin_signed_in? 
     #ROOT LANDING PAGE - NO SUBDOMAIN && NO ONE IS SIGNED IN
     if @current_agency.nil? && signed_in? == false
       render 'mainpage'
       
     end
-    if @current_agency.present? && @current_agency.subdomain == "demo" && !signed_in?
+    # DEMO
+    if @current_agency.present? && @current_agency.demo? && !signed_in?
       render 'demo_page'
     end
     #WITH SUBDOMAIN
     #ROOT FOR WHEN A SUBDOMAIN IS PRESENT && NO ONE IS SIGNED IN
     if @current_agency.present? && signed_in? == false
-        @orders = Order.needs_attention.order(:needed_by).paginate(page: params[:page], per_page: 15)
+        @orders = @current_agency.orders.published.order(:needed_by).paginate(page: params[:page], per_page: 15)
     end
     #ROOT FOR ADMIN DASHBOARDS IF SIGNED IN
     if admin_signed_in? && @current_agency.present?
       # ROUTE TO DASHBOARD BASED ON ROLE
-      @candidates = User.available
+      @candidates = @current_agency.users.available
         if current_admin.owner?
           render 'admin/dashboard/owner'
         elsif current_admin.account_manager?

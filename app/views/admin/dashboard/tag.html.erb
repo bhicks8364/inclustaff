@@ -4,8 +4,7 @@
    <%= @employees.count %> available employees.
    </h1>
     <div class='col-md-3'>
-           
-         <%= render 'admin/infoboxes/taggings' %>
+        <%= render 'admin/dashboard/taggings', order: @orders, employees: @employees %>
     </div>
        
 

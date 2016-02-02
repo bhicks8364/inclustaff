@@ -23,7 +23,7 @@
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="home">
       <div class='col-md-6'>
-        <div class='well'>
+        <div class='well' data-behavior="company-job-list">
           <h4>CODE: <%= @employee.code %></h4>
           <%= render 'company/jobs/job', job: @job %>
         </div>
@@ -88,7 +88,7 @@
     </div>
 
     <div role="tabpanel" class="tab-pane" id="break">
-      <div class="col-md-6 white ">
+      <div class="col-md-8">
         <div id='shift-break-times'>
         </div>
         <div class=''>
@@ -105,7 +105,9 @@
           Total Break Time: <%= (@shift.break_duration).round(2) %>
       <% end %>
         </div>
-        <%= render 'list', shift: @shift %>
+      </div>
+      <div class="col-md-4">
+        <%= link_to "Edit Breaks", company_shift_breaks_path(@shift) %>
       </div>
     </div>
 

@@ -128,13 +128,20 @@ class Shift < ActiveRecord::Base
   def shift_data; [employee.name, time_in, time_out]; end
   def took_a_break?; breaks.any?; end
   def past?; time_in < Time.current - 12.hours; end
+    
   def calculate_break
-    if clocked_in?
+    if clocked_out? && took_a_break?
       self.break_duration = breaks.sum(:duration)
-    else
-      # This should throw an error because theyre still on break.
-      # Gotta clock out first. Maybe I should use AASM for this?? idk
     end
+    # if clocked_in?
+    #   self.break_duration = breaks.sum(:duration)
+    # elsif current_break.present?
+    #   time = paid_breaks? ? Time.current : current_break.time_in
+    #   self.break_duration = time_diff(time_in, time)
+    # else
+    #   # This should throw an error because theyre still on break.
+    #   # Gotta clock out first. Maybe I should use AASM for this?? idk
+    # end
   end
   def today?; time_in > Time.current.beginning_of_day; end
 
@@ -184,8 +191,8 @@ class Shift < ActiveRecord::Base
     if clocked_in?
       time_diff(time_in, Time.current)
     elsif on_break?
-      time = paid_breaks? ? Time.current : current_break.time_in
-      time_diff(time_in, time)
+      # time = paid_breaks? ? Time.current : current_break.time_in
+      time_diff(time_in, Time.current)
     elsif clocked_out?
       time_diff(time_in, time_out)
     end

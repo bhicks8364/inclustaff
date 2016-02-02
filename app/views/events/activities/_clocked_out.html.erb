@@ -1,10 +1,16 @@
 <%= div_for event do %>
-<i class="fa fa-clock-o fa-fw"></i>
-	<%= event.admin.try(:first_name) if !current_page?('/admins/:id') %>
-	<%= event.company_admin.try(:first_name) if !current_page?('/company_admins/:id') %>
-    <strong>	<%= event.action.humanize.downcase %></strong> <%=  signed_in_link_to event.eventable.name, event.eventable %> 
-		<span class='label label-success black pull-right'>
-		    <%= event.created_at.stamp('11/13 at 8:30am') %>
-		</span>
-
+	<i class="fa fa-clock-o fa-fw red"></i>
+	<%= link_to event.admin.first_name if !current_page?('/admins/:id') && event.admin.present? %>
+		<%= link_to event.company_admin.first_name if !current_page?('/company_admins/:id') && event.company_admin.present? %>
+	<% if event.eventable.present? %>
+		
+	    <strong>	<%= event.action.humanize.downcase %></strong>
+	    <%= signed_in_link_to event.eventable.name, event.eventable  %>
+			
+		<% else %>
+		edited a shift that has been deleted.
+	<% end %>
+	<span class='label label-success black pull-right'>
+	    <%= event.created_at.stamp('11/13 at 8:30am') %>
+	</span>
 <% end %>

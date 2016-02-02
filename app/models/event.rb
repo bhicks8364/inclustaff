@@ -25,6 +25,7 @@ class Event < ActiveRecord::Base
     belongs_to :admin
     belongs_to :company_admin
     belongs_to :user
+    has_one :employee, through: :user
     belongs_to :eventable, polymorphic: true
     include ArelHelpers::ArelTable
     include Arel::Nodes
@@ -42,7 +43,7 @@ class Event < ActiveRecord::Base
     scope :timesheets, -> { where(eventable_type: 'Timesheet')}
     scope :jobs, -> { where(eventable_type: 'Job')}
     scope :comments, -> { where(action: 'commented')}
-    scope :looking_for_work, -> { where(action: 'looking_for_work')}
+    scope :looking_for_work, -> { where(action: 'looking_for_work').joins(:user => :employee).merge(Employee.available)}
     scope :job_approvals, -> { where(action: 'approved', eventable_type: 'Job')}
     scope :job_rejections, -> { where(action: 'declined', eventable_type: 'Job')}
     scope :timesheet_approvals, -> { where(action: 'approved', eventable_type: 'Timesheet')}
@@ -105,6 +106,7 @@ class Event < ActiveRecord::Base
     def self.mentions(admin_id)
         where(action: "mentioned", eventable_id: admin_id)
     end
+    
     
     def self.employee_events(user_id)
         where(eventable_id: user_id)

@@ -123,7 +123,7 @@ class UsersController < ApplicationController
     def update_as_available
         @user = User.includes(:employee, :shifts).find(params[:id])
         @user.update(checked_in_at: Time.current)
-        Event.create(action: "looking_for_work", eventable: @user)
+        Event.create(action: "looking_for_work", eventable: @user, user_id: @user.id)
         skip_authorization
     end
     

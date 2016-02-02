@@ -61,6 +61,9 @@ class Agency < ActiveRecord::Base
     
     before_validation :set_stability_period
     
+    def demo?
+        subdomain == "demo"
+    end
     def set_stability_period
         self.preferences = self.preferences.merge({aca_stability_period: self.aca_measurement_period})
     end

@@ -1,10 +1,10 @@
 <div class='col-md-12'>
   
 <% if @job.active? %>
-<h1 class='text-center bold text-success'><%= @job.state %></h1>
+<h1 class='text-right bold text-success'><%= @job.state %></h1>
 <h2> <strong><%= @employee.name %></strong> <small> <%= @job.title %></small></h2>
 <% else %>
-<h1 class='text-center text-warning bold'><%= @job.state %></h1>
+<h1 class='text-right text-warning bold'><%= @job.state %></h1>
 <h2> <strong><%= @employee.name %></strong> <small> <%= @job.title %></small></h2>
 <% end %>
 
@@ -24,8 +24,7 @@
       <div role="tabpanel" class="tab-pane fade in active" id="job-tab">
         <div class='col-md-12'>
           <div class='col-md-4 well'>
-            <strong>Interview Notes:</strong> <%= @job.description.length > 1 ? @job.description : "No interview notes to show" %><br>
-          <hr>
+           
               <% if @job.active? %>
                 <h4>Total Hours: <%= @job.total_hours %></h4>
                 <h4>Total Gross Pay: <%= number_to_currency(@job.timesheets.sum(:gross_pay)) %></h4>
@@ -72,34 +71,38 @@
           <% end %>
         </div>
       </div>
+      
       <div role="tabpanel" class="tab-pane fade" id="editing">
         <div class='col-md-12'>
-          <div class='col-md-10 well' data-behavior="company-job-list">
+          <div class='col-md-5 well'>
+             <p class='lead'>Interview Notes:</p> 
+             <p class='metal'><%= @job.description.length > 1 ? @job.description : "No interview notes to show" %></p>
+          <hr>
+          </div>
+          <div class='col-md-5 well' data-behavior="company-job-list">
             <div data-behavior="job" data-id="<%= @job.id %>">
               
               <h4><%= @job.title %></h4>
               <span id='verified'></span>
               <%= render 'company/dashboard/clock', job: @job if @job.active? %>
             </div>
-            <%= link_to 'Edit', edit_company_job_path(@job), class: 'btn btn-primary btn-lg' %> 
-            
-            
-            <div class='well'>
+          </div>
+          <div class='col-md-2'>
+              <%= link_to 'Edit', edit_company_job_path(@job), class: 'btn btn-primary btn-lg' %> 
               Timeclock Code: <%= @employee.code %>
+              
+            <div class='well well-sm text-center'>
+              <h4 class='text-center'><%= @current_agency.name %><br> <small>Contact List</small></h4>
+              <h5 class='text-left'>Account Manager:</h5>
+              <%= @job.account_manager.try(:name) %><br>
+              <small><%= @job.account_manager.try(:phone_number) %> <br> <%= @job.account_manager.try(:email) %></small><br>
+            <h5 class='text-left'>Recruiter:</h5>
+            <%= @job.recruiter.try(:name) %><br>
+             <small> <%= @job.recruiter.try(:email) %></small><br>
+             <h5 class='text-left'>Payroll:</h5><%= @current_agency.payroll_admin.first.try(:name) %><br>
+             <small><%= @current_agency.payroll_admin.first.try(:email) %></small>
             </div>
           </div>
-          <div class='col-md-2 well well-sm text-center'>
-            <h4 class='text-center'><%= @current_agency.name %><br> <small>Contact List</small></h4>
-            <h5 class='text-left'>Account Manager:</h5>
-            <%= @job.account_manager.name %><br>
-            <small><%= @job.recruiter.try(:phone_number) %> <br> <%= @job.account_manager.email %></small><br>
-          <h5 class='text-left'>Recruiter:</h5>
-          <%= @job.recruiter.name %><br>
-           <small><%= @job.recruiter.try(:phone_number) %> <br> <%= @job.recruiter.email %></small><br>
-           <h5 class='text-left'>Payroll:</h5><%= @company.payroll_admins.first.try(:name) %><br>
-           <small><%= @job.recruiter.try(:phone_number) %> <br> <%= @job.recruiter.try(:email) %></small>
-          </div>
-          
         </div>
       </div>
       <div role="tabpanel" class="tab-pane fade" id="comments">

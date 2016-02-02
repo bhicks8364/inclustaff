@@ -1,7 +1,11 @@
 class Company::Shifts::BreaksController < ApplicationController
   before_action :authenticate_company_admin!
   before_action :set_shift
-
+  layout "company_layout"
+  
+  def index
+    skip_authorization
+  end
   def start
     skip_authorization
 
@@ -19,6 +23,7 @@ class Company::Shifts::BreaksController < ApplicationController
     @current_break = @shift.current_break
     @current_break.update(time_out: Time.current)
     @shift.update(state: "Clocked In")
+    @shift_break = @shift.breaks.last
   end
 
   private

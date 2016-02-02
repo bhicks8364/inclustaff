@@ -1,0 +1,5 @@
+<div id="break_<%=shift_break.id%>">
+    
+    <%= shift_break.time_in.stamp("11:23am") %> - <%= shift_break.time_out ? shift_break.time_out.stamp("11:23am") : @shift.state %>
+    <span class='badge'> <%= shift_break.duration %></span>
+</div>

@@ -167,7 +167,7 @@ class Job < ActiveRecord::Base
         shifts.on_break.any?
     end
     def off_shift?
-       !shifts.clocked_in.any?
+       !shifts.clocked_in.any? && !shifts.on_break.any?
     end
     def update_employee
         employee.mark_as_assigned!

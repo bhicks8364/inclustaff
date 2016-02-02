@@ -66,6 +66,8 @@ class Employee < ActiveRecord::Base
 
   after_save :create_user, if: :has_no_user?
   after_initialize :set_defaults
+  before_save :check_assigned
+  
 
   def available?
     current_job.nil? && dns == false
@@ -188,11 +190,11 @@ class Employee < ActiveRecord::Base
     self.save
   end
 
-  def mark_as_assigned!
-    if jobs.active.any?
-      self.update(assigned: true)
+  def check_assigned
+    if current_job.present?
+      self.assigned = true
     else
-      self.update(assigned: false)
+      self.assigned = false
     end
   end
 
