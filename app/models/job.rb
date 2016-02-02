@@ -67,7 +67,7 @@ class Job < ActiveRecord::Base
     # CALLBACKS
     # after_create :send_notifications!
     before_validation :defaults, :set_main_pay
-    after_save :update_employee
+    after_save :update_employee, if: :active_changed?
     after_initialize :ensure_pay
 
     def ensure_pay
@@ -170,7 +170,7 @@ class Job < ActiveRecord::Base
        !shifts.clocked_in.any? && !shifts.on_break.any?
     end
     def update_employee
-        employee.mark_as_assigned!
+        active? ? employee.update(assigned: true) : employee.update(assigned: false)
     end
 
     def self.by_recuriter(admin_id)

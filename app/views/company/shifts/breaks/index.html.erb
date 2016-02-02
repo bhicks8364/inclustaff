@@ -1,6 +1,6 @@
 <div class='col-md-6 well'>
     <h2><%= link_to @shift.employee.name, company_shift_path(@shift) %></h2>
-    <h2>Break Duration: <%= @shift.break_duration %></h2>
+    <h2>Break Duration: <%= @shift.breaks.sum(:duration) %></h2>
    <p class='lead' id='shift-times'> <%= shift_times(@shift) %></p>
    <div class='break_times'>
        <%= div_for @shift.breaks do |shift_break| %>

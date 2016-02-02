@@ -117,15 +117,7 @@
 		</div>
   </div>
   <div role="tabpanel" class="tab-pane fade" id="employees">
-     <div class='col-md-6'>
-       <% if @company.jobs.active.any? %>
-       <h3>Current Employees</h3>
-    <%= render @jobs.active %>
-    <% else %>
-      <h3>No employees to display.</h3>
-      <% end %>
-     </div>
-
+    <h3>This week</h3>
      <div class='table-responsive'>
        <%= render 'admin/shifts/week_calendar', shifts: @company.shifts.current_week %>
      </div>

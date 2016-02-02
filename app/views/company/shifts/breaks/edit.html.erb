@@ -1,0 +1,14 @@
+<%= simple_form_for [:company, @shift, @shift_break], html: { class: 'form-horizontal' } do |f| %>
+   
+    <div class='form-inline'>
+        <%= f.input :time_in, as: :time, ampm: true, default: @shift_break.time_in %>
+    </div>
+    <div class="form-group">
+        <%= f.input :paid, as: :select %>
+    </div>
+    
+    <div class="form-inline">
+           <%= f.input :time_out, as: :time, ampm: true, default: @shift_break.time_out %>
+    </div>
+    <%= f.submit %>
+<% end %>

@@ -62,7 +62,7 @@
         </div>
     </div>
     <div role="tabpanel" class="tab-pane" id="location">
-        <div class='col-md-6'>
+        <div class='col-md-4'>
             <dl class="dl-horizontal">
               <dt>Latitude</dt>
               <dd><%= @shift.latitude %></dd>
@@ -71,7 +71,7 @@
             </dl>
             
         </div>
-        <div class='col-md-6'>
+        <div class='col-md-4'>
             <dl class="dl-horizontal">
               <dt>Clock-In IP Address</dt>
               <dd><%= @shift.in_ip %></dd>
@@ -79,7 +79,7 @@
               <dd><%= @shift.out_ip %></dd>
             </dl>
         </div>
-        <div class='col-md-6'>
+        <div class='col-md-4'>
             <%= image_tag "http://maps.google.com/maps/api/staticmap?size=250x300&sensor=false&zoom=12&markers=#{@shift.latitude}%2C#{@shift.longitude}",
         class: "img-zoom" %>
         
@@ -92,6 +92,7 @@
             </div>
             <div class=''>
                 <%= on_break_for(@shift) %>
+                
         		<% if @shift.paid_breaks? %>
         			<h4> PAID BREAKS </h4>
         			<%= number_to_currency(@shift.with_paid_breaks) %>
@@ -101,6 +102,8 @@
         		<%= number_to_currency(@shift.with_unpaid_breaks) %>
         		<br>
         		 Total Break Time: <%= (@shift.break_duration).round(2) %>
+        		 <h4> PAID BREAKS </h4>
+        			<%= number_to_currency(@shift.with_paid_breaks) %>
         		<% end %>
         	</div>
         </div>
