@@ -31,8 +31,8 @@
             <td><%= number_to_currency(invoice.amt_paid) %></td>
             <td data-behavior='date-paid'><%= invoice.paid_on %></td>
             <td><%= number_to_currency(invoice.balance) %></td>
-            <td><%= link_to '<i class="fa fa-file fa-1x "></i>'.html_safe, admin_invoice_path(invoice), class: 'btn btn-tiny' %></td>
-            <td><%= link_to '<i class="fa fa-pencil fa-1x "></i>'.html_safe, edit_admin_invoice_path(invoice), class: 'btn btn-tiny' %></td>
+            <td><%= link_to '<i class="fa fa-file fa-1x "></i>'.html_safe, company_invoice_path(invoice), class: 'btn btn-tiny' %></td>
+            <td><%= link_to '<i class="fa fa-pencil fa-1x "></i>'.html_safe, edit_company_invoice_path(invoice), class: 'btn btn-tiny' %></td>
           </tr>
         <% end %>
       </tbody>

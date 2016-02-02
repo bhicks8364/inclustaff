@@ -130,8 +130,8 @@ class Timesheet < ActiveRecord::Base
   def set_invoice
     company_id = company.id
     agency_id = company.agency.id
-    invoice = Invoice.find_or_create_by(agency_id: agency_id, company_id: company_id, week: week)
-    self.invoice_id = invoice.id
+    self.invoice = Invoice.current_week.find_or_create_by(agency_id: agency_id, company_id: company_id)
+    
   end
 
   def approved?; state == "approved"; end
