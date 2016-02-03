@@ -4,6 +4,9 @@ ruby "2.3.0"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 4.2.1'
+
+gem 'puma', '~> 2.16'
+
 # USER AUTHENICATIN
 gem "devise"
 # USER AUTHORIZATION
