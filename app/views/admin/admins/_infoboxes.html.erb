@@ -1,15 +1,5 @@
-<div class=''>
-	<div class="col-md-12">
-        <div class="">
-        	<% if @admin.owner? %>
-           <%= pie_chart @admin.invoices.group(:company).references(:invoices).sum(:total), min: 1000, max: 5000 ,
-           library: {legend: {position: "left"}, is3D: true, title: "Invoices by Company"} %>
-           <% else %>
-           <%= column_chart @admin.invoices.group_by_week('invoices.created_at').sum(:total), min: 1000, max: 5000 ,
-           library: {legend: {position: "left"}, is3D: true, title: "Invoices by Company"} %>
-           <% end %>
-        </div>
-	</div>
+<div class='col-md-12'>
+
 	<div class="col-md-4">
         <div class="">
         	<h4>Following Admins</h4>

@@ -1,3 +1,4 @@
+<div class='table-responsive'>
 <% if @shifts.present? %>
 <table id="" class="table table-bordered">
   <thead>
@@ -16,9 +17,9 @@
   <tbody>
     <% @shifts.each do |shift| %>
       <% if shift.clocked_in? %>
-        <tr class="clocked_in">
+        <tr class="bg-success">
       <% else %>
-        <tr class="clocked_out">
+        <tr class="bg-info">
       <% end %>
        
         
@@ -41,3 +42,4 @@
 <% else %>
 No shifts available.
 <% end %>
+</div>

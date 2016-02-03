@@ -1,5 +1,5 @@
 <div class="table-responsive">
-    <%= month_calendar table: {class: "calendar table"}, tr: {class: "calendar-row"}, td: {class: "day"}, events: @shifts do |date, shifts| %>
+    <%= month_calendar table: {class: "calendar table"}, tr: {class: "calendar-row"}, td: {class: "day"}, events: shifts do |date, shifts| %>
   <p class="text-right"><%= date.strftime("%m/%d/%y") %></p>
 
   <% shifts.each do |shift| %>

@@ -25,11 +25,7 @@
               <dd><%= @job.recruiter.present? ? @job.recruiter.name : "Recruiter unavailable" %></dd>
             </dl>
           </div>
-          <h4>Job Description:</h4>
-          <div class='scroll400'>
-
-            <%= markdownify(@job.order.notes) %>
-          </div>
+          
         </div>
       </div>
     </div>

@@ -100,12 +100,13 @@ class Job < ActiveRecord::Base
     scope :off_shift, -> { joins(:shifts).merge(Shift.clocked_out)}
     scope :on_break, -> { joins(:shifts).merge(Shift.on_break)}
 
-
     scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.current_week)}
     scope :worked_today, -> { joins(:shifts).merge(Shift.in_today)}
     scope :worked_yesterday, -> { joins(:shifts).merge(Shift.in_yesterday)}
     scope :worked_this_week, -> { joins(:timesheets).where("timesheets.week <= ?", Date.today.cweek).group("jobs.id") }
-
+    def self.without_current_shifts
+        includes(:current_shift).where( :shifts => { :job_id => nil } )
+    end
     # MAIL - not setup yet
     def send_notifications!
         NotificationMailer.job_notification(account_manager, self).deliver_later

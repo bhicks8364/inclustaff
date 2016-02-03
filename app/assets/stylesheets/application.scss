@@ -119,8 +119,9 @@ body {
   // font-height: 2em;
   .container {
     margin-top: 10px;
+    // margin-bottom: 5px;
   }
-  // margin-bottom: 1px;
+  
 }
 .navbar-brand {
     float: left;
@@ -177,4 +178,11 @@ h1 {
 // }
 #ui-datepicker-div {
   background-color: white;
+}
+
+.twitter-follow-button {
+  margin-top: 8px;
+}
+.social-media-buttons {
+  margin-right: 20px;
 }

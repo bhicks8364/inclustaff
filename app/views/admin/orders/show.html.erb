@@ -82,8 +82,8 @@
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane fade in active" id="order">
        <div class='col-md-12'>
-     <h3 class='metal bold text-warning'> <span class='pull-left'><%= @order.requirements['agency_approval'] ? "Requires Agency Approval" : "" %></span>
-      <span class='pull-right'> <%= @order.requirements['company_approval'] ? "Requires Company Approval" : "" %></span>
+     <h3 class='metal bold text-warning'> <span class='pull-left'><%= @order.needs_agency_approval? ? "Requires Agency Approval" : "" %></span>
+      <span class='pull-right'> <%= @order.needs_company_approval? ? "Requires Company Approval" : "" %></span>
      </h3>
      
            

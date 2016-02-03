@@ -98,7 +98,7 @@
             </div>
             <div role="tabpanel" class="tab-pane fade" id="shifts">
             <% if @employee.assigned? && @employee.shifts.any? %>
-                <%= render 'employee/shifts/shift_calendar' %>
+                <%= render 'employee/shifts/shift_calendar', shifts: @employee.shifts %>
             <% elsif @employee.unassigned? %>
             <h2> <%= @employee.first_name %> is currently unassigned.</h2>
             <% end %>

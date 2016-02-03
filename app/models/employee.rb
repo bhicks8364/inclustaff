@@ -186,8 +186,7 @@ class Employee < ActiveRecord::Base
     @histories + @jobs
   end
   def set_work_tags!
-    self.tag_list.add(work_tags)
-    self.save
+    self.tag_list = skills.pluck(:name)
   end
 
   def check_assigned
@@ -196,6 +195,7 @@ class Employee < ActiveRecord::Base
     else
       self.assigned = false
     end
+    true
   end
 
   def set_defaults

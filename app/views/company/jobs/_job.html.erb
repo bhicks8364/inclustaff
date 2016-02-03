@@ -1,5 +1,10 @@
 <div data-behavior="job" data-id="<%= job.id %>">
-    <h4><%= job.title %></h4>
-    <span id='verified'></span>
-    <%= render 'company/dashboard/clock', job: job %>
+    <div class='col-md-6 text-left'>
+        <%= link_to job.name_title, company_job_path(job) %>
+    </div>
+    <div class='col-md-6 text-right'>
+        <span id='verified'></span>
+        <%= render 'company/dashboard/clock', job: job %>
+    </div>
+    
 </div>

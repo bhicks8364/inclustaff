@@ -1,10 +1,10 @@
-<div class='col-md-12 lightbox'>
+<div class='col-md-12'>
     <div class='btn-group'>
         <%= link_to "<i class='fa fa-download fa-md'></i> Download PDF".html_safe, employee_timesheet_path(@timesheet, format: :pdf), class: 'btn btn-primary'%>
         <%= link_to 'All Timesheets', employee_timesheets_path(@job), class: 'btn btn-primary' %>
     </div>
   
-<div class='lightbox'>
+<div class='well'>
   <h3>For the week of:<strong><br>
         <%= @timesheet.week_begin %>
           - 
