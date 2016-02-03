@@ -1,14 +1,4 @@
-<div class='col-md-4'>
-           <%= pie_chart @current_agency.invoices.current_week.group(:company).references(:invoices).sum(:total), min: 1000, max: 5000 ,
-           library: {legend: {position: "left"}, is3D: true, title: "Invoices by Company"} %>
-         
-    
-</div>
-<div class="col-md-8">
-<%= column_chart @current_agency.companies.order('name').map{|company|
-        {name: company.name, data: company.invoices.group_by_month('created_at', range: 2.months.ago.midnight..Time.current, format: "%B").sum(:total)}
-    }, library: {isStacked: true, backgroundColor: "#e5dbcf", legend: {position: "right"}, title: "Company Billings by Month"} %>
-</div>
+
 <div class="col-md-12">
     <%= line_chart @current_agency.companies.includes(:invoices).map{|company|
     {name: company.name, data: company.invoices.group_by_week(:created_at, range: 2.weeks.ago.midnight..Time.now).sum(:total)}

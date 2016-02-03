@@ -26,9 +26,7 @@
   <body>
 
     <%= render 'shared/navbar' %>
-    <div class='social-media-buttons text-right'>
-          <a href="https://twitter.com/IncluStaff" class="twitter-follow-button" data-show-count="false" data-size="large" data-show-screen-name="false">Follow @IncluStaff</a>
-       </div>
+        
     <div class="container " id="main-wrapper">
                    
       <div class="row">
@@ -36,7 +34,7 @@
          <%= render 'layouts/alerts' %>
           <%= yield %>
        </div>
-       
+       <%= render 'layouts/footer' %>
         
       </div>
     </div>
