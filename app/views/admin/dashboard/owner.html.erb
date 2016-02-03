@@ -52,7 +52,20 @@
 					<div class="col-md-10">
 						<%= render 'admin/orders/table', orders: @current_agency.orders.needs_attention.order(:needed_by) %>
 					</div>
-				
+					<div class='col-md-10'>
+							<h3 class='text-center'>Job Orders by Company</h3>
+	       				<div class='list-group'>
+       					<% @current_agency.companies.includes(:orders => :jobs).order(:name).each do |company| %>
+	       					<li class='list-group-item'><h4 class="list-group-item-heading">
+	       						<%= link_to company.name, admin_company_path(company)%>
+	       					</h4>
+	       					Active <span class='label label-success'><%= company.jobs.active.count %></span> &nbsp;
+	       					Pending <span class='label label-info'><%= company.jobs.pending_approval.count %></span>
+	       					</li>
+	       				<% end %>
+	       				</div>
+	       			</div>
+
 				<% else %>
 					<h3 class='text-center'>No Job Orders</h3>
 					<div class="col-md-2">

@@ -66,9 +66,9 @@ class Job < ActiveRecord::Base
 
     # CALLBACKS
     # after_create :send_notifications!
-    before_validation :defaults, :set_main_pay
+    before_validation :defaults, :ensure_pay
     after_save :update_employee, if: :active_changed?
-    after_initialize :ensure_pay
+    # after_initialize :ensure_pay
 
     def ensure_pay
         self.pay_rate = order.min_pay if pay_rate.nil?
@@ -77,6 +77,7 @@ class Job < ActiveRecord::Base
 
     # SCOPES
     scope :with_recent_comments,    -> { joins(:comments).merge(Comment.payroll_week)}
+   scope :pending_approval, ->{ where("preferences @> hstore(:key, :value)", key: "github", value: "fnando")}
     # scope :with_drive_pay, -> { where("settings ? :key", :key => 'drive_pay')}
     # scope :with_ride_pay, -> { where("settings ? :key", :key => 'ride_pay')}
     # scope :with_pay, -> { where("settings ? :key", :key => 'pay_rate')}
@@ -193,13 +194,13 @@ class Job < ActiveRecord::Base
         "#{employee.name} -  #{title}"
     end
 
-    def set_main_pay
-        pay = pay_rate
-        if settings.nil?
-            self.settings = {}
-        end
-        self.settings['pay_rate'] = pay
-    end
+    # def set_main_pay
+    #     pay = pay_rate
+    #     if settings.nil?
+    #         self.settings = {}
+    #     end
+    #     self.settings['pay_rate'] = pay
+    # end
 
 
 
@@ -232,8 +233,9 @@ class Job < ActiveRecord::Base
     def defaults
         self.active = false if active.nil?
         self.start_date = Date.today if start_date.nil?
-        # self.settings = {current_state: "Pending Approval"} if settings[:current_state].nil? && active == false
-        self.settings = {current_state: "Currently Working"} if settings[:current_state].nil? && active == true
+        self.settings = {} if settings.nil?
+        self.settings = {current_state: "Pending Approval"} if settings[:current_state].nil? && active == false
+        # self.settings = {current_state: "Currently Working"} if settings[:current_state].nil? && active == true
         self.vacation = {} if vacation.nil?
         self.title = order.title if title.nil?
     end

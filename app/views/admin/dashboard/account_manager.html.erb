@@ -3,9 +3,12 @@
 
 	<h1 class='page-header text-center'>Sales Dashboard</h1>
 	<div class='col-md-12 '>
+		<div class="col-md-3">
+			<h2>Pending Approval</h2>
+				<%= render 'admin/jobs/pending_list', jobs: @current_admin.jobs.pending_approval %>
+		</div>
 		
-		
-		<div class='col-md-9 well'>
+		<div class='col-md-6 well'>
 			<h2>Companies with Open Job Orders</h2>
 			<%= render 'admin/shared/company_collapse', companies: @current_admin.companies.with_open_orders.includes(:orders).distinct.order(:name) %>
 		</div>
