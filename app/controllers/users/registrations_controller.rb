@@ -29,7 +29,7 @@ before_filter :configure_sign_up_params, only: [:create]
     resource.agency = @current_agency
     # resource.set_code
     # resource.set_code
-    # resource.save
+    resource.save
     yield resource if block_given?
     if resource.persisted?
       if resource.active_for_authentication?
