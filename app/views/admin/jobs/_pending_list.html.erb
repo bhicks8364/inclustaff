@@ -2,7 +2,6 @@
     <ul class="fa-ul">
         <% jobs.each do |job| %>
         <li data-behavior="job" data-id="<%= job.id %>"><i class="fa-li fa fa-user-plus"></i>
-            <%= check_box_tag :active, 1, job.active?, data: { behavior: "job-toggle" } %>
             <%= link_to job.name_title, admin_job_path(job) %>
             <span data-behavior="job-name">
               <% if job.active? %>

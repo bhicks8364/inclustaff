@@ -74,8 +74,10 @@
 	       					<li class='list-group-item'><h4 class="list-group-item-heading">
 	       						<%= link_to company.name, admin_company_path(company)%>
 	       					</h4>
+	       					<% if company.jobs.any? %>
 	       					Active <span class='label label-success'><%= company.jobs.active.count %></span> &nbsp;
 	       					Pending <span class='label label-info'><%= company.jobs.pending_approval.count %></span>
+	       					<% end %>
 	       					</li>
 	       				<% end %>
 	       				</div>
