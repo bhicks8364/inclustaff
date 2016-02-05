@@ -232,9 +232,9 @@ class Job < ActiveRecord::Base
     def defaults
         self.active = false if active.nil?
         self.start_date = Date.today if start_date.nil?
-        self.settings = {} if settings.nil?
-        # self.settings = {current_state: "Pending Approval"} if settings[:current_state].nil? && active == false
-        # self.settings = {current_state: "Currently Working"} if settings[:current_state].nil? && active == true
+        # self.settings = {} if settings.nil?
+        self.settings = {current_state: "Pending Approval"} if settings[:current_state].nil? && active == false
+        self.settings = {current_state: "Currently Working"} if settings[:current_state].nil? && active == true
         self.vacation = {} if vacation.nil?
         self.title = order.title if title.nil?
     end
