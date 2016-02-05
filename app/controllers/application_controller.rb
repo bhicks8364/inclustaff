@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
 
   def set_current
     subdomains = request.subdomains
-    @current_agency = Agency.where(subdomain: subdomains).first
+    @current_agency = Agency.where(subdomain: subdomains).first if vaild_subdomain?(request)
     @current_admin = current_admin if admin_signed_in?
     @current_user = current_user if user_signed_in?
     @current_company = current_company_admin.company if company_admin_signed_in?
@@ -29,7 +29,10 @@ class ApplicationController < ActionController::Base
     @signed_in = @current
     
   end
-
+  def vaild_subdomain?(request)
+    subdomains = %w{ www admin public }
+    request.subdomain.present? && !subdomains.include?(request.subdomain)
+  end
   def after_sign_in_path_for(resource)
     root_path
   end

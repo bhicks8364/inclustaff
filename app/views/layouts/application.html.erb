@@ -27,18 +27,14 @@
 
     <%= render 'shared/navbar' %>
         
-    <div class="container " id="main-wrapper">
-                   
-      <div class="row">
-       <div class="col-md-12">
+    <div class="row">
+			<div class="container" id="main-wrapper">
          <%= render 'layouts/alerts' %>
          <%= render 'demo/demo_nav' if @current_agency.demo? %>
           <%= yield %>
-       </div>
-       <%= render 'layouts/footer' %>
-        
       </div>
     </div>
+    <%= render 'layouts/footer' %>
 
 </body>
 </html>
