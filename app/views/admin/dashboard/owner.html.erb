@@ -70,13 +70,13 @@
 					<div class='col-md-10'>
 							<h3 class='text-center'>Job Orders by Company</h3>
 	       				<div class='list-group'>
-       					<% @current_agency.companies.includes(:orders => :jobs).order(:name).each do |company| %>
+       					<% @current_agency.companies.includes(:orders).order(:name).each do |company| %>
 	       					<li class='list-group-item'><h4 class="list-group-item-heading">
 	       						<%= link_to company.name, admin_company_path(company)%>
 	       					</h4>
-	       					<% if company.jobs.any? %>
-	       					Active <span class='label label-success'><%= company.jobs.active.count %></span> &nbsp;
-	       					Pending <span class='label label-info'><%= company.jobs.pending_approval.try(:count) %></span>
+	       					<% if company.orders.any? %>
+	       					Active <span class='label label-success'><%= company.orders.active.count %></span> &nbsp;
+	       					Pending <span class='label label-info'><%= company.orders.inactive.count %></span>
 	       					<% end %>
 	       					</li>
 	       				<% end %>
