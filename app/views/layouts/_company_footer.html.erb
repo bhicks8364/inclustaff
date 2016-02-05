@@ -1,0 +1,8 @@
+<nav class="navbar navbar-default company-footer">
+  <div class="container">
+    <%= link_to "New Shift", new_company_shift_path, class: "btn btn-default navbar-btn" %>
+  	<% if company_admin_signed_in? %>
+  		<p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link"><%= @current.name %></a></p>
+  	<% end %>
+  </div>
+</nav>

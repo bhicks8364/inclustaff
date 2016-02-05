@@ -198,9 +198,6 @@ class Order < ActiveRecord::Base
     end
   end
 
-
-
-
   def self.by_manager(admin_id)
     where(manager_id: admin_id)
   end

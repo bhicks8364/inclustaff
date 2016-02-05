@@ -37,13 +37,12 @@
                         <%= link_to(admin_job_path(@job, format: :pdf), class: 'btn btn-primary') do %>
                         <i class="fa fa-download fa-md"></i> Candidate Sheet
                         <% end %>
+                        
                     </div>
 
                     <div class='col-md-4 '>
                         <div class=''>
-                            <span data-behavior="job-status">
-                                 <h2><%= @job.status %></h2>
-                            </span>
+                            
                             <span data-behavior="job-state">
                                 <h2><%= @job.state %></h2>
                             </span>
@@ -70,14 +69,31 @@
                 <div role="tabpanel" class="tab-pane fade" id="order-info">
                     <h3>Order Information</h3>
                     <div class='col-md-12'>
-                        <div class='col-md-6'>
+                        <div class='col-md-8 well well-sm'>
                             <%= markdownify(@order.notes) %>
                             
                         </div>
-                        <div class='col-md-6'>
-                            
+                        <div class='col-md-4 well well-sm text-info'>
+                            Skills
+                            <%= render @order.skills %>
                         </div>
+                           <div class='col-md-12 well well-sm'>
+	  	<div class="col-md-4">
+	  	    	<h3><%= signed_in_link_to @order.title, @order %></h3>
+	  	    	<h4>Pay range: <%= pay_range(@order) %></h4>
+    	    <%= @order.tag_list %>
+    	</div>
+    	<div class="col-md-4 well well-sm">
+    		<h3><%= signed_in_link_to @employee.name, @employee %></h3>
+    	    <%= @employee.tag_list || "No employee tags" %>
+    	    	<h4>Preferred job type:  <%= @employee.desired_job_type %></h4>
+    	    	<h4>Preferred shift:  <%= @employee.desired_shift %></h4>
+    	</div>
+        
+      
+   </div>
                     </div>
+                    
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="comments-tab">
                     <div class='col-md-12'>

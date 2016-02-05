@@ -2,6 +2,9 @@
 <div class="col-md-12 lightbox">
 	<%= render 'search' %>
     <h1>Search Job Orders</h1>
+    <div class='col-md-12'>
+		<%= render 'admin/shared/alerts/open_orders', orders: @orders %>
+	</div>
 	<div class='col-md-12 bg-white'>
 	  	<h3>Sort By:</h3>
 	  <ul class="nav nav-pills nav-justified">
@@ -11,15 +14,13 @@
 		  <li><%= sort_link(@q, :min_pay) %></li>
 		  <li><%= sort_link(@q, :max_pay) %></li>
 		</ul>
-		<div class="col-md-10 bg-white">
+		<div class="col-md-12 well well-sm">
 			<%= render 'admin/orders/table', orders: @orders %>
 			<%= will_paginate @orders %>
 		</div>
-		<div class='col-md-2'>
-			<%= render 'admin/shared/alerts/open_orders', orders: @orders %>
-			<%= render 'admin/infoboxes/taggings' %>
-		</div>
+		
 	</div>
+	<hr>
 	<div class='center'>
 		<div id="map" style='width: 400px; height: 400px;'></div>
 	</div>

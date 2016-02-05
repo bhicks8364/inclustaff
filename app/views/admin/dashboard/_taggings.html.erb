@@ -2,7 +2,7 @@
   <div class="">
   	 
   	<div class="scroll600">
-	  <% orders.tags_on(:tags).order(name: :asc).each do |tag, css_class| %>
+	  <% tags.order(name: :asc).each do |tag| %>
 	  	<%= link_to(tag_path(tag.name), class: "list-group-item list-group-item-info") do  %>
 	   <% if employees.tagged_with([tag], :any => true).any? %>
 		 <span><i class="fa fa-user-plus fa-fw"></i>  <%= tag.name %></span>
@@ -12,7 +12,7 @@
 	   <% end %>
 	  <% end %>
 		</div>
-	<%= link_to 'Clear Search', tags_path, class: 'pull-right small' %>
+	<%= link_to 'Clear Search', tags_path, class: ' button pull-right small' %>
 		
 		
 	</div>

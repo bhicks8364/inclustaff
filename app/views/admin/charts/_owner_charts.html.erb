@@ -1,9 +1,5 @@
 
-<div class="col-md-12">
-<%= column_chart @current_agency.companies.order('name').map{|company|
-        {name: company.name, data: company.invoices.group_by_week(:created_at, range: 2.weeks.ago.midnight..Time.current, format: "%b %d %y").sum(:total)}
-    }, library: {isStacked: true, backgroundColor: "#e5dbcf", legend: {position: "right"}, title: "Company Billings by Month"} %>
-</div>
+
 <div class="col-md-12">
     <%= line_chart @current_agency.companies.includes(:invoices).map{|company|
     {name: company.name, data: company.invoices.group_by_week(:created_at, range: 2.weeks.ago.midnight..Time.now).sum(:total)}

@@ -7,6 +7,7 @@
 					
 						<ul class="nav nav-tabs">
 						  <li class="active"><a href="#tab-home" data-toggle="tab">Recruiting Dashboard</a></li>
+						  <li class=""><a href="#tab-events" data-toggle="tab"> Recent Activity</a></li>
 						  <li class=""><a href="#tab-job-orders" data-toggle="tab">Open Job Orders</a></li>
 						  <li class=""><a href="#tab-calendar" data-toggle="tab">Calendar</a></li>
 							<li class=""><a href="#tab-candidates" data-toggle="tab">Current Candidates</a></li>
@@ -17,9 +18,20 @@
 					
 					<div class="tab-content">
 						<div class="tab-pane fade in active" id="tab-home">
+							<div class="well well-sm">
+									<%= render "admin/shared/alerts/open_orders", orders: @orders %>
+							</div>
+							<div class="col-md-4">
+							  <h4 class='text-center'>Current Leaders</h4>
+							  <h5 class='text-center'><small>Based on current billing</small></h5>
+							  <%= column_chart recruiter_ranking_path, ytitle: "Current Billing", xtitle: "Top 5 Recruiters"  %>
+							</div>
+							
+						</div>
+						<div class="tab-pane fade in" id="tab-events">
 							<div class='col-md-12 metal well well-sm'>
 								 <h2>Recent Activity</h2>
-								<div class="col-md-4">
+								<div class="col-md-6 well well-sm">
 									<h3 class='text-info'>Looking for work</h3>
 									<% if Event.looking_for_work.any? %>
 								<% Event.looking_for_work.order(:created_at).limit(10).each do |event| %>
@@ -33,7 +45,7 @@
 					            <% end %>
 					            
 								</div>
-								<div class="col-md-4">
+								<div class="col-md-6 well well-sm">
 									<h3 class='text-success'>Job Approvals</h3>
 									<% if Event.job_approvals.any? %>
 								<% Event.job_approvals.order(:created_at).limit(10).each do |event| %>
@@ -48,7 +60,7 @@
 					            <% end %>
 					            	
 					            </div>
-					            <div class="col-md-4">
+					            <div class="col-md-6 well well-sm">
 					            <h3 class='text-danger'>Job Declines</h3>
 					            <% if Event.job_rejections.any? %>
 								<% Event.job_rejections.order(:created_at).limit(10).each do |event| %>
@@ -66,7 +78,7 @@
 							</div>
 						</div>
 						<div class="tab-pane fade in" id="tab-job-orders">
-							<div class='col-md-12 bg-white'>
+							<div class='col-md-12'>
 								<h3 class='text-center'><%= pluralize(@orders.count, "Open Job Orders") %></h3>
 								<div class="col-md-10">
 										<%= render 'admin/orders/table', orders: @orders %>
@@ -86,19 +98,19 @@
 						
 						
 						<div class="tab-pane fade" id="tab-candidates">
-							<div class="col-md-12 bg-white">
+							<div class="col-md-12">
 								<h3>Candidate List</h3>
 								<%= render 'users/table', users: @candidates.order(:checked_in_at).limit(50) %>
 							</div>
 						</div>	 
 						
 						<div class="tab-pane fade" id="tab-calendar">
-							<div class="col-md-12 bg-white">
+							<div class="col-md-12">
 							  	<%= render 'admin/infoboxes/recruiting_calendar' %>
 						  	</div>
 						</div>
 						<div class="tab-pane fade" id="tab-events">
-							<div class="col-md-12 bg-white">
+							<div class="col-md-12">
 							<% if Event.applications.any? %>
 							<h3>Recent Applications</h3>
 							<% Event.applications.order(created_at: :desc).each do |event| %>

@@ -132,7 +132,7 @@ class Job < ActiveRecord::Base
     def mentions
         @mentions ||= begin
                         regex = /@([\w]+)/
-                        description.scan(regex).flatten
+                        description.scan(regex).flatten if description.present?
                       end
     end
 

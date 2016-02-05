@@ -47,7 +47,7 @@ body {
   padding-top: 70px;
   padding-bottom: 70px;
   height: 100%;
-  background: transparent;
+  background: #DEE0E8;
   // background-image:
   //       // linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
   //       url(InclusStaff-linkedin-cover.png)  no-repeat center center fixed;
@@ -58,6 +58,7 @@ body {
 #main-wrapper {
   // margin-top: -20px;
   padding-top: 15px;
+  padding-bottom: 70px;
   // margin-bottom: 70px;
   
 }
@@ -186,4 +187,8 @@ h1 {
 }
 .social-media-buttons {
   margin-right: 20px;
+}
+
+.company-footer {
+  height: 40px;
 }

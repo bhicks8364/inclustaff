@@ -22,7 +22,6 @@ class Company::ShiftsController < ApplicationController
   end
 
   def new
-    @company = @admin.company
     @jobs = @company.jobs.off_shift.distinct
     # @jobs = @company.jobs.off_shift.distinct
     # @orders = @company.orders.off_shift.distinct
@@ -91,10 +90,10 @@ class Company::ShiftsController < ApplicationController
   def clock_out
     @shift = Shift.find(params[:id])
     if @shift.clock_in?
-
+    
       @shift.update(time_out: Time.current,
                     state: "Clocked Out",
-                    out_ip: "#{@current_company_admin.name}", week: Date.today.cweek )
+                    out_ip: "#{@current_company_admin.name}", week: Date.today.beginning_of_week )
 
       respond_to do |format|
         if @shift.save

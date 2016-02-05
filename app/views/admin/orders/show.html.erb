@@ -1,4 +1,5 @@
 <div class='col-md-12 lightbox'> 
+<%= @order.active? ? "" : "Inactive" %>
   <div class="btn-group pull-right">
     <% if policy(Job).create? && @order.needs_attention? %>
           <%= link_to 'Make a placement', new_admin_order_job_path(@order), class: "btn btn-primary" %>

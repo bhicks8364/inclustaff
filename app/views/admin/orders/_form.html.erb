@@ -24,6 +24,9 @@
 			</div>
 		</div>
 		<div class='form-group'>
+			<%= f.input :active, as: :select %>
+		</div>
+		<div class='form-group'>
 			<p class='bold'>When should this post expire from public view?</p>
 			<div class=''>
 				<%= f.input :expires_at, wrapper_html: {class: "form-inline"}, 

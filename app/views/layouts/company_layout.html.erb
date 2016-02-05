@@ -1,41 +1,30 @@
 <html>
-<head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-	<title>IncluStaff</title>
-
-
-	<%= Gon::Base.render_data %>
-	<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  	<%= javascript_include_tag 'application' %>
-  	<%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
-	<%= javascript_include_tag 'charts' %>
-	<!-- google font libraries -->
-	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300|Titillium+Web:200,300,400' rel='stylesheet' type='text/css'>
-
-	<%= csrf_meta_tags %>
-</head>
-
-<body>
-
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+		<title>IncluStaff</title>
+	
+		<%= Gon::Base.render_data %>
+		<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+	  	<%= javascript_include_tag 'application' %>
+	  	<%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
+		<%= javascript_include_tag 'charts' %>
+		<!-- google font libraries -->
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300|Titillium+Web:200,300,400' rel='stylesheet' type='text/css'>
+	
+		<%= csrf_meta_tags %>
+	</head>
+	<body>
 		<%= render 'company/shared/navbar' %>
-
-	<div class="container">
+		
 		<div class="row">
-<div class="row">
 			<div class="container" id="main-wrapper">
-	
-	
-
 				<%= render 'layouts/alerts' %>
+				<%= render 'demo/demo_nav' if @current_agency.demo? %>
 	    		<%= yield %>
-
-
-	    	
+			</div>
 		</div>
-		
-		
-	</div>
-</body>
+		<%= render 'layouts/company_footer' %>
+	</body>
 </html>

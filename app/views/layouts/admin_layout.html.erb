@@ -25,9 +25,10 @@
 
 <body>
 
-		<%= render 'admin/shared/navbar' %>
-
+		<%= render 'admin/shared/navbar'  %>
+		
 	<div class="row">
+		<%= render 'demo/demo_nav' if @current_agency.demo? %>
 			<div class="container" id="main-wrapper">
 	
 	

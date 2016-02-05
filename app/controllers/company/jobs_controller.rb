@@ -93,7 +93,12 @@ class Company::JobsController < ApplicationController
   def clock_out_all
       @all_jobs = current_company_admin.jobs
       @jobs = @all_jobs.on_shift
-      @jobs.each {|job| job.clock_out! }
+      @jobs.each {|job| job.current_shift.update(
+        time_out: Time.current,
+        state: "Clocked Out",
+        out_ip: current_company_admin.current_sign_in_ip,
+        week: Date.today.beginning_of_week
+      )}
       if !@all_jobs.on_shift.any?
         redirect_to company_jobs_path, notice: "You have just clocked out all working employees"
       else

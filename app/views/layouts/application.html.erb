@@ -32,6 +32,7 @@
       <div class="row">
        <div class="col-md-12">
          <%= render 'layouts/alerts' %>
+         <%= render 'demo/demo_nav' if @current_agency.demo? %>
           <%= yield %>
        </div>
        <%= render 'layouts/footer' %>

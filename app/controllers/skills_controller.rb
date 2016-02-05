@@ -66,6 +66,7 @@ class SkillsController < ApplicationController
   def update_all
     Skill.job_order.each do |skill|
       skill.save
+      skip_authorization
     end
         redirect_to skills_path, notice: 'Successfully updated all job order skills'
       

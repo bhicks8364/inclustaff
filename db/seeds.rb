@@ -6,4 +6,4 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.firs
 
-a = Agency.create(name: "Demo Agency", subdomain: "demo", contact_name: "Danny Demo", contact_email: "demo@email.com")
+# a = Agency.create(name: "Demo Agency", subdomain: "demo", contact_name: "Danny Demo", contact_email: "demo@email.com")
