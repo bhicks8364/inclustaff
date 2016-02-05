@@ -1,3 +1,4 @@
+<% if jobs.any? %>
 <div data-behavior="job-list">
     <ul class="fa-ul">
         <% jobs.each do |job| %>
@@ -14,3 +15,4 @@
         <% end %>
   </ul>
 </div>
+<% end %>
