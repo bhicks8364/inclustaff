@@ -77,7 +77,7 @@ class Job < ActiveRecord::Base
 
     # SCOPES
     scope :with_recent_comments,    -> { joins(:comments).merge(Comment.payroll_week)}
-   scope :pending_approval, ->{ where("preferences @> hstore(:key, :value)", key: "github", value: "fnando")}
+   
     # scope :with_drive_pay, -> { where("settings ? :key", :key => 'drive_pay')}
     # scope :with_ride_pay, -> { where("settings ? :key", :key => 'ride_pay')}
     # scope :with_pay, -> { where("settings ? :key", :key => 'pay_rate')}

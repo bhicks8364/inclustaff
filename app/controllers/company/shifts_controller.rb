@@ -78,7 +78,7 @@ class Company::ShiftsController < ApplicationController
 
     respond_to do |format|
       if @shift.save
-        format.html { redirect_to company_dashboard_path, anchor: "job_#{@shift.job_id}", notice: 'Sucessfully clocked in.' }
+        format.html { redirect_to company_jobs_path, anchor: "job_#{@shift.job_id}", notice: 'Sucessfully clocked in.' }
         format.json { render :show, status: :created, location: @shift }
       else
         format.html { render :new }
