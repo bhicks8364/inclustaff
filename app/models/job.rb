@@ -74,7 +74,6 @@ class Job < ActiveRecord::Base
         self.pay_rate = order.min_pay if pay_rate.nil?
     end
 
-
     # SCOPES
     scope :with_recent_comments,    -> { joins(:comments).merge(Comment.payroll_week)}
    
