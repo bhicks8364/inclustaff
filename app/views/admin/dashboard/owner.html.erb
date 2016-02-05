@@ -76,7 +76,7 @@
 	       					</h4>
 	       					<% if company.jobs.any? %>
 	       					Active <span class='label label-success'><%= company.jobs.active.count %></span> &nbsp;
-	       					Pending <span class='label label-info'><%= company.jobs.pending_approval.count %></span>
+	       					Pending <span class='label label-info'><%= company.jobs.pending_approval.try(:count) %></span>
 	       					<% end %>
 	       					</li>
 	       				<% end %>
