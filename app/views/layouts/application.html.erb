@@ -26,11 +26,12 @@
   <body>
 
     <%= render 'shared/navbar' %>
-        
+    <%= render 'demo/demo_nav' if @current_agency.present? && @current_agency.demo? && signed_in? %>
     <div class="row">
 			<div class="container" id="main-wrapper">
          <%= render 'layouts/alerts' %>
-         <%= render 'demo/demo_nav' if @current_agency.present? && @current_agency.demo? %>
+         <%= render 'demo/how_to_buttons' if @current_agency.present? && @current_agency.demo? %>
+         
           <%= yield %>
       </div>
     </div>
