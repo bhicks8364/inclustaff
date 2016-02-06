@@ -68,7 +68,7 @@ class Job < ActiveRecord::Base
     # after_create :send_notifications!
     before_validation :ensure_pay
     after_save :update_employee, if: :active_changed?
-    after_initialize :defaults
+    before_save :defaults
 
     def ensure_pay
         self.pay_rate = order.min_pay if pay_rate.nil?
