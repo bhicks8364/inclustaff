@@ -1,0 +1,57 @@
+<div class="modal fade" id="companyDemoModal" tabindex="-1" role="dialog" aria-labelledby="companyDemoModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="companyDemoModalLabel">Adding New Companies</h4>
+      </div>
+      <div class="modal-body">
+        When adding a new company you can automatically create their personalized login account! Choose to send them a welcome email to really streamline the process!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <%= link_to "Add A Company", new_admin_company_path, type: "button", class: 'btn btn-success'%>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="usersDemoModal" tabindex="-1" role="dialog" aria-labelledby="usersDemoModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="usersDemoModalLabel">Creating User Accounts</h4>
+      </div>
+      <div class="modal-body">
+          <p class=''>Choose the type of account you'd like to create below. The new account user will recieve a welcome email with further instructions. 
+          You can also set roles & permissions when creating admin accounts.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <%= link_to "Add Agency Admin", new_admin_admin_path, type: "button", class: 'btn btn-success black bold metal'%>
+        <%= link_to "Add Company Admin", new_company_admin_registration_path, type: "button", class: 'btn btn-success'%>
+        <%= link_to "Add New Employee", new_admin_employee_path, type: "button", class: 'btn btn-success'%>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="clockDemoModal" tabindex="-1" role="dialog" aria-labelledby="clockDemoModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="clockDemoModalLabel">View Time Clock</h4>
+      </div>
+      <div class="modal-body">
+        <p>
+            Timesheets and invoices are automatically created when an employee clocks in.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <%= link_to "View Timesheets", admin_timesheets_path, type: "button", class: 'btn btn-success'%>
+        <%= link_to "View Shifts", admin_shifts_path, type: "button", class: 'btn btn-success'%>
+      </div>
+    </div>
+  </div>
+</div>

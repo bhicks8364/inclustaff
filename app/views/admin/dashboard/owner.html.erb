@@ -1,4 +1,5 @@
 <div class="col-md-12">
+	
 	<%= render 'admin/shared/welcome/agency_setup' if @current_admin.sign_in_count == 1 || @current_agency.subdomain == "demo" %> 
 	<h2 class='text-right metal bold'>  <span class='label label-success black'>Sales Goal &nbsp;<%= number_to_currency(@current_agency.weekly_sales_goal) %></span></h2>
 	<h1 class='page-header white'>Owner Dashboard</h1>
@@ -35,6 +36,9 @@
 					<div class='col-md-4'>
 						<div class="alert alert-info fade in text-center open-order">
 							<p class='lead bold metal green'><i class="fa fa-usd fa-fw"></i> &nbsp; Current Revenue: <%= number_to_currency(@current_agency.current_revenue) %>  </span> <br>
+						</div>
+						<div class="alert alert-info fade in text-center open-order">
+							<p class='lead bold metal'><i class="fa fa-usd fa-fw"></i> &nbsp; Last Week Billing: <%= number_to_currency(@current_agency.last_week_billing) %>  </span> <br>
 						</div>
 					</div>
 		 			<div class='col-md-8 well well-sm grey'>
