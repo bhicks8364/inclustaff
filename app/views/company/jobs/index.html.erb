@@ -1,4 +1,5 @@
 <div class='col-md-12'>
+  <%= link_to "Archived", archived_company_jobs_path %>
   <% if @jobs %>
   <h1>Active Jobs <small><%= @company.name %></small></h1>
   <div id="" class="table-responsive">
@@ -19,7 +20,7 @@
     </thead>
   
     <tbody>
-      <%= content_tag_for(:tr, @jobs) do |job| %>
+      <%= content_tag_for(:tr, @jobs.active) do |job| %>
       <% if job.on_shift? %>
           <tr class="bg-success">
         <% else %>

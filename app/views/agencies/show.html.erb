@@ -1,4 +1,12 @@
 <div class='col-md-12 lightbox-long'>
+<% if company_admin_signed_in? %>
+
+
+<%= render 'company_view' %>
+
+
+<!--IF A COMPANY ADMIN IS NOT SIGNED IN-->
+<% else %>
     <% if @agency.admins.count == 1 && admin_signed_in? %>
     <h1 class='page-header'>Welcome to IncluStaff, <%= @agency.name %>!</h1>
    
@@ -157,4 +165,5 @@
     </div>
     
 </div>
+<% end %>
 </div>

@@ -1,6 +1,6 @@
 <div class=''>
         <h4 class=''><%= link_to employee.name, admin_employee_path(employee) %></h4>
-       <span class='pull-right'><%= emp_popover(employee) %></span>
+       
         <% if employee.work_histories.any? %>
             <h4> Most Recent Position
                 <%= link_to admin_employee_work_histories_path(employee), class: "button" do %>

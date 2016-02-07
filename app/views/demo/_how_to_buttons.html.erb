@@ -55,3 +55,26 @@
     </div>
   </div>
 </div>
+<div class="modal fade" id="jobOrderDemoModal" tabindex="-1" role="dialog" aria-labelledby="jobOrderDemoModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="jobOrderDemoModalLabel">Create & Manage Job Orders</h4>
+      </div>
+      <div class="modal-body col-md-12">
+             <p class='lead metal bold'>Need to enter a new job order?</p> 
+          <div class='col-md-7'> <%= image_tag("new_order.png", class: 'screenshot') %></div>
+          <div class='col-md-5'>
+          <p class='lead metal'>Just <%= link_to "create a new job order", new_admin_order_path %> so your recruiting team can get working on it right away!</p>
+          </div>
+      </div>
+          
+         
+        
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

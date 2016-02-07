@@ -175,6 +175,7 @@ Rails.application.routes.draw do
       resources :orders
       resources :jobs do
         collection do
+          get 'archived'
           patch 'clock_out_all'
         end
         member do

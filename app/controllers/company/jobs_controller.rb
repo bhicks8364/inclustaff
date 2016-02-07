@@ -16,9 +16,9 @@ class Company::JobsController < ApplicationController
   def archived
     @admin = current_company_admin
     @company = @admin.company
-    @archived_jobs = @company.jobs.inactive.with_employee
+    @archived_jobs = @company.jobs.inactive
     
-    authorize @archived_jobs
+    authorize @archived_jobs, :index?
   end
 
   def show

@@ -17,14 +17,13 @@
 	</head>
 	<body>
 		<%= render 'company/shared/navbar' %>
-		<%= render 'demo/demo_nav' if @current_agency.demo? %>
+		<%= render 'demo/demo_nav' %>
 		<div class="row">
 			<div class="container" id="main-wrapper">
 				<%= render 'layouts/alerts' %>
-				<%= render 'demo/company_how_to' if @current_agency.present? && @current_agency.demo? %>
+				<%= render 'demo/company_how_to' if @current_agency.present?  %>
 	    		<%= yield %>
 			</div>
 		</div>
-		<%= render 'layouts/company_footer' %>
 	</body>
 </html>

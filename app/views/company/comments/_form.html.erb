@@ -1,0 +1,23 @@
+<% if commentable.present? %>
+<%= simple_form_for [commentable.comments.new], class: 'comment', remote: true do |f| %>
+<%= f.hidden_field :commentable_id, value: commentable.id %>
+<%= f.hidden_field :commentable_type, value: commentable.class %>
+  
+   
+    
+ 
+    <div class="form-group" id="comment_form">
+      <%= f.input :body, label: false, input_html: { class: "form-control body myatwho"}, placeholder: "Add a comment" %>
+
+      
+         <%= f.submit "Send", class: "btn btn-primary" %>
+     
+    </div>
+  
+    
+  
+  
+<% end %>
+<%else%>
+Nope
+<% end %>

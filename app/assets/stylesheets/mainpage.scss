@@ -265,3 +265,13 @@ input.file-field {
 #bs-demo-navbar-collapse-1 {
     // background: transparent;
 }
+.how-to {
+    font: bold 1em/150% Helvetica, Arial, sans-serif;
+}
+.simple {
+  text-shadow: 2px 3px 5px rgba(0,0,0,0.3);
+}
+.double {
+  text-shadow: 2px 2px 0 white,
+               4px 4px 0 black;
+}

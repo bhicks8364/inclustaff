@@ -1,0 +1,30 @@
+<%= @comment.recipient.try(:id) %> <%= @comment.recipient.try(:type) %>
+<%= @comment.sender.try(:name) %>
+
+<%= simple_form_for @comment, class: 'comment' do |f| %>
+
+    <%= @comment.commentable.try(:name) %>
+ 
+    <div class="form-group">
+      <%= f.input :body, label: false, input_html: {data: { behavior: "autocomplete_order_notes" }, class: "form-control body"}, placeholder: "Add a comment" %>
+      <%= f.input :recipient_type, collection: ["Admin", "CompanyAdmin", "Employee"], prompt: "Send To:", label: false %>
+     
+       
+    </div>
+    <div class="new-recipient">
+        
+    </div>
+    <div class="admin-recipient">
+        <%= f.input :recipient_id, collection: @comment.commentable.company.agency.admins, label: false %>
+    </div>
+    <div class="company-admin-recipient">
+        <%= f.input :recipient_id, collection: @comment.commentable.company.admins, label: false %>
+    </div>
+    <div class="employee-recipient">
+        <%= f.input :recipient_id, collection: @comment.commentable.company.employees, label: false %>
+    </div>
+      
+    
+  
+    <%= f.submit "Send", class: "btn btn-primary btn-block" %>
+<% end %>

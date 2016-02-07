@@ -1,27 +1,32 @@
 <nav class="navbar demo-nav">
     <div class="container-fluid">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-demo-navbar-collapse-1" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-demo-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
         <div class="collapse navbar-collapse navbar-left" id="bs-demo-navbar-collapse-1">
-            <p class="navbar-text text-muted metal bold lead"><i class="fa fa-question-circle fa-pull-left fa-border"></i>  How To</p>
+            <p class='navbar-text'><a class="demo-link" data-toggle="modal" data-target="#WelcomeDemoModal">  <span class='how-to'>How To  <i class="fa fa-arrow-right fa-fw"></i></span> </a></p>
             <ul class="nav navbar-nav">
-                
                 <% if admin_signed_in? %>
                 <li class='' data-toggle="tooltip" data-placement="bottom" title="Add A New Company"><a class="demo-link" data-toggle="modal" data-target="#companyDemoModal">   <i class="fa fa-building fa-2x"></i> </a> </li>
+                <li class='' data-toggle="tooltip" data-placement="bottom" title="Create Job Orders"><a class="demo-link" data-toggle="modal" data-target="#jobOrderDemoModal">   <i class="fa fa-plus-square fa-2x"></i> </a> </li>
                 <li class='' data-toggle="tooltip" data-placement="bottom" title="Create User Accounts"><a class="demo-link" data-toggle="modal" data-target="#usersDemoModal">   <i class="fa fa-user-plus fa-2x"></i> </a> </li>
                 <li class='' data-toggle="tooltip" data-placement="bottom" title="View Time Clock"><a class="demo-link" data-toggle="modal" data-target="#clockDemoModal">   <i class="fa fa-clock-o fa-2x"></i> </a> </li>
                 <% end %>
                 <% if company_admin_signed_in? %>
-                <li class='' data-toggle="tooltip" data-placement="bottom" title="START HERE"><a class="demo-link" data-toggle="modal" data-target="#companyWelcomeDemoModal">   <i class="fa fa-asterisk fa-2x"></i> </a> </li>
+                <li class='' data-toggle="tooltip" data-placement="bottom" title="START HERE"> <a class="demo-link" data-toggle="modal" data-target="#companyWelcomeDemoModal">  <i class="fa fa-question-circle fa-2x"></i> </a> </li>
                 <li class='' data-toggle="tooltip" data-placement="bottom" title="Fill A Position"><a class="demo-link" data-toggle="modal" data-target="#jobOrderDemoModal">   <i class="fa fa-user-plus fa-2x"></i> </a> </li>
                 <li class='' data-toggle="tooltip" data-placement="bottom" title="Review Timesheets"><a class="demo-link" data-toggle="modal" data-target="#clockDemoModal">   <i class="fa fa-clock-o fa-2x"></i> </a> </li>
+                <li class='' data-toggle="tooltip" data-placement="bottom" title="View Invoices"><a class="demo-link" data-toggle="modal" data-target="#invoiceDemoModal">   <i class="fa fa-usd fa-2x"></i> </a> </li>
                 <% end %>
             </ul>
         </div>
-        <p class="navbar-text text-muted metal bold lead navbar-right">Demo Mode</p>
+        <% if @current_agency.demo? %>
+        <p class="navbar-text text-info metal bold lead navbar-right">Demo Mode</p>
+        <% end %>
     </div>
 </nav>

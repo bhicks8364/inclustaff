@@ -1,0 +1,20 @@
+
+	<%= link_to(admin_timesheet_path(comment.commentable), class: 'list-group-item list-group-item-success') do %>
+	<h2> <%= comment.commentable_type %> </h2>
+		<small><%= comment.created_at.stamp('Mon 11/30 at 11:30am') %>	</small>
+				<h5>	<strong><%= comment.commentable.job.name_title %> </strong></h5>
+				
+				<ul class="fa-ul">
+				
+				<li><i class="fa-li fa fa-commenting"></i><strong>
+						<%= comment.admin.try(:name) || comment.company_admin.try(:name) %> - 
+						<%= comment.admin.try(:role) || comment.company_admin.try(:role) %>
+						</strong><br>
+					<p><%= comment.body %></p>
+					
+				
+					</li>
+				</ul>
+					
+					
+				<% end %>

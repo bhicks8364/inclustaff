@@ -1,6 +1,6 @@
 module TimesheetsHelper
     def invoice_timesheet(timesheet)
-        "<small> ID: #{timesheet.id}</small> #{ timesheet.week_ending } - #{ number_to_currency(timesheet.total_bill)}".html_safe
+        "<small> W/E: #{ timesheet.week_ending }</small> #{ number_to_currency(timesheet.total_bill)}".html_safe
     end
     
     def timesheet_popover(timesheet)

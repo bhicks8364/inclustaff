@@ -1,3 +1,20 @@
+<div class="modal fade" id="WelcomeDemoModal" tabindex="-1" role="dialog" aria-labelledby="WelcomeDemoModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="WelcomeDemoModalLabel">Welcome, <%= @current_company.name %></h4>
+      </div>
+      <div class="modal-body col-md-12">
+          <div class='col-md-7'>  <%= image_tag("cogwheels12.png", class: 'screenshot') %></div>
+          <div class='col-md-5'><p class='lead metal'>Click on the icons for "How-To" tips!</p>      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="modal fade" id="jobOrderDemoModal" tabindex="-1" role="dialog" aria-labelledby="jobOrderDemoModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -5,14 +22,18 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="jobOrderDemoModalLabel">Create & Manage Job Orders</h4>
       </div>
-      <div class="modal-body">
-          <p class='lead metal'><strong>Need a new position filled?</strong> Just <%= link_to "create a new job order", new_company_order_path %> and let <%= @current_agency.name %> take care of the rest!</p>
-          <%= image_tag("new_order.png", class: 'screenshot') %>
-        
+      <div class="modal-body col-md-12">
+             <p class='lead metal bold'>Need a new position filled?</p> 
+          <div class='col-md-7'> <%= image_tag("new_order.png", class: 'screenshot') %></div>
+          <div class='col-md-5'>
+          <p class='lead metal'>Just <%= link_to "create a new job order", new_company_order_path %> and let <%= @current_agency.name %> take care of the rest!</p>
+          </div>
       </div>
+          
+         
+        
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <%= link_to "View All Job Orders", company_orders_path, type: "button", class: 'btn btn-success'%>
       </div>
     </div>
   </div>
@@ -25,9 +46,10 @@
         <h4 class="modal-title" id="companyWelcomeDemoModalLabel">Welcome, <%= @current_company.name %></h4>
       </div>
       <div class="modal-body col-md-12">
-          <div class='col-md-8'><%= image_tag("toolbox_screenshot.png", class: 'screenshot') %></div>
-          <div class='col-md-4'>
-            <p class='bold metal'>This is your company's direct connection to <%= @current_agency.name %>'s services. </p>
+          <p class='lead metal text-center'>This is your company's direct connection to <br><%= link_to "#{@current_agency.name}'s services.", @current_agency%> </p>
+          <div class='col-md-7'>  <%= image_tag("toolbox_screenshot.png", class: 'screenshot') %></div>
+          <div class='col-md-5'>
+            
             <p class='lead metal'>You'll find everything you need using the <strong>Toolbox</strong> dropdown above.</p>
           </div>
       </div>
@@ -54,9 +76,29 @@
       
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <%= link_to "View Invoices", company_invoices_path, type: "button", class: 'btn btn-success'%>
-        <%= link_to "View Timesheets", company_timesheets_path, type: "button", class: 'btn btn-success'%>
-        <%= link_to "View Shifts", company_shifts_path, type: "button", class: 'btn btn-success'%>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="invoiceDemoModal" tabindex="-1" role="dialog" aria-labelledby="invoiceDemoModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="invoiceDemoModalLabel">Invoices</h4>
+      </div>
+      <div class="modal-body col-md-12">
+          <div class='col-md-5'> <p class='lead bold metal'>Invoices are available to view instantly!  </p></div>
+          <div class='col-md-7'>
+           
+            <p class='lead metal'>Easily download as a PDF or export all as CSV for quick reports. </p>
+          </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        
       </div>
     </div>
   </div>
