@@ -1,4 +1,4 @@
-<% if jobs.any? %>
+<% if jobs.pending_approval.any? %>
 <div data-behavior="job-list">
     <ul class="fa-ul">
         <% jobs.each do |job| %>
