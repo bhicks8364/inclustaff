@@ -66,9 +66,9 @@ class Job < ActiveRecord::Base
 
     # CALLBACKS
     # after_create :send_notifications!
-    before_validation :ensure_pay
+    before_validation :defaults, :ensure_pay
     after_save :update_employee, if: :active_changed?
-    before_save :defaults
+    # before_save :defaults
 
     def ensure_pay
         self.pay_rate = order.min_pay if pay_rate.nil?
@@ -233,8 +233,8 @@ class Job < ActiveRecord::Base
         self.active = false if active.nil?
         self.start_date = Date.today if start_date.nil?
         self.settings = {} if settings.nil?
-        self.settings = {current_state: "Pending Approval"} if settings[:current_state].nil? && active == false
-        self.settings = {current_state: "Currently Working"} if settings[:current_state].nil? && active == true
+        # self.settings = {current_state: "Pending Approval"} if settings[:current_state].nil? && active == false
+        # self.settings = {current_state: "Currently Working"} if settings[:current_state].nil? && active == true
         self.vacation = {} if vacation.nil?
         self.title = order.title if title.nil?
     end

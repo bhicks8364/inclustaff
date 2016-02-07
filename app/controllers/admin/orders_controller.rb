@@ -8,7 +8,7 @@ class Admin::OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
-    @q = Order.includes(:company).active.order(needed_by: :desc).ransack(params[:q]) if @current_admin.owner? || @current_admin.payroll?
+    @q = Order.includes(:company).active.order(needed_by: :desc).ransack(params[:q]) if @current_admin.owner? || @current_admin.payroll? || @current_admin.account_manager?
     @q = Order.includes(:company).order(needed_by: :desc).ransack(params[:q]) if @current_admin.recruiter?
     @import = Order::Import.new
     
@@ -44,7 +44,7 @@ class Admin::OrdersController < ApplicationController
   end
   
   def search
-    @q = Order.includes(:company).active.order(needed_by: :desc).ransack(params[:q]) if @current_admin.owner? || @current_admin.payroll?
+    @q = Order.includes(:company).active.order(needed_by: :desc).ransack(params[:q]) if @current_admin.owner? || @current_admin.payroll? || @current_admin.account_manager?
     @q = Order.includes(:company).needs_attention.order(needed_by: :desc).ransack(params[:q]) if @current_admin.recruiter?
     @q = Order.includes(:company).needs_attention.order(needed_by: :desc).ransack(params[:q]) if @q.nil?
     
