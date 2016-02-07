@@ -22,7 +22,7 @@ class Company::ShiftsController < ApplicationController
   end
 
   def new
-    @jobs = @company.jobs.off_shift.distinct
+    @jobs = @company.jobs.active.distinct
     # @jobs = @company.jobs.off_shift.distinct
     # @orders = @company.orders.off_shift.distinct
     @shift = Shift.new

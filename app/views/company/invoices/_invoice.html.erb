@@ -1,17 +1,14 @@
-<strong><%= inv_sym(invoice) %> <%= link_to "Invoice #: #{invoice.id}", company_invoice_path(invoice), class: 'black'%> </strong>
-<% if invoice.paid %>
-   <li class='paid'><i class="fa-li fa fa-check-square"></i>
-   <%= invoice.paid_on %> <%= number_to_currency(invoice.total) %>
-   </li>
-<% else %>
-   <li class='unpaid'><i class="fa-li fa fa-square-o"></i>
-        <% invoice.timesheets.each do |timesheet| %>
-          <li><%= timesheet_popover(timesheet) %>
-              <%= link_to company_timesheet_path(timesheet), class: "black" do %>
-              <%= invoice_timesheet(timesheet) %>
-              <% end %>
-          </li>
-        <% end %>
-   <p class='text-right'><span class='pull-left'><%= invoice.due_by.stamp("Mon 11/12/15") %></span> Subtotal: <%= number_to_currency(invoice.total) %></p>
-   </li>
+<%= div_for invoice do %>
+    <div class=''><%= inv_sym(invoice) %> <%= link_to "Invoice #: #{invoice.id}", company_invoice_path(invoice), class: 'black'%> </div>
+    <ul class='fa-ul'>
+    <% invoice.timesheets.each do |timesheet| %>
+    <%= link_to company_timesheet_path(timesheet), class: "black" do %>
+      <li><%= timesheet_popover(timesheet) %> &nbsp;  <%= timesheet.employee.name %> <br>  <%= invoice_timesheet(timesheet) %>  </li>
+       <% end %>
+    <% end %>
+    </u>
 <% end %>
+
+
+
+

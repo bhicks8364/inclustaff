@@ -19,7 +19,7 @@
     </thead>
   
     <tbody>
-      <%= content_tag_for(:tr, @jobs) do |person| %>
+      <%= content_tag_for(:tr, @jobs) do |job| %>
       <% if job.on_shift? %>
           <tr class="bg-success">
         <% else %>

@@ -1,0 +1,63 @@
+<div class="modal fade" id="jobOrderDemoModal" tabindex="-1" role="dialog" aria-labelledby="jobOrderDemoModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="jobOrderDemoModalLabel">Create & Manage Job Orders</h4>
+      </div>
+      <div class="modal-body">
+          <p class='lead metal'><strong>Need a new position filled?</strong> Just <%= link_to "create a new job order", new_company_order_path %> and let <%= @current_agency.name %> take care of the rest!</p>
+          <%= image_tag("new_order.png", class: 'screenshot') %>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <%= link_to "View All Job Orders", company_orders_path, type: "button", class: 'btn btn-success'%>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="companyWelcomeDemoModal" tabindex="-1" role="dialog" aria-labelledby="companyWelcomeDemoModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="companyWelcomeDemoModalLabel">Welcome, <%= @current_company.name %></h4>
+      </div>
+      <div class="modal-body col-md-12">
+          <div class='col-md-8'><%= image_tag("toolbox_screenshot.png", class: 'screenshot') %></div>
+          <div class='col-md-4'>
+            <p class='bold metal'>This is your company's direct connection to <%= @current_agency.name %>'s services. </p>
+            <p class='lead metal'>You'll find everything you need using the <strong>Toolbox</strong> dropdown above.</p>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="clockDemoModal" tabindex="-1" role="dialog" aria-labelledby="clockDemoModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="clockDemoModalLabel">Review Timesheets</h4>
+      </div>
+      <div class="modal-body col-md-12">
+          <div class='col-md-8'><%= image_tag("approve_timesheets.png", class: 'screenshot') %></div>
+          <div class='col-md-4'>
+            <p class='bold metal'>Timesheets are automatically created when an employee clocks in, so they can be reviewed & corrected in real-time. </p>
+            <p class='lead metal'>At the end of the week, easily approve timesheets with a single click! </p>
+          </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <%= link_to "View Invoices", company_invoices_path, type: "button", class: 'btn btn-success'%>
+        <%= link_to "View Timesheets", company_timesheets_path, type: "button", class: 'btn btn-success'%>
+        <%= link_to "View Shifts", company_shifts_path, type: "button", class: 'btn btn-success'%>
+      </div>
+    </div>
+  </div>
+</div>

@@ -57,7 +57,7 @@ body {
 }
 #main-wrapper {
   // margin-top: -20px;
-  padding-top: 15px;
+  // padding-top: 15px;
   padding-bottom: 70px;
   // margin-bottom: 70px;
   
@@ -145,6 +145,16 @@ body {
 }
 #bs-example-navbar-collapse-1 {
   background-color: rgb(248, 248, 248);
+  a {
+    color: black;
+    // background-color: rgb(218, 218, 218);
+  }
+  a:hover, a:active, a:focus {
+    background-color: rgb(217, 237, 247);
+  }
+}
+#bs-example-navbar-collapse-1 > ul > li.dropdown.open > ul > li:hover {
+  background-color: rgb(217, 237, 247);
 }
 
 #nav-logo {

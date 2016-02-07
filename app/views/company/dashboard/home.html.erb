@@ -12,18 +12,24 @@
     <% end %>
   <% end %>
     </div>
+  <div class='col-md-3'>
+    <%= render 'company/shifts/one_day_calendar', shifts: @shifts if @shifts.present? %>
+  </div>
   <div class='col-md-6 text-center'>
       <%= link_to "<i class='fa fa-plus-square'></i> New Job Order".html_safe, new_company_order_path, class: "btn btn-primary btn-lg" %>
       <%= link_to "<i class='fa fa-clock-o'></i> Timeclock".html_safe, company_timeclock_path, class: "btn btn-primary btn-lg" %>
    
   </div>
   <div class='col-md-3'>
-  	    <%= render 'company/shifts/one_day_calendar', shifts: @shifts if @shifts.present? %>
-  	   
-  	</div>
-  <div class='col-md-9'>
-  		<h2 class='white'>  <%= pluralize( @current_company_admin.company.invoices.unpaid.count, 'unpaid invoice') %></h2>
-  	        <%= render "company/invoices/calendar" %>
-  	    
-      </div>
+  <% if @company.invoices.unpaid.any?  %>
+    <div class="alert alert-danger" role="alert">
+      <h2 class='metal'>  <%= pluralize( @current_company_admin.company.invoices.unpaid.count, 'unpaid invoice') %></h2>
+    </div>
+    <%= render partial: "company/invoices/invoice", collection: @company.invoices.unpaid %>
+  <% else %>
+    <div class="alert alert-success" role="alert">
+      <h2 class='metal'>  <%= pluralize( @current_company_admin.company.invoices.unpaid.count, 'unpaid invoice') %></h2>
+    </div>
+  <% end %>
+  </div>
 </div>

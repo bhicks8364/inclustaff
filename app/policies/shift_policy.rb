@@ -14,9 +14,9 @@ class ShiftPolicy < ApplicationPolicy
       end
     end
   end
-  # def create?
-  #   return true if user.payroll? || user.owner?
-  # end
+  def create?
+    user.payroll? || user.owner?
+  end
   
   def index?
     return true if user.payroll? || user.owner?
