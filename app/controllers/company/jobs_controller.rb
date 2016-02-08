@@ -3,21 +3,21 @@ class Company::JobsController < ApplicationController
   before_action :authenticate_company_admin!
   # before_action :set_order
   layout "company_layout"
-  
+
   def index
-    
+
       @admin = current_company_admin
       @company = @admin.company
       @jobs = @company.jobs.order(title: :asc)
       authorize @jobs
 
   end
-  
+
   def archived
     @admin = current_company_admin
     @company = @admin.company
     @archived_jobs = @company.jobs.inactive
-    
+
     authorize @archived_jobs, :index?
   end
 
@@ -27,15 +27,15 @@ class Company::JobsController < ApplicationController
     @company = @job.company
     @order = @job.order
     @current_timesheet = @job.current_timesheet
-    
+
     @current_shift = @job.shifts.clocked_in.last if @job.on_shift?
     @all_timesheets = @job.timesheets
     @timesheets = @job.timesheets
     @last_week_timesheets =  @job.timesheets.last_week
-    
+
   end
 
-  
+
   def verify_code
     @job = Job.find(params[:id])
     skip_authorization
@@ -51,7 +51,7 @@ class Company::JobsController < ApplicationController
       end
     end
   end
-  
+
   def clock_in
 
     authorize @job, :clock_in?
@@ -61,16 +61,16 @@ class Company::JobsController < ApplicationController
                                   in_ip: current_company_admin.current_sign_in_ip)
     current_company_admin.events.create(action: "clocked_in", eventable: @shift, user_id: @shift.employee.user_id)
 
-    
+
       respond_to do |format|
-          format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
+          format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?,
                     state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out, last_out: @job.last_clock_out,
                     in_ip: @shift.in_ip, first_name: @job.employee.first_name, new_count: @on_shift.count } }
 
       end
     end
   end
-  
+
   def clock_out
 
     authorize @job, :clock_out?
@@ -80,16 +80,16 @@ class Company::JobsController < ApplicationController
                         state: "Clocked Out", week: Date.today.beginning_of_week.cweek,
                         out_ip: current_company_admin.current_sign_in_ip )
       current_company_admin.events.create(action: "clocked_out", eventable: @shift, user_id: @shift.employee.user_id)
-       
+
       respond_to do |format|
-          format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?, 
+          format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?,
                     state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out.strftime("%l:%M%P"),
                     in_ip: @shift.in_ip, first_name: @job.employee.first_name, new_count: @on_shift.count } }
 
       end
     end
   end
-  
+
   def clock_out_all
       @all_jobs = current_company_admin.jobs
       @jobs = @all_jobs.on_shift
@@ -121,31 +121,31 @@ class Company::JobsController < ApplicationController
       end
     end
   end
-  
+
   def approve
     if @job.pending_approval?
-      @job.update(active: true, settings: @job.settings.merge({current_state: "Currently Working"}))
+      @job.update(active: true, state: "Currently Working")
       current_company_admin.events.create(action: "approved", eventable: @job, user_id: @employee.user_id)
     elsif !@job.active?
-    # NOT LIKING THIS - maybe should throw an error? An inactive job should always be "pending" or "ended" Create new job if reassigning 
-      @job.update(active: true, settings: @job.settings.merge({current_state: "Currently Working"}))
+    # NOT LIKING THIS - maybe should throw an error? An inactive job should always be "pending" or "ended" Create new job if reassigning
+      @job.update(active: true, state: "Currently Working")
       current_company_admin.events.create(action: "approved", eventable: @job, user_id: @employee.user_id)
     end
     respond_to do |format|
       format.json { render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, state: @job.state } }
     end
   end
-  
+
   def cancel
     if @job.active? && @job.shifts.any?
-      @job.update(active: false, end_date: Date.today, settings: @job.settings.merge({current_state: "Assignment Ended"})) 
+      @job.update(active: false, end_date: Date.today, state: "Assignment Ended")
       current_company_admin.events.create(action: "canceled", eventable: @job, user_id: @employee.user_id)
       respond_to do |format|
         format.json { render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, ended: @job.end_date.stamp('11/12/2016'), state: @job.state } }
       end
-      
+
     else
-      @job.update(active: false, settings: @job.settings.merge({current_state: "Declined by agency"}))
+      @job.update(active: false, state: "Declined by agency")
       current_company_admin.events.create(action: "declined", eventable: @job, user_id: @employee.user_id)
       respond_to do |format|
         format.json { render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, state: @job.state } }
@@ -156,7 +156,7 @@ class Company::JobsController < ApplicationController
   # DELETE /jobs/1
   # DELETE /jobs/1.json
   def destroy
-    
+
     @job.destroy
     respond_to do |format|
       format.html { redirect_to jobs_url, notice: 'Job was successfully destroyed.' }
@@ -173,7 +173,7 @@ class Company::JobsController < ApplicationController
       @job = Job.find(params[:id])
       authorize @job
     end
-    
+
     def set_order
       # @company = Company.find(params[:company_id])
       # @order = Order.find(params[:order_id])
