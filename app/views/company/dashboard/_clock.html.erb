@@ -1,27 +1,15 @@
- <div class='btn-group'> 
+<div class='btn-group clock-actions'> 
 <% if job.on_shift? %>
-  <button type='button' data-behavior="job-out-button_<%= job.id %>" class='btn btn-danger'>
-    <i class='fa fa-sign-out'></i> Clock Out
-  </button>
-  
-  <button type='button'  data-behavior="job-in-button_<%= job.id %>" class='hide-this btn btn-success'>
-  <i class='fa fa-sign-in'></i> Clock In
-  </button>
+  <button type='button' data-behavior="job-out-button_<%= job.id %>" class='btn btn-danger'>  <i class='fa fa-sign-out'></i> Clock Out </button>
   <% elsif job.off_shift? %>
   <button class='btn btn-info black' data-behavior="code-button_<%= job.id %>">Enter Code</button>
-  
-  <button type='button' data-behavior="job-in-button_<%= job.id %>" class='hide-this btn btn-success'>
-  <i class='fa fa-sign-in'></i> Clock In
-  </button>
-  <button type='button'  data-behavior="job-out-button_<%= job.id %>" class='hide-this btn btn-danger'>
-  <i class='fa fa-sign-out'></i> Clock Out
-  </button>
-  
+  <button type='button' data-behavior="job-in-button_<%= job.id %>" class='hide-this btn btn-success'><i class='fa fa-sign-in'></i> Clock In </button>
   <% end %>
- 
-    <% if job.on_break? %>
-    <%= link_to stop_company_shift_breaks_path(job.current_shift), class: "btn btn-warning", remote: true, method: :patch do %> <i class='fa fa-clock-o'></i> End Break <% end %>
+</div> 
+<div class='btn-group break-actions'>
+   <% if job.on_break? %>
+    <%= link_to stop_company_shift_breaks_path(job.current_shift), class: "btn btn-danger", id: "stop-break-btn", remote: true, method: :patch do %> <i class='fa fa-clock-o'></i> End Break <% end %>
     <% elsif job.on_shift? %>
-    <%= link_to start_company_shift_breaks_path(job.current_shift), class: "btn btn-warning", remote: true, method: :post do %>  <i class='fa fa-clock-o'></i> Start Break <% end %>
+    <%= link_to start_company_shift_breaks_path(job.current_shift), class: "btn btn-success", id: "start-break-btn", remote: true, method: :post do %>  <i class='fa fa-clock-o'></i> Start Break <% end %>
     <% end %>
-  </div> 
+</div>

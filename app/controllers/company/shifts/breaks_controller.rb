@@ -43,6 +43,17 @@ class Company::Shifts::BreaksController < ApplicationController
     @shift.update(state: "Clocked In")
     @shift_break = @shift.breaks.last
   end
+  
+  def destroy
+    @shift = Shift.find(params[:shift_id])
+    @shift_break = Break.find(params[:id])
+    @shift_break.destroy
+    skip_authorization
+    respond_to do |format|
+      format.html { redirect_to company_shift_breaks_path(@shift), notice: 'Break was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
 
   private
 

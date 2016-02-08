@@ -1,4 +1,6 @@
-$(".break-actions").html("<%=j link_to "<i class='fa fa-clock-o'></i> Start Break".html_safe, start_company_shift_breaks_path(@shift), remote: true, method: :post %>");
+$(".break-actions").html("<%=j link_to "<i class='fa fa-clock-o'></i> Start Break".html_safe, start_company_shift_breaks_path(@shift), class: "btn btn-warning", id: "start-break-btn", remote: true, method: :post %>");
 $("#shift-times").html("<%=j shift_times(@shift) %>");
+$(".clock-actions").html("<button type='button' data-behavior='job-out-button_<%= @shift.job_id %>' class='btn btn-danger'>  <i class='fa fa-sign-out'></i> Clock In </button>");
+$("#shift-sym").html("<%=j shift_sym(@shift) %>");
 $("#break_<%=@shift_break.id%>").html("<%=j render 'shift_break', shift_break: @shift_break %>");
-$("[data-behavior='job-out-button_<%= @shift.job_id %>']").show();
+<!--$("[data-behavior='job-out-button_<%= @shift.job_id %>']").show();-->

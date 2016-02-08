@@ -12,10 +12,21 @@
 				All timesheets for last week have been approved.<br>
 				<span class="list-group-item"><%= @current_agency.timesheets.last_week.approved.try(:count) %> Approved </span>
 			</p>
-			</div>
 			<%= link_to(past_admin_timesheets_path(@current_admin.timesheets.last_week, format: :csv), class: 'btn btn-success') do %>
-  				<i class="fa fa-upload fa-fw"></i> Export
-  			<% end %>
+	  			<i class="fa fa-upload fa-fw"></i> Export
+	  		<% end %>
+		</div>
+  		<% else %>
+  		<div class='text-center metal'>
+  			<p class='lead'>There are still <%= pluralize(@current_agency.timesheets.needing_approval.count, "pending timesheets") %> from last week.</p>
+  			<%= render @current_agency.companies.with_late_timesheets.distinct %>
+  		</div>
+  		
+  		<div class='text-center metal scroll500'>	  	
+			
+			<%= render @current_agency.timesheets.needing_approval %>
+		</div>
+  		
   		<% end %>
 		</div>
 	</div>

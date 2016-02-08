@@ -1,7 +1,7 @@
 
 <% if current_page?(controller: 'company/shifts', action: 'index') %>
       <%= link_to shift_times(shift), company_shift_path(shift), class: 'black' %>
-<% elsif current_page?(controller: 'company/employees', action: 'show') %>
+<% elsif current_page?(controller: 'company/jobs', action: 'show') %>
       <%= link_to shift_times(shift), company_shift_path(shift), class: 'black' %>
 <% else %>
       <%= link_to company_shift_path(shift), class: 'black small' do %>

@@ -179,8 +179,6 @@ class Company::ShiftsController < ApplicationController
   # DELETE /shifts/1
   # DELETE /shifts/1.json
   def destroy
-
-
     @shift.destroy
     respond_to do |format|
       format.html { redirect_to root_path, notice: 'Shift was successfully destroyed.' }
