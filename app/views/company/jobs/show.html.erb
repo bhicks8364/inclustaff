@@ -41,18 +41,19 @@
                   <p class='bold'>No past work history.</p>
                 <% end %>
               <% end %>
-          
           </div>
-          <div class='col-md-4 well'>
+          <div class='col-md-6 well'>
             <% if @job.active? %>
-                <strong>First day:</strong> <%= @job.first_day %><br>
+                <p class='lead'><strong>First day:</strong> <%= @job.first_day.stamp("Monday December 25th, 2016") %></p>
               <strong>Pay rate:</strong>  <%= number_to_currency(@job.pay_rate, :unit => "$") %><br>
             <h4><%= @job.title %><small><%= number_to_currency(@job.pay_rate) %></small></h4>
-              <%= render @job %>
               <% else %>
               <h3> This position is currently inactive.</h3>
             <% end %>
 
+        </div>
+        <div class='row'>
+          <%= render 'company/shifts/wk_calendar', shifts: @job.current_timesheet.shifts if @job.current_timesheet.present? %>
         </div>
           
         </div>

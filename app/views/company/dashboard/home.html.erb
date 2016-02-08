@@ -1,12 +1,17 @@
- <h1 class='text-muted metal'><%= @company.name %></h1>
+<div class='lightbox-long'>
+ <h1 class='simple metal'><%= @company.name %></h1>
 <div class='row'>
   	<div class='col-md-9 '>
   	 
   <h2 class='metal'> Welcome, <%= current_company_admin.name %>!</h2>
-  
+    <div class='well well-sm'>
+      <%= render 'company/orders/table', orders: @company.orders %>
+    </div>
   </div>
   <div class='col-md-3'>
+    <div class='well well-sm'>
     <% if @company.invoices.unpaid.any?  %>
+    
     <div class="alert alert-danger text-center metal bold" role="alert">
      <%= pluralize( @current_company_admin.company.invoices.unpaid.count, 'unpaid invoice') %>
     </div>
@@ -23,6 +28,7 @@
     </div>
   <% end %>
   </div>
+  </div>
   
 </div>
 <div class='row'>
@@ -37,3 +43,4 @@
      
     </div>
   </div>
+</div>

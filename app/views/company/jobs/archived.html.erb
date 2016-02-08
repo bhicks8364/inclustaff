@@ -1,8 +1,11 @@
+<% if @archived_jobs.any? %>
 <%= div_for @archived_jobs.distinct do |job| %>
     <h3><%= job.employee.name %> - <%= job.state %></h3>
      <%= render job.comments %>
 <% end %>  
-
+<% else %>
+<h2>No Inactive Jobs</h2>
+<% end %>
 
 
 

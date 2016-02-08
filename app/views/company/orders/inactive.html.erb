@@ -1,0 +1,11 @@
+<div class='col-md-12 lightbox-long'>
+  <div class=''>
+      <% if @orders.any? %>
+    <%= render 'company/orders/table', orders: @orders %>
+    <% else %>
+    <h2>No Inactive Job Orders</h2>
+    <% end %>
+  </div>
+  
+  <%= link_to 'New Job Order', new_company_order_path, class: "btn btn-default btn-lg pull-right" %>
+</div>
