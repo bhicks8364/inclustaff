@@ -10,7 +10,18 @@
   </div>
   
   <% else %>
-  <%= render 'form' %>
+  <% if @order.present? %>
+  <div class='col-md-3 well well-sm'>
+    <h3 class=''>Matching Employees</h3>
+    <%@order.matching_employees.each do |employee| %>
+    <p class=''><%= employee.name %></p>
+    <% end %>
+  </div>
+  <% end %>
+  <div class='col-md-6 well'>
+    <%= render 'form' %>
+  </div>
+  
 
 
 <% end %>

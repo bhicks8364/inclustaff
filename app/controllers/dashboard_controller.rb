@@ -51,6 +51,9 @@ class DashboardController < ApplicationController
         end
       @current_admin = current_admin
       #ROOT FOR COMPANY_ADMINS DASHBOARDS IF SIGNED IN
+    elsif company_admin_signed_in? && current_company_admin.role == "Timeclock"
+    @company = current_company_admin.company
+      render "company/dashboard/timeclock"
     elsif company_admin_signed_in? && @current_agency.present?
     @current_company_admin = current_company_admin
       @company = current_company_admin.company

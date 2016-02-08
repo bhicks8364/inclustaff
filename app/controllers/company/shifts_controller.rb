@@ -5,7 +5,7 @@ class Company::ShiftsController < ApplicationController
   layout "company_layout"
 
   def index
-    @jobs = @company_admin.company.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 5).order('id DESC') if @company_admin.present?
+    @jobs = @company_admin.company.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 5) if @company_admin.present?
       @shifts = @company.shifts
     # gon.shifts = @shifts
     authorize @shifts

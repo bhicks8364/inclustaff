@@ -87,7 +87,7 @@ class Invoice < ActiveRecord::Base
         self.total - amt
     end
     def current?
-        week == Date.today.cweek
+        week == Date.today.beginning_of_week
     end
     def paid_on
         if date_paid.nil?

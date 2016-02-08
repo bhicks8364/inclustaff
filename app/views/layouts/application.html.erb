@@ -30,7 +30,8 @@
     <div class="row">
 			<div class="container" id="main-wrapper">
          <%= render 'layouts/alerts' %>
-         <%= render 'demo/how_to_buttons' if @current_agency.present? && @current_agency.demo? %>
+         <%= render 'demo/agency_how_to' if @current_agency.present? && @current_agency.demo? && admin_signed_in? %>
+         <%= render 'demo/company_how_to' if @current_agency.present? && @current_agency.demo? && company_admin_signed_in? %>
          
           <%= yield %>
       </div>

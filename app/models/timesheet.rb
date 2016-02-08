@@ -31,7 +31,7 @@
 class Timesheet < ActiveRecord::Base
   belongs_to :job, counter_cache: true
   belongs_to :invoice
-  has_many :shifts, -> { order('time_in DESC') }, dependent: :destroy
+  has_many :shifts, dependent: :destroy
   has_one :employee, :through => :job
   has_one :company, :through => :job
   has_one :order, :through => :job

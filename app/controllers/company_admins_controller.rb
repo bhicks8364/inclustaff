@@ -17,6 +17,9 @@ class CompanyAdminsController < ApplicationController
     def show
       @company_admin = CompanyAdmin.find(params[:id])
       @company = @company_admin.company
+      if @company_admin.role == "Timeclock"
+        render "company/dashboard/timeclock"
+      end
       skip_authorization
     end
     
@@ -37,8 +40,10 @@ class CompanyAdminsController < ApplicationController
     def determine_layout
       if admin_signed_in?
         "admin_layout"
-      elsif company_admin_signed_in?
+      elsif company_admin_signed_in? && !current_company_admin.role == "Timeclock"
         "company_layout"
+      elsif company_admin_signed_in? && current_company_admin.role == "Timeclock"
+        "timeclock"
       else
           "application"
       end

@@ -1,6 +1,7 @@
 <table class="table table-bordered">
   <thead>
     <tr>
+      <% if @employee.nil? %><th>Employee</th><% end %>
       <th>Work Date</th>
       <th>Time In/Out</th>
       <th>Hours</th>
@@ -10,8 +11,9 @@
   </thead>
 
   <tbody>
-    <% @shifts.order(:time_in).reverse_order.each do |shift| %>
+    <% shifts.order(time_in: :asc).each do |shift| %>
         <tr>
+        <% if @employee.nil? %><td><%= shift.employee.name %></td><% end %>
         <td><%= link_to shift.time_in.stamp("Monday 11/2"), company_shift_path(shift) %></td>
         <td><%= shift.time_in.strftime("%I:%M %p") %> - <%= shift.clocked_out? ? shift.time_out.strftime("%I:%M %p") : "Clocked In" %></td>
         <td><%= shift.time_worked %></td>

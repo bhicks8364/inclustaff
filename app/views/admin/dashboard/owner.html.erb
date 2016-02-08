@@ -50,17 +50,8 @@
 		                </div>
 		                
 	       			</div>
-	       			<div class='row'>
-	       				<div class="col-md-6">
-			 				<%= render "admin/infoboxes/leaderboxes" %>
-			 			</div>
-		       			<div class="col-md-6">
-								<%= column_chart @current_agency.companies.order('name').map{|company|
-								        {name: company.name, data: company.timesheets.group_by_week(:week, range: 2.weeks.ago.midnight..Time.current, format: "%b %d %y").sum(:total_bill)}
-								    }, library: {isStacked: true, backgroundColor: "#e5dbcf", legend: {position: "bottom"}, title: "Weekly Billings by Company"} %>
-								</div>
-			 			</div>
-	       			</div>
+	       			
+       			</div>
 			</div>
 			<div class="tab-pane fade in" id="tab-orders">
 				<div class='col-md-12'>
@@ -126,6 +117,16 @@
 					 	<h3 class=''>	<strong>Last Week:</strong> <%= number_to_currency(@current_agency.last_week_billing) %></h3>
 
 				</div>
+				<div class='row'>
+       				<div class="col-md-6">
+		 				<%= render "admin/infoboxes/leaderboxes" %>
+		 			</div>
+	       			<div class="col-md-6">
+						<%= column_chart @current_agency.companies.order('name').map{|company|
+					        {name: company.name, data: company.timesheets.group_by_week(:week, range: 2.weeks.ago.beginning_of_week.midnight..Time.current.beginning_of_week, format: "%b %d %y").sum(:total_bill)}
+					    }, library: {isStacked: true, backgroundColor: "#e5dbcf", legend: {position: "bottom"}, title: "Weekly Billings by Company"} %>
+					</div>
+	 			</div>
 			</div>
 			<div class="tab-pane fade" id="tab-invoices">
 				<div class='col-md-12'>
@@ -151,12 +152,12 @@
 				    <%= date %>
 				  </span>
 
-				  <% invoices.each do |invoice| %>
-				  <%= invoice.id %>
-				    <div class='black small'>
-				      <%= signed_in_link_to(invoice.company.name, invoice, class: "small") %>
-
-				    </div>
+				  <%= div_for invoices do |invoice| %>
+				   <%= inv_timesheets_collaspe(invoice) %><br>
+				      <div class='black collapse' id="collapseInv_<%=invoice.id%>">
+				         <%= render 'admin/invoices/invoice', invoice: invoice %>
+				      </div>
+				   
 				  <% end %>
 				<% end %>
 

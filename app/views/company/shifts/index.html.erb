@@ -1,9 +1,9 @@
 <div class='col-md-12'>
-    <div class=''>
-      <%= render 'calendar', shifts: @shifts %>
-      
-    </div>
-
-<%= render 'table' %>
-
+  <div class='well'>
+    <%= render 'calendar', shifts: @shifts %>
+  </div>
+  <div class='well'>
+    <h2 class='simple'>This week</h2>
+    <%= render 'table', shifts: @shifts %>
+  </div>
 </div>

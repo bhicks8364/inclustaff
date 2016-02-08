@@ -45,20 +45,18 @@
     </div>
   </div>
   <div class="col-md-12">
-    <div class='col-md-6'>
+    <div class='col-md-6 well well-sm'>
       <div class='' data-behavior="timesheet-list">
       <%= render @timesheet %>
       </div>
     </div>
-    
-    <div class='col-md-6'>
+    <div class='col-md-6 well well-sm'>
       <h3> Shifts</h3>
-      <%= render 'company/shifts/table' %>
+      <%= render 'company/shifts/table', shifts: @timesheet.shifts %>
+    </div>
+    <div class='col-md-6'>
+    <%= render 'comments/comments', comments: @timesheet.comments if @timesheet.comments.any?%>
     </div>
   </div>
-  <hr>
-  <div class='col-md-12 well'>
-    <%= render 'comments/comments', comments: @timesheet.comments %>
-  </div>
-</div>
 
+</div>

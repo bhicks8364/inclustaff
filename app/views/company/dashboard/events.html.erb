@@ -1,1 +1,6 @@
 <h1>COMPANY EVENTS</h1>
+<% @current_company.events.each do |event| %>
+    <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+      <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
+    <% end %>
+<% end %>

@@ -8,6 +8,9 @@ class Company::DashboardController < ApplicationController
     @company = current_company_admin.company
     @invoices = @company.invoices
     @at_work = @company.jobs.at_work 
+    if @current_company_admin.role == "Timeclock"
+      render "company/dashboard/timeclock"
+    end
   end
   def admins
       

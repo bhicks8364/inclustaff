@@ -30,13 +30,14 @@
              is currently <%= @job.status.downcase %>.</strong>
         </p>
         <hr>
+        <div data-behavior="job" data-id="<%= @job.id %>">
+          <%= render 'company/dashboard/clock', job: @job %>
+        </div>
         
           
         </div>
 
-        <div data-behavior="job" data-id="<%= @job.id %>">
-          <%= render 'company/dashboard/clock', job: @job %>
-        </div>
+        
       </div>
 
       <div class='col-md-6'>

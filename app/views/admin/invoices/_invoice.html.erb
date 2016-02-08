@@ -1,22 +1,18 @@
 <%= div_for invoice, class: "#{invoice.paid? ? "paid" : "unpaid"}" do %>
 
-<%= link_to admin_invoices_path, class: "black" do %>
-  <%= invoice.company.name %><br>
+<%= link_to admin_invoice_path(invoice), class: "black" do %>
       
-     <strong> Week:</strong>  <%= invoice.week_ending %>
-       <br>
-  
-       <strong>Total: </strong> <%= number_to_currency(invoice.balance) %><br>
+       <small>Total: </small> <%= number_to_currency(invoice.balance) %><br>
      <% if invoice.paid? %>
       <strong>Amount paid</strong>  <%= number_to_currency(invoice.amt_paid) %><br>
        <strong>Paid on: </strong> <%= invoice.paid_on %><br>
        <% else %>
        <strong>Due by: </strong> <%= invoice.due_by.stamp('11/13') %><br>
-       <small><%= distance_of_time_in_words(invoice.due_by, Date.today) %></small>
-       <% end %>
- <% end %>
        <div class="inv">
         <%= timesheets_for(invoice) %>
        </div>
+       <% end %>
+ <% end %>
+       
 
 <% end %>
