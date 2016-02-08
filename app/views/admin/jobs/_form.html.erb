@@ -41,9 +41,9 @@
   </div>
 
   <div class='form-actions'>
-    <%= f.submit "Send for Approval", class: 'btn btn-primary' if @order.needs_approval? && !current_page?(action: 'edit') %>
-    <%= f.submit "Assign Now", class: 'btn btn-success' if !current_page?(action: 'edit')%>
-    <%= f.submit "Save Changes", class: 'btn btn-success' if current_page?(action: 'edit')%>
+    <%= f.submit "Send for Approval", class: 'btn btn-primary' if @order.needs_approval? && params[:action] != 'edit' %>
+    <%= f.submit "Assign Now", class: 'btn btn-success' if params[:action] != 'edit' %>
+    <%= f.submit "Save Changes", class: 'btn btn-success' if params[:action] == 'edit' %>
   </div>
 
 <% end %>
