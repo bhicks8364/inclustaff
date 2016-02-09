@@ -14,4 +14,11 @@ module JobsHelper
         "<i class='fa fa-user'></i>".html_safe 
       end
   end
+  def current_job_status(job)
+    if job.declined?
+      "Declined"
+    else
+      job.state
+    end
+  end
 end

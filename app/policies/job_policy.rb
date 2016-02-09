@@ -47,7 +47,7 @@ class JobPolicy < ApplicationPolicy
   end
 
   def update?
-    return true if user.admin?
+    return true if user.admin?  || user.company_admin?
     user.employee? && record.employee_id == user.employee.id
   end
 

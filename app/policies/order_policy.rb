@@ -22,7 +22,7 @@ class OrderPolicy < ApplicationPolicy
   end
   
   def index?
-    user.account_manager? || user.owner? || user.payroll?
+    user.admin? || user.owner? || user.payroll?
   end
   def search?
     index?

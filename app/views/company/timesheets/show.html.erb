@@ -1,6 +1,6 @@
 <div class='col-md-12 lightbox-long metal'>
    <h1 class='page-header'>
-     <%= @employee.name %>
+     <%= link_to @employee.name, company_job_path(@job) %>
    </h1>
   <div class='btn-group'>
     <%= link_to(company_timesheet_path(@timesheet, format: :pdf), class: 'btn btn-primary') do %>

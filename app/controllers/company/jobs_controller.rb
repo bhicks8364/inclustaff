@@ -8,7 +8,7 @@ class Company::JobsController < ApplicationController
 
       @admin = current_company_admin
       @company = @admin.company
-      @jobs = @company.jobs.order(title: :asc)
+      @jobs = @company.jobs.active.order(title: :asc)
       authorize @jobs
 
   end
@@ -106,11 +106,24 @@ class Company::JobsController < ApplicationController
       end
       skip_authorization
   end
+  
+  def edit 
+  end
 
   # PATCH/PUT /jobs/1
   # PATCH/PUT /jobs/1.json
   def update
-
+    if @job.active?
+      @job.state = "Currently Working"
+      @current_company_admin.events.create(action: "approved", eventable: @job)
+    end
+    if  @job.active == false && @job.shifts.none?
+      @job.state = "Declined by company"
+      @current_company_admin.events.create(action: "declined", eventable: @job)
+    elsif  @job.active == false && @job.shifts.any?
+      @job.state = "Assignment Ended"
+      @current_company_admin.events.create(action: "canceled", eventable: @job)
+    end
     respond_to do |format|
       if @job.update(job_params)
         format.html { redirect_to company_job_path(@job), notice: 'Job was successfully updated.' }
@@ -181,10 +194,7 @@ class Company::JobsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def job_params
-      params.require(:job).permit(:order, :recruiter_id, :title, :active, :description, :start_date, :pay_rate, :end_date, :order_id, :employee_id,
-                            employee_attributes: [:id, :first_name, :last_name, :email, :ssn, :_destroy])
+      params.require(:job).permit(:title, :active, :description, :pay_rate, :end_date, :state)
     end
-    def employee_params
-      params.require(:employee).permit(:first_name, :last_name, :email, :ssn, :phone_number)
-    end
+  
 end

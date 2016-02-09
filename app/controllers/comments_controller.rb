@@ -114,7 +114,7 @@ class CommentsController < ApplicationController
       skip_authorization
     end
     def comment_params
-      params.require(:comment).permit(:body, :commentable_id, :commentable_type, :recruiter, :account_manager, :admin_id, :read_at, :company_admin_id, :user_id, :recipient_id, :recipient_type, :account_manager, :recruiter)
+      params.require(:comment).permit(:body, :commentable_id, :commentable_type, :admin_id, :read_at, :company_admin_id, :user_id, :recipient_id, :recipient_type, :account_manager, :recruiter)
     end
     def determine_layout
       if admin_signed_in?

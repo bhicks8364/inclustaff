@@ -1,9 +1,9 @@
 <div class='col-md-12'>
   <div class='well'>
-    <%= render 'calendar', shifts: @shifts %>
+    <%= render 'calendar', shifts: @shifts  %>
   </div>
   <div class='well'>
     <h2 class='simple'>This week</h2>
-    <%= render 'table', shifts: @shifts %>
+    <%= render 'table', shifts: @shifts.current_week if @shifts.current_week.any? %>
   </div>
 </div>

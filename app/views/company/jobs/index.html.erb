@@ -26,7 +26,7 @@
         <% else %>
           <tr class="bg-info">
         <% end %>
-          <td><%= link_to job.status, company_job_path(job), class: "black button" %></td>
+          <td><%= link_to current_job_status(job), company_job_path(job), class: "black button" %></td>
           <td><%= link_to job.employee.name, company_job_path(job), class: "black button bold" %></td>
           <td><%= link_to job.title, company_job_path(job), class: "black button" %></td>
           <td><%= job.start_date.strftime("%B %e, %Y") %></td>

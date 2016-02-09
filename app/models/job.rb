@@ -39,7 +39,6 @@ class Job < ActiveRecord::Base
     has_many :comments, as: :commentable
     has_many :events, as: :eventable
 
-    accepts_nested_attributes_for :employee
 
     delegate :manager, to: :order
     delegate :title, to: :order
@@ -54,7 +53,6 @@ class Job < ActiveRecord::Base
 
 
         # setup settings
-    store_accessor :settings, :drive_pay, :ride_pay
     store_accessor :vacation, :number_of_days, :milestone_1, :milestone_2, :milestone_3
 
     # VALIDATIONS
@@ -231,8 +229,6 @@ class Job < ActiveRecord::Base
         self.active = false if active.nil?
         self.start_date = Date.today if start_date.nil?
         self.settings = {} if settings.nil?
-        # self.state = "Pending Approval" if state.nil? && active == false
-        # self.state = "Currently Working" if state.nil? && active == true
         self.vacation = {} if vacation.nil?
         self.title = order.title if title.nil?
     end
