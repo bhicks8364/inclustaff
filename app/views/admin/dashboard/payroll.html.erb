@@ -80,7 +80,7 @@
 					<%= render 'admin/timesheets/table', timesheets: @timesheets.current_week.order(updated_at: :desc) %>
 					 
 				</div>
-				<div class='col-md-4'>
+				<div class='col-md-3'>
 			   		<h4 class='text-center'><%= Date.today.end_of_week.stamp("Week ending: Nov 20th") %></h4>
 			   		<%= pie_chart Timesheet.current_week.group('timesheets.state').count, 
 			   		library: {backgroundColor: "#ccc", legend: {position: "bottom"}, is3D: true, title: "This Week"}%>
