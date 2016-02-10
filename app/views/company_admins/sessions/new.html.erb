@@ -1,13 +1,24 @@
-<div class='col-md-3'></div>
-<div class='col-md-6'>
   <% if @current_agency.subdomain == "demo" %>
 <h2 class='metal text-center'>Demo Log in</h2>
 
-<div class='well'>
+<div class='col-md-6 well'>
   <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
   <div class="form-group">
-    <p class='metal lead bold'>Select which role you want to sign in as.</p>
-    <%= f.input :email, as: :select, collection: @current_agency.company_admins.order(:company_id), label_method: :name, value_method: :email, required: false, include_blank: false, label: false  %>
+    <p class='metal lead bold'>Timeclock Demo <i class='fa fa-info-circle fa-fw' data-placement='right' data-toggle='tooltip' title='Each company can set-up a timeclock on any device connected to the internet. Employees simply clock-in with a passcode when they arrive on assignment.'></i></p>
+    <%= f.input :email, as: :select, collection: @current_agency.company_admins.timeclocks.order(:company_id), label_method: :name, value_method: :email, required: false, include_blank: false, label: false  %>
+    <%= f.hidden_field :password, required: false, value: "password" %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, "Try it out", class: 'btn btn-success' %>
+  </div>
+<% end %>
+</div>
+<div class='col-md-6 well'>
+  <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <div class="form-group">
+    <p class='metal lead bold'>Sign in as a company admin.</p>
+    <%= f.input :email, as: :select, collection: @current_agency.company_admins.real_users.order(:company_id), label_method: :role, value_method: :email, required: false, include_blank: false, label: false  %>
     <%= f.hidden_field :password, required: false, value: "password" %>
   </div>
 
@@ -17,6 +28,9 @@
 <% end %>
 </div>
 
+
+
+<!--NOT A DEMO-->
 <%else%>
 <h2>Log in</h2>
 
@@ -35,5 +49,3 @@
 <%= render "company_admins/shared/links" %>
 
 <% end %>
-</div>
-<div class='col-md-3'></div>

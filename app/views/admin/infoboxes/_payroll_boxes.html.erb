@@ -1,10 +1,6 @@
 <div class='payroll-boxes'>
-	<div class='col-md-4'>
-		<h4 class='text-center'><%= 1.week.ago.end_of_week.stamp("Week ending: Nov 20th") %></h4>
-   		<%= pie_chart Timesheet.last_week.group('timesheets.state').count, 
-   		library: {backgroundColor: "#ccc", legend: {position: "bottom"}, is3D: true, title: "Last Week"}%>
-   	</div>
-	<div class="col-md-4">
+	
+	<div class="col-md-9">
 		<div class='center'>
 		<% if @current_agency.timesheets.last_week.pending.none? %>
 		<div class='text-center metal'>	  	
@@ -17,20 +13,27 @@
 	  		<% end %>
 		</div>
   		<% else %>
-  		<div class='text-center metal'>
-  			<p class='lead'>There are still <%= pluralize(@current_agency.timesheets.needing_approval.count, "pending timesheets") %> from last week.</p>
-  			<%= render @current_agency.companies.with_late_timesheets.distinct %>
-  		</div>
   		
-  		<div class='text-center metal scroll500'>	  	
-			
-			<%= render @current_agency.timesheets.needing_approval %>
+  		
+  		<div class='text-center metal well'>	  	
+			<%= render 'admin/timesheets/table', timesheets: @current_agency.timesheets.needing_approval.distinct %>
 		</div>
   		
-  		<% end %>
+  		
 		</div>
 	</div>
-	
+	<div class='col-md-3 text-center metal'>
+	  	<p class='lead'>There are still <%= pluralize(@current_agency.timesheets.needing_approval.count, "pending timesheets") %> from last week.</p>
+	  	<% @current_agency.companies.with_late_timesheets.distinct.each do |company| %>
+	  	<%= company.name %><br>
+	  	<% end %>
+	  </div>
+	<div class='col-md-3'>
+		<h4 class='text-center'><%= 1.week.ago.end_of_week.stamp("Week ending: Nov 20th") %></h4>
+   		<%= pie_chart Timesheet.last_week.group('timesheets.state').count, 
+   		library: {backgroundColor: "#ccc", legend: {position: "bottom"}, is3D: true, title: "Last Week"}%>
+   	</div>
+	<% end %>
 	
 	<div class="col-md-4">
 		<div class='center'>

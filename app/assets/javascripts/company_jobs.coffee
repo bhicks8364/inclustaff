@@ -16,7 +16,7 @@ class Job
     @item.find("[data-behavior='job-out-button_#{@id}']").on "click", @handleOut
     
   getCode: =>
-    @code = prompt("Please enter your employee code. (Case sensitive)", "Example: BH1234");
+    @code = prompt("Please enter your employee code.");
     $.ajax(
       url: "/company/jobs/#{@id}/verify_code",
       data: { code: @code },
@@ -29,11 +29,8 @@ class Job
       @item.find("[data-behavior='code-button_#{@id}']").hide()
       @item.find("[data-behavior='job-in-button_#{@id}']").show()
       @item.find("#verified").html "VERIFIED! You can now clock in."
-     
-      console.log data.authorized
-      console.log data.code
     else
-      alert("Uh-Oh! Something went wrong! #{data.authorized} - #{data.code}")
+      @item.find("#unauthorized").html "Sorry that's not right. <br> Please try again or see a manager for help."
 
   handleIn: =>
     $.ajax(
@@ -51,6 +48,7 @@ class Job
       @item.find("[data-behavior='time-out']").html "<small>Last Out: #{data.last_out}</small>"
       @item.find("[data-behavior='time-in']").html "<small><strong> In:</strong> #{data.time_in}</small>"
       @item.find("[data-behavior='shift-state']").html "<strong>#{data.first_name} is now clocked in.</strong><br>"
+      @item.find("#verified").html "<strong>#{data.first_name} is now clocked in.</strong><br>"
       console.log data.time_in
       console.log data.time_out
       
@@ -78,7 +76,7 @@ class Job
       $("#in-job-#{@id}").hide()
       $("[data-behavior='code-button_#{@id}']").show()
       $("#clocked-in-count").text "#{data.new_count}"
-      $(".break-actions").hide()
+      $(".break-actions-#{@id}").hide()
       @item.find("[data-behavior='time-in']").html "<small><strong> In:</strong> #{data.time_in}</small>"
       @item.find("[data-behavior='time-out']").html "<small><strong> Out:</strong> #{data.time_out}</small>"
       @item.find("[data-behavior='shift-state']").html "<strong>#{data.first_name} is now clocked out.</strong><br>"

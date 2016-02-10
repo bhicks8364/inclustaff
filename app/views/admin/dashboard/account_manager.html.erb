@@ -17,7 +17,7 @@
 			<%= render "admin/shared/alerts/open_orders", orders: @current_admin.job_orders %>
 		</div>
 
-		<div class="col-md-10 well">
+		<div class="col-md-12 metal well">
 			<h2>All Job Orders</h2>
 					<%= render 'admin/orders/table', orders: @current_admin.job_orders.includes(:company).order(:created_at) %>
 		</div>

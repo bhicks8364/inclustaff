@@ -14,7 +14,7 @@
 	<div class="alert alert-success fade in text-center open-order">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 		<i class="fa fa-check-square-o fa-fw fa-lg"></i>
-			<h4><%= pluralize(orders.overdue.count, 'overdue job order') %>. </h4>
+			<span class='bold metal'><%= pluralize(orders.overdue.count, 'overdue job order') %>. </span>
 	</div>
 <% end %>
 
@@ -28,7 +28,7 @@
 	<div class="alert alert-success fade in text-center open-order">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 		<i class="fa fa-check-square-o fa-fw fa-lg"></i>
-			<h4><%= pluralize(orders.priority.count, 'priority job order') %>. </h4>
+			<span class='bold metal'><%= pluralize(orders.priority.count, 'priority job order') %>. </span>
 	</div>
 <% end %>
 <div class="alert alert-info fade in text-center open-order">

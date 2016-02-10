@@ -69,7 +69,7 @@ class Shift < ActiveRecord::Base
   scope :with_break,    -> { where.not(breaks: [])}
   scope :with_no_break, -> { where(breaks: [])}
   scope :clocked_in,    -> { where(state: "Clocked In")}
-  scope :at_work,       -> { where.not(state: "Clocked Out")}
+  scope :at_work,       -> { where(state: ["Clocked In", "On Break"])}
   scope :clocked_out,   -> { where(state: ["Clocked Out", nil])}
   scope :on_break,      -> { where(state: "On Break")}
   scope :with_notes,    -> { where(NamedFunction.new("LENGTH", [Shift[:note]]).gt(2))}

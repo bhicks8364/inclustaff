@@ -5,9 +5,10 @@
 <li role="separator" class="divider"></li>
 <li><%= link_to "<i class='fa fa-plus-square'></i> Add Company".html_safe, new_admin_company_path %></li>
 <li><%= link_to "<i class='fa fa-plus-square-o'></i> Add Job Order".html_safe, new_admin_order_path %></li>
-
+<li class=''><%= link_to "<i class='fa fa-user-plus fa-fw'></i> New Agency Admin".html_safe, new_admin_admin_path %></li>
+<li class=''><%= link_to "<i class='fa fa-user-plus fa-fw'></i> New Company Admin".html_safe, new_company_admin_registration_path %></li>
 <li role="separator" class="divider"></li>
-<li><%= link_to "<i class='fa fa-home'></i> Agency Page".html_safe, @current_agency %></li>
+
 <li><%= link_to "<i class='fa fa-file-text'></i> Timesheets".html_safe, admin_timesheets_path %></li>
 <li><%= link_to "<i class='fa fa-file-text-o'></i> Past Timesheets".html_safe, past_admin_timesheets_path %></li>
 <li><%= link_to "<i class='fa fa-building-o'></i> All Companies".html_safe, admin_companies_path %></li>

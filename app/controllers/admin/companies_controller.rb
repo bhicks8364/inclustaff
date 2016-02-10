@@ -115,7 +115,7 @@ class Admin::CompaniesController < ApplicationController
 
   private
     def company_import_params
-        params.require(:company_import).permit(:file)
+        params.require(:company_import).permit(:file, :agency_id)
     end
   
     def pundit_user

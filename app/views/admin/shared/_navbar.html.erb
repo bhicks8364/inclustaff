@@ -16,28 +16,37 @@
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <% if admin_signed_in? %>
       <ul class="nav navbar-nav">
+        <li class=''><%= link_to "<i class='fa fa-home fa-lg' data-placement='bottom' data-toggle='tooltip' title='Home'></i> ".html_safe, admin_admin_path(@current_admin) %></li>
+        <li class=''><%= link_to "<i class='fa fa-users fa-lg' data-placement='bottom' data-toggle='tooltip' title='View Current Employees'></i>".html_safe, admin_jobs_path if policy(:job).index? %></li>
+  			<li class=''><%= link_to "<i class='fa fa-briefcase fa-lg' data-placement='bottom' data-toggle='tooltip' title='View Job Orders'></i>".html_safe, admin_orders_path if policy(:order).index? %></li>
+  			<li class=''><%= link_to "<i class='fa fa-clock-o fa-lg' data-placement='bottom' data-toggle='tooltip' title='View Timesheets'></i>".html_safe, admin_timesheets_path if policy(:timesheet).index? %></li>
+  			<li class=''><%= link_to "<i class='fa fa-plus-square fa-lg' data-placement='bottom' data-toggle='tooltip' title='New Job Order'></i>".html_safe, new_admin_order_path if policy(:order).create? %></li>
         
-        <li><%= link_to "<i class='fa fa-bell green fa-1x'></i>".html_safe, events_path, class: 'button' if @current_admin.events.unread.happened_after(Date.yesterday).any? %></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= @current_admin.name %> <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><%= link_to "My Profile", admin_admin_path(@current_admin) %></li>
-            <%= render "admin/sidebars/recruiter_links" if @current_admin.recruiter? %>
-            <%= render "admin/sidebars/sales_links" if @current_admin.account_manager? %>
-            <%= render "admin/sidebars/payroll_links" if @current_admin.payroll? %>
-            <%= render "admin/sidebars/owner_links" if @current_admin.owner? %>
-            <li role="separator" class="divider"></li>
-
-            <li><%= link_to "<i class='fa fa-power-off'></i> Sign Out".html_safe, destroy_admin_session_path, method: :delete  %></li>
-          </ul>
-        </li>
       </ul>
+      <% end %>
       <ul class="nav navbar-nav">
         <%= render 'admin/shared/clocked_in' if  @current_admin.jobs.on_shift.any? %>
         <%= render 'admin/shared/on_break' if @current_admin.jobs.on_break.any? %>
         <!--<%= render 'admin/shared/dropdown'if @current_admin.comments.includes(:commentable).unread.any? %>-->
       </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= @current_admin.name %> <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><%= link_to "My Profile", admin_admin_path(@current_admin) %></li>
+            <li><%= link_to "<i class='fa fa-bell green fa-1x'></i>".html_safe, events_path, class: 'button' if @current_admin.events.unread.happened_after(Date.yesterday).any? %></li>
+            <%= render "admin/sidebars/recruiter_links" if @current_admin.recruiter? %>
+            <%= render "admin/sidebars/sales_links" if @current_admin.account_manager? %>
+            <%= render "admin/sidebars/payroll_links" if @current_admin.payroll? %>
+            <%= render "admin/sidebars/owner_links" if @current_admin.owner? %>
+            <li role="separator" class="divider"></li>
+            <li><%= link_to "<i class='fa fa-power-off'></i> Sign Out".html_safe, destroy_admin_session_path, method: :delete  %></li>
+          </ul>
+        </li>
+  			<li><%= link_to "<i class='fa fa-power-off'></i> Sign Out".html_safe, destroy_admin_session_path, method: :delete  %></li>
+  		</ul>
 
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

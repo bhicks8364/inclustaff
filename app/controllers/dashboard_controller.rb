@@ -134,6 +134,9 @@ class DashboardController < ApplicationController
           "application"
       end
     end
+     def pundit_user
+       current_admin || current_company_admin || current_user
+     end
     
   
   

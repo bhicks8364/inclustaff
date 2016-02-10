@@ -41,6 +41,9 @@ class ApplicationController < ActionController::Base
   # def not_found
   #   # raise ActionController::RoutingError.new("Subdomain Not Found. >>  Hey now! You shouldn't be here... You must register if you want to be here :) ")
   # end
+  def pundit_user
+    current_admin || current_company_admin || current_user
+  end
 
 
   def update_permitted_parameters

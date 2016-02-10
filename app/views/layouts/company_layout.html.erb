@@ -16,8 +16,9 @@
 		<%= csrf_meta_tags %>
 	</head>
 	<body>
-		<%= render 'company/shared/navbar' %>
-		<%= render 'demo/demo_nav' %>
+		<%= render 'company/shared/navbar' if current_company_admin.role != "Timeclock" %>
+		<%= render 'company/shared/timeclock_navbar' if current_company_admin.role == "Timeclock" %>
+		<%= render 'demo/demo_nav' if current_company_admin.role != "Timeclock" %>
 		<div class="row">
 			<div class="container" id="main-wrapper">
 				<%= render 'layouts/alerts' %>

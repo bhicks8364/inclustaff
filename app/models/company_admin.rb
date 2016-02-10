@@ -64,7 +64,8 @@ class CompanyAdmin < ActiveRecord::Base
   scope :managers, -> { where(role: "Manager")}
   scope :hr, -> { where(role: "HR")}
   scope :limited, -> { where(role: "Limited Access")}
-  scope :timclocks, -> { where(role: "Timeclock")}
+  scope :timeclocks, -> { where(role: "Timeclock")}
+  scope :real_users, -> { where.not(role: "Timeclock")}
   scope :current_week, -> {
           start = Time.current.beginning_of_week
           ending = start.end_of_week

@@ -137,9 +137,10 @@ class Company < ActiveRecord::Base
     end
 
     # IMPORT TO CSV
-    def self.assign_from_row(row)
+    def self.assign_from_row(row, agency_id)
         company = Company.where(name: row[:name]).first_or_initialize
-        company.assign_attributes row.to_hash.slice(:name, :address, :city, :state, :zipcode, :contact_name, :contact_email, :admin_id, :agency_id, :phone_number)
+        company.assign_attributes row.to_hash.slice(:name, :address, :city, :state, :zipcode, :contact_name, :contact_email, :admin_id, :phone_number)
+        company.agency_id = agency_id
         company
     end
 

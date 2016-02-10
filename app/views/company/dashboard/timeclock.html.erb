@@ -3,7 +3,7 @@
    
     <div class='col-md-6 well' id='clocked_in_list'>
          <h2>Clocked In</h2>
-        <%= div_for(@company.jobs.active.on_shift.each, class: 'clocked-in-sm') do |job| %>
+        <%= div_for(@company.jobs.at_work.distinct.each, class: 'clocked-in-sm') do |job| %>
             <div class='col-md-12 well well-sm'>
                  
               <%= render 'company/jobs/job', job: job %>

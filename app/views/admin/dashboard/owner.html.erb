@@ -7,8 +7,6 @@
 		<div class="clearfix">
 			<ul class="nav nav-tabs">
 			  <li class="active"><a href="#tab-home" data-toggle="tab">Dashboard</a></li>
-			  <li class=""><a href="#tab-orders" data-toggle="tab">Job Orders</a></li>
-			  <li class=""><a href="#tab-calendar" data-toggle="tab">Calendar</a></li>
 			  <li class=""><a href="#tab-invoices" data-toggle="tab">Invoices</a></li>
 			  <li class=""><a href="#tab-admins" data-toggle="tab">Admins</a></li>
 			  <li class=""><a href="#tab-leaderboard" data-toggle="tab">Stats</a></li>
@@ -53,41 +51,7 @@
 	       			
        			</div>
 			</div>
-			<div class="tab-pane fade in" id="tab-orders">
-				<div class='col-md-12'>
-				<% if @current_agency.orders %>
-					<div class="col-md-2">
-						<%= render "admin/shared/alerts/open_orders", orders: @current_agency.orders %>
-					</div>
-					<div class="col-md-10">
-						<%= render 'admin/orders/table', orders: @current_agency.orders.needs_attention.order(:needed_by) %>
-					</div>
-					<div class='col-md-10'>
-							<h3 class='text-center'>Job Orders by Company</h3>
-	       				<div class='list-group'>
-       					<% @current_agency.companies.includes(:orders).order(:name).each do |company| %>
-	       					<li class='list-group-item'><h4 class="list-group-item-heading">
-	       						<%= link_to company.name, admin_company_path(company)%>
-	       					</h4>
-	       					<% if company.orders.any? %>
-	       					Active <span class='label label-success'><%= company.orders.active.count %></span> &nbsp;
-	       					Pending <span class='label label-info'><%= company.orders.inactive.count %></span>
-	       					<% end %>
-	       					</li>
-	       				<% end %>
-	       				</div>
-	       			</div>
-
-				<% else %>
-					<h3 class='text-center'>No Job Orders</h3>
-					<div class="col-md-2">
-						<%= link_to "Add Job Order", new_admin_order_path %>
-					</div>
-					<div class="col-md-10">
-					</div>
-				<% end %>
-				</div>
-			</div>
+			
 			<div class="tab-pane fade" id="tab-admins">
 				<div class='col-md-4'>
        				<div class='text-center'>
@@ -117,23 +81,20 @@
 					 	<h3 class=''>	<strong>Last Week:</strong> <%= number_to_currency(@current_agency.last_week_billing) %></h3>
 
 				</div>
-				<div class='row'>
-       				<div class="col-md-6">
+					<%= column_chart @current_agency.companies.order('name').map{|company|
+				        {name: company.name, data: company.timesheets.group_by_week(:week, range: 2.weeks.ago.beginning_of_week.midnight..Time.current.beginning_of_week, format: "%b %d %y").sum(:total_bill)}
+				    }, library: {isStacked: true, backgroundColor: "#e5dbcf", legend: {position: "right"}, title: "Weekly Billings by Company"} %>
+       				<div class="col-md-4">
 		 				<%= render "admin/infoboxes/leaderboxes" %>
 		 			</div>
-	       			<div class="col-md-6">
-						<%= column_chart @current_agency.companies.order('name').map{|company|
-					        {name: company.name, data: company.timesheets.group_by_week(:week, range: 2.weeks.ago.beginning_of_week.midnight..Time.current.beginning_of_week, format: "%b %d %y").sum(:total_bill)}
-					    }, library: {isStacked: true, backgroundColor: "#e5dbcf", legend: {position: "bottom"}, title: "Weekly Billings by Company"} %>
-					</div>
-	 			</div>
+	       			
 			</div>
 			<div class="tab-pane fade" id="tab-invoices">
 				<div class='col-md-12'>
 					<h2 class=''>Unpaid Invoices</h2>
-					<div class="col-md-4 scroll500">
+					<div class="col-md-4">
 				     <% @current_agency.invoices.unpaid.order(:week).each do |invoice| %>
-						<%= link_to(admin_invoice_path(invoice), class: "list-group-item list-group-item-success") do %>
+						<%= link_to(admin_invoice_path(invoice), class: "") do %>
 					       <div data-behavior="invoice" data-id="<%= invoice.id %>" class=''>
 					      <strong> <%= invoice.company.name %></strong>
 					     	 <span class='label label-success pull-right black'>
@@ -141,29 +102,12 @@
 					       </div>
 					       <% end %>
 					  <% end %>
+					  <p class='lead'>Unpaid Balance: <span class='pull-right'><%= number_to_currency(@current_agency.invoices.unpaid.sum(:total)) %></span></p>
 				    </div>
+				    
 				    </div>
 			</div>
-			<div class="tab-pane fade" id="tab-calendar">
-				<div class='col-md-12'>
-					<h3 class='white'>Invoices Calendar</h3>
-				<%= month_calendar events: @current_agency.invoices.unpaid, attribute: :due_by do |date, invoices| %>
-				  <span class='cal-date'>
-				    <%= date %>
-				  </span>
-
-				  <%= div_for invoices do |invoice| %>
-				   <%= inv_timesheets_collaspe(invoice) %><br>
-				      <div class='black collapse' id="collapseInv_<%=invoice.id%>">
-				         <%= render 'admin/invoices/invoice', invoice: invoice %>
-				      </div>
-				   
-				  <% end %>
-				<% end %>
-
-
-				 </div>
-			</div>
+		
 		</div>
 	</div>
 </div>

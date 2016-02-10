@@ -59,6 +59,7 @@ class Company::Shifts::BreaksController < ApplicationController
 
     def set_shift
       @shift = current_company_admin.company.shifts.find(params[:shift_id])
+      
     end
     def shift_break_params
       params.require(:break).permit(:time_in, :time_out, :shift_id, :paid)

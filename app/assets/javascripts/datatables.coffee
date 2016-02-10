@@ -8,7 +8,7 @@ jQuery ->
     # "info":     true
   # $('[data-toggle="tooltip"]').tooltip()
     
-  $('.inv_datatable').dataTable
+  $('.datatable').dataTable
     sPaginationType: "full_numbers",
     "paging":   true,
     "scrollY": 500,
