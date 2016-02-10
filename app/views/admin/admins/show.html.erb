@@ -6,9 +6,7 @@
             <%= @admin.role %>
         <%= @admin.email %>
         </p>
-
-        <%= @admin.latitude %>
-        <%= @admin.longitude %>
+            <p> Current Commission: <%= number_to_currency(@admin.current_commission) %></p>
         <br>
         Last seen: <%= @admin.last_sign_in_at.present? ? @admin.last_sign_in_at.stamp("11/12 at 11:15am") : "Yet to sign in" %>
     </div>

@@ -14,7 +14,7 @@
   <div class='col-md-3 well well-sm'>
     <h3 class=''>Matching Employees</h3>
     <%@order.matching_employees.each do |employee| %>
-    <p class=''><%= employee.name %></p>
+    <p class=''><%= link_to employee.name, admin_employee_path(employee) %></p>
     <% end %>
   </div>
   <% end %>

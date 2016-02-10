@@ -136,7 +136,9 @@ class Order < ActiveRecord::Base
         end
       end
     end
-
+    def inactive?
+      active == false
+    end
     def needs_agency_approval?; requirements['agency_approval'] == "true"; end
     def needs_company_approval?;  requirements['company_approval'] == "true";  end
     def needs_approval?;  needs_agency_approval? || needs_company_approval?;  end

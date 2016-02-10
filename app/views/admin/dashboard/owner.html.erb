@@ -76,15 +76,15 @@
 				</div>
 			</div>
 			<div class="tab-pane fade" id="tab-leaderboard">
-				<div class='col-md-12'>
+				<div class='col-md-6'>
 					<h2 class=''><strong>Current Billing:</strong> <%= number_to_currency(@current_agency.current_billing) %></h2>
 					 	<h3 class=''>	<strong>Last Week:</strong> <%= number_to_currency(@current_agency.last_week_billing) %></h3>
-
-				</div>
 					<%= column_chart @current_agency.companies.order('name').map{|company|
 				        {name: company.name, data: company.timesheets.group_by_week(:week, range: 2.weeks.ago.beginning_of_week.midnight..Time.current.beginning_of_week, format: "%b %d %y").sum(:total_bill)}
 				    }, library: {isStacked: true, backgroundColor: "#e5dbcf", legend: {position: "right"}, title: "Weekly Billings by Company"} %>
-       				<div class="col-md-4">
+				</div>
+					
+       				<div class="col-md-6">
 		 				<%= render "admin/infoboxes/leaderboxes" %>
 		 			</div>
 	       			

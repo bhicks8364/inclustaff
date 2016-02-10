@@ -1,8 +1,9 @@
 <% if orders.any? %>
 <div class="table-responsive">
-  <table id="" class="table table-bordered">
+  <table id="" class="table table-bordered table-hover">
     <thead>
       <tr>
+        <td><i class='fa fa-cog fa-fw pull-center'></i></td>
         <% if @company.nil? %><td> Company</td><%end %>
         <td>Fill Date</td>
         <td>Industry</td>
@@ -10,7 +11,7 @@
         <th>Pay Range</th>
         <th>Open</th>
         <th>Make A Placement</th>
-        <th><i class='fa fa-cog fa-lg pull-center'></i></th>
+        <th><i class='fa fa-cog fa-fw pull-center'></i></th>
         
       </tr>
     </thead>
@@ -18,13 +19,14 @@
     <tbody>
       <% orders.each do |order| %>
         <tr>
+          <td><%= order_status(order) %></td>
           <% if @company.nil? %><td> <%= link_to order.company.name, admin_company_path(order.company) %></td><%end %>
           <td><%= order.needed_by.stamp('Mon 11/12') %>  </td>
           <td> <%= order.industry %></td>
           <td><%= link_to title_for(order), admin_order_path(order), class: "button" %></td>
           <td><%= pay_range(order) %></td>
           <td><%= order.open_jobs %></td>
-          <td class='text-center'><% if order.needs_attention? %><%= link_to "<i class='fa fa-user-plus fa-lg'></i>".html_safe, new_admin_order_job_path(order) %>
+          <td class='text-center'><% if order.needs_attention? %><%= link_to "<i class='fa fa-user-plus fa-lg'></i>".html_safe, new_admin_order_job_path(order), class: "button"  %>
           <%else%><%= status_tag(order) %><% end %></td>
           <td><%= link_to "<i class='fa fa-pencil fa-fw'></i>".html_safe, edit_admin_order_path(order) %></td>
           </td>
