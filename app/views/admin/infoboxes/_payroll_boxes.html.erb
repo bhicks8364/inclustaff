@@ -7,7 +7,7 @@
 				All timesheets for last week have been approved.<br>
 				<span class="list-group-item"><%= @current_agency.timesheets.last_week.approved.try(:count) %> Approved </span>
 			</p>
-			<%= link_to(past_admin_timesheets_path(@current_admin.timesheets.last_week, format: :csv), class: 'btn btn-success') do %>
+			<%= link_to(last_week_admin_timesheets_path(@current_admin.timesheets.last_week, format: :csv), class: 'btn btn-success') do %>
 	  			<i class="fa fa-upload fa-fw"></i> Export
 	  		<% end %>
 		</div>

@@ -16,7 +16,7 @@ class Admin::TimesheetsController < ApplicationController
 		end
 		gon.timesheets = @timesheets
     authorize @timesheets
-    @current_timesheets = @timesheets.current_week if @timesheets.present?
+    @current_timesheets = @timesheets.current_week.distinct if @timesheets.present?
 		respond_to do |format|
       format.html
       format.csv { send_data @current_timesheets.to_csv, filename: "current_timesheets-export-#{Time.current}-inclustaff.csv" }

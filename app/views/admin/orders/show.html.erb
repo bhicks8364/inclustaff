@@ -91,25 +91,28 @@
      </div>
       <div class='col-md-4'>
         
-        <h3><strong><%= @order.shift %></strong> </h3>
-        <p class='lead'>
-          <%= pay_range(@order) %>        
-        </p>
-        <%= @order.heavy_lifting ? "#{heavy_lifting(@order)} - Heavy Lifting Required".html_safe : "" %>
-        <p><%= @order.stwb ? "#{stwb(@order)}  STWB Required".html_safe : "" %></p>
-        <p class=''>
-        <strong>Drug Test </strong>
-        <%= @order.dt_req %>
-        </p>
-        <p class=''>
-        <strong>Background Check </strong>
-        <%= @order.bg_check %>
-        </p>
-        <p class=''>
-        <strong>Assignment Type</strong>
-        <%= @order.est_duration %>
-        </p>
-        <p class='lead'><strong>Requirements:</strong> <br><%= @order.requirements['certifications'] %></p>
+        <div class='well'>
+          <h3><strong><%= @order.shift %></strong> </h3>
+          <p class='lead'>
+            <%= pay_range(@order) %>        
+          </p>
+          <p class='text-warning'><%= @order.heavy_lifting ? "#{heavy_lifting(@order)} - Heavy Lifting Required".html_safe : "" %></p>
+          <p class='text-warning'><%= @order.stwb ? "#{stwb(@order)}  STWB Required".html_safe : "" %></p>
+          <p class='text-info'>
+          <strong>Drug Test </strong><br>
+          <%= @order.dt_req %>
+          </p>
+          <p class=''>
+          <strong>Background Check </strong><br>
+          <%= @order.bg_check %>
+          </p>
+          <p class=''>
+          <strong>Assignment Type</strong><br>
+          <%= @order.est_duration %>
+          </p>
+          <p class='lead'><strong>Requirements:</strong> <br><%= @order.requirements['certifications'] %></p>
+        </div>
+        
         
        <div class='center'>
           <% if @order.skills.count < 1 %>
@@ -236,7 +239,8 @@
   
   <!--APPLICATIONS TAB-->
     <div role="tabpanel" class="tab-pane fade" id="applications">
-        <div class='col-md-6'>
+        <div class='col-md-6 metal'>
+          <h2 class='text-center'>Applications</h2>
           <% if @order.applications.any? %>
           <ul>
             <% @order.applications.each do |event| %>
