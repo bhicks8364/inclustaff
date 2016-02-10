@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/Nerian/bootstrap-datepicker-rails.git
+  revision: ec4b9e9e41c828c9e5549e8071e426f43f105cc5
+  specs:
+    bootstrap-datepicker-rails (1.6.0.pre.alpha)
+      railties (>= 3.0)
+
+GIT
   remote: git://github.com/activerecord-hackery/ransack.git
   revision: d9f516f9185cf7eb7c9853a942493460e304857e
   branch: rails-4.2
@@ -366,6 +373,7 @@ DEPENDENCIES
   arel-helpers
   better_errors
   binding_of_caller
+  bootstrap-datepicker-rails!
   bootstrap-sass (~> 3.2.0.2)
   byebug
   capybara

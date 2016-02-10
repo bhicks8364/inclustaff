@@ -14,7 +14,6 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require refile
-//= require jquery-ui/datepicker
 //= require jquery.atwho
 //= require dataTables/jquery.dataTables
 //= require bootstrap-sprockets
@@ -45,7 +44,7 @@
 //= require pending_approval
 //= require emp_jobs
 //= require company_jobs
-
+//= require bootstrap-datepicker
 
 $(document).ready(function(){
   $('.img-zoom').hover(function() {
@@ -59,4 +58,7 @@ $(document).ready(function(){
   }, function() {
     $(this).removeClass('transition');
   });
+  $('.datepicker').datepicker();
 });
+
+

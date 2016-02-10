@@ -7,11 +7,12 @@
 		<%= f.input :industry, as: :select,	collection: [ "Manufacturing", "General Labor", "Office", "Sales", "IT", "Retail", "Logistics", "Warehouse", "Medical", "Food Service"], label: false,	prompt: "Select an industry"  %>
 		<%= f.input :title, placeholder: "Job Title", label: false  %>
 		<%= f.input :address, placeholder: "You can leave this blank if same as company address.", label: "Jobsite Location" %>
-		<div class='form-group text-center'>
-			<p class='lead'>When do you need them to start?</p>
-			<%= f.input :needed_by, default: Date.tomorrow, as: :date, end_year: Date.today.year + 1, start_year: Date.today.year, order: [:month, :day, :year], wrapper_html: {class: "form-inline"}, label: false %>
+		<div class='form-inline '>
+			<p class='lead pull-left'>When do you need them to start?</p>
+			<%= f.input :needed_by, default: Date.tomorrow, as: :string, data: { provide: "datepicker"}, label: false %>
+			<hr>
 		</div>
-		<div class='form-group'>
+		<div class='form-group well'>
 			<%= f.input :notes, as: :text, label: "Job Description", placeholder: "Please list desired skills, qualifications, etc...", input_html: {id: "autocomplete", data: { behavior: "autocomplete_order_notes" }, rows: 12 } %>
 		</div>
 		<div class='form-group'>
