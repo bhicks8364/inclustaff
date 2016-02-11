@@ -45,12 +45,12 @@
 body {
   // font-family: 'Titillium Web', Geneva, sans-serif;
   padding-top: 70px;
-  padding-bottom: 70px;
+  padding-bottom: 80px;
   height: 100%;
   // background: #DEE0E8;
-  // background: rgba(0, 0, 0, 0.6);
-  background: url(bg_design.png) no-repeat center fixed; 
-  background-size: cover;
+  background: rgba(255, 255, 255, 0.6);
+  // background: url(bg_design.png) no-repeat center fixed; 
+  // background-size: cover;
 }
 #main-wrapper {
   // margin-top: -20px;
@@ -203,4 +203,23 @@ h1 {
 td.day:hover {
   cursor: pointer;
   background-color: #ccc;
+}
+.gravatar {
+  float: left;
+  margin-right: 10px;
+  // margin-bottom: 5px;
+}
+.user {
+  max-width: 284px;
+  padding: 8px;
+  .user-address {
+    margin-top: 1px;
+    margin-bottom: 3px;
+  }
+}
+.user-actions {
+  
+}
+p.work_history {
+  max-width: 284px;
 }

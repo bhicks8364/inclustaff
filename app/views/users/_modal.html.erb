@@ -1,22 +1,23 @@
 <a class='button' data-toggle="modal" data-target="#mod_<%= user.id %>">
-	<%= user.name %>
+	<%=emp_popover(user.employee)%>
 </a>
 
 <!-- Modal -->
-<div class="modal fade dark" id="mod_<%= user.id %>" tabindex="-1" role="dialog" aria-labelledby="#<%= user.employee.name %>">
+<div class="modal fade" id="mod_<%= user.id %>" tabindex="-1" role="dialog" aria-labelledby="#<%= user.employee.name %>">
   <div class="modal-dialog" role="document">
-    <div class="modal-content dark">
+    <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class='metal modal-title'><%= link_to user.name, user %></h3>
       </div>
       
-      <div class="modal-body col-md-12">
-        <h3 class='metal modal-title'><%= link_to user.name, user %></h3>
-        <div class="">
-          <div class="col-md-4">
+      <div class="modal-body">
+        
+        <div class="row">
+          <div class="col-md-6">
              <%= render user %>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-6">
             <% if user.employee.work_histories.any? %>
             <p class='text-info metal'>Recent Work History</p>
             <%= render user.employee.work_histories.order(:start_date).last(3)  %>

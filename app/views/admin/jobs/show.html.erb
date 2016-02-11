@@ -1,4 +1,4 @@
-<% if @job.pending_approval? %>
+<% if @job.pending_approval? || @job.declined? %>
   <%= render "pending_approval" %>
   <%else%>
 <div class='col-md-12 lightbox' data-behavior="job-list" >

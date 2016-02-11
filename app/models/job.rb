@@ -83,6 +83,7 @@ class Job < ActiveRecord::Base
     scope :pending_approval,      -> { where(state: "Pending Approval")}
     scope :currently_working,     -> { where(state: "Currently Working")}
     scope :ended_assignments,     -> { where(state: "Assignment Ended")}
+    scope :already_working,     -> { where(state: "Already Working")}
     scope :declined_by_agency,    -> { where(state: "Declined by agency")}
     scope :declined_by_company,   -> { where(state: "Declined by company")}
     scope :declined_by_candidate, -> { where(state: "Declined by candidate")}
@@ -140,6 +141,9 @@ class Job < ActiveRecord::Base
     def declined?
         state == "Declined by agency" || state == "Declined by company" || state == "Declined by employee" || state == "Declined by other" || state == "Already Working"
     end
+    def cancelled?
+        state == "Assignment Ended"
+    end
 
     def status
         if shifts.any?
@@ -148,10 +152,7 @@ class Job < ActiveRecord::Base
             state
         end
     end
-
-
-
-
+    
     def on_shift?
         # status == "Clocked In"
         shifts.clocked_in.any?

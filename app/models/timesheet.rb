@@ -177,10 +177,11 @@ class Timesheet < ActiveRecord::Base
       CompanyAdmin.find(approved_by).name
     end
   end
+  
 
   # EXPORT TO CSV
   def self.to_csv
-    attributes = %w{id order_id week_ending company employee_name ssn reg_hours ot_hours total_hours pay_rate ot_rate gross_pay state approved_by approved_by_type shifts_count}
+    attributes = %w{id order_id week_ending company employee_name ssn reg_hours ot_hours total_hours pay_rate ot_rate gross_pay state user_approved approved_by_type shifts_count invoice_id}
     CSV.generate(headers: true) do |csv|
       csv << attributes
 

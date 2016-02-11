@@ -27,17 +27,10 @@
 
 		<%= render 'employee/shared/navbar' %>
 		<%= render 'demo/demo_nav' if @current_agency.demo? %>
-	<div class="row">
-			<div class="container" id="main-wrapper">
+			<div class="container-fluid">
 				<%= render 'layouts/alerts' %>
 				<%= render 'demo/employee_how_to' if @current_agency.present? && @current_agency.demo? %>
 	    		<%= yield %>
-
-
-	    	
 		</div>
-		
-		
-	</div>
 </body>
 </html>

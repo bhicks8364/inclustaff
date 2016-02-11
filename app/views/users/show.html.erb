@@ -2,10 +2,9 @@
 <div class='col-md-12 lightbox'>
     
   <div class="page-header">
+      <% if @user.online? %> <%= image_tag("user-green.png", class: 'online-icon') %> <% end %>
       <h1><%= @user.name %></h1>
-      <div id='<%=@user.id%>-updated-available-at-icon' class=''><%=check_in(@user)%></div>
       </div>
-<span id='<%=@user.id%>-updated-available-at'>Updated as available: <%= @user.checked_in_at? ? "#{time_ago_in_words(@user.checked_in_at)} ago" : "" %></span>
 
 <!--NAV TABS-->
 <div id='' class='col-md-12'>
@@ -29,20 +28,19 @@
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane fade in active" id="home">
         <div class='col-md-12 pad'>
-            <div class='col-md-4'>
-                <% if @user.online? %> <%= image_tag("user-green.png", class: 'online-icon') %> <% end %>
+            <div class='col-md-6'>
+                
                 <%= render @user %>
             </div>
             
-            <div class='col-md-4'>
+            <div class='col-md-6'>
                 <% if @employee.assigned? %>
                 <%= render 'employee/jobs/job', job: @job if user_signed_in? %>
                 <%= render 'admin/jobs/job', job: @job if admin_signed_in? %>
                 <% else %>
                 <p class='lead bold'><%= @employee.first_name %> is currently unassigned. </p>
                 <% end %>
-            </div>
-            <div class='col-md-4'>
+            
                 
                 <h2>Tags</h2>
                 <%= highlight(@employee.tag_list.to_s, ActsAsTaggableOn::Tag.all.map(&:name), highlighter: '<a href="/tags?tag=\1">\1</a>') %>

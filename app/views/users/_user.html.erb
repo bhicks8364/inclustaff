@@ -1,13 +1,16 @@
-<%= div_for(user, class: '') do %>
-<div class='pull-left'><%=gravatar_for(user)%></div>
-<p class='text-right'><span id='<%=user.id%>-updated-available-at-icon'><%= check_in(user) %></span></p>
-<p class='text-right'><span id='<%=user.id%>-follow-user-icon'><%= follow(user) %></span></p>
-<hr>
-  <address class="">
-    <%= user.address %><br>
-    <%= user.city %>, <%= user.state %> <%= user.zipcode %><br>
-    <i class="fa fa-phone-square"></i>  <%= user.employee.phone_number.present? ? user.employee.phone_number : "Unavailable"  %> 
-  </address>
+<%= div_for(user) do %>
+
+  <div class=''>
+     <h4><%= user.name %></h4>
+  <div class='gravatar'><%=gravatar_for(user)%></div>
   
-  
+    <div class='user-actions'><span id='<%=user.id%>-updated-available-at-icon'><%= check_in(user) %></span> <span id='<%=user.id%>-follow-user-icon'><%= follow(user) %></span></div>
+   
+    <div class="user-address">
+      <%= user.address %><br>
+      <%= user.city %>, <%= user.state %> <%= user.zipcode %><br>
+      <small><%= user_phone(user) %></small>  <br>
+      <small><%=user_email(user)%></small>
+    </div>
+  </div>
 <% end %>

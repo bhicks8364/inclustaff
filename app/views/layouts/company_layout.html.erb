@@ -19,12 +19,10 @@
 		<%= render 'company/shared/navbar' if current_company_admin.role != "Timeclock" %>
 		<%= render 'company/shared/timeclock_navbar' if current_company_admin.role == "Timeclock" %>
 		<%= render 'demo/demo_nav' if current_company_admin.role != "Timeclock" %>
-		<div class="row">
-			<div class="container" id="main-wrapper">
+			<div class="container-fluid">
 				<%= render 'layouts/alerts' %>
 				<%= render 'demo/company_how_to' if @current_agency.present?  %>
 	    		<%= yield %>
 			</div>
-		</div>
 	</body>
 </html>
