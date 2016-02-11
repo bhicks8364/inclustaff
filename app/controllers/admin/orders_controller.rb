@@ -11,7 +11,6 @@ class Admin::OrdersController < ApplicationController
     @q = Order.includes(:company).active.order(needed_by: :desc).ransack(params[:q]) if @current_admin.owner? || @current_admin.payroll? || @current_admin.account_manager?
     @q = Order.includes(:company).order(needed_by: :desc).ransack(params[:q]) if @current_admin.recruiter?
     @import = Order::Import.new
-    
     if params[:company_id]
       @company = Company.find(params[:company_id])
       @orders = @company.orders.paginate(page: params[:page], per_page: 25)
@@ -41,6 +40,11 @@ class Admin::OrdersController < ApplicationController
     end 
     
     
+  end
+  
+  def inactive
+    @inactive = @current_admin.job_orders.inactive
+    authorize @inactive, :index?
   end
   
   def search

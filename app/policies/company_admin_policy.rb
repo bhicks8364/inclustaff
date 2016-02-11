@@ -1,4 +1,4 @@
-class AdminPolicy < ApplicationPolicy
+class CompanyAdminPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       scope

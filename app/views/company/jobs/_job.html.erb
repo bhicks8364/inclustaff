@@ -1,11 +1,12 @@
 <div data-behavior="job" data-id="<%= job.id %>">
     <div class='col-md-8 text-left'>
-        <%= link_to job.name_title, company_job_path(job) unless current_company_admin.role == "Timeclock" %>
-         <%=  job.name_title if current_company_admin.role == "Timeclock" %>
+        <%= link_to job.name_title, company_job_path(job) if company_admin_signed_in? && current_company_admin.role != "Timeclock" %>
+         <%=  job.name_title if company_admin_signed_in? && current_company_admin.role == "Timeclock" %>
+         <%=  link_to job.name_title, admin_job_path(job) if admin_signed_in?  %>
     </div>
     <div class='col-md-4 text-right'>
         <span id='verified'></span>
-        <%= render 'company/dashboard/clock', job: job %>
+        <%= render 'company/dashboard/clock', job: job if company_admin_signed_in? && current_company_admin.role == "Timeclock" %>
     </div>
     
 </div>

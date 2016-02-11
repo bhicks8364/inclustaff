@@ -29,7 +29,7 @@
 			<div class='col-md-6'>
 				<h4>Timesheets waiting for approval</h4>
 				<% company.timesheets.needing_approval.each do |timesheet| %>
-					<%= render "company/timesheets/timesheet", timesheet: timesheet %>
+					<%= render "company/timesheets/timesheet", timesheet: timesheet if company_admin_signed_in? %>
 				<% end %>
 			</div>
 			<div class='col-md-6'>

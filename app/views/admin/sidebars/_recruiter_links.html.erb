@@ -1,10 +1,7 @@
-<li><%= link_to "<i class='fa fa-dashboard'></i> Dashboard".html_safe, admin_admin_path(current_admin) %></li>
+<li><%= link_to "<i class='fa fa-dashboard fa-fw'></i> Recruiting Dashboard".html_safe, admin_recruiter_path %></li>
+<li><%= link_to "<i class='fa fa-users fa-fw'></i> Candidate List".html_safe, users_path %></li>
+<li><%= link_to "<i class='fa fa-search fa-fw'></i> Search Job Orders".html_safe, search_admin_orders_path %></li>
 <li role="separator" class="divider"></li>
-<li><%= link_to "<i class='fa fa-home'></i> Recruiting Dashboard".html_safe, admin_recruiter_path %></li>
-<li><%= link_to "<i class='fa fa-list'></i> Candidate List".html_safe, users_path %></li>
-<li><%= link_to "<i class='fa fa-university'></i> Search Job Orders".html_safe, search_admin_orders_path %></li>
-<li role="separator" class="divider"></li>
-<li><%= link_to "<i class='fa fa-home'></i> Agency Page".html_safe, @current_agency %></li>
-<li><%= link_to "<i class='fa fa-university'></i> Job Orders".html_safe, admin_orders_path %></li>
-<li><%= link_to "<i class='fa fa-commenting'></i> Messages".html_safe, comments_path %></li>
-<li><%= link_to "<i class='fa fa-briefcase'></i> Placements".html_safe, admin_jobs_path %></li>
+<li><%= link_to "<i class='fa fa-home fa-fw'></i> Agency Home Page".html_safe, @current_agency %></li>
+<li><%= link_to "<i class='fa fa-comments-o fa-fw'></i> Messages".html_safe, comments_path %></li>
+<li><%= link_to "<i class='fa fa-user fa-fw'></i> Placements".html_safe, admin_jobs_path %></li>

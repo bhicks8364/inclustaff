@@ -5,15 +5,13 @@
 <table id='' class="table table-hover" >
   <thead>
     <tr>
-    
+      <th>Company</th>
       <th>Job Title</th> 
       <th>Pay rate</th> 
       <th>Total Hours</th>
       <th>Total Gross</th>
       <th>Total Bill</th>
-      <th>Mark Up</th>
-      <th>Recruiter</th>
-      <th>Acct Manager</th>
+      <th>Recruiter/Acct Manager</th>
       
     </tr>
   </thead>
@@ -26,16 +24,14 @@
     <tr class="info">
       
       <% end %>
-
+        <td><%= job.company.name %></td>
         <td><%= job_sym(job) %> <%= link_to job.employee.name, admin_job_path(job) %><br> <small><%= job.title %></small></td>
         
         <td><%= number_to_currency(job.pay_rate) %></td>
         <td><%= job.total_hours.round(2) %></td>
         <td><%= number_to_currency(job.total_gross_pay) %></td>
         <td><%= number_to_currency(job.total_gross_bill) %></td>
-        <td><%= job.mark_up_percent %></td>
-        <td><%= job.recruiter.present? ? job.recruiter.last_name : "Unassigned" %></td>
-        <td><%= job.account_manager.present? ? job.account_manager.last_name : "Unassigned" %></td>
+        <td><%= job.staff %></td>
         
       </tr>
     <% end %>

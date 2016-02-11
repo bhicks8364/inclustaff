@@ -109,62 +109,43 @@
     
 
   </div>
-  
+  <!--TIMESHEETS TAB-->
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
+      <h2>Timesheets</h2>
     <% if user_signed_in? %>
      <%= render 'employee/timesheets/table', timesheets: @employee.timesheets %>
      <% elsif admin_signed_in? %>
      <%= render 'admin/timesheets/table', timesheets: @employee.timesheets %>
      <% end %>
-
-      
-     
-                
-        
-
-            
   </div>
-  
+  <!--CURRENT JOB TAB-->
   <div role="tabpanel" class="tab-pane fade" id="current-job">
-    
-  <% if @jobs %>
-    <%= @jobs.map(&:title).join(', ') %>
+  <% if @employee.jobs %>
+    <%= @employee.jobs.map(&:title).join(', ') %>
     <% else %>
     <h3><%= @employee.first_name %> is currently unassigned.</h3>
   <% end %>
-     
-                
-        
-
-            
   </div>
+  <!--SHIFTS TAB-->
   <div role="tabpanel" class="tab-pane fade" id="shifts">
-    
   <% if @employee.assigned? %>
-
+        <h3> <%= @employee.first_name %> is currently assigned to a position.</h3>
     <% else %>
-    <h3> <%= @employee.first_name %> is currently unassigned.</h3>
+        <h3> <%= @employee.first_name %> is currently unassigned.</h3>
   <% end %>
-     
-                
-        
-
-            
   </div>
+  <!--WORK HISTORY TAB-->
   <div role="tabpanel" class="tab-pane fade" id="work_history">
-    <div class=''>
+    <div class='well'>
     <% if @employee.work_histories.any? %>
         <div class=' table-responsive'>
-       
-       <%= render 'admin/work_histories/table' %>
-       </div>
+           <%= render 'admin/work_histories/table' %>
+        </div>
        <% if admin_signed_in? %>
          <%=link_to "Add Work History", new_admin_employee_work_history_path(@employee), class: 'btn btn-primary' %>
        <% elsif user_signed_in? %>
          <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
        <% end %>
-        
-        
     <% else %>
       <p>No Work History Available.</p>
        <% if admin_signed_in? %>
@@ -176,9 +157,10 @@
      </div>
        
   </div>
+  <!--APPLICATIONS TAB-->
   <div role="tabpanel" class="tab-pane fade" id="applications-tab">
       <% if @user.events.any? %>
-   <h3> Your Applications</h3>
+    <h3> Your Applications</h3>
       <div class='list-group'>
 						<% @user.events.applications.each do |event| %>
 						  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
@@ -190,6 +172,7 @@
 			<h3>No applications to show.</h3>
 			<% end %>
   </div>
+  <!--SETTINGS TAB-->
   <div role="tabpanel" class="tab-pane fade" id="settings">
       <span id='<%=@user.id%>-updated-available-at'>Updated as available: <%= @user.checked_in_at? ? "#{time_ago_in_words(@user.checked_in_at)} ago" : "" %></span>
       <div class='btn-group'>

@@ -5,7 +5,8 @@
   <%= link_to 'Clear Search', admin_jobs_path, class: 'btn btn-primary btn-sm' %>
 <% end %>
         <div class='col-md-3'>
-            <%= render 'admin/jobs/pending_list', jobs: @jobs.inactive %>
+           <%= pie_chart @jobs.inactive.group('jobs.state').count, 
+			   		library: {backgroundColor: "#ccc", legend: {position: "bottom"}, is3D: true, title: "Jobs by Current Status"}%>
         </div>
     <div class='col-md-9'>
         <% if @jobs.active.any? %>

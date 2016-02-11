@@ -1,0 +1,44 @@
+<a class='button' data-toggle="modal" data-target="#mod_<%= user.id %>">
+	<%= user.name %>
+</a>
+
+<!-- Modal -->
+<div class="modal fade dark" id="mod_<%= user.id %>" tabindex="-1" role="dialog" aria-labelledby="#<%= user.employee.name %>">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content dark">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      
+      <div class="modal-body col-md-12">
+        <h3 class='metal modal-title'><%= link_to user.name, user %></h3>
+        <div class="">
+          <div class="col-md-4">
+             <%= render user %>
+          </div>
+          <div class="col-md-8">
+            <% if user.employee.work_histories.any? %>
+            <p class='text-info metal'>Recent Work History</p>
+            <%= render user.employee.work_histories.order(:start_date).last(3)  %>
+            <% else %>
+            <p class='text-danger metal'>No Recent Work History</p>
+            <%end %>
+            <% if user.employee.jobs.any? %>
+              <% user.employee.jobs.each do |job| %>
+                <%= link_to job.title, admin_job_path(job) %> - <%= job.state %><br>
+              <% end %>
+            <% end %>
+          </div>
+          
+        </div>
+        </div>
+       
+
+      <div class="modal-footer">
+         <p class='metal'><strong>Available as of: </strong> <span id='<%=user.id%>-updated-available-at'><%= user.checked_in_at? ? "#{time_ago_in_words(user.checked_in_at)} ago" : "" %></span></p>
+        
+  				
+      </div>
+    </div>
+  </div>
+</div>

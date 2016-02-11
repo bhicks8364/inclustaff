@@ -44,7 +44,7 @@ class Timesheet < ActiveRecord::Base
 
   validates_associated :shifts
 
-  delegate :name_title, :mark_up, :pay_rate, :bill_rate, :ot_rate, :agency, :company, :manager, :recruiter, :current_shift, :account_manager, to: :job
+  delegate :name_title, :mark_up, :pay_rate, :bill_rate, :ot_rate, :agency, :company, :manager, :recruiter, :current_shift, :account_manager, :order_id, to: :job
   delegate :ssn, to: :employee
   before_save :total_timesheet, if: :clocked_out?
   before_create :defaults
@@ -180,7 +180,7 @@ class Timesheet < ActiveRecord::Base
 
   # EXPORT TO CSV
   def self.to_csv
-    attributes = %w{id week_ending company employee_name ssn reg_hours ot_hours total_hours job_title pay_rate ot_rate gross_pay state approved_by approved_by_type shifts_count}
+    attributes = %w{id order_id week_ending company employee_name ssn reg_hours ot_hours total_hours pay_rate ot_rate gross_pay state approved_by approved_by_type shifts_count}
     CSV.generate(headers: true) do |csv|
       csv << attributes
 
@@ -191,11 +191,10 @@ class Timesheet < ActiveRecord::Base
   end
 
   def current?
-    if week == Date.today.cweek
-      true
-    else
-      false
-    end
+     week == Date.today.beginning_of_week
+  end
+  def last_week?
+     week == (Date.today.beginning_of_week - 1.week )
   end
 
   def company_order
@@ -262,11 +261,7 @@ class Timesheet < ActiveRecord::Base
   end
 
   def week_begin
-    if shifts.any?
-      shifts.last.time_in.beginning_of_week.stamp("11/22/2015")
-    else
-      Date.today.beginning_of_week.stamp("11/22/2015")
-    end
+    week
   end
 
   def time_frame

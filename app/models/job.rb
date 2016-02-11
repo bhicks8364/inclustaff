@@ -75,11 +75,6 @@ class Job < ActiveRecord::Base
 
     # SCOPES
     scope :with_recent_comments,    -> { joins(:comments).merge(Comment.payroll_week)}
-
-    # scope :with_drive_pay, -> { where("settings ? :key", :key => 'drive_pay')}
-    # scope :with_ride_pay, -> { where("settings ? :key", :key => 'ride_pay')}
-    # scope :with_pay, -> { where("settings ? :key", :key => 'pay_rate')}
-    # scope :with_drive_pay, -> { where("settings ? :key", :key => 'drive_pay')}
     scope :with_notes,    -> { where(NamedFunction.new("LENGTH", [Job[:description]]).gt(2))}
     scope :active, -> { where(active: true)}
     scope :with_employee, ->  { includes(:employee) }
@@ -91,6 +86,7 @@ class Job < ActiveRecord::Base
     scope :declined_by_agency,    -> { where(state: "Declined by agency")}
     scope :declined_by_company,   -> { where(state: "Declined by company")}
     scope :declined_by_candidate, -> { where(state: "Declined by candidate")}
+    scope :declined,    -> { where(state: ["Declined by agency", "Declined by company", "Declined by candidate"])}
     scope :new_start, -> { where(Job[:start_date].gteq(Date.today.beginning_of_week)) }
 
     # THESE WORKED!!!

@@ -9,7 +9,7 @@
       <th>Hours</th>
       <th>Pay Rate</th>
       <th>Earnings</th>
-      <th></th>
+      <th>Edit</th>
 
     </tr>
   </thead>
@@ -24,9 +24,7 @@
         <td><%= link_to shift.time_in.strftime("%x"), admin_shift_path(shift) %></td>
         <td><%= link_to shift.employee.name, admin_employee_path(shift.employee) %></td>
         <td><%= shift.time_in.strftime("%I:%M %p") %></td>
-        
         <td><%= shift.clocked_out? ? shift.time_out.strftime("%I:%M %p") : "Clocked In" %></td>
-        
         <td><%= shift.time_worked.round(2) %></td>
         <td><%= number_to_currency(shift.pay_rate) %></td>
         <td><%= number_to_currency(shift.earnings) %></td>
@@ -34,7 +32,7 @@
         <td><%= link_to(edit_admin_shift_path(shift), class: "table-link" ) do %>
 					<span class="fa-stack">
 						<i class="fa fa-square fa-stack-3x fa-inverse"></i>
-						<i class="fa fa-pencil fa-stack-1x "></i>
+						<i class="fa fa-edit fa-stack-1x "></i>
 					</span>
 				<% end %></td>
 

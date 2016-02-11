@@ -1,36 +1,45 @@
-<div class="col-md-12">
-	
-	<div class="table-responsive dark">
+<div class="col-md-6 metal">
+	<h2>Company Admins</h2>
+	<div class="table-responsive">
 		<table id='' class="table table-bordered">
 			<thead>
 				<tr>
-				    <th><span>Company</span></th>
-					<th><span>Name</span></th>
-					<th><span>Email</span></th>
-					<th><span>Last Sign In</span></th>
+				   <th>Company</th>
+					<th>Name</th>
+					<th>Email</th>
 				</tr>
 			</thead>
 			<tbody>
 				<%= content_tag_for(:tr, @company_admins) do |company_admin| %>
-				    <td>
-						<%= signed_in_link_to company_admin.company.name, company_admin.company, class: "white" if admin_signed_in? %>
-						<%= @current_company_admin.company.name if company_admin_signed_in? %>
-					</td>
-					<td>
-						<%= link_to company_admin.name, company_admin, class: "white" %> <small>	<%= company_admin.role %></small>
-					</td>
-					<td class='white'>
-						<%= company_admin.email %>
-					</td>
-				
-					<td>
-						<%= company_admin.current_sign_in_at.present? ? company_admin.current_sign_in_at.strftime("%x") : "Yet to sign in" %>
-					</td>
-				
+				<td><%= link_to company_admin.company.name, admin_company_path(company_admin.company), class: "button" %>	</td>
+				<td><%= render 'modal', company_admin: company_admin %></td>
+				<td class='white'><%= company_admin.email %>	</td>
 				<% end %>
 			</tbody>
 		</table>
 		<%= will_paginate @company_admins %>
+	</div>
+</div>
+<div class="col-md-6 metal">
+	<h2>Timeclocks</h2>
+	<div class="table-responsive">
+		<table id='' class="table table-bordered">
+			<thead>
+				<tr>
+				   <th>Company</th>
+					<th>Name</th>
+					<th>Email</th>
+				</tr>
+			</thead>
+			<tbody>
+				<%= content_tag_for(:tr, @timeclocks) do |timeclock| %>
+				<td><%= link_to timeclock.company.name, admin_company_path(timeclock.company), class: "button" %>	</td>
+				<td><%= render 'modal', company_admin: timeclock %></td>
+				<td class='white'><%= timeclock.email %>	</td>
+				<% end %>
+			</tbody>
+		</table>
+		<%= will_paginate @timeclocks %>
 	</div>
 </div>
 					

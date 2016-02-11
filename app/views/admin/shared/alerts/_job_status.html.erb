@@ -1,0 +1,41 @@
+<div class="alert alert-info fade in">
+		<span class='bold metal red'>
+		    <i class="fa fa-exclamation fa-fw fa-lg"></i><%= jobs.count %> Inactive Jobs </span> 
+</div>
+
+<% if jobs.pending_approval.any? %>
+	<div class="alert alert-warning fade in">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+		<i class="fa fa-exclamation-triangle fa-fw fa-lg"></i> &nbsp;
+			<span class='bold metal'><%= pluralize(jobs.pending_approval.count, 'pending approval job') %> </span> 
+	</div>
+<% end %>
+<% if jobs.declined_by_agency.any? %>
+<div class="alert alert-danger fade in">
+	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+	<i class="fa fa-exclamation-triangle fa-fw fa-lg"></i> &nbsp;
+		<span class='bold metal'><%= pluralize(jobs.declined_by_agency.count, 'job') %> declined by agency</span> 
+</div>
+<% end %>
+<% if jobs.declined_by_company.any? %>
+<div class="alert alert-danger fade in">
+	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+	<i class="fa fa-exclamation-triangle fa-fw fa-lg"></i> &nbsp;
+		<span class='bold metal'><%= pluralize(jobs.declined_by_company.count, 'job') %>  declined by company</span> 
+		
+</div>
+<% end %>
+<% if jobs.declined_by_candidate.any? %>
+<div class="alert alert-danger fade in">
+	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+	<i class="fa fa-exclamation-triangle fa-fw fa-lg"></i> &nbsp; 
+		<span class='bold metal'><%= pluralize(jobs.declined_by_candidate.count, 'job') %> declined by candidate</span> 
+</div>
+<% end %>
+<% if jobs.ended_assignments.any? %>
+<div class="alert alert-danger fade in">
+	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+	<i class="fa fa-exclamation-triangle fa-fw fa-lg"></i> &nbsp; 
+		<span class='bold metal'><%= pluralize(jobs.ended_assignments.count, 'job') %> ended assignments</span> 
+</div>
+<% end %>

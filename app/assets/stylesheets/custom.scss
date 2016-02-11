@@ -93,9 +93,7 @@ div.comments {
   border: solid 2px white;
   padding: 8px;
 }
-#tab-timesheets > div > div:nth-child(1) > div.conversation-user > i {
-  margin: 3px;
-}
+
 .clockbg {
   min-height: 100px;
 
@@ -202,4 +200,15 @@ a.button:hover {
 }
 .btn.btn-warning {
   color: black;
+}
+li.dashboard {
+  a {
+    border: solid 2px #ccc;
+  }
+  i {
+    color: red;
+  }
+  a:hover {
+    background-color: red;
+  }
 }

@@ -1,17 +1,13 @@
 <%= div_for(user, class: '') do %>
-<%= user_email(user) %>
+<div class='pull-left'><%=gravatar_for(user)%></div>
+<p class='text-right'><span id='<%=user.id%>-updated-available-at-icon'><%= check_in(user) %></span></p>
+<p class='text-right'><span id='<%=user.id%>-follow-user-icon'><%= follow(user) %></span></p>
+<hr>
   <address class="">
     <%= user.address %><br>
     <%= user.city %>, <%= user.state %> <%= user.zipcode %><br>
-    <i class="fa fa-phone-square"></i>  <%= user.employee.phone_number || "Unavailable"  %> 
+    <i class="fa fa-phone-square"></i>  <%= user.employee.phone_number.present? ? user.employee.phone_number : "Unavailable"  %> 
   </address>
-  <% if admin_signed_in? && !current_admin.is_following?(user) %>
-  <%= link_to(follow_user_path(user), method: :post, class: "table-link") do %>
-								<span class="fa-stack">
-									<i class="fa fa-square fa-stack-2x"></i>
-									<i class="fa fa-bookmark-o fa-stack-1x fa-inverse"></i>
-								</span>
-							<% end %>
-	<% end %>
+  
   
 <% end %>

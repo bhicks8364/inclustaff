@@ -12,7 +12,8 @@ class Admin::TimesheetsController < ApplicationController
 			@company = Company.includes(:jobs, :timesheets).find(params[:company_id])
       @timesheets = @company.timesheets if @company.timesheets.any?
     else
-     	@timesheets = Timesheet.order(week: :desc)
+    	
+     	@timesheets = Timesheet.includes(:job => :order)
 		end
 		gon.timesheets = @timesheets
     authorize @timesheets

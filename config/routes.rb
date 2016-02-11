@@ -122,6 +122,7 @@ Rails.application.routes.draw do
       resources :orders do
         collection do
           post 'import'
+          get 'inactive'
           match 'search' => 'orders#search', via: [:get, :post], as: :search
         end
         resources :skills
