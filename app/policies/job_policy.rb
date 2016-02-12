@@ -24,12 +24,12 @@ class JobPolicy < ApplicationPolicy
   end
 
   def clock_in?
-    return true if user.owner?
+    return true if user.owner? || user.timeclock?
     user.employee? && user.employee.current_job.order.mobile_time_clock_enabled? && record.id == user.employee.current_job.id
   end
 
   def clock_out?
-    return true if user.owner?
+    return true if user.owner? || user.timeclock?
     user.employee? && user.employee.current_job.order.mobile_time_clock_enabled? && record.id == user.employee.current_job.id
   end
 

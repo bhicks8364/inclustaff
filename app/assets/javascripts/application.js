@@ -32,7 +32,10 @@
 //= require at_mentions
 //= require messages
 
+//= require bootstrap-datepicker
 //= require forms
+
+
 //= require datatables
 //= require comments
 //= require events
@@ -44,7 +47,7 @@
 //= require pending_approval
 //= require emp_jobs
 //= require company_jobs
-//= require bootstrap-datepicker
+
 
 $(document).ready(function(){
   $('.img-zoom').hover(function() {
@@ -58,7 +61,6 @@ $(document).ready(function(){
   }, function() {
     $(this).removeClass('transition');
   });
-  $('.datepicker').datepicker();
 });
 
 

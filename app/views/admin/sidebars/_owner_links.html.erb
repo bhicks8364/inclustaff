@@ -1,8 +1,5 @@
-<li><%= link_to "<i class='fa fa-building-o'></i> All Companies".html_safe, admin_companies_path %></li>
-<li><%= link_to "<i class='fa fa-users'></i> Employees".html_safe, admin_employees_path %></li>
-<li><%= link_to "<i class='fa fa-university'></i> Job Orders".html_safe, admin_orders_path %></li>
-<li><%= link_to "<i class='fa fa-users'></i> Agency Users".html_safe, admin_admins_path %></li>
-<li><%= link_to "<i class='fa fa-money'></i> Invoices".html_safe, admin_invoices_path %></li>
-<li><%= link_to "<i class='fa fa-commenting'></i> Messages".html_safe, comments_path %></li>
-<li><%= link_to "<i class='fa fa-briefcase'></i> Jobs".html_safe, admin_jobs_path %></li>
-<li><%= link_to "<i class='fa fa-list'></i> Candidate List".html_safe, users_path %></li>
+
+<li><%= link_to "<i class='fa fa-globe fa-lg' data-placement='bottom' data-toggle='tooltip' title='Sales Dashboard'></i>".html_safe, admin_account_manager_path, class: "navbar-link" if @current_admin.owner? %>&nbsp;</li>
+<li><%= link_to "<i class='fa fa-street-view fa-lg' data-placement='bottom' data-toggle='tooltip' title='Recruiting Dashboard'></i>".html_safe, admin_recruiter_path, class: "navbar-link" if @current_admin.owner? %>&nbsp;</li>
+<li><%= link_to "<i class='fa fa-usd fa-lg' data-placement='bottom' data-toggle='tooltip' title='Payroll Dashboard'></i>".html_safe, admin_payroll_path, class: "navbar-link" if @current_admin.owner? %>&nbsp;</li>
+      

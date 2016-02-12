@@ -1,4 +1,5 @@
-<div class='col-md-12 lightbox'> 
+<div class='col-md-12 lightbox'>
+  <%= link_to "Download PDF", admin_order_path(@order, format: "pdf") %> 
 <%= @order.active? ? "" : "Inactive" %>
   <div class="btn-group pull-right">
     <% if policy(Job).create? && @order.needs_attention? %>

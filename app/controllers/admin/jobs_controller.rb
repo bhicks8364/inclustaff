@@ -41,7 +41,7 @@ class Admin::JobsController < ApplicationController
     @timesheets = @job.timesheets if @job.timesheets.any?
     @last_week_timesheets =  @job.timesheets.last_week
     @skills = @job.employee.skills
-
+  
     respond_to do |format|
       format.html
       format.json

@@ -13,8 +13,8 @@
   <% if @order.present? %>
   <div class='col-md-3 well well-sm'>
     <h3 class=''>Matching Employees</h3>
-    <%@order.matching_employees.each do |employee| %>
-    <p class=''><%= link_to employee.name, admin_employee_path(employee) %></p>
+    <%@order.matching_employees.includes(:user).each do |employee| %>
+    <p class=''><%= render 'users/modal', user: employee.user %></p>
     <% end %>
   </div>
   <% end %>

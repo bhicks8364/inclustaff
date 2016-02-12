@@ -410,6 +410,7 @@ DEPENDENCIES
   paranoia (~> 2.1.0)
   pg
   populator
+  prawn
   puma (~> 2.16)
   pundit (~> 1.0.1)
   rails (~> 4.2.1)

@@ -339,8 +339,13 @@ class Job < ActiveRecord::Base
         end
     end
     def candidate_sheet
-        Receipts::Receipt.new(
+        CandidatePdf.new(
           id: id,
+          recruiter_name: recruiter.name,
+          candidate_name: employee.user.email,
+          recruiter_email: recruiter.email,
+          position_name: title,
+          company_name: order.company.name,
           message: "#{recruiter.name} is presenting #{employee.name} for a position at #{company.name} ",
           company: {
             name: "#{company.name}",
@@ -357,7 +362,6 @@ class Job < ActiveRecord::Base
             ["Required Skills:",        "#{order.skills.required.order(:name).map(&:name).join(', ')}"],
             ["Other Skills:",        "#{order.skills.additional.order(:name).map(&:name).join(', ')}"],
             ["Candidate Skills:",        "#{employee.skills.order(:name).map(&:name).join(', ')}"],
-            ["Job Description:",      order.notes],
             ["Needed By",         order.needed_by.stamp('11/12/2015')],
             ["Pay - Bill",         "$#{pay_rate.round(2)}  -  $#{bill_rate.round(2)}"],
             ["Mark Up",         mark_up_percent],

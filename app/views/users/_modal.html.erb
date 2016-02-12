@@ -12,15 +12,14 @@
       </div>
       
       <div class="modal-body">
-        
-        <div class="row">
-          <div class="col-md-6">
-             <%= render user %>
+        <div class="col-md-12">
+          <div class="col-md-5">
+             <%= render 'users/user', user: user %>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-7">
             <% if user.employee.work_histories.any? %>
             <p class='text-info metal'>Recent Work History</p>
-            <%= render user.employee.work_histories.order(:start_date).last(3)  %>
+            <%= render partial: 'work_histories/work_history', collection: user.employee.work_histories.order(:start_date).last(3)  %>
             <% else %>
             <p class='text-danger metal'>No Recent Work History</p>
             <%end %>
@@ -32,7 +31,7 @@
           </div>
           
         </div>
-        </div>
+      </div>
        
 
       <div class="modal-footer">

@@ -213,7 +213,7 @@ input.file-field {
 .rainbow {
     // width: 100px;
     // height: 100px;
-    background-color: red;
+    // background-color: red;
     position: relative;
     /* Chrome, Safari, Opera */
     -webkit-animation-name: example;
@@ -233,20 +233,20 @@ input.file-field {
 
 /* Chrome, Safari, Opera */
 @-webkit-keyframes example {
-    0%   {background-color:red; left:0px; top:0px;}
-    25%  {background-color:yellow; left:100px; top:0px;}
-    50%  {background-color:blue; left:0px; top:0px;}
-    75%  {background-color:green; left:100px; top:0px;}
-    100% {background-color:red; left:0px; top:0px;}
+    0%   {color:red; left:0px; top:0px;}
+    25%  {color:yellow; left:100px; top:0px;}
+    50%  {color:blue; left:0px; top:0px;}
+    75%  {color:green; left:100px; top:0px;}
+    100% {color:red; left:0px; top:0px;}
 }
 
 /* Standard syntax */
 @keyframes example {
-    0%   {background-color:red; left:0px; top:0px;}
-    25%  {background-color:yellow; left:100px; top:0px;}
-    50%  {background-color:blue; left:0px; top:0px;}
-    75%  {background-color:green; left:100px; top:0px;}
-    100% {background-color:red; left:0px; top:0px;}
+    0%   {color:red; left:0px; top:0px;}
+    25%  {color:yellow; left:100px; top:0px;}
+    50%  {color:blue; left:0px; top:0px;}
+    75%  {color:green; left:100px; top:0px;}
+    100% {color:red; left:0px; top:0px;}
 }
 
 .demo-nav {

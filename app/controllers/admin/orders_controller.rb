@@ -36,7 +36,7 @@ class Admin::OrdersController < ApplicationController
     respond_to do |format|
         format.html
         format.json
-        format.csv { send_data @orders.to_csv, filename: "orders-export-#{Time.now}-inclustaff.csv" }
+        format.csv { send_data @orders.to_csv, filename: "orders-export-#{Time.current}-inclustaff.csv" }
     end 
     
     
@@ -72,6 +72,13 @@ class Admin::OrdersController < ApplicationController
     @timesheets = @order.timesheets
     @current_timesheets = @order.current_timesheets
     authorize @order
+    respond_to do |format|
+      format.html 
+      format.pdf do
+        pdf = OrderPdf.new(@order, @current_agency, @order.min_pay, view_context)
+        send_data pdf.render, filename: "#{@order.title_company}_#{Time.current}", type: "application/pdf", disposition: "inline"
+      end
+    end
    
   end
     
@@ -115,12 +122,12 @@ class Admin::OrdersController < ApplicationController
   # POST /orders.json
   def create
     @current_admin = current_admin
-    
 
       if params[:company_id]
         
         @company = Company.find(params[:company_id])
         @order = @company.orders.new(order_params)
+        
         @order.agency = @current_agency if @current_agency.present?
       else
         
@@ -164,7 +171,6 @@ class Admin::OrdersController < ApplicationController
     @order.agency = @current_agency
     authorize @order
     @company = @order.company
-
     respond_to do |format|
       if @order.update(order_params)
         format.html { redirect_to admin_company_order_path(@company, @order), notice: 'Order was successfully updated.' }

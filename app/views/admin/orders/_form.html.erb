@@ -3,14 +3,15 @@
     <%= simple_form_for [:admin, @company, @order], html: { class: 'form' } do |f| %>
 	<%= f.error_notification %>
 	<div class='col-md-8 well well-sm'>
-		<%= f.association :company, as: :select, collection: @current_admin.companies.distinct, label: false, prompt: "Choose a company" if @company.nil? %>
+		<%= f.association :company, as: :select, collection: @current_admin.companies.order(:name).distinct, required: true, label: false, include_blank: false if @company.nil? %>
 		<%= f.input :industry, as: :select,	collection: [ "Manufacturing", "General Labor", "Office", "Sales", "IT", "Retail", "Logistics", "Warehouse", "Medical", "Food Service"], label: false,	prompt: "Select an industry"  %>
 		<%= f.input :title, placeholder: "Job Title", label: false  %>
 		<%= f.input :address, placeholder: "You can leave this blank if same as company address.", label: "Jobsite Location" %>
 		<div class='form-inline '>
 			<p class='lead pull-left'>When do you need them to start?</p>
-			<%= f.input :needed_by, default: Date.tomorrow, as: :string, data: { provide: "datepicker"}, label: false %>
+			<%= f.input :needed_by, as: :string, input_html: {data: { provide: "datepicker"}}, label: false %>
 			<hr>
+			<div data-date="12/03/2012"></div>
 		</div>
 		<div class='form-group well'>
 			<%= f.input :notes, as: :text, label: "Job Description", placeholder: "Please list desired skills, qualifications, etc...", input_html: {id: "autocomplete", data: { behavior: "autocomplete_order_notes" }, rows: 12 } %>

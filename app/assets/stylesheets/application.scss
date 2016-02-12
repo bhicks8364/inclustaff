@@ -48,7 +48,7 @@ body {
   padding-bottom: 80px;
   height: 100%;
   // background: #DEE0E8;
-  background: rgba(255, 255, 255, 0.6);
+  background: #ccc;
   // background: url(bg_design.png) no-repeat center fixed; 
   // background-size: cover;
 }
@@ -206,11 +206,12 @@ td.day:hover {
 }
 .gravatar {
   float: left;
-  margin-right: 10px;
+  margin-right: 20px;
   // margin-bottom: 5px;
 }
 .user {
   max-width: 284px;
+  min-width: 104px;
   padding: 8px;
   .user-address {
     margin-top: 1px;
@@ -220,6 +221,6 @@ td.day:hover {
 .user-actions {
   
 }
-p.work_history {
+.work_history {
   max-width: 284px;
 }

@@ -120,4 +120,20 @@ class Invoice < ActiveRecord::Base
     def self.by_account_manager(admin_id)
         joins(:company => :orders).where(orders: { account_manager_id: admin_id })
     end
+    def timesheet_data
+        @t = []
+            timesheets.each do |timesheet|
+                @t << [timesheet.employee.name, timesheet.total_bill]
+            end
+            @t
+    end
+    def agency_copy(view_context)
+        
+        InvoicePdf.new(self, agency, company, total, timesheet_data, view_context)
+    end
+    
+    
+    
+    
+    
 end

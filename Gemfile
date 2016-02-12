@@ -88,7 +88,7 @@ gem 'will_paginate', '~> 3.0.6'
 
 # PDFs
 gem 'receipts'
-
+gem 'prawn'
 # NESTED FORMS
 gem "cocoon"
 

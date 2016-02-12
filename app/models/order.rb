@@ -75,18 +75,18 @@ class Order < ActiveRecord::Base
   validates :mark_up, :min_pay, :max_pay, :account_manager_id,  presence: true
 
   validates :company_id,  presence: true
-  validates :needed_by, presence: true
+  # validates :needed_by, presence: true
 
 
     # CALLBACKS
     after_initialize :defaults
-    before_validation :set_mark_up, :set_address
+    before_validation :set_mark_up
     after_save :set_note_skills
     # before_save :set_needed_by, if: :urgent?
 
   #  GEOCODER
   geocoded_by :address
-  after_validation :geocode
+  after_validation :set_address, :geocode
 
 
     # NESTED ATTRIBUTES
@@ -112,6 +112,8 @@ class Order < ActiveRecord::Base
     scope :long,    -> { where(NamedFunction.new("LENGTH", [Order[:notes]]).gt(200))}
 
     def defaults
+      self.needed_by = Date.today + 5.days if self.needed_by.nil?
+      # Just putting this in here until I figure out how to format bootstrap datepicker
       self.active = true if self.active.nil?
       self.urgent = false if self.urgent.nil?
       self.jobs_count = 0 if self.jobs_count.nil?
