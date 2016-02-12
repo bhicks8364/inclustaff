@@ -121,9 +121,10 @@ class Invoice < ActiveRecord::Base
         joins(:company => :orders).where(orders: { account_manager_id: admin_id })
     end
     def timesheet_data
-        @t = []
+        @t = [["Employee Name", "Total Bill"]]
             timesheets.each do |timesheet|
-                @t << [timesheet.employee.name, timesheet.total_bill]
+                timesheet_total = timesheet.total_bill ? timesheet.total_bill : 0
+                @t << [timesheet.employee.name, timesheet_total]
             end
             @t
     end

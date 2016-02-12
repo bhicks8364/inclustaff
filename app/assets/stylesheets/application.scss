@@ -206,8 +206,8 @@ td.day:hover {
 }
 .gravatar {
   float: left;
-  margin-right: 20px;
-  // margin-bottom: 5px;
+  display: block;
+  margin-bottom: 5px;
 }
 .user {
   max-width: 284px;
@@ -216,9 +216,13 @@ td.day:hover {
   .user-address {
     margin-top: 1px;
     margin-bottom: 3px;
+    margin-left: 5px;
   }
 }
 .user-actions {
+  float: right;
+  margin: 12px;
+  margin-right: 34px;
   
 }
 .work_history {

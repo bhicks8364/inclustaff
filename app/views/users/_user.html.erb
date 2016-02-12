@@ -1,16 +1,16 @@
 <%= div_for(user) do %>
 
-  <div class=''>
-     <h4><%= user.name %></h4>
-  <div class='gravatar'><%=gravatar_for(user)%></div>
-  
-    <div class='user-actions'><span id='<%=user.id%>-updated-available-at-icon'><%= check_in(user) %></span> <span id='<%=user.id%>-follow-user-icon'><%= follow(user) %></span></div>
-   
-    <div class="user-address">
-      <%= user.address %><br>
-      <%= user.city %>, <%= user.state %> <%= user.zipcode %><br>
-      <small><%= user_phone(user) %></small>  <br>
-      <small><%=user_email(user)%></small>
-    </div>
+   <p class=''><%= user.name %></p> 
+  <div class='gravatar'><%=gravatar_for(user)%>
+  <p class='user-actions'><span id='<%=user.id%>-updated-available-at-icon'><%= check_in(user) %></span> <span id='<%=user.id%>-follow-user-icon'><%= follow(user) %></span></p>
   </div>
+  
+    
+   
+    <p class="user-address">
+        <%= user.address %><br>
+        <%= user.city %>, <%= user.state %> <%= user.zipcode %><br>
+        <small><%= user_phone(user) %></small>  <br>
+        <small><%=user_email(user)%></small>
+    </p>
 <% end %>

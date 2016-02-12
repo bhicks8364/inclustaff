@@ -12,7 +12,7 @@ class CandidatePdf < Prawn::Document
         @position_name     = attributes.fetch(:position_name)
         @line_items  = attributes.fetch(:line_items)
         @custom_font = attributes.fetch(:font, {})
-        default_message
+        
         super(margin: 0)
         
         setup_fonts if custom_font.any?
@@ -22,8 +22,7 @@ class CandidatePdf < Prawn::Document
     private
     
     def default_message
-        "#{recruiter_name} is presenting #{@candidate_name} for a #{@position_name} at #{@company_name}. 
-        For questions, contact us anytime at <color rgb='326d92'><link href='mailto:#{@recruiter_email}.com?subject=\"Charge ##{id}\"'><b>#{@recruiter_email}</b></link></color>."
+        "#{recruiter_name} is presenting #{candidate_name} for a #{position_name} at #{company_name}."
     end
     
     def setup_fonts
@@ -45,7 +44,7 @@ class CandidatePdf < Prawn::Document
         move_down 60
         text default_message
         if company.has_key? :logo
-          image open(company.fetch(:logo)), height: 50
+          image open(company.fetch(:logo)), height: 50, align: :center
         else
           move_down 32
         end

@@ -45,10 +45,10 @@
            <%= highlight(@work_history.description, Skill.job_order.map(&:name), highlighter: '<a href="/tags?tag=\1">\1</a>') %>
        </div>
 
-     <div class='center'>
-      <%= link_to '<i class="fa fa-user"></i>  Back'.html_safe, admin_employee_path(@employee), class: 'btn btn-primary' %>
-      <%= link_to '<i class="fa fa-trash red"></i>  Delete'.html_safe, @work_history, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn red' %>
-      <%= link_to '<i class="fa fa-pencil"></i>  Edit'.html_safe, edit_admin_employee_work_history_path(@employee, @work_history), class: 'btn' %>
+     <div class='btn-group'>
+      <%= link_to '<i class="fa fa-user"></i>  Back'.html_safe, admin_employee_path(@employee), class: 'btn btn-primary' if policy(@employee).show?  %>
+      <%= link_to '<i class="fa fa-trash red"></i>  Delete'.html_safe, @work_history, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-primary' if policy(@work_history).destroy? %>
+      <%= link_to '<i class="fa fa-pencil"></i>  Edit'.html_safe, edit_admin_employee_work_history_path(@employee, @work_history), class: 'btn btn-primary' if policy(@work_history).edit? %>
      </div>
  
      </div>

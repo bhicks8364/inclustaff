@@ -1,4 +1,4 @@
-<div class="col-md-6 metal">
+<div class="col-md-8 well metal">
 	<h2>Company Admins</h2>
 	<div class="table-responsive">
 		<table id='' class="table table-bordered">
@@ -20,22 +20,18 @@
 		<%= will_paginate @company_admins %>
 	</div>
 </div>
-<div class="col-md-6 metal">
+<div class="col-md-4 well metal">
 	<h2>Timeclocks</h2>
 	<div class="table-responsive">
 		<table id='' class="table table-bordered">
 			<thead>
 				<tr>
-				   <th>Company</th>
 					<th>Name</th>
-					<th>Email</th>
 				</tr>
 			</thead>
 			<tbody>
 				<%= content_tag_for(:tr, @timeclocks) do |timeclock| %>
-				<td><%= link_to timeclock.company.name, admin_company_path(timeclock.company), class: "button" %>	</td>
 				<td><%= render 'modal', company_admin: timeclock %></td>
-				<td class='white'><%= timeclock.email %>	</td>
 				<% end %>
 			</tbody>
 		</table>

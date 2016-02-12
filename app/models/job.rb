@@ -342,7 +342,7 @@ class Job < ActiveRecord::Base
         CandidatePdf.new(
           id: id,
           recruiter_name: recruiter.name,
-          candidate_name: employee.user.email,
+          candidate_name: employee.name,
           recruiter_email: recruiter.email,
           position_name: title,
           company_name: order.company.name,
@@ -351,7 +351,7 @@ class Job < ActiveRecord::Base
             name: "#{company.name}",
             address: "#{company.address}",
             email: "#{company.contact_email}",
-            logo: Rails.root.join("app/assets/images/achievement1.png")
+            logo: Rails.root.join("app/assets/images/applicants.png")
           },
 
           line_items: [

@@ -10,13 +10,20 @@
         <br>
         Last seen: <%= @admin.last_sign_in_at.present? ? @admin.last_sign_in_at.stamp("11/12 at 11:15am") : "Yet to sign in" %>
         <hr>
-        <ul class='fa-ul'>
-            <%= render 'admin/shared/clocked_in' if  @current_admin.jobs.on_shift.any? %>
-            <%= render 'admin/shared/on_break' if @current_admin.jobs.on_break.any? %>
-        </ul>
         
     </div>
-    <div class='col-md-9 well well-sm'>
+    <div class='col-md-9'>
+        <% if @admin.jobs.any? %>
+        <div class='col-md-6'>
+            <%= pie_chart @admin.jobs.group('jobs.state').count, library: {backgroundColor: "#ccc", legend: {position: "right"}, is3D: true, title: "Jobs by Current Status"}%>
+        </div>
+        <ul class='fa-ul'>
+            <%= render 'admin/shared/clocked_in' if  @admin.jobs.on_shift.any? %>
+            <%= render 'admin/shared/on_break' if @admin.jobs.on_break.any? %>
+        </ul>
+        
+         
+	    <% end %>
         <%= render 'infoboxes'  %>
     </div>
      <div class='col-md-12'>

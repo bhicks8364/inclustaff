@@ -5,13 +5,13 @@
   <%= link_to 'Clear Search', admin_jobs_path, class: 'btn btn-primary btn-sm' %>
 <% end %>
         <div class='col-md-3'>
-           <%= pie_chart @jobs.inactive.group('jobs.state').count, 
+           <%= pie_chart @jobs.group('jobs.state').count, 
 			   		library: {backgroundColor: "#ccc", legend: {position: "bottom"}, is3D: true, title: "Jobs by Current Status"}%>
         </div>
     <div class='col-md-9'>
         <% if @jobs.active.any? %>
         
-    <h1>All Active Jobs</h1>
+    <h1><%= pluralize(@jobs.active.count, "Active Job")%> </h1>
     <%= render 'admin/jobs/table', jobs: @jobs.active %>
     <% else %>
    <h1 class='page-header'>

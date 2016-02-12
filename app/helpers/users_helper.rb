@@ -3,11 +3,11 @@ module UsersHelper
         "<i class='fa fa-user fa-fw' data-placement='top' data-toggle='tooltip' title=' #{ user.name}'></i>".html_safe
     end
     def user_email(user)
-        "<i class='fa fa-envelope fa-fw'></i> #{user.email}".html_safe
+       user.email
     end
     def user_phone(user)
         @phone = user.employee.phone_number.present? ? user.employee.phone_number : "Unavailable"
-        "<i class='fa fa-phone-square'></i> #{@phone}".html_safe
+        "PH: #{@phone}"
     end
     
     def check_in(user)

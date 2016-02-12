@@ -1,6 +1,6 @@
 
-	<div class="col-md-3">
-        <div class="">
+	<div class="col-md-6">
+        <div class="well well-sm">
         	<h4>Following Admins</h4>
         	<% if @admin.events.following_admin.any? %>
     		<ul class='fa-ul'>
@@ -26,9 +26,8 @@
     		<p class='bold'>No users to show.</p>
     		<% end %>
     	</div>
-	</div>
-	<div class="col-md-9">
-	    <div class="box">
+
+	    <div class="well well-sm">
 	        <div class="">
 	    		<h4>Recent Activity</h4>
 	        <% if @admin.events.any? %>

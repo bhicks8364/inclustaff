@@ -1,5 +1,11 @@
 
-<li><%= link_to "<i class='fa fa-globe fa-lg' data-placement='bottom' data-toggle='tooltip' title='Sales Dashboard'></i>".html_safe, admin_account_manager_path, class: "navbar-link" if @current_admin.owner? %>&nbsp;</li>
-<li><%= link_to "<i class='fa fa-street-view fa-lg' data-placement='bottom' data-toggle='tooltip' title='Recruiting Dashboard'></i>".html_safe, admin_recruiter_path, class: "navbar-link" if @current_admin.owner? %>&nbsp;</li>
-<li><%= link_to "<i class='fa fa-usd fa-lg' data-placement='bottom' data-toggle='tooltip' title='Payroll Dashboard'></i>".html_safe, admin_payroll_path, class: "navbar-link" if @current_admin.owner? %>&nbsp;</li>
-      
+
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class='fa fa-dashboard fa-lg' data-placement='right' data-toggle='tooltip' title='Dashboards'></i></a>
+  <ul class="dropdown-menu">
+    <li><%= link_to "<i class='fa fa-dashboard fa-fw'></i> #{@current.role} Dashboard".html_safe, root_path, class: "navbar-link" %></li>
+    <li><%= link_to "<i class='fa fa-globe fa-fw'></i> Sales".html_safe, admin_account_manager_path, class: "navbar-link" if @current_admin.owner? %></li>
+    <li><%= link_to "<i class='fa fa-street-view fa-fw'></i> Recruiting".html_safe, admin_recruiter_path, class: "navbar-link" if @current_admin.owner? %></li>
+    <li><%= link_to "<i class='fa fa-usd fa-fw'></i> Payroll".html_safe, admin_payroll_path, class: "navbar-link" if @current_admin.owner? %></li>
+  </ul>
+</li>

@@ -13,11 +13,13 @@ class Admin::JobsController < ApplicationController
     else
 
       @q = Job.includes(:employee).order(created_at: :desc).ransack(params[:q])  if @current_agency.present?
+      @q = @current_admin.jobs.includes(:employee).order(created_at: :desc).ransack(params[:q])  if @current_admin.recruiter?
       if params[:q].present?
         @jobs = @q.result(distinct: true).paginate(page: params[:page], per_page: 5)
       else
-        @jobs = Job.includes(:employee)
+        @jobs = @current_admin.jobs.includes(:employee).order(created_at: :desc).ransack(params[:q])
       end
+      @jobs = @current_admin.jobs.includes(:employee)
       authorize @jobs
     end
 
