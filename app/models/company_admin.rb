@@ -77,6 +77,7 @@ class CompanyAdmin < ActiveRecord::Base
   def manager?; role == "Manager"; end
   def recruiter?;           false;  end
   def account_manager?;           false;  end
+  def agency?;           false;  end
   def hr?;           role == "HR";  end
   def timeclock?;           role == "Timeclock";  end
   def company_admin?;           true;  end

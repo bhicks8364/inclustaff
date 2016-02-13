@@ -9,8 +9,10 @@ class InvoicePdf < Prawn::Document
         @company = company
         @view = view_context
         @color ||= @invoice.paid? ? "cccccc" : "ff0000"
+        @status ||= @invoice.paid? ? "Paid on: #{@invoice.paid_on}" : ""
         font "Times-Roman"
         text "Due Date: #{@invoice.due_by.stamp('11/12/2016') }", :color => @color, align: :right
+        text @status, :color => "#ccc", align: :left, size: 16
         
         
         move_down 20

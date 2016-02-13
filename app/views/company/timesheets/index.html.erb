@@ -2,7 +2,7 @@
    <div class='row'>
     <% if @timesheets.any? %>
             
-            
+            <%= link_to "Current Timesheet Report", company_timesheets_path(format: :pdf) %>
 <div class='col-md-6'>
     <h4 class='text-center'><strong>Pending Timesheets</strong></h4>
     <div id='pending'>

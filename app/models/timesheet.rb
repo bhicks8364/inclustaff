@@ -85,26 +85,27 @@ class Timesheet < ActiveRecord::Base
   scope :needing_approval, -> { last_week.pending }
 
   def receipt
-    Receipts::Receipt.new(
-      id: id,
-      message: "Weekly Pay Summary",
-      company: {
-        name: "#{company.agency.name}",
-        address: "8364 Oberlin Rd\nElyria, OH 44035",
-        email: "contact@inclustaff.com",
-        logo: Rails.root.join("app/assets/images/clock.png")
-      },
+    
+    # TimesheetPdf.new(
+    #   id: id,
+    #   message: "Weekly Pay Summary",
+    #   company: {
+    #     name: "#{company.agency.name}",
+    #     address: "8364 Oberlin Rd\nElyria, OH 44035",
+    #     email: "contact@inclustaff.com",
+    #     logo: Rails.root.join("app/assets/images/clock.png")
+    #   },
 
-      line_items: [
-        ["Week Ending",           week_ending],
-        ["Assignment", "#{job.id} (#{job.title})"],
-        ["Reg Hrs",        "#{reg_hours}    ($#{pay_rate.round(2)})"],
-        ["OT Hrs",       "#{ot_hours}    ($#{ot_rate.round(2)})"],
-        ["Gross Pay",         "$#{gross_pay.round(2)}"],
+    #   line_items: [
+    #     ["Week Ending",           week_ending],
+    #     ["Assignment", "#{job.id} (#{job.title})"],
+    #     ["Reg Hrs",        "#{reg_hours}    ($#{pay_rate.round(2)})"],
+    #     ["OT Hrs",       "#{ot_hours}    ($#{ot_rate.round(2)})"],
+    #     ["Gross Pay",         "$#{gross_pay.round(2)}"],
 
-        ["Payroll ID", "#{id} - #{week}"]
-      ]
-    )
+    #     ["Payroll ID", "#{id} - #{week}"]
+    #   ]
+    # )
   end
 
   def name
@@ -175,6 +176,8 @@ class Timesheet < ActiveRecord::Base
       Admin.find(approved_by).name
     elsif approved? && approved_by_type == "CompanyAdmin"
       CompanyAdmin.find(approved_by).name
+    else
+      state
     end
   end
   

@@ -1,6 +1,6 @@
 <div class="col-md-12 lightbox-long">
   <h2><%= @company.name %></h2>
-
+  <%= link_to 'Current Timesheets PDF', admin_company_timesheets_path(@company, format: :pdf), class: 'btn btn-primary' %>
   <!-- Nav tabs -->
   <ul class="nav nav-tabs nav-justified" role="tablist">
     <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Contact Information</a></li>

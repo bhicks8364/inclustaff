@@ -37,6 +37,7 @@
     </div>
     <div class='col-md-6 text-center'>
         <div class='btn-group'>
+          <%= link_to "Current Timesheet Report", company_timesheets_path, format: :pdf %>
           <%= link_to "<i class='fa fa-plus-square'></i> New Job Order".html_safe, new_company_order_path, class: "btn btn-primary btn-lg" %>
           <%= link_to "<i class='fa fa-clock-o'></i> Timeclock".html_safe, company_timeclock_path, class: "btn btn-primary btn-lg" %>
         </div>

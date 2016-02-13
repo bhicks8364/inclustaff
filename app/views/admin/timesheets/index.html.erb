@@ -21,7 +21,7 @@
 		
 	</thead>
 	<tbody>
-		<% @timesheets.current_week.order('orders.company_id').each do |timesheet| %>
+		<% @timesheets.current_week.includes(:job => :order).order('orders.company_id').each do |timesheet| %>
 		<tr data-behavior="timesheet" data-id="<%= timesheet.id %>">
 			<td><strong>      <%= link_to timesheet.week_ending,admin_timesheet_path(timesheet), data: {toggle: "tooltip", placement: "right", title: "View Timesheet"}, class: "button"  %>
     </div></strong></td>

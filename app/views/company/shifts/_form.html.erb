@@ -14,7 +14,7 @@
 
 <div class="form-contol black">
    <div class="field">
-    <%= f.input :state, as: :select, collection: ["Clocked In", "Clocked Out", "On Break"], selected: @shift.state, label: false %>
+    <%= f.input :state, as: :select, collection: ["Clocked In", "Clocked Out"], selected: @shift.state, label: false %>
   </div>
 </div>
 
@@ -25,9 +25,10 @@
   </div>
 </div>
 <div class='form-group'>
+    <p class='pull-left'>Pay Rate</p>
      <div class="input-group">
         <span class="input-group-addon"><i class='fa fa-usd'></i></span>
-        <%= f.input :pay_rate, label: false, :input_html => {value: number_with_precision(f.object.pay_rate, precision: 2) } %>
+        <%= f.input :pay_rate, label: false, placeholder: "Only needed if different than regular pay rate", :input_html => {value: number_with_precision(f.object.pay_rate, precision: 2) } %>
         <span class="input-group-addon">/hr</span>
       </div>
 </div>
