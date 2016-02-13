@@ -40,6 +40,10 @@ class CandidatePdf < Prawn::Document
         end
     end
     
+        
+
+    
+    
     def header
         move_down 60
         text default_message

@@ -15,7 +15,7 @@
     <div class="alert alert-danger text-center metal bold" role="alert">
      <%= pluralize( @current_company_admin.company.invoices.unpaid.count, 'unpaid invoice') %>
     </div>
-    <%= div_for @company.invoices.unpaid do |invoice| %>
+    <%= div_for @company.invoices.order(created_at: :desc).unpaid do |invoice| %>
       <%= inv_timesheets_collaspe(invoice) %><br>
       <div class='black collapse' id="collapseInv_<%=invoice.id%>">
          <%= render 'company/invoices/invoice', invoice: invoice %>

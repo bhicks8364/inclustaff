@@ -39,7 +39,7 @@ class Job < ActiveRecord::Base
     has_many :comments, as: :commentable
     has_many :events, as: :eventable
 
-
+    delegate :user, to: :employee
     delegate :manager, to: :order
     delegate :title, to: :order
     delegate :mark_up, to: :order
@@ -196,23 +196,19 @@ class Job < ActiveRecord::Base
 
 
 
-    # def straight_8
-    #     t = Time.current.beginning_of_week - 1.week
+    def straight_8
+        t = Time.current.beginning_of_week.midnight - 1.week
 
-    #     5.times do |n|
-    #         time_in = t + n.days
-    #         time_out = time_in + 8.hours
-    #      self.shifts.create(time_in: time_in, time_out: time_out, state: "Clocked Out", out_ip: "Admin-Clock-Out")
+        5.times do |n|
+            time_in = t + n.days
+            time_out = time_in + 8.hours
+         self.shifts.create(time_in: time_in, time_out: time_out, state: "Clocked Out", out_ip: user.current_sign_in_ip)
 
-    #     end
+        end
 
-    # end
+    end
     def name
         employee.name
-    end
-
-    def company
-        order.company
     end
 
     def title_company

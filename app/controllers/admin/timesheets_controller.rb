@@ -38,12 +38,12 @@ class Admin::TimesheetsController < ApplicationController
 		authorize @timesheets
 		respond_to do |format|
       format.html
-      format.csv { send_data @timesheets.to_csv, filename: "past-timesheets-export-#{Time.current}-inclustaff.csv" }
+      format.csv { send_data @timesheets.distinct.to_csv, filename: "past-timesheets-export-#{Time.current}-inclustaff.csv" }
   	end 
 	end
 	
 	def last_week
-		@timesheets = Timesheet.last_week
+		@timesheets = Timesheet.last_week.distinct
 		authorize @timesheets, :index?
 		respond_to do |format|
       format.html

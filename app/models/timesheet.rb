@@ -44,7 +44,7 @@ class Timesheet < ActiveRecord::Base
 
   validates_associated :shifts
 
-  delegate :name_title, :mark_up, :pay_rate, :bill_rate, :ot_rate, :agency, :company, :manager, :recruiter, :current_shift, :account_manager, :order_id, to: :job
+  delegate :name_title, :mark_up, :mark_up_percent, :pay_rate, :bill_rate, :ot_rate, :agency, :company, :manager, :recruiter, :current_shift, :account_manager, :order_id, to: :job
   delegate :ssn, to: :employee
   before_save :total_timesheet, if: :clocked_out?
   before_create :defaults
@@ -258,11 +258,11 @@ class Timesheet < ActiveRecord::Base
   end
 
   def week_ending
-    week.end_of_week.stamp("11/22/2015")
+    week.end_of_week.stamp("1/22")
   end
 
   def week_begin
-    week
+    week.stamp("1/22")
   end
 
   def time_frame

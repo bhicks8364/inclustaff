@@ -4,6 +4,7 @@
   <% if @invoice.unpaid? %>
   <%= link_to 'Mark As Paid', mark_as_paid_admin_invoice_path(@invoice), method: :patch, remote: true, id: 'pay-button', class: 'btn btn-primary' %>
   <% end %>
+  <%= link_to 'Download PDF', admin_company_invoice_path(@company, @invoice, format: :pdf), class: 'btn btn-primary' %>
     <%= link_to 'Edit', edit_admin_company_invoice_path(@company, @invoice), class: 'btn btn-primary' %>
   <%= link_to 'Back', admin_company_invoices_path(@company), class: 'btn btn-primary' %>
   <%= link_to "All Company Invoices", admin_company_invoices_path(@invoice.company), class: 'btn btn-primary' %>
