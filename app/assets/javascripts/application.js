@@ -20,9 +20,6 @@
 //= require bootstrap-sprockets
 //= require cocoon
 
-
-
-
 //= require chartkick
 //= require popovers
 //= require tooltips
