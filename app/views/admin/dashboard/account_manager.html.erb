@@ -5,10 +5,10 @@
 	<div class='col-md-12 '>
 		<div class="col-md-3">
 			<h2>Pending Approval</h2>
-				<%= render 'admin/jobs/pending_list', jobs: @current_admin.jobs.pending_approval %>
+				<%= render 'admin/jobs/pending_list', jobs: @current_admin.jobs.pending_approval if @current_admin.jobs.pending_approval.any? %>
 		</div>
 		
-		<div class='col-md-6'>
+		<div class='col-md-6 well'>
 			<h2>Companies with Open Job Orders</h2>
 			<%= render 'admin/shared/company_collapse', companies: @current_admin.companies.with_open_orders.includes(:orders).distinct.order(:name) %>
 		</div>
@@ -17,7 +17,7 @@
 			<%= render "admin/shared/alerts/open_orders", orders: @current_admin.job_orders %>
 		</div>
 
-		<div class="col-md-10 well">
+		<div class="col-md-12 metal well">
 			<h2>All Job Orders</h2>
 					<%= render 'admin/orders/table', orders: @current_admin.job_orders.includes(:company).order(:created_at) %>
 		</div>

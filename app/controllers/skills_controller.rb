@@ -64,9 +64,15 @@ class SkillsController < ApplicationController
     end
   end
   def update_all
-    Skill.job_order.each do |skill|
-      skill.save
+    Order.all.each do |job_order|
+      job_order.set_note_skills
+      job_order.save
     end
+    WorkHistory.all.each do |work_history|
+      work_history.set_listed_skills
+      work_history.save
+    end
+      skip_authorization
         redirect_to skills_path, notice: 'Successfully updated all job order skills'
       
   end

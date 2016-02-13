@@ -5,7 +5,7 @@ class Company::ShiftsController < ApplicationController
   layout "company_layout"
 
   def index
-    @jobs = @company_admin.company.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 5).order('id DESC') if @company_admin.present?
+    @jobs = @company_admin.company.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 5) if @company_admin.present?
       @shifts = @company.shifts
     # gon.shifts = @shifts
     authorize @shifts
@@ -22,8 +22,7 @@ class Company::ShiftsController < ApplicationController
   end
 
   def new
-    @company = @admin.company
-    @jobs = @company.jobs.off_shift.distinct
+    @jobs = @company.jobs.active.distinct
     # @jobs = @company.jobs.off_shift.distinct
     # @orders = @company.orders.off_shift.distinct
     @shift = Shift.new
@@ -79,7 +78,7 @@ class Company::ShiftsController < ApplicationController
 
     respond_to do |format|
       if @shift.save
-        format.html { redirect_to company_dashboard_path, anchor: "job_#{@shift.job_id}", notice: 'Sucessfully clocked in.' }
+        format.html { redirect_to company_jobs_path, anchor: "job_#{@shift.job_id}", notice: 'Sucessfully clocked in.' }
         format.json { render :show, status: :created, location: @shift }
       else
         format.html { render :new }
@@ -91,10 +90,10 @@ class Company::ShiftsController < ApplicationController
   def clock_out
     @shift = Shift.find(params[:id])
     if @shift.clock_in?
-
+    
       @shift.update(time_out: Time.current,
                     state: "Clocked Out",
-                    out_ip: "#{@current_company_admin.name}", week: Date.today.cweek )
+                    out_ip: "#{@current_company_admin.name}", week: Date.today.beginning_of_week )
 
       respond_to do |format|
         if @shift.save
@@ -180,8 +179,6 @@ class Company::ShiftsController < ApplicationController
   # DELETE /shifts/1
   # DELETE /shifts/1.json
   def destroy
-
-
     @shift.destroy
     respond_to do |format|
       format.html { redirect_to root_path, notice: 'Shift was successfully destroyed.' }

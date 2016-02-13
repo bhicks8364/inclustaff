@@ -5,8 +5,8 @@ module EmployeesHelper
       </a>".html_safe
     end
     def emp_popover(employee)
-        "<i class='fa fa-tag white' data-toggle='tooltip' 
-        title='#{ employee.skills.map {|p| p.name.titleize}.join(', ')}'></i>".html_safe
+        "<span class='' data-toggle='tooltip' 
+        title='#{ employee.skills.map {|p| p.name.titleize}.join(', ')}'>#{employee.name}</span>".html_safe
     end
     def aca_progress(employee_hours, eligiblity_hours)
             x = (employee_hours / eligiblity_hours * 100).round(2)

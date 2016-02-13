@@ -1,7 +1,7 @@
 <%= simple_form_for [:employee, @work_history] do |f| %>
   
   <%= f.error_notification %>
-  <div class="panel panel-primary">
+  <div class="panel panel-info">
     <div class="panel-heading">
       <h3 class="panel-title">General Info</h3>
     </div>
@@ -12,7 +12,7 @@
           
           <%= f.input :employer_name, placeholder: "Company Name" %>
           <%= f.input :pay, placeholder: "Pay Rate" %>
-          <%= f.input :current, as: :select, label: "Is this your current position?", include_blank: false %>
+          <%= f.input :current, as: :select, label: "Is this your current position?", selected: true, include_blank: false %>
         </div>
         <div class="col-md-6">
           <%= f.input :may_contact, as: :select, include_blank: false, label: "May we contact this employer?" %>
@@ -28,7 +28,7 @@
       </div>
     </div>
   </div>
-  <div class="panel panel-primary">
+  <div class="panel panel-info">
     <div class="panel-heading">
       <h3 class="panel-title">Job Description</h3>
     </div>
@@ -41,7 +41,7 @@
     </div>
   </div>
   <div class='form-actions'>
-    <%= f.button :submit, "Save", class: 'btn btn-primary pull-right' %>
+    <%= f.button :submit, "Save", class: 'btn btn-success pull-right' %>
   </div>
   
 <% end %>

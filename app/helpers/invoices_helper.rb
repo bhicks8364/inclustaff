@@ -20,8 +20,9 @@ module InvoicesHelper
         @str.html_safe
     end
     def inv_timesheets_collaspe(inv)
+        @title = company_admin_signed_in?  ? inv.week_ending : inv.company.name
       "<a class='black text-center' role='button' data-toggle='collapse' href='#collapseInv_#{inv.id}' aria-expanded='false' aria-controls='collapseInv_#{inv.id}'>
-       #{inv_sym(inv)}  <small>#{inv.week_ending}</small><span class='pull-right'><strong>#{inv.week}</strong></span>
+       #{inv_sym(inv)}  <strong>#{@title}</strong>
       </a>".html_safe
     end
     def inv_sym(inv)

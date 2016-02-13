@@ -87,6 +87,9 @@
          <%= render 'admin/companies/company_users' %>
       </div>
     </div>
+    <div class='col-md-4'>
+      <%= link_to "Add Company Admin", new_company_admin_registration_path, class: "btn btn-primary btn-lg" %>
+    </div>
   </div>
 
   <div role="tabpanel" class="tab-pane fade" id="pending-approval">

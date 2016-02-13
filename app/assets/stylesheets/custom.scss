@@ -93,9 +93,7 @@ div.comments {
   border: solid 2px white;
   padding: 8px;
 }
-#tab-timesheets > div > div:nth-child(1) > div.conversation-user > i {
-  margin: 3px;
-}
+
 .clockbg {
   min-height: 100px;
 
@@ -130,20 +128,20 @@ h3 {
 //   text-decoration: none; 
 //   cursor: pointer;
 // }
-// .img-zoom {
-//     max-width: 100%;
-//     -webkit-transition: all .2s ease-in-out;
-//     -moz-transition: all .2s ease-in-out;
-//     -o-transition: all .2s ease-in-out;
-//     -ms-transition: all .2s ease-in-out;
-// }
+.img-zoom {
+    width: 310px;
+    -webkit-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    -ms-transition: all .2s ease-in-out;
+}
 
-// .transition {
-//     -webkit-transform: scale(2); 
-//     -moz-transform: scale(2);
-//     -o-transform: scale(2);
-//     transform: scale(2);
-// }
+.transition {
+    -webkit-transform: scale(2); 
+    -moz-transform: scale(2);
+    -o-transform: scale(2);
+    transform: scale(2);
+}
 
 .bottom {
   margin-bottom: 12px;
@@ -180,4 +178,37 @@ a.button:hover {
   background-color: #ccc;
   margin: 5px;
   max-width: 50%;
+}
+.open-order {
+  // max-width: 400px;
+  // height: 60px;
+  margin: 3px;
+  margin-bottom: 5px;
+  display: inline-block;
+  span {
+    margin-right: 3px;
+  }
+}
+.grey {
+  background-color: #ccc;
+}
+.owner-totals {
+  background-color: #ccc;
+  padding: 5px;
+  display: inline-block;
+  // width: 100%;
+}
+.btn.btn-warning {
+  color: black;
+}
+li.dashboard {
+  a {
+    border: solid 2px #ccc;
+  }
+  i {
+    color: red;
+  }
+  a:hover {
+    background-color: red;
+  }
 }

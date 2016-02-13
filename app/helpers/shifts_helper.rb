@@ -50,11 +50,11 @@ module ShiftsHelper
 
     def shift_sym(shift)
       if shift.on_break?
-        "<i class='fa fa-spinner fa-spin'></i>".html_safe
+        "<i class='fa fa-spinner fa-spin' data-toggle='tooltip' data-placement='top' title='On Break'></i>".html_safe
       elsif shift.clocked_in?
-        "<i class='fa fa-cog fa-spin'></i>".html_safe
+        "<i class='fa fa-cog fa-spin'></i data-toggle='tooltip' data-placement='top' title='Clocked In'></i>".html_safe
       else
-        "<i class='fa fa-cog'></i>".html_safe
+        "<i class='fa fa-cog'></i data-toggle='tooltip' data-placement='top' title='Clocked Out'></i>".html_safe
       end
     end
     def breaks_collaspe(shift)

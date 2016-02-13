@@ -1,0 +1,26 @@
+<div class='col-md-12' data-behavior='comment-list'>
+    
+  <div class='col-md-6'>
+     
+       <h2>Unread Comments	<span class="badge" data-behavior='comments-count'>        		<%=  comments.unread.count %>        </span></h2>
+        <div class='scroll600' id='unread'>
+             <% if comments.unread.any? %>
+            <% comments.unread.order(created_at: :asc).each do |comment| %>
+                    <%= render 'comments/comment', comment: comment %>
+            <% end %>
+            <% else %>
+				No messages to show.
+			<% end %>
+        </div>
+        
+    </div>
+    <div class='col-md-6'>
+        <h2>Old Comments</h2>
+        <div data-behavior='read-comment-list' class='scroll300'>
+            <% comments.read.limit(20).order(read_at: :desc).distinct.each do |comment| %>
+                <%= render 'comments/comment', comment: comment %>
+                
+        <% end %>
+        </div>
+    </div>
+</div>

@@ -1,19 +1,33 @@
-<div class='col-md-12 metal lightbox-long'>
+<div class='col-md-12 metal'>
     <h1><%= @admin.name %></h1>
-    <div class='col-md-2'>
+    <div class='col-md-3'>
          <% if @admin.online? %> <%= image_tag("user-green.png", class: 'online-icon') %> <% end %>
-        <p class='lead'>
+        <p class='metal bold'>
             <%= @admin.role %>
         <%= @admin.email %>
         </p>
-
-        <%= @admin.latitude %>
-        <%= @admin.longitude %>
+            <p> Current Commission: <%= number_to_currency(@admin.current_commission) %></p>
         <br>
-        <%= @admin.last_sign_in_at.present? ? @admin.last_sign_in_at.stamp("11/12 at 11:15am") : "Yet to sign in" %>
+        Last seen: <%= @admin.last_sign_in_at.present? ? @admin.last_sign_in_at.stamp("11/12 at 11:15am") : "Yet to sign in" %>
+        <hr>
+        
     </div>
-
-     <div class='col-md-10'>
+    <div class='col-md-9'>
+        <% if @admin.jobs.any? %>
+        <div class='col-md-6'>
+            <%= pie_chart @admin.jobs.group('jobs.state').count, library: {backgroundColor: "#ccc", legend: {position: "right"}, is3D: true, title: "Jobs by Current Status"}%>
+        </div>
+        <ul class='fa-ul'>
+            <%= render 'admin/shared/clocked_in' if  @admin.jobs.on_shift.any? %>
+            <%= render 'admin/shared/on_break' if @admin.jobs.on_break.any? %>
+        </ul>
+        
+         
+	    <% end %>
+        <%= render 'infoboxes'  %>
+    </div>
+     <div class='col-md-12'>
+         
  	<% if @current_agency.companies.blank? %>
    	    <h2 class=''>Getting Started</h2>
    		<div class='col-md-4'>
@@ -31,8 +45,6 @@
          <%= render "admin/charts/payroll_charts", admin: @admin if @admin.payroll? %>
     <% end %>
      </div>
-     <div class='col-md-10'>
-        <%= render 'infoboxes'  %>
-    </div>
-      <%= link_to "Edit", edit_admin_registration_path %>
+    
+      
 </div>

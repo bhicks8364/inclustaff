@@ -1,6 +1,12 @@
-<div class="well">
+
+<div class="col-md-6 well well-sm">
  
 <%= simple_form_for [:company, @shift], html: { class: 'form' } do |f| %>
+<% if @jobs.present? && @jobs.any? %>
+    <div class="form-group black">
+        <%= f.association :job, collection: @jobs, prompt: "Choose An Employee", label: false, input_html: {class: "form-control"} %>    
+    </div>
+<% end %>
 <div class="form-group black">
     <label class='white' for="TimeIn">Time In: </label>
     <%= f.datetime_select :time_in, ampm: true, default: Time.current %>    
@@ -25,12 +31,12 @@
         <span class="input-group-addon">/hr</span>
       </div>
 </div>
-   <div class='form-group'>
+   <div class='form-group col-md-6'>
        <%= f.input :paid_breaks, as: :select %>
        
        <%= f.input :break_duration, disabled: true %>
    </div>
-<div class="form-group">
+<div class="form-group col-md-6">
     <%= f.input :note, placeholder: "Add a note.", input_html: {rows: 2, class: "form-control"}, label: false %>
 </div>
 

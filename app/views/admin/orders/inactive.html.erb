@@ -1,0 +1,6 @@
+<div class=''>
+    <h1>Inactive Job Orders</h1>
+    <% @inactive.each do |order| %>
+    <p class='text-info'><%= order.company.name %> - <%= link_to order.title, admin_order_path(order) %></p>
+    <% end %>
+</div>

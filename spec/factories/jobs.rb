@@ -19,6 +19,7 @@
 #  settings         :hstore
 #  pay_types        :text             is an Array
 #  vacation         :hstore
+#  state            :string           default("Pending Approval")
 #
 # Indexes
 #

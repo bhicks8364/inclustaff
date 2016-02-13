@@ -29,6 +29,19 @@ class Admin::InvoicesController < ApplicationController
       @company = @invoice.company
       
     end
+    @week = @invoice.timesheets.last.week
+    @company_name = @invoice.company.name
+    @id = @invoice.id
+    respond_to do |format|
+      format.html
+      format.json
+      format.pdf {
+        send_data @invoice.agency_copy(view_context).render,
+          filename: "#{@week}-#{@company_name}_INV##{@id}-candidate-sheet.pdf",
+          type: "application/pdf",
+          disposition: :inline
+      }
+    end
     
     skip_authorization
   end

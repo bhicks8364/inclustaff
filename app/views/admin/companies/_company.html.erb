@@ -1,6 +1,4 @@
 <%= div_for company do %>
- <h4><%= company.name %>
- <span class='orders-count'><%= company.orders.count %></span>
- </h4>
- <%= company_status_msg(company) %>
+ <h4><%= link_to company.name, admin_company_path(company) %> </h4>
+ <%= company_status(company) %>
 <% end %>

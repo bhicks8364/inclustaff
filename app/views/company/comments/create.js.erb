@@ -1,0 +1,6 @@
+<% if @comment.valid? %>
+$("<%= escape_javascript(render @comment) %>").appendTo("#comment-list");
+$("#comment_body").val('');
+<% else %>
+alert("Cannot leave a blank comment");
+<% end %>

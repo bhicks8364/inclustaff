@@ -3,20 +3,24 @@ class CompanyAdminsController < ApplicationController
     
     def index
         if admin_signed_in?
-          @q = CompanyAdmin.includes(:company, :jobs).ransack(params[:q]) 
+          @q = CompanyAdmin.real_users.includes(:company).ransack(params[:q]) 
   
            @company_admins = @q.result(distinct: true).order('companies.name').paginate(page: params[:page], per_page: 10) if @q.present?
+           @timeclocks = CompanyAdmin.timeclocks.includes(:company).order('companies.name').paginate(page: params[:page], per_page: 10)
         elsif company_admin_signed_in?
-            @company_admins = @current_company.admins.all.paginate(page: params[:page], per_page: 10) 
-            @q = @company_admins.includes(:company, :jobs).ransack(params[:q]) 
+            @company_admins = @current_company.admins.real_users.paginate(page: params[:page], per_page: 10) 
+            @q = @company_admins.includes(:company).ransack(params[:q]) 
         end
-        gon.admins = CompanyAdmin.all
+        gon.admins = CompanyAdmin.real_users
         skip_authorization
     end
     
     def show
       @company_admin = CompanyAdmin.find(params[:id])
       @company = @company_admin.company
+      if @company_admin.role == "Timeclock"
+        render "company/dashboard/timeclock"
+      end
       skip_authorization
     end
     
@@ -37,8 +41,10 @@ class CompanyAdminsController < ApplicationController
     def determine_layout
       if admin_signed_in?
         "admin_layout"
-      elsif company_admin_signed_in?
+      elsif company_admin_signed_in? && !current_company_admin.role == "Timeclock"
         "company_layout"
+      elsif company_admin_signed_in? && current_company_admin.role == "Timeclock"
+        "timeclock"
       else
           "application"
       end

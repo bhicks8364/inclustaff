@@ -12,11 +12,12 @@ class Admin::TimesheetsController < ApplicationController
 			@company = Company.includes(:jobs, :timesheets).find(params[:company_id])
       @timesheets = @company.timesheets if @company.timesheets.any?
     else
-     	@timesheets = Timesheet.order(week: :desc)
+    	
+     	@timesheets = Timesheet.includes(:job => :order)
 		end
 		gon.timesheets = @timesheets
     authorize @timesheets
-    @current_timesheets = @timesheets.current_week if @timesheets.present?
+    @current_timesheets = @timesheets.current_week.distinct if @timesheets.present?
 		respond_to do |format|
       format.html
       format.csv { send_data @current_timesheets.to_csv, filename: "current_timesheets-export-#{Time.current}-inclustaff.csv" }

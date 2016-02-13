@@ -22,33 +22,27 @@
   <!-- Tab panes -->
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="home">
-      <div class='col-md-6'>
-        <div class='well' data-behavior="company-job-list">
+      <div class='col-md-6 well'>
+        <div class='' data-behavior="company-job-list">
           <h4>CODE: <%= @employee.code %></h4>
           <p data-behavior='shift-state'>
              <strong> <%= link_to @employee.first_name, company_job_path(@job), class: 'white' %>
              is currently <%= @job.status.downcase %>.</strong>
         </p>
-        
-          <%= render 'company/jobs/job', job: @job %>
+        <hr>
+        <div data-behavior="job" data-id="<%= @job.id %>">
+          <%= render 'company/dashboard/clock', job: @job %>
         </div>
-        <dl class="dl-horizontal">
-          <dt>Company</dt>
-          <dd><%= @company.name %></dd>
-          <dt>Job Title</dt>
-          <dd><%= @job.title %></dd>
-          <dt>Pay Rate</dt>
-          <dd><%= number_to_currency(@job.pay_rate) %>/hr</dd>
-        </dl>
-        <dl class="dl-horizontal">
-          <dt>Recruiter</dt>
-          <dd><%= @job.recruiter.try(:name) || "Unavailable" %></dd>
-          <dt>Account Manager</dt>
-          <dd><%= @order.account_manager.try(:name) %></dd>
-        </dl>
+        
+          
+        </div>
+
+        
       </div>
 
       <div class='col-md-6'>
+        
+        
         <table class="table">
           <tr>
             <td class=""> <strong>Total Hours</strong></td>
@@ -66,6 +60,20 @@
         <div class=''>
           <p class='lead'><%= markdownify(@shift.note) %></p>
         </div>
+          <dl class="dl-horizontal">
+            <dt>Company</dt>
+            <dd><%= @company.name %></dd>
+            <dt>Job Title</dt>
+            <dd><%= @job.title %></dd>
+            <dt>Pay Rate</dt>
+            <dd><%= number_to_currency(@job.pay_rate) %>/hr</dd>
+          </dl>
+          <dl class="dl-horizontal">
+            <dt>Recruiter</dt>
+            <dd><%= @job.recruiter.try(:name) || "Unavailable" %></dd>
+            <dt>Account Manager</dt>
+            <dd><%= @order.account_manager.try(:name) %></dd>
+          </dl>
       </div>
     </div>
 

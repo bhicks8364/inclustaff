@@ -1,41 +1,37 @@
+<div class="alert alert-info fade in text-center open-order">
+		<span class='bold metal red'><i class="fa fa-exclamation fa-fw fa-lg"></i><%= @current_agency.orders.needs_attention.count %> Open Job Orders </span> 
+</div>
+
 <% if orders.overdue.any? %>
-	<div class="alert alert-danger fade in text-center">
+	<div class="alert alert-danger fade in text-center open-order">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 		<i class="fa fa-exclamation-triangle fa-fw fa-lg"></i>
-			<strong><%= pluralize(orders.overdue.count, 'overdue job order') %> </strong>   
+			<span class='bold metal'><%= pluralize(orders.overdue.count, 'overdue job order') %> </span>   
 	</div>
 <% else %>
-	<div class="alert alert-success fade in">
+	<div class="alert alert-success fade in text-center open-order">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 		<i class="fa fa-check-square-o fa-fw fa-lg"></i>
-			<h4><%= pluralize(orders.overdue.count, 'overdue job order') %>. </h4>
+			<span class='bold metal'><%= pluralize(orders.overdue.count, 'overdue job order') %>. </span>
 	</div>
 <% end %>
 
 <% if orders.priority.any? %>
-	<div class="alert alert-warning fade in text-center">
+	<div class="alert alert-warning fade in text-center open-order">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 		<i class="fa fa-exclamation-triangle fa-fw fa-lg"></i>
-			<strong><%= pluralize(orders.priority.count, 'priority job order') %> </strong> 
+			<span class='bold metal'><%= pluralize(orders.priority.count, 'priority job order') %> </span> 
 	</div>
 <% else %>
-	<div class="alert alert-success fade in">
+	<div class="alert alert-success fade in text-center open-order">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 		<i class="fa fa-check-square-o fa-fw fa-lg"></i>
-			<h4><%= pluralize(orders.priority.count, 'priority job order') %>. </h4>
+			<span class='bold metal'><%= pluralize(orders.priority.count, 'priority job order') %>. </span>
 	</div>
 <% end %>
-
-<% if orders.needs_attention.any? %>
-	<div class="alert alert-danger fade in text-center">
-		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-		<i class="fa fa-exclamation-triangle fa-fw fa-lg"></i>
-			<strong><%= pluralize(orders.needs_attention.count, 'open job order') %> </strong> 
-	</div>
-<% else %>
-	<div class="alert alert-success fade in">
-		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-		<i class="fa fa-check-square-o fa-fw fa-lg"></i>
-			<h4><%= pluralize(orders.count, 'total job order') %>. </h4>
-	</div>
-<% end %>
+<div class="alert alert-info fade in text-center open-order">
+		<span class='bold metal'><i class="fa fa-info fa-fw fa-lg"></i>
+		<%= @current_agency.orders.active.count %> Active Job Orders </span> <br>
+			
+		
+</div>

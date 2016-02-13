@@ -1,0 +1,40 @@
+
+<div class='col-md-12 white'>
+
+    <% @comment.mentioned_company_admins.each do |admin| %>
+        <%= link_to admin.name, admin %>
+    <% end %>
+    <% @comment.mentioned_admins.each do |admin| %>
+        <%= link_to admin.name, admin %>
+    <% end %>
+    <% @comment.mentioned_users.each do |user| %>
+        <%= link_to user.name, user %>
+    <% end %>
+    <% @comment.all_mentions.each do |user| %>
+        <%= link_to "<i class='fa fa-trash-o fa-red'></i> #{user.name}", user %>
+    <% end %>
+
+
+    <h2 class="pointer" id='recipient' onclick="toggleFunction()"> Recipient: <%= @comment.recipient.try(:name) %></h2>
+    <%= @comment.recipient_id %> <%= @comment.recipient_type %>
+    <%= selected_recipient(@comment.recipient_type, @comment.recipient_id) %>
+    <h2 class="intro" id="color">Sender: <%= @comment.sender.try(:name) %></h2>
+    <p class="pointer intro" ><%= @comment.body %></p>
+
+
+    
+    
+    
+<%= link_to_commentable(@comment, class: "btn btn-primary") %>
+
+    <%= @comment.admin.try(:name) || @comment.company_admin.try(:name) %> - 
+						<%= @comment.admin.try(:role) || @comment.company_admin.try(:role) %>
+   
+   
+    <%= link_to "<i class='fa fa-trash-o fa-red'></i>".html_safe, comment_path(@comment), method: :delete, 
+                                                    data: { confirm: 'Are you sure?' }, class: 'btn btn-danger intro' %>
+    <%= link_to "View All", comments_path, class: 'btn btn-primary' %>
+    <%= link_to "New", new_comment_path, class: 'btn btn-primary' %>
+    <%= link_to "Edit", edit_comment_path(@comment), class: 'btn btn-primary' %>
+</div>
+

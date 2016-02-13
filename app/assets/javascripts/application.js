@@ -14,7 +14,6 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require refile
-//= require jquery-ui/datepicker
 //= require jquery.atwho
 //= require dataTables/jquery.dataTables
 //= require bootstrap-sprockets
@@ -30,7 +29,10 @@
 //= require at_mentions
 //= require messages
 
+//= require bootstrap-datepicker
 //= require forms
+
+
 //= require datatables
 //= require comments
 //= require events
@@ -57,3 +59,5 @@ $(document).ready(function(){
     $(this).removeClass('transition');
   });
 });
+
+

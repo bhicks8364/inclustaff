@@ -1,15 +1,11 @@
-<div id="accordion">
-  <% @archived_jobs.each do |job| %>
-    <h3><%= job.employee.name %> - <%= job.company_name %></h3>
-    <div>
-    <p>    
-    <strong>Job Title: </strong><%= job.title %><br>
-    <strong>Total Hours: </strong><%= job.total_hours %></p>
-    </div>
-
+<% if @archived_jobs.any? %>
+<%= div_for @archived_jobs.distinct do |job| %>
+    <h3><%= job.employee.name %> - <%= job.state %></h3>
+     <%= render job.comments %>
 <% end %>  
-</div>
-
+<% else %>
+<h2>No Inactive Jobs</h2>
+<% end %>
 
 
 

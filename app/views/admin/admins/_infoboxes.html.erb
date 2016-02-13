@@ -1,13 +1,12 @@
-<div class='col-md-12'>
 
-	<div class="col-md-4">
-        <div class="">
+	<div class="col-md-6">
+        <div class="well well-sm">
         	<h4>Following Admins</h4>
         	<% if @admin.events.following_admin.any? %>
     		<ul class='fa-ul'>
     		    <% @admin.events.following_admin.each do |event| %>
         			<li><i class='fa fa-user'></i> <%= link_to event.eventable.name, admin_admin_path(event.eventable) %>
-        			<%= link_to "<i class='fa fa-minus-square red'></i>".html_safe, event, class: "pull-right button", method: :delete, data: { confirm: 'Are you sure?' } %></li>
+        			<%= link_to "<i class='fa fa-user-times red'></i>".html_safe, event, class: "pull-right button", method: :delete, data: { confirm: 'Are you sure?', toggle: "tooltip", position: "right" }, title: "Unfollow" %></li>
         		<% end %>
     		</ul>
     		<% else %>
@@ -19,7 +18,7 @@
     		<ul class='fa-ul'>
     		    <% @admin.events.following_candidates.each do |event| %>
         			<li><i class='fa fa-user'></i> <%= link_to event.eventable.name, event.eventable %>
-        			<%= link_to "<i class='fa fa-minus-square red'></i>".html_safe, event, class: "pull-right button", method: :delete, data: { confirm: 'Are you sure?' } %>
+        			<%= link_to "<i class='fa fa-user-times red'></i>".html_safe, event, class: "pull-right button small", method: :delete, data: { confirm: "Are you sure?", toggle: "tooltip", position: "right" }, title: "Unfollow" %>
         			</li>
         		<% end %>
     		</ul>
@@ -27,9 +26,8 @@
     		<p class='bold'>No users to show.</p>
     		<% end %>
     	</div>
-	</div>
-	<div class="col-md-8">
-	    <div class="box">
+
+	    <div class="well well-sm">
 	        <div class="">
 	    		<h4>Recent Activity</h4>
 	        <% if @admin.events.any? %>
@@ -45,4 +43,3 @@
 	        <% end %>
 	    </div>
 	</div>
-</div>

@@ -1,27 +1,39 @@
 <div class='payroll-boxes'>
-	<div class='col-md-4'>
-		<h4 class='text-center'><%= 1.week.ago.end_of_week.stamp("Week ending: Nov 20th") %></h4>
-   		<%= pie_chart Timesheet.last_week.group('timesheets.state').count, 
-   		library: {backgroundColor: "#ccc", legend: {position: "bottom"}, is3D: true, title: "Last Week"}%>
-   	</div>
-	<div class="col-md-4">
-		<div class='center'>
+	
+	<div class="col-md-12">
 		<% if @current_agency.timesheets.last_week.pending.none? %>
-		<div class='text-center metal'>	  	
+		<div class='text-center metal col-md-6'>	  	
 			<p class='lead'>
 				All timesheets for last week have been approved.<br>
 				<span class="list-group-item"><%= @current_agency.timesheets.last_week.approved.try(:count) %> Approved </span>
 			</p>
-			</div>
-			<%= link_to(past_admin_timesheets_path(@current_admin.timesheets.last_week, format: :csv), class: 'btn btn-success') do %>
-  				<i class="fa fa-upload fa-fw"></i> Export
-  			<% end %>
-  		<% end %>
+			<%= link_to(last_week_admin_timesheets_path(@current_admin.timesheets.last_week, format: :csv), class: 'btn btn-success') do %>
+	  			<i class="fa fa-upload fa-fw"></i> Export
+	  		<% end %>
 		</div>
-	</div>
+  		<% else %>
+  		
+  		
+  		<div class='text-center metal well col-md-6'>	  	
+			<%= render 'admin/timesheets/table', timesheets: @current_agency.timesheets.needing_approval.distinct %>
+		</div>
+  		
+  		
 	
+	<div class='col-md-3 text-center metal'>
+	  	<p class='lead'>There are still <%= pluralize(@current_agency.timesheets.needing_approval.count, "pending timesheets") %> from last week.</p>
+	  	<% @current_agency.companies.with_late_timesheets.distinct.each do |company| %>
+	  	<%= company.name %><br>
+	  	<% end %>
+	  </div>
+	<div class='col-md-3'>
+		<h4 class='text-center'><%= 1.week.ago.end_of_week.stamp("Week ending: Nov 20th") %></h4>
+   		<%= pie_chart Timesheet.last_week.group('timesheets.state').count, 
+   		library: {backgroundColor: "#ccc", legend: {position: "bottom"}, is3D: true, title: "Last Week"}%>
+   	</div>
+	<% end %>
 	
-	<div class="col-md-4">
+	<div class="col-md-6">
 		<div class='center'>
 			<% if @new_starts.any? %>
 			<h3> <i class="fa fa-users fa-fw"></i> &nbsp; New Employees</h3>
@@ -38,5 +50,6 @@
   				<i class="fa fa-user-plus fa-fw"></i> Add Employee
   			<% end %>
 		</div>
+	</div>
 	</div>
 </div>

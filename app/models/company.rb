@@ -56,7 +56,7 @@ class Company < ActiveRecord::Base
     scope :with_balance, -> { where(Company[:balance].gt(0).and(Company[:balance].not_eq(nil))) }
     scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.current_week)}
     scope :ordered_by_current_bill, -> { includes(:current_timesheets).order('timesheets.total_bill') }
-
+    scope :with_late_timesheets, -> { joins(:timesheets).merge(Timesheet.needing_approval)}
     store_accessor :preferences, :current_account_manager
 
     accepts_nested_attributes_for :orders
@@ -137,9 +137,10 @@ class Company < ActiveRecord::Base
     end
 
     # IMPORT TO CSV
-    def self.assign_from_row(row)
+    def self.assign_from_row(row, agency_id)
         company = Company.where(name: row[:name]).first_or_initialize
-        company.assign_attributes row.to_hash.slice(:name, :address, :city, :state, :zipcode, :contact_name, :contact_email, :admin_id, :agency_id, :phone_number)
+        company.assign_attributes row.to_hash.slice(:name, :address, :city, :state, :zipcode, :contact_name, :contact_email, :admin_id, :phone_number)
+        company.agency_id = agency_id
         company
     end
 

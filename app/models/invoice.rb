@@ -87,7 +87,7 @@ class Invoice < ActiveRecord::Base
         self.total - amt
     end
     def current?
-        week == Date.today.cweek
+        week == Date.today.beginning_of_week
     end
     def paid_on
         if date_paid.nil?
@@ -120,4 +120,21 @@ class Invoice < ActiveRecord::Base
     def self.by_account_manager(admin_id)
         joins(:company => :orders).where(orders: { account_manager_id: admin_id })
     end
+    def timesheet_data
+        @t = [["Employee Name", "Total Bill"]]
+            timesheets.each do |timesheet|
+                timesheet_total = timesheet.total_bill ? timesheet.total_bill : 0
+                @t << [timesheet.employee.name, timesheet_total]
+            end
+            @t
+    end
+    def agency_copy(view_context)
+        
+        InvoicePdf.new(self, agency, company, total, timesheet_data, view_context)
+    end
+    
+    
+    
+    
+    
 end

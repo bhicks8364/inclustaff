@@ -45,25 +45,24 @@
 body {
   // font-family: 'Titillium Web', Geneva, sans-serif;
   padding-top: 70px;
+  padding-bottom: 80px;
   height: 100%;
-  background: transparent;
-  // background-image:
-  //       // linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
-  //       url(InclusStaff-linkedin-cover.png)  no-repeat center center fixed;
-  // background-image:
-  //       // linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
-  //       url(InclusStaff-linkedin-cover.png)  no-repeat center center fixed;
+  // background: #DEE0E8;
+  background: #ccc;
+  // background: url(bg_design.png) no-repeat center fixed; 
+  // background-size: cover;
 }
 #main-wrapper {
-  margin-top: -20px;
-  padding-top: 15px;
+  // margin-top: -20px;
+  // padding-top: 15px;
+  padding-bottom: 70px;
   // margin-bottom: 70px;
   
 }
 
 #logo > img {
     // max-height: 45px;
-    max-width: 180px;
+    max-width: 110px;
     // margin: 0px;
     // margin-top: 5px;
     vertical-align: middle;
@@ -134,7 +133,7 @@ body {
 .nav-tabs > li > a {
     background-color: rgba(17, 17, 17, 0.77);
     color: white;
-    font-weight: bold;
+    // font-weight: bold;
 }
 .nav-tabs > li > a:hover {
     background-color: rgba(255, 255, 255, 0.67);
@@ -143,10 +142,21 @@ body {
 }
 #bs-example-navbar-collapse-1 {
   background-color: rgb(248, 248, 248);
+  a {
+    color: black;
+    // background-color: rgb(218, 218, 218);
+  }
+  a:hover, a:active, a:focus {
+    background-color: rgb(217, 237, 247);
+  }
+}
+#bs-example-navbar-collapse-1 > ul > li.dropdown.open > ul > li:hover {
+  background-color: rgb(217, 237, 247);
 }
 
 #nav-logo {
   font-weight: bold;
+  
 }
 .pad {
   padding: 8px;
@@ -185,4 +195,36 @@ h1 {
 }
 .social-media-buttons {
   margin-right: 20px;
+}
+
+.company-footer {
+  height: 40px;
+}
+td.day:hover {
+  cursor: pointer;
+  background-color: #ccc;
+}
+.gravatar {
+  float: left;
+  display: block;
+  margin-bottom: 5px;
+}
+.user {
+  max-width: 284px;
+  min-width: 104px;
+  padding: 8px;
+  .user-address {
+    margin-top: 1px;
+    margin-bottom: 3px;
+    margin-left: 5px;
+  }
+}
+.user-actions {
+  float: right;
+  margin: 12px;
+  margin-right: 34px;
+  
+}
+.work_history {
+  max-width: 284px;
 }

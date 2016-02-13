@@ -122,6 +122,7 @@ Rails.application.routes.draw do
       resources :orders do
         collection do
           post 'import'
+          get 'inactive'
           match 'search' => 'orders#search', via: [:get, :post], as: :search
         end
         resources :skills
@@ -172,9 +173,14 @@ Rails.application.routes.draw do
       get 'timeclock' => 'dashboard#timeclock'
       get 'admins' => 'dashboard#admins'
       get 'admin/:id' => 'dashboard#admin', as: :admin_profile
-      resources :orders
+      resources :orders do
+        collection do
+          get 'inactive'
+        end
+      end
       resources :jobs do
         collection do
+          get 'archived'
           patch 'clock_out_all'
         end
         member do

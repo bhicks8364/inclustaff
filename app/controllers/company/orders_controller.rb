@@ -6,6 +6,10 @@ class Company::OrdersController < ApplicationController
     @orders = @company.orders.active.order(title: :asc)
     authorize @orders
   end
+  def inactive
+    @orders = @company.orders.inactive.order(title: :asc)
+    authorize @orders, :index?
+  end
   
   def all
     @orders = @company.orders.all

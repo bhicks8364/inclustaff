@@ -1,4 +1,5 @@
 <div class="col-md-12">
+	
 	<%= render 'admin/shared/welcome/agency_setup' if @current_admin.sign_in_count == 1 || @current_agency.subdomain == "demo" %> 
 	<h2 class='text-right metal bold'>  <span class='label label-success black'>Sales Goal &nbsp;<%= number_to_currency(@current_agency.weekly_sales_goal) %></span></h2>
 	<h1 class='page-header white'>Owner Dashboard</h1>
@@ -6,8 +7,6 @@
 		<div class="clearfix">
 			<ul class="nav nav-tabs">
 			  <li class="active"><a href="#tab-home" data-toggle="tab">Dashboard</a></li>
-			  <li class=""><a href="#tab-orders" data-toggle="tab">Job Orders</a></li>
-			  <li class=""><a href="#tab-calendar" data-toggle="tab">Calendar</a></li>
 			  <li class=""><a href="#tab-invoices" data-toggle="tab">Invoices</a></li>
 			  <li class=""><a href="#tab-admins" data-toggle="tab">Admins</a></li>
 			  <li class=""><a href="#tab-leaderboard" data-toggle="tab">Stats</a></li>
@@ -27,55 +26,32 @@
 							<%= link_to "New Company", new_admin_company_path, class: 'btn btn-success' %>
 					  	</div>
 	       			</div>
-	       			<% end %>
-
-
-	       			<div class='col-md-8'>
-	       				
+	       			<% else %>
+	       			<div class='text-center'>
+	       				<%= render "admin/shared/alerts/open_orders", orders: @current_agency.orders %>
+	       			</div>
+					<% end %>
+					<div class='col-md-4'>
+						<div class="alert alert-info fade in text-center open-order">
+							<p class='lead bold metal green'><i class="fa fa-usd fa-fw"></i> &nbsp; Current Revenue: <%= number_to_currency(@current_agency.current_revenue) %>  </span> <br>
+						</div>
+						<div class="alert alert-info fade in text-center open-order">
+							<p class='lead bold metal'><i class="fa fa-usd fa-fw"></i> &nbsp; Last Week Billing: <%= number_to_currency(@current_agency.last_week_billing) %>  </span> <br>
+						</div>
+					</div>
+		 			<div class='col-md-8 well well-sm grey'>
 		                <h3 class='text-center'>Sales progress for this week <span class='label label-success pull-right'> <%= number_to_currency(@current_agency.current_billing) %></span></h3>
 		                <div class="progress">
-		                  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<%= @current_agency.percent_to_sales_goal %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= number_to_percentage(@current_agency.percent_to_sales_goal, precision: 2)%>">
-		                    <span class="black"><%= number_to_percentage(@current_agency.percent_to_sales_goal, precision: 2)%> </span>
+		                  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<%= @current_agency.percent_to_sales_goal %>" aria-valuemin="0" aria-valuemax="100" style="min-width: 4em; width: <%= number_to_percentage(@current_agency.percent_to_sales_goal, precision: 2)%>">
+		                    <span class=""><%= number_to_percentage(@current_agency.percent_to_sales_goal, precision: 2)%> </span>
 		                  </div>
 		                </div>
 		                
 	       			</div>
 	       			
-	 			</div>
+       			</div>
 			</div>
-			<div class="tab-pane fade in" id="tab-orders">
-				<div class='col-md-12'>
-				<% if @current_agency.orders %>
-					<div class="col-md-2">
-						<%= render "admin/shared/alerts/open_orders", orders: @current_agency.orders %>
-					</div>
-					<div class="col-md-10">
-						<%= render 'admin/orders/table', orders: @current_agency.orders.needs_attention.order(:needed_by) %>
-					</div>
-					<div class='col-md-10'>
-							<h3 class='text-center'>Job Orders by Company</h3>
-	       				<div class='list-group'>
-       					<% @current_agency.companies.includes(:orders => :jobs).order(:name).each do |company| %>
-	       					<li class='list-group-item'><h4 class="list-group-item-heading">
-	       						<%= link_to company.name, admin_company_path(company)%>
-	       					</h4>
-	       					Active <span class='label label-success'><%= company.jobs.active.count %></span> &nbsp;
-	       					Pending <span class='label label-info'><%= company.jobs.pending_approval.count %></span>
-	       					</li>
-	       				<% end %>
-	       				</div>
-	       			</div>
-
-				<% else %>
-					<h3 class='text-center'>No Job Orders</h3>
-					<div class="col-md-2">
-						<%= link_to "Add Job Order", new_admin_order_path %>
-					</div>
-					<div class="col-md-10">
-					</div>
-				<% end %>
-				</div>
-			</div>
+			
 			<div class="tab-pane fade" id="tab-admins">
 				<div class='col-md-4'>
        				<div class='text-center'>
@@ -100,18 +76,25 @@
 				</div>
 			</div>
 			<div class="tab-pane fade" id="tab-leaderboard">
-				<div class='col-md-12'>
+				<div class='col-md-6'>
 					<h2 class=''><strong>Current Billing:</strong> <%= number_to_currency(@current_agency.current_billing) %></h2>
 					 	<h3 class=''>	<strong>Last Week:</strong> <%= number_to_currency(@current_agency.last_week_billing) %></h3>
-
+					<%= column_chart @current_agency.companies.order('name').map{|company|
+				        {name: company.name, data: company.timesheets.group_by_week(:week, range: 2.weeks.ago.beginning_of_week.midnight..Time.current.beginning_of_week, format: "%b %d %y").sum(:total_bill)}
+				    }, library: {isStacked: true, backgroundColor: "#e5dbcf", legend: {position: "right"}, title: "Weekly Billings by Company"} %>
 				</div>
+					
+       				<div class="col-md-6">
+		 				<%= render "admin/infoboxes/leaderboxes" %>
+		 			</div>
+	       			
 			</div>
 			<div class="tab-pane fade" id="tab-invoices">
 				<div class='col-md-12'>
 					<h2 class=''>Unpaid Invoices</h2>
-					<div class="col-md-4 scroll500">
+					<div class="col-md-4">
 				     <% @current_agency.invoices.unpaid.order(:week).each do |invoice| %>
-						<%= link_to(admin_invoice_path(invoice), class: "list-group-item list-group-item-success") do %>
+						<%= link_to(admin_invoice_path(invoice), class: "") do %>
 					       <div data-behavior="invoice" data-id="<%= invoice.id %>" class=''>
 					      <strong> <%= invoice.company.name %></strong>
 					     	 <span class='label label-success pull-right black'>
@@ -119,29 +102,12 @@
 					       </div>
 					       <% end %>
 					  <% end %>
+					  <p class='lead'>Unpaid Balance: <span class='pull-right'><%= number_to_currency(@current_agency.invoices.unpaid.sum(:total)) %></span></p>
 				    </div>
+				    
 				    </div>
 			</div>
-			<div class="tab-pane fade" id="tab-calendar">
-				<div class='col-md-12'>
-					<h3 class='white'>Invoices Calendar</h3>
-				<%= month_calendar events: @current_agency.invoices.unpaid, attribute: :due_by do |date, invoices| %>
-				  <span class='cal-date'>
-				    <%= date %>
-				  </span>
-
-				  <% invoices.each do |invoice| %>
-				  <%= invoice.id %>
-				    <div class='black small'>
-				      <%= signed_in_link_to(invoice.company.name, invoice, class: "small") %>
-
-				    </div>
-				  <% end %>
-				<% end %>
-
-
-				 </div>
-			</div>
+		
 		</div>
 	</div>
 </div>

@@ -1,4 +1,4 @@
-<h3 class='white'>Recruiting Calendar</h3>
+<h3 class='metal'>Recruiting Calendar</h3>
 <%= month_calendar events: @orders, attribute: :needed_by do |date, orders| %>
   <span class='cal-date'>
     <%= date %>
@@ -7,7 +7,6 @@
   <% orders.each do |order| %>
     <div class='black small'>
       <%= signed_in_link_to(title_for(order), order, class: "small") %>
-      <%= skills_popover(order.skills) if order.skills.any? %>
     </div>
   <% end %>
 <% end %>

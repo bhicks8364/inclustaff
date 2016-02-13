@@ -1,16 +1,16 @@
 
-<%= link_to event, class: 'list-group-item list-group-item-success' do %>
-	<%= user_signed_in? ? "You" : event.user.name %> <%= event.action %>  to  <%= event.eventable.try(:title) || "a job order that has since been removed." %>
-
-	<% if event.user.assigned? %>
-		<span class='label label-danger pull-right'>
-		   Assigned
-		</span>
-	<% else %>
-		<span class='label label-success pull-right'>
-		    <%= event.created_at.stamp('11/13') %>
-		</span>
+<%= div_for event do %>
+	<i class="fa fa-check-square fa-fw green"></i>
+	<%= user_signed_in? ? "You" : event.user.name %> 
+	<% if event.eventable.present? %>
+		
+	    <strong>	<%= event.action.humanize.downcase %></strong>
+	    <%= signed_in_link_to event.eventable.title.titleize, event.eventable  %>
+			
+		<% else %>
+		edited a position that has been deleted.
 	<% end %>
-	
+	<span class='label label-success black pull-right'>
+	    <%= event.created_at.stamp('11/13 at 8:30am') %>
+	</span>
 <% end %>
-

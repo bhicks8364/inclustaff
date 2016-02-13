@@ -213,39 +213,65 @@ input.file-field {
 .rainbow {
     // width: 100px;
     // height: 100px;
-    background-color: red;
+    // background-color: red;
     position: relative;
     /* Chrome, Safari, Opera */
     -webkit-animation-name: example;
     -webkit-animation-duration: 3s;
     -webkit-animation-timing-function: linear;
     -webkit-animation-delay: 1s;
-    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-iteration-count: 3;
     -webkit-animation-direction: alternate;
     /* Standard syntax */
     animation-name: example;
     animation-duration: 3s;
     animation-timing-function: linear;
     animation-delay: 1s;
-    animation-iteration-count: infinite;
+    animation-iteration-count: 3;
     animation-direction: alternate;
 }
 
 /* Chrome, Safari, Opera */
 @-webkit-keyframes example {
-    0%   {background-color:red; left:0px; top:0px;}
-    25%  {background-color:yellow; left:100px; top:0px;}
-    50%  {background-color:blue; left:0px; top:0px;}
-    75%  {background-color:green; left:100px; top:0px;}
-    100% {background-color:red; left:0px; top:0px;}
+    0%   {color:red; left:0px; top:0px;}
+    25%  {color:yellow; left:100px; top:0px;}
+    50%  {color:blue; left:0px; top:0px;}
+    75%  {color:green; left:100px; top:0px;}
+    100% {color:red; left:0px; top:0px;}
 }
 
 /* Standard syntax */
 @keyframes example {
-    0%   {background-color:red; left:0px; top:0px;}
-    25%  {background-color:yellow; left:100px; top:0px;}
-    50%  {background-color:blue; left:0px; top:0px;}
-    75%  {background-color:green; left:100px; top:0px;}
-    100% {background-color:red; left:0px; top:0px;}
+    0%   {color:red; left:0px; top:0px;}
+    25%  {color:yellow; left:100px; top:0px;}
+    50%  {color:blue; left:0px; top:0px;}
+    75%  {color:green; left:100px; top:0px;}
+    100% {color:red; left:0px; top:0px;}
 }
 
+.demo-nav {
+    height: 40px;
+    // margin: auto;
+    // margin-top: -8px;
+    // padding-top: 8px;
+    // width: 500px;demo 
+    .demo-link    {
+        // color: #ccc;
+    }
+    .demo-link:hover   {
+        // color: black;
+    }
+}
+#bs-demo-navbar-collapse-1 {
+    // background: transparent;
+}
+.how-to {
+    font: bold 1em/150% Helvetica, Arial, sans-serif;
+}
+.simple {
+  text-shadow: 2px 3px 5px rgba(0,0,0,0.3);
+}
+.double {
+  text-shadow: 2px 2px 0 white,
+               4px 4px 0 black;
+}

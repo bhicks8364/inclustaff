@@ -1,9 +1,7 @@
-<div class='col-md-12 lightbox' data-behavior="job-list" >
+<div class='col-md-12 lightbox-long' data-behavior="job-list" >
     <div class='' data-behavior="job" data-id="<%= @job.id %>">
-        <div data-behavior="job-state"><h2 class='text-right'><span class='label label-success'><%= @job.state %></span></h2></div>
-        <div class='page-header'>
-            <h1><%= @job.title_company %></h1>
-
+        <div class=''>
+            <h1><%= @job.title %> <small><%= @company.name %></small></h1>
         </div>
         <div class='col-md-4 text-center'>
 
@@ -28,7 +26,7 @@
                 </ul>
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane fade in active" id="job">
-                    <div class='col-md-4'>
+                    <div class='col-md-3'>
                         <h4><strong>Interview Notes:</strong></h4>
                         <%= markdownify(@job.description) %>
                         <% if @job.recruiter.present? %>
@@ -39,24 +37,28 @@
                         <% end %>
                     </div>
 
-                    <div class='col-md-4 '>
-                        <div class=''>
-                            <span data-behavior="job-status">
-                                 <h2><%= @job.status %></h2>
-                            </span>
+                    <div class='col-md-3 well well-sm'>
+                        <div class='metal'>
                             <span data-behavior="job-state">
-                                <h2><%= @job.state %></h2>
+                                <h2 class='text-info'><%= @job.state %></h2>
                             </span>
-                           
-                            <div class='btn-group'>
-                                <button type='button' class='btn btn-danger' data-behavior='active-job-cancel'>Decline </button>
+                            <div class='border pad bg-warning'>
                                 <% if @employee.available? %>
+                                <button type='button' class='btn btn-danger' data-behavior='active-job-cancel'>Decline </button>
                                 <button type='button' class='btn btn-success' data-behavior='job-toggle'>APPROVE </button>
+                                <% else %>
+                                <% if @job.pending_approval? %>
+                                <button type='button' class='btn btn-danger' data-behavior='active-job-cancel'>Mark as 'Already Working' </button>
+                                <% end %>
+                                <h3 class='text-danger'> Sorry - <%=@employee.first_name %> is currently unavailable.</h3>
+                                <hr>
+                                <p class='text-muted bold'> <%=@employee.name%> already accepted a position as a <%= link_to @employee.current_job.title, admin_job_path(@employee.current_job), class: "button"%>
+                                at <%= link_to @employee.current_job.company.name, admin_job_path(@employee.current_job.company), class: "button" %></p>
                                 <% end %>
                             </div>
                         </div>
                     </div>
-                    <div class='col-md-4'>
+                    <div class='col-md-6'>
                         <h3 class='text-center'>Recent Activity</h3>
                         <% @job.events.each do |event| %>
                           <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
@@ -71,13 +73,25 @@
                     <h3>Order Information</h3>
                     <div class='col-md-12'>
                         <div class='col-md-6'>
-                            <%= markdownify(@order.notes) %>
+                            <h4>Pay range: <%= pay_range(@order) %></h4>
+                            <div class='well well-sm'>
+                                <%= markdownify(@order.notes) %>
+                            </div>
                             
+                            <h4>Skills</h4>
+                            <%= render @order.skills %>
                         </div>
-                        <div class='col-md-6'>
-                            
-                        </div>
+	  
+                    	<div class="col-md-6">
+                    		<h3><%= signed_in_link_to @employee.name, @employee %></h3>
+                    	    <%= @employee.tag_list || "No employee tags" %>
+                	    	<h4>Preferred job type:  <%= @employee.desired_job_type %></h4>
+                	    	<h4>Preferred shift:  <%= @employee.desired_shift %></h4>
+                    	</div>
+        
+      
                     </div>
+                    
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="comments-tab">
                     <div class='col-md-12'>

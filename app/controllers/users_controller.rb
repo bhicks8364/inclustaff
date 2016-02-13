@@ -3,7 +3,7 @@ class UsersController < ApplicationController
     layout :determine_layout
 
     def index
-        @users = @current_agency.users.available.ordered_by_last_name
+        @users = @current_agency.users.available.includes(:employee).ordered_by_last_name
         # @users = User.includes(:employee).available
         @import = User::Import.new
         skip_authorization
@@ -15,10 +15,12 @@ class UsersController < ApplicationController
           marker.title user.name
         end
         
+        @export = User.all
+        
         respond_to do |format|
             format.html
             format.json
-            format.csv { send_data @users.to_csv, filename: "users-export-#{Time.now}-inclustaff.csv" }
+            format.csv { send_data @export.to_csv, filename: "users-export-#{Time.now}-inclustaff.csv" }
         end 
 
     end
@@ -112,11 +114,6 @@ class UsersController < ApplicationController
       @user = User.find(params[:id])
       if admin_signed_in?
           @event = current_admin.events.create(action: "followed", eventable: @user)
-      end
-      if @event.save
-        redirect_to users_path, notice: 'You are now following ' + "#{@user.name}"
-      else
-        redirect_to users_path, notice: 'Unable to follow ' + "#{@user.name}"
       end
       skip_authorization
     end

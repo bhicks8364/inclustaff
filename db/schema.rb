@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160129213318) do
+ActiveRecord::Schema.define(version: 20160208190548) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -259,15 +259,16 @@ ActiveRecord::Schema.define(version: 20160129213318) do
     t.date     "start_date"
     t.decimal  "pay_rate"
     t.date     "end_date"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
     t.boolean  "active"
     t.datetime "deleted_at"
     t.integer  "recruiter_id"
     t.integer  "timesheets_count"
     t.hstore   "settings"
-    t.text     "pay_types",                     array: true
+    t.text     "pay_types",                                                  array: true
     t.hstore   "vacation"
+    t.string   "state",            default: "Pending Approval"
   end
 
   add_index "jobs", ["deleted_at"], name: "index_jobs_on_deleted_at", using: :btree

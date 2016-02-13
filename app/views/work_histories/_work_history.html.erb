@@ -1,32 +1,13 @@
-<div class='well well-sm'>
-   
-        
+<%= div_for work_history do %>
         <% if work_history.current? %>
-            <span data-toggle="tooltip" data-placement="top" title="Current Employer"><i class="fa fa-asterisk"></i> </span>
+            <p class='text-warning' data-toggle="tooltip" data-placement="top" title="Current Employer"><i class="fa fa-asterisk"></i> Current Employer</p>
         <% end %>
-        <% if work_history.may_contact? %>
-            <i class="fa fa-phone-square" data-toggle="tooltip" data-placement="top" title="Allowed to Contact"></i>
-        <% end %>
-        
-       
-            <h5><%= work_history.employer_name %> - <%= work_history.title %></h5>
-            
-        
-      
-
+            <p class='big'><%= work_history.employer_name %> </p>
+            <p class='metal bold text-info'> <%= work_history.title %></p>
             <strong><%= work_history.start_date.stamp("December 2013") %> - <%= work_history.end_date.stamp("December 2013") %></strong>
-            <%= link_to "edit", edit_work_history_path(work_history) %>
-     
-            <%= number_to_currency(work_history.pay) %><hr>
-            <p><%= markdownify(work_history.description) %></p>
-       
+             
+            <p class='bold'><%= number_to_currency(work_history.pay) %></p>
+            <p class='metal'><%= truncate(work_history.description, length: 130) { link_to "More", admin_employee_work_history_path(work_history.employee, work_history) }%>
+            </p>
             
-            <%= link_to admin_employee_work_history_path(work_history.employee, work_history), class: "btn btn-primary" do %>
-                <i class="fa fa-newspaper-o"></i> View Position Details
-            <% end %>
-        
-        
- 
-       
-        
-</div>
+<% end %>

@@ -1,0 +1,31 @@
+<a class='button' data-toggle="modal" data-target="#mod_<%= company_admin.id %>">
+	<%= company_admin.name %>
+</a>
+
+<!-- Modal -->
+<div class="modal fade dark" id="mod_<%= company_admin.id %>" tabindex="-1" role="dialog" aria-labelledby="#<%= company_admin.name %>">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content dark">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class='metal modal-title'><%= link_to company_admin.company.name, admin_company_path(company_admin.company) %></h4>
+        <h2 class='metal modal-title'><%= link_to company_admin.name, company_admin %> <small> <%= company_admin.role %></small></h2>
+      </div>
+      <div class="modal-body">
+        <%= render company_admin %>
+        <% if company_admin.managed_orders.any? %>
+        <% company_admin.managed_orders.each do |job_order| %>
+          <%= signed_in_link_to job_order.title, job_order %> - <%= status_tag(job_order) %><br>
+        <% end %>
+           <% end %>
+        </div>
+       
+
+      <div class="modal-footer">
+         <p class='metal'><strong>Last seen: </strong> <span id='<%=company_admin.id%>-last-sign-in-at'><%= company_admin.last_sign_in_at? ? "#{time_ago_in_words(company_admin.last_sign_in_at)} ago" : "" %></span></p>
+        
+  				
+      </div>
+    </div>
+  </div>
+</div>

@@ -26,20 +26,15 @@
   <body>
 
     <%= render 'shared/navbar' %>
-    <div class='social-media-buttons text-right'>
-          <a href="https://twitter.com/IncluStaff" class="twitter-follow-button" data-show-count="false" data-size="large" data-show-screen-name="false">Follow @IncluStaff</a>
-       </div>
-    <div class="container " id="main-wrapper">
-                   
-      <div class="row">
-       <div class="col-md-12">
+    <%= render 'demo/demo_nav' if @current_agency.present? && @current_agency.demo? && signed_in? %>
+			<div class="container-fluid">
          <%= render 'layouts/alerts' %>
+         <%= render 'demo/agency_how_to' if @current_agency.present? && @current_agency.demo? && admin_signed_in? %>
+         <%= render 'demo/company_how_to' if @current_agency.present? && @current_agency.demo? && company_admin_signed_in? %>
+         
           <%= yield %>
-       </div>
-       
-        
       </div>
-    </div>
+    <%= render 'layouts/footer' %>
 
 </body>
 </html>

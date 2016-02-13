@@ -1,0 +1,29 @@
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+		<title>IncluStaff</title>
+	
+		<%= Gon::Base.render_data %>
+		<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+	  	<%= javascript_include_tag 'application' %>
+	  	<%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
+		<%= javascript_include_tag 'charts' %>
+		<!-- google font libraries -->
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300|Titillium+Web:200,300,400' rel='stylesheet' type='text/css'>
+	
+		<%= csrf_meta_tags %>
+	</head>
+	<body>
+		<%= render 'shared/timeclock_navbar' %>
+		<%= render 'demo/demo_nav' %>
+		<div class="row">
+			<div class="container" id="main-wrapper">
+				<%= render 'layouts/alerts' %>
+				<%= render 'demo/timeclock_how_to' if @current_agency.present?  %>
+	    		<%= yield %>
+			</div>
+		</div>
+	</body>
+</html>

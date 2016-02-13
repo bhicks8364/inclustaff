@@ -19,6 +19,7 @@
 #  settings         :hstore
 #  pay_types        :text             is an Array
 #  vacation         :hstore
+#  state            :string           default("Pending Approval")
 #
 # Indexes
 #
@@ -37,8 +38,7 @@ class Job < ActiveRecord::Base
     belongs_to :recruiter, class_name: "Admin", foreign_key: "recruiter_id"
     has_many :comments, as: :commentable
     has_many :events, as: :eventable
-    
-    accepts_nested_attributes_for :employee
+
 
     delegate :manager, to: :order
     delegate :title, to: :order
@@ -53,7 +53,6 @@ class Job < ActiveRecord::Base
 
 
         # setup settings
-    store_accessor :settings, :current_state, :drive_pay, :ride_pay
     store_accessor :vacation, :number_of_days, :milestone_1, :milestone_2, :milestone_3
 
     # VALIDATIONS
@@ -66,32 +65,29 @@ class Job < ActiveRecord::Base
 
     # CALLBACKS
     # after_create :send_notifications!
-    before_validation :defaults, :set_main_pay
+    before_validation :defaults, :ensure_pay
     after_save :update_employee, if: :active_changed?
-    after_initialize :ensure_pay
+    # before_save :defaults
 
     def ensure_pay
         self.pay_rate = order.min_pay if pay_rate.nil?
     end
 
-
     # SCOPES
     scope :with_recent_comments,    -> { joins(:comments).merge(Comment.payroll_week)}
-    # scope :with_drive_pay, -> { where("settings ? :key", :key => 'drive_pay')}
-    # scope :with_ride_pay, -> { where("settings ? :key", :key => 'ride_pay')}
-    # scope :with_pay, -> { where("settings ? :key", :key => 'pay_rate')}
-    # scope :with_drive_pay, -> { where("settings ? :key", :key => 'drive_pay')}
     scope :with_notes,    -> { where(NamedFunction.new("LENGTH", [Job[:description]]).gt(2))}
     scope :active, -> { where(active: true)}
     scope :with_employee, ->  { includes(:employee) }
     scope :have_ended, -> { where(Job[:end_date].not_eq(nil)) }
     scope :inactive, -> { where(active: false)}
-    scope :pending_approval, -> { where("settings @> hstore(:key, :value)", key: "current_state", value: "Pending Approval")}
-    scope :currently_working, -> { where("settings @> hstore(:key, :value)", key: "current_state", value: "Currently Working")}
-    scope :ended_assignments, -> { where("settings @> hstore(:key, :value)", key: "current_state", value: "Assignment Ended")}
-    scope :declined_by_agency, -> { where("settings @> hstore(:key, :value)", key: "current_state", value: "Declined by agency") }
-    scope :declined_by_company, -> { where("settings @> hstore(:key, :value)", key: "current_state", value: "Declined by company")}
-    scope :declined_by_candidate, -> { where("settings @> hstore(:key, :value)", key: "current_state", value: "Declined by candidate")}
+    scope :pending_approval,      -> { where(state: "Pending Approval")}
+    scope :currently_working,     -> { where(state: "Currently Working")}
+    scope :ended_assignments,     -> { where(state: "Assignment Ended")}
+    scope :already_working,     -> { where(state: "Already Working")}
+    scope :declined_by_agency,    -> { where(state: "Declined by agency")}
+    scope :declined_by_company,   -> { where(state: "Declined by company")}
+    scope :declined_by_candidate, -> { where(state: "Declined by candidate")}
+    scope :declined,    -> { where(state: ["Declined by agency", "Declined by company", "Declined by candidate"])}
     scope :new_start, -> { where(Job[:start_date].gteq(Date.today.beginning_of_week)) }
 
     # THESE WORKED!!!
@@ -122,16 +118,13 @@ class Job < ActiveRecord::Base
         end
     end
     def set_state
-        update(active: false, end_date: Date.today, settings: @job.settings.merge({current_state: "Assignment Ended"}))
-    end
-    def state
-        settings['current_state']
+        update(active: false, end_date: Date.today, state: "Assignment Ended")
     end
 
     def mentions
         @mentions ||= begin
                         regex = /@([\w]+)/
-                        description.scan(regex).flatten
+                        description.scan(regex).flatten if description.present?
                       end
     end
 
@@ -148,6 +141,9 @@ class Job < ActiveRecord::Base
     def declined?
         state == "Declined by agency" || state == "Declined by company" || state == "Declined by employee" || state == "Declined by other" || state == "Already Working"
     end
+    def cancelled?
+        state == "Assignment Ended"
+    end
 
     def status
         if shifts.any?
@@ -156,10 +152,7 @@ class Job < ActiveRecord::Base
             state
         end
     end
-
-
-
-
+    
     def on_shift?
         # status == "Clocked In"
         shifts.clocked_in.any?
@@ -193,13 +186,13 @@ class Job < ActiveRecord::Base
         "#{employee.name} -  #{title}"
     end
 
-    def set_main_pay
-        pay = pay_rate
-        if settings.nil?
-            self.settings = {}
-        end
-        self.settings['pay_rate'] = pay
-    end
+    # def set_main_pay
+    #     pay = pay_rate
+    #     if settings.nil?
+    #         self.settings = {}
+    #     end
+    #     self.settings['pay_rate'] = pay
+    # end
 
 
 
@@ -232,8 +225,7 @@ class Job < ActiveRecord::Base
     def defaults
         self.active = false if active.nil?
         self.start_date = Date.today if start_date.nil?
-        # self.settings = {current_state: "Pending Approval"} if settings[:current_state].nil? && active == false
-        self.settings = {current_state: "Currently Working"} if settings[:current_state].nil? && active == true
+        self.settings = {} if settings.nil?
         self.vacation = {} if vacation.nil?
         self.title = order.title if title.nil?
     end
@@ -347,14 +339,19 @@ class Job < ActiveRecord::Base
         end
     end
     def candidate_sheet
-        Receipts::Receipt.new(
+        CandidatePdf.new(
           id: id,
+          recruiter_name: recruiter.name,
+          candidate_name: employee.name,
+          recruiter_email: recruiter.email,
+          position_name: title,
+          company_name: order.company.name,
           message: "#{recruiter.name} is presenting #{employee.name} for a position at #{company.name} ",
           company: {
             name: "#{company.name}",
             address: "#{company.address}",
             email: "#{company.contact_email}",
-            logo: Rails.root.join("app/assets/images/achievement1.png")
+            logo: Rails.root.join("app/assets/images/applicants.png")
           },
 
           line_items: [
@@ -365,7 +362,6 @@ class Job < ActiveRecord::Base
             ["Required Skills:",        "#{order.skills.required.order(:name).map(&:name).join(', ')}"],
             ["Other Skills:",        "#{order.skills.additional.order(:name).map(&:name).join(', ')}"],
             ["Candidate Skills:",        "#{employee.skills.order(:name).map(&:name).join(', ')}"],
-            ["Job Description:",      order.notes],
             ["Needed By",         order.needed_by.stamp('11/12/2015')],
             ["Pay - Bill",         "$#{pay_rate.round(2)}  -  $#{bill_rate.round(2)}"],
             ["Mark Up",         mark_up_percent],

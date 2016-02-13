@@ -21,12 +21,28 @@ module OrdersHelper
         @str.html_safe
     end
     
+    def order_status(order)
+        if order.overdue?
+            "<span class='red'>Overdue</span>".html_safe
+        elsif order.priority?
+            "<span class='red'>Priority</span>".html_safe
+        elsif order.needs_attention?
+            "<span class='green'>Open</span>".html_safe
+        elsif order.filled?
+            "<span class='bold'>Filled</span>".html_safe
+        elsif order.inactive?
+            "<span class='red'>Inactive</span>".html_safe
+        else
+            ""
+        end
+    end
+    
     def info_popover(order)
         "<span class='black'><i class='fa fa-user' data-placement='top' data-toggle='popover' title='#{ order.title_company}' 
         data-content='Account Manager: #{ order.account_manager.present? ? order.account_manager.name : "Unavailable"}'></i></span>".html_safe
     end
     def matching_emp_popover(order)
-        "<span class='black'><i class='fa fa-users' data-toggle='popover' data-placement='top' title='#{ order.matching_employees.count} Matching Candidates' 
+        "<span class='black rainbow'><i class='fa fa-users' data-toggle='popover' data-placement='top' title='#{ order.matching_employees.count} Matching Candidates' 
         data-content='#{ order.matching_employees.map {|p| p.name.titleize}.join(', ')}'></i></span>".html_safe
     end
    
@@ -51,6 +67,8 @@ module OrdersHelper
             "<i class='fa fa-clock-o fa-fw' data-toggle='tooltip' data-placement='left' title='#{status_msg(order)}'></i>".html_safe
         elsif order.filled?
             "<i class='fa fa-check fa-fw green' data-toggle='tooltip' data-placement='left' title='#{status_msg(order)}'></i>".html_safe
+        elsif order.inactive?
+            "<i class='fa fa-history fa-fw red' data-toggle='tooltip' data-placement='left' title='Inactive'></i>".html_safe
         end
     end
     def title_for(order)

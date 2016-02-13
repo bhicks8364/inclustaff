@@ -6,23 +6,25 @@ class Admin::JobsController < ApplicationController
 
 
   def index
-    
+
     if params[:employee_id]
       @employee = Employee.find(params[:employee_id])
       @jobs = @employee.jobs.active
     else
 
       @q = Job.includes(:employee).order(created_at: :desc).ransack(params[:q])  if @current_agency.present?
+      @q = @current_admin.jobs.includes(:employee).order(created_at: :desc).ransack(params[:q])  if @current_admin.recruiter?
       if params[:q].present?
         @jobs = @q.result(distinct: true).paginate(page: params[:page], per_page: 5)
       else
-        @jobs = Job.includes(:employee)
+        @jobs = @current_admin.jobs.includes(:employee).order(created_at: :desc).ransack(params[:q])
       end
+      @jobs = @current_admin.jobs.includes(:employee)
       authorize @jobs
     end
-    
 
-    
+
+
   end
 
   def inactive
@@ -41,7 +43,7 @@ class Admin::JobsController < ApplicationController
     @timesheets = @job.timesheets if @job.timesheets.any?
     @last_week_timesheets =  @job.timesheets.last_week
     @skills = @job.employee.skills
-
+  
     respond_to do |format|
       format.html
       format.json
@@ -61,7 +63,7 @@ class Admin::JobsController < ApplicationController
     authorize @job
     @employee = @job.employee
 
-    @job.update(active: true, settings: @job.settings.merge({current_state: "Currently Working"}))
+    @job.update(active: true, state: "Currently Working")
     @employee.update(assigned: true)
     current_admin.events.create(action: "approved", eventable: @job, user_id: @employee.user_id)
 
@@ -72,7 +74,7 @@ class Admin::JobsController < ApplicationController
 
   def cancel
     if @job.active? && @job.shifts.any?
-      @job.update(active: false, end_date: Date.today, settings: @job.settings.merge({current_state: "Assignment Ended"}))
+      @job.update(active: false, end_date: Date.today, state: "Assignment Ended")
       @employee.update(assigned: false)
       # It'd be nice to have them be required to give a reason when ending an assignment
       # Like just a comment and/or choices (hired-in, quit, ncns, laid-off, fired)
@@ -82,13 +84,13 @@ class Admin::JobsController < ApplicationController
         format.json { render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, ended: @job.end_date.stamp('11/12/2016'), state: @job.state } }
       end
     elsif @job.pending_approval? && !@employee.available?
-      @job.update(active: false, settings: @job.settings.merge({current_state: "Already Working"}))
+      @job.update(active: false, state: "Already Working")
       current_admin.events.create(action: "declined", eventable: @job, user_id: @employee.user_id)
       respond_to do |format|
         format.json { render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, state: @job.state } }
       end
     else
-      @job.update(active: false, settings: @job.settings.merge({current_state: "Declined by agency"}))
+      @job.update(active: false, state: "Declined by agency")
       current_admin.events.create(action: "declined", eventable: @job, user_id: @employee.user_id)
       respond_to do |format|
         format.json { render json: { id: @job.id, approved: @job.active?, name: @employee.name, status: @job.status, state: @job.state } }
@@ -201,10 +203,10 @@ class Admin::JobsController < ApplicationController
     end
     if sending_for_approval?
       @job.active = false
-      @job.settings = {current_state: "Pending Approval"}
+      @job.state = "Pending Approval"
       current_admin.events.create(action: "presented", eventable: @job)
     else
-      @job.settings = @job.settings.merge({current_state: "Currently Working"})
+      @job.state = "Currently Working"
     end
 
     respond_to do |format|
@@ -278,7 +280,7 @@ class Admin::JobsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def job_params
       params.require(:job).permit(:order, :recruiter_id, :title, :active, :description,
-      :start_date, :pay_rate, :end_date, :order_id, :employee_id, :drive_pay, :ride_pay, :current_state,
+      :start_date, :pay_rate, :end_date, :order_id, :employee_id, :drive_pay, :ride_pay, :state,
       :number_of_days, :milestone_1, :milestone_2, :milestone_3)
     end
 

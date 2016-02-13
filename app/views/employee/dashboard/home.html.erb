@@ -5,14 +5,7 @@
         <div class="panel-body">
           <h2><%= @user.name %></h2>
           <%= render 'users/user', user: @user %>
-
-          <div class='btn-group'>
-            <%= link_to "Edit Profile", edit_employee_employee_path(@employee), class: 'btn btn-primary' %>
-            <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' if @employee.unassigned? %>
-            <%= link_to "View Job Posting", employee_job_board_path, class: 'btn btn-primary' if @employee.unassigned? %>
-          </div>
-
-          <div class=''>
+          <div class='well'>
             <h2 class='text-center'><%= @job.title %></h2>
             <dl class="">
               <dt>Company Name</dt>
@@ -54,27 +47,34 @@
       </div>
     </div>
   <% else %>
-    <div class="col-md-6">
-      <div class="panel panel-default">
-        <div class="panel-body">
+    <div class="col-md-3">
+      <div class="">
+        <div class="">
           <h2><%= @user.name %></h2>
-
           <%= render 'users/user', user: @user %>
-
+        </div>
+        <div class='btn-group'>
+          <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' if @employee.unassigned? %>
+          <%= link_to "View Job Posting", employee_job_board_path, class: 'btn btn-primary' if @employee.unassigned? %>
         </div>
       </div>
-      <div class='btn-group'>
-        <%= link_to "Edit Profile", edit_employee_employee_path(@employee), class: 'btn btn-primary' %>
-        <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' if @employee.unassigned? %>
-        <%= link_to "View Job Posting", employee_job_board_path, class: 'btn btn-primary' if @employee.unassigned? %>
-      </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-5 well well-sm">
+     
+      <h2 class='text-info metal'>Recent Activity</h2>
+      <%= render @employee.events %>
+      <%= render @employee.job_events %>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-3 border well well-sm">
       <% if @employee.availability.present? %>
+      <p class='lead text-info metal'>Your Availability</p>
         <%= render 'employee/employees/availability', employee: @employee %>
+        <%= link_to "Edit Info", edit_employee_employee_path(@employee), class: 'btn btn-primary pull-right' %>
       <% else %>
         <%= link_to "Enter Availability", edit_employee_employee_path(@employee), class: 'btn btn-success btn-lg pulse' %>
       <% end %>
     </div>
+    
   <% end %>
 </div>

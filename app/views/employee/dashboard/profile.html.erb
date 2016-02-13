@@ -6,7 +6,6 @@
         <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
         <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
         <li role="presentation"><a href="#work_history" aria-controls="work_history" role="tab" data-toggle="tab">Work History</a></li>
-        <li role="presentation"><a href="#applications-tab" aria-controls="applications" role="tab" data-toggle="tab">Applications</a></li>
         <% if @employee.jobs.any? %><li role="presentation"><a href="#jobs-tab" aria-controls="jobs" role="tab" data-toggle="tab">Jobs</a></li><% end %>
         <% if @employee.assigned? %>
         <li role="presentation"><a href="#current-job" aria-controls="current-job" role="tab" data-toggle="tab">Current Job</a></li>
@@ -55,11 +54,30 @@
                 </div>
             </div>
             <div role="tabpanel" class="tab-pane fade" id="profile">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        <h2> Availability</h2>
+                        <%= link_to "Edit Availability", edit_employee_employee_path(@employee), class: 'btn btn-primary' %>
                         <%= render 'employee/employees/availability', employee: @employee %>
+                        
+                    </div>
+                    <div class='col-md-4'>
+                      <% if @user.events.any? %>
+                        <h2> Your Applications</h2>
+                        <div class='list-group'>
+                    		<% @user.events.applications.each do |event| %>
+                    		  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+                    		    <%= render partial: "events/activities/employee_applied", locals: {event: event} %>
+                    		  <% end %>
+                    		<% end %>
+                    	</div>
+                    	<% else %>
+                    	    <h2 class='text-center'> You haven't applied to any jobs yet.</h2>
+                    	    <br>
+                    	<%= link_to "View Job Posting", employee_job_board_path, class: 'btn btn-primary' %>
+                    	<% end %>
                     </div>
                     <% if @employee.matching_orders.any? %>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                     	<h2 class="text-center">Suggested Positions </h2>
                         <div class='list-group'>
                           <% @employee.matching_orders.each do |order| %>
@@ -116,25 +134,6 @@
                 <% end %>
                 <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
             </div>
-            </div>
-            <div role="tabpanel" class="tab-pane fade dark" id="applications-tab">
-              <div class='col-md-12'>
-              <% if @user.events.any? %>
-                <h2> Your Applications</h2>
-                <div class='list-group'>
-            		<% @user.events.applications.each do |event| %>
-            		  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
-            		    <%= render partial: "events/activities/employee_applied", locals: {event: event} %>
-            		  <% end %>
-            		<% end %>
-            	</div>
-            	<% else %>
-            	    <h2 class='text-center'> You haven't applied to any jobs yet.</h2>
-            	    <br>
-            	<%= link_to "View Job Posting", employee_job_board_path, class: 'btn btn-primary' %>
-            	<% end %>
-            	</div>
-
             </div>
             <div role="tabpanel" class="tab-pane fade dark" id="jobs-tab">
                 <h2>Jobs</h2>

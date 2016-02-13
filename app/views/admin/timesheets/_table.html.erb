@@ -1,12 +1,12 @@
 <div class='' data-behavior="timesheet-list">
 <table class="table table-bordered">
 	<thead>
-		<th><i class="fa fa-calendar-o"></i>&nbsp; Week</th>
-		<th><i class="fa fa-building"></i>&nbsp; Company</th>
-		<th><i class="fa fa-user"></i>&nbsp; Employee</th>
-		<th><i class="fa fa-money"></i>&nbsp; Gross Pay</th>
-		<th><i class="fa fa-clock-o"></i>&nbsp; Hours</th>
-		<th><i class="fa fa-certificate"></i>&nbsp; Status</th>
+		<th> Week Ending</th>
+		<th> Company</th>
+		<th>Employee</th>
+		<th> Gross Pay</th>
+		<th> Hours</th>
+		<th> Status</th>
 		
 	</thead>
 	<tbody>
@@ -20,14 +20,12 @@
 		<td><%= timesheet.gross_pay.present? ? number_to_currency(timesheet.gross_pay) : timesheet.shifts.last.state.upcase %></td>
 		<td><%= timesheet.total_hours.present? ? timesheet.total_hours.round(2) : timesheet.shifts.last.state.upcase %></td>
 		<td>
-			<a class='btn btn-tiny' data-behavior="timesheet-toggle" >
+			<a class='button' data-behavior="timesheet-toggle" >
 				<span  class="fa-stack" data-behavior="approve-button" >
 		          <% if timesheet.approved? %>
-					  <i class="fa fa-square-o fa-stack-2x"></i>
-					  <i class="fa fa-times fa-stack-1x"></i>
+					  <i class="fa fa-times"></i>
 		          <% else %>
-			          <i class="fa fa-square-o fa-stack-2x "></i>
-					  <i class="fa fa-check fa-stack-1x"></i>
+					  <i class="fa fa-check"></i>
 		          <% end %>
 			    </span>
 			</a>

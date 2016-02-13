@@ -34,7 +34,7 @@
             <strong>Supervisor:</strong>
             <%= @work_history.supervisor %>
             <hr>
-         <div class='>
+         <div class=''>
            <h3>Skills matching Open Job Orders</h3>
             <% @work_history.listed_skills.each do |skill| %>
               <%= skill.name %> - <small><%= skill.skillable.try(:name) || skill.skillable.try(:title_count) %></small>

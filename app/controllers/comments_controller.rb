@@ -3,7 +3,8 @@ class CommentsController < ApplicationController
   # before_action :authenticate_admin!
   layout :determine_layout
   def index
-    @comments = Comment.all
+    @comments = Comment.all if admin_signed_in?
+    @comments = @current_company.job_comments.all if company_admin_signed_in?
     @q = Comment.includes(:commentable).ransack(params[:q]) 
     if params[:q].present?
       @comments = @q.result(distinct: true).paginate(page: params[:page], per_page: 5)
@@ -113,9 +114,17 @@ class CommentsController < ApplicationController
       skip_authorization
     end
     def comment_params
-      params.require(:comment).permit(:body, :commentable_id, :commentable_type, :recruiter, :account_manager, :admin_id, :read_at, :company_admin_id, :user_id, :recipient_id, :recipient_type, :account_manager, :recruiter)
+      params.require(:comment).permit(:body, :commentable_id, :commentable_type, :admin_id, :read_at, :company_admin_id, :user_id, :recipient_id, :recipient_type, :account_manager, :recruiter)
     end
-  def determine_layout
-    current_admin ? "admin_layout" : "application"
-  end
+    def determine_layout
+      if admin_signed_in?
+        "admin_layout"
+      elsif company_admin_signed_in?
+        "company_layout"
+      elsif user_signed_in?
+        "employee"
+      else
+          "application"
+      end
+    end
 end

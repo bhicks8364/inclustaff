@@ -1,0 +1,8 @@
+<%= search_form_for @q, class: 'col-md-3 well form-inline', url: search_comments_path,
+                        html: { method: :post } do |f| %>
+
+  <%= f.search_field :body_cont, class: 'form-control', placeholder: "Search..." %>
+
+
+  <%= f.submit "GO!", class:'btn btn-success' %>
+<% end %>

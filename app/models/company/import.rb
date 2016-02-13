@@ -1,13 +1,13 @@
 class Company::Import
     include ActiveModel::Model
-    attr_accessor :file, :imported_count
+    attr_accessor :file, :imported_count, :agency_id
     
     
     
     def process!
         @imported_count = 0
         CSV.foreach(file.path, headers: true, header_converters: :symbol) do |row|
-            company = Company.assign_from_row(row)
+            company = Company.assign_from_row(row, agency_id)
             
             if company.save
                 @imported_count += 1

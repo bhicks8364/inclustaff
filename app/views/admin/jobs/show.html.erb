@@ -1,4 +1,4 @@
-<% if @job.pending_approval? %>
+<% if @job.pending_approval? || @job.declined? %>
   <%= render "pending_approval" %>
   <%else%>
 <div class='col-md-12 lightbox' data-behavior="job-list" >
@@ -42,7 +42,7 @@
 
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="job">
-    <div class='col-md-4'>
+    <div class='col-md-4 well well-sm'>
     <h4><strong>Interview Notes:</strong></h4>
           <%= markdownify(@job.description) %>
          <% if @job.recruiter.present? %>
@@ -53,15 +53,15 @@
             <% end %>
        </div>
 
-        <div class='col-md-4 well'>
+        <div class='col-md-4 well well-sm'>
             <% if @job.active? %>
         <h4><%= @job.title %><small><%= number_to_currency(@job.pay_rate) %></small></h4>
           <% else %>
-          <h3> This position is currently inactive.</h3>
+          <h3 class='bold metal'> This position is currently inactive.</h3>
         <% end %>
 
          </div>
-      <div class='col-md-4'>
+      <div class='col-md-4 well well-sm'>
         <% if @job.vacation['number_of_days'].present? %>
 
         <h2>Vacation Tracking</h2>
@@ -117,7 +117,7 @@
   </div>
 
   <div role="tabpanel" class="tab-pane fade" id="order-info">
-     <h3>  Order Information</h3>
+     <h3> Job Order Information</h3>
      <div class='well'>
        <%= markdownify(@order.notes) %>
      </div>

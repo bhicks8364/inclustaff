@@ -75,18 +75,18 @@ class Order < ActiveRecord::Base
   validates :mark_up, :min_pay, :max_pay, :account_manager_id,  presence: true
 
   validates :company_id,  presence: true
-  validates :needed_by, presence: true
+  # validates :needed_by, presence: true
 
 
     # CALLBACKS
     after_initialize :defaults
-    before_validation :set_mark_up, :set_address
+    before_validation :set_mark_up
     after_save :set_note_skills
     # before_save :set_needed_by, if: :urgent?
 
   #  GEOCODER
   geocoded_by :address
-  after_validation :geocode
+  after_validation :set_address, :geocode
 
 
     # NESTED ATTRIBUTES
@@ -112,6 +112,8 @@ class Order < ActiveRecord::Base
     scope :long,    -> { where(NamedFunction.new("LENGTH", [Order[:notes]]).gt(200))}
 
     def defaults
+      self.needed_by = Date.today + 5.days if self.needed_by.nil?
+      # Just putting this in here until I figure out how to format bootstrap datepicker
       self.active = true if self.active.nil?
       self.urgent = false if self.urgent.nil?
       self.jobs_count = 0 if self.jobs_count.nil?
@@ -136,7 +138,9 @@ class Order < ActiveRecord::Base
         end
       end
     end
-
+    def inactive?
+      active == false
+    end
     def needs_agency_approval?; requirements['agency_approval'] == "true"; end
     def needs_company_approval?;  requirements['company_approval'] == "true";  end
     def needs_approval?;  needs_agency_approval? || needs_company_approval?;  end
@@ -197,9 +201,6 @@ class Order < ActiveRecord::Base
 
     end
   end
-
-
-
 
   def self.by_manager(admin_id)
     where(manager_id: admin_id)
@@ -291,13 +292,9 @@ class Order < ActiveRecord::Base
 
 
   def self.assign_from_row(row, company_id)
-    company = Company.find(company_id)
-    if company.present?
-      order = company.orders.new
-    else
-      order = Order.where(id: row[:id], company_id: row[:company_id]).first_or_initialize
-    end
+    order = Order.where(id: row[:id], company_id: row[:company_id]).first_or_initialize
     order.assign_attributes row.to_hash.slice(:title, :min_pay, :max_pay, :number_needed, :needed_by, :notes, :est_duration)
+    order.company_id = company_id
     order
   end
 

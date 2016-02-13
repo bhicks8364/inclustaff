@@ -1,20 +1,42 @@
 <div class='col-md-12 lightbox-long'>
-        <div class='col-md-3'>
-            <%= render 'admin/jobs/pending_list', jobs: @jobs.inactive %>
+        <div class='col-md-4'>
+            <%= render 'admin/shared/alerts/job_status', jobs: @jobs.inactive %>
+            <%= pie_chart @jobs.inactive.group('jobs.state').count, 
+			   		library: {backgroundColor: "#ccc", legend: {position: "bottom"}, is3D: true, title: "Jobs by Current Status"}%>
         </div>
-    <div class='col-md-9'>
-        <% if @jobs.active.any? %>
-        
-    <h1>All Inactive Jobs</h1>
-    <%= render 'admin/jobs/table', jobs: @jobs.inactive %>
-    <% else %>
-    <h1 class='page-header'>
-        No inactive jobs to display.
-   </h1>
-    <% end %>
-    
-    
-    <%= link_to 'View Active', admin_jobs_path, class: 'btn btn-primary' %>
+    <div class='col-md-4 well well-sm'>
+        <h1 class='metal'>Pending</h1>
+        <% if @jobs.pending_approval.any? %>
+        <% @jobs.pending_approval.each do |job| %>
+            <%= link_to(admin_job_path(job)) do %>
+                <p class='bold'><%= job.company.name %> - <%= job.employee.name %></p>
+                <p class='small'><%= job.staff %></p>
+            <% end %>
+        <%end%>
+        <% else %>
+        <h1 class='metal'>No declined jobs to display. </h1>
+        <% end %>
+    </div>
+    <div class='col-md-4 well well-sm'>
+        <h1 class='metal'>Declined</h1>
+        <% if @jobs.declined.any? %>
+        <% @jobs.declined.each do |job| %>
+            <%= link_to(admin_job_path(job)) do %>
+                <p class='bold'><%= job.company.name %> - <%= job.employee.name %></p>
+                <p class='small'><%= job.staff %></p>
+            <% end %>
+        <%end%>
+        <% else %>
+        <h1 class='metal'>No declined jobs to display. </h1>
+        <% end %>
+    </div>
+    <div class='col-md-8'>
+        <h1 class='metal'>Ended</h1>
+        <% if @jobs.ended_assignments.any? %>
+        <%= render 'admin/jobs/table', jobs: @jobs.ended_assignments %>
+        <% else %>
+        <h1 class='metal'>No ended assignments to display. </h1>
+        <% end %>
     </div>
     
 </div>

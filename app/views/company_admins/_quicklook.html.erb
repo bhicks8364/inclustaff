@@ -1,6 +1,5 @@
 <div class="tabs-wrapper">
 	<div class="clearfix">
-		<h2 class="pull-left">At a glance</h2>
 		<ul class="nav nav-tabs pull-right">
 			<li class="active"><a href="#tab-users" data-toggle="tab">Employees</a></li>
 			<li><a href="#tab-products" data-toggle="tab">Timesheets</a></li>
@@ -14,7 +13,7 @@
 			<% @company_admin.managed_orders.each do |order| %>
 	           <%= order.id%>   <%= info_popover(order) %> <%= signed_in_link_to order.title, order %><br>
 	          <% order.jobs.each do |job| %>
-	          	<%= signed_in_link_to job.status, job %><br>
+	          	<%= signed_in_link_to job.name_title, job, class: "button" %><br>
 	          <% end %>
 	        <% end %>
 			<% if company.employees.any? %>
@@ -30,7 +29,7 @@
 			<div class='col-md-6'>
 				<h4>Timesheets waiting for approval</h4>
 				<% company.timesheets.needing_approval.each do |timesheet| %>
-					<%= render "company/timesheets/timesheet", timesheet: timesheet %>
+					<%= render "company/timesheets/timesheet", timesheet: timesheet if company_admin_signed_in? %>
 				<% end %>
 			</div>
 			<div class='col-md-6'>

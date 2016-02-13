@@ -1,6 +1,6 @@
 module TimesheetsHelper
     def invoice_timesheet(timesheet)
-        "<small> ID: #{timesheet.id}</small><i class='fa-li fa fa-square-o'></i> #{ timesheet.week_ending } - #{ number_to_currency(timesheet.total_bill)}".html_safe
+        " #{ timesheet_sym(timesheet) } #{ number_to_currency(timesheet.total_bill)}".html_safe
     end
     
     def timesheet_popover(timesheet)
@@ -21,9 +21,9 @@ module TimesheetsHelper
     end
     def timesheet_sym(timesheet)
         if timesheet.approved?
-            "<i class='fa fa-user green' data-placement='right' data-toggle='tooltip' title='#{ timesheet.job.name_title}'></i>".html_safe
+            "<i class='fa fa-clock-o green' data-placement='right' data-toggle='tooltip' title='#{ timesheet.state.titleize}'></i>".html_safe
         else
-            "<i class='fa fa-user green' data-placement='right' data-toggle='tooltip' title='#{ timesheet.job.name_title}'></i>".html_safe
+            "<i class='fa fa-clock-o red' data-placement='right' data-toggle='tooltip' title='#{ timesheet.state.titleize}'></i>".html_safe
         end
     end
 end

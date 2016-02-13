@@ -8,10 +8,9 @@ class Admin::OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
-    @q = Order.includes(:company).active.order(needed_by: :desc).ransack(params[:q]) if @current_admin.owner? || @current_admin.payroll?
+    @q = Order.includes(:company).active.order(needed_by: :desc).ransack(params[:q]) if @current_admin.owner? || @current_admin.payroll? || @current_admin.account_manager?
     @q = Order.includes(:company).order(needed_by: :desc).ransack(params[:q]) if @current_admin.recruiter?
     @import = Order::Import.new
-    
     if params[:company_id]
       @company = Company.find(params[:company_id])
       @orders = @company.orders.paginate(page: params[:page], per_page: 25)
@@ -37,14 +36,19 @@ class Admin::OrdersController < ApplicationController
     respond_to do |format|
         format.html
         format.json
-        format.csv { send_data @orders.to_csv, filename: "orders-export-#{Time.now}-inclustaff.csv" }
+        format.csv { send_data @orders.to_csv, filename: "orders-export-#{Time.current}-inclustaff.csv" }
     end 
     
     
   end
   
+  def inactive
+    @inactive = @current_admin.job_orders.inactive
+    authorize @inactive, :index?
+  end
+  
   def search
-    @q = Order.includes(:company).active.order(needed_by: :desc).ransack(params[:q]) if @current_admin.owner? || @current_admin.payroll?
+    @q = Order.includes(:company).active.order(needed_by: :desc).ransack(params[:q]) if @current_admin.owner? || @current_admin.payroll? || @current_admin.account_manager?
     @q = Order.includes(:company).needs_attention.order(needed_by: :desc).ransack(params[:q]) if @current_admin.recruiter?
     @q = Order.includes(:company).needs_attention.order(needed_by: :desc).ransack(params[:q]) if @q.nil?
     
@@ -68,6 +72,13 @@ class Admin::OrdersController < ApplicationController
     @timesheets = @order.timesheets
     @current_timesheets = @order.current_timesheets
     authorize @order
+    respond_to do |format|
+      format.html 
+      format.pdf do
+        pdf = OrderPdf.new(@order, @current_agency, @order.min_pay, view_context)
+        send_data pdf.render, filename: "#{@order.title_company}_#{Time.current}", type: "application/pdf", disposition: "inline"
+      end
+    end
    
   end
     
@@ -85,7 +96,6 @@ class Admin::OrdersController < ApplicationController
       @order = Order.new
       @account_managers = @current_agency.account_managers
       
-      render 'manager_order_form' if current_admin.account_manager?
     end
     authorize @order
 
@@ -112,12 +122,12 @@ class Admin::OrdersController < ApplicationController
   # POST /orders.json
   def create
     @current_admin = current_admin
-    
 
       if params[:company_id]
         
         @company = Company.find(params[:company_id])
         @order = @company.orders.new(order_params)
+        
         @order.agency = @current_agency if @current_agency.present?
       else
         
@@ -161,7 +171,6 @@ class Admin::OrdersController < ApplicationController
     @order.agency = @current_agency
     authorize @order
     @company = @order.company
-
     respond_to do |format|
       if @order.update(order_params)
         format.html { redirect_to admin_company_order_path(@company, @order), notice: 'Order was successfully updated.' }

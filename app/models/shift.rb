@@ -69,7 +69,7 @@ class Shift < ActiveRecord::Base
   scope :with_break,    -> { where.not(breaks: [])}
   scope :with_no_break, -> { where(breaks: [])}
   scope :clocked_in,    -> { where(state: "Clocked In")}
-  scope :at_work,       -> { where.not(state: "Clocked Out")}
+  scope :at_work,       -> { where(state: ["Clocked In", "On Break"])}
   scope :clocked_out,   -> { where(state: ["Clocked Out", nil])}
   scope :on_break,      -> { where(state: "On Break")}
   scope :with_notes,    -> { where(NamedFunction.new("LENGTH", [Shift[:note]]).gt(2))}
@@ -92,7 +92,6 @@ class Shift < ActiveRecord::Base
       .and(Shift[:time_in].lteq(date2)))
   end
 
-  # scope :last_week,     -> { where(week: Date.today.cweek - 1)}
   scope :last_week, -> {
     start = Time.current.beginning_of_week - 1.week
     ending = start.end_of_week
@@ -166,7 +165,7 @@ class Shift < ActiveRecord::Base
   end
 
   def set_pay
-    self.pay_rate = job.pay_rate if pay_rate.nil?
+    self.pay_rate = job.pay_rate if pay_rate.nil? && job.present?
     self.break_duration = 0 if break_duration.nil?
   end
 

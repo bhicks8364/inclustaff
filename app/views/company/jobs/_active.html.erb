@@ -9,7 +9,7 @@
   
     <span class="label label-success label-large pull-right"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> Clocked In</span>
 
-   <p>Time In: <%= job.last_clock_in ? job.last_clock_in.strftime("%I:%M %p") : "No Shifts Yet" %>  
+   <p>Time In: <%= job.last_clock_in ? job.last_clock_in : "No Shifts Yet" %>  
 
   <% else %>
   <h4><%=  job.employee.name %>   |    <%= link_to job.title, company_job_path(job) %> </h4>

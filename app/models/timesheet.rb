@@ -31,22 +31,21 @@
 class Timesheet < ActiveRecord::Base
   belongs_to :job, counter_cache: true
   belongs_to :invoice
-  has_many :shifts, -> { order('time_in DESC') }, dependent: :destroy
+  has_many :shifts, dependent: :destroy
   has_one :employee, :through => :job
   has_one :company, :through => :job
   has_one :order, :through => :job
   has_many :comments, as: :commentable
   has_many :events, as: :eventable
   has_one :recruiter, through: :job, class_name: "Admin"
-  has_one :recruiter, through: :job
   include ArelHelpers::ArelTable
 
   accepts_nested_attributes_for :shifts, reject_if: :all_blank, allow_destroy: true
 
   validates_associated :shifts
 
-  delegate :name_title, :mark_up, :pay_rate, :bill_rate, :ot_rate, :agency, :company, :manager, :recruiter, :current_shift, :account_manager, to: :job
-
+  delegate :name_title, :mark_up, :pay_rate, :bill_rate, :ot_rate, :agency, :company, :manager, :recruiter, :current_shift, :account_manager, :order_id, to: :job
+  delegate :ssn, to: :employee
   before_save :total_timesheet, if: :clocked_out?
   before_create :defaults
 
@@ -178,10 +177,11 @@ class Timesheet < ActiveRecord::Base
       CompanyAdmin.find(approved_by).name
     end
   end
+  
 
   # EXPORT TO CSV
   def self.to_csv
-    attributes = %w{id week company_order time_frame employee_name job_id job_title reg_hours ot_hours pay_rate ot_rate gross_pay state approved_by approved_by_type shifts_count}
+    attributes = %w{id order_id week_ending company employee_name ssn reg_hours ot_hours total_hours pay_rate ot_rate gross_pay state user_approved approved_by_type shifts_count invoice_id}
     CSV.generate(headers: true) do |csv|
       csv << attributes
 
@@ -192,11 +192,10 @@ class Timesheet < ActiveRecord::Base
   end
 
   def current?
-    if week == Date.today.cweek
-      true
-    else
-      false
-    end
+     week == Date.today.beginning_of_week
+  end
+  def last_week?
+     week == (Date.today.beginning_of_week - 1.week )
   end
 
   def company_order
@@ -259,15 +258,11 @@ class Timesheet < ActiveRecord::Base
   end
 
   def week_ending
-    shifts.any? ? shifts.last.time_in.end_of_week.stamp("11/22/2015") : Date.today.end_of_week.stamp("11/22/2015")
+    week.end_of_week.stamp("11/22/2015")
   end
 
   def week_begin
-    if shifts.any?
-      shifts.last.time_in.beginning_of_week.stamp("11/22/2015")
-    else
-      Date.today.beginning_of_week.stamp("11/22/2015")
-    end
+    week
   end
 
   def time_frame

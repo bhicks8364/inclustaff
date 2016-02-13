@@ -1,4 +1,6 @@
-<div class='col-md-12 lightbox'> 
+<div class='col-md-12 lightbox'>
+  <%= link_to "Download PDF", admin_order_path(@order, format: "pdf") %> 
+<%= @order.active? ? "" : "Inactive" %>
   <div class="btn-group pull-right">
     <% if policy(Job).create? && @order.needs_attention? %>
           <%= link_to 'Make a placement', new_admin_order_job_path(@order), class: "btn btn-primary" %>
@@ -90,25 +92,28 @@
      </div>
       <div class='col-md-4'>
         
-        <h3><strong><%= @order.shift %></strong> </h3>
-        <p class='lead'>
-          <%= pay_range(@order) %>        
-        </p>
-        <%= @order.heavy_lifting ? "#{heavy_lifting(@order)} - Heavy Lifting Required".html_safe : "" %>
-        <p><%= @order.stwb ? "#{stwb(@order)}  STWB Required".html_safe : "" %></p>
-        <p class=''>
-        <strong>Drug Test </strong>
-        <%= @order.dt_req %>
-        </p>
-        <p class=''>
-        <strong>Background Check </strong>
-        <%= @order.bg_check %>
-        </p>
-        <p class=''>
-        <strong>Assignment Type</strong>
-        <%= @order.est_duration %>
-        </p>
-        <p class='lead'><strong>Requirements:</strong> <br><%= @order.requirements['certifications'] %></p>
+        <div class='well'>
+          <h3><strong><%= @order.shift %></strong> </h3>
+          <p class='lead'>
+            <%= pay_range(@order) %>        
+          </p>
+          <p class='text-warning'><%= @order.heavy_lifting ? "#{heavy_lifting(@order)} - Heavy Lifting Required".html_safe : "" %></p>
+          <p class='text-warning'><%= @order.stwb ? "#{stwb(@order)}  STWB Required".html_safe : "" %></p>
+          <p class='text-info'>
+          <strong>Drug Test </strong><br>
+          <%= @order.dt_req %>
+          </p>
+          <p class=''>
+          <strong>Background Check </strong><br>
+          <%= @order.bg_check %>
+          </p>
+          <p class=''>
+          <strong>Assignment Type</strong><br>
+          <%= @order.est_duration %>
+          </p>
+          <p class='lead'><strong>Requirements:</strong> <br><%= @order.requirements['certifications'] %></p>
+        </div>
+        
         
        <div class='center'>
           <% if @order.skills.count < 1 %>
@@ -135,46 +140,45 @@
   </div>
   <!--MATCHING CANDIDATES TAB-->
   <div role="tabpanel" class="tab-pane fade" id="matches">
-    <div class="panel panel-success">
+    <% if @order.needs_attention? %>
+    <div class="panel panel-success col-md-6">
       <div class="panel-heading">
-        <h3 class="panel-title">Matching Any Skills</h3>
+        <h3 class="panel-title">Matching Skills</h3>
       </div>
       <div class="panel-body">
+        <% if @order.matching_employees.any? %>
         <%= render @order.matching_employees %>
+        <% else %>
+              <h3 class='text-center'>No matching candidates.</h3>
+        <% end %>
       </div>
        
     </div>
-    <div class="panel panel-success">
+   
+        
+        <div class='panel panel-success col-md-6 '>
+         
       <div class="panel-heading">
-        <h3 class="panel-title">Matching All Skills</h3>
+        <h3 class="panel-title">Nearby Candidates</h3>
       </div>
-       <%= render @order.matching_all_requirments %>
-    </div>
-    <hr>
-        <% if @order.needs_attention? %>
-        
-        <div class='col-md-6 '>
-          <% if @near_by.any? %>
-        <h3>Nearby Candidates</h3>
-          <% @near_by.each do |user| %>
-            <li class='list-group-item' data-placement='right' data-toggle='tooltip' title='<%= user.skills.map(&:name).join(', ')%>'>
-              <%=users_tooltip(user)%> 
-            <%= link_to user.name, user %> (<%= user.distance.round(2) %> miles)</li>
-          <% end %>
-        <% else %>
-          <h3 class='text-center'>No nearby candidates.</h3>
-        <% end %>
-        </div>
-        <div class='col-md-6'>
-          <% if @order.matching_employees.any? %>
-             <h3>Matching Candidates</h3>
-                <%= render @order.matching_employees %>
-              <% else %>
-        <h3 class='text-center'>No matching candidates.</h3>
-        <% end %>
-        
+           
+          <div class="panel-body">
+            <% if @near_by.any? %>
+              <% @near_by.each do |user| %>
+                <li class='list-group-item' data-placement='right' data-toggle='tooltip' title='<%= user.skills.map(&:name).join(', ')%>'>
+                  <%=users_tooltip(user)%> 
+                <%= link_to user.name, user %> (<%= user.distance.round(2) %> miles)</li>
+              <% end %>
+            <% else %>
+              <h3 class='text-center'>No nearby candidates.</h3>
+            <% end %>
+            
           </div>
-          <%= link_to "Candidate List", users_path, class: "btn btn-primary" %>
+          
+        </div>
+       
+          <hr>
+          <%= link_to "Candidate List", users_path, class: "btn btn-primary pull-right" %>
         <% else %>
         <div class='col-md-6 '>
         <h3>Employee Commutes</h3>
@@ -236,7 +240,8 @@
   
   <!--APPLICATIONS TAB-->
     <div role="tabpanel" class="tab-pane fade" id="applications">
-        <div class='col-md-6'>
+        <div class='col-md-6 metal'>
+          <h2 class='text-center'>Applications</h2>
           <% if @order.applications.any? %>
           <ul>
             <% @order.applications.each do |event| %>
