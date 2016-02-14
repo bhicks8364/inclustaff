@@ -1,3 +1,21 @@
+# == Schema Information
+#
+# Table name: work_histories
+#
+#  id            :integer          not null, primary key
+#  employee_id   :integer          not null
+#  employer_name :string
+#  title         :string
+#  start_date    :date
+#  end_date      :date
+#  description   :text
+#  current       :boolean          default(FALSE)
+#  may_contact   :boolean          default(FALSE)
+#  supervisor    :string
+#  phone_number  :string
+#  pay           :string
+#
+
 class WorkHistoriesController < ApplicationController
   before_action :set_work_history, only: [:show, :edit, :update, :destroy]
   layout :determine_layout

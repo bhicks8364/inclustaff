@@ -27,15 +27,23 @@ class ApplicationController < ActionController::Base
     @new_starts = @current_company.employees.new_starts.order(created_at: :desc) if @current_company.present?
     @current = @current_user || @current_admin || @current_company_admin
     @signed_in = @current
-    
+
   end
+
   def vaild_subdomain?(request)
     subdomains = %w{ www admin public }
     request.subdomain.present? && !subdomains.include?(request.subdomain)
   end
+
   def after_sign_in_path_for(resource)
     root_path
   end
+
+  def current_agency
+    @current_agency
+  end
+
+  helper_method :current_agency
 
   private
   # def not_found

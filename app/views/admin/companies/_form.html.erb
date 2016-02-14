@@ -1,16 +1,25 @@
 <%= simple_form_for([:admin, @company], defaults: { label: false, input_html: { class: 'form-control' } }) do |f| %>
-        <%= f.input :name, placeholder: "Company name" %>
-        <%= f.input :address, placeholder: "Address" %>
-        <%= f.input :city, placeholder: "City"  %>
-        <%= f.input :state, placeholder: "State"  %>
-        <%= f.input :zipcode, placeholder: "Zipcode"  %>
-        <%= f.input :phone_number, placeholder: "Phone Number"  %>
-        
-        <%= f.input :preferences, class: "" do %>
-          <%= f.input :current_account_manager, collection: @current_agency.admins.account_managers.order(:last_name), include_blank: false, class: "form-control" %>
-        <% end %>
-        
-        <%= f.input :contact_name, placeholder: "Contact name"  %>
-        <%= f.input :contact_email, placeholder: "Contact email"  %>
-        <%= f.button :submit, "Submit", class: "btn btn-success btn-lg pull-right" %>
+
+  <h4>Account Manager</h4>
+  <%= f.input :preferences, class: "" do %>
+    <%= f.input :current_account_manager, collection: @current_agency.admins.account_managers.order(:last_name), include_blank: false, class: "form-control" %>
+  <% end %>
+
+  <hr />
+
+  <h4>Company Details</h4>
+  <%= f.input :name, placeholder: "Company name" %>
+  <%= f.input :address, placeholder: "Address" %>
+  <%= f.input :city, placeholder: "City"  %>
+  <%= f.input :state, placeholder: "State"  %>
+  <%= f.input :zipcode, placeholder: "Zipcode"  %>
+  <%= f.input :phone_number, placeholder: "Phone Number"  %>
+
+  <hr />
+
+  <h4>Company Contact</h4>
+  <%= f.input :contact_name, placeholder: "Contact name"  %>
+  <%= f.input :contact_email, placeholder: "Contact email"  %>
+
+  <%= f.button :submit, "Save Company", class: "btn-success btn-lg pull-right" %>
 <% end %>

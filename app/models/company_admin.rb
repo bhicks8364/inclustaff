@@ -30,11 +30,22 @@
 #  name                   :string
 #  latitude               :float
 #  longitude              :float
+#  invitation_token       :string
+#  invitation_created_at  :datetime
+#  invitation_sent_at     :datetime
+#  invitation_accepted_at :datetime
+#  invitation_limit       :integer
+#  invited_by_id          :integer
+#  invited_by_type        :string
+#  invitations_count      :integer          default(0)
 #
 # Indexes
 #
 #  index_company_admins_on_confirmation_token    (confirmation_token) UNIQUE
 #  index_company_admins_on_email                 (email) UNIQUE
+#  index_company_admins_on_invitation_token      (invitation_token) UNIQUE
+#  index_company_admins_on_invitations_count     (invitations_count)
+#  index_company_admins_on_invited_by_id         (invited_by_id)
 #  index_company_admins_on_reset_password_token  (reset_password_token) UNIQUE
 #  index_company_admins_on_unlock_token          (unlock_token) UNIQUE
 #
@@ -50,7 +61,7 @@ class CompanyAdmin < ActiveRecord::Base
   has_many :job_comments, through: :jobs, source: "comments"
   has_many :timesheet_comments, through: :timesheets, source: 'comments'
   has_many :shift_comments, through: :shifts, source: 'comments'
-  devise :database_authenticatable, :registerable, 
+  devise :invitable, :database_authenticatable, :registerable, 
          :recoverable, :rememberable, :trackable, :validatable
          
   geocoded_by :current_sign_in_ip

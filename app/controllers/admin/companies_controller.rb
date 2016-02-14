@@ -7,15 +7,15 @@ class Admin::CompaniesController < ApplicationController
   def index
     @companies = @current_agency.companies.distinct
     @top_billing = Company.ordered_by_current_bill
-    
+
     @import = Company::Import.new
     # authorize @companies
     skip_authorization
     respond_to do |format|
       format.html
       format.csv { send_data @companies.to_csv, filename: "companies-export-#{Time.now}-inclustaff.csv" }
-  	end 
-    
+  	end
+
   end
 
   # GET /companies/1
@@ -26,7 +26,7 @@ class Admin::CompaniesController < ApplicationController
     @orders = @company.orders
     @jobs = @company.jobs
 
-    @timesheets = @company.timesheets.order(updated_at: :desc) 
+    @timesheets = @company.timesheets.order(updated_at: :desc)
     @last_week_timesheets = @timesheets.last_week.order(updated_at: :desc)
 
     @all_users = @company.admins
@@ -35,7 +35,7 @@ class Admin::CompaniesController < ApplicationController
     # @clocked_in = @company.jobs.on_shift.includes(:employee) if @company.jobs.any?
 
     @with_active_jobs = @orders.with_active_jobs
-    
+
     @today = @company.shifts.today.order(updated_at: :desc)
     @yesterday = @company.shifts.yesterday
     # @today = @company.shifts.in_today.order(time_in: :desc)
@@ -53,14 +53,14 @@ class Admin::CompaniesController < ApplicationController
   def import
       @companies = @current_agency.companies.distinct
       @import  = Company::Import.new(company_import_params)
-      
+
       if @import.save
           redirect_to admin_companies_path, notice: "Imported #{@import_count} companines."
       else
           render action: :index, notice: "There were errors with your CSV file."
       end
       skip_authorization
-        
+
   end
 
   # GET /companies/1/edit
@@ -71,9 +71,9 @@ class Admin::CompaniesController < ApplicationController
   # POST /companies
   # POST /companies.json
   def create
-   
-    @company = @current_agency.companies.new(company_params) if @current_agency.present?
+    @company = @current_agency.companies.new(company_params)
     authorize @company
+
     respond_to do |format|
       if @company.save
         current_admin.events.create(action: "created", eventable: @company)
@@ -104,7 +104,7 @@ class Admin::CompaniesController < ApplicationController
   # DELETE /companies/1
   # DELETE /companies/1.json
   def destroy
-    
+
     @company.destroy
     authorize @company
     respond_to do |format|
@@ -117,7 +117,7 @@ class Admin::CompaniesController < ApplicationController
     def company_import_params
         params.require(:company_import).permit(:file, :agency_id)
     end
-  
+
     def pundit_user
       current_admin
     end
@@ -130,7 +130,7 @@ class Admin::CompaniesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def company_params
       params.require(:company).permit(:name, :address, :city, :state, :zipcode, :contact_name, :contact_email, :current_account_manager, :admin_id, :agency_id, :phone_number,
-      orders_attributes: [:id, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title,  
+      orders_attributes: [:id, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title,
       :notes, :number_needed, :needed_by, :urgent, :active, :dt_req, :bg_check, :stwb, :heavy_lifting, :shift, :est_duration])
     end
 end
