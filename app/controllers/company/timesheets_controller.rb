@@ -22,12 +22,12 @@ class Company::TimesheetsController < ApplicationController
       end
       format.pdf {
         send_data CompanyTimesheetPdf.new(@company, @pdf_timesheets, view_context, @admin).render,
-          filename: "#{@company.name}-current-timesheets-#{Time.current.stamp('Monday 10/12 at 12:30pm')}.pdf",
+          filename: "#{@company.name}-#{params[:scope]}-#{Time.current}.pdf",
           type: "application/pdf",
           disposition: :inline
       }
        @csv_timesheets = @pdf_timesheets
-      format.csv { send_data @csv_timesheets.to_csv, filename: "timesheets-export-#{Time.now}-inclustaff.csv" }
+      format.csv { send_data @csv_timesheets.to_csv, filename: "timesheets-export--#{params[:scope]}-#{Time.current}-inclustaff.csv" }
   	end 
  
   end

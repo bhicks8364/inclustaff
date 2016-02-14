@@ -3,34 +3,60 @@ class Admin::TimesheetsController < ApplicationController
   before_action :authenticate_admin!
 	layout 'admin_layout'
 
-	def index
-		@test_timesheet = TimesheetQueryBuilder.new.with_admin_comments_by(@current_admin.id)
-		if params[:job_id]
-  		@job = Job.includes(:employee, :timesheets).find(params[:job_id])
-  		@timesheets = @job.timesheets.order(updated_at: :desc) if @job.timesheets.any?
-  	elsif params[:company_id]
-			@company = Company.includes(:jobs, :timesheets).find(params[:company_id])
-      @timesheets = @company.timesheets if @company.timesheets.any?
-    else
-    	
-     	@timesheets = Timesheet.includes(:job => :order)
-		end
-		gon.timesheets = @timesheets
-    authorize @timesheets
-    @current_timesheets = @timesheets.current_week.distinct if @timesheets.present?
-		respond_to do |format|
-      format.html
-      if @company.present?
-      format.pdf {
-        send_data CompanyTimesheetPdf.new(@company, @company.timesheets.last_week.order(week: :asc).distinct, view_context, @signed_in).render,
-          filename: "#{@company.name}-current-timesheets-#{Time.current.stamp('Monday 10/12 at 12:30pm')}.pdf",
-          type: "application/pdf",
-          disposition: :inline
-      }
-      end
-      format.csv { send_data @current_timesheets.to_csv, filename: "current_timesheets-export-#{Time.current}-inclustaff.csv" }
-  	end 
-	end
+    def index
+        @test_timesheets = TimesheetQueryBuilder.new.with_admin_comments_by(@current_admin.id)
+        if params[:job_id]
+            @job = Job.includes(:employee, :timesheets).find(params[:job_id])
+            @timesheets = @job.timesheets.order(updated_at: :desc) if @job.timesheets.any?
+        elsif params[:company_id]
+            @company = Company.includes(:jobs, :timesheets).find(params[:company_id])
+            @timesheets = @company.timesheets if @company.timesheets.any?
+        else
+            @timesheets = Timesheet.includes(:job => :order)
+        end
+        gon.timesheets = @timesheets
+        authorize @timesheets
+        @scope = params[:scope]
+        respond_to do |format|
+            format.html
+            if @company.present?
+                if @scope == "current_week"
+                    @pdf_timesheets = @company.timesheets.current_week.order(week: :asc).distinct
+                elsif @scope == "last_week"
+                    @pdf_timesheets = @company.timesheets.last_week.order(week: :asc).distinct
+                else
+                    @pdf_timesheets = @company.timesheets.order(week: :asc).distinct
+                end
+                format.pdf {
+                    send_data CompanyTimesheetPdf.new(@company, @pdf_timesheets, view_context, @scope, @signed_in).render,
+                    filename: "#{@company.name}-#{@scope}-#{Time.current}.pdf",
+                    type: "application/pdf",
+                    disposition: :inline
+                }
+            else
+                if @scope == "current_week"
+
+                    @pdf_timesheets = @current_admin.timesheets.includes(job: [{ order: :company }]).current_week.order('companies.name').distinct
+                elsif @scope == "last_week"
+                    @pdf_timesheets = @current_admin.timesheets.includes(job: [{ order: :company }]).last_week.order('companies.name').distinct
+                else
+                    @pdf_timesheets = @current_admin.timesheets.order(week: :asc).distinct
+                end
+                format.pdf {
+                    send_data AgencyTimesheetPdf.new(@current_agency, @pdf_timesheets, view_context,  @scope, @signed_in).render,
+                    filename: "#{@current_agency.name}-#{@scope}-#{Time.current}.pdf",
+                    type: "application/pdf",
+                    disposition: :inline
+                }
+            
+            end 
+            @csv_timesheets = @pdf_timesheets
+            format.csv { send_data @csv_timesheets.to_csv, filename: "timesheets-export-#{Time.now}-inclustaff.csv" }
+            
+            
+        end
+        
+    end
 	
 	def past
 		if params[:job_id]

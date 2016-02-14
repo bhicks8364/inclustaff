@@ -21,6 +21,7 @@
       <ul class="nav navbar-nav navbar-left">
         <%= render "admin/sidebars/owner_links" if @current_admin.owner? %>
         <%= render "admin/sidebars/payroll_links" if @current_admin.payroll? || @current_admin.owner? %>
+        <%= render "admin/sidebars/reports" if @current_admin.payroll? || @current_admin.owner? %>
       </ul>
       <% end %>
       <ul class="nav navbar-nav">

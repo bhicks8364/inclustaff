@@ -75,7 +75,7 @@
 					<% end %>
 					</div>
 				</div>
-			    <div class='col-md-9'>
+			    <div class='col-md-9 well well-sm'>
 			        <h2>Current Timesheets</h2>
 					<%= render 'admin/timesheets/table', timesheets: @timesheets.current_week.order(updated_at: :desc) %>
 					 

@@ -1,6 +1,6 @@
 <div class="col-md-12 lightbox-long">
+  
   <h2><%= @company.name %></h2>
-  <%= link_to 'Current Timesheets PDF', admin_company_timesheets_path(@company, format: :pdf), class: 'btn btn-primary' %>
   <!-- Nav tabs -->
   <ul class="nav nav-tabs nav-justified" role="tablist">
     <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Contact Information</a></li>
@@ -14,7 +14,7 @@
 
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="home">
-    <div class='col-md-6'>
+    <div class='col-md-3 well'>
       <% if @company.orders.blank? %>
       <div id="no-orders-alert" class="alert alert-danger text-center" role="alert">
         <i class="fa fa-exclamation-triangle fa-2x"></i>
@@ -34,6 +34,9 @@
         <strong><%= @company.contact_name %></strong><br>
         <a href="mailto:#"><%= @company.contact_email %></a>
       </address>
+      </div>
+      <div class='col-md-3 well'>
+        <ul class='nav pull-right'><%= render "admin/sidebars/reports" if @current_admin.payroll? || @current_admin.owner? %></ul>
       </div>
      
       <div class='col-md-6'>
@@ -59,9 +62,7 @@
             </button>
             <ul class="dropdown-menu">
               <li><%= link_to "<i class='fa fa-user-plus fa-fw'></i> &nbsp; Add Company Admin".html_safe, new_company_admin_registration_path, class: "button" %></li>
-              <li> <%= link_to(admin_company_timesheets_path(@company), class: "") do %>
-              			<i class='fa fa-clock-o fa-fw'></i> Timesheets
-              <% end %></li>
+              <li> <%= link_to "<i class='fa fa-clock-o fa-fw'></i> Timesheets".html_safe, admin_company_timesheets_path(@company), class: ""%></li>
               <li><%= link_to(admin_company_invoices_path(@company), class: "") do %>
               			<i class='fa fa-usd fa-fw'></i> Invoices
               <% end %></li>
