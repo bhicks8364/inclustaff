@@ -1,6 +1,5 @@
 <%= div_for invoice, class: "#{invoice.paid? ? "paid" : "unpaid"}" do %>
 
-<%= link_to admin_invoice_path(invoice), class: "black" do %>
       
        <small>Total: </small> <%= number_to_currency(invoice.balance) %><br>
      <% if invoice.paid? %>
@@ -12,7 +11,6 @@
         <%= timesheets_for(invoice) %>
        </div>
        <% end %>
- <% end %>
        
 
 <% end %>

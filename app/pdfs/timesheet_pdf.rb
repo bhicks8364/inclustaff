@@ -1,30 +1,28 @@
-class InvoicePdf < Prawn::Document
-    attr_reader :invoice, :current_agency, :company, :subtotal, :timesheet_data, :view_context
-    def initialize(invoice, current_agency, company, subtotal, timesheet_data, view_context)
+class TimesheetPdf < Prawn::Document
+    attr_reader :timesheet, :view_context
+    def initialize(timesheet, view_context)
         super() 
-        @invoice = invoice
-        @subtotal = subtotal
-        @timesheet_data = timesheet_data
-        @current_agency = current_agency
-        @company = company
+        @timesheet = timesheet
+        @subtotal = @timesheet.gross_pay
+        @employee = @timesheet.employee
+        @current_agency = @timesheet.agency
+        @company = @timesheet.company
         @view = view_context
-        @color ||= @invoice.paid? ? "cccccc" : "ff0000"
-        @status ||= @invoice.paid? ? "Paid on: #{@invoice.paid_on}" : ""
+        @color ||= @timesheet.approved? ? "cccccc" : "ff0000"
+        @status ||= @timesheet.approved? ? "Approved by: #{@timesheet.user_approved}" : ""
+        move_down 10
+        text "Invoice Id #:#{@timesheet.id }", :align => :right
         font "Times-Roman"
-        text "Due Date: #{@invoice.due_by.stamp('11/12/2016') }", :color => @color, align: :right
-        text @status, :color => "#ccc", align: :left, size: 16
-        
-        
+        text "Dates: #{@timesheet.time_frame }", :color => @color, align: :left, size: 14
+        text @status, :color => "#ccc", align: :right, size: 16
         move_down 20
-        text "For staffing services provided by: #{@current_agency.name }", size: 30, style: :bold, :align => :center, :size => 18
+        text " #{@company.name }", size: 30, style: :bold, :align => :center, :size => 18
         move_down 10
-        text "Invoice Id #:#{@invoice.id }", :align => :right
-        move_down 10
-        text "Invoice for #{@company.name }", :align => :left
+        text "Employee: #{@employee.name }"
         move_down 20
-        text "Subtotal: #{@view.number_to_currency(@subtotal)}", style: :bold, align: :right, size: 16
+        text "Gross Pay: #{@view.number_to_currency(@subtotal)}", style: :bold, align: :right, size: 16
         move_down 20
-        text "#{helpers.pluralize(@invoice.timesheets.count, 'timesheet')}", align: :right, size: 14
+        text "#{helpers.pluralize(@timesheet.shifts.count, 'shift')}", align: :right, size: 14
         move_down 2
         stroke_horizontal_rule
         timesheets
@@ -59,9 +57,9 @@ class InvoicePdf < Prawn::Document
     
     
     def timesheets2
-        @t = [["ID", "Type", "Employee", "Bill Rate", "Hours", "Total Bill"]]
-        @invoice.timesheets.map do |timesheet|
-           @t <<  [timesheet.id, timesheet.order.industry, timesheet.employee.name, price(timesheet.bill_rate), timesheet.total_hours.round(2), price(timesheet.total_bill)]
+        @t = [["ID", "Date", "Pay Rate", "Hours", "Shift Earnings"]]
+        @timesheet.shifts.map do |shift|
+           @t <<  [shift.id, shift.work_date, price(shift.pay_rate), shift.hours_worked.round(2), price(shift.earnings)]
         end
         @t
     end

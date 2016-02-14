@@ -13,7 +13,21 @@ class Company::TimesheetsController < ApplicationController
     authorize @timesheets
     respond_to do |format|
       format.html
-      format.csv { send_data @timesheets.to_csv, filename: "timesheets-export-#{Time.now}-inclustaff.csv" }
+      if params[:scope] == "current_week"
+        @pdf_timesheets = @company.timesheets.current_week.order(week: :asc).distinct
+      elsif params[:scope] == "last_week"
+        @pdf_timesheets = @company.timesheets.last_week.order(week: :asc).distinct
+      else
+        @pdf_timesheets = @company.timesheets.order(week: :asc).distinct
+      end
+      format.pdf {
+        send_data CompanyTimesheetPdf.new(@company, @pdf_timesheets, view_context, @admin).render,
+          filename: "#{@company.name}-current-timesheets-#{Time.current.stamp('Monday 10/12 at 12:30pm')}.pdf",
+          type: "application/pdf",
+          disposition: :inline
+      }
+       @csv_timesheets = @pdf_timesheets
+      format.csv { send_data @csv_timesheets.to_csv, filename: "timesheets-export-#{Time.now}-inclustaff.csv" }
   	end 
  
   end

@@ -20,6 +20,14 @@ class Admin::TimesheetsController < ApplicationController
     @current_timesheets = @timesheets.current_week.distinct if @timesheets.present?
 		respond_to do |format|
       format.html
+      if @company.present?
+      format.pdf {
+        send_data CompanyTimesheetPdf.new(@company, @company.timesheets.last_week.order(week: :asc).distinct, view_context, @signed_in).render,
+          filename: "#{@company.name}-current-timesheets-#{Time.current.stamp('Monday 10/12 at 12:30pm')}.pdf",
+          type: "application/pdf",
+          disposition: :inline
+      }
+      end
       format.csv { send_data @current_timesheets.to_csv, filename: "current_timesheets-export-#{Time.current}-inclustaff.csv" }
   	end 
 	end
@@ -38,12 +46,12 @@ class Admin::TimesheetsController < ApplicationController
 		authorize @timesheets
 		respond_to do |format|
       format.html
-      format.csv { send_data @timesheets.to_csv, filename: "past-timesheets-export-#{Time.current}-inclustaff.csv" }
+      format.csv { send_data @timesheets.distinct.to_csv, filename: "past-timesheets-export-#{Time.current}-inclustaff.csv" }
   	end 
 	end
 	
 	def last_week
-		@timesheets = Timesheet.last_week
+		@timesheets = Timesheet.last_week.distinct
 		authorize @timesheets, :index?
 		respond_to do |format|
       format.html
@@ -67,7 +75,7 @@ class Admin::TimesheetsController < ApplicationController
       format.html
       format.json
       format.pdf {
-        send_data @timesheet.receipt.render,
+        send_data TimesheetPdf.new(@timesheet, view_context).render,
           filename: "#{@timesheet.week_ending}-#{@employee.name}-timesheet.pdf",
           type: "application/pdf",
           disposition: :inline

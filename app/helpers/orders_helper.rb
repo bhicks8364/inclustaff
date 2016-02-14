@@ -112,15 +112,15 @@ module OrdersHelper
     def status_tag(order, options={})
         options[:class] ? options[:class] += ' status_msg' : options[:class] = 'status_msg'
         if order.overdue?
-            "<i class='fa fa-exclamation fa-fw red' data-toggle='tooltip' data-placement='left' title='#{status_msg(order)}'></i>".html_safe
+            "<i class='fa fa-exclamation fa-fw red' data-toggle='tooltip' data-placement='right' title='#{status_msg(order)}'></i>".html_safe
         elsif order.priority?
-            "<i class='fa fa-exclamation-circle fa-fw red' data-toggle='tooltip' data-placement='left' title='#{status_msg(order)}'></i>".html_safe
+            "<i class='fa fa-exclamation-circle fa-fw red' data-toggle='tooltip' data-placement='right' title='#{status_msg(order)}'></i>".html_safe
         elsif order.needs_attention?
-            "<i class='fa fa-clock-o fa-fw' data-toggle='tooltip' data-placement='left' title='#{status_msg(order)}'></i>".html_safe
+            "<i class='fa fa-clock-o fa-fw' data-toggle='tooltip' data-placement='right' title='#{status_msg(order)}'></i>".html_safe
         elsif order.filled?
-            "<i class='fa fa-check fa-fw green' data-toggle='tooltip' data-placement='left' title='#{status_msg(order)}'></i>".html_safe
+            "<i class='fa fa-check fa-fw green' data-toggle='tooltip' data-placement='right' title='#{status_msg(order)}'></i>".html_safe
         elsif order.inactive?
-            "<i class='fa fa-history fa-fw red' data-toggle='tooltip' data-placement='left' title='Inactive'></i>".html_safe
+            "<i class='fa fa-history fa-fw red' data-toggle='tooltip' data-placement='right' title='Inactive'></i>".html_safe
         end
     end
     def title_for(order)

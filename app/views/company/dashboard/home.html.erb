@@ -15,7 +15,7 @@
     <div class="alert alert-danger text-center metal bold" role="alert">
      <%= pluralize( @current_company_admin.company.invoices.unpaid.count, 'unpaid invoice') %>
     </div>
-    <%= div_for @company.invoices.unpaid do |invoice| %>
+    <%= div_for @company.invoices.order(created_at: :desc).unpaid do |invoice| %>
       <%= inv_timesheets_collaspe(invoice) %><br>
       <div class='black collapse' id="collapseInv_<%=invoice.id%>">
          <%= render 'company/invoices/invoice', invoice: invoice %>
@@ -37,6 +37,7 @@
     </div>
     <div class='col-md-6 text-center'>
         <div class='btn-group'>
+          <%= link_to "Current Timesheet Report", company_timesheets_path, format: :pdf %>
           <%= link_to "<i class='fa fa-plus-square'></i> New Job Order".html_safe, new_company_order_path, class: "btn btn-primary btn-lg" %>
           <%= link_to "<i class='fa fa-clock-o'></i> Timeclock".html_safe, company_timeclock_path, class: "btn btn-primary btn-lg" %>
         </div>

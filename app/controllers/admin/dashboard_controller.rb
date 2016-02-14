@@ -57,7 +57,7 @@ class Admin::DashboardController < ApplicationController
     #   @orders = @agency.orders
     #   @shifts = @agency.shifts
     #   @jobs = @agency.jobs.active.joins(:shifts).group("jobs.title").order("shifts.updated_at DESC, jobs.title ASC") if @company.jobs.any?
-      @timesheets = @current_agency.timesheets
+      @timesheets = @current_agency.timesheets.distinct
         skip_authorization
     end
     def company_view
@@ -90,7 +90,7 @@ class Admin::DashboardController < ApplicationController
    
     
     def payroll
-      @timesheets = @current_agency.timesheets.includes(:shifts).distinct
+      @timesheets = @current_agency.timesheets.includes(:job, :shifts).distinct
       @jobs = @current_agency.jobs.all
       @shifts = @current_agency.shifts.current_week
       skip_authorization
