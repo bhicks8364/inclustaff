@@ -1,3 +1,25 @@
+# == Schema Information
+#
+# Table name: invoices
+#
+#  id         :integer          not null, primary key
+#  company_id :integer
+#  agency_id  :integer
+#  week       :integer
+#  due_by     :datetime
+#  paid       :boolean
+#  total      :decimal(, )
+#  amt_paid   :decimal(, )
+#  date_paid  :datetime
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+# Indexes
+#
+#  index_invoices_on_agency_id   (agency_id)
+#  index_invoices_on_company_id  (company_id)
+#
+
 class InvoicesController < ApplicationController
   before_action :set_invoice, only: [:show, :edit, :update, :destroy]
 

@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: skills
+#
+#  id             :integer          not null, primary key
+#  name           :string
+#  required       :boolean          default(FALSE)
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  skillable_type :string
+#  skillable_id   :integer
+#
+
 class SkillsController < ApplicationController
   before_action :set_skill, only: [:show, :edit, :update, :destroy]
   layout 'admin_layout'

@@ -9,7 +9,7 @@
     <li role="presentation"><a href="#customers" aria-controls="customers" role="tab" data-toggle="tab">Your Customers</a></li>
     <li role="presentation"><a href="#employees" aria-controls="employees" role="tab" data-toggle="tab">Your Employees</a></li>
     <li role="presentation"><a href="#aca" aria-controls="aca" role="tab" data-toggle="tab">ACA Compliance</a></li>
-    
+
   </ul>
 
   <!-- Tab panes -->
@@ -19,44 +19,38 @@
       <hr>
       <%= render 'front_info' %>
     </div>
-    
+
     <div role="tabpanel" class="tab-pane fade" id="sales">
       <h1 class='text-info'>Sales</h1>
-      
-       <div class='col-md-6'>
-         
-         <%= image_tag("sales-dash.png", class: 'screenshot') %>
-       </div>
-       <%= render 'manager' %>
-      
-     
+
+      <div class='col-md-6'>
+        <%= image_tag("sales-dash.png", class: 'screenshot') %>
+      </div>
+
+      <%= render 'manager' %>
     </div>
+
     <div role="tabpanel" class="tab-pane fade" id="recruiting">
       <h1 class='text-info'> Recruiting</h1>
-        
-        
-         <%= render 'recruiter' %>
-
-       
-       
+      <%= render 'recruiter' %>
     </div>
+
     <div role="tabpanel" class="tab-pane fade" id="payroll">
       <h1 class='text-info'>Payroll</h1>
-     
-       <div class='col-md-6'>
-         <p class='lead text-danger'>Missing hours are expensive. </p>
-          
-         <%= image_tag("payroll-timesheets-tab.png", class: 'screenshot') %>
-       </div>
-       <div class='col-md-6'>
-         <p class='lead '>
-          Eliminate the extra expense of additional payrolls fees  by tracking all of your employees' hours in real-time.</p>
-         <%= image_tag("timesheets-index.png", class: 'screenshot img-zoom') %>
-       </div>
-      
+
+      <div class='col-md-6'>
+        <p class='lead text-danger'>Missing hours are expensive. </p>
+        <%= image_tag("payroll-timesheets-tab.png", class: 'screenshot') %>
+      </div>
+
+      <div class='col-md-6'>
+        <p class='lead'>Eliminate the extra expense of additional payrolls fees  by tracking all of your employees' hours in real-time.</p>
+        <%= image_tag("timesheets-index.png", class: 'screenshot img-zoom') %>
+      </div>
+
       <%= render 'payroll' %>
     </div>
-    
+
     <div role="tabpanel" class="tab-pane fade" id="aca">
       <h1 class='text-info'>ACA Compliance</h1>
       <div class='col-md-4'>
@@ -65,34 +59,32 @@
       <div class='col-md-8'>
         <h2>Avoid penalties. Track eligibility. Simplify reporting. </h2>
         <ul class='fa-ul bold'>
-         <li><i class="fa-li fa fa-check-square"></i> IRS 1095-C and 1094-C report preparation </li>
-         <li><i class="fa-li fa fa-check-square"></i> Forecast and view ACA eligibility </li>
-         <li><i class="fa-li fa fa-check-square"></i> Collects and monitors actual hours worked by all employees  </li>
-         <li><i class="fa-li fa fa-check-square"></i> Ensures IRS audit preparedness </li>
-         <li><i class="fa-li fa fa-check-square"></i> Provides advance alerts before employee thresholds are exceeded</li>
-         <li><i class="fa-li fa fa-check-square"></i> Collects and monitors actual hours worked by all employee  </li>
+          <li><i class="fa-li fa fa-check-square"></i> IRS 1095-C and 1094-C report preparation </li>
+          <li><i class="fa-li fa fa-check-square"></i> Forecast and view ACA eligibility </li>
+          <li><i class="fa-li fa fa-check-square"></i> Collects and monitors actual hours worked by all employees  </li>
+          <li><i class="fa-li fa fa-check-square"></i> Ensures IRS audit preparedness </li>
+          <li><i class="fa-li fa fa-check-square"></i> Provides advance alerts before employee thresholds are exceeded</li>
+          <li><i class="fa-li fa fa-check-square"></i> Collects and monitors actual hours worked by all employee  </li>
         </ul>
-        
+
       </div>
     </div>
+
     <div role="tabpanel" class="tab-pane fade" id="customers">
       <h1 class='text-info'>Your Customers</h1>
-     
+
       <div class='col-md-8'>
         <%= image_tag("company-signin.png", class: 'screenshot') %>
       </div>
       <div class='col-md-4'>
-         <p  class='lead bold'>Customer Portals</p>
+        <p  class='lead bold'>Customer Portals</p>
         <p class='lead'>Give your customers the added value and flexiblity of managing their accounts through your custom portal.  </p>
       </div>
     </div>
+
     <div role="tabpanel" class="tab-pane fade" id="employees">
       <h1 class='text-info'>Your Employees</h1>
-      
-      <div class=''>
-        <%= render 'employee' %>
-      </div>
-     
+      <%= render 'employee' %>
     </div>
   </div>
 

@@ -9,29 +9,25 @@
  * compiled file so the styles you add here take precedence over styles defined in any styles
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
+ *
+ *= require dataTables/bootstrap/2/jquery.dataTables.bootstrap
+ *= require jquery.atwho
+ *= require simple_calendar
+ *= require dataTables/jquery.dataTables
+ */
 
-
-  *= require dataTables/bootstrap/2/jquery.dataTables.bootstrap
-  *= require jquery.atwho
-  *= require simple_calendar
-  *= require dataTables/jquery.dataTables
-*/
-
-
-
+$font-family-sans-serif: 'Lato', sans-serif;
+$font-size-base: 16px;
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import "font-awesome";
-
-
 
 @import "table_styles";
 @import "forms";
 @import "custom";
 @import "calendar";
 @import "invoices";
-
 
 @import "main";
 @import "jobs";
@@ -40,34 +36,124 @@
 @import "shifts";
 @import "companies";
 
+@import url(https://fonts.googleapis.com/css?family=Lato:400,300,700,400italic);
 
-  
 body {
-  // font-family: 'Titillium Web', Geneva, sans-serif;
   padding-top: 70px;
   padding-bottom: 80px;
   height: 100%;
-  // background: #DEE0E8;
-  background: #ccc;
-  // background: url(bg_design.png) no-repeat center fixed; 
-  // background-size: cover;
+  -webhkit-font-smoothing: antialiased;
 }
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 200;
+}
+
+.form-control {
+  border: 1px solid #C5C5C5;
+  box-shadow: none;
+  border-radius: 0.25em;
+  -webkit-appearance: none;
+  color: #555459;
+  height: auto;
+  line-height: normal;
+  margin: 0 0 0.5em;
+  font-size: 1em;
+  padding: .45em .75em .55em;
+
+  &:hover, {
+    border-color: #2780f8;
+  }
+
+  &:focus {
+    border-color: #2780f8;
+    box-shadow: 0 0 7px rgba(39,128,248, 0.15);
+  }
+}
+
+.btn {
+  background: #2ab27b;
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.2em;
+  font-weight: 900;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  text-decoration: none;
+  cursor: pointer;
+  text-shadow: 0 1px 1px rgba(0,0,0,.1);
+  border: none;
+  border-radius: .25em;
+  box-shadow: none;
+  position: relative;
+  display: inline-block;
+  vertical-align: bottom;
+  text-align: center;
+  white-space: nowrap;
+  margin: 0;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  padding: 8px 14px 9px;
+  font-size: 15px;
+
+  &:active {
+    -webkit-box-shadow: inset 0 2px 4px rgba(0,0,0,.15),0 1px 2px rgba(0,0,0,.05);
+    -moz-box-shadow: inset 0 2px 4px rgba(0,0,0,.15),0 1px 2px rgba(0,0,0,.05);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,.15),0 1px 2px rgba(0,0,0,.05);
+    outline: none;
+  }
+
+  &:active:focus {
+    outline: none;
+  }
+
+  &.btn-lg {
+    font-size: 1.05em;
+    padding: 10px 22px 14px;
+  }
+
+  &.btn-default {
+    background: #fbfbfa;
+    border: 1px solid #C7CACD;
+    color: #555459;
+    font-weight: 700;
+
+    &:hover, &:focus {
+      color: #439fe0;
+      background-color: #fbfbfa;
+      border-color: #C7CACD;
+    }
+  }
+
+  &.btn-success {
+    background: #2ab27b;
+    border: none;
+    color: #fff;
+
+    &:active {
+      background: darken(#2ab27b, 10%);
+    }
+  }
+}
+
 #main-wrapper {
   // margin-top: -20px;
   // padding-top: 15px;
   padding-bottom: 70px;
   // margin-bottom: 70px;
-  
+
 }
 
 #logo > img {
-    // max-height: 45px;
-    max-width: 110px;
-    // margin: 0px;
-    // margin-top: 5px;
-    vertical-align: middle;
+  // max-height: 45px;
+  max-width: 110px;
+  // margin: 0px;
+  // margin-top: 5px;
+  vertical-align: middle;
 
-    // margin-right: 20px;
+  // margin-right: 20px;
 }
 
 .hide-this {
@@ -112,7 +198,7 @@ body {
 // NAVBAR
 .navbar.navbar-default {
   // border: none;
-  font-family: 'Titillium Web', Geneva, sans-serif;
+  font-family: 'Lato', sans-serif;
   // background-color: rgb(230, 230, 230);
   height: 65px;
   // font-height: 2em;
@@ -120,24 +206,24 @@ body {
     margin-top: 10px;
     // margin-bottom: 5px;
   }
-  
+
 }
 .navbar-brand {
-    float: left;
-    padding: 15px 15px;
-    font-size: 28px;
-    line-height: 20px;
-    height: 50px;
-    margin-right: 25px;
+  float: left;
+  padding: 15px 15px;
+  font-size: 28px;
+  line-height: 20px;
+  height: 50px;
+  margin-right: 25px;
 }
 .nav-tabs > li > a {
-    background-color: rgba(17, 17, 17, 0.77);
-    color: white;
-    // font-weight: bold;
+  background-color: rgba(17, 17, 17, 0.77);
+  color: white;
+  // font-weight: bold;
 }
 .nav-tabs > li > a:hover {
-    background-color: rgba(255, 255, 255, 0.67);
-    color: black;
+  background-color: rgba(255, 255, 255, 0.67);
+  color: black;
 
 }
 #bs-example-navbar-collapse-1 {
@@ -156,17 +242,17 @@ body {
 
 #nav-logo {
   font-weight: bold;
-  
+
 }
 .pad {
   padding: 8px;
 }
 .tab-content {
   padding-top: 10px;
-  
+
 }
 h1 {
-  font-family: 'Titillium Web', Geneva, sans-serif;
+  font-family: 'Lato', sans-serif;
 }
 
 
@@ -223,7 +309,7 @@ td.day:hover {
   float: right;
   margin: 12px;
   margin-right: 34px;
-  
+
 }
 .work_history {
   max-width: 284px;

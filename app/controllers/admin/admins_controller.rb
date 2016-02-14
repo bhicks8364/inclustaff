@@ -16,12 +16,8 @@ class Admin::AdminsController < ApplicationController
   end
 
   def create
-    @admin = Admin.new(admin_params)
-    @admin.agency_id = @current_agency.id
-    @admin.password = "password"
-    @admin.password_confirmation = "password"
-
-    if @admin.save
+    @admin = Admin.invite! admin_params.merge(agency_id: @current_agency.id)
+    if @admin.persisted?
       redirect_to admin_admins_path, notice: 'You just added ' + "#{@admin.name}" + " as a #{@admin.role}"
     else
       redirect_to admin_admins_path, notice: 'Unable to add admin'
@@ -81,5 +77,4 @@ class Admin::AdminsController < ApplicationController
   def admin_params
     params.require(:admin).permit(:first_name, :last_name, :email, :username, :role, :company_id, :agency_id, :password, :password_confirmation)
   end
-  
 end

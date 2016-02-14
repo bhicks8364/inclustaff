@@ -77,17 +77,15 @@ class Company < ActiveRecord::Base
 
 
     def create_company_admin
-      new_name = contact_name.split()
-      self.admins.find_or_create_by(email: contact_email) do |admin|
-        admin.company_id = id
-        admin.first_name = new_name[0]
-        admin.last_name = new_name[1]
-        admin.role = "Owner"
-        admin.password = "password"
-        admin.password_confirmation = "password"
-      end
+      first_name, last_name = contact_name.split()
+      admins.invite!(
+        company_id: id,
+        first_name: first_name,
+        last_name: last_name,
+        role: "Owner"
+      )
     end
-    
+
     def contact
       CompanyAdmin.where(email: contact_email).first
     end
