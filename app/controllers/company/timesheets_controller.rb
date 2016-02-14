@@ -11,6 +11,7 @@ class Company::TimesheetsController < ApplicationController
     @timesheets = @company.timesheets.order(updated_at: :desc)
     gon.timesheets = @timesheets
     authorize @timesheets
+    @scope = params[:scope]
     respond_to do |format|
       format.html
       if params[:scope] == "current_week"
@@ -21,7 +22,7 @@ class Company::TimesheetsController < ApplicationController
         @pdf_timesheets = @company.timesheets.order(week: :asc).distinct
       end
       format.pdf {
-        send_data CompanyTimesheetPdf.new(@company, @pdf_timesheets, view_context, @admin).render,
+        send_data CompanyTimesheetPdf.new(@company, @pdf_timesheets, view_context, @scope, @admin).render,
           filename: "#{@company.name}-#{params[:scope]}-#{Time.current}.pdf",
           type: "application/pdf",
           disposition: :inline

@@ -40,7 +40,7 @@ $font-size-base: 16px;
 
 body {
   padding-top: 70px;
-  padding-bottom: 80px;
+  // padding-bottom: 80px;
   height: 100%;
   -webhkit-font-smoothing: antialiased;
 }
@@ -260,10 +260,10 @@ h1 {
 
 
 // JUST NOT DEALING WITH THE FOOTER ATM
-// .footer {
-//   margin-bottom: 0px;
-//   margin-top: 10px;
-// }
+.footer {
+  // margin-bottom: 0px;
+  margin-top: 10px;
+}
 // .navbar-static-bottom {
 //     border-radius: 0;
 //     z-index: 1000;
