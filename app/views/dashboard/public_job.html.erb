@@ -1,0 +1,14 @@
+<%= link_to "Back to Search", public_job_board_path, class: "btn btn-primary btn-sm" %>
+<h1><%= @order.title %> <small class='pull-right'><%= @order.industry %></small></h1>
+<div class='col-md-4 well'>
+    
+    <p><%= @order.tag_list %></p>
+    <hr>
+    <p class='lead'><%= pay_range(@order) %></p>
+    
+    <%= stwb(@order) %>
+    <%= heavy_lifting(@order) %>
+</div>
+<div class='col-md-8 well'>
+    <%= markdownify(@order.notes) %>
+</div>

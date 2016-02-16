@@ -140,6 +140,10 @@ module OrdersHelper
         "<span class=''><strong>#{order.title}</strong></span> (#{number_to_currency(order.min_pay)} - #{number_to_currency(order.max_pay)}) #{pluralize(order.open_jobs, "open jobs")}".html_safe
     end
     def pay_range(order)
-      "#{number_to_currency(order.min_pay)} - #{number_to_currency(order.max_pay)}"
+        if order.min_pay == order.max_pay
+            number_to_currency(order.min_pay)
+        else
+            "#{number_to_currency(order.min_pay)} - #{number_to_currency(order.max_pay)}"
+        end
     end
 end

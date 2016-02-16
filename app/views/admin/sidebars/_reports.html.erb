@@ -1,19 +1,4 @@
-<% if @company.present? %>
-<li class='dropdown'>
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class='fa fa-download fa-fw'></i></a>
-    <ul class="dropdown-menu">
-        <li class='bold'><i class='fa fa-file-pdf-o fa-fw'></i> PDF Reports for <%= @company.name%></li>
-        <li><%= link_to  "Current Timesheets", admin_company_timesheets_path(@company, format: :pdf, scope: "current_week") if @company.present? %></li>
-        <li><%= link_to  "Last Week Timesheets", admin_company_timesheets_path(@company, format: :pdf, scope: "last_week") if @company.present? %></li>
-        <li><%= link_to  "All Timesheets", admin_company_timesheets_path(@company, format: :pdf, scope: "all") if @company.present? %></li>
-        <li class='bold'><i class='fa fa-file-excel-o fa-fw'></i> CSV Reports for <%= @company.name%></li>
-        <li><%= link_to  "Current Timesheets", admin_company_timesheets_path(@company, format: :csv, scope: "current_week") if @company.present? %></li>
-        <li><%= link_to  "Last Week Timesheets", admin_company_timesheets_path(@company, format: :csv, scope: "last_week") if @company.present? %></li>
-        <li><%= link_to  "All Timesheets", admin_company_timesheets_path(@company, format: :csv, scope: "all") if @company.present? %></li>
-        <li> <%= link_to "<i class='fa fa-clock-o fa-fw'></i> View Timesheets".html_safe, admin_company_timesheets_path(@company), class: "" if @company.present? %></li>
-    </ul>
-</li>
-<% end %>
+
 <li class='dropdown'>
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class='fa fa-download fa-fw'></i></a>
     <ul class="dropdown-menu">
@@ -25,6 +10,6 @@
         <li><%= link_to  "Current Timesheets", admin_timesheets_path(format: :csv, scope: "current_week")%></li>
         <li><%= link_to  "Last Week Timesheets", admin_timesheets_path(format: :csv, scope: "last_week")%></li>
         <li><%= link_to  "All Timesheets", admin_timesheets_path(format: :csv, scope: "all")  %></li>
-        <li> <%= link_to "<i class='fa fa-clock-o fa-fw'></i> View Timesheets".html_safe, admin_timesheets_path(@company), class: ""%></li>
+        <li> <%= link_to "<i class='fa fa-clock-o fa-fw'></i> View Timesheets".html_safe, admin_timesheets_path, class: ""%></li>
     </ul>
 </li>

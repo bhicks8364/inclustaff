@@ -108,12 +108,20 @@ class DashboardController < ApplicationController
   end
   def public_job_board
     if @current_agency.present?
-      @orders = @current_agency.orders.published.order(published_at: :asc).limit(10)
+      @q = @current_agency.orders.published.order(published_at: :asc).ransack(params[:q]) 
+    
+      
+      @orders = @q.result(distinct: true).paginate(page: params[:page], per_page: 25) 
     else
       @orders = Order.published
     end
     skip_authorization
   end
+  def public_job
+    @order = @current_agency.orders.find(params[:id])
+    skip_authorization
+  end
+  
 
   def agency_view
       @current_admin = current_admin if admin_signed_in?
