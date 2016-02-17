@@ -1,4 +1,4 @@
-<%= link_to "Back to Search", public_job_board_path, class: "btn btn-primary btn-sm" %>
+<%= link_to "Back to Search", public_job_board_path, class: "btn btn-primary btn-sm pull-center" %>
 <h1><%= @order.title %> <small class='pull-right'><%= @order.industry %></small></h1>
 <div class='col-md-4 well'>
     
@@ -8,6 +8,13 @@
     
     <%= stwb(@order) %>
     <%= heavy_lifting(@order) %>
+    <hr>
+    <h4 class=''>Required Skills</h4>
+    <% @order.skills.required.each do | skill | %>
+        <%= skill.name %><br>
+    <% end %>
+    <br>
+    <p><%= @order.certificate %> %></p>
 </div>
 <div class='col-md-8 well'>
     <%= markdownify(@order.notes) %>

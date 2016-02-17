@@ -21,7 +21,7 @@
       <ul class="nav navbar-nav navbar-left">
         <%= render "admin/sidebars/owner_links" if @current_admin.owner? %>
         <%= render "admin/sidebars/payroll_links" if @current_admin.payroll? || @current_admin.owner? %>
-        <%= render "admin/sidebars/reports" if @current_admin.payroll? || @current_admin.owner? %>
+        
       </ul>
       <% end %>
       <ul class="nav navbar-nav">
@@ -45,6 +45,7 @@
         
       </ul>
       <ul class='nav navbar-nav navbar-right'>
+        <%= render "admin/sidebars/reports" if @current_admin.payroll? || @current_admin.owner? %>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-user-plus"></i> </a>
           <ul class="dropdown-menu">
