@@ -6,7 +6,7 @@ class CompanyTimesheetPdf < Prawn::Document
         @scope = scoped_params
         @agency = @company.agency
         @timesheets = timesheets
-        @subtotal = timesheets.sum(:gross_pay)
+        @subtotal = @timesheets.sum(:gross_pay)
         @view = view_context
         @color ||= @timesheets.last.approved? ? "cccccc" : "ff0000"
         @status ||= @timesheets.last.approved? ? "Approved by: #{@timesheets.last.user_approved}" : ""

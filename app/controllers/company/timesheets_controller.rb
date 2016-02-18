@@ -2,8 +2,7 @@ class Company::TimesheetsController < ApplicationController
   before_action :set_timesheet, only: [:show, :destroy, :approve]
   before_action :authenticate_company_admin!
   layout 'company_layout'
-  # GET /timesheets
-  # GET /timesheets.json
+
   def index
 
     @admin = current_company_admin
@@ -33,8 +32,7 @@ class Company::TimesheetsController < ApplicationController
  
   end
 
-  # GET /timesheets/1
-  # GET /timesheets/1.json
+
   def show
     # authorize @timesheet
     @shifts = @timesheet.shifts.order(time_in: :desc)
