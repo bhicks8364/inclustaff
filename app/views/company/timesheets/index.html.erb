@@ -1,30 +1,25 @@
 <div class='col-md-12 lightbox-long' data-behavior='timesheet-list'>
    <div class='row'>
-    <% if @timesheets.any? %>
-            
-            <%= link_to "Current Timesheet Report", company_timesheets_path(format: :pdf) %>
-<div class='col-md-6'>
+    
+
+            <%= link_to "Current Timesheet Report", company_timesheets_path(format: :pdf, scope: "current_week"), class: "btn btn-primary" %>
+<div class='col-md-12'>
     <h4 class='text-center'><strong>Pending Timesheets</strong></h4>
     <div id='pending'>
-        <%= render(@timesheets.pending) || "There are no pending timesheets for this week yet." %>
+        <%= render "company/timesheets/table", timesheets: @timesheets.pending || "There are no pending timesheets for this week yet." %>
     </div>
     
     
 </div>
-<div class='col-md-6'>
+<div class='col-md-12'>
     <h4 class='text-center'><strong>Approved Timesheets</strong></h4>
     <div id='approved'>
-        <%= render(@timesheets.approved) || "There are no approved timesheets for this week yet." %>
+        <%= render "company/timesheets/table", timesheets: @timesheets.approved || "There are no approved timesheets for this week yet." %>
     </div>
     
    
 </div>
 
-    <% else %>
-    <h4>There are no timesheets yet.</h4>
-    
-    <% end %>
-
 
 
 
@@ -32,16 +27,6 @@
     
 
 </div>
-
-
- <hr>
-<%= link_to(company_timesheets_path(@timesheets, format: :csv), class: 'btn btn-primary') do %>
-  		<i class="fa fa-file-excel-o fa-fw"></i> Export
-<% end %>
-
-    
-
-
 
 
 </div>

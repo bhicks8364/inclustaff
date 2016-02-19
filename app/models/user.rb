@@ -88,7 +88,7 @@ class User < ActiveRecord::Base
   scope :available, -> { joins(:employee).merge(Employee.available)}
   scope :ordered_by_last_name, -> { order(last_name: :asc) }
   scope :ordered_by_check_in, -> { order(checked_in_at: :asc) }
-
+  def timeclock?;           false;  end
   before_validation do
     self.role = "Employee"
     self.name = "#{first_name} #{last_name}"

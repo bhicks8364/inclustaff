@@ -72,7 +72,7 @@ class Admin < ActiveRecord::Base
     ending = start.end_of_week
     where(updated_at: start..ending)}
 
-  after_initialize :set_name, :set_username
+  before_save :set_name, :set_username
   after_validation :geocode
   geocoded_by :current_sign_in_ip
 
@@ -107,11 +107,11 @@ class Admin < ActiveRecord::Base
   def mention_data;     {name: "#{name}", content: "#{role}"}; end
 
   def set_name
-    self.name ||= "#{first_name} #{last_name}"
+    self.name = "#{first_name} #{last_name}"
   end
 
   def set_username
-    self.username ||= name.gsub(/\s(.)/) {|e| $1.upcase}
+    self.username = name.gsub(/\s(.)/) {|e| $1.upcase}
   end
 
   def online?

@@ -34,7 +34,7 @@ Rails.application.routes.draw do
     get 'recruiter_ranking', to: 'charts#recruiter_ranking'
     get 'order_fill_time', to: 'charts#order_fill_time'
     get 'current_weeks_billing', to: 'charts#current_weeks_billing'
-
+    get 'public_jobs/:id' => 'dashboard#public_job', as: :public_job
     resources :comments do
       collection do
         post :mark_all_read

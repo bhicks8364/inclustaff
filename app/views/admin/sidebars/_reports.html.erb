@@ -1,0 +1,14 @@
+
+<li class='dropdown'>
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class='fa fa-download fa-fw'></i> Reports</a>
+    <ul class="dropdown-menu">
+        <li class='bold'><i class='fa fa-file-pdf-o fa-fw'></i> PDF Reports</li>
+        <li><%= link_to  "Current Timesheets", admin_timesheets_path(format: :pdf, scope: "current_week")%></li>
+        <li><%= link_to  "Last Week Timesheets", admin_timesheets_path(format: :pdf, scope: "last_week")%></li>
+        <li><%= link_to  "All Timesheets", admin_timesheets_path(format: :pdf, scope: "all")%></li>
+        <li class='bold'><i class='fa fa-file-excel-o fa-fw'></i> CSV Reports</li>
+        <li><%= link_to  "Current Timesheets", admin_timesheets_path(format: :csv, scope: "current_week")%></li>
+        <li><%= link_to  "Last Week Timesheets", admin_timesheets_path(format: :csv, scope: "last_week")%></li>
+        <li><%= link_to  "All Timesheets", admin_timesheets_path(format: :csv, scope: "all")  %></li>
+    </ul>
+</li>

@@ -1,12 +1,11 @@
-class CompanyTimesheetPdf < Prawn::Document
-    attr_reader :company, :timesheets, :view_context, :scoped_params, :signed_in
-    def initialize(company, timesheets, view_context, scoped_params, signed_in)
-        @company = company
+class AgencyTimesheetPdf < Prawn::Document
+    attr_reader :agency, :timesheets, :view_context, :scoped_params, :signed_in
+    def initialize(agency, timesheets, view_context, scoped_params, signed_in)
         @signed_in = signed_in
+        @agency = agency
         @scope = scoped_params
-        @agency = @company.agency
         @timesheets = timesheets
-        @subtotal = @timesheets.sum(:gross_pay)
+        @subtotal = timesheets.sum(:gross_pay)
         @view = view_context
         @color ||= @timesheets.last.approved? ? "cccccc" : "ff0000"
         @status ||= @timesheets.last.approved? ? "Approved by: #{@timesheets.last.user_approved}" : ""
@@ -16,7 +15,7 @@ class CompanyTimesheetPdf < Prawn::Document
         text @timesheets.last.time_frame if @scope != "all"
         stroke_horizontal_rule
         move_down 5
-        text "Timesheet Report for #{@company.name}", style: :bold, align: :left, size: 16
+        text "Timesheet Report for #{@agency.name}", style: :bold, align: :left, size: 16
         timesheet_table
         move_down 20
         stroke_horizontal_rule
@@ -40,18 +39,17 @@ class CompanyTimesheetPdf < Prawn::Document
     end
     def timesheet_rows
         if @scope == "all"
-            @t = [["EmpID", "Week", "Employee", "Pay Rate", "Hours", "Gross Pay", "Approved by"]]
+            @t = [["Company", "Week", "Employee", "Pay Rate", "Hours", "Gross Pay", "Approved by"]]
             @timesheets.map do |timesheet|
-               @t <<  [timesheet.employee.id, timesheet.week_ending, timesheet.employee.name, price(timesheet.pay_rate), timesheet.total_hours.round(2), price(timesheet.gross_pay), timesheet.user_approved.titleize]
+               @t <<  [timesheet.company.name, timesheet.week_ending, "#{timesheet.employee.name} #{timesheet.employee.id}", price(timesheet.pay_rate), timesheet.total_hours.round(2), price(timesheet.gross_pay), timesheet.user_approved.titleize]
             end
             @t
         else
-            @t = [["EmpID", "Employee", "Pay Rate", "Hours", "Gross Pay", "Approved by"]]
+            @t = [["Company", "Employee", "Pay Rate", "Hours", "Gross Pay", "Approved by"]]
             @timesheets.map do |timesheet|
-               @t <<  [timesheet.employee.id, timesheet.employee.name, price(timesheet.pay_rate), timesheet.total_hours.round(2), price(timesheet.gross_pay), timesheet.user_approved.titleize]
+               @t <<  [timesheet.company.name, "#{timesheet.employee.name} #{timesheet.employee.id}", price(timesheet.pay_rate), timesheet.total_hours.round(2), price(timesheet.gross_pay), timesheet.user_approved.titleize]
             end
             @t
-            
         end
     end
     

@@ -2,8 +2,7 @@ class Company::TimesheetsController < ApplicationController
   before_action :set_timesheet, only: [:show, :destroy, :approve]
   before_action :authenticate_company_admin!
   layout 'company_layout'
-  # GET /timesheets
-  # GET /timesheets.json
+
   def index
 
     @admin = current_company_admin
@@ -11,6 +10,7 @@ class Company::TimesheetsController < ApplicationController
     @timesheets = @company.timesheets.order(updated_at: :desc)
     gon.timesheets = @timesheets
     authorize @timesheets
+    @scope = params[:scope]
     respond_to do |format|
       format.html
       if params[:scope] == "current_week"
@@ -21,19 +21,18 @@ class Company::TimesheetsController < ApplicationController
         @pdf_timesheets = @company.timesheets.order(week: :asc).distinct
       end
       format.pdf {
-        send_data CompanyTimesheetPdf.new(@company, @pdf_timesheets, view_context, @admin).render,
-          filename: "#{@company.name}-current-timesheets-#{Time.current.stamp('Monday 10/12 at 12:30pm')}.pdf",
+        send_data CompanyTimesheetPdf.new(@company, @pdf_timesheets, view_context, @scope, @admin).render,
+          filename: "#{@company.name}-#{params[:scope]}-#{Time.current}.pdf",
           type: "application/pdf",
           disposition: :inline
       }
        @csv_timesheets = @pdf_timesheets
-      format.csv { send_data @csv_timesheets.to_csv, filename: "timesheets-export-#{Time.now}-inclustaff.csv" }
+      format.csv { send_data @csv_timesheets.to_csv, filename: "timesheets-export--#{params[:scope]}-#{Time.current}-inclustaff.csv" }
   	end 
  
   end
 
-  # GET /timesheets/1
-  # GET /timesheets/1.json
+
   def show
     # authorize @timesheet
     @shifts = @timesheet.shifts.order(time_in: :desc)

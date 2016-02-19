@@ -36,7 +36,7 @@
 
   <div id="job-end-date">
     <%= f.input :state, as: :select, collection: ['Pending Approval', 'Currently Working', 'Assignment Ended', 'Declined by agency', 'Declined by company', 'Declined by candidate', 'Other - requires note'], include_blank: false %>
-    <%= f.input :end_date, as: :string, input_html: { class: 'datepicker' }, placeholder: "End date", required: true, label: false %>
+    <%= f.input :end_date, as: :string, input_html: { class: 'datepicker' }, placeholder: "End date", required: false, label: false %>
   </div>
 
   <div class='form-actions'>

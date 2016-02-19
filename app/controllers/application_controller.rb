@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  before_action :set_current
+  before_action :set_current, :set_mailer_host
 
   def set_current
     subdomains = request.subdomains
@@ -28,6 +28,10 @@ class ApplicationController < ActionController::Base
     @current = @current_user || @current_admin || @current_company_admin
     @signed_in = @current
 
+  end
+  def set_mailer_host
+    @subdomain = @current_agency.present? ? "#{@current_agency.subdomain}.": ""
+    ActionMailer::Base.default_url_options[:host] = "#{@subdomain}inclustaff.com"
   end
 
   def vaild_subdomain?(request)
