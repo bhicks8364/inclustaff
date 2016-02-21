@@ -69,7 +69,7 @@ class CompanyAdmin < ActiveRecord::Base
   
   
   validates :company_id, presence: true
-  before_validation :set_name
+  before_save :set_name
   
   scope :owners, -> { where(role: "Owner")}
   scope :managers, -> { where(role: "Manager")}
