@@ -56,6 +56,9 @@ class Admin < ActiveRecord::Base
 
   belongs_to :agency
   has_many :account_orders, class_name: "Order", foreign_key: "account_manager_id"
+  has_many :admin_invitations, :class_name => 'Admin', :as => :invited_by
+  has_many :company_invitations, :class_name => 'CompanyAdmin', :as => :invited_by
+  has_many :user_invitations, :class_name => 'User', :as => :invited_by
   has_many :comments
   has_many :eventables, :through => :events
   has_many :events

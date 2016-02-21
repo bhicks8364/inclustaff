@@ -72,7 +72,12 @@ Rails.application.routes.draw do
       get  'owner' => 'dashboard#owner'
       get  'account_manager' => 'dashboard#account_manager'
       get  'recruiter' => 'dashboard#recruiter'
-
+      resources :company_admins do
+        member do
+          post :mention
+          post :follow
+        end
+      end
       resources :admins do
         member do
           post :mention
@@ -171,8 +176,7 @@ Rails.application.routes.draw do
     namespace :company do
       get  'dashboard' => 'dashboard#home'
       get 'timeclock' => 'dashboard#timeclock'
-      get 'admins' => 'dashboard#admins'
-      get 'admin/:id' => 'dashboard#admin', as: :admin_profile
+      resources :company_admins
       resources :orders do
         collection do
           get 'inactive'

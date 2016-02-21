@@ -18,7 +18,7 @@ class Admin::AdminsController < ApplicationController
   def create
     @admin = Admin.invite! admin_params.merge(agency_id: @current_agency.id)
     if @admin.persisted?
-      redirect_to admin_admins_path, notice: 'You just added ' + "#{@admin.name}" + " as a #{@admin.role}"
+      redirect_to admin_admins_path, notice: 'You just added ' + "#{@admin.name}" + " as a #{@admin.role}. They will receive an email with further instructions."
     else
       redirect_to admin_admins_path, notice: 'Unable to add admin'
     end
@@ -46,7 +46,7 @@ class Admin::AdminsController < ApplicationController
     skip_authorization
     respond_to do |format|
       if @admin.update(admin_params)
-        format.html { redirect_to @admin, notice: 'Admin info was successfully updated.' }
+        format.html { redirect_to admin_admin_path(@admin), notice: 'Admin info was successfully updated.' }
         format.json { render :show, status: :ok, location: @admin }
       else
         format.html { render :edit }

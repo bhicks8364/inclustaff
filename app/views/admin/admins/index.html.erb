@@ -28,8 +28,8 @@
               <%= link_to admin.name, admin_admin_path(admin), class: "admin-link" %><br>
               <small><%= admin.role %></small>
             </td>
-            <td>
-              <%= admin.last_sign_in_at.present? ? admin.last_sign_in_at.strftime("%x") : "Yet to sign in" %>
+            <td><%= link_to "edit", edit_admin_admin_path(admin) %>
+              <small><%= admin.email %></small>
             </td>
             <td>
               <%= admin.recruiter_jobs.count if admin.recruiter? %>

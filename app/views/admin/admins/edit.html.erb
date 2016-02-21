@@ -2,7 +2,7 @@
   <div class='col-md-4'>
   </div>
   <div class='col-md-4'>
-    <%= simple_form_for(@admin) do |f| %>
+    <%= simple_form_for([:admin, @admin]) do |f| %>
 
            <h3 class='text-center white'>Editing Admin Information</h3>
            
@@ -20,7 +20,7 @@
         <div class="form-group">
         <%= f.input :first_name, label: "First Name", placeholder: "First Name", input_html: {class: "form-control"}  %>
         <%= f.input :last_name, label: "Last Name", placeholder: "Last Name", input_html: {class: "form-control"}  %>
-        <%= f.input :email, disabled: true, placeholder: "Email", label: "Email" %>
+        <%= f.input :email, placeholder: "Email", label: "Email" %>
         <%= f.input :role, required: true, collection: ["Owner", "Account Manager", "Recruiter", "Payroll", "Limited Access"], include_blank: false, label: false %>
         </div>
             <div class="form-actions text-right">

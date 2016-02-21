@@ -3,12 +3,25 @@ en:
     failure:
       invited: "You have a pending invitation, accept it to finish creating your account."
     invitations:
-      send_instructions: "An invitation email has been sent to %{email}."
-      invitation_token_invalid: "The invitation token provided is not valid!"
-      updated: "Your password was set successfully. You are now signed in."
-      updated_not_active: "Your password was set successfully."
-      no_invitations_remaining: "No invitations remaining"
-      invitation_removed: "Your invitation was removed."
+      user:
+        send_instructions: 'A new user invitation has been sent to %{email}.'
+        invitation_token_invalid: 'Your invitation token is not valid!'
+        updated: 'Welcome on board! You are now signed in.'
+        updated_not_active: 'Welcome on board! Sign in to continue.'
+      admin:
+        send_instructions: "An invitation email has been sent to %{email}."
+        invitation_token_invalid: "The invitation token provided is not valid!"
+        updated: 'Welcome on board! You are now signed in.'
+        updated_not_active: 'Welcome on board! Sign in to continue.'
+        no_invitations_remaining: "No invitations remaining"
+        invitation_removed: "Your invitation was removed."
+      company_admin:
+        send_instructions: "An invitation email has been sent to %{email}."
+        invitation_token_invalid: "The invitation token provided is not valid!"
+        updated: "Your password was set successfully. You are now signed in."
+        updated_not_active: "Your password was set successfully."
+        no_invitations_remaining: "No invitations remaining"
+        invitation_removed: "Your invitation was removed."
       new:
         header: "Send invitation"
         submit_button: "Send an invitation"
@@ -17,6 +30,8 @@ en:
         submit_button: "Set my password"
     mailer:
       invitation_instructions:
+      
+        
         subject: "Invitation instructions"
         hello: "Hello %{email}"
         someone_invited_you: "Someone has invited you to %{url}, you can accept it through the link below."
