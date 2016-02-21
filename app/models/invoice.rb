@@ -59,11 +59,11 @@ class Invoice < ActiveRecord::Base
         recruiters.first
     end
     def defaults
-        self.week = Date.today.beginning_of_week if self.week.nil?
+        due = Date.today.beginning_of_week if self.week.nil?
         self.total = 0 if total.nil?
         self.paid = false if self.paid.nil?
         self.amt_paid = 0 if self.amt_paid.nil?
-        self.due_by = week + 15.days 
+        self.due_by = due + 15.days 
     end
     def self.without_timesheets
         includes(:timesheets).where( :timesheets => { :invoice_id => nil } )
