@@ -105,7 +105,7 @@ class Admin::EmployeesController < ApplicationController
 
 
   def update
-
+      @employee.set_work_tags!
     respond_to do |format|
       if @employee.update(employee_params)
         format.html { redirect_to admin_employee_path(@employee), notice: 'Employee was successfully updated.' }

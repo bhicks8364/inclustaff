@@ -14,13 +14,16 @@
 		</div>
 		<div class='col-md-3 well well-sm'>
 			<%= render 'admin/orders/search' %>
-			<%= render "admin/shared/alerts/open_orders", orders: @current_admin.job_orders %>
+			<%= render "admin/shared/alerts/open_orders", orders: @current_admin.job_orders.includes(:company).order(:created_at).needs_attention %>
 		</div>
 
 		<div class="col-md-12 metal well">
-			<h2>All Job Orders</h2>
-					<%= render 'admin/orders/table', orders: @current_admin.job_orders.includes(:company).order(:created_at) %>
+			<h2>Open Job Orders</h2>
+					<%= render 'admin/orders/table', orders: @current_admin.job_orders.includes(:company).order(:created_at).needs_attention %>
 		</div>
-		
+		<div class="col-md-12 metal well">
+			<h2>Filled Job Orders</h2>
+					<%= render 'admin/orders/table', orders: @current_admin.job_orders.includes(:company).order(:created_at).filled %>
+		</div>
 	</div>
 </div>

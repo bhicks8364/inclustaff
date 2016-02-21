@@ -91,6 +91,7 @@ class Order < ActiveRecord::Base
 
     # NESTED ATTRIBUTES
     accepts_nested_attributes_for :jobs
+    
     accepts_nested_attributes_for :skills, reject_if: :all_blank, allow_destroy: true
 
     # SCOPES
