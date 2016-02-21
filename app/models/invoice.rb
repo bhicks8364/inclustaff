@@ -59,7 +59,7 @@ class Invoice < ActiveRecord::Base
         recruiters.first
     end
     def defaults
-        # due = Date.today.end_of_week if self.new_record?
+        self.week = Date.today.beginning_of_week if self.new_record?
         self.total = 0 if total.nil?
         self.paid = false if self.paid.nil?
         self.amt_paid = 0 if self.amt_paid.nil?
