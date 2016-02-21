@@ -1,8 +1,6 @@
 
     <div class='col-md-12 lightbox-long'>
-        <%= link_to(admin_timesheets_path(@timesheets.current_week, format: :csv), class: 'btn btn-primary pull-right') do %>
-          		<i class="fa fa-file-excel-o fa-fw"></i> Export Current Timesheets
-        <% end %>
+        
         <h2 class='text-center metal'>Current Timesheets </h2>
         <p class='lead'>Week Ending <%= @timesheets.current_week.first.try(:week_ending) %></p>
         
@@ -21,7 +19,7 @@
 		
 	</thead>
 	<tbody>
-		<% @timesheets.current_week.includes(:job => :order).order('orders.company_id').each do |timesheet| %>
+		<% @timesheets.current_week.includes(:job => :order).distinct.each do |timesheet| %>
 		<tr data-behavior="timesheet" data-id="<%= timesheet.id %>">
 			<td><strong>      <%= link_to timesheet.week_ending,admin_timesheet_path(timesheet), data: {toggle: "tooltip", placement: "right", title: "View Timesheet"}, class: "button"  %>
     </div></strong></td>

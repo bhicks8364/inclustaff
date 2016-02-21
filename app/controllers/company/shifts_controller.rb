@@ -36,39 +36,6 @@ class Company::ShiftsController < ApplicationController
     @employee = @shift.employee
   end
 
-  #def break_start
-  #@shift = Shift.find(params[:id])
-  #@shift.breaks ||= []
-  #@shift.break_out ||= []
-  #@shift.breaks << Time.current
-  #@shift.break_out << Time.current
-  #@shift.state = 'On Break'
-  #@shift.save
-  #skip_authorization
-  #end
-  #def break_end
-  #@shift = Shift.find(params[:id])
-  #if @shift.on_break?
-  #@shift.breaks ||= []
-  #@shift.break_in ||= []
-  #@shift.breaks << Time.current
-  #@shift.break_in << Time.current
-  #@shift.state = 'Clocked In'
-  #@shift.save
-  #end
-  #skip_authorization
-  #end
-  ## THIS DOESNT WORK
-  #def remove_breaks
-  #@shift = Shift.find(params[:id])
-  #@shift.update(
-  #breaks:        [],
-  #break_in:      [],
-  #break_out:     [],
-  #break_duration: 0
-  #)
-  #skip_authorization
-  #end
 
   # POST /shifts
   # POST /shifts.json
@@ -78,7 +45,7 @@ class Company::ShiftsController < ApplicationController
 
     respond_to do |format|
       if @shift.save
-        format.html { redirect_to company_jobs_path, anchor: "job_#{@shift.job_id}", notice: 'Sucessfully clocked in.' }
+        format.html { redirect_to company_shifts_path, anchor: "job_#{@shift.job_id}", notice: "Sucessfully created a shift for " + "#{@shift.employee.name}" }
         format.json { render :show, status: :created, location: @shift }
       else
         format.html { render :new }

@@ -7,6 +7,7 @@ class TimesheetPdf < Prawn::Document
         @employee = @timesheet.employee
         @current_agency = @timesheet.agency
         @company = @timesheet.company
+        @job_order = @timesheet.job.order
         @view = view_context
         @color ||= @timesheet.approved? ? "cccccc" : "ff0000"
         @status ||= @timesheet.approved? ? "Approved by: #{@timesheet.user_approved}" : ""
@@ -16,8 +17,10 @@ class TimesheetPdf < Prawn::Document
         text "Dates: #{@timesheet.time_frame }", :color => @color, align: :left, size: 14
         text @status, :color => "#ccc", align: :right, size: 16
         move_down 20
-        text " #{@company.name }", size: 30, style: :bold, :align => :center, :size => 18
-        move_down 10
+        text " #{@company.name } - #{@job_order.title }", size: 30, style: :bold, :align => :center, :size => 18
+        move_down 5
+        text " #{@current_agency.name }"
+        move_down 5
         text "Employee: #{@employee.name }"
         move_down 20
         text "Gross Pay: #{@view.number_to_currency(@subtotal)}", style: :bold, align: :right, size: 16
@@ -32,6 +35,8 @@ class TimesheetPdf < Prawn::Document
         
        
         move_down 20
+        start_new_page
+        notes
     end
     def details
         stroke_horizontal_rule
@@ -57,9 +62,12 @@ class TimesheetPdf < Prawn::Document
     
     
     def timesheets2
-        @t = [["ID", "Date", "Pay Rate", "Hours", "Shift Earnings"]]
+        running_total = 0
+        @t = [["ID", "Date", "Pay Rate", "Hours", "Shift Earnings", "Running Total"]]
         @timesheet.shifts.map do |shift|
-           @t <<  [shift.id, shift.work_date, price(shift.pay_rate), shift.hours_worked.round(2), price(shift.earnings)]
+            running_total += shift.earnings
+           @t <<  [shift.id, shift.work_date, price(shift.pay_rate), shift.hours_worked.round(2), price(shift.earnings), running_total]
+           
         end
         @t
     end
@@ -68,8 +76,7 @@ class TimesheetPdf < Prawn::Document
         @view.number_to_currency(number)
     end
     def words
-        string = "This is the sample text used for the text boxes. See how it " +
-         "behave with the various overflow options used."
+        string = @timesheet.job.order.notes
         text string
         y_position = cursor - 20
         [:truncate, :expand, :shrink_to_fit].each_with_index do |mode, i|
@@ -79,7 +86,18 @@ class TimesheetPdf < Prawn::Document
          :overflow => mode
         end
     end
-
+    
+    def notes
+        string = ""
+        text_box string, :at => [0, cursor],
+         :width => 400,
+         :height => 500,
+         :overflow => :shrink_to_fit
+    end
+    
+    
+    
+    
    
     def helpers
         ActionController::Base.helpers

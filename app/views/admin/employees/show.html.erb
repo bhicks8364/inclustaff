@@ -16,7 +16,6 @@
       <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
         <li role="presentation"><a href="#work_history" aria-controls="work_history" role="tab" data-toggle="tab">Work History</a></li>
-        <li role="presentation"><a href="#skills-tab" aria-controls="skills-tab" role="tab" data-toggle="tab">Skills</a></li>
         <% if @employee.shifts.any? %>
         <li role="presentation"><a href="#payroll" aria-controls="payroll" role="tab" data-toggle="tab">Payroll Information</a></li>
         <li role="presentation"><a href="#aca" aria-controls="aca" role="tab" data-toggle="tab">ACA Information</a></li>
@@ -34,7 +33,7 @@
       <div role="tabpanel" class="tab-pane fade in active" id="home">
           <div class='col-md-12'>
            <div class='col-md-3'>
-               <h4>Contact Info</h4>
+               Contact Info
                <p class=''><i class="fa fa-envelope-o"></i> 
                <%= @employee.email %></p>
                <%= render "users/user", user: @user %>
@@ -42,26 +41,26 @@
               
             </div>
         <div class='col-md-3'>
-            <h4>Employee Details</h4>
+            Employee Details
                 <p class='lead'><i class="fa fa-wrench"></i> <%= @employee.desired_job_type %></p>
                 <p class='lead'><i class="fa fa-clock-o"></i>  <%= @employee.desired_shift %></p>
                 
         </div>
         <div class='col-md-3'>
-            <h4>Availablility</h4>
+            Availablility
             <%= render 'admin/employees/availability', employee: @employee %>
         </div>
         <div class='col-md-3'>
             
-            <h4 class=''>Current Job Assignment</h4>
+            Current Job Assignment
              <% @employee.jobs.active.each do |job| %>
               <%= link_to job.title, admin_job_path(job) %> 
-              <h4 class=''>Current Company</h4>
+              Current Company
               <%= link_to job.company.name, admin_company_path(job.company) %>
                
             <% end %>
         
-             <h4>Tags</h4>
+             Tags
               <%= highlight(@employee.tag_list.to_s, ActsAsTaggableOn::Tag.all.map(&:name), highlighter: '<a href="/tags?tag=\1" class="">\1</a>') %>
         </div>
             
@@ -179,7 +178,7 @@
               <h5 class='text-center'>Past Job Assignments</h5>
         <% @employee.jobs.inactive.each do |job| %>
        
-          <h4><%= job.company %> <small> <%= job.title %></small></h4>
+          <%= job.company %> <small> <%= job.title %></small>
           <small> Assignment duration: <%= distance_of_time_in_words(job.start_date, job.end_date, include_seconds: true) if job.end_date.present? %></small>
           <p><%= job.start_date.stamp('11/12') %> - <%= job.end_date.stamp('11/12') %></p>
             <% if job.comments.unread.any? %>
@@ -208,28 +207,7 @@
            <% end %>
          </div>
       </div>
-      <div role="tabpanel" class="tab-pane fade" id="skills-tab">
-          <div class='col-md-8'>
-        <% if @skills.count < 1 %>
-           <h4 id='no-skills' class="text-center">This employee has no skills entered.</h4>
-          <% else %>
-           <h4 class='text-center'>Skills</h4>
-            <%= pie_chart @skills.group(:name).count, 
-            library: {backgroundColor: "#e5dbcf", legend: {position: "right"}, title: "Skills"} %>
-          <% end %>
-         </div>
-         <div class='col-md-4'>
-            <div id='skills'>
-             <% @employee.skills.each do |skill| %>
-              <%= render "admin/skills/skill", skill: skill %>
-            <% end %>
-            </div>
-            <div class='form-inline'>
-               <%= render partial: "admin/skills/form", locals: {skillable: @employee} %>
-             </div>
-         </div>
-             
-        </div>  
+     
       <!--SETTINGS TAB ADMIN ONLY ----> 
         <div role="tabpanel" class="tab-pane fade" id="settings">
             <div class='col-md-4'>

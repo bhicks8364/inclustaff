@@ -42,8 +42,8 @@
                             <span data-behavior="job-state">
                                 <h2 class='text-info'><%= @job.state %></h2>
                             </span>
-                            <div class='border pad bg-warning'>
-                                <% if @employee.available? %>
+                            <div class='well bg-warning'>
+                                <% if @employee.available? && policy(Job).approve?  %>
                                 <button type='button' class='btn btn-danger' data-behavior='active-job-cancel'>Decline </button>
                                 <button type='button' class='btn btn-success' data-behavior='job-toggle'>APPROVE </button>
                                 <% else %>
@@ -52,8 +52,8 @@
                                 <% end %>
                                 <h3 class='text-danger'> Sorry - <%=@employee.first_name %> is currently unavailable.</h3>
                                 <hr>
-                                <p class='text-muted bold'> <%=@employee.name%> already accepted a position as a <%= link_to @employee.current_job.title, admin_job_path(@employee.current_job), class: "button"%>
-                                at <%= link_to @employee.current_job.company.name, admin_job_path(@employee.current_job.company), class: "button" %></p>
+                                <p class='text-muted bold'> <%=@employee.name%> already accepted a position as a <%= link_to @employee.current_job.title, admin_job_path(@employee.current_job), class: "button" if @employee.current_job %>
+                                at <%= link_to @employee.current_job.company.name, admin_job_path(@employee.current_job.company), class: "button" if @employee.current_job %></p>
                                 <% end %>
                             </div>
                         </div>

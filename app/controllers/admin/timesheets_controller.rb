@@ -22,10 +22,11 @@ class Admin::TimesheetsController < ApplicationController
             if @company.present?
                 if @scope == "current_week"
                     @pdf_timesheets = @company.timesheets.current_week.order(week: :asc).distinct
+                    
                 elsif @scope == "last_week"
                     @pdf_timesheets = @company.timesheets.last_week.order(week: :asc).distinct
                 else
-                    @pdf_timesheets = @company.timesheets.order(week: :asc).distinct if @pdf_timesheets.present?
+                    @pdf_timesheets = @company.timesheets.order(week: :asc).distinct
                 end
                 format.pdf {
                     send_data CompanyTimesheetPdf.new(@company, @pdf_timesheets, view_context, @scope, @signed_in).render,

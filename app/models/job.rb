@@ -135,9 +135,8 @@ class Job < ActiveRecord::Base
         @requested_employees ||= User.where(last_name: mentions)
     end
 
-    def pending_approval?
-        state == "Pending Approval"
-    end
+    def pending_approval?; state == "Pending Approval"; end
+    def currently_working?; state == "Currently Working"; end
     def declined?
         state == "Declined by agency" || state == "Declined by company" || state == "Declined by employee" || state == "Declined by other" || state == "Already Working"
     end
@@ -164,7 +163,7 @@ class Job < ActiveRecord::Base
        !shifts.clocked_in.any? && !shifts.on_break.any?
     end
     def update_employee
-        active? ? employee.update(assigned: true) : employee.update(assigned: false)
+        currently_working? ? employee.update(assigned: true) : employee.update(assigned: false)
     end
 
     def self.by_recuriter(admin_id)
@@ -220,6 +219,7 @@ class Job < ActiveRecord::Base
 
     def defaults
         self.active = false if active.nil?
+        self.active = true if state == "Currently Working"
         self.start_date = Date.today if start_date.nil?
         self.settings = {} if settings.nil?
         self.vacation = {} if vacation.nil?

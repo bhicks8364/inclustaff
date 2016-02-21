@@ -116,7 +116,9 @@ class User < ActiveRecord::Base
     "#{id}-#{name.parameterize }"
   end
   def online?
-    updated_at > 10.minutes.ago
+    if current_sign_in_at.present?
+      current_sign_in_at > 10.minutes.ago
+    end
   end
 
   scope :dns, -> { joins(:employee).merge(Employee.dns)}

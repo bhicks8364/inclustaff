@@ -26,8 +26,8 @@ class Admin::CompaniesController < ApplicationController
     @orders = @company.orders
     @jobs = @company.jobs
 
-    @timesheets = @company.timesheets.order(updated_at: :desc)
-    @last_week_timesheets = @timesheets.last_week.order(updated_at: :desc)
+    @timesheets = @company.timesheets.order(updated_at: :desc).distinct
+    @last_week_timesheets = @timesheets.last_week.order(updated_at: :desc).distinct
 
     @all_users = @company.admins
     @employees = @company.employees
@@ -40,6 +40,25 @@ class Admin::CompaniesController < ApplicationController
     @yesterday = @company.shifts.yesterday
     # @today = @company.shifts.in_today.order(time_in: :desc)
     # @yesterday = @company.shifts.in_yesterday.order(time_in: :desc)
+    @pdf_type = params[:pdf_type]
+    respond_to do |format|
+      format.html
+      if @pdf_type =="info"
+      format.pdf {
+                    send_data CompanyPdf.new(@company, @signed_in, @current_agency, view_context, @pdf_type).render,
+                    filename: "#{@current_agency.name}-#{@pdf_type}-#{Time.current}.pdf",
+                    type: "application/pdf",
+                    disposition: :inline
+                }
+      elsif @pdf_type == "agreement"
+        format.pdf {
+                    send_data CompanyAgreementPdf.new(@company, @signed_in, @current_agency, view_context, @pdf_type).render,
+                    filename: "#{@current_agency.name}-#{@pdf_type}-#{Time.current}.pdf",
+                    type: "application/pdf",
+                    disposition: :inline
+                }
+      end
+    end
   end
 
   # GET /companies/new

@@ -102,7 +102,7 @@ class Order < ActiveRecord::Base
     scope :with_active_jobs, -> { joins(:jobs).merge(Job.active)}
     scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.current_week)}
     scope :off_shift, -> { joins(:jobs).merge(Job.off_shift)}
-    scope :needs_attention, -> { where(Order[:number_needed].gt(Order[:jobs_count])) }
+    scope :needs_attention, -> { active.where(Order[:number_needed].gt(Order[:jobs_count])) }
     scope :filled, -> { where(Order[:jobs_count].gteq(Order[:number_needed])) }
     scope :priority, -> { needs_attention.where(Order[:needed_by].lteq(Time.current + 3.days))}
     scope :newly_added, -> { needs_attention.where(Order[:created_at].gteq(Time.current - 1.day))}
@@ -138,6 +138,22 @@ class Order < ActiveRecord::Base
         end
       end
     end
+    def status
+        if overdue?
+            "Overdue"
+        elsif priority?
+           "Priority"
+        elsif needs_attention?
+            "Open"
+        elsif filled?
+           "Filled"
+        elsif inactive?
+            "Inactive"
+        else
+            ""
+        end
+      
+    end
     def inactive?
       active == false
     end
@@ -152,7 +168,7 @@ class Order < ActiveRecord::Base
     end
 
     def set_address
-      self.address = "#{company.address} #{company.city}, #{company.state}" if address.blank?
+      self.address = "#{company.address} #{company.city}, #{company.state}" if address.blank? && company.present?
     end
 
     def self.by_recuriter(admin_id)
@@ -266,9 +282,11 @@ class Order < ActiveRecord::Base
   end
 
   def note_skills
-    @note_skills ||= Skill.where(name: keywords).select(:name).distinct
-    @all_skills = @note_skills + skills.select(:name).distinct
-    @all_skills.uniq
+    @note_skills = Skill.where(name: keywords).distinct
+    @note_skills
+    
+    # @all_skills = @note_skills + skills.select(:name).distinct
+    # @all_skills.uniq
   end
 
   def matching_skills

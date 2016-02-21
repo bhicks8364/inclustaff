@@ -95,7 +95,9 @@ class CompanyAdmin < ActiveRecord::Base
   def admin?;           false;  end
   def employee?;           false;  end
   def online?
-    updated_at > 10.minutes.ago
+    if current_sign_in_at.present?
+      current_sign_in_at > 10.minutes.ago
+    end
   end
   def mention_data; {name: "#{name}", content: "#{role}", company: "#{company.name}"}; end
   def managed_orders

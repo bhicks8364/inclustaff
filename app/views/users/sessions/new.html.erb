@@ -8,7 +8,7 @@
   <h3>Potential Candidate</h3>
   <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
   <div class="form-group">
-    <%= f.hidden_field :email, value: @current_agency.users.available.last.email, required: false %>
+    <%= f.input :email, as: :select, collection: @current_agency.users.available.order(:last_name), label_method: :name, value_method: :email, required: false, include_blank: false, label: false  %>
     <%= f.hidden_field :password, required: false, value: "password" %>
   </div>
 
@@ -21,6 +21,7 @@
   <h3>Working Employee</h3>
   <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
   <div class="form-group">
+    <%= f.input :email, as: :select, collection: @current_agency.employees.assigned.order(:last_name), label_method: :title, value_method: :email, required: false, include_blank: false, label: false  %>
     <%= f.hidden_field :email, value: @current_agency.jobs.active.last.employee.email, required: false %>
     <%= f.hidden_field :password, required: false, value: "password" %>
   </div>

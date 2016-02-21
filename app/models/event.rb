@@ -32,7 +32,7 @@ class Event < ActiveRecord::Base
     
     validates_presence_of :eventable_id, :eventable_type, :action
     
-    
+    default_scope { order(created_at: :desc) } 
     scope :admin, -> { where.not(admin_id: nil)}
     scope :employee, -> { where.not(user_id: nil)}
     scope :company_admin, -> { where.not(company_admin_id: nil)}

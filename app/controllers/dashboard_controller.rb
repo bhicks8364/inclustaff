@@ -35,7 +35,7 @@ class DashboardController < ApplicationController
         @jobs = current_admin.jobs.active.paginate(page: params[:page], per_page: 15)
         @timesheets = Timesheet.by_recruiter(current_admin.id)
 
-        @orders = Order.needs_attention.order(:needed_by).paginate(page: params[:page], per_page: 15)
+        @orders = Order.active.needs_attention.order(:needed_by).paginate(page: params[:page], per_page: 15)
         render 'admin/dashboard/recruiter'
       elsif current_admin.payroll?
         @timesheets = Timesheet.all

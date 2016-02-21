@@ -5,7 +5,7 @@
 	<% if event.eventable.present? %>
 		
 	    <strong>	<%= event.action.humanize.downcase %></strong>
-	    <%= signed_in_link_to event.eventable.title.titleize, event.eventable  %>
+	    <%= link_to event.eventable.title.titleize, event  %>
 			
 		<% else %>
 		edited a position that has been deleted.

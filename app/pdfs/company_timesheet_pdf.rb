@@ -1,19 +1,19 @@
 class CompanyTimesheetPdf < Prawn::Document
-    attr_reader :company, :timesheets, :view_context, :scoped_params, :signed_in
-    def initialize(company, timesheets, view_context, scoped_params, signed_in)
+    attr_reader :company, :pdf_timesheets, :view_context, :scoped_params, :signed_in
+    def initialize(company, pdf_timesheets, view_context, scoped_params, signed_in)
         @company = company
         @signed_in = signed_in
         @scope = scoped_params
         @agency = @company.agency
-        @timesheets = timesheets
-        @subtotal = @timesheets.sum(:gross_pay)
+        @pdf_timesheets = pdf_timesheets
         @view = view_context
-        @color ||= @timesheets.last.approved? ? "cccccc" : "ff0000"
-        @status ||= @timesheets.last.approved? ? "Approved by: #{@timesheets.last.user_approved}" : ""
+        @color ||= @pdf_timesheets.last.approved? ? "cccccc" : "ff0000"
+        @status ||= @pdf_timesheets.last.approved? ? "Approved by: #{@pdf_timesheets.last.user_approved}" : ""
         super()
         text @agency.name, color: "cccccc", style: :bold, align: :center, size: 12
         move_down 20
-        text @timesheets.last.time_frame if @scope != "all"
+        move_down 20
+        text @pdf_timesheets.last.time_frame if @scope != "all"
         stroke_horizontal_rule
         move_down 5
         text "Timesheet Report for #{@company.name}", style: :bold, align: :left, size: 16
@@ -21,7 +21,7 @@ class CompanyTimesheetPdf < Prawn::Document
         move_down 20
         stroke_horizontal_rule
         move_down 5
-        text "Total: #{price(@subtotal)}", style: :bold, align: :right, size: 14
+        text "Total: #{price(@total_pay)}", style: :bold, align: :right, size: 14
         move_down 30
         text "Copy prepared by: #{@signed_in.name}", color: "cccccc", style: :bold, align: :right, size: 10
         
@@ -39,17 +39,22 @@ class CompanyTimesheetPdf < Prawn::Document
         
     end
     def timesheet_rows
+        total = 0
         if @scope == "all"
             @t = [["EmpID", "Week", "Employee", "Pay Rate", "Hours", "Gross Pay", "Approved by"]]
-            @timesheets.map do |timesheet|
+            @pdf_timesheets.map do |timesheet|
                @t <<  [timesheet.employee.id, timesheet.week_ending, timesheet.employee.name, price(timesheet.pay_rate), timesheet.total_hours.round(2), price(timesheet.gross_pay), timesheet.user_approved.titleize]
+            total += timesheet.gross_pay
             end
+            @t << ["", "", "", "", "Total", price(total)]
             @t
         else
             @t = [["EmpID", "Employee", "Pay Rate", "Hours", "Gross Pay", "Approved by"]]
-            @timesheets.map do |timesheet|
+            @pdf_timesheets.map do |timesheet|
                @t <<  [timesheet.employee.id, timesheet.employee.name, price(timesheet.pay_rate), timesheet.total_hours.round(2), price(timesheet.gross_pay), timesheet.user_approved.titleize]
+                total += timesheet.gross_pay
             end
+            @t << ["", "", "", "", "Total", price(total)]
             @t
             
         end
