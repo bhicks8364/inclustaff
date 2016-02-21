@@ -52,7 +52,7 @@ class Shift < ActiveRecord::Base
 
   # GEOCODER
   geocoded_by :in_ip
-  after_validation :geocode
+  after_validation :geocode, if: :in_ip_changed?
 
   # delegate :employee, to: :job
   delegate :order, to: :job

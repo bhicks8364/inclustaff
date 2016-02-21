@@ -5,7 +5,6 @@
 #  id         :integer          not null, primary key
 #  company_id :integer
 #  agency_id  :integer
-#  week       :integer
 #  due_by     :datetime
 #  paid       :boolean
 #  total      :decimal(, )
@@ -13,6 +12,7 @@
 #  date_paid  :datetime
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  week       :date
 #
 # Indexes
 #
@@ -59,11 +59,11 @@ class Invoice < ActiveRecord::Base
         recruiters.first
     end
     def defaults
-        due = Date.today.end_of_week if self.new_record?
+        # due = Date.today.end_of_week if self.new_record?
         self.total = 0 if total.nil?
         self.paid = false if self.paid.nil?
         self.amt_paid = 0 if self.amt_paid.nil?
-        self.due_by = due + 15.days if due_by.nil?
+        self.due_by = week + 15.days 
     end
     def self.without_timesheets
         includes(:timesheets).where( :timesheets => { :invoice_id => nil } )

@@ -5,7 +5,6 @@
 #  id         :integer          not null, primary key
 #  company_id :integer
 #  agency_id  :integer
-#  week       :integer
 #  due_by     :datetime
 #  paid       :boolean
 #  total      :decimal(, )
@@ -13,6 +12,7 @@
 #  date_paid  :datetime
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  week       :date
 #
 # Indexes
 #

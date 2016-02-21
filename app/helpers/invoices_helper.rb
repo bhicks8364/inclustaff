@@ -5,7 +5,6 @@
 #  id         :integer          not null, primary key
 #  company_id :integer
 #  agency_id  :integer
-#  week       :integer
 #  due_by     :datetime
 #  paid       :boolean
 #  total      :decimal(, )
@@ -13,6 +12,7 @@
 #  date_paid  :datetime
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  week       :date
 #
 # Indexes
 #
@@ -53,7 +53,7 @@ module InvoicesHelper
             title='#{inv.state} on #{inv.paid_on}'></i></span>".html_safe
         elsif inv.unpaid? && inv.timesheets_approved?
             "<span class='red'><i class='fa fa-exclamation' data-toggle='tooltip' data-placement='top'
-            title='#{inv.state} - Due #{distance_of_time_in_words(inv.due_by, Time.current, include_seconds: true)} ago'></i></span>".html_safe
+            title='#{inv.state} - Due #{inv.due_by > Date.today ? "in" : ""} #{distance_of_time_in_words(inv.due_by, Time.current, include_seconds: true)} #{inv.due_by < Date.today ? "ago" : ""}'></i></span>".html_safe
         elsif !inv.timesheets_approved? && inv.current?
             "<span class='black'><i class='fa fa-history' data-toggle='tooltip' data-placement='top'
             title='#{inv.state} - #{pluralize(inv.timesheets.count, 'timesheet')}'></i></span>".html_safe

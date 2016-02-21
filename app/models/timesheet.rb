@@ -51,6 +51,7 @@ class Timesheet < ActiveRecord::Base
 
   after_save :update_company_balance!, if: :has_a_job?
   before_create :set_job, unless: :has_a_job?
+  before_save :set_total_hours
   # I dont think setting the invoice has to happen before_save. Maybe just before create?
   before_save :set_invoice, unless: :has_invoice?
   after_save :update_invoice!, if: :has_invoice?
@@ -86,26 +87,26 @@ class Timesheet < ActiveRecord::Base
 
   def receipt
     
-    # TimesheetPdf.new(
-    #   id: id,
-    #   message: "Weekly Pay Summary",
-    #   company: {
-    #     name: "#{company.agency.name}",
-    #     address: "8364 Oberlin Rd\nElyria, OH 44035",
-    #     email: "contact@inclustaff.com",
-    #     logo: Rails.root.join("app/assets/images/clock.png")
-    #   },
+    TimesheetPdf.new(
+      id: id,
+      message: "Weekly Pay Summary",
+      company: {
+        name: "#{company.agency.name}",
+        address: "8364 Oberlin Rd\nElyria, OH 44035",
+        email: "contact@inclustaff.com",
+        logo: Rails.root.join("app/assets/images/clock.png")
+      },
 
-    #   line_items: [
-    #     ["Week Ending",           week_ending],
-    #     ["Assignment", "#{job.id} (#{job.title})"],
-    #     ["Reg Hrs",        "#{reg_hours}    ($#{pay_rate.round(2)})"],
-    #     ["OT Hrs",       "#{ot_hours}    ($#{ot_rate.round(2)})"],
-    #     ["Gross Pay",         "$#{gross_pay.round(2)}"],
+      line_items: [
+        ["Week Ending",           week_ending],
+        ["Assignment", "#{job.id} (#{job.title})"],
+        ["Reg Hrs",        "#{reg_hours}    ($#{pay_rate.round(2)})"],
+        ["OT Hrs",       "#{ot_hours}    ($#{ot_rate.round(2)})"],
+        ["Gross Pay",         "$#{gross_pay.round(2)}"],
 
-    #     ["Payroll ID", "#{id} - #{week}"]
-    #   ]
-    # )
+        ["Payroll ID", "#{id} - #{week}"]
+      ]
+    )
   end
 
   def name
@@ -130,8 +131,7 @@ class Timesheet < ActiveRecord::Base
   def set_invoice
     company_id = company.id
     agency_id = company.agency.id
-    self.invoice = Invoice.current_week.find_or_create_by(agency_id: agency_id, company_id: company_id)
-    
+    self.invoice = Invoice.find_or_create_by(agency_id: agency_id, company_id: company_id, week: week)
   end
 
   def approved?; state == "approved"; end
@@ -145,11 +145,11 @@ class Timesheet < ActiveRecord::Base
     self.gross_pay = 0 if gross_pay.nil?
   end
 
-  def total_hours
+  def set_total_hours
     if reg_hours && ot_hours
-      reg_hours + ot_hours
+      self.total_hours = reg_hours + ot_hours
     elsif reg_hours
-      reg_hours
+      self.total_hours = reg_hours
     end
   end
 

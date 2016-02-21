@@ -102,6 +102,9 @@ class Company < ActiveRecord::Base
           orders.last.agency
       end
     end
+    def fulladdress
+      "#{address} #{city}, #{state}"
+    end
 
     def current_account_manager
       if preferences['current_account_manager'].present?
