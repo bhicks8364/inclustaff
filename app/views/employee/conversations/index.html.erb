@@ -1,0 +1,18 @@
+<h1>
+  <div class="pull-right">
+    <%= link_to "New Conversation", new_employee_conversation_path, class: 'btn btn-primary' %>
+  </div>
+
+  All Conversations
+</h1>
+
+
+<% @conversations.each do |conversation| %>
+  <hr />
+  <div>
+    <%= link_to employee_conversation_path(conversation) do %>
+      <h5><strong><%= conversation.subject %></strong></h5>
+      <p><%= conversation.recipients.map(&:name).join(", ") %></p>
+    <% end %>
+  </div>
+<% end %>

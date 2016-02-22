@@ -1,0 +1,37 @@
+<p><%= link_to "Back to all conversations", company_conversations_path %></p>
+
+<div class="row">
+  <div class="col-sm-9">
+    <h1><%= @conversation.subject %></h1>
+    <hr />
+
+    <% @conversation.receipts_for(current_company_admin).order(created_at: :asc).each do |receipt| %>
+      <div>
+        <div>
+          <div class="pull-right"><%= local_time_ago(receipt.created_at) %></div>
+          <strong><%= receipt.message.sender.name %></strong>
+        </div>
+        <p><%= simple_format receipt.message.body %></p>
+      </div>
+
+      <hr />
+    <% end %>
+
+    <%= form_tag company_conversation_messages_path(@conversation), method: :post do %>
+      <div class="form-group">
+        <%= text_area_tag :body, nil, required: true, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= submit_tag "Send Message", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-sm-3">
+    <h5>In this conversation</h5>
+    <% @conversation.participants.each do |participant| %>
+      <div><%= participant.name %></div>
+    <% end %>
+  </div>
+</div>

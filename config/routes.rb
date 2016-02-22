@@ -169,6 +169,9 @@ Rails.application.routes.draw do
         end
       end
 
+      resources :conversations do
+        resources :messages
+      end
     end
     # END ADMIN
 
@@ -176,7 +179,9 @@ Rails.application.routes.draw do
     namespace :company do
       get  'dashboard' => 'dashboard#home'
       get 'timeclock' => 'dashboard#timeclock'
-      resources :company_admins
+      get 'admins' => 'dashboard#admins'
+      get 'admin/:id' => 'dashboard#admin', as: :admin_profile
+
       resources :orders do
         collection do
           get 'inactive'
@@ -212,6 +217,10 @@ Rails.application.routes.draw do
             patch :stop
           end
         end
+      end
+
+      resources :conversations do
+        resources :messages
       end
     end
     # END COMPANY_ADMIN
@@ -249,6 +258,10 @@ Rails.application.routes.draw do
       end
 
       resources :timesheets
+
+      resources :conversations do
+        resources :messages
+      end
     end
     # END EMPLOYEE
 

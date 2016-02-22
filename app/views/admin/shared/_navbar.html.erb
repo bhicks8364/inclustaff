@@ -17,10 +17,10 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <% if admin_signed_in? %>
-     
+
       <ul class="nav navbar-nav navbar-left">
         <%= render "admin/sidebars/payroll_links" if @current_admin.payroll? || @current_admin.owner? %>
-        
+
       </ul>
       <% end %>
       <ul class="nav navbar-nav">
@@ -40,11 +40,12 @@
           </ul>
         </li>
         <% end %>
-        
-        
+
+
       </ul>
       <ul class='nav navbar-nav navbar-right'>
         <%= render "admin/sidebars/reports" if @current_admin.payroll? || @current_admin.owner? %>
+        <li><%= link_to admin_conversations_path do %><i class="fa fa-comments-o"></i> <span class="badge badge-default"><%= current_admin.mailbox.inbox.count %></span><% end %></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-users"></i> </a>
           <ul class="dropdown-menu">

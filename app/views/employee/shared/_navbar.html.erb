@@ -31,7 +31,7 @@
 						<span>Profile</span>
 					<% end %>
 				</li>
-				<% if @employee.assigned? %>
+				<% if current_user.employee.assigned? %>
 				<li><%= link_to employee_timesheets_path do %>
 					<i class="fa fa-clock-o"></i>
 						<span>Timesheets</span>
@@ -55,6 +55,8 @@
 			    <li><%= link_to "<i class='fa fa-power-off'></i> Sign Out".html_safe, destroy_user_session_path, method: :delete  %></li>
 			  </ul>
 			</li>
+
+      <li><%= link_to employee_conversations_path do %><i class="fa fa-comments-o"></i> <span class="badge badge-default"><%= current_user.mailbox.inbox.count %></span><% end %></li>
 		</ul>
 
 

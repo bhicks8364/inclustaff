@@ -1,4 +1,4 @@
-  
+
   <div class="">
     <%= simple_form_for [:admin, @company, @order], html: { class: 'form' } do |f| %>
 	<%= f.error_notification %>
@@ -20,23 +20,20 @@
 		<div class='form-group'>
 			<%= f.input :mobile_time_clock_enabled, as: :select, label_html: { class: 'mobile_timeclock' }, label: "Do you want to enable mobile time clocks for these employees?", input_html: {class: 'mobile_timeclock_input'}, include_blank: false   %>
 		</div>
-		<div class='form-inline'>
-			<div class='form-group'>
-				<%= f.input :active, as: :select, label: "Do you want to make this posting public?" %>
+		<div class='form-group'>
+			<p class='bold'>Do you want to make this posting public?</p>
+			<div class=''>
+				<%= f.input :published_at, wrapper_html: {class: "form-inline"}, default: Date.today, as: :date, end_year: Date.today.year + 1, start_year: Date.today.year, order: [:month, :day, :year], label: false %>
 			</div>
 			
 		</div>
-		
+
 		<div class='form-group'>
 			<p class='bold'>When should this post expire from public view?</p>
 			<div class=''>
-				<div class='form-group'>
-					<%= f.hidden_field :published_at, wrapper_html: {class: "date-input"}, default: Date.today, as: :date, end_year: Date.today.year + 1, start_year: Date.today.year, order: [:month, :day, :year], label: false %>  
-					<%= f.input :expires_at, wrapper_html: {class: "form-inline date-input"}, 
-				default: Date.today + 14.days, as: :date, end_year: Date.today.year + 1, 
-				start_year: Date.today.year, order: [:month, :day, :year], label: false %>  
-				</div>
-				
+				<%= f.input :expires_at, wrapper_html: {class: "form-inline"},
+				default: Date.today + 14.days, as: :date, end_year: Date.today.year + 1,
+				start_year: Date.today.year, order: [:month, :day, :year], label: false %>
 			</div>
 		</div>
 		<div id='skills' class='form-group'>
@@ -68,7 +65,7 @@
 		<div class='form-group'>
 			<%= f.input :aca_type, collection: ["Variable-Hour", "Full-Time", "Part-Time"], include_blank: false %>
 		</div>
-	
+
 		<div class='form-group'>
 			<%= f.input :est_duration, as: :select,	collection: [ "Temp-to-Hire", "Direct-Hire", "Temporary", "Payroll"], include_blank: false %>
 			<%= f.input :bg_check, collection: ["None", "Case-by-case", "No Felonies"], include_blank: false, label: "Background Screening" %>
@@ -79,15 +76,20 @@
 		<div class='form-group'>
 			<%= f.input :years_of_experience, as: :select, collection: 0..25, label: "Minimum years of experience", input_html: {class: 'form-control'}, include_blank: false   %>
 			<%= f.input :certifications, placeholder: "Required Education/Certifications, if any." %>
-			
+
 			<%= f.input :shift, as: :select,
-				collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible"], 
+				collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible"],
 				label: "Select shift needed", include_blank: false %>
 		</div>
 		<div class='form-group'>
 			<%= f.association :account_manager, collection: @current_agency.admins.account_managers.order(:last_name), prompt: "Select Account Manager" if @current_admin.role != "Account Manager" %>
+<<<<<<< HEAD
 			<%= f.association :manager, collection: @company.admins.real_users.order(:last_name), prompt: "Select Company Manager" if @company.present? %>
 			
+=======
+			<%= f.association :manager, collection: @company.admins.order(:last_name), prompt: "Select Company Manager" if @company.present? %>
+
+>>>>>>> ee6541ba3f6f66bd8ec20a19016558acf1293efc
 		</div>
 		<div class='form-group'>
 			<%= f.input :agency_approval, as: :select, label: "Agency approval needed?", include_blank: false %>
@@ -99,9 +101,9 @@
 	</div>
 	
 
-	
-	
-		
+
+
+
 
 	<div class='form-actions'>
 		<%= f.button :submit %>
