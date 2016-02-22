@@ -18,7 +18,10 @@
 //= require dataTables/jquery.dataTables
 //= require bootstrap-sprockets
 //= require cocoon
+//= require local_time
+//= require selectize
 
+//= require conversations
 //= require chartkick
 //= require popovers
 //= require tooltips

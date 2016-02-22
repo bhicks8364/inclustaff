@@ -12,17 +12,17 @@
 			       <%= @current_agency.name %>
 			 <% end %>
     </div>
-    
-	
+
+
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		<ul class="nav navbar-nav">
 			<%= render "company/shared/owner_links" if current_company_admin.owner? %>
 			    <%= render "company/shared/manager_links" if current_company_admin.manager? %>
-			
+
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
-			
+      <li><%= link_to company_conversations_path do %><i class="fa fa-comments-o"></i> <span class="badge badge-default"><%= current_company_admin.mailbox.inbox.count %></span><% end %></li>
 			<li class="dropdown">
 			  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  <span class="text-info"><%= @current_company.name %> <i class="fa fa-arrow-circle-o-down fa-lg"></i></span></a>
 			  <ul class="dropdown-menu">
@@ -39,7 +39,7 @@
 			<%= render 'company/shared/clocked_in' if  @current_company.jobs.on_shift.any?  %>
 			<%= render 'company/shared/on_break' if @current_company.jobs.on_break.any?  %>
 		</ul>
-     
+
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>

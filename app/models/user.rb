@@ -56,6 +56,8 @@
 #
 
 class User < ActiveRecord::Base
+  acts_as_messageable
+
   has_one :employee, dependent: :destroy
   has_many :jobs, through: :employee
   has_many :shifts, through: :employee
@@ -124,7 +126,7 @@ class User < ActiveRecord::Base
   scope :available, -> { joins(:employee).merge(Employee.available)}
   scope :assigned, -> { joins(:employee).merge(Employee.with_active_jobs)}
   scope :online, -> { where("updated_at > ?", 10.minutes.ago) }
-  
+
   def company_admin?;           false;  end
   def admin?;           false;  end
   def employee?;           true;  end
@@ -171,7 +173,7 @@ class User < ActiveRecord::Base
   end
    # IMPORT TO CSV
   def self.assign_from_row(row, agency_id)
-    
+
     user = User.where(email: row[:email]).first_or_initialize
     user.assign_attributes row.to_hash.slice(:first_name, :last_name, :agency_id, :email, :code, :role, :address, :city, :state, :zipcode)
     user.password = "password"
@@ -198,5 +200,9 @@ class User < ActiveRecord::Base
     else
       false
     end
+  end
+
+  def mailboxer_email(object)
+    nil
   end
 end

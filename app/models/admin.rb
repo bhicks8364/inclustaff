@@ -52,6 +52,8 @@ class Admin < ActiveRecord::Base
   include ArelHelpers::ArelTable
   include ArelHelpers::JoinAssociation
 
+  acts_as_messageable
+
   devise :invitable, :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
 
   belongs_to :agency
@@ -216,5 +218,9 @@ class Admin < ActiveRecord::Base
     else
       0.00
     end
+  end
+
+  def mailboxer_email(object)
+    nil
   end
 end

@@ -51,6 +51,8 @@
 #
 
 class CompanyAdmin < ActiveRecord::Base
+  acts_as_messageable
+
   belongs_to :company
 
   has_many :jobs, through: :company
@@ -61,16 +63,16 @@ class CompanyAdmin < ActiveRecord::Base
   has_many :job_comments, through: :jobs, source: "comments"
   has_many :timesheet_comments, through: :timesheets, source: 'comments'
   has_many :shift_comments, through: :shifts, source: 'comments'
-  devise :invitable, :database_authenticatable, :registerable, 
+  devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-         
+
   geocoded_by :current_sign_in_ip
   after_validation :geocode
-  
-  
+
+
   validates :company_id, presence: true
   before_validation :set_name
-  
+
   scope :owners, -> { where(role: "Owner")}
   scope :managers, -> { where(role: "Manager")}
   scope :hr, -> { where(role: "HR")}
@@ -105,7 +107,8 @@ class CompanyAdmin < ActiveRecord::Base
       Order.by_manager(id)
     end
   end
-  
-  
- 
+
+  def mailboxer_email(object)
+    nil
+  end
 end

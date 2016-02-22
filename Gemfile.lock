@@ -17,6 +17,15 @@ GIT
       i18n
       polyamorous (~> 1.1)
 
+GIT
+  remote: git://github.com/mailboxer/mailboxer.git
+  revision: 61aca134baca35ddda8bf4ac2aff4c1c39d62bda
+  specs:
+    mailboxer (0.13.0)
+      carrierwave (>= 0.5.8)
+      foreigner (>= 0.9.1)
+      rails (>= 3.2.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -89,6 +98,11 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    carrierwave (0.10.0)
+      activemodel (>= 3.2.0)
+      activesupport (>= 3.2.0)
+      json (>= 1.7)
+      mime-types (>= 1.16)
     chartkick (1.4.1)
     chronic (0.10.2)
     clockpicker-rails (0.0.2)
@@ -135,6 +149,8 @@ GEM
     ffaker (2.2.0)
     font-awesome-rails (4.5.0.1)
       railties (>= 3.2, < 5.1)
+    foreigner (1.7.4)
+      activerecord (>= 3.0.0)
     friendly_id (5.1.0)
       activerecord (>= 4.0.0)
     gemoji (2.1.0)
@@ -300,6 +316,7 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
+    selectize-rails (0.12.1)
     simple_calendar (2.0.6)
       rails (>= 3.0)
     simple_form (3.2.1)
@@ -390,6 +407,7 @@ DEPENDENCIES
   jquery-ui-rails (~> 5.0.5)
   launchy
   local_time (~> 1.0.0)
+  mailboxer!
   mandrill-api (~> 1.0, >= 1.0.53)
   paranoia (~> 2.1.0)
   pg (~> 0.18.4)
@@ -406,6 +424,7 @@ DEPENDENCIES
   sanitize (~> 4.0, >= 4.0.1)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
+  selectize-rails (~> 0.12.1)
   simple_calendar (~> 2.0)
   simple_form (~> 3.2.1)
   spring

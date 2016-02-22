@@ -39,6 +39,7 @@ gem 'jquery-datatables-rails', '~> 3.3.0'
 gem 'jquery-turbolinks', '~> 2.1'
 gem 'jquery-ui-rails', '~> 5.0.5'
 gem 'local_time', '~> 1.0.0'
+gem 'mailboxer', github: 'mailboxer/mailboxer'
 gem 'mandrill-api', '~> 1.0', '>= 1.0.53', require: 'mandrill'
 gem 'paranoia', '~> 2.1.0'
 gem 'pundit', '~> 1.0.1' # USER AUTHORIZATION
@@ -47,6 +48,7 @@ gem 'receipts', '~> 0.1.3'
 gem 'refile', '~> 0.5.5', require: ['refile/rails', 'refile/image_processing']
 gem 'refile-mini_magick', '~> 0.2.0'
 gem 'sanitize', '~> 4.0', '>= 4.0.1'
+gem 'selectize-rails', '~> 0.12.1'
 gem 'simple_calendar', "~> 2.0"
 gem 'simple_form', "~> 3.2.1"
 gem 'stamp', '~> 0.6.0'
