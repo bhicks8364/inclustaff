@@ -116,6 +116,10 @@ class Admin < ActiveRecord::Base
   def set_username
     self.username = name.gsub(/\s(.)/) {|e| $1.upcase}
   end
+  
+  def to_param
+    "#{id}-#{name.parameterize }"
+  end
 
   def online?
     if current_sign_in_at.present?

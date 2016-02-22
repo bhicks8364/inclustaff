@@ -158,6 +158,11 @@ class Order < ActiveRecord::Base
     def inactive?
       active == false
     end
+    
+    def to_param
+      "#{id}-#{title.parameterize }"
+    end
+    
     def needs_agency_approval?; requirements['agency_approval'] == "true"; end
     def needs_company_approval?;  requirements['company_approval'] == "true";  end
     def needs_approval?;  needs_agency_approval? || needs_company_approval?;  end

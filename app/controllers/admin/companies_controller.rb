@@ -5,7 +5,7 @@ class Admin::CompaniesController < ApplicationController
   # GET /companies
   # GET /companies.json
   def index
-    @companies = @current_agency.companies.distinct
+    @companies = Company.all
     @top_billing = Company.ordered_by_current_bill
 
     @import = Company::Import.new

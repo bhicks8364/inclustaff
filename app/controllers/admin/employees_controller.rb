@@ -42,6 +42,17 @@ class Admin::EmployeesController < ApplicationController
   
   def aca
     @employee = Employee.find(params[:id])
+    @job = @employee.current_job
+    respond_to do |format|
+      format.html
+      format.json
+      format.pdf {
+        send_data @employee.aca_report_pdf.render,
+          filename: "#{@job.title_company}-#{@employee.name}-candidate-sheet.pdf",
+          type: "application/pdf",
+          disposition: :inline
+      }
+    end
     skip_authorization
   end
   

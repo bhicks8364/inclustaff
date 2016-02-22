@@ -99,6 +99,9 @@ class CompanyAdmin < ActiveRecord::Base
       current_sign_in_at > 10.minutes.ago
     end
   end
+  def to_param
+    "#{id}-#{name.parameterize }"
+  end
   def mention_data; {name: "#{name}", content: "#{role}", company: "#{company.name}"}; end
   def managed_orders
     if owner?

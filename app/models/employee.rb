@@ -279,4 +279,35 @@ class Employee < ActiveRecord::Base
       end
     end
   end
+  
+  def aca_report_pdf
+    EmployeeAcaPdf.new(
+      id: id,
+      name: name,
+      email: email,
+      initial_start_date: initial_start_date,
+      company_name: company.name,
+      message: "ACA Report for #{name}  ",
+      company: {
+        name: "#{company.name}",
+        address: "#{company.address}",
+        email: "#{company.contact_email}",
+        logo: Rails.root.join("app/assets/images/applicants.png")
+      },
+      line_items: [
+        year_report.to_a.flatten,
+        # ["Job Title",           title],
+        # ["Employee:",           employee.name],
+        # ["Recruiter:",          recruiter.name],
+        # ["Interview Notes",     description],
+        # ["Required Skills:",        "#{order.skills.required.order(:name).map(&:name).join(', ')}"],
+        # ["Other Skills:",        "#{order.skills.additional.order(:name).map(&:name).join(', ')}"],
+        # ["Candidate Skills:",        "#{employee.skills.order(:name).map(&:name).join(', ')}"],
+        # ["Needed By",         order.needed_by.stamp('11/12/2015')],
+        # ["Pay - Bill",         "$#{pay_rate.round(2)}  -  $#{bill_rate.round(2)}"],
+        # ["Mark Up",         mark_up_percent],
+        ["Start Date",         created_at.stamp('11/12/2015')]
+      ]
+    )
+  end
 end
