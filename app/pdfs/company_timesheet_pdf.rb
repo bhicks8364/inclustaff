@@ -7,13 +7,13 @@ class CompanyTimesheetPdf < Prawn::Document
         @agency = @company.agency
         @pdf_timesheets = pdf_timesheets
         @view = view_context
-        @color ||= @pdf_timesheets.last.approved? ? "cccccc" : "ff0000"
-        @status ||= @pdf_timesheets.last.approved? ? "Approved by: #{@pdf_timesheets.last.user_approved}" : ""
+        @color ||= @pdf_timesheets.last.approved? ? "cccccc" : "ff0000" if @pdf_timesheets.any?
+        @status ||= @pdf_timesheets.last.approved? ? "Approved by: #{@pdf_timesheets.last.user_approved}" : "" if @pdf_timesheets.any?
         super()
         text @agency.name, color: "cccccc", style: :bold, align: :center, size: 12
         move_down 20
         move_down 20
-        text @pdf_timesheets.last.time_frame if @scope != "all"
+        text @pdf_timesheets.last.time_frame if @scope != "all" if @pdf_timesheets.any?
         stroke_horizontal_rule
         move_down 5
         text "Timesheet Report for #{@company.name}", style: :bold, align: :left, size: 16

@@ -13,7 +13,7 @@ class Admin::ConversationsController < ApplicationController
 
   def new
     @admins = Admin.all - [current_admin]
-    @company_admins = CompanyAdmin.all
+    @company_admins = CompanyAdmin.real_users
     @users = User.all
   end
 

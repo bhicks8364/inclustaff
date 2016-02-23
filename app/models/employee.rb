@@ -62,6 +62,7 @@ class Employee < ActiveRecord::Base
   delegate :current_shift, to: :current_job
   delegate :account_manager, to: :current_job
   delegate :recruiter, to: :current_job
+  delegate :company, to: :current_job
   delegate :code, to: :user
   delegate :current_sign_in_ip, to: :user
 
@@ -121,9 +122,6 @@ class Employee < ActiveRecord::Base
   scope :new_starts, -> { joins(:jobs).where(Job[:start_date].gteq(Date.today.beginning_of_week).and(Job[:active].eq(true))) }
   scope :newly_added, -> { where("employees.created_at >= ?", 3.days.ago) }
 
-  def company
-    current_job.company if current_job.present?
-  end
   def initial_start_date
     if shifts.any?
       shifts.order(:time_in).first.time_in
