@@ -60,7 +60,7 @@
           </ul>
         </li>
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class='gravatar'><%=gravatar_for(@current_admin, options = { size: 25 })%></span> &nbsp; <%= @current_admin.name %></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class='gravatar'><%=gravatar_for(@current_admin, options = { size: 25 })%></span> &nbsp; <%= @current_admin.first_name %></a>
           <ul class="dropdown-menu">
             <li class=''><%= link_to "<i class='fa fa-user fa-fw'></i> View Profile ".html_safe, admin_admin_path(@current_admin) %></li>
             <li class=''><%= link_to "<i class='fa fa-edit fa-fw'></i> Edit Profile ".html_safe, edit_admin_admin_path(@current_admin) %></li>
