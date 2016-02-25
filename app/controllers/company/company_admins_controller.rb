@@ -60,7 +60,20 @@ class Company::CompanyAdminsController < ApplicationController
         gon.admins = @company_admins
         skip_authorization
     end
-    
+    def new
+      @company_admin = CompanyAdmin.new
+      skip_authorization
+    end
+  
+    def create
+      @company_admin = CompanyAdmin.invite! company_admin_params.merge(company_id: @current_company.id)
+      if @company_admin.persisted?
+        redirect_to company_company_admins_path, notice: 'You just added ' + "#{@company_admin.name}" + " as a #{@company_admin.role}. They will receive an email with further instructions."
+      else
+        redirect_to company_company_admins_path, notice: 'Unable to add admin'
+      end
+      skip_authorization
+    end
     def show
       @company_admin = @current_company.admins.find(params[:id])
       
@@ -74,9 +87,9 @@ class Company::CompanyAdminsController < ApplicationController
       @company_admin = CompanyAdmin.find(params[:id])
       @event = current_company_admin.events.create(action: "followed", eventable: @company_admin)
       if @event.save
-        redirect_to admins_path, notice: 'You are now following ' + "#{@company_admin.name}"
+        redirect_to company_company_admins_path, notice: 'You are now following ' + "#{@company_admin.name}"
       else
-        redirect_to admins_path, notice: 'Unable to follow ' + "#{@company_admin.name}"
+        redirect_to company_company_admins_path, notice: 'Unable to follow ' + "#{@company_admin.name}"
       end
       skip_authorization
     end
@@ -86,5 +99,8 @@ class Company::CompanyAdminsController < ApplicationController
     private
     def set_company
       @company = @current_company
+    end
+    def company_admin_params
+      params.require(:company_admin).permit(:first_name, :last_name, :email, :username, :role, :company_id, :agency_id, :password, :password_confirmation)
     end
 end

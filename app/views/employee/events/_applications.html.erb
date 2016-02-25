@@ -1,0 +1,6 @@
+<div class="list-group">
+	 <h3 class=''><i class="fa fa-file-text-o fa-fw"></i><strong>&nbsp; Applications</strong></h3>
+	<%= div_for @events.applications do |event| %>
+	 <%= render partial: "events/activities/applied", locals: {event: event} %>
+	<% end %>
+</div>

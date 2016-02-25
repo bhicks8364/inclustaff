@@ -1,0 +1,16 @@
+<%= div_for event do %>
+<% if !user_signed_in? %>
+<i class="fa fa-user fa-fw" data-toggle= "tooltip" title="<%=event.eventable.skills.map {|p| p.name.titleize}.join(', ')%> " ></i>
+<%= link_to event.eventable.name, event.eventable if !current_page?('/users/:id') %> 
+is
+   	<%= event.action.humanize.downcase %>
+   	
+   <% else %>
+   You updated as available for work
+   <% end %>
+		<span class='label label-info black pull-right'>
+		    <%= event.created_at.stamp('11/13 at 8:30am') %>
+		</span>
+	
+ 
+<% end %>

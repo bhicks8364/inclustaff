@@ -1,0 +1,11 @@
+<%= div_for event do %>
+	<i class="fa fa-certificate gold fa-fw"></i>
+	<%= event.admin.try(:first_name) if !current_page?('/admins/:id') %>
+	<%= event.company_admin.try(:first_name) if !current_page?('/company_admins/:id') %>
+	added
+    <strong><%= link_to event.eventable.name, admin_company_path(event.eventable) %></strong> as a new company.
+		<span class='label label-warning black pull-right'>
+		    <%= event.created_at.stamp('11/13 at 8:30am') %>
+		</span>
+
+<% end %>

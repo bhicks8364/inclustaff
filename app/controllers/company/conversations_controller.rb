@@ -1,5 +1,5 @@
 class Company::ConversationsController < ApplicationController
-  before_action :skip_authorization
+  before_action :skip_authorization, :set_company
 
   layout 'company_layout'
 
@@ -13,8 +13,8 @@ class Company::ConversationsController < ApplicationController
 
   def new
     @admins = Admin.all
-    @company_admins = CompanyAdmin.real_users - [current_company_admin]
-    @users = User.all
+    @company_admins = @company.admins.real_users - [current_company_admin]
+    @users = @company.users
   end
 
   def create
@@ -25,5 +25,13 @@ class Company::ConversationsController < ApplicationController
     receipt   = current_company_admin.send_message(recipients, params[:body], params[:subject])
     redirect_to company_conversation_path(receipt.conversation)
   end
+  
+  private
+  
+  def set_company
+    @company = current_company_admin.company
+  end
+  
+  
 end
 

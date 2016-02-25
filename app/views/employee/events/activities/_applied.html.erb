@@ -1,0 +1,16 @@
+
+<%= div_for event do %>
+	<i class="fa fa-check-square fa-fw green"></i>
+	<%= user_signed_in? ? "You" : event.user.name %> 
+	<% if event.eventable.present? %>
+		
+	    <strong>	<%= event.action.humanize.downcase %></strong>
+	    <%= link_to event.eventable.title.titleize, event  %>
+			
+		<% else %>
+		edited a position that has been deleted.
+	<% end %>
+	<span class='label label-success black pull-right'>
+	    <%= event.created_at.stamp('11/13 at 8:30am') %>
+	</span>
+<% end %>

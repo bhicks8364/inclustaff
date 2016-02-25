@@ -1,0 +1,11 @@
+<%= div_for event do %>
+<i class="fa fa-times fa-fw"></i>
+	<%= event.admin.try(:first_name) if !current_page?('/admins/:id') %>
+	<%= event.company_admin.try(:first_name) if !current_page?('/company_admins/:id') %>
+	marked a timesheet for <%=  signed_in_link_to event.eventable.name, event.eventable %> as 
+	<strong>	<%= event.action.humanize.downcase %></strong>
+		<span class='label label-warning black pull-right'>
+		    <%= event.created_at.stamp('11/13 at 8:30am') %>
+		</span>
+
+<% end %>

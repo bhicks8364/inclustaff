@@ -71,7 +71,7 @@ class CompanyAdmin < ActiveRecord::Base
 
 
   validates :company_id, presence: true
-  before_save :set_name
+  before_validation :set_name
   
   scope :owners, -> { where(role: "Owner")}
   scope :managers, -> { where(role: "Manager")}
@@ -111,6 +111,10 @@ class CompanyAdmin < ActiveRecord::Base
     else
       Order.by_manager(id)
     end
+  end
+  
+  def is_following?(user)
+    Event.where(admin_id: self.id, eventable: user, action: 'followed').any?
   end
 
   def mailboxer_email(object)

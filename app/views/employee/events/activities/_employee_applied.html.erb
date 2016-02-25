@@ -1,0 +1,18 @@
+<%= link_to employee_order_path(event.eventable), class: 'list-group-item list-group-item-success' do %>
+	<% if user_signed_in?%>
+	<% else %>
+	<%= event.user.name %> applied  to
+	<% end %>
+	<strong> <%= event.eventable.title %></strong>  
+
+	<% if event.user.assigned? %>
+		<span class='label label-danger pull-right'>
+		   Assigned
+		</span>
+	<% else %>
+		<span class='label label-success pull-right'>
+		   <%= event.created_at.stamp('11/13 8:30am') %>
+		</span>
+	<% end %>
+	
+<% end %>

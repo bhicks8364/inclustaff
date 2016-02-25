@@ -101,13 +101,9 @@ class User < ActiveRecord::Base
   def has_no_employee?
     employee.nil?
   end
-  def admin?
-    false
-  end
   def owner?
     false
   end
-
 
   def set_role
     # Maybe this should change depending on if they have ever worked for the agency or if theyre just a candidate
@@ -197,11 +193,10 @@ class User < ActiveRecord::Base
   end
 
   def applied_to(order_id)
-    if Event.where(user_id: self.id, eventable_id: order_id, action: 'applied').any?
-      true
-    else
-      false
-    end
+    Event.where(user_id: self.id, eventable_id: order_id, action: 'applied').any?
+  end
+  def is_following?(user)
+    Event.where(admin_id: self.id, eventable: user, action: 'followed').any?
   end
 
   def mailboxer_email(object)

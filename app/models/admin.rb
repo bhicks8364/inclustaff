@@ -118,7 +118,6 @@ class Admin < ActiveRecord::Base
   def set_username
     self.username = name.gsub(/\s(.)/) {|e| $1.upcase}
   end
-  
   def to_param
     "#{id}-#{name.parameterize }"
   end
@@ -184,11 +183,7 @@ class Admin < ActiveRecord::Base
   end
 
   def is_following?(user)
-    if Event.where(admin_id: self.id, eventable: user, action: 'followed').any?
-      true
-    else
-      false
-    end
+    Event.where(admin_id: self.id, eventable: user, action: 'followed').any?
   end
 
   def current_billing

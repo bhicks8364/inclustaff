@@ -146,4 +146,7 @@ module OrdersHelper
             "#{number_to_currency(order.min_pay)} - #{number_to_currency(order.max_pay)}"
         end
     end
+    def order_count(order)
+        "<span class='' data-toggle='tooltip' data-placement='right' title='#{order.jobs.active.count}/#{order.number_needed}'>#{order.open_jobs}</span>".html_safe
+    end
 end

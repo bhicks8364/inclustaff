@@ -1,0 +1,23 @@
+
+<div class='col-md-12 lightbox'>
+    <h1><%= @company_admin.name %></h1>
+    
+   
+    <div class='col-md-2'>
+        <% if @company_admin.online? %> <%= image_tag("user-green.png", class: 'online-icon') %> <% end %>
+        <%= @company_admin.role %>
+
+        <%= @company_admin.email %>
+        <%= @company_admin.last_sign_in_ip if company_admin_signed_in? %>
+        <br>
+        <%= @company_admin.last_sign_in_at.present? ? @company_admin.last_sign_in_at.stamp("11/12 at 11:15am") : "Yet to sign in" %>
+
+    <%= link_to "Edit", edit_company_company_admin_path(@company_admin), class: "btn btn-primary" %>
+
+        
+    </div>
+     <div class='col-md-10'>
+         <%= render "quicklook", company: @company %>
+     </div>
+      
+</div>

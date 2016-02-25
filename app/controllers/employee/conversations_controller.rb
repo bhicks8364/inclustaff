@@ -1,5 +1,5 @@
 class Employee::ConversationsController < ApplicationController
-  before_action :skip_authorization
+  before_action :skip_authorization, :set_employee
 
   layout 'employee'
 
@@ -12,9 +12,9 @@ class Employee::ConversationsController < ApplicationController
   end
 
   def new
-    @admins = Admin.all
-    @company = current_user.employee.company
-    @company_admins = @company.admins.real_users
+    @admins = @current_agency.admins.recruiters 
+    @company = current_user.employee.company if @employee.assigned?
+    @company_admins = @company.admins.real_users if @company.present?
   end
 
   def create
@@ -23,5 +23,8 @@ class Employee::ConversationsController < ApplicationController
 
     receipt   = current_user.send_message(recipients, params[:body], params[:subject])
     redirect_to employee_conversation_path(receipt.conversation)
+  end
+  def set_employee
+    @employee = @current_user.employee
   end
 end

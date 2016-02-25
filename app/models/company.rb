@@ -37,7 +37,9 @@ class Company < ActiveRecord::Base
     has_many :orders, dependent: :destroy
     has_many :skills, through: :orders
     has_many :jobs, through: :orders
-    has_many :employees, through: :jobs
+    has_many :active_jobs, -> { where active: true }, through: :orders, class_name: "Job"
+    has_many :employees, through: :active_jobs
+    has_many :users, through: :employees
     has_many :shifts, through: :jobs
     has_many :timesheets, through: :jobs
     has_many :current_timesheets, through: :jobs

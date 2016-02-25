@@ -78,13 +78,5 @@ module UsersHelper
             
         end
     end
-    def follow(user)
-        if admin_signed_in? && !current_admin.is_following?(user)
-            link_to "<span class='button' data-placement='top' data-toggle='tooltip' title='Click to follow #{user.name}'><i class='fa fa-street-view fa-lg'></i>	</span>".html_safe, follow_user_path(user), method: :post, remote: true, class: "button"
-            
-        else
-            "<span class='button' data-placement='top' data-toggle='tooltip' title='Already following #{user.name}'><i class='fa fa-street-view fa-lg'></i></span>".html_safe
-            
-        end
-    end
+    
 end

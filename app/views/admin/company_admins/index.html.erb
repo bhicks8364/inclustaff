@@ -1,9 +1,10 @@
-<div class="col-md-8 well metal">
+<div class="col-md-8 well ">
 	<h2>Company Admins</h2>
 	<div class="table-responsive">
 		<table id='' class="table table-bordered">
 			<thead>
 				<tr>
+					<th></th>
 				   <th>Company</th>
 					<th>Name</th>
 					<th>Email</th>
@@ -11,6 +12,7 @@
 			</thead>
 			<tbody>
 				<%= content_tag_for(:tr, @company_admins) do |company_admin| %>
+				<td> <span id='<%=company_admin.id%>-follow-company_admin-icon'><%= follow(company_admin)  %></span></td>
 				<td><%= link_to company_admin.company.name, admin_company_path(company_admin.company), class: "button" %>	</td>
 				<td><%= render 'modal', company_admin: company_admin %></td>
 				<td class='white'><%= company_admin.email %>	</td>
@@ -20,7 +22,7 @@
 		<%= will_paginate @company_admins %>
 	</div>
 </div>
-<div class="col-md-4 well metal">
+<div class="col-md-4 well ">
 	<h2>Timeclocks</h2>
 	<div class="table-responsive">
 		<table id='' class="table table-bordered">

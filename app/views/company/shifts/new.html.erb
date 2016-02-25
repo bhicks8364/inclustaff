@@ -1,6 +1,11 @@
 <div class='col-md-12'>
    <h2 class='text-center'>Add a new shift</h2>
-   <div class='col-md-3'></div>
+   <div class='col-md-3'>
+      <% @company.employees.with_active_jobs.distinct.each do |employee| %>
+         <strong> <%= employee.name_title %> </strong> <br>
+         <%= employee.last_clock_out.stamp('Mon 11/12 at 1:05am') %><hr>
+      <% end %>
+   </div>
    <div class=''>
        <%= render 'form' %>
    </div>

@@ -223,13 +223,13 @@
       <%= link_to "All Company Timesheets", admin_company_timesheets_path(@company), class: "btn btn-success" %>
       <% if @order.timesheets.current_week.any? %>
       <h3><strong>This week timesheets</strong></h3>
-        <%= render "admin/timesheets/table", timesheets: @timesheets.current_week %>
+        <%= render "admin/timesheets/table", timesheets: @timesheets.current_week.distinct %>
       <% else %>
         <h3>No timesheets for this week yet.</h3>
       <% end %>
       <% if @order.timesheets.last_week.any? %>
         <h3><strong>Last week timesheets</strong></h3>
-      <%= render "admin/timesheets/table", timesheets: @timesheets.last_week %>
+      <%= render "admin/timesheets/table", timesheets: @timesheets.last_week.distinct %>
       <% else %>
         <h3>No timesheets last week.</h3>
       <% end %>

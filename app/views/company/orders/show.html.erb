@@ -22,7 +22,7 @@
       <strong>Company Manager</strong><br>
       <%=
          link_to_if(@order.manager.nil?, "Add Manager", { controller: "company/orders", action: "edit", id: @order }) do
-           link_to(@order.manager.name, @order.manager)
+           link_to(@order.manager.name, company_company_admin_path(@order.manager))
          end
       %>
       <br>

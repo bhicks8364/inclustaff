@@ -1,0 +1,16 @@
+<%= div_for event do %>
+	<i class="fa fa-user fa-fw"></i>
+	<%= event.admin.try(:first_name) if !current_page?('/admins/:id') %>
+	<%= event.company_admin.try(:first_name) if !current_page?('/company_admins/:id') %>
+    	<strong><%= event.action.humanize.downcase %> </strong> 
+    	<% if event.eventable_type == "Admin" %>
+    		<%= link_to event.eventable.name, admin_admin_path(event.eventable) %> 
+    	<% else %>
+    		<%= link_to event.eventable.name, event.eventable %> 
+    	<% end %>
+    	
+		<span class='label label-info black pull-right'>
+		  <%= event.created_at.stamp('11/13 at 8:30am') %>
+		</span>
+
+<% end %>

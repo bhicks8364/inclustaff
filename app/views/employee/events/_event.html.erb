@@ -1,0 +1,5 @@
+
+      <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+        <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
+      <% end %>
+    

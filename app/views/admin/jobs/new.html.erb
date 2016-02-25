@@ -1,4 +1,5 @@
 <div class='col-md-12 lightbox'>
+  <!--IF THE COMPANY HAS NO UNASSIGNED EMPLOYEES - - END-->
   <% if Employee.unassigned.empty? %>
   <div id="no-employees-alert" class="alert alert-danger text-center" role="alert"><br>
   <i class="fa fa-exclamation-triangle fa-3x fa-border"></i>
@@ -13,7 +14,7 @@
   <% if @order.present? %>
   <div class='col-md-3 well well-sm'>
     <h3 class=''>Matching Employees</h3>
-    <%@order.matching_employees.includes(:user).each do |employee| %>
+    <%@order.matching_employees.available.includes(:user).each do |employee| %>
     <p class=''><%= render 'users/modal', user: employee.user %></p>
     <% end %>
   </div>
@@ -27,5 +28,5 @@
 <% end %>
 
 
-<!--IF THE COMPANY HAS NO UNASSIGNED EMPLOYEES - - END-->
+
 </div>

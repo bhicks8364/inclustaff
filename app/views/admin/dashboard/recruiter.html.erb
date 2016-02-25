@@ -18,15 +18,18 @@
 					
 					<div class="tab-content">
 						<div class="tab-pane fade in active" id="tab-home">
+							
 							<div class="col-md-9 well well-sm">
-								<%= @orders.pluck(:industry) %>
 									<%= render "admin/orders/table", orders: @orders %>
 							</div>
 							<div class="col-md-3"><%= render "admin/shared/alerts/open_orders", orders: @orders %></div>
-							<div class="col-md-9">
-							  <h4 class='text-center'>Current Leaders</h4>
-							  <h5 class='text-center'><small>Based on current billing</small></h5>
+							<div class="col-md-6">
+							  <h4 class='text-center'>Current Leaders <small>Based on current billing</small></h4>
 							  <%= column_chart recruiter_ranking_path, ytitle: "Current Billing", xtitle: "Top 5 Recruiters", library: {isStacked: true, backgroundColor: "#e5dbcf"} %>
+							</div>
+							<div class="col-md-6">
+								<h4 class='text-center'> Open Job Orders <small>by industry</small></h4>
+								<%= pie_chart @orders.group('orders.industry').count, library: {backgroundColor: "#e5dbcf", is3D: true}%>
 							</div>
 							
 						</div>

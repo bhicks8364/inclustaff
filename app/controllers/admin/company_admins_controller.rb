@@ -78,12 +78,8 @@ class Admin::CompanyAdminsController < ApplicationController
   
   def follow
     @company_admin = CompanyAdmin.find(params[:id])
-    @event = current_company_admin.events.create(action: "followed", eventable: @company_admin)
-    if @event.save
-      redirect_to admin_company_admins_path, notice: 'You are now following ' + "#{@company_admin.name}"
-    else
-      redirect_to admin_company_admins_path, notice: 'Unable to follow ' + "#{@company_admin.name}"
-    end
+    @event = current_admin.events.create(action: "followed", eventable: @company_admin)
+    
     skip_authorization
   end
     

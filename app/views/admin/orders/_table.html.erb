@@ -25,7 +25,7 @@
           <td> <%= order.industry %></td>
           <td><%= link_to title_for(order), admin_order_path(order), class: "button" %></td>
           <td><%= pay_range(order) %></td>
-          <td><%= order.open_jobs %></td>
+          <td><%= order_count(order)%></td>
           <td class='text-center'><% if order.needs_attention? %><%= link_to "<i class='fa fa-user-plus fa-lg'></i>".html_safe, new_admin_order_job_path(order), class: "button"  %>
           <%else%><%= status_tag(order) %><% end %></td>
           <td><%= link_to "<i class='fa fa-pencil fa-fw'></i>".html_safe, edit_admin_order_path(order) %></td>

@@ -54,7 +54,7 @@
             <li class=''><%= link_to "<i class='fa fa-plus-square fa-fw'></i> New Employee".html_safe, new_user_registration_path if policy(User).create? %></li>
             <li role="separator" class="divider"></li>
             <li class=''><%= link_to "<i class='fa fa-list fa-fw'></i> &nbsp; Agency Users".html_safe, admin_admins_path if policy(Admin).index? %></li>
-            <li class=''><%= link_to "<i class='fa fa-list-alt fa-fw'></i> &nbsp; Company Users".html_safe, company_admins_path if policy(User).index? %></li>
+            <li class=''><%= link_to "<i class='fa fa-list-alt fa-fw'></i> &nbsp; Company Users".html_safe, admin_company_admins_path if policy(User).index? %></li>
             <li class=''><%= link_to "<i class='fa fa-wrench fa-fw'></i> &nbsp; Working Employees".html_safe, admin_jobs_path if policy(Job).index? %></li>
             <li class=''><%= link_to "<i class='fa fa-users fa-fw'></i> &nbsp; Candidate List".html_safe, users_path if policy(User).index? %></li>
           </ul>

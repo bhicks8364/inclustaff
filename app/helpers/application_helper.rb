@@ -60,4 +60,32 @@ module ApplicationHelper
         gravatar_url = "https://secure.gravatar.com/avatar/#{gravatar_id}?s=#{size}"
         image_tag(gravatar_url, alt: user.name, class: "gravatar")
     end
+    def unfollow(user)
+        event = @signed_in.events.where(action: "followed", eventable: user).first
+        if @signed_in.is_following?(user)
+            link_to "<i class='fa fa-user-times red'></i>".html_safe, event, class: "pull-right button small", method: :delete, data: { confirm: "Are you sure?", toggle: "tooltip", position: "right" }, title: "Unfollow"
+        end
+    end
+    def follow(user)
+        if @signed_in.is_following?(user)
+            "<span class='button' data-placement='top' data-toggle='tooltip' title='Already following #{user.name}'><i class='fa fa-check fa-lg green'></i></span>".html_safe
+        else
+            if user.company_admin?
+                link_to "<span class='button' data-placement='top' data-toggle='tooltip'
+                title='Click to follow #{user.name}'><i class='fa fa-street-view fa-lg'></i></span>".html_safe,
+                follow_admin_company_admin_path(user), method: :post, remote: true, class: "button"
+            elsif user.employee? 
+                link_to "<span class='button' data-placement='top' data-toggle='tooltip'
+                title='Click to follow #{user.name}'><i class='fa fa-street-view fa-lg'></i></span>".html_safe,
+                follow_user_path(user), method: :post, remote: true, class: "button"
+                
+            elsif user.agency?
+                link_to "<span class='button' data-placement='top' data-toggle='tooltip'
+                title='Click to follow #{user.name}'><i class='fa fa-street-view fa-lg'></i></span>".html_safe,
+                follow_admin_admin_path(user), method: :post, remote: true, class: "button"
+            else
+                "Idk"
+            end
+        end
+    end
 end

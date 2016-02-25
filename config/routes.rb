@@ -179,8 +179,12 @@ Rails.application.routes.draw do
     namespace :company do
       get  'dashboard' => 'dashboard#home'
       get 'timeclock' => 'dashboard#timeclock'
-      get 'admins' => 'dashboard#admins'
-      get 'admin/:id' => 'dashboard#admin', as: :admin_profile
+      resources :company_admins do
+        member do
+          post :mention
+          post :follow
+        end
+      end
 
       resources :orders do
         collection do

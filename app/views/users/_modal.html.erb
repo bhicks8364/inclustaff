@@ -8,7 +8,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h3 class='metal modal-title'><%= link_to user.name, user %></h3>
+        <h3 class=' modal-title'><%= link_to user.name, user %></h3>
       </div>
       
       <div class="modal-body">
@@ -18,11 +18,11 @@
           </div>
           <div class="col-md-7">
             <% if user.employee.work_histories.any? %>
-            <p class='text-info metal'>Recent Work History</p>
+            <p class='text-info '>Recent Work History</p>
             <%= render partial: 'work_histories/work_history', collection: user.employee.work_histories.order(:start_date).last(3)  %>
             <% else %>
-            <p class='text-danger metal'>No Recent Work History</p>
-            <%end %>
+            <p class='text-danger '>No Recent Work History</p>
+            <% end %>
             <% if user.employee.jobs.any? %>
               <% user.employee.jobs.each do |job| %>
                 <%= link_to job.title, admin_job_path(job) %> - <%= job.state %><br>
@@ -35,7 +35,7 @@
        
 
       <div class="modal-footer">
-         <p class='metal'><strong>Available as of: </strong> <span id='<%=user.id%>-updated-available-at'><%= user.checked_in_at? ? "#{time_ago_in_words(user.checked_in_at)} ago" : "" %></span></p>
+         <p class=''><strong>Available as of: </strong> <span id='<%=user.id%>-updated-available-at'><%= user.checked_in_at? ? "#{time_ago_in_words(user.checked_in_at)} ago" : "" %></span></p>
         
   				
       </div>
