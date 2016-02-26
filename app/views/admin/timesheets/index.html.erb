@@ -1,62 +1,22 @@
-
-    <div class='col-md-12 lightbox-long'>
-        
-        <h2 class='text-center metal'>Current Timesheets </h2>
-        <p class='lead'>Week Ending <%= @timesheets.current_week.first.try(:week_ending) %></p>
-        
-<div class='col-md-12'>
-    <% if @timesheets.present? %>
-    
-   <div class='' data-behavior="timesheet-list">
-<table class="table table-bordered inv_datatable">
-	<thead>
-		<th> Week Ending</th>
-		<th> Company</th>
-		<th>Employee</th>
-		<th> Gross Pay</th>
-		<th> Hours</th>
-		<th> Status</th>
+<span class='pull-right text-muted'><small>Week Ending <%= @timesheets.current_week.first.week_ending %></small> </span>
+<%= render "admin/timesheets/search" %>
+<div class='col-md-12' data-behavior='timesheet-list'>
+	<h1 class='text-center'>Current Timesheets </h1>
+	<div class='col-md-6'>
+		<h2 class='text-center'>Approved Timesheets </h2>
+		<% if @timesheets.approved.any? %>
 		
-	</thead>
-	<tbody>
-		<% @timesheets.current_week.includes(:job => :order).distinct.each do |timesheet| %>
-		<tr data-behavior="timesheet" data-id="<%= timesheet.id %>">
-			<td><strong>      <%= link_to timesheet.week_ending,admin_timesheet_path(timesheet), data: {toggle: "tooltip", placement: "right", title: "View Timesheet"}, class: "button"  %>
-    </div></strong></td>
-			<td><%= link_to timesheet.order.company, admin_company_path(timesheet.company), class: 'black'  %></td>
-	      	<td><%= link_to timesheet.employee.name, admin_employee_path(timesheet.employee), class: 'black' %></td>
-			<td><%= timesheet.gross_pay.present? ? number_to_currency(timesheet.gross_pay) : timesheet.shifts.last.state.upcase %></td>
-			<td><%= timesheet.total_hours.present? ? timesheet.total_hours.round(2) : timesheet.shifts.last.state.upcase %></td>
-			<td>
-				<a class='button' data-behavior="timesheet-toggle" >
-					<span  class="fa-stack" data-behavior="approve-button" >
-			          <% if timesheet.approved? %>
-						  <i class='fa fa-square-o fa-stack-2x'></i> <i class='fa fa-times fa-stack-1x'></i>
-			          <% else %>
-				          <i class='fa fa-square-o fa-stack-2x '></i>  <i class='fa fa-check fa-stack-1x'></i>
-			          <% end %>
-				    </span>
-				    <span data-behavior='timesheet-state'><%= timesheet.state.upcase %></span>
-				</a>
-			</td>
-		</tr>
+		<%= render "admin/timesheets/table", timesheets: @timesheets.approved %>
+		<% else %>
+		<h3>No approved timesheets to display.</h3>
 		<% end %>
-	</tbody>
-</table>
+	</div>
+	<div class='col-md-6'>
+		<h2 class='text-center'>Pending Timesheets </h2>
+		<% if @timesheets.pending.any? %>
+		<%= render "admin/timesheets/table", timesheets: @timesheets.pending %>
+		<% else %>
+		<h3>No pending timesheets to display.</h3>
+		<% end %>
+	</div>
 </div>
-
-    
-    <% else %>
-    <h3>No timesheets to display.</h3>
-    <% end %>
-
-</div>
-
-
-
-
-
-
-</div>
-
-

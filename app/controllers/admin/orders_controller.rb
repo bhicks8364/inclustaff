@@ -109,6 +109,7 @@ class Admin::OrdersController < ApplicationController
   def edit
    
     @order = Order.find(params[:id])
+    @order.skills
     authorize @order
     @company = @order.company
     @account_managers = @company.account_managers if @company.account_managers.any?

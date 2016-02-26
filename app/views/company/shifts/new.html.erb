@@ -1,9 +1,11 @@
 <div class='col-md-12'>
    <h2 class='text-center'>Add a new shift</h2>
-   <div class='col-md-3'>
-      <% @company.employees.with_active_jobs.distinct.each do |employee| %>
-         <strong> <%= employee.name_title %> </strong> <br>
-         <%= employee.last_clock_out.stamp('Mon 11/12 at 1:05am') %><hr>
+   <div class='col-md-3 scroll400 shift-employees'>
+      <% @company.employees.with_active_jobs.order(:last_name).distinct.each do |employee| %>
+         <p><strong> <%= employee.name %> </strong> <br> <small><%= employee.title %> </small><br>
+         <%= employee.last_clock_out %> 
+         </p>
+         
       <% end %>
    </div>
    <div class=''>

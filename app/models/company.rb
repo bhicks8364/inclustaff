@@ -104,6 +104,9 @@ class Company < ActiveRecord::Base
           orders.last.agency
       end
     end
+    def to_param
+      "#{id}-#{name.parameterize }"
+    end
     def fulladdress
       "#{address} #{city}, #{state}"
     end

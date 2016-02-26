@@ -60,15 +60,15 @@ module OrdersHelper
     def status_msg(order)
         @str = ""
         if order.overdue? 
-            @str += "Overdue " + "  #{order.needed_by.stamp("11/12/2015")}"
+            @str += "<p class='red'> Overdue " + "  #{order.needed_by.stamp("11/12/2015")} </p>"
         elsif order.priority?
-            @str += "Priority " + "    #{order.needed_by.stamp("11/12/2015")}"
+            @str += "<p class='red'> Priority " + "    #{order.needed_by.stamp("11/12/2015")} </p>"
         elsif order.needs_attention? && order.needed_by.present?
-            @str += "Open " + "  #{order.needed_by.stamp("11/12/2015")}"
+            @str += "<p class='bg-warning'> Open " + "  #{distance_of_time_in_words(order.needed_by, Time.current, include_seconds: true)} </p>"
         elsif order.filled?
-            @str += "Filled in " + "#{distance_of_time_in_words(order.created_at, order.jobs.last.try(:created_at), include_seconds: true)}"
+            @str += "<p class='green bold'> Filled in " + "#{distance_of_time_in_words(order.created_at, order.jobs.active.last.try(:created_at), include_seconds: true)} </p>"
         elsif order.has_pending_jobs?
-            @str += "<p class='green'><strong>Open</strong></p> " + " #{pluralize(order.jobs.pending_approval.count, 'placement')} pending" + "  #{order.needed_by.stamp("11/12/2015")}"
+            @str += "<p class='green bold'> Open with" + " #{pluralize(order.jobs.pending_approval.count, 'placement')} pending" + "  #{order.needed_by.stamp("11/12/2015")} </p>"
         end
         @str.html_safe
     end
@@ -124,7 +124,7 @@ module OrdersHelper
         end
     end
     def title_for(order)
-        "<span class='black' data-placement='right' data-toggle='tooltip' title=' #{ order.company.name}'>#{order.title }</span>".html_safe
+        "<span class='black' data-placement='right' data-toggle='tooltip' title=' #{ order.company.name}'>#{truncate(order.title, length: 15) }</span>".html_safe
     end
     def heavy_lifting(order)
         if order.heavy_lifting?
@@ -147,6 +147,6 @@ module OrdersHelper
         end
     end
     def order_count(order)
-        "<span class='' data-toggle='tooltip' data-placement='right' title='#{order.jobs.active.count}/#{order.number_needed}'>#{order.open_jobs}</span>".html_safe
+        "<span class='' data-toggle='tooltip' data-placement='right' title='#{order.jobs.active.count}/#{order.number_needed}'>#{order.open_jobs} needed </span>".html_safe
     end
 end

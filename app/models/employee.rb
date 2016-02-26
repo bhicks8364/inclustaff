@@ -43,7 +43,7 @@ class Employee < ActiveRecord::Base
   has_many :jobs, dependent: :destroy
   has_many :orders, :through => :jobs
   has_many :companies, :through => :orders
-  has_one :current_job, -> { where active: true }, class_name: "Job"
+  has_one :current_job, -> { where(active: true, state: "Currently Working") }, class_name: "Job"
   has_many :job_comments, through: :jobs, source: 'comments'
   has_many :comments, as: :commentable
   has_many :timesheets, :through => :jobs
@@ -89,7 +89,7 @@ class Employee < ActiveRecord::Base
     end
   end
 
-
+# employees.each {|e| e.update(desired_job_type: "Full-time")}
 
 
   # VALIDATIONS

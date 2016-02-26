@@ -1,66 +1,19 @@
-<div class='col-md-12 main-box'>
-  
-    <% if @timesheets.any? %>
-    <h1> <%= @employee.name %>'s Timesheets</h1>
-    <h3>Gross pay: <%= number_to_currency(@timesheets.sum(:gross_pay)) %></h3>
-<div class="table-responsive" data-behavior="timesheet-list">
-  <table id="timesheets" class="table" >
-  <thead>
-    <tr>
-      <th></th>
-      <th>Week</th>
-      <th>Title</th>
-      <th>Reg/OT Hrs</th>
-      <th>Gross pay</th>
-      <th>Status</th>
-      
-
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @timesheets.each do |timesheet| %>
-      <% if timesheet.clocked_in? %>
-        <tr class="clocked_in" data-behavior="timesheet" data-id="<%= timesheet.id %>">
-      <% else %>
-        <tr class="clocked_out" data-behavior="timesheet" data-id="<%= timesheet.id %>">
-      <% end %>
-      <td><%= link_to "<i class='fa fa-folder-open'></i>     View".html_safe, employee_timesheet_path(timesheet), class: "table-link" %></td>
-      <td><%= timesheet.week_ending %></td>
-        <td><%= link_to timesheet.job.title, employee_job_path(timesheet.job), class: "table-link" %></td>
-        <td><%= timesheet.reg_hours %>  |  <%= timesheet.ot_hours %></td>
-        <td><%= number_to_currency(timesheet.gross_pay) %></td>
-        <td class="text-center" data-behavior="timesheet-state">
-          <%if timesheet.approved? %>
-          <span class="label label-success">
-           <% else %>
-           <span class="label label-primary">
-            <% end %>
-              <%= timesheet.state.titleize %>
-           </span>
-           
-        </td>
-
-        
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class='col-md-12' data-behavior='timesheet-list'>
+    <%= render "employee/timesheets/search" %>
+   <div class='row'>
+        <div class='col-md-6'>
+            <h4 class='text-center'><strong>Pending Timesheets</strong></h4>
+            <div id=''>
+                <%= render "employee/timesheets/table", timesheets: @timesheets.pending || "There are no pending timesheets for this week yet." %>
+            </div>
+        </div>
+        <div class='col-md-6'>
+            <h4 class='text-center'><strong>Approved Timesheets</strong></h4>
+            <div id=''>
+                <%= render "employee/timesheets/table", timesheets: @timesheets.approved || "There are no approved timesheets for this week yet." %>
+            </div>
+        </div>
+    </div>
 </div>
 
-    
 
-
-<% else %>
-<h1><%= @current_user.present? ? @current_user.name : @company.name %> has no timesheets yet.</h1>
-
-
-<% end %>
-
-<br>
-
-    
-    
-
-
-</div>

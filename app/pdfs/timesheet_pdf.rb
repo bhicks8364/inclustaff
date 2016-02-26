@@ -13,15 +13,16 @@ class TimesheetPdf < Prawn::Document
         @status ||= @timesheet.approved? ? "Approved by: #{@timesheet.user_approved}" : ""
         move_down 10
         text "Invoice Id #:#{@timesheet.id }", :align => :right
+        text "Total Bill: #{price(@timesheet.total_bill) }", :align => :right
         font "Times-Roman"
         text "Dates: #{@timesheet.time_frame }", :color => @color, align: :left, size: 14
         text @status, :color => "#ccc", align: :right, size: 16
         move_down 20
         text " #{@company.name } - #{@job_order.title }", size: 30, style: :bold, :align => :center, :size => 18
+        stroke_horizontal_rule
         move_down 5
-        text " #{@current_agency.name }"
-        move_down 5
-        text "Employee: #{@employee.name }"
+        text " #{@current_agency.name }", align: :left, size: 14
+        text "Employee: #{@employee.name }", align: :right, size: 14
         move_down 20
         text "Gross Pay: #{@view.number_to_currency(@subtotal)}", style: :bold, align: :right, size: 16
         move_down 20
@@ -62,12 +63,9 @@ class TimesheetPdf < Prawn::Document
     
     
     def timesheets2
-        running_total = 0
-        @t = [["ID", "Date", "Pay Rate", "Hours", "Shift Earnings", "Running Total"]]
-        @timesheet.shifts.map do |shift|
-            running_total += shift.earnings
-           @t <<  [shift.id, shift.work_date, price(shift.pay_rate), shift.hours_worked.round(2), price(shift.earnings), running_total]
-           
+        @t = [["ID", "Date", "Pay Rate", "Hours", "Time In", "Time Out"]]
+        @timesheet.shifts.order(:time_in).map do |shift|
+           @t <<  [shift.id, shift.work_date, price(shift.pay_rate), shift.hours_worked.round(2), shift.time_in.stamp("11:30am"), shift.time_out.stamp("11:30am")]
         end
         @t
     end
@@ -88,7 +86,7 @@ class TimesheetPdf < Prawn::Document
     end
     
     def notes
-        string = ""
+        string = @job_order.notes
         text_box string, :at => [0, cursor],
          :width => 400,
          :height => 500,

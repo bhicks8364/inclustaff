@@ -4,12 +4,19 @@ class Company::TimesheetsController < ApplicationController
   layout 'company_layout'
 
   def index
-
     @admin = current_company_admin
     @company = @admin.company
-    @timesheets = @company.timesheets.order(updated_at: :desc)
+    @job = Job.find(params[:job_id]) if params[:job_id]
+    if @job.present?
+      @q = @job.timesheets.ransack(params[:q])
+      @timesheets = @q.result.includes(:job, :employee)
+    else
+      @q = @company.timesheets.ransack(params[:q])
+      @timesheets = @q.result.includes(:job, :employee)
+    end
     gon.timesheets = @timesheets
     authorize @timesheets
+    
     @scope = params[:scope]
     respond_to do |format|
       format.html
@@ -47,7 +54,7 @@ class Company::TimesheetsController < ApplicationController
       format.html
       format.json
       format.pdf {
-        send_data @timesheet.receipt.render,
+        send_data TimesheetPdf.new(@timesheet, view_context).render,
           filename: "#{@timesheet.week_ending}-#{@employee.name}-timesheet.pdf",
           type: "application/pdf",
           disposition: :inline

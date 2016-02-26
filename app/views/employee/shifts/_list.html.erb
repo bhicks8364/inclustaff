@@ -7,11 +7,11 @@
   <% if policy(@job).clock_in? %>
     <div class='break-actions'>
       <% if shift.on_break? %>
-        <%= link_to stop_employee_shift_breaks_path(shift), remote: true, method: :patch do %>
+        <%= link_to stop_employee_shift_breaks_path(shift), class: "btn btn-danger", remote: true, method: :patch do %>
           <i class='fa fa-clock-o'></i> End Break
         <% end %>
       <% elsif shift.clocked_in? %>
-        <%= link_to start_employee_shift_breaks_path(shift), remote: true, method: :post do %>
+        <%= link_to start_employee_shift_breaks_path(shift), class: "btn btn-success", remote: true, method: :post do %>
           <i class='fa fa-clock-o'></i> Start Break
         <% end %>
       <% end %>

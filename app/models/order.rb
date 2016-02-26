@@ -75,7 +75,7 @@ class Order < ActiveRecord::Base
   validates :mark_up, :min_pay, :max_pay, :account_manager_id,  presence: true
 
   validates :company_id,  presence: true
-  # validates :needed_by, presence: true
+  validates :needed_by, presence: true
 
 
     # CALLBACKS
@@ -124,7 +124,8 @@ class Order < ActiveRecord::Base
     end
 
     def set_mark_up
-      if max_pay.present?
+      self.title = title.titleize
+      if max_pay.present? && mark_up.nil?
         case max_pay
         when (8..10)
           self.mark_up = 1.5

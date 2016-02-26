@@ -9,20 +9,19 @@
 	</div>
 	<div class="tab-content">
 		<div class="tab-pane fade in active" id="tab-users">
-		<h2>	Job Orders I Manage</h2>
-			<% @company_admin.managed_orders.each do |order| %>
-	           <%= order.id%>   <%= info_popover(order) %> <%= signed_in_link_to order.title, order %><br>
-	          <% order.jobs.each do |job| %>
-	          	<%= signed_in_link_to job.name_title, job, class: "button" %><br>
-	          <% end %>
+		<h2>	Job Orders <%= @company_admin.first_name %> is managing</h2>
+			<%= div_for @company_admin.managed_orders, class: "managed-order" do |order| %>
+	             <%= info_popover(order) %> <%= signed_in_link_to order.title, order %>
+	             <%= link_to "<i class='fa fa-edit'></i>".html_safe, edit_admin_order_path(order) %>
+	             <p class='pull-right'><%= order.account_manager.name %></p>
 	        <% end %>
 			<% if company.employees.any? %>
-	<h2>	All Company employees</h2>
-				<% company.employees.each do |employee| %>
+		<h2>	All Company employees</h2>
+				<%= div_for company.employees, class: "company-employee" do |employee| %>
 					<%= timesheet_user(employee.current_timesheet) if employee.current_timesheet.present? %>	<%= employee.name %> 
 				<% end %>
 			<%else%>
-				
+					<h2>	No current employees to show.</h2>
 			<% end %>
 		</div>
 		<div class="tab-pane fade" id="tab-products" data-behavior="timesheet-list">

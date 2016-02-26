@@ -52,24 +52,39 @@
             <% end %>
 
         </div>
-        <div class='row'>
-          <%= render 'company/shifts/wk_calendar', shifts: @job.current_timesheet.shifts if @job.current_timesheet.present? %>
-        </div>
+        
           
         </div>
       </div>
-      <div role="tabpanel" class="tab-pane fade" id="timesheets">
-        <h2 class='page-header text-center'>Timesheets</h2>
+      <div role="tabpanel" class="tab-pane fade" id="timesheets" data-behavior='timesheet-list'>
+        <h2 class='text-center'>Timesheets</h2>
         
-        <div id="pending" class='col-md-6 ' data-behavior='timesheet-list'>
-          <h5 class='text-center'>Pending</h5>
-          <%= render @job.timesheets.pending %>
+        <div class='col-md-6'>
+          <h4 class='text-center'>Approved</h4>
+           
+             <%  if @timesheets.approved.any? %>
+             <%= render 'company/timesheets/table', timesheets: @timesheets.approved.distinct %>
+             <% else %>
+             <div id="approved">
+               <p>No approved timesheets.</p>
+             </div>
+             <% end %>
+           
         </div>
-        <div id="approved" class='col-md-6 ' data-behavior='timesheet-list'>
-          <h5 class='text-center'>Approved</h5>
-          <% @job.timesheets.approved.each do |timesheet| %>
-              <%= render 'company/timesheets/timesheet', timesheet: timesheet %>
-          <% end %>
+        <div class='col-md-6'>
+          <h4 class='text-center'>Pending</h4>
+         
+            <%  if @timesheets.pending.any? %>
+            <%= render 'company/timesheets/table', timesheets: @timesheets.pending.distinct %>
+            <% else %>
+            <div id="pending">
+              <p id='no-pending'>No pending timesheets.</p>
+            </div>
+            <% end %>
+         
+        </div>
+        <div class='row'>
+          <%= render 'company/shifts/wk_calendar', shifts: @job.current_timesheet.shifts if @job.current_timesheet.present? %>
         </div>
       </div>
       
@@ -94,13 +109,13 @@
               
             <div class='well well-sm text-center'>
               <h4 class='text-center'><%= @current_agency.name %><br> <small>Contact List</small></h4>
-              <h5 class='text-left'>Account Manager:</h5>
+              <h4 class='text-left'>Account Manager:</h4>
               <%= @job.account_manager.try(:name) %><br>
               <small><%= @job.account_manager.try(:phone_number) %> <br> <%= @job.account_manager.try(:email) %></small><br>
-            <h5 class='text-left'>Recruiter:</h5>
+            <h4 class='text-left'>Recruiter:</h4>
             <%= @job.recruiter.try(:name) %><br>
              <small> <%= @job.recruiter.try(:email) %></small><br>
-             <h5 class='text-left'>Payroll:</h5><%= @current_agency.payroll_admin.first.try(:name) %><br>
+             <h4 class='text-left'>Payroll:</h4><%= @current_agency.payroll_admin.first.try(:name) %><br>
              <small><%= @current_agency.payroll_admin.first.try(:email) %></small>
             </div>
           </div>

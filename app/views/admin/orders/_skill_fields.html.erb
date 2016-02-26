@@ -1,6 +1,6 @@
-<div class="nested-fields">
+<div class="nested-fields form-inline">
   <div class='form-group'>
-       <%= f.input :name, label: false, autofocus: true, placeholder: "Enter a skill", input_html: {data: { behavior: "autocomplete_skills" }}, wrapper_html: {class: ''} %>
+       <%= f.input :name, label: false, autofocus: true, placeholder: "Enter a skill", input_html: {id: "autocomplete"}, wrapper_html: {class: ''} %>
   </div>
   <div class='form-group'>
        <%= f.input :required, inline_label: 'Is this a requirement?', wrapper_html: {class: ''}, input_html: {class: 'boolean'}   %>

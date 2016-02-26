@@ -9,13 +9,21 @@
     </div>
   </div>
   <div class='col-md-3'>
+    <% @items = [1,2,3,4] %>
+    <% @items.each do |item| %>
+      <div style="background-color:<%= cycle("red","white","blue") %>">
+        <span style="background-color:<%= current_cycle %>"><%= item %></span>
+      </div>
+    <% end %>
+    
+    
     <div class='well well-sm'>
     <% if @company.invoices.unpaid.any?  %>
     
       <div class="alert alert-danger text-center" role="alert">
        <%= pluralize( @current_company_admin.company.invoices.unpaid.count, 'unpaid invoice') %>
       </div>
-      <%= div_for @company.invoices.order(created_at: :desc).unpaid do |invoice| %>
+      <%= div_for @company.invoices.order(week: :desc).unpaid do |invoice| %>
         <%= inv_timesheets_collaspe(invoice) %><br>
         <div class='black collapse' id="collapseInv_<%=invoice.id%>">
            <%= render 'company/invoices/invoice', invoice: invoice %>

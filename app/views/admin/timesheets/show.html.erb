@@ -6,37 +6,16 @@
     <%= link_to 'View Invoice', admin_invoice_path(@timesheet.invoice), class: 'btn btn-primary' %>
        <%= link_to 'Download Invoice PDF', admin_company_invoice_path(@timesheet.company, @timesheet.invoice, format: :pdf), class: 'btn btn-primary' %>
 </div>
- <div class='col-md-4 '>
-     <h3>For the week of:<strong><br>
-        <%= @timesheet.week_begin %>
-          - 
-        <%= @timesheet.week_ending %>
-      </strong></h3>
- </div>
-     
-<div class='col-md-8 ' data-behavior="timesheet-list">
+    <div class='col-md-4 '>
+        <h2>For the week of:<strong><br><%= @timesheet.week_begin %> - <%= @timesheet.week_ending %></strong></h2>
+    </div>
+    <div class='col-md-8 ' data-behavior="timesheet-list">
+      <%= render @timesheet %>
+    </div>
+    <div class='col-md-12'>
+      <h3> Shifts</h3>
+       <%= render 'admin/shifts/table' %>
+    </div>
     
-  <%= render @timesheet %>
-  
-  </div>
-         <div class='col-md-6'>
-            <h2>Comments</h2>
-            <div data-behavior='comment-list' class='scroll300' id='comment-list'>
-                <% @timesheet.comments.unread.order(created_at: :desc).each do |comment| %>
-                    <%= render 'comments/comment', comment: comment %>
-                <% end %>
-            </div>
-            <%= render partial: "comments/form", locals: {commentable: @timesheet} %>
-         </div>
-    
-
-<div class='col-md-6'>
-  <h3> Shifts</h3>
-   <%= render 'admin/shifts/table' %>
-</div>
-
-
-
-
 </div>
 

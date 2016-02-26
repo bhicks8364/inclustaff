@@ -14,7 +14,7 @@
   		<% else %>
   		
   		
-  		<div class='text-center metal well col-md-6'>	  	
+  		<div class='text-center metal well col-md-6' data-behavior='timesheet-list'>	  	
 			<%= render 'admin/timesheets/table', timesheets: @current_agency.timesheets.needing_approval.distinct %>
 		</div>
   		

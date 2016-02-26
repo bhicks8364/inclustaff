@@ -1,19 +1,11 @@
-<div class='col-md-12 lightbox'>
+<div class='col-md-12'>
+ <%= render "admin/timesheets/search" %>
+ <div class='col-md-6'>
+    <%= render 'shared/searching_between' %>
+  </div>
  <h1>Past Timesheets</h1>
-  <h4 class='text-left'>Approved</h4>
-   <div id='approved' class='col-md-5' data-behavior="timesheet-list">
-   
-    <% @timesheets.past.approved.order(updated_at: :desc).limit(40).each do |timesheet| %>
-   <%= render timesheet %>
-   <% end %>
-   </div>
-   <div id='pending' class='col-md-5 lightbox' data-behavior="timesheet-list">
-    <h4 class='black'>Pending</h4>
-    <%= render(@timesheets.past.pending) || "There are no pending timesheets for last week yet." %>
-   
-  
-   </div>
-    <div class='col-md-2'>
+ <%= render "admin/timesheets/table", timesheets: @timesheets.distinct %>
+    <div class='btn-group'>
      <%= link_to(past_admin_timesheets_path(@timesheets, format: :csv), class: 'btn btn-primary') do %>
 			  					<i class="fa fa-file-excel-o fa-lg"></i> Export CSV
 			  				

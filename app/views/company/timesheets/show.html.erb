@@ -6,7 +6,7 @@
     <%= link_to(company_timesheet_path(@timesheet, format: :pdf), class: 'btn btn-primary') do %>
     <i class="fa fa-download fa-md"></i> Download PDF
     <% end %>
-    <%= link_to 'All Timesheets', company_jobs_path(@job), class: 'btn btn-primary' %>
+    <%= link_to 'All Timesheets', company_job_timesheets_path(@job), class: 'btn btn-primary' %>
   </div>
   
  
@@ -45,16 +45,16 @@
     </div>
   </div>
   <div class="col-md-12">
-    <div class='col-md-6 well well-sm'>
+    <div class='col-md-5 well well-sm'>
       <div class='' data-behavior="timesheet-list">
       <%= render @timesheet %>
       </div>
     </div>
-    <div class='col-md-6 well well-sm'>
+    <div class='col-md-7 well well-sm'>
       <h3> Shifts</h3>
       <%= render 'company/shifts/table', shifts: @timesheet.shifts %>
     </div>
-    <div class='col-md-6'>
+    <div class='row'>
     <%= render 'comments/comments', comments: @timesheet.comments if @timesheet.comments.any?%>
     </div>
   </div>

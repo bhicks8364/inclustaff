@@ -199,7 +199,7 @@ class Admin::ShiftsController < ApplicationController
 
     @shift.destroy
     respond_to do |format|
-      format.html { redirect_to admin_dashboard_path, notice: 'Shift was successfully destroyed.' }
+      format.html { redirect_to admin_shifts_path, notice: 'Shift was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

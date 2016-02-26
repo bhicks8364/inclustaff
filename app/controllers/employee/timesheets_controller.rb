@@ -1,24 +1,21 @@
 class Employee::TimesheetsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_timesheet, only: [:show, :edit, :update, :destroy]
   layout 'employee'
-  # GET /timesheets
-  # GET /timesheets.json
+  
   def index
-
-      @current_user = current_user if current_user.present?
-      @employee = @current_user.employee
-      @company = @employee.company
-      @current_job = @employee.current_job if @employee.assigned?
-      
-      @timesheets = @employee.timesheets.order('timesheets.created_at DESC')
-      # gon.jbuilder
-      authorize @timesheets
-    
-
+    @current_user = current_user
+    @employee = @current_user.employee
+    @company = @employee.company
+    @current_job = @employee.current_job if @employee.assigned?
+    @q = @employee.timesheets.ransack(params[:q])
+    @timesheets = @q.result.includes(:job, :employee)
+    gon.timesheets = @timesheets
+    authorize @timesheets
+    # gon.jbuilder
+    authorize @timesheets
   end
 
-  # GET /timesheets/1
-  # GET /timesheets/1.json
   def show
     authorize @timesheet
     @job = @timesheet.job

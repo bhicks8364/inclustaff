@@ -1,34 +1,19 @@
-<div class='col-md-12 lightbox-long' data-behavior='timesheet-list'>
+<div class='col-md-12' data-behavior='timesheet-list'>
+    <%= render "company/timesheets/search" %>
    <div class='row'>
-    
-
-            <%= link_to "Current Timesheet Report", company_timesheets_path(format: :pdf, scope: "current_week"), class: "btn btn-primary" %>
-<div class='col-md-12'>
-    <h4 class='text-center'><strong>Pending Timesheets</strong></h4>
-    <div id='pending'>
-        <%= render "company/timesheets/table", timesheets: @timesheets.pending || "There are no pending timesheets for this week yet." %>
+        <div class='col-md-6'>
+            <h4 class='text-center'><strong>Pending Timesheets</strong></h4>
+            <div id=''>
+                <%= render "company/timesheets/table", timesheets: @timesheets.pending || "There are no pending timesheets for this week yet." %>
+            </div>
+        </div>
+        <div class='col-md-6'>
+            <h4 class='text-center'><strong>Approved Timesheets</strong></h4>
+            <div id=''>
+                <%= render "company/timesheets/table", timesheets: @timesheets.approved || "There are no approved timesheets for this week yet." %>
+            </div>
+        </div>
     </div>
-    
-    
-</div>
-<div class='col-md-12'>
-    <h4 class='text-center'><strong>Approved Timesheets</strong></h4>
-    <div id='approved'>
-        <%= render "company/timesheets/table", timesheets: @timesheets.approved || "There are no approved timesheets for this week yet." %>
-    </div>
-    
-   
-</div>
-
-
-
-
-
-    
-
-</div>
-
-
 </div>
 
 

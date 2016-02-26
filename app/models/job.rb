@@ -185,27 +185,33 @@ class Job < ActiveRecord::Base
         "#{employee.name} -  #{title}"
     end
 
-    # def set_main_pay
-    #     pay = pay_rate
-    #     if settings.nil?
-    #         self.settings = {}
-    #     end
-    #     self.settings['pay_rate'] = pay
-    # end
-
-
-
     def straight_8
-        t = Time.current.beginning_of_week.midnight - 1.week
-
+        t = Time.current.beginning_of_week.midnight + 8.hours
         5.times do |n|
             time_in = t + n.days
             time_out = time_in + 8.hours
-         self.shifts.create(time_in: time_in, time_out: time_out, state: "Clocked Out", out_ip: user.current_sign_in_ip)
-
+            self.shifts.create(time_in: time_in, time_out: time_out, state: "Clocked Out", out_ip: user.current_sign_in_ip)
         end
-
     end
+    
+    def forty_hour_week(week_date)
+        t = week_date.beginning_of_week.midnight + 8.hours
+        5.times do |n|
+            time_in = t + n.days
+            time_out = time_in + 8.hours
+            self.shifts.create(time_in: time_in, time_out: time_out, state: "Clocked Out", out_ip: user.current_sign_in_ip)
+        end
+    end
+    
+    def same_hour_week(week_date, number)
+        t = week_date.beginning_of_week.midnight + number.hours
+        5.times do |n|
+            time_in = t + n.days
+            time_out = time_in + 8.hours
+            self.shifts.create(time_in: time_in, time_out: time_out, state: "Clocked Out", out_ip: user.current_sign_in_ip)
+        end
+    end
+    
     def name
         employee.name
     end
@@ -223,7 +229,7 @@ class Job < ActiveRecord::Base
         self.start_date = Date.today if start_date.nil?
         self.settings = {} if settings.nil?
         self.vacation = {} if vacation.nil?
-        self.title = order.title if title.nil?
+        self.title = order.title  if title.nil?
     end
 
 
@@ -299,7 +305,7 @@ class Job < ActiveRecord::Base
 
     def last_clock_in
         if shifts.any?
-            shifts.order(:time_in).last.time_in
+            shifts.order(:time_in).last.time_in.stamp('Mon 11/12 at 1:05am') 
         else
             "No shifts yet."
         end
@@ -307,7 +313,7 @@ class Job < ActiveRecord::Base
 
     def last_clock_out
         if shifts.clocked_out.any?
-            shifts.clocked_out.order(:time_out).last.time_out
+            shifts.clocked_out.order(:time_out).last.time_out.stamp('Mon 11/12 at 1:05am') 
         else
             "No complete shifts."
         end

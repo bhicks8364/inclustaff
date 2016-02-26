@@ -1,4 +1,21 @@
-<%= search_form_for @q, class: 'form-inline', url: search_admin_orders_path,
-                        html: { method: :post } do |f| %>
-  <%= f.search_field :notes_or_title_or_company_name_cont , class: 'form-control', placeholder: "Search Job Orders"%>
-<% end %>
+<div class='col-md-12'>
+    <div class='pull-left'>
+        <%= search_form_for @q, class: 'form-inline', url: search_admin_orders_path, html: { method: :post } do |f| %>
+          <%= f.search_field :notes_or_title_or_company_name_cont, class: "form-control", placeholder: "Search Job Orders"%>
+        <% end %>
+    </div>
+    <div class='btn-group'>
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Sort By <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><%= sort_link(@q, 'company.name') %></li>
+            <li><%= sort_link(@q, :industry) %></li>
+            <li><%= sort_link(@q, :title) %></li>
+            <li><%= sort_link(@q, :needed_by) %></li>
+            <li><%= sort_link(@q, :min_pay) %></li>
+            <li><%= sort_link(@q, :max_pay) %></li>
+        </ul>
+    </div>
+        
+</div>

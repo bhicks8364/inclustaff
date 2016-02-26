@@ -1,31 +1,26 @@
 
-<div class="col-md-12 lightbox">
-	<%= render 'search' %>
+<div class="col-md-12">
+	
     <h1>Search Job Orders</h1>
-    <div class='col-md-12'>
+    <div class=''>
 		<%= render 'admin/shared/alerts/open_orders', orders: @orders %>
 	</div>
-	<div class='col-md-12 bg-white'>
-	  	<h3>Sort By:</h3>
-	  <ul class="nav nav-pills nav-justified">
-	  	<li><%= sort_link(@q, :industry) %></li>
-		  <li><%= sort_link(@q, :title) %></li>
-		  <li><%= sort_link(@q, :needed_by) %></li>
-		  <li><%= sort_link(@q, :min_pay) %></li>
-		  <li><%= sort_link(@q, :max_pay) %></li>
-		</ul>
-		<div class="col-md-12 well well-sm">
+	<div class='col-md-12 well well-sm'>
+	  	<%= render 'search' %>
+		<div class="col-md-9">
 			<%= render 'admin/orders/table', orders: @orders %>
 			<%= will_paginate @orders %>
 		</div>
-		
+		<div class='col-md-3'>
+			<hr>
+			<div id="map" style='width: 300px; height: 400px;'></div>
+		</div>
 	</div>
-	<hr>
-	<div class='center'>
-		<div id="map" style='width: 400px; height: 400px;'></div>
-	</div>
+	
+	
 
 </div>
+
 <script type='text/javascript'>
 handler = Gmaps.build('Google');
 handler.buildMap({

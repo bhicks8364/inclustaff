@@ -84,7 +84,16 @@ class Timesheet < ActiveRecord::Base
 
   scope :overtime_errors, -> { where('reg_hours > 40') }
   scope :needing_approval, -> { last_week.pending }
-
+  def self.worked_before(date)
+    includes(:shifts).where(Shift[:time_in].lteq(date))
+  end
+  def self.worked_after(date)
+    includes(:shifts).where(Shift[:time_in].gteq(date))
+  end
+  def self.occurring_between(date1, date2)
+    includes(:shifts).where(Shift[:time_in].gteq(date1)
+      .and(Shift[:time_in].lteq(date2)))
+  end
   def receipt
     
     TimesheetPdf.new(

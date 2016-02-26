@@ -1,4 +1,4 @@
-<table class="table table-bordered datatable">
+<table class="table table-bordered">
   <thead>
     <tr>
       
@@ -34,7 +34,8 @@
 						<i class="fa fa-square fa-stack-3x fa-inverse"></i>
 						<i class="fa fa-edit fa-stack-1x "></i>
 					</span>
-				<% end %></td>
+				<% end %>
+				<%= link_to '<i class="fa fa-trash"></i> Delete'.html_safe, admin_shift_path(shift), method: :delete, data: { confirm: 'Are you sure you want to delete this shift?' }, class: "btn btn-primary" %></td>
 
       </tr>
     <% end %>

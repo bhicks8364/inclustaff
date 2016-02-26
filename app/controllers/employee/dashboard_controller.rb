@@ -20,6 +20,12 @@ class Employee::DashboardController < ApplicationController
     gon.clocked_in = @employee.clocked_in?
     gon.current_shift = @job.current_shift if @job
     gon.current_job = @job
+    if @employee.clocked_in?
+      @shift = @employee.current_shift
+      render "employee/shifts/show"
+    end
+    
+    
   end
 
   def edit_profile

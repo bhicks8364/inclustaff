@@ -37,7 +37,6 @@ class Admin::JobsController < ApplicationController
 
   def show
     @timesheet = @job.current_timesheet if @job.current_timesheet.present?
-    @shift = @job.shifts.last if @job.shifts.any?
     @timesheets = @job.timesheets if @job.timesheets.any?
     @last_week_timesheets =  @job.timesheets.last_week
     @skills = @job.employee.skills
@@ -263,7 +262,7 @@ class Admin::JobsController < ApplicationController
   end
     # Use callbacks to share common setup or constraints between actions.
     def set_job
-      @job = Job.includes(:employee, :order).find(params[:id])
+      @job = Job.includes(:employee, :order, :shifts).find(params[:id])
       authorize @job
       @employee = @job.employee
       @order = @job.order

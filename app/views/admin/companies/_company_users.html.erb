@@ -2,7 +2,7 @@
    
         <%= div_for(@company.admins) do |admin| %>
 
-            <p><%= link_to admin.name, admin, class: "btn" %></p>
+            <p><%= link_to admin.name, admin_company_admin_path(admin), class: "btn" %></p>
             <p> <%= admin.email %></p>
     
         <% end %>

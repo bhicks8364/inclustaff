@@ -13,7 +13,7 @@
         <br>
         <%= @company_admin.last_sign_in_at.present? ? @company_admin.last_sign_in_at.stamp("11/12 at 11:15am") : "Yet to sign in" %>
 
-    <%= link_to "Edit", edit_company_admin_registration_path, class: "btn btn-primary" %>
+    <%= link_to "Edit", edit_admin_company_admin_path(@company_admin), class: "btn btn-primary" %>
 
         
     </div>

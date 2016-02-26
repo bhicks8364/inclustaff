@@ -32,9 +32,7 @@
             </div>
             <div id='shift-break-times'>
             </div>
-            <div class=''>
-        	</div>
-        	<%= render 'list', shift: @shift  %>
+        	<%= render 'employee/shifts/list', shift: @shift  %>
         </div>
         <div class='col-md-6'>
             <dl class="dl-horizontal">
@@ -113,7 +111,7 @@
         		 Total Break Time: <%= (@shift.break_duration).round(2) %>
         		<% end %>
         	</div>
-        	<%= render 'list', shift: @shift %>
+        	<%= render 'employee/shifts/list', shift: @shift %>
         </div>
     </div>
     <div role="tabpanel" class="tab-pane" id="messages">

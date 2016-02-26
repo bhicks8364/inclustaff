@@ -21,8 +21,6 @@ class CompanyTimesheetPdf < Prawn::Document
         move_down 20
         stroke_horizontal_rule
         move_down 5
-        text "Total: #{price(@total_pay)}", style: :bold, align: :right, size: 14
-        move_down 30
         text "Copy prepared by: #{@signed_in.name}", color: "cccccc", style: :bold, align: :right, size: 10
         
     end

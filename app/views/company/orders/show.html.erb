@@ -117,14 +117,17 @@
   <!--TIMESHEETS TAB-->
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
     <div class=''>
-      <% if @order.timesheets.current_week.any? %>
-        <%= render "company/timesheets/table", timesheets: @order.timesheets.current_week %>
+      <% if @order.timesheets.pending.any? %>
+      <h3>Pending timesheets</h3>
+        <%= render "company/timesheets/table", timesheets: @order.timesheets.pending.distinct %>
       <% else %>
-        <h3>No timesheets for this week yet.</h3>
+        <h3>No pending timesheets.</h3>
       <% end %>
-      <% if @order.timesheets.any? %>
-        <strong>All timesheets</strong>
-      <%= render "company/timesheets/table", timesheets: @order.timesheets.current_week %>
+      <% if @order.timesheets.approved.any? %>
+        <h3>Approved timesheets</h3>
+      <%= render "company/timesheets/table", timesheets: @order.timesheets.approved.distinct %>
+      <% else %>
+        <h3>No approved timesheets.</h3>
       <% end %>
     </div>
   </div>

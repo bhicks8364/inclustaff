@@ -7,15 +7,23 @@ class Admin::TimesheetsController < ApplicationController
         @test_timesheets = TimesheetQueryBuilder.new.with_admin_comments_by(@current_admin.id)
         if params[:job_id]
             @job = Job.includes(:employee, :timesheets).find(params[:job_id])
-            @timesheets = @job.timesheets.order(updated_at: :desc) if @job.timesheets.any?
+            @q = @job.timesheets.ransack(params[:q])
+            @timesheets = @q.result.includes(:job, :employee)
+            gon.timesheets = @timesheets
+            authorize @timesheets
         elsif params[:company_id]
             @company = Company.includes(:jobs, :timesheets).find(params[:company_id])
-            @timesheets = @company.timesheets if @company.timesheets.any?
+            @q = @company.timesheets.ransack(params[:q])
+            @timesheets = @q.result.includes(:job, :employee)
+            gon.timesheets = @timesheets
+            authorize @timesheets
         else
-            @timesheets = Timesheet.includes(:job => :order)
+            @q = @current_admin.timesheets.ransack(params[:q])
+            @timesheets = @q.result.includes(:job, :employee)
+            gon.timesheets = @timesheets
+            authorize @timesheets
         end
-        gon.timesheets = @timesheets
-        authorize @timesheets
+        
         @scope = params[:scope]
         respond_to do |format|
             format.html
@@ -62,13 +70,28 @@ class Admin::TimesheetsController < ApplicationController
 	def past
 		if params[:job_id]
 			@job = Job.includes(:employee, :timesheets).find(params[:job_id])
-			@timesheets = @job.timesheets.past
+			@q = @job.timesheets.past.ransack(params[:q])
+            @timesheets = @q.result.includes(:job, :employee)
 		elsif params[:company_id]
 			@company = Company.includes(:jobs, :timesheets).find(params[:company_id])
-			@timesheets = @company.timesheets.past.order(created_at: :desc) if @company.present?
+			@q = @company.timesheets.past.ransack(params[:q])
+            @timesheets = @q.result.includes(:job, :employee)
 		else
-			@timesheets = Timesheet.past 
+			@q = Timesheet.past.ransack(params[:q])
+            @timesheets = @q.result.includes(:job, :employee)
 		end
+		Chronic.time_class = Time.zone
+        @start_time = Chronic.parse(params[:date1])
+        @end_time = Chronic.parse(params[:date2])
+        if @start_time.present? && @end_time.present?
+          @timesheets = Timesheet.occurring_between(@start_time, @end_time).distinct
+        elsif @start_time.present?
+          @timesheets = Timesheet.worked_after(@start_time).distinct
+        elsif @end_time.present?
+          @timesheets = Timesheet.worked_before(@end_time).distinct
+        else
+          @timesheets = Timesheet.all
+        end
 		gon.timesheets = @timesheets
 		authorize @timesheets
 		respond_to do |format|

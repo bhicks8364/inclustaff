@@ -50,19 +50,40 @@ namespace :db do
 	# def random_hour(from, to)
  # 		(Date.today + 1.hour + rand(0..60).minutes).to_datetime
 	# end
-	Apartment::Tenant.switch!('ontimestaffing')
-	Shift.populate 10 do |shift|
-		day = Time.current.beginning_of_week
-		shift.time_in = day
-		shift.time_out = shift.time_in + rand(6...10).hours
-		shift.job_id = rand(1...15)
-		shift.state = "Clocked Out"
-		shift.breaks = []
-		
-		puts day
-		puts shift.time_out
-	end
-	
+	Apartment::Tenant.switch!('testing')
+	[Company, Order, Person].each(&:delete_all)
+    
+    Company.populate 20 do |company|
+      company.name = Faker::Company.name
+      company.name = Populator.words(1..3).titleize
+      Order.populate 10..100 do |order|
+      	time = (2.years.ago..Time.now)
+        order.company_id = company.id
+        order.title = Populator.words(1..4).titleize
+        order.notes = Populator.sentences(2..10)
+        order.min_pay = 9...30
+        order.max_pay = order.min_pay + 1..3
+        order.bg_check = ["None", "Case-by-case", "No Felonies"]
+        order.dt_req = ["None", "Yes - 5 panel", "Yes - 10 panel"]
+        order.heavy_lifting = [true, false]
+        order.stwb = [true, false]
+        order.created_at = time
+        order.needed_by = time + 2.weeks
+        order.shift = [ "1st shift", "2nd shift", "3rd shift", "Flexible"]
+      end
+    end
+	    
+    Person.populate 100 do |person|
+      person.name    = Faker::Name.name
+      person.company = Faker::Company.name
+      person.email   = Faker::Internet.email
+      person.phone   = Faker::PhoneNumber.phone_number
+      person.street  = Faker::Address.street_address
+      person.city    = Faker::Address.city
+      person.state   = Faker::Address.us_state_abbr
+      person.zip     = Faker::Address.zip_code
+    end
+  end
 		
   end
 
@@ -93,16 +114,8 @@ namespace :db do
 			employee.ssn = 1234..9999
 			employee.assigned = false
 			employee.phone_number = FFaker::PhoneNumber.short_phone_number
-
-			
-	
-	
-			
 			puts employee.first_name
 		  end
-		
-
-
 		
 		puts user.first_name
 	  end
@@ -115,28 +128,7 @@ namespace :db do
 	require 'ffaker'
 
 	password = "password"
-	  
-	 # Agency.populate 1 do |agency|
-		# agency.name = "Global Technical Recruiters"
-		# puts agency.name
-	 # end
-	 # Agency.populate 2 do |agency|
-		# agency.name = FFaker::Company.name
-		# puts agency.name
-	 # end
-	 
-	 #Apartment::Tenant.switch!('ontimestaffing')
-	 # Admin.populate 1 do |admin|
-		# admin.first_name = "Brittany"
-		# admin.last_name = "Hicks"
-		# admin.email = "bhicks@email.com"
-		# admin.agency_id = 21
-		# admin.role = "Owner"
-		# admin.encrypted_password = Admin.new(:password => password).encrypted_password
-		# admin.sign_in_count = 0
-		# admin.failed_attempts = 0
-		# puts admin.first_name
-	 # end
+
 	 Apartment::Tenant.switch!('orbie')
 	  Admin.populate 15 do |admin|
 		admin.first_name = FFaker::Name.first_name
@@ -149,95 +141,21 @@ namespace :db do
 		admin.failed_attempts = 0
 		puts admin.first_name
 	  end
-	 # Admin.populate 2 do |admin|
-		# admin.first_name = FFaker::Name.first_name
-		# admin.last_name = FFaker::Name.last_name
-		# admin.email = FFaker::Internet.email
-		# admin.agency_id = 1
-		# admin.role = "Account Manager"
-		# admin.encrypted_password = Admin.new(:password => password).encrypted_password
-		# admin.sign_in_count = 0
-		# admin.failed_attempts = 0
-		# puts admin.first_name
-	 # end
-	 # Admin.populate 5 do |admin|
-		# admin.first_name = FFaker::Name.first_name
-		# admin.last_name = FFaker::Name.last_name
-		# admin.email = FFaker::Internet.email
-		# admin.agency_id = 2
-		# admin.role = "Recruiter"
-		# admin.encrypted_password = Admin.new(:password => password).encrypted_password
-		# admin.sign_in_count = 0
-		# admin.failed_attempts = 0
-		# puts admin.first_name
-	 # end
-	 # Admin.populate 2 do |admin|
-		# admin.first_name = FFaker::Name.first_name
-		# admin.last_name = FFaker::Name.last_name
-		# admin.email = FFaker::Internet.email
-		# admin.agency_id = 2
-		# admin.role = "Account Manager"
-		# admin.encrypted_password = Admin.new(:password => password).encrypted_password
-		# admin.sign_in_count = 0
-		# admin.failed_attempts = 0
-		# puts admin.first_name
-	 # end
-	 # Admin.populate 1 do |admin|
-		# admin.first_name = FFaker::Name.first_name
-		# admin.last_name = FFaker::Name.last_name
-		# admin.email = FFaker::Internet.email
-		# admin.agency_id = 2
-		# admin.role = "Owner"
-		# admin.encrypted_password = Admin.new(:password => password).encrypted_password
-		# admin.sign_in_count = 0
-		# admin.failed_attempts = 0
-		# puts admin.first_name
-	 # end
-	 # Admin.populate 1 do |admin|
-		# admin.first_name = FFaker::Name.first_name
-		# admin.last_name = FFaker::Name.last_name
-		# admin.email = FFaker::Internet.email
-		# admin.agency_id = 1
-		# admin.role = "Owner"
-		# admin.encrypted_password = Admin.new(:password => password).encrypted_password
-		# admin.sign_in_count = 0
-		# admin.failed_attempts = 0
-		# puts admin.first_name
-	 # end
-	  
-	  
-	  
+
 	  
 	  puts 'All done!!!'
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
   end
   
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-end
-
-
-
-# require "as-duration"
-# FFaker::Time.between(2.days.ago, Time.now, :all) #=> "2014-09-19 07:03:30 -0700"
-# FFaker::Time.between(2.days.ago, Time.now, :day) #=> "2014-09-18 16:28:13 -0700"
-# FFaker::Time.between(2.days.ago, Time.now, :night) #=> "2014-09-20 19:39:38 -0700"
-# FFaker::Time.between(2.days.ago, Time.now, :morning) #=> "2014-09-19 08:07:52 -0700"
-# FFaker::Time.between(2.days.ago, Time.now, :afternoon) #=> "2014-09-18 12:10:34 -0700"
-# FFaker::Time.between(2.days.ago, Time.now, :evening) #=> "2014-09-19 20:21:03 -0700"
-# FFaker::Time.between(2.days.ago, Time.now, :midnight) #=> "2014-09-20 00:40:14 -0700"
-
 
 desc "Create 25 employees with random names and addresses"
   task :pop_emp => :environment do

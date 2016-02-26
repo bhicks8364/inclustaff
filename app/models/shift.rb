@@ -207,8 +207,15 @@ class Shift < ActiveRecord::Base
 
   def reg_earnings
     @payable_hours = pay_time
-    self.earnings = pay_rate * @payable_hours
-    self.time_worked = @payable_hours
+    if timesheet.reg_hours <= 40
+      self.earnings = pay_rate * @payable_hours
+      self.time_worked = @payable_hours
+    else
+      ot_rate = pay_rate * 1.5
+      self.earnings = pay_rate * @payable_hours
+      self.time_worked = @payable_hours
+      self.pay_rate = ot_rate
+    end
   end
 
   # IMPORTANT: This actually sets the timesheet initially to the current week,

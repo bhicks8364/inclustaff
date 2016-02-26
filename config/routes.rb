@@ -200,8 +200,8 @@ Rails.application.routes.draw do
           post 'verify_code'
           patch 'clock_in'
           patch 'clock_out'
-
         end
+        resources :timesheets
       end
       resources :timesheets do
         member do

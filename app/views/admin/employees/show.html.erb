@@ -1,5 +1,5 @@
-<div class='col-md-12 lighterbox metal'>
-   
+<div class='col-md-12'>
+   <%= rand(5..30) %>
 <p id="user-role">  <strong><% if @user.can_edit? %> <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> <% end %></strong> </p> 
         <% if @employee.dns? %>
         <div class="alert alert-danger fade in text-center">
@@ -31,52 +31,38 @@
       <div class="tab-content">
         <!--HOME TAB-->
       <div role="tabpanel" class="tab-pane fade in active" id="home">
-          <div class='col-md-12'>
-           <div class='col-md-3'>
-               Contact Info
-               <p class=''><i class="fa fa-envelope-o"></i> 
-               <%= @employee.email %></p>
-               <%= render "users/user", user: @user %>
-               <hr>
-              
+        <div class='col-md-12'>
+            <div class='col-md-3'>
+                <%= render "users/user", user: @user %>
+                <p class="user-address">
+                    <%= @user.address %><br>
+                    <%= @user.city %>, <%= @user.state %> <%= @user.zipcode %><br>
+                    <small><%= user_phone(@user) %></small>  <br>
+                    <small><%=user_email(@user)%></small>
+                </p>
             </div>
-        <div class='col-md-3'>
-            Employee Details
-                <p class='lead'><i class="fa fa-wrench"></i> <%= @employee.desired_job_type %></p>
-                <p class='lead'><i class="fa fa-clock-o"></i>  <%= @employee.desired_shift %></p>
-                
+            <div class='col-md-6'>
+                <p>Current Job Assignment</p>
+                 <%= div_for @employee.jobs.active, class: "well" do |job| %>
+                 <span class='pull-right text-muted small'>Pay rate: <%= number_to_currency(job.pay_rate) %></span>
+                  <%= link_to job.title, admin_job_path(job), class: "bold" %> <br>
+                  <%= link_to job.company.name, admin_company_path(job.company), class: "small" %>
+                  <p class=''>Total hours: <%= job.total_hours %> <br>
+                  Total gross: <%= number_to_currency(job.total_gross_pay) %> <br>   </p>
+                <% end %>
+            </div>
+            <div class='col-md-3'>
+                <p>Availablility</p>
+                <%= render 'admin/employees/availability', employee: @employee %>
+            </div>
+            <div class='col-md-12'>
+                <p class='lead text-center'>Hours Worked <small> Last 4 weeks</small></p>
+                <hr>
+              <%= column_chart @employee.jobs.active.map{|job| {name: job.employee.name, data: job.shifts.group_by_week(:time_in, range: 12.weeks.ago.beginning_of_week.midnight..Time.current, format: "%a, %m/%d").sum(:time_worked)}}, xtitle: "Week", ytitle: "Total Hours", library: {height: 300, width: 1000} %>
+            </div>
         </div>
-        <div class='col-md-3'>
-            Availablility
-            <%= render 'admin/employees/availability', employee: @employee %>
-        </div>
-        <div class='col-md-3'>
-            
-            Current Job Assignment
-             <% @employee.jobs.active.each do |job| %>
-              <%= link_to job.title, admin_job_path(job) %> 
-              Current Company
-              <%= link_to job.company.name, admin_company_path(job.company) %>
-               
-            <% end %>
-        
-             Tags
-              <%= highlight(@employee.tag_list.to_s, ActsAsTaggableOn::Tag.all.map(&:name), highlighter: '<a href="/tags?tag=\1" class="">\1</a>') %>
-        </div>
-            
-        
-        </div>
-        <% if @employee.work_histories.any?  %>
-         <div class='col-md-12'>
-            <h2><%= @employee.first_name %>'s Employment Timeline</h2>
-            <%= timeline  @employee.work_history_data, width: "100%", height: "300px"  %>
-        </div>
-        <% end %>
-        
-
     </div>
     <div role="tabpanel" class="tab-pane fade" id="matching_orders">
-        
          <h2 class="text-center">Matching Job Orders  </h2>
         <div class='col-md-9 black'>
               <%= render 'admin/orders/table', orders: @employee.matching_orders %>
@@ -161,7 +147,7 @@
         <div class='col-md-12'>
             
         <% if @employee.work_histories.any? %>
-         <div class='col-md-12'>
+         <div class='col-md-10'>
             <h2><%= @employee.first_name %>'s Employment Timeline</h2>
             <%= timeline  @employee.work_history_data, width: "100%", height: "300px"  %>
         </div>
@@ -173,6 +159,10 @@
           <p>No Work History Available.</p>
     
         <% end %>
+        <div class='col-md-2'>
+            <h4>Tags</h4>
+              <%= highlight(@employee.tag_list.to_s, ActsAsTaggableOn::Tag.all.map(&:name), highlighter: '<a href="/tags?tag=\1" class="">\1</a>') %>
+        </div>
          <% if @employee.jobs.have_ended.any? %>
      <div class='col-md-6'>
               <h5 class='text-center'>Past Job Assignments</h5>
