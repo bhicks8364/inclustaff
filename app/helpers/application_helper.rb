@@ -88,4 +88,30 @@ module ApplicationHelper
             end
         end
     end
+    def link_to_add_fields(name, f, type)
+      new_object = f.object.send "build_#{type}"
+      id = "new_#{type}"
+      fields = f.send("#{type}_fields", new_object, child_index: id) do |builder|
+        render(type.to_s + "_fields", f: builder)
+      end
+      link_to(name, '#', class: "add_fields", data: {id: id, fields: fields.gsub("\n", "")})
+    end
+    
+    def convo_for(options={})
+        date = (Time.current.end_of_week + 1.day).stamp("Monday 12/18")
+        @admins = options[:admins]
+        @company_admins = options[:company_admins]
+        @users = options[:users]
+        @type = options[:type]
+        @message = options[:message]
+        @subject = options[:subject]
+        if @type == :timesheet_reminder
+            @subject = "Timesheet Reminder"
+            @message = "Please remember to have all timesheets for last week approved the end of the day on #{date}. Thank you! "
+        end
+        
+        render "admin/conversations/form", users: @users, admins: @admins, company_admins: @company_admins, type: @type, message: @message, subject: @subject
+    end
+    
+    
 end

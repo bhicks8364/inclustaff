@@ -3,9 +3,22 @@
   
   <div class='form'>
       <%= search_form_for [:admin, @q] do |f| %>
+      <%= f.condition_fields do |c| %>
+        <%= render "admin/timesheets/condition_fields", f: c %>
+      <% end %>
+      <p><%= link_to_add_fields "Add Conditions", f, :condition %></p>
+      <div class="field">
+        Sort:
+        <%= f.sort_fields do |s| %>
+          <%= s.sort_select %>
+        <% end %>
+      </div>
+      <hr>
+      
         <div class="form-inline">
+          
+          
           <%= f.search_field :employee_first_name_or_employee_last_name_cont, placeholder: "Search by employee", class: "form-control" %>
-          <%= f.search_field :week_cont, placeholder: "Search by week", class: "form-control" %>
         
         <%= f.submit class: "btn btn-default" do %><i class='fa fa-search'></i><% end %> 
           <%= link_to admin_timesheets_path, class: "btn btn-default" do %><i class="fa fa-search-minus"></i> Reset<%end %>

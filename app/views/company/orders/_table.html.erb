@@ -17,7 +17,7 @@
       <% orders.each do |order| %>
         <tr>
           <td class='text-center'><%= status_tag(order) %></td>
-          <td><%= link_to order.title, company_order_path(order) %></td>
+          <td><%= link_to "#{truncate(order.title, length: 15)}", company_order_path(order) %></td>
           <td><%= pay_range(order) %></td>
           <td><%= order.open_jobs %></td>
           <td><%= order.jobs.active.count %></td>

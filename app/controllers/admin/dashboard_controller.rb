@@ -10,11 +10,11 @@ class Admin::DashboardController < ApplicationController
       skip_authorization
     end
     def recruiter
-      @orders = @current_agency.orders.active.needs_attention.order(needed_by: :asc).paginate(page: params[:page], per_page: 15)
-      @q = @orders.ransack(params[:q]) 
+      @q = @current_agency.orders.active.needs_attention.order(needed_by: :asc).paginate(page: params[:page], per_page: 15).ransack(params[:q]) 
+      @orders = @q.result
       @candidates = User.available
-      
-      @hash = Gmaps4rails.build_markers(@orders) do |order, marker|
+      @map_orders = @orders.any? ? @orders : @current_agency.orders.active.needs_attention.order(needed_by: :asc)
+      @hash = Gmaps4rails.build_markers(@map_orders) do |order, marker|
           marker.lat order.latitude
           marker.lng order.longitude
           marker.infowindow order.title_company
@@ -23,8 +23,12 @@ class Admin::DashboardController < ApplicationController
         skip_authorization
     end
     def account_manager
-        @orders = Order.all.paginate(page: params[:page], per_page: 15)
-        @q = @orders.ransack(params[:q])
+      @q = @current_admin.job_orders.active.needs_attention.order(needed_by: :asc).paginate(page: params[:page], per_page: 15).ransack(params[:q]) 
+      @orders = @q.result
+        # @orders = Order.all.paginate(page: params[:page], per_page: 15)
+        # @q = @orders.ransack(params[:q])
+        @q.build_condition if @q.conditions.empty?
+        @q.build_sort if @q.sorts.empty?
         skip_authorization
     end
     

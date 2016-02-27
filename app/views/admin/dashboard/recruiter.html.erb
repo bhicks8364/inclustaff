@@ -1,7 +1,7 @@
 <div class='col-md-12'>
 <%= render 'admin/shared/welcome/recruiter_dashboard' if @current_admin.sign_in_count == 1 || @current_agency.subdomain == "demo" %> 
   <div class='pull-right'><%= render 'admin/orders/search' %></div>
-  <div class="col-md-12 lightbox-long">
+  <div class="col-md-12">
 				<div class="tabs-wrapper">
 					<div class="clearfix">
 					
@@ -12,7 +12,7 @@
 						  <li class=""><a href="#tab-calendar" data-toggle="tab">Calendar</a></li>
 							<li class=""><a href="#tab-candidates" data-toggle="tab">Current Candidates</a></li>
 							<li class=""><a href="#tab-map" data-toggle="tab">Map</a></li>
-							<li class=""><a href="#tab-events" data-toggle="tab">Applications</a></li>
+							<li class=""><a href="#tab-applications" data-toggle="tab">Applications</a></li>
 						</ul>
 					</div>
 					
@@ -114,7 +114,7 @@
 							  	<%= render 'admin/infoboxes/recruiting_calendar' %>
 						  	</div>
 						</div>
-						<div class="tab-pane fade" id="tab-events">
+						<div class="tab-pane fade" id="tab-applications">
 							<div class="col-md-12">
 							<% if Event.applications.any? %>
 							<h3>Recent Applications</h3>

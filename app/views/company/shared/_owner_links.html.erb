@@ -13,14 +13,20 @@
         
     </ul>
 </li>
-<li><%= link_to "<i class='fa fa-university'></i> Job Orders".html_safe, company_orders_path %></li>
-<li><%= link_to "<i class='fa fa-usd fa-fw'></i> Invoices".html_safe, company_invoices_path %></li>
+
 <li class='dropdown'>
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class='fa fa-clock-o fa-fw'></i>Time Tracking</a>
     <ul class="dropdown-menu">
         <li><%= link_to "<i class='fa fa-file-text'></i> Timesheets".html_safe, company_timesheets_path %></li>
         <li><%= link_to "<i class='fa fa-calendar'></i> Shift Calendar".html_safe, company_shifts_path %></li>
         <li><%= link_to "<i class='fa fa-clock-o fa-fw'></i> Company Timeclock".html_safe, company_timeclock_path %></li>
+    </ul>
+</li>
+<li class='dropdown'>
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class='fa fa-usd fa-fw'></i>Orders & Invoices</a>
+    <ul class="dropdown-menu">
+        <li><%= link_to "<i class='fa fa-university'></i> Job Orders".html_safe, company_orders_path %></li>
+        <li><%= link_to "<i class='fa fa-usd fa-fw'></i> Invoices".html_safe, company_invoices_path %></li>
     </ul>
 </li>
 <li class='dropdown'>

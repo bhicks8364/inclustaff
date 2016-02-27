@@ -9,17 +9,23 @@ class Admin::TimesheetsController < ApplicationController
             @job = Job.includes(:employee, :timesheets).find(params[:job_id])
             @q = @job.timesheets.ransack(params[:q])
             @timesheets = @q.result.includes(:job, :employee)
+            @q.build_condition if @q.conditions.empty?
+            @q.build_sort if @q.sorts.empty?
             gon.timesheets = @timesheets
             authorize @timesheets
         elsif params[:company_id]
             @company = Company.includes(:jobs, :timesheets).find(params[:company_id])
             @q = @company.timesheets.ransack(params[:q])
             @timesheets = @q.result.includes(:job, :employee)
+            @q.build_condition if @q.conditions.empty?
+            @q.build_sort if @q.sorts.empty?
             gon.timesheets = @timesheets
             authorize @timesheets
         else
             @q = @current_admin.timesheets.ransack(params[:q])
             @timesheets = @q.result.includes(:job, :employee)
+            @q.build_condition if @q.conditions.empty?
+            @q.build_sort if @q.sorts.empty?
             gon.timesheets = @timesheets
             authorize @timesheets
         end

@@ -5,7 +5,6 @@
       <tr>
         <% if @company.nil? %><th> Company</th><%end %>
         <th>Fill Date</th>
-        <th>Industry</th>
         <th>Title</th>
         <th>Pay Range</th>
         <th>Make A Placement</th>
@@ -15,26 +14,17 @@
   
     <tbody>
       <% orders.each do |order| %>
-        <tr>
-          <% if @company.nil? %><td> <%= link_to order.company.name, admin_company_path(order.company) %></td><%end %>
-          <td><%= order.needed_by.stamp('Mon 11/12') %><br>
-          <% if order.overdue? %>
-            <span class="text-danger small"> <%= distance_of_time_in_words(order.needed_by, Time.current) %> ago</span> 
-          <% elsif order.needs_attention? %>
-            <span class="text-info small"><%= distance_of_time_in_words(order.needed_by, Time.current) %></span> 
-            <% elsif order.filled? %>
-            <span class="text-success small"><%= distance_of_time_in_words(order.needed_by, order.jobs.last.created_at) %></span> 
-          <% end %>       </td>
-          <td> <%= order.industry %></td>
-          <td><%= link_to title_for(order), admin_order_path(order), class: "button" %> <br>
-          <%= link_to "<i class='fa fa-edit fa-fw'></i>".html_safe, edit_admin_order_path(order), class: "button pull-right" if policy(order).edit? %></td>
-          <td class='text-center'><%= pay_range(order) %></td>
-          <td><% if order.needs_attention? %><%= link_to new_admin_order_job_path(order), class: "button" do %> 
+        <tr class='order-row'>
+          <% if @company.nil? %><td style="vertical-align:middle"> <%= link_to order.company.name, admin_company_path(order.company) %></td><%end %>
+          <td style="vertical-align:middle" class='text-center'> <%= status_tag(order) %>  <%= order.needed_by.stamp('Mon 11/12') %></td>
+          <td style="vertical-align:middle"><%= link_to title_for(order), admin_order_path(order), class: "button" %><br><small><%= order.industry %></small></td>
+          <td style="vertical-align:middle" class='text-center'><%= pay_range(order) %></td>
+          <td style="vertical-align:middle"><% if order.needs_attention? %>
+          <%= link_to new_admin_order_job_path(order), class: "button" do %> 
           <%= order_count(order)%>  <i class='fa fa-user-plus fa-fw'></i><br>
           <% end %>
           <%else%><%= status_tag(order) %> <% end %> 
           <%= order_status(order) %> 
-          </td>
           </td>
         </tr>
       <% end %>

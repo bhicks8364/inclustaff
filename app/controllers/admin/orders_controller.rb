@@ -51,10 +51,11 @@ class Admin::OrdersController < ApplicationController
     @q = Order.includes(:company).active.order(needed_by: :desc).ransack(params[:q]) if @current_admin.owner? || @current_admin.payroll? || @current_admin.account_manager?
     @q = Order.includes(:company).needs_attention.order(needed_by: :desc).ransack(params[:q]) if @current_admin.recruiter?
     @q = Order.includes(:company).needs_attention.order(needed_by: :desc).ransack(params[:q]) if @q.nil?
-    
-      
-      @orders = @q.result(distinct: true).paginate(page: params[:page], per_page: 25) 
-     @hash = Gmaps4rails.build_markers(@orders) do |order, marker|
+    @orders = @q.result(distinct: true).paginate(page: params[:page], per_page: 25)
+    @q.build_condition if @q.conditions.empty?
+    @q.build_sort if @q.sorts.empty?
+    @map_orders = @orders.any? ? @orders : @current_agency.orders.active.needs_attention.order(needed_by: :asc)
+     @hash = Gmaps4rails.build_markers(@map_orders) do |order, marker|
           marker.lat order.latitude
           marker.lng order.longitude
           marker.infowindow order.title_company

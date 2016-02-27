@@ -183,13 +183,17 @@
   </div>
 
   <div role="tabpanel" class="tab-pane fade" id="timesheets">
-    <div class='col.md-12'>
+    <div class='col-md-8'>
       <% if @company.timesheets.any? %>
        <h3>Timesheets</h3>
       <%= render 'admin/timesheets/table', timesheets: @company.timesheets %>
       <% else %>
       <h3>No timesheets to display.</h3>
       <% end %>
+    </div>
+    <div class='col-md-4'>
+      <h3>Send A Reminder</h3>
+    <%= convo_for(users: User.none, admins: Admin.none, company_admins: @company.admins.real_users, type: :timesheet_reminder) %>
     </div>
   </div>
 </div>

@@ -34,7 +34,7 @@
 
 //= require bootstrap-datepicker
 //= require forms
-
+//= require ransack_forms
 
 //= require datatables
 //= require comments

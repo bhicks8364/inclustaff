@@ -5,15 +5,15 @@
     <div class=''>
 		<%= render 'admin/shared/alerts/open_orders', orders: @orders %>
 	</div>
-	<div class='col-md-12 well well-sm'>
+	<div class=''>
 	  	<%= render 'search' %>
-		<div class="col-md-9">
+		<div class="col-md-8 well well-sm">
 			<%= render 'admin/orders/table', orders: @orders %>
 			<%= will_paginate @orders %>
 		</div>
-		<div class='col-md-3'>
+		<div class='col-md-4'>
 			<hr>
-			<div id="map" style='width: 300px; height: 400px;'></div>
+			<div id="map" style='width: 400px; height: 400px;'></div>
 		</div>
 	</div>
 	

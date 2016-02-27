@@ -60,15 +60,15 @@ module OrdersHelper
     def status_msg(order)
         @str = ""
         if order.overdue? 
-            @str += "<p class='red'> Overdue " + "  #{order.needed_by.stamp("11/12/2015")} </p>"
+            @str += "Overdue " + "  #{order.needed_by.stamp("11/12/2015")}"
         elsif order.priority?
-            @str += "<p class='red'> Priority " + "    #{order.needed_by.stamp("11/12/2015")} </p>"
+            @str += "Priority " + "    #{order.needed_by.stamp("11/12/2015")}"
         elsif order.needs_attention? && order.needed_by.present?
-            @str += "<p class='bg-warning'> Open " + "  #{distance_of_time_in_words(order.needed_by, Time.current, include_seconds: true)} </p>"
+            @str += " Open " + "  #{distance_of_time_in_words(order.needed_by, Time.current, include_seconds: true)}"
         elsif order.filled?
-            @str += "<p class='green bold'> Filled in " + "#{distance_of_time_in_words(order.created_at, order.jobs.active.last.try(:created_at), include_seconds: true)} </p>"
+            @str += " Filled in " + "#{distance_of_time_in_words(order.created_at, order.jobs.active.last.try(:created_at), include_seconds: true)}"
         elsif order.has_pending_jobs?
-            @str += "<p class='green bold'> Open with" + " #{pluralize(order.jobs.pending_approval.count, 'placement')} pending" + "  #{order.needed_by.stamp("11/12/2015")} </p>"
+            @str += " Open with" + " #{pluralize(order.jobs.pending_approval.count, 'placement')} pending" + "  #{order.needed_by.stamp("11/12/2015")}"
         end
         @str.html_safe
     end

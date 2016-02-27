@@ -88,9 +88,22 @@
                     <% end %>
 
             </div>
-
+            <div role="tabpanel" class="tab-pane fade" id="work_history">
+                <div class='col-md-12'>
+                    <% if @employee.work_histories.any? %>
+                     <h2>Work History</h2>
+                        <div class='table-responsive'>
+                            <%= render 'employee/work_histories/table' %>
+                        </div>
+                    <% else %>
+                     <h2>No work history to show.</h2>
+                        <p class='lead text-info'>Adding your work history makes it easier to match you with right position.</p>
+                    <% end %>
+                    <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
+                </div>
+            </div>
             <div role="tabpanel" class="tab-pane fade" id="timesheets">
-                 <%= render 'employee/timesheets/table' %>
+                 <%= render 'employee/timesheets/table', timesheets: @employee.timesheets if @employee.timesheets.any? %>
             </div>
 
             <div role="tabpanel" class="tab-pane fade" id="current-job">
@@ -121,20 +134,7 @@
             <h2> <%= @employee.first_name %> is currently unassigned.</h2>
             <% end %>
             </div>
-            <div role="tabpanel" class="tab-pane fade" id="work_history">
-            <div class='col-md-12'>
-                <% if @employee.work_histories.any? %>
-                 <h2>Work History</h2>
-                    <div class='table-responsive'>
-                        <%= render 'employee/work_histories/table' %>
-                    </div>
-                <% else %>
-                 <h2>No work history to show.</h2>
-                    <p class='lead text-info'>Adding your work history makes it easier to match you with right position.</p>
-                <% end %>
-                <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
-            </div>
-            </div>
+            
             <div role="tabpanel" class="tab-pane fade dark" id="jobs-tab">
                 <h2>Jobs</h2>
                 <div class='list-group'>
