@@ -9,7 +9,7 @@
     </div>
   </div>
   <div class='col-md-3'>
-    
+    <%= convo_for(header: "Send A Message", back_to: company_jobs_path) %>
     
     <div class='well well-sm'>
     <% if @company.invoices.unpaid.any?  %>

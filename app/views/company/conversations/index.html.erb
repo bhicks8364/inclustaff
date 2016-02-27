@@ -12,7 +12,7 @@
   <div>
     <%= link_to company_conversation_path(conversation) do %>
       <h5><strong><%= conversation.subject %></strong></h5>
-      <p><%= conversation.recipients.map(&:name).join(", ") %></p>
+      <p> To: <%= (conversation.recipients - [current_company_admin]).map(&:name).join(", ") %></p>
     <% end %>
   </div>
 <% end %>

@@ -192,8 +192,12 @@
       <% end %>
     </div>
     <div class='col-md-4'>
+      <% if @company.timesheets.needing_approval.any? %>
       <h3>Send A Reminder</h3>
     <%= convo_for(users: User.none, admins: Admin.none, company_admins: @company.admins.real_users, type: :timesheet_reminder) %>
+    <% else %>
+    <h3 class='text-info'>All timesheets for last week have been approved.</h3>
+    <% end %>
     </div>
   </div>
 </div>

@@ -23,6 +23,10 @@ class Admin::ConversationsController < ApplicationController
       User.where(id: params[:user_ids]).to_a
 
     receipt   = current_admin.send_message(recipients, params[:body], params[:subject])
-    redirect_to admin_conversation_path(receipt.conversation)
+    if params[:redirect_to].present?
+      redirect_to params[:redirect_to]
+    else
+      redirect_to admin_conversation_path(receipt.conversation)
+    end
   end
 end

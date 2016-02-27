@@ -99,19 +99,32 @@ module ApplicationHelper
     
     def convo_for(options={})
         date = (Time.current.end_of_week + 1.day).stamp("Monday 12/18")
+        @header = options[:header]
         @admins = options[:admins]
         @company_admins = options[:company_admins]
         @users = options[:users]
         @type = options[:type]
         @message = options[:message]
         @subject = options[:subject]
+        @back_to = options[:back_to]
         if @type == :timesheet_reminder
             @subject = "Timesheet Reminder"
             @message = "Please remember to have all timesheets for last week approved the end of the day on #{date}. Thank you! "
         end
-        
-        render "admin/conversations/form", users: @users, admins: @admins, company_admins: @company_admins, type: @type, message: @message, subject: @subject
+        if admin_signed_in?
+            render "admin/conversations/form", users: @users, admins: @admins, company_admins: @company_admins, type: @type, message: @message, subject: @subject
+        elsif company_admin_signed_in?
+            if @type == :general || @type.nil?
+                @admins = Admin.all
+                @company_admins = @company.admins.real_users - [current_company_admin]
+                @users = @company.users
+            end
+            render "company/conversations/form", users: @users, admins: @admins, company_admins: @company_admins, type: @type, message: @message, subject: @subject
+        elsif user_signed_in?
+            render "employee/conversations/form", users: @users, admins: @admins, company_admins: @company_admins, type: @type, message: @message, subject: @subject
+        end
     end
+    
     
     
 end

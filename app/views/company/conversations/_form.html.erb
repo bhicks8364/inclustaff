@@ -1,5 +1,7 @@
-<%= form_tag admin_conversations_path, method: :post do %>
-<%= hidden_field_tag :redirect_to, params[:redirect_to]%>
+<h2><%= @header %></h2>
+<%= form_tag company_conversations_path, method: :post do %>
+
+<%= hidden_field_tag :redirect_to, @back_to.present? ? @back_to : root_path %>
     <div class="form-group">
             <% if admins.any? %>
             <div class="form-group">
