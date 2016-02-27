@@ -118,7 +118,10 @@ class Shift < ActiveRecord::Base
     where(time_out: start..ending)}
   STARTING = Date.yesterday.beginning_of_day
   ENDING = Date.today.beginning_of_day
-
+  scope :oops, -> {
+    start = Time.current - 25.minutes
+    ending = Time.current
+    where(created_at: start..ending)}
   def clocked_in?; state == "Clocked In"; end
   def clocked_out?; state == "Clocked Out"; end
   def on_break?; state == "On Break"; end

@@ -1,4 +1,14 @@
-<div class='well'>
-    
-  <%= render partial: "company/invoices/invoice", collection: @company.invoices %>
+<div class='col-md-12 well'>
+    <div class='col-md-9 well'>
+        <%= render "company/invoices/table", invoices: @company.invoices.order(week: :desc) %>
+    </div>
+    <div class='col-md-3 well'>
+        <%= div_for @company.invoices.order(week: :desc).unpaid do |invoice| %>
+            <%= inv_timesheets_collaspe(invoice) %><br>
+            <div class='black collapse' id="collapseInv_<%=invoice.id%>">
+               <%= render 'company/invoices/invoice', invoice: invoice %>
+            </div>
+        <% end %>
+    </div>
+  
 </div>

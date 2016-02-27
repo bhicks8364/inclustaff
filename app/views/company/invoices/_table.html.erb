@@ -1,0 +1,25 @@
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>Week</th>
+      <th>Due by</th>
+      <th>Paid</th>
+      <th>Total</th>
+      <th>Amt paid</th>
+      <th>Paid on</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% invoices.each do |invoice| %>
+      <tr>
+        <td><%= link_to invoice.week.stamp("12/12/2016"), company_invoice_path(@company, invoice)  %></td>
+        <td><%= invoice.due_by.stamp("12/12") %></td>
+        <td><%= invoice.state %></td>
+        <td><%= number_to_currency(invoice.total) %></td>
+        <td><%= number_to_currency(invoice.amt_paid) %></td>
+        <td><%= invoice.paid? ? invoice.paid_on : "TBD" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

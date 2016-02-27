@@ -99,9 +99,12 @@ class Job < ActiveRecord::Base
     scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.current_week)}
     scope :worked_today, -> { joins(:shifts).merge(Shift.in_today)}
     scope :worked_yesterday, -> { joins(:shifts).merge(Shift.in_yesterday)}
-    scope :worked_this_week, -> { joins(:timesheets).where("timesheets.week <= ?", Date.today.cweek).group("jobs.id") }
+    scope :worked_this_week, -> { joins(:timesheets).where("timesheets.week <= ?", Date.today.beginning_of_week).group("jobs.id") }
     def self.without_current_shifts
         includes(:current_shift).where( :shifts => { :job_id => nil } )
+    end
+    def self.without_current_timesheet
+        includes(:current_timesheet).where( :timesheets => { :job_id => nil } )
     end
     # MAIL - not setup yet
     def send_notifications!
@@ -195,19 +198,21 @@ class Job < ActiveRecord::Base
     end
     
     def forty_hour_week(week_date)
-        t = week_date.beginning_of_week.midnight + 8.hours
+        num = rand(7..12)
+        t = week_date.beginning_of_week.midnight + num.hours
         5.times do |n|
             time_in = t + n.days
-            time_out = time_in + 8.hours
+            time_out = time_in + num.hours
             self.shifts.create(time_in: time_in, time_out: time_out, state: "Clocked Out", out_ip: user.current_sign_in_ip)
         end
     end
     
     def same_hour_week(week_date, number)
-        t = week_date.beginning_of_week.midnight + number.hours
+        num = rand(7..12) 
+        t = week_date.beginning_of_week.midnight + number.hours 
         5.times do |n|
-            time_in = t + n.days
-            time_out = time_in + 8.hours
+            time_in = t + n.days + rand(1...60).minutes
+            time_out = time_in + num.hours + rand(1...60).minutes
             self.shifts.create(time_in: time_in, time_out: time_out, state: "Clocked Out", out_ip: user.current_sign_in_ip)
         end
     end
@@ -371,6 +376,13 @@ class Job < ActiveRecord::Base
           ]
         )
     end
+    
+    def random_date_between(first, second)
+      number_of_days = (first - second).abs
+      [first, second].min + rand(number_of_days)
+    end
+    
+    
     private
 
       def remove_blanks

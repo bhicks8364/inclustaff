@@ -1,5 +1,5 @@
 
-<div class="col-md-12 lighterbox timesheet metal" data-behavior="timesheet" data-id="<%= timesheet.id %>">
+<div class="col-md-12 <%= timesheet.approved? ? 'bg-success' : 'bg-info' %> pad" data-behavior="timesheet" data-id="<%= timesheet.id %>">
 		<%= link_to(company_timesheet_path(timesheet), class: '') do %>
 			<i class="fa fa-calendar-times-o fa-1x"></i>
 			<%= timesheet.week_begin %>  -  <%= timesheet.week_ending %>
@@ -21,7 +21,6 @@
 		</h4>
 		<% end %>
 	</div>
-	<div class="col-md-12 pad <%= timesheet.approved? ? 'bg-success' : 'bg-info' %>" data-behavior="timesheet-bg">
 
 		<div class="col-md-6 col-sm-6 col-xs-6">
 			<p class=''>		<strong>	Regular Hours:	<%= timesheet.reg_hours.round(2) %></strong>        </p>
@@ -39,7 +38,6 @@
 					<small> Approved by: <%= timesheet.user_approved %></small>
 				</p>
 			<% end %>
-		</div>
 			<%= render 'company/timesheets/tool_buttons', timesheet: timesheet %>
 	</div>	
 	

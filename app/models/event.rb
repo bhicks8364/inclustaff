@@ -114,6 +114,8 @@ class Event < ActiveRecord::Base
     def self.admin_events(admin_id)
         where(eventable_id: admin_id)
     end
-    
+    def self.without_eventable
+        timesheet_approvals.joins(:timesheets).where( :timesheets => { :id => nil } )
+    end
     
 end

@@ -51,7 +51,7 @@ namespace :db do
  # 		(Date.today + 1.hour + rand(0..60).minutes).to_datetime
 	# end
 	Apartment::Tenant.switch!('testing')
-	[Company, Order, Person].each(&:delete_all)
+	[Company, Order, User].each(&:delete_all)
     
     Company.populate 20 do |company|
       company.name = Faker::Company.name
@@ -73,16 +73,31 @@ namespace :db do
       end
     end
 	    
-    Person.populate 100 do |person|
-      person.name    = Faker::Name.name
-      person.company = Faker::Company.name
-      person.email   = Faker::Internet.email
-      person.phone   = Faker::PhoneNumber.phone_number
-      person.street  = Faker::Address.street_address
-      person.city    = Faker::Address.city
-      person.state   = Faker::Address.us_state_abbr
-      person.zip     = Faker::Address.zip_code
-    end
+    User.populate 50 do |user|
+	  	user.agency_id = 3
+		user.first_name = FFaker::Name.first_name
+		user.last_name = FFaker::Name.last_name
+		user.email = FFaker::Internet.free_email
+		user.city = FFaker::Address.city
+		user.state = FFaker::AddressUS.state
+		user.zipcode = FFaker::AddressUS.zip_code
+		user.address = FFaker::AddressUS.street_address
+		user.role = "Employee"
+		user.encrypted_password = User.new(:password => password).encrypted_password
+		user.sign_in_count = 0
+		Employee.populate 1 do |employee|
+			employee.user_id = user.id
+			employee.first_name = user.first_name
+			employee.last_name = user.last_name
+			employee.email = user.email
+			employee.ssn = 1234..9999
+			employee.assigned = false
+			employee.phone_number = FFaker::PhoneNumber.short_phone_number
+			puts employee.first_name
+		  end
+		
+		puts user.first_name
+	  end
   end
 		
   end
@@ -141,19 +156,7 @@ namespace :db do
 		admin.failed_attempts = 0
 		puts admin.first_name
 	  end
-
-	  
 	  puts 'All done!!!'
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
   end
   
 
@@ -180,37 +183,8 @@ desc "Create 25 employees with random names and addresses"
 			employee.email = user.email
 			employee.ssn = 1234..9999
 			employee.phone_number = FFaker::PhoneNumber.short_phone_number
-
-			
-	
-	
-			
 			puts employee.first_name
 		  end
-		
-
-
-		
-		puts user.first_name
-	  end
+	end
 	  puts 'All done!!!'
-  end
-  
- # task :shifts => :environment do
- # 	def random_hour(from, to)
- # 		(Date.today + rand(from..to).hour + rand(0..60).minutes).to_datetime
-	# end
-
-	# puts random_hour(10, 15)
-	
- #   # Shift.populate 100 do |t|
- #   #   t.time_in = 
-    
- #   #   t.employee_id = rand(6)+1 # random group_id [1..6]
- #   #   t.state = "clocked_out"
- #   #   t.priority_id = rand(3)+1 # random priority_id [1..3]
- #   #   t.contact_id = rand(NUM_CONTACTS)+1 # random contact_id [1..NUM_CONTACTS]
- #   #   t.creator_id = rand(6)+2 # random created_by [2..7]
- #   #   t.created_at = CREATION_PERIOD.sample
- #   # end
- # end
+ end
