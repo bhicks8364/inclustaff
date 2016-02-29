@@ -1,4 +1,4 @@
-<span class='pull-right text-muted'><small>Week Ending <%= @timesheets.current_week.first.week_ending %></small> </span>
+<span class='pull-right text-muted'><% if @timesheets.current_week.any? %><small>Week Ending <%= @timesheets.current_week.first.week_ending %></small> <% end %></span>
 <%= render "admin/timesheets/search" %>
 <div class='col-md-12' data-behavior='timesheet-list'>
 	<h1 class='text-center'>Current Timesheets </h1>

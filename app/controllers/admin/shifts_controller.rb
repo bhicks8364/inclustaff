@@ -109,7 +109,7 @@ class Admin::ShiftsController < ApplicationController
       @shift.update(
           time_out: Time.current,
           state: "Clocked Out",
-          week: Date.today.cweek )
+          week: Date.today.beginning_of_week )
 
       respond_to do |format|
         if @shift.update
@@ -137,7 +137,7 @@ class Admin::ShiftsController < ApplicationController
     @shift = Shift.find(params[:id])
     @job = @shift.job
       if @shift.clocked_out?
-        @shift = @job.shifts.create(time_in: Time.current, week: Date.today.cweek,
+        @shift = @job.shifts.create(time_in: Time.current, week: Date.today.beginning_of_week,
                                     state: "Clocked In",
                                     in_ip: @current_admin.last_name + "-admin")
         respond_to do |format|
