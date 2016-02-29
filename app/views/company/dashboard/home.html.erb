@@ -1,23 +1,23 @@
 <div class=''>
- <h1 class='simple '><%= @company.name %></h1>
+ <h1 class='simple '><%= @current_company.name %></h1>
 <div class='row'>
   	<div class='col-md-9 '>
   	 
   <h2 class=''> Welcome, <%= current_company_admin.name %>!</h2>
     <div class='well well-sm'>
-      <%= render 'company/orders/table', orders: @company.orders %>
+      <%= render 'company/orders/table', orders: @current_company.orders %>
     </div>
   </div>
   <div class='col-md-3'>
     <%= convo_for(header: "Send A Message", back_to: company_dashboard_path) %>
     
     <div class='well well-sm'>
-    <% if @company.invoices.unpaid.any?  %>
+    <% if @current_company.invoices.unpaid.any?  %>
     
       <div class="alert alert-danger text-center" role="alert">
        <%= pluralize( @current_company_admin.company.invoices.unpaid.count, 'unpaid invoice') %>
       </div>
-      <%= div_for @company.invoices.order(week: :desc).unpaid do |invoice| %>
+      <%= div_for @current_company.invoices.order(week: :desc).unpaid do |invoice| %>
         <%= inv_timesheets_collaspe(invoice) %><br>
         <div class='black collapse' id="collapseInv_<%=invoice.id%>">
            <%= render 'company/invoices/invoice', invoice: invoice %>

@@ -115,7 +115,7 @@ class Agency < ActiveRecord::Base
     def create_tenant
       Apartment::Tenant.create(subdomain)
     end
-
+    # Apartment::Tenant.switch!('testing')
     # Apartment::Tenant.switch!('gtrjobs')
     # Apartment::Tenant.switch!('demo')
 end
