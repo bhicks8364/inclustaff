@@ -1,23 +1,22 @@
-<div class='col-md-3'>
-    <h4 class='text-center'>Current Billings by Recruiter</h4>
-    <ul class="list-group">
-    <% @current_agency.admins.recruiters.sorted_by_current_billing.each do |admin| %>
-        <% if admin.id == recruiter.id %> <li class="list-group-item list-group-item-success"> <% else %><li class="list-group-item"><% end %>
-            <%= admin.name %> <span class="label label-success pull-right"><%= number_to_currency(admin.current_billing) %></span> 
-        </li>
-    <% end %>
-    </ul>
-</div>
 
-<div class='col-md-12 well'>
-     <div class='col-md-8 bg-white'>
-        <%= line_chart recruiter.jobs.group_by_week('jobs.start_date', format: "%b %Y").count, library: {legend: {position: "right"}, title: "Placements by week"} %>
+
+<div class='col-md-12'>
+    <div class='col-md-9 well well-sm'>
+    <%= column_chart recruiter.companies.distinct.map{|company|
+            {name: company.name, data: company.invoices.group_by_week('invoices.week', range: 4.weeks.ago.midnight...Time.current, format: "%m/%d").sum(:total)}
+        }, library: {title: "Company Billings per Week"}, xtitle: "Week", ytitle: "Total Billing" %>
+    </div>
+    <div class='col-md-3 well well-sm'>
+        <h4 class='text-center'>Current Billings by Recruiter</h4>
+        <div class="fa-ul">
+        <% @current_agency.admins.recruiters.sorted_by_current_billing.each do |admin| %>
+            <% if admin.id == recruiter.id %> <li class="bg-success"> <% else %><li class=""><% end %>
+                <%= link_to admin.name, admin_admin_path(admin) %> <span class="bold pull-right"><%= number_to_currency(admin.current_billing) %></span> 
+            </li>
+        <% end %>
+        </div>
     </div>
 
-        <div class='col-md-6'>
-            <h4 class='text-center'>Placements</h4>
-            <%= pie_chart recruiter.jobs.includes(:current_timesheet, :employee).group(:last_name).sum(:total_bill), library: {legend: {position: "right"}, title: "Current Billings by Recruiter"} %>
-        </div>
+        
     
-    <%= line_chart recruiter.jobs.group_by_week('jobs.start_date', format: "%b %Y").count%>
 </div>

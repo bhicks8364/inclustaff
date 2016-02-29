@@ -5,6 +5,8 @@ class Admin::ConversationsController < ApplicationController
 
   def index
     @conversations = current_admin.mailbox.conversations
+    @sent_box = current_admin.mailbox.sentbox
+
   end
 
   def show

@@ -1,7 +1,7 @@
 <div class="col-md-12">
 	
 	<%= render 'admin/shared/welcome/agency_setup' if @current_admin.sign_in_count == 1 || @current_agency.subdomain == "demo" %> 
-	<h2 class='text-right metal bold'>  <span class='label label-success black'>Sales Goal &nbsp;<%= number_to_currency(@current_agency.weekly_sales_goal) %></span></h2>
+	<h2 class='text-right metal bold'>  <span class='label label-success black'>Sales Goal &nbsp;<%= number_to_currency(@current_agency.weekly_sales_goal) %></span> <%  if policy(@current_agency).update? %> <%= link_to(edit_agency_path(@current_agency), class: '') do %> <span class='small pul-right'><i class='fa fa-pencil fa-fw'></i></span>	<% end %>	<% end %></h2>
 	<h1 class='page-header white'>Owner Dashboard</h1>
 	<div class="tabs-wrapper">
 		<div class="clearfix">
@@ -15,7 +15,7 @@
 		<div class="tab-content">
 			<div class="tab-pane fade in active" id="tab-home">
 				<div class='col-md-12'>
-					
+				<%  if policy(@current_agency).update? %> <%= link_to(edit_agency_path(@current_agency), class: 'btn btn-primary pull-right') do %> <span><i class='fa fa-pencil fa-fw'></i>	Edit Agency</span>	<% end %>	<% end %>
 				<% if @current_agency.companies.blank? %>
 	       		<h2 class=''>Getting Started</h2>
 	       			<div class='col-md-4'>
@@ -27,11 +27,9 @@
 					  	</div>
 	       			</div>
 	       			<% else %>
-	       			<div class='text-center'>
-	       				<%= render "admin/shared/alerts/open_orders", orders: @current_agency.orders %>
-	       			</div>
-					<% end %>
+				
 					<div class='col-md-4'>
+						<%= render "admin/shared/alerts/open_orders", orders: @current_agency.orders %>
 						<div class="alert alert-info fade in text-center open-order">
 							<p class='lead bold metal green'><i class="fa fa-usd fa-fw"></i> &nbsp; Current Revenue: <%= number_to_currency(@current_agency.current_revenue) %>  </span> <br>
 						</div>
@@ -39,6 +37,7 @@
 							<p class='lead bold metal'><i class="fa fa-usd fa-fw"></i> &nbsp; Last Week Billing: <%= number_to_currency(@current_agency.last_week_billing) %>  </span> <br>
 						</div>
 					</div>
+						<% end %>
 		 			<div class='col-md-8 well well-sm grey'>
 		                <h3 class='text-center'>Sales progress for this week <span class='label label-success pull-right'> <%= number_to_currency(@current_agency.current_billing) %></span></h3>
 		                <div class="progress">

@@ -96,6 +96,7 @@ class CompanyAdmin < ActiveRecord::Base
   def company_admin?;           true;  end
   def admin?;           false;  end
   def employee?;           false;  end
+  def name_role;        "#{name} #{role}"; end
   def online?
     if current_sign_in_at.present?
       current_sign_in_at > 10.minutes.ago

@@ -65,6 +65,13 @@
      <li class='list-group-item'><%= timesheet.week_ending %> - <%= timesheet.employee_bill %> - <small><%= timesheet.state %></small></li>
     <% end %>
 <% end %>
+<hr>
+<% @invoice.orders.distinct.each do |order| %>
+  <%= link_to admin_order_path(order) do %>
+  
+     <li class='list-group-item'><%= order.title %> - <%= order.account_manager.name %> - <small><%= status_tag(order) %></small></li>
+    <% end %>
+<% end %>
 </div>
   <div class='col-md-4'>
     

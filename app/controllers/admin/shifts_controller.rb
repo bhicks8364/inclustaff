@@ -180,7 +180,7 @@ class Admin::ShiftsController < ApplicationController
     # # @employee = @shift.employee
     # time = @shift.time_out || @shift.time_in
     # @shift.week = time.to_date
-
+    authorize @shift
     respond_to do |format|
       if @shift.update(shift_params)
         format.html { redirect_to admin_shift_path(@shift), notice: 'Shift was successfully updated.' }

@@ -1,6 +1,7 @@
 <%= div_for(user) do %>
 
-   <p class='lead'> <% if @user.nil? %><%= user.name %><small><%= user.city %>, <%= user.state %></small><% end %></p> 
+   <p class=''> <% if @user.nil? %><%= user.name %><br>
+   <small class='text-muted'><%= user.city %>, <%= user.state %></small><% end %></p> 
   <div class='gravatar'><%=gravatar_for(user)%>
   <p class='pull-right'> Employee Details <br> <i class="fa fa-wrench"></i> <%= user.employee.desired_job_type %><br>
   <i class="fa fa-clock-o"></i>  <%= user.employee.desired_shift %></p>

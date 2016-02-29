@@ -22,8 +22,9 @@
 	
 	<div class='col-md-3 text-center metal'>
 	  	<p class='lead'>There are still <%= pluralize(@current_agency.timesheets.needing_approval.distinct.count, "pending timesheets") %> from last week.</p>
-	  	<% @current_agency.companies.with_late_timesheets.distinct.each do |company| %>
-	  	<%= company.name %><br>
+	  	<%= div_for @current_agency.companies.with_late_timesheets.distinct do |company| %>
+	  	<%= link_to company.name, admin_company_timesheets_path(company) %>
+	  	<span class='pull-right'><%= convo_for(company: company, type: :timesheet_reminder) %></span>
 	  	<% end %>
 	  </div>
 	<div class='col-md-3'>

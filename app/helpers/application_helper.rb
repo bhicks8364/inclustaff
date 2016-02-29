@@ -107,20 +107,38 @@ module ApplicationHelper
         @message = options[:message]
         @subject = options[:subject]
         @back_to = options[:back_to]
+        @company = options[:company]
+        @button = options[:button]
         if @type == :timesheet_reminder
+            @admins = Admin.none
+            @company_admins = @company.admins.real_users
+            @users = User.none
+            @header = "Send A Reminder"
+            @button = "<i class='fa fa-bell-o' data-placement='top' data-toggle='tooltip' title='#{@header}'></i>"
+            
             @subject = "Timesheet Reminder"
             @message = "Please remember to have all timesheets for last week approved the end of the day on #{date}. Thank you! "
         end
         if admin_signed_in?
-            render "admin/conversations/form", users: @users, admins: @admins, company_admins: @company_admins, type: @type, message: @message, subject: @subject
+            if @type == :general || @type.nil?
+                @admins = Admin.all
+                @company_admins = CompanyAdmin.all
+                @users = User.all
+            end
+            render "admin/conversations/modal", users: @users, admins: @admins, company_admins: @company_admins, type: @type, message: @message, subject: @subject
         elsif company_admin_signed_in?
             if @type == :general || @type.nil?
                 @admins = Admin.all
-                @company_admins = @company.admins.real_users - [current_company_admin]
-                @users = @company.users
+                @company_admins = @current_company.admins.real_users - [current_company_admin]
+                @users = @current_company.users
             end
             render "company/conversations/form", users: @users, admins: @admins, company_admins: @company_admins, type: @type, message: @message, subject: @subject
         elsif user_signed_in?
+            if @type == :general || @type.nil?
+                @admins = @current_agency.admins.recruiters 
+                @company = current_user.employee.company if @company.assigned?
+                @company_admins = @company.admins.real_users if @company.present?
+            end
             render "employee/conversations/form", users: @users, admins: @admins, company_admins: @company_admins, type: @type, message: @message, subject: @subject
         end
     end

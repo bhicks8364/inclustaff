@@ -95,8 +95,6 @@ class Admin::TimesheetsController < ApplicationController
           @timesheets = Timesheet.worked_after(@start_time).distinct
         elsif @end_time.present?
           @timesheets = Timesheet.worked_before(@end_time).distinct
-        else
-          @timesheets = Timesheet.all
         end
 		gon.timesheets = @timesheets
 		authorize @timesheets

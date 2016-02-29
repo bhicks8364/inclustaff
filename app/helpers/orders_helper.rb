@@ -137,7 +137,7 @@ module OrdersHelper
         end
     end
     def title_count(order)
-        "<span class=''><strong>#{order.title}</strong></span> (#{number_to_currency(order.min_pay)} - #{number_to_currency(order.max_pay)}) #{pluralize(order.open_jobs, "open jobs")}".html_safe
+        "<span class=''><strong>#{order.title}</strong> </span> (#{number_to_currency(order.min_pay)} - #{number_to_currency(order.max_pay)}) #{pluralize(order.open_jobs, "open jobs")}".html_safe
     end
     def pay_range(order)
         if order.min_pay == order.max_pay

@@ -150,7 +150,7 @@ class Admin < ActiveRecord::Base
 
   def job_orders
     if recruiter?
-      Order.by_recruiter(id)
+      Order.includes(:company, :invoices).by_recruiter(id)
     elsif account_manager?
       account_orders
     else
@@ -216,8 +216,8 @@ class Admin < ActiveRecord::Base
 
   def current_commission
     if timesheets.current_week.any?
-      pay = timesheets.current_week.sum(:gross_pay)
-      bill = timesheets.current_week.sum(:total_bill)
+      pay = timesheets.current_week.distinct.sum(:gross_pay)
+      bill = timesheets.current_week.distinct.sum(:total_bill)
       (bill - pay) * 0.15  #FAKE COMMISSION RATE
     else
       0.00

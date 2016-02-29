@@ -58,12 +58,14 @@ class Order < ActiveRecord::Base
   belongs_to :manager, foreign_key: 'manager_id', class_name: "CompanyAdmin"
   belongs_to :account_manager, foreign_key: 'account_manager_id',  class_name: "Admin"
   has_many :skills, as: :skillable
-  has_many :jobs
+  has_many :jobs, -> { where state: "Currently Working" }, class_name: "Job"
+  has_many :pending_jobs, -> { where state: "Pending Approval" }, class_name: "Job"
+  has_many :presented_candidates, through: :pending_jobs
   has_many :timesheets, :through => :jobs
   has_many :current_timesheets, :through => :jobs
   has_many :comments, as: :commentable
-  has_many :active_jobs, -> { where active: true }, class_name: "Job"
-  has_many :employees, :through => :active_jobs
+  has_many :inactive_jobs, -> { where active: false }, class_name: "Job"
+  has_many :employees, :through => :jobs
   has_many :users, through: :employees
   include ArelHelpers::ArelTable
   include ArelHelpers::JoinAssociation
@@ -104,14 +106,15 @@ class Order < ActiveRecord::Base
     scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.current_week)}
     scope :off_shift, -> { joins(:jobs).merge(Job.off_shift)}
     scope :needs_attention, -> { active.where(Order[:number_needed].gt(Order[:jobs_count])) }
-    scope :filled, -> { where(Order[:jobs_count].gteq(Order[:number_needed])) }
     scope :priority, -> { needs_attention.where(Order[:needed_by].lteq(Time.current + 3.days))}
     scope :newly_added, -> { needs_attention.where(Order[:created_at].gteq(Time.current - 1.day))}
     scope :overdue, -> { needs_attention.where(Order[:needed_by].lteq(Time.current))}
     scope :published, -> { needs_attention.where(Order[:published_at].lteq(Time.current))}
     scope :unpublished, -> { needs_attention.where(Order[:published_at].eq(nil))}
     scope :long,    -> { where(NamedFunction.new("LENGTH", [Order[:notes]]).gt(200))}
-
+    def self.filled
+      OrderQueryBuilder.new.filled
+    end
     def defaults
       self.needed_by = Date.today + 5.days if self.needed_by.nil?
       # Just putting this in here until I figure out how to format bootstrap datepicker
@@ -178,7 +181,7 @@ class Order < ActiveRecord::Base
       self.address = "#{company.address} #{company.city}, #{company.state}" if address.blank? && company.present?
     end
 
-    def self.by_recuriter(admin_id)
+    def self.by_recruiter(admin_id)
         joins(:jobs).where( :jobs => { :recruiter_id => admin_id } )
     end
     def self.with_no_timesheets

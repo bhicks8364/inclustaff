@@ -1,4 +1,4 @@
-<div class="col-md-12 lightbox-long">
+<div class="col-md-12">
   
   <h2><%= @company.name %></h2>
   <!-- Nav tabs -->
@@ -182,7 +182,7 @@
      </div>
   </div>
 
-  <div role="tabpanel" class="tab-pane fade" id="timesheets">
+  <div role="tabpanel" class="tab-pane fade" data-behavior='timesheet-list' id="timesheets">
     <div class='col-md-8'>
       <% if @company.timesheets.any? %>
        <h3>Timesheets</h3>
@@ -193,8 +193,7 @@
     </div>
     <div class='col-md-4'>
       <% if @company.timesheets.needing_approval.any? %>
-      <h3>Send A Reminder</h3>
-    <%= convo_for(users: User.none, admins: Admin.none, company_admins: @company.admins.real_users, type: :timesheet_reminder) %>
+    <%= convo_for(header: "Send A Reminder",  company: @company, type: :timesheet_reminder) %>
     <% else %>
     <h3 class='text-info'>All timesheets for last week have been approved.</h3>
     <% end %>

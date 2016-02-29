@@ -23,7 +23,7 @@ class ShiftPolicy < ApplicationPolicy
     
   end
   def update?
-    return true if user.payroll? || user.owner?
+    record.timesheet.pending? && user.payroll? || record.timesheet.pending? && user.owner?
     
   end
   def clock_in?

@@ -21,11 +21,9 @@
   <h3>Working Employee</h3>
   <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
   <div class="form-group">
-    <%= f.input :email, as: :select, collection: @current_agency.employees.assigned.order(:last_name), label_method: :title, value_method: :email, required: false, include_blank: false, label: false  %>
-    <%= f.hidden_field :email, value: @current_agency.jobs.active.last.employee.email, required: false %>
+    <%= f.input :email, as: :select, collection: @current_agency.employees.assigned.order(:last_name), label_method: :name_title, value_method: :email, required: false, include_blank: false, label: false  %>
     <%= f.hidden_field :password, required: false, value: "password" %>
   </div>
-
   <div class="form-actions">
     <%= f.button :submit, "Start Employee Demo", class: 'btn btn-success' %>
   </div>

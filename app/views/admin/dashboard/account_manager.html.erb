@@ -3,10 +3,12 @@
 
 	<h1 class='page-header text-center'>Sales Dashboard</h1>
 	<div class='col-md-12 '>
+		<% if @current_admin.jobs.pending_approval.any?  %>
 		<div class="col-md-3">
 			<h2>Pending Approval</h2>
-				<%= render 'admin/jobs/pending_list', jobs: @current_admin.jobs.pending_approval if @current_admin.jobs.pending_approval.any? %>
+				<%= render 'admin/jobs/pending_list', jobs: @current_admin.jobs.pending_approval %>
 		</div>
+		<% end %>
 		
 		<div class='col-md-6 well'>
 			<h2>Companies with Open Job Orders</h2>

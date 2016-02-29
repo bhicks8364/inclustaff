@@ -10,19 +10,21 @@ class Admin::OrdersController < ApplicationController
   def index
     @q = Order.includes(:company).active.order(needed_by: :desc).ransack(params[:q]) if @current_admin.owner? || @current_admin.payroll? || @current_admin.account_manager?
     @q = Order.includes(:company).order(needed_by: :desc).ransack(params[:q]) if @current_admin.recruiter?
+    
     @import = Order::Import.new
     if params[:company_id]
       @company = Company.find(params[:company_id])
       @orders = @company.orders.paginate(page: params[:page], per_page: 25)
-     
+      @order_months = @orders.group_by { |t| t.needed_by.beginning_of_month }
     else
       @q_orders = Order.includes(:company).ransack(params[:q]) 
       @orders = @q_orders.result(distinct: true).paginate(page: params[:page], per_page: 25)
-      # @orders = Order.includes(:jobs).active.order(created_at: :desc) 
+      @order_months = @orders.group_by { |t| t.needed_by.beginning_of_month }
     end
     if params[:tag]
-      @orders = Order.needs_attention
+      # @orders = Order.needs_attention
       @orders = @orders.tagged_with(params[:tag])
+      @order_months = @orders.group_by { |t| t.needed_by.beginning_of_month }
     end
     @hash = Gmaps4rails.build_markers(@orders) do |order, marker|
           marker.lat order.latitude
@@ -54,6 +56,7 @@ class Admin::OrdersController < ApplicationController
     @orders = @q.result(distinct: true).paginate(page: params[:page], per_page: 25)
     @q.build_condition if @q.conditions.empty?
     @q.build_sort if @q.sorts.empty?
+    @order_months = @orders.group_by { |t| t.needed_by.beginning_of_month }
     @map_orders = @orders.any? ? @orders : @current_agency.orders.active.needs_attention.order(needed_by: :asc)
      @hash = Gmaps4rails.build_markers(@map_orders) do |order, marker|
           marker.lat order.latitude

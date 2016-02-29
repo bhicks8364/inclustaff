@@ -200,6 +200,8 @@ class Employee < ActiveRecord::Base
   def set_defaults
     self.dns = false if dns.nil?
     self.assigned = false if assigned.nil?
+    self.desired_job_type = "Any" if desired_job_type.nil?
+    self.desired_shift = "1st" if desired_shift.nil?
   end
 
   def unassigned?

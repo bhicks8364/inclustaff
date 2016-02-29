@@ -25,7 +25,7 @@ class TimesheetPolicy < ApplicationPolicy
     user.employee? && record.job_id == user.employee.current_job.id
   end
   def update?
-    return true if user.admin?
+    return true if user.admin? && record.pending?
     
   end
   def destroy?

@@ -1,10 +1,20 @@
 
-<div class="col-md-12 lightbox">
+<div class="col-md-12">
 	
 	<div class=''>
 	   <%= render 'admin/orders/search' %>
 	</div>
-	
+	<div class='well well-sm'>
+	    <% @order_months.sort.each do |month, orders| %>
+	    <h2><%= month.strftime('%B') %></h2>
+	    <% for order in orders %>
+	      <div class="order">
+	        <strong><%= title_count(order) %></strong><br>
+	        needed by <%= order.needed_by.to_date.to_s(:long) %>
+	      </div>
+	    <% end %>
+	  <% end %>
+	</div>
 	<div class="col-md-10">
 		<%= render 'admin/orders/table', orders: @orders %>
 			<%= will_paginate @orders %>

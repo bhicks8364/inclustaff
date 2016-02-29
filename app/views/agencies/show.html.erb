@@ -41,8 +41,8 @@
 
     <div class='col-md-12'>
         
-            <div class='col-md-3'>
-                <%= image_tag(@agency.logo_url, class: "img-zoom", alt: "img-#{@agency.id}") if @agency.logo_url.present? %> 
+            <div class='col-md-3 well well-sm'>
+                <%= image_tag(@agency.logo_url, class: "img-zoom border", alt: "img-#{@agency.id}") if @agency.logo_url.present? %> 
                 <% if @agency.contact.present? %>
                 <p> Name: <strong><%= link_to @agency.contact.name, admin_admin_path(@agency.contact) %></strong><br>
                  Email: <strong><%= @agency.contact.email%></strong>

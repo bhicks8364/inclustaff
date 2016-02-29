@@ -10,14 +10,29 @@
 <% @conversations.each do |conversation| %>
   <hr />
   <div>
+    <p>To: <%= (conversation.recipients - [current_admin]).map(&:name).join(", ") %></p>
     <%= link_to admin_conversation_path(conversation) do %>
       <h5><strong><%= conversation.subject %></strong></h5>
-      <p>To: <%= (conversation.recipients - [current_admin]).map(&:name).join(", ") %></p>
+      
     <% end %>
   </div>
 <% end %>
 
 <div class='col-md-6 well well-sm'>
-  <h4>Send A Message</h4>
-  
+  <h2 class='text-center'>Sent</h2>
+<% @sent_box.each do |conversation| %>
+  <hr />
+  <div>
+    <p>To: <%= (conversation.recipients - [current_admin]).map(&:name).join(", ") %><br>
+    <%= link_to admin_conversation_path(conversation) do %>
+      <h5><strong><%= conversation.subject %></strong></h5>
+      
+      <small><%= conversation.created_at.stamp('Monday 12/18 at 11:23am') %></small>
+      </p>
+    <% end %>
+  </div>
+<% end %>  
 </div>
+
+
+<hr>

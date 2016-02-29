@@ -181,11 +181,14 @@
           <%= link_to "Candidate List", users_path, class: "btn btn-primary pull-right" %>
         <% else %>
         <div class='col-md-6 '>
+          
+          <% if @order.users.any? %>
         <h3>Employee Commutes</h3>
         <% @order.users.near(@order.address).try(:each) do |user| %>
           <li class='list-group-item' data-placement='right' data-toggle='tooltip' title='<%= user.skills.map(&:name).join(', ')%>'>
             <%=users_tooltip(user)%>
             <%= link_to user.name, user %> (<%= user.distance.round(2) %> miles)</li>
+        <% end %>
         <% end %>
          </div>
       <% end %>

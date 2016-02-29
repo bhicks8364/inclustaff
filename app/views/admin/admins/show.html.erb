@@ -1,34 +1,18 @@
-<div class='col-md-12 metal'>
+<div class='col-md-12 '>
     <h1><%= @admin.name %></h1>
-    <div class='col-md-3'>
-         <% if @admin.online? %> <%= image_tag("user-green.png", class: 'online-icon') %> <% end %>
-        <p class='metal bold'>
-            <%= @admin.role %>
-        <%= @admin.email %>
-        </p>
-            <p> Current Commission: <%= number_to_currency(@admin.current_commission) %></p>
-        <br>
-        Last seen: <%= @admin.last_sign_in_at.present? ? @admin.last_sign_in_at.stamp("11/12 at 11:15am") : "Yet to sign in" %>
-        <hr>
-        
-    </div>
-    <div class='col-md-9'>
-        <% if @admin.jobs.any? %>
-        <div class='col-md-6'>
-            <%= pie_chart @admin.jobs.group('jobs.state').count, library: {backgroundColor: "#ccc", legend: {position: "right"}, is3D: true, title: "Jobs by Current Status"}%>
+    <div class='col-md-12'>
+         <div class='col-md-3'>
+             <% if @admin.online? %> <%= image_tag("user-green.png", class: 'online-icon') %> <% end %>
+            <p class=' bold'>
+                <%= @admin.role %>
+            <%= @admin.email %>
+            </p>
+                <p> Current Commission: <%= number_to_currency(@admin.current_commission) %></p>
+            <br>
+            Last seen: <%= @admin.last_sign_in_at.present? ? @admin.last_sign_in_at.stamp("11/12 at 11:15am") : "Yet to sign in" %>
+            <hr>
         </div>
-        <ul class='fa-ul'>
-            <%= render 'admin/shared/clocked_in' if  @admin.jobs.on_shift.any? %>
-            <%= render 'admin/shared/on_break' if @admin.jobs.on_break.any? %>
-        </ul>
-        
-         
-	    <% end %>
-        <%= render 'infoboxes'  %>
-    </div>
-     <div class='col-md-12'>
-         
- 	<% if @current_agency.companies.blank? %>
+ 	<% if @current_agency.companies.blank? && current_admin.owner? || current_admin.account_manager? %>
    	    <h2 class=''>Getting Started</h2>
    		<div class='col-md-4'>
    			<div id="no-companies-alert" class="alert alert-danger text-center" role="alert">
@@ -45,6 +29,22 @@
          <%= render "admin/charts/payroll_charts", admin: @admin if @admin.payroll? %>
     <% end %>
      </div>
+    
+    <div class='col-md-9'>
+        <% if @admin.jobs.any? %>
+        <div class='col-md-6'>
+            <%= pie_chart @admin.jobs.group('jobs.state').count, library: {backgroundColor: "#ccc", legend: {position: "right"}, is3D: true, title: "Jobs by Current Status"}%>
+        </div>
+        <ul class='fa-ul'>
+            <%= render 'admin/shared/clocked_in' if  @admin.jobs.on_shift.any? %>
+            <%= render 'admin/shared/on_break' if @admin.jobs.on_break.any? %>
+        </ul>
+        
+         
+	    <% end %>
+        <%= render 'infoboxes'  %>
+    </div>
+     
     
       
 </div>

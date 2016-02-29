@@ -8,6 +8,7 @@
     <% @conversation.receipts_for(current_admin).order(created_at: :asc).each do |receipt| %>
       <div>
         <div>
+          <%= read = receipt.is_unread? %>
           <div class="pull-right"><%= local_time_ago(receipt.created_at) %></div>
           <strong><%= receipt.message.sender.name %></strong>
         </div>
