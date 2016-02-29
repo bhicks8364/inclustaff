@@ -125,7 +125,7 @@
         <div class='col-md-6'>
             <%= image_tag "http://maps.google.com/maps/api/staticmap?size=250x300&sensor=false&zoom=16&markers=#{@user.latitude}%2C#{@user.longitude}",
                 class: "img-zoom" %>
-                    Distance from current job: <%= @user.distance_to(@order.address).round(2) if @order.present?%> miles
+                    <p>Distance from current job: <%= @user.distance_to(@order.address).round(2) if @order.present?%> miles</p>
         </div>
         <% else %>
         <h3><%= @employee.first_name %> is currently unassigned.</h3>
@@ -145,25 +145,23 @@
         
         <div class='col-md-12'>
             
-        <% if @employee.work_histories.any? %>
-         <div class='col-md-10'>
+        
+         <div class='well'>
+             <% if @employee.work_histories.any? %>
             <h2><%= @employee.first_name %>'s Employment Timeline</h2>
-            <%= timeline  @employee.work_history_data, width: "100%", height: "300px"  %>
+            <%= timeline  @employee.work_history_data %>
+            <%= render 'work_histories/table' %>
+            <% else %>
+            <p>No Work History Available.</p>
+            <% end %>
         </div>
-           
-           <%= render 'work_histories/table' %>
-          
-       
-        <% else %>
-          <p>No Work History Available.</p>
-    
-        <% end %>
+        
         <div class='col-md-2'>
             <h4>Tags</h4>
               <%= highlight(@employee.tag_list.to_s, ActsAsTaggableOn::Tag.all.map(&:name), highlighter: '<a href="/tags?tag=\1" class="">\1</a>') %>
         </div>
          <% if @employee.jobs.have_ended.any? %>
-     <div class='col-md-6'>
+     <div class='col-md-10'>
               <h5 class='text-center'>Past Job Assignments</h5>
         <% @employee.jobs.inactive.each do |job| %>
        

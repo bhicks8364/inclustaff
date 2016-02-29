@@ -12,7 +12,7 @@
 		<h2>	Job Orders I Manage</h2>
 			<%= div_for @company_admin.managed_orders do |order| %>
 	            <%= info_popover(order) %> <%= link_to order.title, company_order_path(order), class: "button" %>
-	          <%= order.manager.name %>
+	          <%= order.manager.try(:name) %>
 	        <% end %>
 			<% if company.employees.any? %>
 	<h2>	All Company employees</h2>

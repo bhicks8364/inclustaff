@@ -26,6 +26,7 @@
             <% if user.employee.jobs.any? %>
               <% user.employee.jobs.each do |job| %>
                 <%= link_to job.title, admin_job_path(job) %> - <%= job.state %><br>
+                <small>Worked for <%= job.days_worked %> - Ended: <%= time_ago_in_words(job.end_date) %> </small>
               <% end %>
             <% end %>
           </div>

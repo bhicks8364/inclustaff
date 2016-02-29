@@ -66,7 +66,7 @@ class Job < ActiveRecord::Base
     # CALLBACKS
     # after_create :send_notifications!
     before_validation :defaults, :ensure_pay
-    after_save :update_employee, if: :active_changed?
+    after_save :update_employee, if: :state_changed?
     # before_save :defaults
 
     def ensure_pay
@@ -344,6 +344,15 @@ class Job < ActiveRecord::Base
         else
             percent
         end
+    end
+    
+    def days_worked
+        end_time = end_date.present? ? end_date : Date.today
+        helpers.distance_of_time_in_words(start_date, end_time)
+        # TimeDifference.between(start_date, end_time).in_days
+    end
+    def helpers
+      ActionController::Base.helpers
     end
     def candidate_sheet
         CandidatePdf.new(
