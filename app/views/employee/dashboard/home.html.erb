@@ -34,6 +34,7 @@
       </div>
     </div>
     <div class="col-md-4">
+      <%= convo_for %>
       <div class="panel panel-default">
         <div class="panel-body text-center">
           <% if @employee.on_shift? || @employee.on_break? %>
@@ -59,16 +60,18 @@
         </div>
       </div>
     </div>
+    <div class='row'>
+      <%= render "employee/shifts/wk_calendar", shifts: @employee.current_timesheet.shifts if @employee.current_timesheet.present? %>
+    </div>
     <div class="col-md-5 well well-sm">
      
-      <h2 class='text-info metal'>Recent Activity</h2>
+      <h2 class='text-info'>Recent Activity</h2>
       <%= render @employee.events %>
       <%= render @employee.job_events %>
     </div>
-    <div class="col-md-1"></div>
     <div class="col-md-3 border well well-sm">
       <% if @employee.availability.present? %>
-      <p class='lead text-info metal'>Your Availability</p>
+      <p class='lead text-info'>Your Availability</p>
         <%= render 'employee/employees/availability', employee: @employee %>
         <%= link_to "Edit Info", edit_employee_employee_path(@employee), class: 'btn btn-primary pull-right' %>
       <% else %>
@@ -77,4 +80,5 @@
     </div>
     
   <% end %>
+  <%= render "employee/shifts/calendar", shifts: @employee.current_timesheet.shifts if @employee.current_timesheet.present? %>
 </div>

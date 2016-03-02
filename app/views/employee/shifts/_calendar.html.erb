@@ -1,0 +1,22 @@
+<div class="">
+
+	<%= month_calendar(attribute: :time_in, events: shifts) do |date, shifts| %>
+	
+  <div class='cal-date'><%= date %></div>
+
+  <% shifts.each do |shift| %>
+    <div class=''>
+      <%= link_to shift_collaspe(shift), employee_shift_path(shift), data: {toggle: "tooltip"}, title: "View timesheet"  %>
+       <div class='list-group collapse' id="collapseShift_<%=shift.id%>">
+           <%= render 'employee/shifts/shift', shift: shift %>
+        </div>
+      <div class=''>
+        
+
+      </div>
+      
+    </div>
+  <% end %>
+<% end %>
+
+</div>

@@ -19,7 +19,7 @@
   <tbody>
     <% @companies.each do |company| %>
       <tr>
-        <td><%= link_to company.name, admin_company_path(company), class: '' %></td>
+        <td><%= company.agency_id %><%= link_to company.name, admin_company_path(company), class: '' %></td>
         <td><%= company.contact_name %></td>
         <td><%= company.current_timesheets.try(:count) %> / <%= company.jobs.active.try(:count) %></td>
         <td><%= company.timesheets.current_week.any? ? number_to_currency(company.timesheets.current_week.sum(:total_bill) ) : "N/A"%></td>
@@ -39,7 +39,16 @@
 <div class=''>
   <%= form_for @import, url: import_admin_companies_path, multipart: true do |f| %>
   <%= f.file_field :file, class: '' %>
+  <%= f.hidden_field :agency_id, value: @current_agency.id %>
   <br>
+  <% if @import.errors.any? %>
+<ul>
+  <% @import.errors.full_messages.each do |msg| %>
+    <li><%= msg %></li>
+  <% end %>
+</ul>
+<% end %>
+
   <%= f.submit "Upload", class: 'btn btn-success btn-sm' %>
 <% end %>
 </div>

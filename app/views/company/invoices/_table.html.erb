@@ -13,7 +13,7 @@
   <tbody>
     <% invoices.each do |invoice| %>
       <tr>
-        <td><%= link_to invoice.week.stamp("12/12/2016"), company_invoice_path(@company, invoice)  %></td>
+        <td><%= link_to invoice.week.stamp("12/12/2016"), company_invoice_path(invoice)  %></td>
         <td><%= invoice.due_by.stamp("12/12") %></td>
         <td><%= invoice.state %></td>
         <td><%= number_to_currency(invoice.total) %></td>

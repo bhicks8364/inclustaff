@@ -54,7 +54,7 @@ class Company::TimesheetsController < ApplicationController
       format.html
       format.json
       format.pdf {
-        send_data TimesheetPdf.new(@timesheet, view_context).render,
+        send_data TimesheetPdf.new(@timesheet, view_context, @current_agency).render,
           filename: "#{@timesheet.week_ending}-#{@employee.name}-timesheet.pdf",
           type: "application/pdf",
           disposition: :inline

@@ -41,11 +41,11 @@
         </thead>
       
         <tbody>
-          <% @invoices.order(date_paid: :desc).each do |invoice| %>
+          <% @invoices.order(week: :desc).each do |invoice| %>
           
           
             <tr>
-              <td><%=inv_sym(invoice)%></td>
+              <td><%= link_to mark_as_paid_admin_invoice_path(invoice), method: :patch, remote: true, id: 'pay-button', class: 'button' do %><%= inv_sym(invoice) %> <% end %></td>
               <td><%= invoice.company.name %></td>
               <td> <%= link_to invoice.week_ending, admin_invoice_path(invoice) %></td>
               <td><%= invoice.due_by.stamp('11/13') %></td>

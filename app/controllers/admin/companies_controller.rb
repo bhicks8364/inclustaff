@@ -70,7 +70,7 @@ class Admin::CompaniesController < ApplicationController
     authorize @company
   end
   def import
-      @companies = @current_agency.companies.distinct
+      @companies = Company.all
       @import  = Company::Import.new(company_import_params)
 
       if @import.save

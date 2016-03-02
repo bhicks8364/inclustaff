@@ -1,6 +1,6 @@
-<div class='col-md-12 lightbox'  data-behavior='company-job-list'>
+<div class='col-md-12'  data-behavior='company-job-list'>
     <h1><%= @company.name %>'s Timeclock</h1>
-   
+      
     <div class='col-md-6 well' id='clocked_in_list'>
          <h2>Clocked In</h2>
         <%= div_for(@company.jobs.at_work.distinct.each, class: 'clocked-in-sm') do |job| %>

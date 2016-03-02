@@ -270,11 +270,11 @@ class Timesheet < ActiveRecord::Base
   end
 
   def week_ending
-    week.end_of_week.stamp("1/22")
+    week.end_of_week.stamp("1/22/2016")
   end
 
   def week_begin
-    week.stamp("1/22")
+    week.stamp("1/22/2016")
   end
 
   def time_frame

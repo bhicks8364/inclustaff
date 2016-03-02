@@ -44,7 +44,7 @@
 						<div class="tab-pane fade in" id="tab-events">
 							<div class='col-md-12  well well-sm'>
 								 <h2>Recent Activity</h2>
-								<div class="col-md-6 well well-sm">
+								<div class="col-md-3 well well-sm">
 									<h3 class='text-info'>Looking for work</h3>
 									<% if Event.looking_for_work.any? %>
 								<% Event.looking_for_work.order(:created_at).limit(10).each do |event| %>
@@ -58,7 +58,7 @@
 					            <% end %>
 					            
 								</div>
-								<div class="col-md-6 well well-sm">
+								<div class="col-md-3 well well-sm">
 									<h3 class='text-success'>Job Approvals</h3>
 									<% if Event.job_approvals.any? %>
 								<% Event.job_approvals.order(:created_at).limit(10).each do |event| %>
@@ -73,7 +73,7 @@
 					            <% end %>
 					            	
 					            </div>
-					            <div class="col-md-8 well well-sm">
+					            <div class="col-md-3 well well-sm">
 					            <h3 class='text-danger'>Job Declines</h3>
 					            <% if Event.job_rejections.any? %>
 								<% Event.job_rejections.order(:created_at).limit(10).each do |event| %>

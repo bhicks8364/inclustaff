@@ -159,12 +159,15 @@ class Admin::OrdersController < ApplicationController
     end
   end
   def import
+    @orders = Order.all.paginate(page: params[:page], per_page: 25)
+      @q = Order.includes(:company).active.order(needed_by: :desc).ransack(params[:q]) if @current_admin.owner? || @current_admin.payroll? || @current_admin.account_manager?
+      @order_months = @orders.group_by { |t| t.needed_by.beginning_of_month }
       @import  = Order::Import.new(order_import_params)
       
       if @import.save
           redirect_to admin_orders_path, notice: "Imported #{@import_count} orders."
       else
-          @orders = Order.all
+          
           render action: :index, notice: "There were errors with your CSV file."
       end
       skip_authorization

@@ -99,7 +99,8 @@ class Job < ActiveRecord::Base
     scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.current_week)}
     scope :worked_today, -> { joins(:shifts).merge(Shift.in_today)}
     scope :worked_yesterday, -> { joins(:shifts).merge(Shift.in_yesterday)}
-    scope :worked_this_week, -> { joins(:timesheets).where("timesheets.week <= ?", Date.today.beginning_of_week).group("jobs.id") }
+    scope :worked_this_week, -> { joins(:timesheets).merge(Timesheet.this_week) }
+    scope :worked_last_week, -> { joins(:timesheets).merge(Timesheet.last_week) }
     def self.without_current_shifts
         includes(:current_shift).where( :shifts => { :job_id => nil } )
     end
@@ -207,13 +208,14 @@ class Job < ActiveRecord::Base
         end
     end
     
-    def same_hour_week(week_date, number)
+    def same_hour_week(week_date=Date.today, number=8)
         num = rand(7..12) 
         t = week_date.beginning_of_week.midnight + number.hours 
+        week_beginning = week_date.beginning_of_week
         5.times do |n|
             time_in = t + n.days + rand(1...60).minutes
             time_out = time_in + num.hours + rand(1...60).minutes
-            self.shifts.create(time_in: time_in, time_out: time_out, state: "Clocked Out", out_ip: user.current_sign_in_ip)
+            self.shifts.where(week: week_beginning).first_or_create(time_in: time_in, time_out: time_out, state: "Clocked Out", out_ip: user.current_sign_in_ip)
         end
     end
     

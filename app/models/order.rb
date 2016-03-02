@@ -82,7 +82,7 @@ class Order < ActiveRecord::Base
 
     # CALLBACKS
     after_initialize :defaults
-    before_validation :set_mark_up
+    before_validation :set_mark_up, :set_account_manager
     after_save :set_note_skills
     # before_save :set_needed_by, if: :urgent?
 
@@ -124,6 +124,9 @@ class Order < ActiveRecord::Base
       self.aca_type = "Variable-Hour" if aca_type.nil?
       self.requirements = {} if requirements.nil?
       self.account_manager = company.current_account_manager if company.present? && account_manager_id.nil?
+    end
+    def set_account_manager
+      self.account_manager = Admin.account_managers.first
     end
 
     def set_mark_up
@@ -323,6 +326,11 @@ class Order < ActiveRecord::Base
     order = Order.where(id: row[:id], company_id: row[:company_id]).first_or_initialize
     order.assign_attributes row.to_hash.slice(:title, :min_pay, :max_pay, :number_needed, :needed_by, :notes, :est_duration)
     order.company_id = company_id
+    if order.needed_by.blank?
+        order.needed_by = Date.today + 3.days
+    else
+        order.needed_by = Chronic.parse(row[:needed_by])
+    end
     order
   end
 

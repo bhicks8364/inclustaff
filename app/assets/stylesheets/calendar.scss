@@ -13,7 +13,8 @@
     // background-color: black;
   
   .day {
-    background-color: rgba(255, 255, 255, 0.29);
+    background-color: #ccffff;
+    // background-color: rgba(255, 255, 255, 0.29);
     // min-width: 100px;
     width: 150px;
     height: 100px;
@@ -40,8 +41,12 @@
 
   .today {
     border: solid 3px green;
-    background-color: light-green;
+    background-color: #99ff99;
+    
   }
+  .today:hover {
+      background-color: #66ff66;
+    }
   .past {
       background-color: #D5E5EA;
   }

@@ -70,7 +70,7 @@ class Company < ActiveRecord::Base
     after_create :create_company_admin
 
     validates :name,  presence: true, length: { maximum: 50 }
-    validates :agency_id,  presence: true
+    # validates :agency_id,  presence: true
     validates :contact_name,  presence: true, length: { maximum: 20 }
     VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
     validates :contact_email, presence: true, length: { maximum: 255 },
@@ -117,7 +117,7 @@ class Company < ActiveRecord::Base
       elsif account_managers.any?
         account_managers.last
       else
-        agency.admins.account_managers.first
+        Admin.account_managers.first
       end
     end
     def self.by_account_manager(admin_id)

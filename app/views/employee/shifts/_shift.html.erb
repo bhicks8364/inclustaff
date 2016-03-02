@@ -1,6 +1,5 @@
-<li>
-     <p><%= link_to shift.job.title, employee_job_path(shift.job) %>
-   <%= shift.state.humanize.downcase %>
-    <span class="date"><%= time_ago_in_words(shift.updated_at) %></span>
+<li class="shift-list">
+     <p><%= link_to shift.job.title_company, employee_job_path(shift.job) %>
+    <span class="date"><%= shift_times(shift) %></span>
     </p>
 </li>

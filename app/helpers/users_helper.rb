@@ -68,14 +68,16 @@ module UsersHelper
     end
     
     def check_in(user)
-        if user.checked_in_at.present? && user.checked_in_at > Date.today.beginning_of_day
-            "<span class='green button' data-placement='top' data-toggle='tooltip' title='Available as of: #{user.checked_in_at.stamp("12/18")}'>
-              <i class='fa fa-check fa-1x'></i>
-            </span>
-            ".html_safe
-        else
-            link_to "<span class='button' data-placement='top' data-toggle='tooltip' title='Update as Available'><i class='fa fa-thumbs-up fa-1x'></i></span>".html_safe, update_as_available_user_path(user), method: :patch, remote: true
-            
+        if user.employee.unassigned?
+            if user.checked_in_at.present? && user.checked_in_at > Date.today.beginning_of_day
+                "<span class='green button' data-placement='top' data-toggle='tooltip' title='Available as of: #{user.checked_in_at.stamp("12/18")}'>
+                  <i class='fa fa-check fa-1x'></i>
+                </span>
+                ".html_safe
+            else
+                link_to "<span class='button' data-placement='top' data-toggle='tooltip' title='Update as Available'><i class='fa fa-thumbs-up fa-1x'></i></span>".html_safe, update_as_available_user_path(user), method: :patch, remote: true
+                
+            end
         end
     end
     

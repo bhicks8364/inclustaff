@@ -14,6 +14,19 @@ class Employee::TimesheetsController < ApplicationController
     authorize @timesheets
     # gon.jbuilder
     authorize @timesheets
+    @pdf_timesheets = @timesheets
+    @scoped_params = params[:q]
+    respond_to do |format|
+      format.html
+      format.json
+      format.pdf {
+        # This is just a placeholder. Should be more like a paystub that employees can print/save
+        send_data EmployeeTimesheetPdf.new(@employee, @pdf_timesheets, view_context, @scoped_params, @signed_in, @current_agency).render,
+          filename: "#{@timesheet.week_ending}-#{@employee.name}-timesheet.pdf",
+          type: "application/pdf",
+          disposition: "inline"
+      }
+    end
   end
 
   def show
@@ -32,10 +45,11 @@ class Employee::TimesheetsController < ApplicationController
       format.json
       format.pdf {
         # This is just a placeholder. Should be more like a paystub that employees can print/save
-        send_data @timesheet.receipt.render,
+        send_data TimesheetPdf.new(@timesheet, view_context, @current_agency).render,
           filename: "#{@timesheet.week_ending}-#{@employee.name}-timesheet.pdf",
           type: "application/pdf",
           disposition: "inline"
+      
       }
     end
   end

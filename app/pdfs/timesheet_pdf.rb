@@ -1,11 +1,11 @@
 class TimesheetPdf < Prawn::Document
-    attr_reader :timesheet, :view_context
-    def initialize(timesheet, view_context)
+    attr_reader :timesheet, :view_context, :current_agency
+    def initialize(timesheet, view_context, current_agency)
         super() 
         @timesheet = timesheet
         @subtotal = @timesheet.gross_pay
         @employee = @timesheet.employee
-        @current_agency = @timesheet.agency
+        @current_agency = current_agency
         @company = @timesheet.company
         @job_order = @timesheet.job.order
         @view = view_context
@@ -13,7 +13,6 @@ class TimesheetPdf < Prawn::Document
         @status ||= @timesheet.approved? ? "Approved by: #{@timesheet.user_approved}" : ""
         move_down 10
         text "Invoice Id #:#{@timesheet.id }", :align => :right
-        text "Total Bill: #{price(@timesheet.total_bill) }", :align => :right
         font "Times-Roman"
         text "Dates: #{@timesheet.time_frame }", :color => @color, align: :left, size: 14
         text @status, :color => "#ccc", align: :right, size: 16
@@ -36,8 +35,8 @@ class TimesheetPdf < Prawn::Document
         
        
         move_down 20
-        start_new_page
-        notes
+        # start_new_page
+        # notes
     end
     def details
         stroke_horizontal_rule

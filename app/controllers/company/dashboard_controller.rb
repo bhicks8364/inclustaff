@@ -20,8 +20,14 @@ class Company::DashboardController < ApplicationController
   end
   def timeclock
     # 'entered_code' -> NOT WORKING ATM - Want to do somekind of find_by_code_and_clockin_in all in one thingy
-    @entered_code = params[:code]
-    @orders = @company.orders.includes(:jobs)
+    @entered_code = params[:code] if params[:code].present?
+    @job = @company.users.where(code: @entered_code).first if params[:code].present?
+    if @job.present?
+      @employee_code = @job.employee.code 
+      @orders = @company.orders.includes(:jobs)
+      @state = @job.on_shift? ? true : false
+      authorized = (@entered_code === @employee_code) ? true : false
+    end
   end
   def clock
     @job = @company.jobs.find(params[:id])

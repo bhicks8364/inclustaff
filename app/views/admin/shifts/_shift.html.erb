@@ -1,6 +1,4 @@
-<% if current_page?(controller: 'admin/shifts', action: 'index') %>
-      <%= link_to shift_times(shift), admin_shift_path(shift), class: 'black' %>
-<% elsif current_page?(controller: 'admin/employees', action: 'show') %>
+<% if @employee.nil? %>
       <%= link_to shift_times(shift), admin_shift_path(shift), class: 'black' %>
 <% else %>
       <%= link_to admin_shift_path(shift), class: 'black small' do %>

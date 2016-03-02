@@ -136,13 +136,12 @@ module ApplicationHelper
         elsif user_signed_in?
             if @type == :general || @type.nil?
                 @admins = @current_agency.admins.recruiters 
-                @company = current_user.employee.company if @company.assigned?
+                @user = current_user
+                @job = current_user.employee.current_job if @user.assigned?
                 @company_admins = @company.admins.real_users if @company.present?
             end
             render "employee/conversations/form", users: @users, admins: @admins, company_admins: @company_admins, type: @type, message: @message, subject: @subject
         end
     end
-    
-    
     
 end
