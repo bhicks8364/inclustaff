@@ -2,20 +2,22 @@
 <h1><%= @order.title %> <small class='pull-right'><%= @order.industry %></small></h1>
 <div class='col-md-4 well'>
     
-    <p><%= @order.tag_list %></p>
+    <p><%= @order.shift %></p>
     <hr>
     <p class='lead'><%= pay_range(@order) %></p>
     
     <%= stwb(@order) %>
     <%= heavy_lifting(@order) %>
-    <hr>
-    <h4 class=''>Required Skills</h4>
-    <% @order.skills.required.each do | skill | %>
-        <%= skill.name %><br>
+    
+    <h4 class=''>Desired Skills</h4>
+    <%= div_for @order.skills do |skill| %>
+        <%= skill.name %>
     <% end %>
-    <br>
-    <p><%= @order.certificate %> %></p>
+    <hr>
+    <p><strong>Job Type</strong> <br><%= @order.est_duration %> </p>
+    <p><strong>Education</strong> <br> <%= @order.certifications %> </p>
 </div>
 <div class='col-md-8 well'>
     <%= markdownify(@order.notes) %>
+    <%= link_to "Sign In to Apply!", new_user_session_path, class: "btn btn-info btn-lg pull-right" %>
 </div>

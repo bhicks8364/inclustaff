@@ -284,4 +284,5 @@ class Timesheet < ActiveRecord::Base
     bill = total_bill || 0
     "#{employee_name} - $#{bill.round(2)}"
   end
+  
 end

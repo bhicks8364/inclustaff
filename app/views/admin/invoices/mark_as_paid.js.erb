@@ -1,4 +1,5 @@
 $("#balance").html("<%= number_to_currency(@invoice.balance) %>");
+$("#mark-paid-<%=@invoice.id%>").html("<%=j inv_sym(@invoice) %>");
 $('#status').html("Paid");
 $('#date-paid').html("<strong>Status:</strong> Paid ");
 $('#pay-button').hide();

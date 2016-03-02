@@ -1,5 +1,7 @@
 <div class='table-responsive'>
+	<% if timesheets.any? %>
 <table  id="<%= timesheets.last.approved? ? 'approved' : 'pending' %>" class="table table-bordered table-hover">
+	<% end %>
 	<thead>
 		<th class='text-center'><i class="fa fa-calendar"></i> Week</th>
 		<% if @job.nil? %> <th class='text-center'><i class="fa fa-wrench"></i> Job</th><% end %>

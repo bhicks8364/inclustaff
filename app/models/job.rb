@@ -215,7 +215,7 @@ class Job < ActiveRecord::Base
         5.times do |n|
             time_in = t + n.days + rand(1...60).minutes
             time_out = time_in + num.hours + rand(1...60).minutes
-            self.shifts.where(week: week_beginning).first_or_create(time_in: time_in, time_out: time_out, state: "Clocked Out", out_ip: user.current_sign_in_ip)
+            self.shifts.create(week: week_beginning, time_in: time_in, time_out: time_out, state: "Clocked Out", out_ip: user.current_sign_in_ip)
         end
     end
     

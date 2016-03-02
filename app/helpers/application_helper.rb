@@ -138,7 +138,9 @@ module ApplicationHelper
                 @admins = @current_agency.admins.recruiters 
                 @user = current_user
                 @job = current_user.employee.current_job if @user.assigned?
+                @company = current_user.employee.current_job.company if @user.assigned?
                 @company_admins = @company.admins.real_users if @company.present?
+                @users = User.none if user_signed_in?
             end
             render "employee/conversations/form", users: @users, admins: @admins, company_admins: @company_admins, type: @type, message: @message, subject: @subject
         end
