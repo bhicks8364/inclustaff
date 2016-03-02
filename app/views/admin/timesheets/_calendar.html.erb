@@ -1,0 +1,22 @@
+<div class="">
+
+	<%= month_calendar(attribute: :week, events: timesheets) do |date, timesheets| %>
+	
+  <div class='cal-date'><%= date %></div>
+
+  <% timesheets.each do |timesheet| %>
+    <div class=''>
+      <%= timesheet_collaspe(timesheet) %>
+       <div class='collapse' id="collapseTimesheet_<%=timesheet.id%>">
+           <%= render 'admin/timesheets/timesheet', timesheet: timesheet %>
+        </div>
+      <div class=''>
+        
+
+      </div>
+      
+    </div>
+  <% end %>
+<% end %>
+
+</div>

@@ -6,11 +6,19 @@ class Admin::ConversationsController < ApplicationController
   def index
     @conversations = current_admin.mailbox.conversations
     @sent_box = current_admin.mailbox.sentbox
+    gon.candidates = @current_agency.users.available
+    gon.employees = @current_agency.users.assigned
+    gon.admins_display = @current_agency.admins.map(&:mention_data)
+    gon.company_admins_display = CompanyAdmin.real_users.map(&:mention_data)
 
   end
 
   def show
     @conversation = current_admin.mailbox.conversations.find(params[:id])
+    gon.candidates = @current_agency.users.available
+    gon.employees = @current_agency.users.assigned
+    gon.admins_display = @current_agency.admins.map(&:mention_data)
+    gon.company_admins_display = CompanyAdmin.real_users.map(&:mention_data)
   end
 
   def new

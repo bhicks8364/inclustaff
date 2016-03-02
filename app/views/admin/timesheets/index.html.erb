@@ -6,7 +6,7 @@
 		<h2 class='text-center'>Approved Timesheets </h2>
 		<% if @timesheets.approved.any? %>
 		
-		<%= render "admin/timesheets/table", timesheets: @timesheets.approved %>
+		<%= render "admin/timesheets/calendar", timesheets: @timesheets.approved %>
 		<% else %>
 		<h3>No approved timesheets to display.</h3>
 		<% end %>
