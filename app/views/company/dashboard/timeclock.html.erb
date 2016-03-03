@@ -1,23 +1,21 @@
 <div class='col-md-12'  data-behavior='company-job-list'>
     <h1><%= @company.name %>'s Timeclock</h1>
       
-    <div class='col-md-6 well' id='clocked_in_list'>
+    <div class='col-md-6 well well-sm'>
          <h2>Clocked In</h2>
+         <div id='clocked_in_list'>
         <%= div_for(@company.jobs.at_work.distinct.each, class: 'clocked-in-sm') do |job| %>
-            <div class='col-md-12 well well-sm'>
-                 <%= job.employee.code if @current_agency.demo? %>
               <%= render 'company/jobs/job', job: job %>
-            </div>
         <% end %>
+        </div>
     </div>
-    <div class='col-md-6 well' id='clocked_out_list'>
+    <div class='col-md-6 well well-sm'>
          <h2>Clocked Out</h2>
-        <%= div_for(@company.jobs.active.without_current_shifts.each, class: 'clocked-in-sm') do |job| %>
-            <div class='col-md-12 well well-sm'>
-                <%= job.employee.code if @current_agency.demo? %>
-              <%= render 'company/jobs/job', job: job %>
-            </div>
-        <% end %>
+         <div id='clocked_out_list'>
+            <%= div_for(@company.jobs.active.without_current_shifts.each,  class: 'clocked-in-sm') do |job| %>
+                  <%= render 'company/jobs/job', job: job %>
+            <% end %>
+         </div>
     </div>
    
    

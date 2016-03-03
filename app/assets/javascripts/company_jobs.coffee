@@ -42,7 +42,7 @@ class Job
 
   handleInSuccess: (data) =>
     if data.clocked_in
-      
+      @item.prependTo("#clocked_in_list");
       $("[data-behavior='job-in-button_#{@id}']").hide()
       
       @item.find("[data-behavior='time-out']").html "<small>Last Out: #{data.last_out}</small>"
@@ -70,7 +70,7 @@ class Job
 
   handleOutSuccess: (data) =>
     if data.clocked_out
-      
+      @item.prependTo("#clocked_out_list");
       #@item.find(".shift-item").hide()
       $("[data-behavior='job-out-button_#{@id}']").hide()
       $("#in-job-#{@id}").hide()
