@@ -4,17 +4,31 @@ class Company::ConversationsController < ApplicationController
   layout 'company_layout'
 
   def index
+    @users = @current_company.employees
     @conversations = current_company_admin.mailbox.conversations
+    gon.candidates = @current_company.jobs.pending_approval
+    gon.employees = @company.employees.map(&:mention_data)
+    gon.admins_display = @admins.map(&:mention_data)
+    gon.company_admins_display = @current_company.admins.map(&:mention_data)
   end
 
   def show
+    @users = @company.employees
     @conversation = current_company_admin.mailbox.conversations.find(params[:id])
+    gon.candidates = @users
+    gon.employees = @company.employees.map(&:mention_data)
+    gon.admins_display = @admins.map(&:mention_data)
+    gon.company_admins_display = @company.admins.map(&:mention_data)
   end
 
   def new
     @admins = Admin.all
     @company_admins = @company.admins.real_users - [current_company_admin]
     @users = @company.users
+    gon.candidates = @users.available
+    gon.employees = @current_company.employees
+    gon.admins_display = @admins.map(&:mention_data)
+    gon.company_admins_display = @company_admins.map(&:mention_data)
   end
 
   def create
@@ -34,6 +48,7 @@ class Company::ConversationsController < ApplicationController
   
   def set_company
     @company = current_company_admin.company
+    
   end
   
   

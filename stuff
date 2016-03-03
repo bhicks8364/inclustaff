@@ -1,0 +1,6 @@
+rails server -b $IP -p $PORT
+
+
+Apartment::Tenant.switch!('testing')
+Apartment::Tenant.switch!('gtrjobs')
+Apartment::Tenant.switch!('demo')

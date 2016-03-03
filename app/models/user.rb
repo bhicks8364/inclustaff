@@ -97,7 +97,8 @@ class User < ActiveRecord::Base
   end
   before_validation :set_code, :set_role
   after_create :set_employee, if: :has_no_employee?
-
+  
+  def mention_data; {name: "#{name}", content: "#{title_company}"}; end
   def has_no_employee?
     employee.nil?
   end
@@ -132,6 +133,16 @@ class User < ActiveRecord::Base
   def set_check_in!
     if checked_in_at.nil?
       self.update(checked_in_at: created_at)
+    end
+  end
+  def company
+    employee.company if assigned?
+  end
+  def title_company
+    if assigned?
+      "#{company.try(:name)} #{try(:title)} "
+    else
+      "Unassigned!!!!"
     end
   end
   def employee?

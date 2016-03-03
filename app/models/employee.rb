@@ -64,6 +64,7 @@ class Employee < ActiveRecord::Base
   delegate :recruiter, to: :current_job
   delegate :company, to: :current_job
   delegate :code, to: :user
+  delegate :mention_data, to: :user
   delegate :current_sign_in_ip, to: :user
 
   after_save :create_user, if: :has_no_user?

@@ -18,9 +18,16 @@
 					
 					<div class="tab-content">
 						<div class="tab-pane fade in active" id="tab-home">
-							
+							<div class='row'>
 							<div class="col-md-3 well well-sm">
 								<%= render "admin/shared/alerts/open_orders", orders: @orders %>
+								
+							</div>
+							<div class="col-md-6 well well-sm">
+							  <h4 class='text-center'>Current Leaders <small>Based on current billing</small></h4>
+							  <%= column_chart recruiter_ranking_path, ytitle: "Current Billing", xtitle: "Recruiters", library: {isStacked: true, backgroundColor: "#e5dbcf"} %>
+							</div>
+							<div class='col-md-3'>
 								<h4 class='text-center'>Current Billings by Recruiter</h4>
 						        <div class="fa-ul">
 						        <% @current_agency.admins.recruiters.sorted_by_current_billing.each do |admin| %>
@@ -30,21 +37,22 @@
 						        <% end %>
 						        </div>
 							</div>
-							<div class="col-md-9 well well-sm">
-							  <h4 class='text-center'>Current Leaders <small>Based on current billing</small></h4>
-							  <%= column_chart recruiter_ranking_path, ytitle: "Current Billing", xtitle: "Top 5 Recruiters", library: {isStacked: true, backgroundColor: "#e5dbcf"} %>
-							
-								
-						
-								<%= line_chart @current_agency.orders.needs_attention.group_by_day(:needed_by, format: "%x").sum(:number_needed), library: {title: "Open Positions by Day"}, xtitle: "Needed By Date", ytitle: "Number of Positions" %>
-								<h4 class='text-center'> Open Job Orders <small>by industry</small></h4>
-								<%= pie_chart @orders.group('orders.industry').count, library: {backgroundColor: "#e5dbcf", is3D: true}%>
 							</div>
+							<div class='row'>
+								<div class="col-md-6 well well-sm">
+									<%= line_chart @current_agency.orders.needs_attention.group_by_day(:needed_by, format: "%x").sum(:number_needed), library: {title: "Open Positions by Day"}, xtitle: "Needed By Date", ytitle: "Number of Positions" %>
+								</div>
+								<div class="col-md-6 well well-sm">
+									<h4 class='text-center'> Open Job Orders <small>by industry</small></h4>
+									<%= pie_chart @orders.group('orders.industry').count, library: {backgroundColor: "#ccc", is3D: true}%>
+								</div>
+							</div>
+							
 						</div>
 						<div class="tab-pane fade in" id="tab-events">
-							<div class='col-md-12  well well-sm'>
+							<div class='col-md-12'>
 								 <h2>Recent Activity</h2>
-								<div class="col-md-3 well well-sm">
+								<div class="col-md-4 well well-sm">
 									<h3 class='text-info'>Looking for work</h3>
 									<% if Event.looking_for_work.any? %>
 								<% Event.looking_for_work.order(:created_at).limit(10).each do |event| %>
@@ -58,7 +66,7 @@
 					            <% end %>
 					            
 								</div>
-								<div class="col-md-3 well well-sm">
+								<div class="col-md-4 well well-sm">
 									<h3 class='text-success'>Job Approvals</h3>
 									<% if Event.job_approvals.any? %>
 								<% Event.job_approvals.order(:created_at).limit(10).each do |event| %>
@@ -73,7 +81,7 @@
 					            <% end %>
 					            	
 					            </div>
-					            <div class="col-md-3 well well-sm">
+					            <div class="col-md-4 well well-sm">
 					            <h3 class='text-danger'>Job Declines</h3>
 					            <% if Event.job_rejections.any? %>
 								<% Event.job_rejections.order(:created_at).limit(10).each do |event| %>

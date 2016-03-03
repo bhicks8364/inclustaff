@@ -105,7 +105,7 @@ class CompanyAdmin < ActiveRecord::Base
   def to_param
     "#{id}-#{name.parameterize }"
   end
-  def mention_data; {name: "#{name}", content: "#{role}", company: "#{company.name}"}; end
+  def mention_data; {name: "#{name}", content: "#{company.name} - #{role}"}; end
   def managed_orders
     if owner?
       company.orders

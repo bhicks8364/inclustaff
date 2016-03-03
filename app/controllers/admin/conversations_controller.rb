@@ -6,25 +6,20 @@ class Admin::ConversationsController < ApplicationController
   def index
     @conversations = current_admin.mailbox.conversations
     @sent_box = current_admin.mailbox.sentbox
-    gon.candidates = @current_agency.users.available
-    gon.employees = @current_agency.users.assigned
-    gon.admins_display = @current_agency.admins.map(&:mention_data)
-    gon.company_admins_display = CompanyAdmin.real_users.map(&:mention_data)
-
   end
 
   def show
     @conversation = current_admin.mailbox.conversations.find(params[:id])
-    gon.candidates = @current_agency.users.available
-    gon.employees = @current_agency.users.assigned
-    gon.admins_display = @current_agency.admins.map(&:mention_data)
-    gon.company_admins_display = CompanyAdmin.real_users.map(&:mention_data)
   end
 
   def new
     @admins = Admin.all - [current_admin]
     @company_admins = CompanyAdmin.real_users
     @users = User.all
+    gon.candidates = @users.available
+    gon.employees = @users.assigned
+    gon.admins_display = @admins.map(&:mention_data) + @company_admins.map(&:mention_data)
+    gon.company_admins_display = @company_admins.map(&:mention_data)
   end
 
   def create

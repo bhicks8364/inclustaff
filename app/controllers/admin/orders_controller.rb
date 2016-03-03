@@ -15,17 +15,17 @@ class Admin::OrdersController < ApplicationController
     if params[:company_id]
       @company = Company.find(params[:company_id])
       @orders = @company.orders.paginate(page: params[:page], per_page: 25)
-      @order_months = @orders.group_by { |t| t.needed_by.beginning_of_month }
     else
       @q_orders = Order.includes(:company).ransack(params[:q]) 
       @orders = @q_orders.result(distinct: true).paginate(page: params[:page], per_page: 25)
-      @order_months = @orders.group_by { |t| t.needed_by.beginning_of_month }
     end
     if params[:tag]
       # @orders = Order.needs_attention
       @orders = @orders.tagged_with(params[:tag])
-      @order_months = @orders.group_by { |t| t.needed_by.beginning_of_month }
     end
+    if @q.nil?
+      
+    @order_months = @current_agency.orders.group_by { |t| t.needed_by.beginning_of_month }
     @hash = Gmaps4rails.build_markers(@orders) do |order, marker|
           marker.lat order.latitude
           marker.lng order.longitude
@@ -33,6 +33,13 @@ class Admin::OrdersController < ApplicationController
           marker.title order.title
         end
     gon.order = @hash
+    else
+      @orders = @current_agency.orders.paginate(page: params[:page], per_page: 25)
+      @order_months = @orders.group_by { |t| t.needed_by.beginning_of_month }
+    end
+    
+    # @q.build_condition if @q.conditions.empty?
+    @q.build_sort if @q.sorts.empty?
     authorize @orders
     
     respond_to do |format|

@@ -25,8 +25,9 @@ class Admin::DashboardController < ApplicationController
     def account_manager
       @q = @current_admin.job_orders.active.needs_attention.order(needed_by: :asc).paginate(page: params[:page], per_page: 15).ransack(params[:q]) 
       @orders = @q.result
-        # @orders = Order.all.paginate(page: params[:page], per_page: 15)
-        # @q = @orders.ransack(params[:q])
+      @candidates = User.available
+      
+
         @q.build_condition if @q.conditions.empty?
         @q.build_sort if @q.sorts.empty?
         skip_authorization

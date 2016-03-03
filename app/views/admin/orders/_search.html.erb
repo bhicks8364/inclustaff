@@ -1,10 +1,10 @@
-<div class='col-md-12'>
+<div class='row'>
     <div class='pull-left'>
         <%= search_form_for @q, class: 'form-inline', url: search_admin_orders_path, html: { method: :post } do |f| %>
       <%= f.condition_fields do |c| %>
         <%= render "condition_fields", f: c %>
       <% end %>
-      <p><%= link_to_add_fields "Add Conditions", f, :condition %></p>
+      <p><%= link_to_add_fields "<i class='fa fa-plus-square fa-1x fa-pull-right'></i> Add Search Field".html_safe, f, :condition %></p>
       <div class="field">
         Sort:
         <%= f.sort_fields do |s| %>
@@ -16,7 +16,7 @@
         <% end %>
         
     </div>
-    <div class='btn-group'>
+    <div class='btn-group pull-right'>
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Sort By <span class="caret"></span>
         </button>

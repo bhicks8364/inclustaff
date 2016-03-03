@@ -139,6 +139,16 @@ module OrdersHelper
     def title_count(order)
         "<span class=''><strong>#{order.title}</strong> </span> (#{number_to_currency(order.min_pay)} - #{number_to_currency(order.max_pay)}) #{pluralize(order.open_jobs, "open jobs")}".html_safe
     end
+    def dt_req(order)
+        if order.dt_req?
+            "<i class='fa fa-certificate fa-fw' data-toggle='tooltip' data-placement='right' title='#{order.dt_req} Drug test required'></i>".html_safe
+        end
+    end
+    def bg_check(order)
+        if order.dt_req?
+            "<i class='fa fa-certificate fa-fw' data-toggle='tooltip' data-placement='right' title='#{order.dt_req} Drug test required'></i>".html_safe
+        end
+    end
     def pay_range(order)
         if order.min_pay == order.max_pay
             number_to_currency(order.min_pay)

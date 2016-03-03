@@ -1,29 +1,29 @@
-<div class='col-md-12 lightbox'>
-  <%= link_to "Download PDF", admin_order_path(@order, format: "pdf") %> 
+<div class='col-md-12'>
+  
 <%= @order.active? ? "" : "Inactive" %>
   <div class="btn-group pull-right">
     <% if policy(Job).create? && @order.needs_attention? %>
           <%= link_to 'Make a placement', new_admin_order_job_path(@order), class: "btn btn-primary" %>
         <% end %>
     <button type="button" class="btn btn-primary black dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <i class='fa fa-pencil'></i> Edit
+      <i class="fa fa-user-secret"></i>
       <span class="sr-only">Toggle Dropdown</span>
     </button>
     <ul class="dropdown-menu">
+      <li><%= link_to "<i class='fa fa-pdf'></i>".html_safe, admin_order_path(@order, format: "pdf") %> </li>
       <li><%= link_to "<i class='fa fa-building' data-toggle='tooltip' data-placement='right' title='View Company'></i> &nbsp; #{@order.company.name}".html_safe, admin_company_path(@company), class: "" %></li>
       <li role="separator" class="divider"></li>
       <% if policy(@order).update? %><li><%= link_to "<i class='fa fa-pencil' data-toggle='tooltip' data-placement='right' title='Edit Order'></i>&nbsp; Edit".html_safe, edit_admin_order_path(@order), class: "" %></li><% end %>
       <% if policy(@order).destroy? %><li><%= link_to "<i class='fa fa-trash' data-toggle='tooltip' data-placement='right' title='Delete Order'></i>&nbsp; Delete".html_safe, admin_order_path(@order), method: :delete, data: { confirm: 'Are you sure?' }, class: "" %></li><% end %>
     </ul>
   </div>
-   <h1 class='text-muted'> <%= link_to @company.name, admin_company_path(@company), class: "button" %> </h1>
-    <h3 class='text-right'>
-          <%= @order.address %> <%= render "order_map", order: @order %>
-        </h3>
+    
   <div class='col-md-2'>
     <div class=''>
+      
+      
       <h3 class='text-center'><%= lg_status_tag(@order) %> <%= status_msg(@order) %></h3>
-     
+     <h2 class='text-muted'> <%= link_to @company.name, admin_company_path(@company), class: "button" %> </h2>
       <p class='lead'>Needed: <%= @order.number_needed %> <br>
         Active: <%= @order.jobs.active.count %><br>
         Open: <%= @order.open_jobs %>
@@ -83,8 +83,11 @@
   
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane fade in active" id="order">
+      <h3 class='text-right'>
+        <%= @order.address %> <%= render "order_map", order: @order %>
+      </h3>
        <div class='col-md-12'>
-     <h3 class='metal bold text-warning'> <span class='pull-left'><%= @order.needs_agency_approval? ? "Requires Agency Approval" : "" %></span>
+     <h3 class='metal bold text-info'> <span class='pull-left'><%= @order.needs_agency_approval? ? "Requires Agency Approval" : "" %></span>
       <span class='pull-right'> <%= @order.needs_company_approval? ? "Requires Company Approval" : "" %></span>
      </h3>
      
@@ -93,19 +96,16 @@
       <div class='col-md-4'>
         
         <div class='well'>
-          <h3><strong><%= @order.shift %></strong> </h3>
           <p class='lead'>
-            <%= pay_range(@order) %>        
+           <strong><%= @order.shift %></strong> <br> <%= pay_range(@order) %>        
           </p>
-          <p class='text-warning'><%= @order.heavy_lifting ? "#{heavy_lifting(@order)} - Heavy Lifting Required".html_safe : "" %></p>
-          <p class='text-warning'><%= @order.stwb ? "#{stwb(@order)}  STWB Required".html_safe : "" %></p>
+          <p class='text-info'><%= @order.heavy_lifting ? "#{heavy_lifting(@order)} - Heavy Lifting Required".html_safe : "" %></p>
+          <p class='text-info'><%= @order.stwb ? "#{stwb(@order)}  STWB Required".html_safe : "" %></p>
           <p class='text-info'>
-          <strong>Drug Test </strong><br>
-          <%= @order.dt_req %>
+          <%= @order.dt_req != "None" ? "#{dt_req(@order)}  Drug Test Required".html_safe : "Drug Test Not Required"  %>
           </p>
-          <p class=''>
-          <strong>Background Check </strong><br>
-          <%= @order.bg_check %>
+          <p class='text-info'>
+          <%= bg_check(@order) %>
           </p>
           <p class=''>
           <strong>Assignment Type</strong><br>
@@ -115,7 +115,7 @@
         </div>
         
         
-       <div class='center'>
+       <div class='well well-sm'>
           <% if @order.skills.count < 1 %>
              <h4 id='no-skills' class="text-center">This job order has no skills entered.</h4>
             <% end %>
@@ -205,7 +205,7 @@
         <% else %>
           <h3>No active jobs to display yet.</h3>
       <% end %>
-      <%= link_to "Inactive Jobs", inactive_admin_order_jobs_path(@order), class: "btn btn-warning pull-right" %>
+      <%= link_to "Inactive Jobs", inactive_admin_order_jobs_path(@order), class: "btn btn-info pull-right" %>
       
       </div>
   </div>

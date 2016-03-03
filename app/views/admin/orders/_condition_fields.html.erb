@@ -6,5 +6,5 @@
   <%= f.value_fields do |v| %>
     <%= v.text_field :value %>
   <% end %>
-  <%= link_to "remove", '#', class: "remove_fields" %>
+  <%= link_to "<i class='fa fa-minus-square'></i>".html_safe, '#', class: "remove_fields" %>
 </div>

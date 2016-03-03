@@ -4,18 +4,8 @@
 	<div class=''>
 	   <%= render 'admin/orders/search' %>
 	</div>
-	<div class='well well-sm'>
-	    <% @order_months.sort.each do |month, orders| %>
-	    <h2><%= month.strftime('%B') %></h2>
-	    <% for order in orders %>
-	      <div class="order">
-	        <strong><%= title_count(order) %></strong><br>
-	        needed by <%= order.needed_by.to_date.to_s(:long) %>
-	      </div>
-	    <% end %>
-	  <% end %>
-	</div>
-	<div class="col-md-10">
+	
+	<div class="col-md-10 well well-sm">
 		<%= render 'admin/orders/table', orders: @orders %>
 			<%= will_paginate @orders %>
 			
@@ -42,8 +32,20 @@
 				<% end %>
 		  	</div>
 		</div>
-		<div class='col-md-12'>
-			<div id="map" style='width: 400px; height: 400px;'></div>
+		<div class='row'>
+			<div class='col-md-12 well well-sm'>
+				<div class='col-md-5' id="map" style='width: 400px; height: 500px;'></div>
+				<div class='col-md-7 well'>
+				    <% @order_months.sort.each do |month, orders| %>
+				    <h2 class='bold text-center'><%= month.strftime('%B') %></h2>
+				    <hr>
+				    <%= div_for @orders do |order| %>
+				        <p><strong><%= title_count(order) %></strong>
+				        needed by <%= order.needed_by.to_date.to_s(:long) %></p>
+				    <% end %>
+				  <% end %>
+				</div>
+			</div>
 		</div>
 
 

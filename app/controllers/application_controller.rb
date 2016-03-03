@@ -27,6 +27,15 @@ class ApplicationController < ActionController::Base
     @new_starts = @current_company.employees.new_starts.order(created_at: :desc) if @current_company.present?
     @current = @current_user || @current_admin || @current_company_admin
     @signed_in = @current
+    @company_admins = CompanyAdmin.real_users
+    @admins = Admin.all
+    display_admins = @admins.map(&:mention_data) 
+    display_company_admins = @company_admins.map(&:mention_data)
+    gon.candidates = @current_agency.users.available if admin_signed_in?
+    gon.employees = @current_agency.users.assigned if admin_signed_in?
+    gon.admins_display = display_admins + display_company_admins
+    gon.company_admins_display = @company_admins.map(&:mention_data) if admin_signed_in?
+     
 
   end
   def set_mailer_host
