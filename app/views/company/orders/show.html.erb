@@ -41,9 +41,9 @@
   <ul id="" class="nav nav-tabs nav-justified" role="tablist">
     <li role="presentation" class="active"><a href="#order" aria-controls="order" role="tab" data-toggle="tab">Order Info.</a></li>
     <li role="presentation"><a href="#description" aria-controls="description" role="tab" data-toggle="tab">Job Description</a></li>
-    <li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li>
-    <li role="presentation"><a href="#active-jobs" aria-controls="inactive-jobs" role="tab" data-toggle="tab"> Employees</a></li>
-    <li role="presentation"><a href="#presented" aria-controls="presented" role="tab" data-toggle="tab">Presented</a></li>
+<% if @order.timesheets.any? %><li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li><% end %>
+<% if @order.jobs.currently_working.any? %><li role="presentation"><a href="#active-jobs" aria-controls="active-jobs" role="tab" data-toggle="tab"> Employees</a></li><% end %>
+<% if @order.jobs.pending_approval.any? %><li role="presentation"><a href="#presented" aria-controls="presented" role="tab" data-toggle="tab">Presented Candidates</a></li><% end %>
   </ul>
   
   <div class="tab-content ">

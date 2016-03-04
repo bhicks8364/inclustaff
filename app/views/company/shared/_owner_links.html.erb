@@ -25,7 +25,10 @@
 <li class='dropdown'>
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class='fa fa-usd fa-fw'></i>Orders & Invoices</a>
     <ul class="dropdown-menu">
-        <li><%= link_to "<i class='fa fa-university'></i> Job Orders".html_safe, company_orders_path %></li>
+        <% @current_company_admin.managed_orders.each do |order| %>
+        <li><%= link_to "#{industry_sym(order)} #{order.title}".html_safe, company_order_path(order) %></li>
+        <% end %>
+        <li class='bold'><%= link_to "<i class='fa fa-university fa-fw'></i>View All Job Orders".html_safe, company_orders_path %></li>
         <li><%= link_to "<i class='fa fa-usd fa-fw'></i> Invoices".html_safe, company_invoices_path %></li>
     </ul>
 </li>

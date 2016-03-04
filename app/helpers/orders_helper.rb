@@ -72,6 +72,48 @@ module OrdersHelper
         end
         @str.html_safe
     end
+    def battery(order)
+        if order.overdue?
+            "<span class='red'><i class='fa fa-battery-empty'></i></span>".html_safe
+        elsif order.priority?
+            "<span class='red'>Priority</span>".html_safe
+        elsif order.needs_attention?
+            "<span class='green'>Open</span>".html_safe
+        elsif order.filled?
+            "<span class='bold'>Filled</span>".html_safe
+        elsif order.inactive?
+            "<span class='red'>Inactive</span>".html_safe
+        else
+            ""
+        end
+    end
+    
+    def industry_sym(order)
+        case order.industry
+        when "General Labor"
+            "<i class='fa fa-cude fa-fw'></i>"
+        when "Retail"
+            "<i class='fa fa-shopping-cart fa-fw'></i>"
+        when "Logistics"
+            "<i class='fa fa-truck fa-fw'></i>"
+        when "Warehouse"
+            "<i class='fa fa-industry fa-fw'></i>"
+        when "Medical"
+            "<i class='fa fa-ambulance fa-fw'></i>"
+        when "Food Service"
+            "<i class='fa fa-cutlery fa-fw'></i>"
+        when "Office"
+          "<i class='fa fa-briefcase fa-fw'></i>"
+        when "Manufacturing"
+          "<i class='fa fa-wrench fa-fw'></i>"
+        when "IT"
+          "<i class='fa fa-laptop fa-fw'></i>"
+        when "Sales"
+          "<i class='fa fa-usd fa-fw'></i>"
+        else
+          "<i class='fa fa-question fa-fw'></i>"
+        end
+    end
     
     def order_status(order)
         if order.overdue?

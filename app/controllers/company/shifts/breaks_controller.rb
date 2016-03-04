@@ -33,9 +33,14 @@ class Company::Shifts::BreaksController < ApplicationController
     end
 
     @shift.update(state: "On Break")
+    
     respond_to do |format|
       if @shift.on_break?
-        format.html { redirect_to root_path}
+        if current_company_admin.timeclock?
+          format.html { redirect_to root_path}
+        else
+          format.html { redirect_to company_timeclock_path, notice: "'#{@employee.first_name}' is now '#{ @shift.state}'"}
+        end
         format.js
       else
         format.html { redirect_to root_path}
@@ -52,8 +57,12 @@ class Company::Shifts::BreaksController < ApplicationController
     @shift.update(state: "Clocked In")
     @shift_break = @shift.breaks.last
     respond_to do |format|
-      if @shift.on_break?
-        format.html { redirect_to root_path }
+      if @shift.clocked_in?
+        if current_company_admin.timeclock?
+          format.html { redirect_to root_path}
+        else
+          format.html { redirect_to company_timeclock_path, notice: "'#{@employee.first_name}' is now '#{ @shift.state}'"}
+        end
         format.js
       else
         format.html { redirect_to root_path}
@@ -77,7 +86,7 @@ class Company::Shifts::BreaksController < ApplicationController
 
     def set_shift
       @shift = current_company_admin.company.shifts.find(params[:shift_id])
-      
+      @employee = @shift.employee
     end
     def shift_break_params
       params.require(:break).permit(:time_in, :time_out, :shift_id, :paid)

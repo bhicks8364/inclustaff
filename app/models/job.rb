@@ -91,8 +91,8 @@ class Job < ActiveRecord::Base
     scope :new_start, -> { where(Job[:start_date].gteq(Date.today.beginning_of_week)) }
 
     # THESE WORKED!!!
-    scope :on_shift, -> { joins(:shifts).merge(Shift.clocked_in)}
-    scope :at_work, -> { joins(:shifts).merge(Shift.at_work)}
+    scope :on_shift, -> { includes(:employee).joins(:shifts).merge(Shift.clocked_in)}
+    scope :at_work, -> { includes(:employee).joins(:shifts).merge(Shift.at_work)}
     scope :off_shift, -> { joins(:shifts).merge(Shift.clocked_out)}
     scope :on_break, -> { joins(:shifts).merge(Shift.on_break)}
 
@@ -102,10 +102,10 @@ class Job < ActiveRecord::Base
     scope :worked_this_week, -> { joins(:timesheets).merge(Timesheet.this_week) }
     scope :worked_last_week, -> { joins(:timesheets).merge(Timesheet.last_week) }
     def self.without_current_shifts
-        includes(:current_shift).where( :shifts => { :job_id => nil } )
+        includes(:employee, :current_shift).where( :shifts => { :job_id => nil } )
     end
     def self.without_current_timesheet
-        includes(:current_timesheet).where( :timesheets => { :job_id => nil } )
+        includes(:employee, :current_timesheet).where( :timesheets => { :job_id => nil } )
     end
     # MAIL - not setup yet
     def send_notifications!

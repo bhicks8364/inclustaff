@@ -256,10 +256,11 @@ input.file-field {
     // padding-top: 8px;
     // width: 500px;demo 
     .demo-link    {
-        // color: #ccc;
+        
     }
     .demo-link:hover   {
-        // color: black;
+        background-color: #ccc;
+        color: black;
     }
 }
 #bs-demo-navbar-collapse-1 {

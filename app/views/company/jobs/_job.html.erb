@@ -1,7 +1,15 @@
 <%= div_for job, class: "col-md-12 well well-sm" do %>
 <div class="" data-behavior="job" data-id="<%= job.id %>">
-   <p class='demo' data-toggle="tooltip" data-placement="left" title="<%= job.employee.first_name %>'s time clock code - (visible in DEMO mode only)"> <%= job.employee.code if @current_agency.demo? %></p>
-    <div class='btn btn-<%= job_class(job)%> btn-lg btn-block' data-behavior="code-button_<%= job.id %>">
+    <% if @current_agency.demo?  && current_company_admin.timeclock? %>
+   <p class='demo' data-toggle="tooltip" data-placement="left" title="<%= job.employee.first_name %>'s time clock code - (visible in DEMO mode only)">
+        <%= job.employee.code  %></p>
+    <% elsif @current_agency.demo? %>
+    <p class='demo' data-toggle="tooltip" data-placement="left" title="Last clocked in: <%=  job.last_clock_in %>">
+        <span id='job-sym'><%= job_sym(job)%> </span>  <%=  job.name %> <br>
+    <small><%= job.title %></small>
+    </p>
+    <% end %>
+    <div class='btn btn-<%= job_class(job)%> btn-lg btn-block <%= current_company_admin.timeclock? ? 'bg-danger' : 'hide-this' %>' data-behavior="code-button_<%= job.id %>">
        <span id='job-sym'><%= job_sym(job)%></span>  <%=  job.name %>
     </div>
         <span id='verified'></span>

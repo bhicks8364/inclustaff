@@ -85,7 +85,7 @@ class Company::JobsController < ApplicationController
                         out_ip: current_company_admin.current_sign_in_ip )
       current_company_admin.events.create(action: "clocked_out", eventable: @shift, user_id: @shift.employee.user_id)
         respond_to do |format|
-          format.html { redirect_to root_path }
+          format.html { redirect_to root_path}
           format.js
           format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?,
                     state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out.strftime("%l:%M%P"),
@@ -106,9 +106,9 @@ class Company::JobsController < ApplicationController
         week: Date.today.beginning_of_week
       )}
       if !@all_jobs.on_shift.any?
-        redirect_to company_jobs_path, notice: "You have just clocked out all working employees"
+        redirect_to company_jobs_path, notice: "You have just clocked out all working employees. There are currently #{view_context.pluralize(@jobs.count, "clocked in employee")}"
       else
-        redirect_to company_jobs_path, notice: "Unable to clocked out #{@jobs.count} employees"
+        redirect_to company_jobs_path, notice: "Unable to clocked out #{view_context.pluralize(@jobs.count, "employee")}"
       end
       skip_authorization
   end
@@ -189,7 +189,8 @@ class Company::JobsController < ApplicationController
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_job
-      @job = Job.find(params[:id])
+      @job = Job.includes(:employee).find(params[:id])
+      @employee = @job.employee
       authorize @job
     end
 

@@ -5,13 +5,13 @@ class Company::DashboardController < ApplicationController
   layout 'company_layout'
 
   def home
-    @company = current_company_admin.company
     @invoices = @company.invoices
     @clocked_in = @company.jobs.at_work.distinct
     @clocked_out = @company.jobs.currently_working.without_current_shifts
     if @current_company_admin.role == "Timeclock"
       render "company/dashboard/timeclock"
     end
+      
   end
   def admins
 
@@ -20,7 +20,8 @@ class Company::DashboardController < ApplicationController
       @admin = CompanyAdmin.find(params[:id])
   end
   def timeclock
-    
+    @clocked_in = @company.jobs.at_work.distinct
+    @clocked_out = @company.jobs.currently_working.without_current_shifts
     # 'entered_code' -> NOT WORKING ATM - Want to do somekind of find_by_code_and_clockin_in all in one thingy
     # @entered_code = params[:code] if params[:code].present?
     # @job = @company.users.where(code: @entered_code).first if params[:code].present?
