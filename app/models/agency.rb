@@ -29,7 +29,8 @@ class Agency < ActiveRecord::Base
   has_many :account_managers,  -> { where(role: "Account Manager", company_id: nil) }, class_name: "Admin"
   has_many :admin_events, :through => :admins, :source => 'events'
   has_many :admins
-  has_many :agency_admins, -> { where(company_id: nil) }, class_name: "Admin"
+  has_many :agency_admins, class_name: "Admin"
+  has_many :payroll_admins, -> { where(role: "Payroll") }, class_name: "Admin"
   has_many :applicants, :through => :applications, :source => 'users'
   has_many :applications, :through => :orders, :source => 'events'
   has_many :companies

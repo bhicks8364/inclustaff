@@ -1,22 +1,12 @@
 <div class='col-md-12'>
-  
-   <div class='col-md-2 well well-sm text-center'>
-   
+    <h2><strong><%= @job.name_title %></strong></h2>
+          <h4 class='text-center'>
+              <span class='pull-left'><%= @job.start_date.strftime("%B %e, %Y ") %></span>
+              <span><%= @job.company.name %></span>
+          <span class='pull-right'><%= number_to_currency(@job.pay_rate) %>/ hr</span>
+         </h4>
           
-  <h2><strong><%= @job.title %></strong></h2>
-          <h4><%= @job.company.name %></h4>
-          
-
-          <h4><%= number_to_currency(@job.pay_rate) %>/ hr</h4>
- 
-          <h4><%= @job.start_date.strftime("%B %e, %Y ") %></h4>
-     
-
-       
-       </div>
-  <div class='col-md-10'>
-
-  
+  <div class='col-md-12'>
   <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#job" aria-controls="job" role="tab" data-toggle="tab">Job Information</a></li>
@@ -29,31 +19,33 @@
   
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane fade in active" id="job">
-            <div class='col-md-3 well'>
+            <div class='col-md-6 well'>
                 <% if @job.on_shift? %>
                  <%= shift_sym(@job.current_shift) %>
                 <% end %>
-                <% if @job.settings['drive_pay'].present? || @job.settings['drive_pay'].present? %>
-                Drive Pay: <%= @job.settings['drive_pay'] if @job.settings %><br>
-                Ride Pay: <%= @job.settings['ride_pay'] if @job.settings %><br>
-                <% end %>
-                
-            </div>
-            <div class='col-md-5 well'>
-                <h3 class='text-center'>Job Description</h3>
-                <%= markdownify(@order.notes) %>
-                <hr>
+               <hr>
+                <h3 class='text-center'>Reports</h3>
                 <div class='btn-group'>
                     <%= link_to(employee_job_path(@job, format: :pdf), class: 'btn btn-primary') do %> <i class="fa fa-download fa-lg"></i> Employment Verifcation Sheet <% end %>
                 </div>
+                
+                
             </div>
-            <div class='col-md-3 well'>
+            <div class='col-md-6 well'>
                 <h3 class='text-center'>Vacation Tracking</h3>
                 <% if @job.settings['min_hours_for_vac'].present? %>
                 <p class='lead'>Minimum Hours for Vacation: <%= @job.settings['min_hours_for_vac'] %></p>
                 <% else %>
-                <p class='metal bold'>Please contact <% if @job.recruiter.present? %> your recruiter, <%= @job.recruiter.name %> at <%= @job.recruiter.email %><% else %><%= @current_agency.name %><% end %> for information about earning paid vacation days.</p>
+                <p class=' bold'>
+                    Please contact <% if @job.recruiter.present? %> your recruiter, <%= @job.recruiter.name %> at <%= @job.recruiter.email %><% else %><%= @current_agency.name %><% end %> for information about earning paid vacation days.</p>
                 <% end %>
+            </div>
+            <div class='row well'>
+                <h3 class='text-center'>Job Description</h3>
+                <div class='scroll600'>
+                    <%= markdownify(@order.notes) %>
+                </div>
+                
             </div>
         </div>
         <div role="tabpanel" class="tab-pane fade" id="timesheets">

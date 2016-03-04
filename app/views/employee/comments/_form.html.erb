@@ -1,4 +1,4 @@
-<%= simple_form_for [Comment.new], class: 'comment', remote: true do |f| %>
+<%= simple_form_for [commentable.comments.new], class: 'comment', remote: true do |f| %>
 <%= f.hidden_field :commentable_id, value: commentable.id %>
     <%= f.hidden_field :commentable_type, value: commentable.class %>
     

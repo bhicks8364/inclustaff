@@ -99,6 +99,7 @@ module ApplicationHelper
     
     def convo_for(options={})
         date = (Time.current.end_of_week + 1.day).stamp("Monday 12/18")
+        
         @header = options[:header]
         @admins = options[:admins]
         @company_admins = options[:company_admins]
@@ -109,6 +110,8 @@ module ApplicationHelper
         @back_to = options[:back_to]
         @company = options[:company]
         @button = options[:button]
+        @fa_icon = "<i class='fa fa-bell fa-2x green' data-placement='top' data-toggle='tooltip' title='#{@button}'></i>"
+        @header = options[:header].present? ? options[:header] : "Send A Message"
         if @type == :timesheet_reminder
             @admins = Admin.none
             @company_admins = @company.admins.real_users
@@ -134,15 +137,29 @@ module ApplicationHelper
             end
             render "company/conversations/form", users: @users, admins: @admins, company_admins: @company_admins, type: @type, message: @message, subject: @subject
         elsif user_signed_in?
+            @user = current_user
+            @users = User.none
+            @company_admins = CompanyAdmin.none
             if @type == :general || @type.nil?
                 @admins = @current_agency.admins.recruiters 
-                @user = current_user
+                @job = @user.employee.current_job if @user.assigned?
+                @company = @job.company if @user.assigned?
+            end
+            if @type == :timesheet_question
+                @timesheet = options[:timesheet]
+                @admins = @current_agency.payroll_admins
                 @job = current_user.employee.current_job if @user.assigned?
                 @company = current_user.employee.current_job.company if @user.assigned?
-                @company_admins = @company.admins.real_users if @company.present?
-                @users = User.none if user_signed_in?
+                @header = "<h3 class='strong'>Do you have a question about your hours? </h3> <p class='text-center text-info'>Ask payroll now!</p>".html_safe
+                @btn_header = @type.to_s.titleize
+                @fa_icon = "<i class='fa fa-question fa-fw fa-border' data-placement='top' data-toggle='tooltip' title='#{@button}'></i>".html_safe
+                @button = "<a type='button' class='btn btn-info' data-toggle='modal' data-target='#myModal'>  #{ @fa_icon }  #{ @btn_header }  </a>".html_safe
+                @subject = @btn_header + " TimesheetID# #{@timesheet.id}"
+                @msg_placeholder = "Ask your question here"
+                @send_btn = "Ask Payroll"
             end
-            render "employee/conversations/form", users: @users, admins: @admins, company_admins: @company_admins, type: @type, message: @message, subject: @subject
+            render "employee/conversations/modal", users: @users, admins: @admins, company_admins: @company_admins, type: @type, message: @message, subject: @subject, button: @button, msg_placeholder: @msg_placeholder
+            # render "employee/conversations/form", users: @users, admins: @admins, company_admins: @company_admins, type: @type, message: @message, subject: @subject, header: @header, button: @button
         end
     end
     

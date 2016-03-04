@@ -1,10 +1,10 @@
 <div class='col-md-12'>
     <div class='btn-group'>
         <%= link_to "<i class='fa fa-download fa-md'></i> Download PDF".html_safe, employee_timesheet_path(@timesheet, format: :pdf), class: 'btn btn-primary'%>
-        <%= link_to 'All Timesheets', employee_timesheets_path(@job), class: 'btn btn-primary' %>
+        <%= link_to 'All Timesheets', employee_timesheets_path, class: 'btn btn-primary' %>
     </div>
   
-<div class='well'>
+<div class='row'>
   <h3>For the week of:<strong><br>
         <%= @timesheet.week_begin %>
           - 
@@ -24,14 +24,9 @@
       </div>
 </div>
 <div class='col-md-6'>
-         <div id='comments_<%= @timesheet.class %>_<%= @timesheet.id %>'>
-            <% @timesheet.comments.each do |comment| %>
-                <%= render 'employee/comments/comment', comment: comment %>
-            <% end %>
-         </div>
-        <%= render partial: "employee/comments/form", locals: {commentable: @timesheet} %>
-      </div>
-<div class='col-md-12'>
+    <%= convo_for(timesheet: @timesheet, type: :timesheet_question) %>
+</div>
+<div class='col-md-6'>
   <h4> Shifts</h4>
    <%= render 'employee/shifts/table' %>
 </div>

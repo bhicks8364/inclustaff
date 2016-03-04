@@ -1,0 +1,113 @@
+<div class="modal fade" id="WelcomeDemoModal" tabindex="-1" role="dialog" aria-labelledby="WelcomeDemoModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="WelcomeDemoModalLabel">Welcome, <%= @current_user.name %></h4>
+      </div>
+      <div class="modal-body col-md-12">
+          <div class='col-md-7'>  <%= image_tag("cogwheels12.png", class: 'screenshot img-zoom') %></div>
+          <div class='col-md-5'>
+            <p class='lead '>Click on the icons for "How-To" tips!</p>
+            <p class='text-info bold '><i class='fa fa-cog'></i> = Completed Shift</p>
+            <p class='text-info bold '><i class='fa fa-cog fa-spin'></i> = Clocked In</p>
+            <p class='text-info bold '><i class='fa fa-spinner fa-spin'></i> = On Break</p>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="employeeProfileDemoModal" tabindex="-1" role="dialog" aria-labelledby="employeeProfileDemoModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="employeeProfileDemoModalLabel">Create & Manage Job Orders</h4>
+      </div>
+      <div class="modal-body col-md-12">
+             <p class='lead  bold'>Need a new position filled?</p> 
+          <div class='col-md-7 well well-sm img-zoom'> <%= image_tag("new_order.png", class: 'screenshot') %></div>
+          <div class='col-md-5'>
+              <% if current_user.assigned? %>
+          <%= link_to(employee_job_path(@current_user.current_job, format: :pdf), class: 'btn btn-primary') do %> <i class="fa fa-download fa-lg"></i> Employment Verifcation Sheet <% end %>
+          <% else %>
+          <p>You aren't currently working. </p>
+          <% end %>
+          </div>
+      </div>
+          
+         
+        
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="companyWelcomeDemoModal" tabindex="-1" role="dialog" aria-labelledby="companyWelcomeDemoModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="companyWelcomeDemoModalLabel">Welcome, <%= @current_user.name %></h4>
+      </div>
+      <div class="modal-body col-md-12">
+          <p class='lead  text-center'>This is your company's direct connection to <br><%= link_to "#{@current_agency.name}'s services.", @current_agency%> </p>
+          <div class='col-md-7'>  <%= image_tag("toolbox_screenshot img-zoom.png", class: 'screenshot img-zoom') %></div>
+          <div class='col-md-5'>
+            
+            <p class='lead '>You'll find everything you need using the <strong>Toolbox</strong> dropdown above.</p>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="clockDemoModal" tabindex="-1" role="dialog" aria-labelledby="clockDemoModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="clockDemoModalLabel">Review Timesheets</h4>
+      </div>
+      <div class="modal-body col-md-12">
+          <div class='col-md-8'><%= image_tag("approve_timesheets.png", class: 'screenshot img-zoom') %></div>
+          <div class='col-md-4'>
+            <p class='bold '>Timesheets are automatically created when an employee clocks in, so they can be reviewed & corrected in real-time. </p>
+            <p class='lead '>At the end of the week, easily approve timesheets with a single click! </p>
+          </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="reportsDemoModal" tabindex="-1" role="dialog" aria-labelledby="reportsDemoModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="reportsDemoModalLabel">Reports & Documents</h4>
+      </div>
+      <div class="modal-body col-md-12">
+          <div class='well'> <p class='lead'>Employment Verifcation Letters are available instantly!  </p>
+            <p class='demo'>Easily download as a PDF or export all your timesheets as CSV for your records.<br/>
+            <small class='text-muted'>  After you clock in on your first day, of course.</small> </p>
+          </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>

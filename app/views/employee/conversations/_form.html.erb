@@ -1,31 +1,34 @@
-<%= form_tag employee_conversations_path, method: :post do %>
-<%= hidden_field_tag :redirect_to, params[:redirect_to]%>
+<div class='employee-convo-form'>
+  <h3 class='text-center text-info'><%= @header %></h3>
+  <%= form_tag employee_conversations_path, method: :post do %>
+  <%= hidden_field_tag :redirect_to, params[:redirect_to]%>
+      <div class="form-group">
+              <% if admins.any? %>
+              <div class="form-group">
+              <%= select_tag :admin_ids, options_from_collection_for_select(admins, :id, :name), class: "selectize", multiple: true, placeholder: "Admins" %>
+              </div>
+              <% end %>
+              <% if company_admins.any? %>
+              <div class="form-group">
+              <%= select_tag :company_admin_ids, options_from_collection_for_select(company_admins, :id, :name), class: "selectize", multiple: true, placeholder: "Company Admins" if company_admins.any? %>
+              </div>
+              <% end %>
+              <% if users.any? %>
+              <div class="form-group">
+              <%= select_tag :user_ids, options_from_collection_for_select(users, :id, :name), class: "selectize", multiple: true, placeholder: "Employees" if users.any? %>
+              </div>
+              <% end %>
+      </div>
     <div class="form-group">
-            <% if admins.any? %>
-            <div class="form-group">
-            <%= select_tag :admin_ids, options_from_collection_for_select(admins, :id, :name), class: "selectize", multiple: true, placeholder: "Admins" %>
-            </div>
-            <% end %>
-            <% if company_admins.any? %>
-            <div class="form-group">
-            <%= select_tag :company_admin_ids, options_from_collection_for_select(company_admins, :id, :name), class: "selectize", multiple: true, placeholder: "Company Admins" if company_admins.any? %>
-            </div>
-            <% end %>
-            <% if users.any? %>
-            <div class="form-group">
-            <%= select_tag :user_ids, options_from_collection_for_select(users, :id, :name), class: "selectize", multiple: true, placeholder: "Employees" if users.any? %>
-            </div>
-            <% end %>
+      <%= text_field_tag :subject, subject.present? ? subject : nil, required: true, placeholder: "Subject", class: "form-control" %>
     </div>
-  <div class="form-group">
-    <%= text_field_tag :subject, subject.present? ? subject : nil, required: true, placeholder: "Subject", class: "form-control" %>
-  </div>
-
-  <div class="form-group">
-    <%= text_area_tag :body, message.present? ? message : nil, required: true, placeholder: "Add a comment", class: "form-control myatwho", rows: 8 %>
-  </div>
-
-  <div class="form-group">
-    <%= submit_tag "Send Message", class: "btn btn-primary" %>
-  </div>
-<% end %>
+  
+    <div class="form-group">
+      <%= text_area_tag :body, message.present? ? message : nil, required: true, placeholder: @placeholder, class: "form-control myatwho", rows: 8 %>
+    </div>
+  
+    <div class="form-group">
+      <%= submit_tag "Send Message", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>

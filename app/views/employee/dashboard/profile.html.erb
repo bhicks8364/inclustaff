@@ -21,7 +21,7 @@
                     <address class="">
                         <%= @user.address %><br>
                         <%= @user.city %>, <%= @user.state %> <%= @user.zipcode %><br>
-                        <i class="fa fa-phone-square"></i>  <%= @employee.phone_number || "Unavailable"  %>
+                        <i class="fa fa-phone-square"></i>  <%= @employee.phone_number || link_to "Add Phone Number", edit_employee_employee_path(@employee)  %>
                     </address>
                     <div class='btn-group'>
                         <%= link_to "Edit Profile", edit_employee_employee_path(@employee), class: 'btn btn-primary' %>
@@ -29,6 +29,7 @@
                     </div>
                 </div>
                 <div class='col-md-6'>
+                    <%= convo_for(timesheet: @employee.current_timesheet, type: :timesheet_question) if @employee.current_timesheet.present? %>
                     <% if @employee.skills %>
                        <h4 class='text-center'>Skills</h4>
                         <div id='skills' class='center'>

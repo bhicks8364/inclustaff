@@ -17,13 +17,24 @@ class Employee::JobsController < ApplicationController
   end
 
   def show
-
+    
     @timesheet = @job.current_timesheet if @job.current_timesheet.present?
     @shift = @job.shifts.last if @job.shifts.any?
     @timesheets = @job.timesheets if @job.timesheets.any?
     @last_week_timesheets =  @job.timesheets.last_week
     @skills = @job.employee.skills
     # @order_skills = @job.order.skills
+    @employee = @current_user.employee
+    respond_to do |format|
+      format.html
+      format.json
+      format.pdf {
+        send_data EmploymentVerificationPdf.new(@employee, view_context, @signed_in, @current_agency).render,
+          filename: "#{@timesheet.week_ending}-#{@employee.name}-timesheet.pdf",
+          type: "application/pdf",
+          disposition: :inline
+      }
+    end
 
   end
 

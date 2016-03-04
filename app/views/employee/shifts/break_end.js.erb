@@ -1,4 +1,0 @@
-$('#start-break-btn').show();
-$('#end-break-btn').hide();
-
-$("<span> <%= @shift.breaks.count.even? ? "Out:" : "In:" %> <strong> <%= @shift.breaks.last.to_datetime.stamp("1:30am") %></strong></span>").appendTo("#break-list");
