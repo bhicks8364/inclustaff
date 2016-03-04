@@ -117,7 +117,7 @@ module ApplicationHelper
             @company_admins = @company.admins.real_users
             @users = User.none
             @header = "Send A Reminder"
-            @button = "<i class='fa fa-bell-o' data-placement='top' data-toggle='tooltip' title='#{@header}'></i>"
+            @button = "<i class='fa fa-bell-o' data-placement='top' data-toggle='popover' title='#{@header}'></i>"
             
             @subject = "Timesheet Reminder"
             @message = "Please remember to have all timesheets for last week approved the end of the day on #{date}. Thank you! "
@@ -146,19 +146,28 @@ module ApplicationHelper
                 @company = @job.company if @user.assigned?
             end
             if @type == :timesheet_question
-                @timesheet = options[:timesheet]
-                @admins = @current_agency.payroll_admins
+                timesheet = options[:timesheet]
+                size = options[:size]
+                
+                @payroll_admins = @current_agency.payroll_admins
+                @send_btn = "Ask Payroll"
                 @job = current_user.employee.current_job if @user.assigned?
                 @company = current_user.employee.current_job.company if @user.assigned?
                 @header = "<h3 class='strong'>Do you have a question about your hours? </h3> <p class='text-center text-info'>Ask payroll now!</p>".html_safe
                 @btn_header = @type.to_s.titleize
-                @fa_icon = "<i class='fa fa-question fa-fw fa-border' data-placement='top' data-toggle='tooltip' title='#{@button}'></i>".html_safe
-                @button = "<a type='button' class='btn btn-info' data-toggle='modal' data-target='#myModal'>  #{ @fa_icon }  #{ @btn_header }  </a>".html_safe
-                @subject = @btn_header + " TimesheetID# #{@timesheet.id}"
+                @question = "Do you have a question about your hours?"
+                @fa_icon = "<i class='fa fa-question fa-1x fa-border'></i>".html_safe
+                @subject = @btn_header + " TimesheetID# #{timesheet.id}"
                 @msg_placeholder = "Ask your question here"
-                @send_btn = "Ask Payroll"
+                if size == :small
+                    @link = "<a type='button' data-toggle='modal' data-target='#myModal'>#{@fa_icon} </a>"
+                    @button = "<span data-placement='top' data-toggle='tooltip' title='#{@question}'> #{@link}</span>".html_safe
+                else
+                    @button = "<a type='button' class='btn btn-default' data-toggle='modal' data-target='#myModal'>  #{ @fa_icon} #{ @send_btn }   </a>".html_safe
+                end
+                
             end
-            render "employee/conversations/modal", users: @users, admins: @admins, company_admins: @company_admins, type: @type, message: @message, subject: @subject, button: @button, msg_placeholder: @msg_placeholder
+            render "employee/conversations/modal", users: @users, admins: @payroll_admins, company_admins: @company_admins, type: @type, message: @message, subject: @subject, button: @button, msg_placeholder: @msg_placeholder, small_btn: @small_btn
             # render "employee/conversations/form", users: @users, admins: @admins, company_admins: @company_admins, type: @type, message: @message, subject: @subject, header: @header, button: @button
         end
     end

@@ -25,7 +25,7 @@
 			</span>
 		<% end %>
 	</div>
-	<div class="bg-white">
+	<div class="">
 	  
 	  <p class='lead pull-center' data-behavior='timesheet-employee'>
 			  <%= timesheet.employee.name %><small> <%=timesheet.job.title %></small>
@@ -60,16 +60,16 @@
       					  <i class="fa fa-download fa-1x"></i>
       				<% end %>
             </div>
+            <div class="btn-group" role="group" aria-label="...">
+            	
+            </div>
+            
             
             
           </div>
 			
 			
-			
-		  
-		    
-			
 		</div>
-			
+		<%= convo_for(timesheet: timesheet, type: :timesheet_question, back_to: employee_timesheets_path) %>	
 </div>
 	

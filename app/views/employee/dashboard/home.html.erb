@@ -1,4 +1,7 @@
-<div class='col-md-12 lightbox-long'>
+<div class='col-md-12'>
+  <%= request.path %> <hr>
+  <%= @redirect_path %>
+  <hr>
   <% if @employee.assigned? && @job.present? %>
     <div class="col-md-4">
       <div class="panel panel-default">
@@ -60,9 +63,7 @@
         </div>
       </div>
     </div>
-    <div class='row'>
-      <%= render "employee/shifts/wk_calendar", shifts: @employee.current_timesheet.shifts if @employee.current_timesheet.present? %>
-    </div>
+    
     <div class="col-md-5 well well-sm">
      
       <h2 class='text-info'>Recent Activity</h2>
@@ -80,5 +81,8 @@
     </div>
     
   <% end %>
-  <%= render "employee/shifts/calendar", shifts: @employee.current_timesheet.shifts if @employee.current_timesheet.present? %>
+  <div class='row'>
+      <%= render "employee/shifts/wk_calendar", shifts: @employee.current_timesheet.shifts if @employee.current_timesheet.present? %>
+    </div>
+  <%= render "employee/shifts/calendar", shifts: @employee.shifts if @employee.shifts.any? %>
 </div>
