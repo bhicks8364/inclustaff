@@ -6,7 +6,6 @@
     <% elsif job.off_shift? %>
     <%= link_to clock_in_company_job_path(job), class: "btn btn-success",  method: :patch do %>  <i class='fa fa-history'></i> Clock In <% end %>
     <% end %>
-    <hr>
     <span id='break-buttons' class='break-actions-<%=job.id%> '>
        <% if job.on_break? %>
         <%= link_to stop_company_shift_breaks_path(job.current_shift), class: "btn btn-danger", method: :patch do %> <i class='fa fa-history'></i> End Break <% end %>

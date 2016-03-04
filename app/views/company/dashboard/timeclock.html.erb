@@ -1,5 +1,5 @@
  <h1><%= @company.name %>'s Timeclock</h1>
-<div class='col-md-2'>
+<div class='col-md-1'>
 </div>
 <div class='col-md-10'  data-behavior='company-job-list'>
     <div class='col-md-5 well well-sm'>
@@ -9,6 +9,8 @@
               <%= render 'company/jobs/job', job: job %>
         <% end %>
         </div>
+    </div>
+    <div class='col-md-1'>
     </div>
     <div class='col-md-5 well well-sm'>
          <h2>Clocked Out</h2>

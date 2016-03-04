@@ -1,4 +1,4 @@
-
+<%= div_for job do %>
 <div class="col-md-12 well well-sm" data-behavior="job" data-id="<%= job.id %>">
    <p class='demo' data-toggle="tooltip" data-placement="left" title="<%= job.employee.first_name %>'s time clock code - (visible in DEMO mode only)"> <%= job.employee.code if @current_agency.demo? %></p>
     <div class='btn btn-default btn-lg btn-block' data-behavior="code-button_<%= job.id %>">
@@ -8,3 +8,4 @@
         <%= render 'company/dashboard/clock', job: job if company_admin_signed_in? && current_company_admin.timeclock? || current_company_admin.owner? %>
     
 </div>
+<% end %>

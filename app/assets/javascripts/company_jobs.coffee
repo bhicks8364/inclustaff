@@ -27,6 +27,7 @@ class Job
     )
   authorizeClockIn: (data) =>
     if data.authorized
+      @item.find("#unauthorized").html("")
       if data.clocked_in
         @item.find("[data-behavior='code-button_#{@id}']").hide()
         
@@ -51,7 +52,6 @@ class Job
     if data.clocked_in
       @item.appendTo("#clocked_in_list")
       @item.find(".clock-actions-#{@id}").hide()
-      @item.find("#unauthorized").hide()
       @item.find("[data-behavior='code-button_#{@id}']").show()
       @item.find("#verified").html "<small><strong> In:</strong> #{data.time_in}</small>"
       $("#clocked-in-nav").show()

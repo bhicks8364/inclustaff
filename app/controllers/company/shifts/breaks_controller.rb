@@ -35,10 +35,10 @@ class Company::Shifts::BreaksController < ApplicationController
     @shift.update(state: "On Break")
     respond_to do |format|
       if @shift.on_break?
-        format.html { redirect_to root_path, notice: 'Shift was successfully updated.' }
+        format.html { redirect_to root_path}
         format.js
       else
-        format.html { redirect_to root_path, notice: 'Shift was successfully updated.' }
+        format.html { redirect_to root_path}
         format.json { render json: @shift.errors, status: :unprocessable_entity }
       end
     end

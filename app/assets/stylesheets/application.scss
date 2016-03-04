@@ -318,3 +318,16 @@ td.day:hover {
 .work_history {
   max-width: 284px;
 }
+
+
+
+.wood {
+  background: 
+    /* top, transparent red, faked with gradient */ 
+    linear-gradient(
+      rgba(255, 255, 255, 0.45),
+      rgba(255, 255, 255, 0.45) 
+    ),
+    /* bottom, image */
+    url(wood-bg.jpg);
+}

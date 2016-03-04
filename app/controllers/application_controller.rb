@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
 
   end
   def set_gon
-    gon.on_break_shifts = @current.jobs.on_break
+    gon.on_break_shifts = @current.jobs.on_break if @current.present?
   end
   def set_mailer_host
     @subdomain = @current_agency.present? ? "#{@current_agency.subdomain}.": ""
