@@ -8,24 +8,16 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
+      
       <%= link_to root_path, id: "nav-logo", class: "navbar-brand" do %>
-			       <%= @company.try(:name) || @current_agency.try(:name) %> Timeclock
+			       <%= @company.try(:name) || @current_agency.try(:name) %> Timeclock <%= fa_icon "bell" %>
 			 <% end %>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <% if !signed_in? && @current_agency.nil?  %>
-        <li><%= link_to "About", about_path %></li>
-        <li><%= link_to "Contact", contact_path %></li>
-        <li><%= link_to "Features", features_path %></li>
-        <% end %>
-        <% if !signed_in? && @current_agency.present?  %>
-        <li><%= link_to "Job Search", public_job_board_path %></li>
-        <li><%= link_to "Client Login", sign_in_path %></li>
-        <% end %>
-      </ul>
+      <%= render 'company/shared/clocked_in' if  @current_company.jobs.on_shift.any?  %>
+			<%= render 'company/shared/on_break' if @current_company.jobs.on_break.any?  %>
       
      
     </div><!-- /.navbar-collapse -->

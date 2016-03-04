@@ -1,3 +1,4 @@
+$("data-behavior='code-button_<%= @shift.job_id %>']").show();
 $(".break-actions-<%=@shift.job_id%>").html("<%=j link_to "<i class='fa fa-clock-o'></i> Start Break".html_safe, start_company_shift_breaks_path(@shift), class: "btn btn-warning", remote: true, method: :post %>");
 $("#shift-times").html("<%=j shift_times(@shift) %>");
 $(".clock-actions-<%=@shift.job_id%>").html("<button type='button' data-behavior='job-out-button_<%= @shift.job_id %>' class='btn btn-danger'>  <i class='fa fa-sign-out'></i> Clock Out </button>");

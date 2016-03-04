@@ -11,11 +11,11 @@ class Company::Shifts::BreaksController < ApplicationController
     skip_authorization
   end
   def update
-    @shift_break = @shift.breaks.find(params[:id])
+    # @shift_break = @shift.breaks.find(params[:id])
     skip_authorization
     respond_to do |format|
-      if @shift_break.update(shift_break_params)
-        format.html { redirect_to company_shift_path(@shift), notice: 'Shift was successfully updated.' }
+      if @shift.on_break?
+        format.html { redirect_to company_shift_path(@shift), notice: 'On Break!' }
         format.json { render :show, status: :ok, location: @shift }
       else
         format.html { render :edit }
@@ -33,6 +33,15 @@ class Company::Shifts::BreaksController < ApplicationController
     end
 
     @shift.update(state: "On Break")
+    respond_to do |format|
+      if @shift.on_break?
+        format.html { redirect_to root_path, notice: 'Shift was successfully updated.' }
+        format.js
+      else
+        format.html { redirect_to root_path, notice: 'Shift was successfully updated.' }
+        format.json { render json: @shift.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def stop
@@ -42,6 +51,15 @@ class Company::Shifts::BreaksController < ApplicationController
     @current_break.update(time_out: Time.current)
     @shift.update(state: "Clocked In")
     @shift_break = @shift.breaks.last
+    respond_to do |format|
+      if @shift.on_break?
+        format.html { redirect_to root_path }
+        format.js
+      else
+        format.html { redirect_to root_path}
+        format.json { render json: @shift.errors, status: :unprocessable_entity }
+      end
+    end
   end
   
   def destroy

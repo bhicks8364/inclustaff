@@ -45,9 +45,13 @@ class Company::JobsController < ApplicationController
     authorized = (@code === @employee_code) ? true : false
     respond_to do |format|
       if @code === @employee_code
-         format.json { render json: { id: @job.id, code: @employee_code, authorized: authorized, status: :ok, clocked_in: @state} }
+         format.json { render json: { id: @job.id, code: @employee_code, authorized: authorized, status: :ok, clocked_in: @state,
+           first_name: @job.employee.first_name, new_count: @on_shift.count, job: @job
+         } }
       else
-        format.json { render json: @job.errors, code: @employee_code, authorized: authorized, clocked_in: @state}
+        format.json { render json: @job.errors, code: @employee_code, authorized: authorized, clocked_in: @state
+          
+        }
       end
     end
   end
@@ -60,14 +64,14 @@ class Company::JobsController < ApplicationController
                                   state: "Clocked In",
                                   in_ip: current_company_admin.current_sign_in_ip)
     current_company_admin.events.create(action: "clocked_in", eventable: @shift, user_id: @shift.employee.user_id)
-
-
       respond_to do |format|
+          format.html { redirect_to root_path }
+          format.js
           format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?,
                     state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out, last_out: @job.last_clock_out,
                     in_ip: @shift.in_ip, first_name: @job.employee.first_name, new_count: @on_shift.count } }
-
       end
+
     end
   end
 
@@ -80,13 +84,15 @@ class Company::JobsController < ApplicationController
                         state: "Clocked Out", week: Date.today.beginning_of_week.cweek,
                         out_ip: current_company_admin.current_sign_in_ip )
       current_company_admin.events.create(action: "clocked_out", eventable: @shift, user_id: @shift.employee.user_id)
-
-      respond_to do |format|
+        respond_to do |format|
+          format.html { redirect_to root_path }
+          format.js
           format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?,
                     state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out.strftime("%l:%M%P"),
                     in_ip: @shift.in_ip, first_name: @job.employee.first_name, new_count: @on_shift.count } }
-
       end
+          
+
     end
   end
 

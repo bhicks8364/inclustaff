@@ -3,7 +3,7 @@
 
   		<i class="fa fa-clock-o green"></i>
 		<span class="count green" id="clocked-in-count">
-			<%= @current.jobs.on_shift.try(:count) %>
+			<%= @on_shift.try(:count) %>
 		</span>
 	</a>
 	<ul class="dropdown-menu dropdown-menu-left">

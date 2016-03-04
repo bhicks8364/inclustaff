@@ -33,7 +33,7 @@
 
         <td><%= job.start_date.strftime("%B %e, %Y") %></td>
         <td><%= number_to_currency(job.pay_rate) %></td>
-        <td><%= job.current_week_hours.round(2) %> | <%= job.total_hours %></td>
+        <td><%= job.current_week_hours.round(2) %> | <%= job.total_hours.round(2) %></td>
         <td><%= number_to_currency(job.current_week_pay) %> | <%= number_to_currency(job.total_gross_pay) %></td>
        
         

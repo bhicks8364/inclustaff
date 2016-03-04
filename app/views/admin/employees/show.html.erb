@@ -55,7 +55,6 @@
                 <%= render 'admin/employees/availability', employee: @employee %>
             </div>
             <div class='col-md-12'>
-                <p class='lead text-center'>Hours Worked <small> Last 4 weeks</small></p>
                 <hr>
               <%= column_chart @employee.jobs.active.map{|job| {name: job.employee.name, data: job.shifts.group_by_week(:time_in, range: 12.weeks.ago.beginning_of_week.midnight..Time.current, format: "%a, %m/%d").sum(:time_worked)}}, xtitle: "Week", ytitle: "Total Hours", library: {height: 300, width: 1000} %>
             </div>

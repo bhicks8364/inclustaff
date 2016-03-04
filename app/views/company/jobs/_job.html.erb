@@ -1,13 +1,10 @@
+
 <div class="col-md-12 well well-sm" data-behavior="job" data-id="<%= job.id %>">
-   <p class='small text-muted'> <%= job.employee.code if @current_agency.demo? %></p>
-    <div class='pull-left'>
-        <%= link_to job.name_title, company_job_path(job) if company_admin_signed_in? && current_company_admin.role != "Timeclock" %>
-         <%=  job.name_title if company_admin_signed_in? && current_company_admin.role == "Timeclock" %>
-         <%=  link_to job.name_title, admin_job_path(job) if admin_signed_in?  %>
+   <p class='demo' data-toggle="tooltip" data-placement="left" title="<%= job.employee.first_name %>'s time clock code - (visible in DEMO mode only)"> <%= job.employee.code if @current_agency.demo? %></p>
+    <div class='btn btn-default btn-lg btn-block' data-behavior="code-button_<%= job.id %>">
+       <span id='job-sym'><%= job_sym(job)%></span>  <%=  job.name %>
     </div>
-    <div class='pull-right'>
         <span id='verified'></span>
-        <%= render 'company/dashboard/clock', job: job if company_admin_signed_in? && current_company_admin.timeclock?|| current_company_admin.owner? %>
-    </div>
+        <%= render 'company/dashboard/clock', job: job if company_admin_signed_in? && current_company_admin.timeclock? || current_company_admin.owner? %>
     
 </div>

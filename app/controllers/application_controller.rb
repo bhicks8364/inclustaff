@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  before_action :set_current, :set_mailer_host
+  before_action :set_current, :set_mailer_host, :set_gon
 
   def set_current
     subdomains = request.subdomains
@@ -37,6 +37,9 @@ class ApplicationController < ActionController::Base
     gon.company_admins_display = @company_admins.map(&:mention_data) if admin_signed_in?
      
 
+  end
+  def set_gon
+    gon.on_break_shifts = @current.jobs.on_break
   end
   def set_mailer_host
     @subdomain = @current_agency.present? ? "#{@current_agency.subdomain}.": ""

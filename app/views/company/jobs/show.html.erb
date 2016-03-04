@@ -55,6 +55,9 @@
         
           
         </div>
+        <div class='row well well-sm'>
+          <%= render 'company/shifts/calendar', shifts: @job.shifts  %>
+         </div>
       </div>
       <div role="tabpanel" class="tab-pane fade" id="timesheets" data-behavior='timesheet-list'>
         <h2 class='text-center'>Timesheets</h2>
@@ -123,7 +126,8 @@
       </div>
       <div role="tabpanel" class="tab-pane fade" id="comments">
            <div class='col-md-12'>
-             <div class='col-md-6'>
+             
+             <div class='col-md-4'>
                 <h2>Comments</h2>
                 <div data-behavior='comment-list' class='scroll300' id='comment-list'>
                     <% @job.comments.unread.order(created_at: :desc).each do |comment| %>

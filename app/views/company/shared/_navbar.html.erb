@@ -23,6 +23,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		<ul class="nav navbar-nav">
+			
 			<%= render 'company/shared/clocked_in' if  @current_company.jobs.on_shift.any?  %>
 			<%= render 'company/shared/on_break' if @current_company.jobs.on_break.any?  %>
 			<%= render "company/shared/owner_links" if current_company_admin.owner? %>

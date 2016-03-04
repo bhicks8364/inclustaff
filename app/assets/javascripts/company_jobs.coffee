@@ -1,3 +1,4 @@
+console.log(gon.on_break_shifts)
 class CompanyJobList
   constructor: (item) ->
     @item = $(item)
@@ -26,11 +27,17 @@ class Job
     )
   authorizeClockIn: (data) =>
     if data.authorized
-      @item.find("[data-behavior='code-button_#{@id}']").hide()
-      @item.find("[data-behavior='job-in-button_#{@id}']").show()
-      @item.find("#verified").html "VERIFIED! You can now clock in."
+      if data.clocked_in
+        @item.find("[data-behavior='code-button_#{@id}']").hide()
+        
+        # @item.find("#break-buttons").show()
+        @item.find(".clock-actions-#{@id}").show()
+      else
+        @item.find("[data-behavior='code-button_#{@id}']").hide()
+        @item.find(".clock-actions-#{@id}").show()
+        @item.find("#verified").html "Welcome back, #{data.first_name}! You can now clock in."
     else
-      @item.find("#unauthorized").html "Sorry that's not right. <br> Please try again or see a manager for help."
+      @item.find("#unauthorized").html("Sorry that's not right. <br> Please try again or see a manager for help.").fadeOut(5000)
 
   handleIn: =>
     $.ajax(
@@ -42,24 +49,15 @@ class Job
 
   handleInSuccess: (data) =>
     if data.clocked_in
-      @item.prependTo("#clocked_in_list");
-      $("[data-behavior='job-in-button_#{@id}']").hide()
-      
-      @item.find("[data-behavior='time-out']").html "<small>Last Out: #{data.last_out}</small>"
-      @item.find("[data-behavior='time-in']").html "<small><strong> In:</strong> #{data.time_in}</small>"
-      @item.find("[data-behavior='shift-state']").html "<strong>#{data.first_name} is now clocked in.</strong><br>"
-      @item.find("#verified").html "<strong>#{data.first_name} is now clocked in.</strong><br>"
-      console.log data.time_in
-      console.log data.time_out
-      
+      @item.appendTo("#clocked_in_list")
+      @item.find(".clock-actions-#{@id}").hide()
+      @item.find("#unauthorized").hide()
+      @item.find("[data-behavior='code-button_#{@id}']").show()
+      @item.find("#verified").html "<small><strong> In:</strong> #{data.time_in}</small>"
       $("#clocked-in-nav").show()
-    
-      
     else
-      alert("Uh-Oh! Something went wrong! #{data.time_in} - #{data.state}")
-      console.log data.time_in
-      console.log data.time_out
-    
+      @item.find("#unauthorized").text("Uh-Oh! Something went wrong! #{data.state}")
+      
   handleOut: =>
     $.ajax(
       url: "/company/jobs/#{@id}/clock_out",
@@ -70,28 +68,18 @@ class Job
 
   handleOutSuccess: (data) =>
     if data.clocked_out
-      @item.prependTo("#clocked_out_list");
-      #@item.find(".shift-item").hide()
-      $("[data-behavior='job-out-button_#{@id}']").hide()
-      $("#in-job-#{@id}").hide()
-      $("[data-behavior='code-button_#{@id}']").show()
+      @item.appendTo("#clocked_out_list")
+      @item.find("[data-behavior='code-button_#{@id}']").show()
+      @item.find(".clock-actions-#{@id}").hide()
+      @item.find("#unauthorized").hide()
+      @item.find("#verified").html "<small><strong> Out:</strong> #{data.time_in}</small>"
       $("#clocked-in-count").text "#{data.new_count}"
-      $(".break-actions-#{@id}").hide()
-      @item.find("[data-behavior='time-in']").html "<small><strong> In:</strong> #{data.time_in}</small>"
-      @item.find("[data-behavior='time-out']").html "<small><strong> Out:</strong> #{data.time_out}</small>"
-      @item.find("[data-behavior='shift-state']").html "<strong>#{data.first_name} is now clocked out.</strong><br>"
       if data.new_count == 0
         $("#clocked-in-nav").hide()
       
     else
       alert("Uh-Oh! Something went wrong! #{data.time_out} - #{data.state}")
-      console.log data.time_in
-      console.log data.time_out
-      
-      
-      
-  
-      
 
 jQuery ->
   new CompanyJobList $("[data-behavior='company-job-list']")
+  

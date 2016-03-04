@@ -19,6 +19,7 @@
 			<div class="container" id="main-wrapper">
 				<%= render 'layouts/alerts' %>
         <%= render 'demo/timeclock_how_to' if @current_agency.present?  %>
+        
         <%= yield %>
 			</div>
 		</div>
