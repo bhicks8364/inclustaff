@@ -1,5 +1,5 @@
 <div class='col-md-12 lightbox-long'>
-  <% if @employee.assigned? %>
+  <% if @employee.assigned? && @job.present? %>
     <div class="col-md-4">
       <div class="panel panel-default">
         <div class="panel-body">
@@ -33,7 +33,7 @@
 
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4 well well-sm">
       <%= convo_for %>
       <div class="panel panel-default">
         <div class="panel-body text-center">

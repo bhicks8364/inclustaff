@@ -42,6 +42,15 @@ module JobsHelper
         "<i class='fa fa-user'></i>".html_safe 
       end
   end
+  def job_class(job)
+      if job.on_break?
+        "warning" 
+      elsif job.on_shift?
+        "danger"
+      else
+        "info"
+      end
+  end
   def current_job_status(job)
     if job.declined?
       "Declined"

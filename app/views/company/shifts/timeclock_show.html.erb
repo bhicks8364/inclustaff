@@ -1,0 +1,120 @@
+<h1 class='text-center'>TIMECLOCK MODE</h1>
+<div class='col-md-4'>
+  <h1 class='text-center'><%= @shift.work_date %>  </h1>
+  <h3 class='text-center'><span class='' id='shift-times'><%= shift_times(@shift) %></span></h3>
+  <hr>
+  <h1 class="text-center">
+    <span id='shift-sym'><%= shift_sym(@shift) %></span>
+    <%= @employee.name %>
+  </h1>
+</div>
+<div class='col-md-8 '>
+  <% if @shift.past? %>
+    <h3 class='white text-center'> <i class="fa fa-calendar"></i> You are currently reviewing a shift from <%= distance_of_time_in_words(@shift.time_in, Time.current, include_seconds: true) %> ago</h3>
+  <% end %>
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab"><%= @employee.name %></a></li>
+    <li role="presentation"><a href="#details" aria-controls="details" role="tab" data-toggle="tab">Details</a></li>
+  </ul>
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="home">
+        <div class='row'>
+      <div class='col-md-6 well'>
+        <div class='' data-behavior="company-job-list">
+          <p class='lead' data-behavior='shift-state'>
+             <strong> <%= @employee.name %> </strong>
+             is currently <%= @job.status.downcase %>
+        </p>
+        </div>
+      </div>
+      <div class='col-md-6 well'>
+        <table class="table">
+          <tr>
+            <td class=""> <strong>Total Hours</strong></td>
+            <td class=""> <strong>Total Earnings</strong></td>
+          </tr>
+          <tr>
+            <td class=""><%= @shift.hours_worked %></td>
+            <td class=""><%= number_to_currency(@shift.earnings) %></td>
+          </tr>
+          <tr>
+            <td class="">Break type: <%= @shift.paid_breaks? ? "PAID" : "UNPAID" %></td>
+            <td class="">Pay rate: <%= number_to_currency(@shift.pay_rate) %></td>
+          </tr>
+        </table>
+      </div>
+      </div>
+        <div class='row'>
+            <p class='lead'><%= markdownify(@shift.note) %></p>
+            <div id='shift-break-times'>
+            </div>
+            <div class='col-md-12 well'>
+                <h4>Break Details</h4>
+                <%= on_break_for(@shift) %>
+                <% if @shift.paid_breaks? %>
+                <h4> PAID BREAKS </h4>
+                <%= number_to_currency(@shift.with_paid_breaks) %>
+                Total Break Time: <%= (@shift.break_duration).round(2) %>
+                <% else %>
+                <h4> UNPAID BREAKS </h4>
+                <%= number_to_currency(@shift.with_unpaid_breaks) %>
+                <br>
+                Total Break Time: <%= (@shift.break_duration).round(2) %>
+                <% end %>
+                <hr>
+                <dl class="dl-horizontal">
+                    <dt>Company</dt>
+                    <dd><%= @company.name %></dd>
+                    <dt>Job Title</dt>
+                    <dd><%= @job.title %></dd>
+                    <dt>Pay Rate</dt>
+                    <dd><%= number_to_currency(@job.pay_rate) %>/hr</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Recruiter</dt>
+                    <dd><%= @job.recruiter.try(:name) || "Unavailable" %></dd>
+                    <dt>Account Manager</dt>
+                    <dd><%= @order.account_manager.try(:name) %></dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="details">
+        <dl class="dl-horizontal">
+          <dt>Latitude</dt>
+          <dd><%= @shift.latitude %></dd>
+          <dt>Longitude</dt>
+          <dd><%= @shift.longitude %></dd>
+        </dl>
+
+        <dl class="dl-horizontal">
+          <dt>Clock-In IP Address</dt>
+          <dd><%= @shift.in_ip %></dd>
+          <dt>Clock-Out IP Address</dt>
+          <dd><%= @shift.out_ip %></dd>
+        </dl>
+      
+      <div class="col-md-12 well">
+        <div id='shift-break-times'>
+        </div>
+        <div class=''>
+          <h4>Break Details</h4>
+          <%= on_break_for(@shift) %>
+          <% if @shift.paid_breaks? %>
+            <h4> PAID BREAKS </h4>
+            <%= number_to_currency(@shift.with_paid_breaks) %>
+            Total Break Time: <%= (@shift.break_duration).round(2) %>
+        <% else %>
+          <h4> UNPAID BREAKS </h4>
+          <%= number_to_currency(@shift.with_unpaid_breaks) %>
+          <br>
+          Total Break Time: <%= (@shift.break_duration).round(2) %>
+      <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -15,7 +15,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		<ul class="nav navbar-nav navbar-right">
-			    <li><%= link_to "<i class='fa fa-power-off'></i> Exit Timeclock Mode".html_safe, destroy_company_admin_session_path, method: :delete, data: {confirm: "Are you sure you want to exit the timeclock?"}  %></li>
+			<li><%= link_to "<span class='text-muted'><i class='fa fa-power-off'></i> Exit Timeclock Mode</span>".html_safe, destroy_company_admin_session_path, method: :delete, class: "", data: {confirm: "Are you sure you want to exit the timeclock?"}  %></li>
 		</ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

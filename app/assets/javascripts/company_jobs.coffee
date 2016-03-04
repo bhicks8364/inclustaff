@@ -29,16 +29,16 @@ class Job
     if data.authorized
       @item.find("#unauthorized").html("")
       if data.clocked_in
-        @item.find("[data-behavior='code-button_#{@id}']").hide()
+        @item.find("[data-behavior='code-button_#{@id}']").hide().delay(5000).show(0)
         
         # @item.find("#break-buttons").show()
-        @item.find(".clock-actions-#{@id}").show()
+        @item.find(".clock-actions-#{@id}").show(0).delay(5000).hide(0)
       else
-        @item.find("[data-behavior='code-button_#{@id}']").hide()
-        @item.find(".clock-actions-#{@id}").show()
-        @item.find("#verified").html "Welcome back, #{data.first_name}! You can now clock in."
+        @item.find("[data-behavior='code-button_#{@id}']").hide().delay(5000).show(0)
+        @item.find(".clock-actions-#{@id}").show(0).delay(5000).hide(0)
+        @item.find("#verified").html("Welcome back, #{data.first_name}! You can now clock in.").delay(5000).hide(0)
     else
-      @item.find("#unauthorized").html("Sorry that's not right. <br> Please try again or see a manager for help.").fadeOut(5000)
+      @item.find("#unauthorized").html("Sorry that's not right. <br> Please try again or see a manager for help.").delay(5000).hide(0)
 
   handleIn: =>
     $.ajax(

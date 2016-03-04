@@ -18,6 +18,9 @@ class Company::ShiftsController < ApplicationController
     @order = @job.order
     @company = @order.company
     gon.shift = @shift
+    if current_company_admin.timeclock? 
+      render "timeclock_show"
+    end
 
   end
 

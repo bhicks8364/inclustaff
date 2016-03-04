@@ -5,7 +5,7 @@
     <div class='col-md-5 well well-sm'>
          <h2>Clocked In</h2>
          <div class='text-center' id='clocked_in_list'>
-        <%= div_for(@company.jobs.at_work.distinct.each, class: '') do |job| %>
+        <%= div_for(@clocked_in.each, class: '') do |job| %>
               <%= render 'company/jobs/job', job: job %>
         <% end %>
         </div>
@@ -16,7 +16,7 @@
          <h2>Clocked Out</h2>
          
          <div class='text-center' id='clocked_out_list'>
-            <%= div_for(@company.jobs.active.without_current_shifts.each,  class: '') do |job| %>
+            <%= div_for(@clocked_out.each,  class: '') do |job| %>
                   <%= render 'company/jobs/job', job: job %>
             <% end %>
          </div>

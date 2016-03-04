@@ -9,9 +9,7 @@
         <span class="icon-bar"></span>
       </button>
       
-      <%= link_to root_path, id: "nav-logo", class: "navbar-brand" do %>
-			       <%= @current_company.try(:name) || @current_agency.try(:name) %> Timeclock <%= fa_icon "bell" %>
-			 <% end %>
+      <%= link_to root_path, id: "nav-logo", class: "navbar-brand" do %> <%= @current_company.try(:name) || @current_agency.try(:name) %> Timeclock	<% end %>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->

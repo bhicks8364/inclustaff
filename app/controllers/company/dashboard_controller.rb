@@ -7,7 +7,8 @@ class Company::DashboardController < ApplicationController
   def home
     @company = current_company_admin.company
     @invoices = @company.invoices
-    @at_work = @company.jobs.at_work
+    @clocked_in = @company.jobs.at_work.distinct
+    @clocked_out = @company.jobs.currently_working.without_current_shifts
     if @current_company_admin.role == "Timeclock"
       render "company/dashboard/timeclock"
     end

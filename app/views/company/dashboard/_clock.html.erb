@@ -2,15 +2,15 @@
 
 <div class="btn-group clock-actions-<%=job.id%> hide-this" role="group" aria-label="...">
     <% if job.on_shift? %>
-    <%= link_to clock_out_company_job_path(job), class: "btn btn-danger", method: :patch do %> <i class='fa fa-history'></i> Clock Out <% end %>
+    <%= link_to clock_out_company_job_path(job), class: "btn btn-danger btn-lg btn-block", method: :patch do %> <i class='fa fa-history'></i> Clock Out <% end %>
     <% elsif job.off_shift? %>
-    <%= link_to clock_in_company_job_path(job), class: "btn btn-success",  method: :patch do %>  <i class='fa fa-history'></i> Clock In <% end %>
+    <%= link_to clock_in_company_job_path(job), class: "btn btn-success btn-lg btn-block",  method: :patch do %>  <i class='fa fa-history'></i> Clock In <% end %>
     <% end %>
     <span id='break-buttons' class='break-actions-<%=job.id%> '>
        <% if job.on_break? %>
-        <%= link_to stop_company_shift_breaks_path(job.current_shift), class: "btn btn-danger", method: :patch do %> <i class='fa fa-history'></i> End Break <% end %>
+        <%= link_to stop_company_shift_breaks_path(job.current_shift), class: "btn btn-danger btn-lg btn-block", method: :patch do %> <i class='fa fa-history'></i> End Break <% end %>
         <% elsif job.on_shift? %>
-        <%= link_to start_company_shift_breaks_path(job.current_shift), class: "btn btn-info",  method: :post do %>  <i class='fa fa-history'></i> Start Break <% end %>
+        <%= link_to start_company_shift_breaks_path(job.current_shift), class: "btn btn-info btn-lg btn-block",  method: :post do %>  <i class='fa fa-history'></i> Start Break <% end %>
         <% end %>
     </span>
 </div>

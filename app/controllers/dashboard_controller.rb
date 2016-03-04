@@ -54,6 +54,8 @@ class DashboardController < ApplicationController
       #ROOT FOR COMPANY_ADMINS DASHBOARDS IF SIGNED IN
     elsif company_admin_signed_in? && current_company_admin.role == "Timeclock"
       @company = current_company_admin.company
+      @clocked_in = @company.jobs.at_work.distinct
+      @clocked_out = @company.jobs.currently_working.without_current_shifts
       render "company/dashboard/timeclock"
     elsif company_admin_signed_in? && @current_agency.present?
       @current_company_admin = current_company_admin
