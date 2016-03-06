@@ -8,12 +8,14 @@
 				<table class="table table-bordered">
 					<thead>
 						<tr>
+							<th></th>
 							<th>User</th>
 							<th>Job-type</th>
 						</tr>
 					</thead>
 					<tbody>
 						<%= content_tag_for(:tr, @users) do |user| %>
+						<td></td>
 							<td> <%= render 'modal', user: user %></td>
 							<td>	<%= user.employee.desired_job_type %>	</td>
 						<% end %>

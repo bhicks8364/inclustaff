@@ -45,17 +45,19 @@ module JobsHelper
   def job_class(job)
       if job.on_break?
         "warning" 
-      elsif job.on_shift?
+      elsif job.declined?
         "danger"
+      elsif job.on_shift?
+        "success"
       else
         "info"
       end
   end
   def current_job_status(job)
     if job.declined?
-      "Declined"
+      "<span class='text-#{job_class(job)}'>Declined</span>".html_safe
     else
-      job.state
+      "<span class='text-#{job_class(job)}'>#{job.state}</span>".html_safe
     end
   end
 end

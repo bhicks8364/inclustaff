@@ -21,13 +21,41 @@
 
   <body>
     <%= render 'admin/shared/navbar'  %>
-    <%= render 'demo/demo_nav' if @current_agency.present? && @current_agency.demo? %>
-
-    <div class="container">
-      <%= render 'demo/agency_how_to' if @current_agency.present? && @current_agency.demo? %>
-      <%= render 'layouts/alerts' %>
-      <%= yield %>
+    <div class="" id="wrapper">
+      
+      <!-- Sidebar -->
+      <%= render 'shared/admin_sidebar' %>
+      <!-- /#sidebar-wrapper -->
+      <!-- Page Content -->
+      <div id="page-content-wrapper">
+          <div class="container-fluid">
+            
+            <%= render 'layouts/alerts' %>
+              <div class="row">
+                
+                <%= render 'demo/demo_nav' if @current_agency.present? && !@current_agency.demo?  %>
+                <%= render 'demo/agency_how_to' if @current_agency.present? && @current_agency.demo? %>
+                  <div class="col-lg-12">
+                      <%= yield %>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!-- /#page-content-wrapper -->
     </div>
-
+    <!-- /#wrapper -->
+        <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+        $("#sidebar-icon").toggleClass("toggled fa-rotate-180");
+    });
+    $("#show-pricing").click(function(e) {
+        e.preventDefault();
+        $("#inclustaff-pricing").toggleClass("hide-this");
+    });
+    </script>
   </body>
 </html>
+ 

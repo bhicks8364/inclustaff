@@ -1,22 +1,14 @@
 <div class='row'>
-    <div class='pull-left'>
-        <%= search_form_for @q, class: 'form-inline', url: search_admin_orders_path, html: { method: :post } do |f| %>
+    <%= search_form_for @q, class: '', url: search_admin_orders_path, html: { method: :post } do |f| %>
       <%= f.condition_fields do |c| %>
         <%= render "condition_fields", f: c %>
       <% end %>
-      <p><%= link_to_add_fields "<i class='fa fa-plus-square fa-1x fa-pull-right'></i> Add Search Field".html_safe, f, :condition %></p>
-      <div class="field">
-        Sort:
-        <%= f.sort_fields do |s| %>
-          <%= s.sort_select %>
-        <% end %>
-      </div>
+     <%= link_to_add_fields "<i class='fa fa-plus-square fa-1x fa-pull-right'></i> Add Search Field".html_safe, f, :condition %>
+      
           <%= f.search_field :notes_or_title_or_company_name_cont, class: "form-control", placeholder: "Search Job Orders"%>
-        <%= f.submit class: "btn btn-default" do %><i class='fa fa-search'></i><% end %> 
-        <% end %>
         
-    </div>
-    <div class='btn-group pull-right'>
+    <div class='btn-group pill-right'>
+        <%= f.submit class: "btn btn-default" do %><i class='fa fa-search'></i><% end %> 
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Sort By <span class="caret"></span>
         </button>
@@ -29,5 +21,5 @@
             <li><%= sort_link(@q, :max_pay) %></li>
         </ul>
     </div>
-        
+     <% end %>
 </div>

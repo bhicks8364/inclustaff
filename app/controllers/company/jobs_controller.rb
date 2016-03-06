@@ -65,7 +65,7 @@ class Company::JobsController < ApplicationController
                                   in_ip: current_company_admin.current_sign_in_ip)
     current_company_admin.events.create(action: "clocked_in", eventable: @shift, user_id: @shift.employee.user_id)
       respond_to do |format|
-          format.html { redirect_to root_path }
+          format.html { redirect_to company_timeclock_path }
           format.js
           format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?,
                     state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out, last_out: @job.last_clock_out,
@@ -85,7 +85,7 @@ class Company::JobsController < ApplicationController
                         out_ip: current_company_admin.current_sign_in_ip )
       current_company_admin.events.create(action: "clocked_out", eventable: @shift, user_id: @shift.employee.user_id)
         respond_to do |format|
-          format.html { redirect_to root_path}
+          format.html { redirect_to company_timeclock_path}
           format.js
           format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?,
                     state: @shift.state, time_in: @shift.time_in.strftime("%l:%M%P"), time_out: @shift.time_out.strftime("%l:%M%P"),

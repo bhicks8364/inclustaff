@@ -24,6 +24,7 @@ class DashboardController < ApplicationController
     if admin_signed_in? && @current_agency.present?
       # ROUTE TO DASHBOARD BASED ON ROLE
       @candidates = @current_agency.users.available
+       @orders = @current_agency.orders.order(:needed_by).paginate(page: params[:page], per_page: 15)
       if current_admin.owner?
         render 'admin/dashboard/owner'
       elsif current_admin.account_manager?

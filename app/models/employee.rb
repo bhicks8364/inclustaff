@@ -39,7 +39,7 @@ class Employee < ActiveRecord::Base
   has_many :job_events, :through => :jobs, source: 'events'
   has_many :work_histories
   has_one :agency, through: :user
-  has_many :shifts, through: :jobs, dependent: :destroy
+  has_many :shifts, through: :jobs
   has_many :jobs, dependent: :destroy
   has_many :orders, :through => :jobs
   has_many :companies, :through => :orders

@@ -1,77 +1,11 @@
-<div class="col-md-2" id="nav-col">
-	<section id="col-left">
-		
-		<div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">
-				
-			<ul class="nav nav-pills nav-stacked">
-
-						<li><%= link_to dashboard_path do %>
-							<i class="fa fa-dashboard"></i>
-							
-								<span>Dashboard</span>
-							<% end %>
-						</li>
-						
-						<li><%= link_to admin_employees_path do %>
-							<i class="fa fa-users"></i>
-								<span>Employees</span>
-							<% end %>
-						</li>
-						
-						<li><%= link_to admin_companies_path(current_admin.company) do %>
-							<i class="fa fa-home"></i>
-							
-								<span>Home</span>
-							<% end %>
-						</li>
-						<li><%= link_to admin_orders_path do %>
-							<i class="fa fa-university"></i>
-							
-								<span>Departments</span>
-							<% end %>
-						</li>
-						
-						<li><%= link_to new_admin_order_path do %>
-							<i class='fa fa-plus-square'></i>
-							
-								<span>New Department</span>
-							<% end %>
-						</li>
-						
-						<li><%= link_to new_user_registration_path do %>
-							<i class='fa fa-user-plus'></i>
-							
-								<span>Add Employee</span>
-							<% end %>
-						</li>
-						<li><%= link_to new_company_order_path(current_admin.company) do %>
-							<i class="fa fa-building"></i>
-								<span>Add Department</span>
-							<% end %>
-						</li>
-
-						
-						<li><%= link_to admin_timesheets_path do %>
-							<i class="fa fa-file-text-o"></i>
-								<span>Timesheets</span>
-							<% end %>
-						</li>
-						<li><%= link_to admin_jobs_path do %>
-							<i class="fa fa-briefcase"></i>
-								<span>Jobs</span>
-							<% end %>
-						</li>
-						<li><%= link_to users_path do %>
-							<i class="fa fa-list"></i>
-								<span>Employee List</span>
-							<% end %>
-						</li>
-						<li><%= link_to admin_shifts_path do %>
-							<i class="fa fa-list"></i>
-								<span>All Shifts</span>
-							<% end %>
-						</li>
-			</ul>
-		</div>
-	</section>
+<a href="#menu-toggle" class="toggle-sidebar sidebar-button" id="menu-toggle"><i id="sidebar-icon" class='fa fa-arrow-circle-o-left fa-2x'></i> </a>
+<!-- Sidebar -->
+<div id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+        <%= render "admin/sidebars/owner_links" if @current_admin.owner? %>
+        <%= render "admin/sidebars/payroll_links" if @current_admin.payroll? %>
+        <%= render "admin/sidebars/sales_links" if @current_admin.account_manager? %>
+        <%= render "admin/sidebars/recruiter_links" if @current_admin.recruiter? %>
+    </ul>
 </div>
+<!-- /#sidebar-wrapper -->

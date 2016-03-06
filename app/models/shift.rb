@@ -64,7 +64,7 @@ class Shift < ActiveRecord::Base
 
   validates :job_id, presence: true
   validates :time_in, presence: true
-
+  default_scope  { order(time_in: :asc)}
   scope :with_recent_comments,    -> { joins(:comments).merge(Comment.payroll_week)}
   scope :with_break,    -> { where.not(breaks: [])}
   scope :with_no_break, -> { where(breaks: [])}
@@ -75,6 +75,7 @@ class Shift < ActiveRecord::Base
   scope :with_notes,    -> { where(NamedFunction.new("LENGTH", [Shift[:note]]).gt(2))}
   scope :short_shifts,  -> { where('time_worked > 4') }
   scope :over_8,        -> { where('time_worked > 8') }
+  scope :worked_today, -> { where(time_in: Time.current.midnight..(Time.current.midnight + 24.hours))}
   scope :past, -> { where(Shift[:time_in].lteq(Date.yesterday))}
 
   after_save :update_timesheet!
@@ -105,8 +106,8 @@ class Shift < ActiveRecord::Base
     ending = start.end_of_week
     where(time_in: start..ending)}
   scope :today, -> {
-    start = Date.today.beginning_of_day
-    ending = Date.today.end_of_day
+    start = Time.current.beginning_of_day
+    ending = start.end_of_day
     where(time_in: start..ending)}
   scope :yesterday, -> {
     start = Date.yesterday.beginning_of_day

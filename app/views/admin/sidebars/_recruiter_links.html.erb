@@ -1,6 +1,6 @@
-<li><%= link_to "<i class='fa fa-street-view fa-fw'></i> Recruiting Dashboard".html_safe, admin_recruiter_path %></li>
-<li><%= link_to "<i class='fa fa-list fa-fw'></i> Candidate List".html_safe, users_path %></li>
-<li><%= link_to "<i class='fa fa-search fa-fw'></i> Search Job Orders".html_safe, search_admin_orders_path %></li>
-<li><%= link_to "<i class='fa fa-users fa-fw'></i> My Placements".html_safe, admin_jobs_path %></li>
+<li><%= link_to "<i class='fa fa-street-view'></i> Recruiting Dashboard".html_safe, admin_recruiter_path %></li>
+<li><%= link_to "<i class='fa fa-list'></i> Candidate List".html_safe, users_path %></li>
+<li><%= link_to "<i class='fa fa-search'></i> Search Job Orders".html_safe, search_admin_orders_path %></li>
+<li><%= link_to "<i class='fa fa-users'></i> My Placements".html_safe, admin_jobs_path %></li>
 <li role="separator" class="divider"></li>
-<li class=''><%= link_to "<i class='fa fa-user-plus fa-fw'></i> Add New Employee".html_safe, new_user_registration_path if policy(User).create? %></li>
+<li class=''><%= link_to "<i class='fa fa-user-plus'></i> Add New Employee".html_safe, new_user_registration_path if policy(User).create? %></li>

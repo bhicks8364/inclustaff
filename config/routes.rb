@@ -171,6 +171,15 @@ Rails.application.routes.draw do
 
       resources :conversations do
         resources :messages
+        collection do
+          get :inbox
+          get :all, action: :index
+          get :sent
+          get :trash
+        end
+        member do
+          patch :mark_as_unread
+        end
       end
     end
     # END ADMIN
@@ -225,6 +234,15 @@ Rails.application.routes.draw do
 
       resources :conversations do
         resources :messages
+        collection do
+          get :inbox
+          get :all, action: :index
+          get :sent
+          get :trash
+        end
+        member do
+          patch :mark_as_unread
+        end
       end
     end
     # END COMPANY_ADMIN
@@ -265,7 +283,17 @@ Rails.application.routes.draw do
 
       resources :conversations do
         resources :messages
+        collection do
+          get :inbox
+          get :all, action: :index
+          get :sent
+          get :trash
+        end
+        member do
+          patch :mark_as_unread
+        end
       end
+      
     end
     # END EMPLOYEE
 

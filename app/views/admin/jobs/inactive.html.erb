@@ -1,11 +1,11 @@
-<div class='col-md-12 lightbox-long'>
-        <div class='col-md-4'>
-            <%= render 'admin/shared/alerts/job_status', jobs: @jobs.inactive %>
-            <%= pie_chart @jobs.inactive.group('jobs.state').count, 
-			   		library: {backgroundColor: "#ccc", legend: {position: "bottom"}, is3D: true, title: "Jobs by Current Status"}%>
-        </div>
+<div class='row'>
+    <div class='col-md-8  well well-sm'>
+        <%= render 'admin/shared/alerts/job_status', jobs: @jobs.inactive %>
+        <%= pie_chart @jobs.inactive.group('jobs.state').count, 
+		   		library: {backgroundColor: "#ccc", legend: {position: "bottom"}, is3D: true, title: "Jobs by Current Status"}%>
+    </div>
     <div class='col-md-4 well well-sm'>
-        <h1 class='metal'>Pending</h1>
+        <h1 class=''>Pending</h1>
         <% if @jobs.pending_approval.any? %>
         <% @jobs.pending_approval.each do |job| %>
             <%= link_to(admin_job_path(job)) do %>
@@ -14,11 +14,11 @@
             <% end %>
         <%end%>
         <% else %>
-        <h1 class='metal'>No declined jobs to display. </h1>
+        <h1 class=''>No declined jobs to display. </h1>
         <% end %>
     </div>
     <div class='col-md-4 well well-sm'>
-        <h1 class='metal'>Declined</h1>
+        <h1 class=''>Declined</h1>
         <% if @jobs.declined.any? %>
         <% @jobs.declined.each do |job| %>
             <%= link_to(admin_job_path(job)) do %>
@@ -27,15 +27,17 @@
             <% end %>
         <%end%>
         <% else %>
-        <h1 class='metal'>No declined jobs to display. </h1>
+        <h1 class=''>No declined jobs to display. </h1>
         <% end %>
     </div>
+</div>    
+<div class='row'>
     <div class='col-md-8'>
-        <h1 class='metal'>Ended</h1>
+        <h1 class=''>Ended</h1>
         <% if @jobs.ended_assignments.any? %>
         <%= render 'admin/jobs/table', jobs: @jobs.ended_assignments %>
         <% else %>
-        <h1 class='metal'>No ended assignments to display. </h1>
+        <h1 class=''>No ended assignments to display. </h1>
         <% end %>
     </div>
     

@@ -1,102 +1,114 @@
-<div class='col-md-12 '>
-<% if company_admin_signed_in? %>
+<% if !signed_in? %>
+    <div class='col-md-12 well'>
+        <h2 class='text-center'>Please start by signing in to your account.</h2>
+        <%= link_to "Sign In", sign_in_path, class: "btn btn-primary btn-lg btn-block" %>
+    </div>
+<% elsif company_admin_signed_in? %>
 
 
 <%= render 'company_view' %>
 
 
 <!--IF A COMPANY ADMIN IS NOT SIGNED IN-->
-<% else %>
-    <h1 class='page-header'>Welcome to IncluStaff, <%= @agency.name %>!</h1>
-   
-
-    <% if @current_agency.present? && !signed_in? %>
-<div class='col-md-12 '>
+<% elsif admin_signed_in? %>
+    <h1 class='text-center'>Welcome to IncluStaff, <%= @agency.name %>!</h1>
     
-<h1 class='text-center'>Welcome to IncluStaff, <%= @agency.name %>!</h1>
-    
-
-    <address class=''>
-        <strong><%= @agency.name %></strong><br>
-        <%= @agency.address %><br>
-        <%= @agency.city %>, <%= @agency.state %> <%= @agency.zipcode %><br>
-        <abbr title="Phone">P:</abbr> <%= @agency.phone_number %>
-    </address>
-
-
-<div class='col-md-4'>
-    <h2 class='text-center'>Please start by signing in to your account.</h2>
-    <%= link_to "Sign In", sign_in_path, class: "btn btn-primary btn-lg btn-block" %>
-</div>
-
-</div>
-<% end %>
-
-
-    
-    
-    
-    <% if @current.present? && admin_signed_in? %>
-
-
-    <div class='col-md-12'>
-        
-            <div class='col-md-3 well well-sm'>
-                <%= image_tag(@agency.logo_url, class: "img-zoom border", alt: "img-#{@agency.id}") if @agency.logo_url.present? %> 
-                <% if @agency.contact.present? %>
-                <p> Name: <strong><%= link_to @agency.contact.name, admin_admin_path(@agency.contact) %></strong><br>
-                 Email: <strong><%= @agency.contact.email%></strong>
-                </p>
-                <% else %>
-                <p>No agency contact available.</p>
-                <% end %>
-                <address class='white'>
-                 <%= @agency.address %><br>
-                  <%= @agency.city %>, <%= @agency.state %> <%= @agency.zipcode %><br>
-                  <abbr title="Phone">P:</abbr> <%= @agency.phone_number %>
-                </address>
-            </div>
-            <div class='col-md-3'>
-                <div class='well'><p class='metal'>ACA Settings</p>
-                <p>Measurement Period: <%= @agency.preferences['aca_measurement_period'] %></p>
-                <p>Administrative Period: <%= @agency.preferences['aca_administrative_period'] %></p>
-                <p>Stability Period: <%= @agency.preferences['aca_stability_period'] %></p></div>
-                <p class='metal lead'>Weekly Sales Goal</h2>
-                <p class='lead'><%= number_to_currency(@agency.weekly_sales_goal) %></p>
-                <h3><%= number_to_percentage(@agency.percent_to_sales_goal, precision: 2)%> to current goal</h3>
-                <div class="progress">
-                  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<%= @agency.percent_to_sales_goal %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= number_to_percentage(@agency.percent_to_sales_goal, precision: 2)%>">
-                    <span class="sr-only"><%= number_to_percentage(@agency.percent_to_sales_goal, precision: 2)%> Complete (success)</span>
-                  </div>
+    <div class='row'>
+        <h1 class='simple'><%= @agency.name %></h1>
+        <div class='col-md-4 well well-sm'>
+            <% if @agency.logo_url.present? %>
+            <%= image_tag(@agency.logo_url, class: "img-zoom border", alt: "img-#{@agency.id}") %> 
+            <% else %>
+            <%= image_tag(Faker::Placeholdit.image("250x250", "jpg", "ffffff", "000", "#{@agency.name}")) %>
+            <% end %>
+            <hr>
+            <% if @agency.contact.present? %>
+            <p> Name: <strong><%= link_to @agency.contact.name, admin_admin_path(@agency.contact) %></strong><br>
+             Email: <strong><%= @agency.contact.email%></strong>
+            </p>
+            <% else %>
+            <p>No agency contact available.</p>
+            <% end %>
+            <address class='white'>
+             <%= @agency.address %><br>
+              <%= @agency.city %>, <%= @agency.state %> <%= @agency.zipcode %><br>
+              <abbr title="Phone">P:</abbr> <%= @agency.phone_number %>
+            </address>
+        </div>
+        <div class="col-md-6 col-md-offset-2 well">
+            <a href="#show-pricing" class="toggle-sidebar navbar-brand" id="show-pricing"><i class='fa fa-user-secret'></i> </a>
+            <div id="inclustaff-pricing" class='hide-this'>
+                <h3>IncluStaff Pricing</h3>
+                <div class='pricing'>
+                    <p class='lead bold'>
+                        Current Billing: <%= number_to_currency(@agency.current_billing) %><br>
+                        Current Revenue: <%= number_to_currency(@agency.current_revenue) %>
+                    </p>
+                    <p class='lead bold'>
+                        Percent: 0.0023%
+                        <% total = @agency.current_billing * 0.000023 %>
+                    </p>
+                    <p class='lead bold'>
+                        Total: <%= number_to_currency(total) %>
+                    </p>
                 </div>
-            <%  if policy(@agency).update? %>
-                    <%= link_to(edit_agency_path(@agency), class: 'btn btn-primary') do %>
-            	      <i class='fa fa-pencil fa-fw'></i>
-            			<span>Edit Agency</span>
-            		<% end %>
-        		<% end %>
+                <div class='pricing'>
+                    <p class='lead bold'>
+                        Active Users: <%= @agency.billable_users %>
+                    </p>
+                    <p class='lead bold'>
+                        Per User: $6.00
+                        <% user_total = @agency.billable_users * 6 %>
+                    </p>
+                    <p class='lead bold'>
+                        Total: <%= number_to_currency(user_total) %>
+                    </p>
+                </div>
             </div>
-        <div class='col-md-3 well hide-this'>
+        </div>
+    </div>
+    <div class='row'>
+        <div class='col-md-4'>
+            <div class='well'><p class='metal'>ACA Settings</p>
+            <p>Measurement Period: <%= @agency.preferences['aca_measurement_period'] %></p>
+            <p>Administrative Period: <%= @agency.preferences['aca_administrative_period'] %></p>
+            <p>Stability Period: <%= @agency.preferences['aca_stability_period'] %></p></div>
+            <p class='metal lead'>Weekly Sales Goal</h2>
+            <p class='lead'><%= number_to_currency(@agency.weekly_sales_goal) %></p>
+            <h3><%= number_to_percentage(@agency.percent_to_sales_goal, precision: 2)%> to current goal</h3>
+            <div class="progress">
+              <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<%= @agency.percent_to_sales_goal %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= number_to_percentage(@agency.percent_to_sales_goal, precision: 2)%>">
+                <span class="sr-only"><%= number_to_percentage(@agency.percent_to_sales_goal, precision: 2)%> Complete (success)</span>
+              </div>
+            </div>
+        <%  if policy(@agency).update? %>
+                <%= link_to(edit_agency_path(@agency), class: 'btn btn-primary') do %>
+        	      <i class='fa fa-pencil fa-fw'></i>
+        			<span>Edit Agency</span>
+        		<% end %>
+    		<% end %>
+        </div>
+        <div class='col-md-4'>
                 <h3>Owners</h3>
-            <div class='scroll300'>
+            <div class='well well-sm'>
                 <% @agency.admins.owners.each do |admin| %>
                     <%=link_to admin.name, admin_admin_path(admin) %> - <small><%= admin.role %></small><br>
                 <% end %>
             </div>
             <h3>Account Managers</h3>
-            <div class='scroll300'>
+            <div class='well well-sm'>
                 <% @agency.admins.account_managers.each do |admin| %>
                     <%=link_to admin.name, admin_admin_path(admin) %> - <small><%= admin.role %></small><br>
                 <% end %>
             </div>
             <h3>Recruiters</h3>
-            <div class='scroll300'>
+            <div class='well well-sm'>
                 <% @agency.admins.recruiters.each do |admin| %>
                     <%=link_to admin.name, admin_admin_path(admin) %> - <small><%= admin.role %></small><br>
                 <% end %>
             </div>
             <h3>Payroll</h3>
-            <div class='scroll300'>
+            <div class='well well-sm'>
                 <% @agency.admins.payroll_admins.each do |admin| %>
                     <%=link_to admin.name, admin_admin_path(admin) %> - <small><%= admin.role %></small><br>
                 <% end %>
@@ -104,12 +116,9 @@
             
            
         </div>
-          <div class='col-md-2'>
-              
-          </div>
         <div class='col-md-4'>
             <h3><%= pluralize(@agency.companies.count, "Company") %></h3>
-            <div class='scroll300'>
+            <div class='well well-sm'>
                 <% @agency.companies.each do |company| %>
                     <h4><%= link_to company.name, admin_company_path(company) %> <small><%= number_to_currency(company.current_billing) %></small></h4>
                     Open: <%=company.orders.needs_attention.count %> | Filled: <%= company.orders.filled.count %> <br>
@@ -121,39 +130,7 @@
                 <% end %>
             </div>
         </div>
-        
-        
     </div>
+<% end %>
 
-<% end %>
-<div class='col-md-10 hide-this'>
-    <h3>IncluStaff Pricing</h3>
-    <div class='pricing'>
-        <p class='lead bold'>
-            Current Billing: <%= number_to_currency(@agency.current_billing) %><br>
-            Current Revenue: <%= number_to_currency(@agency.current_revenue) %>
-        </p>
-        <p class='lead bold'>
-            Percent: 0.0023%
-            <% total = @agency.current_billing * 0.000023 %>
-        </p>
-        <p class='lead bold'>
-            Total: <%= number_to_currency(total) %>
-        </p>
-    </div>
-    <div class='pricing'>
-        <p class='lead bold'>
-            Active Users: <%= @agency.billable_users %>
-        </p>
-        <p class='lead bold'>
-            Per User: $6.00
-            <% user_total = @agency.billable_users * 6 %>
-        </p>
-        <p class='lead bold'>
-            Total: <%= number_to_currency(user_total) %>
-        </p>
-    </div>
-    
-</div>
-<% end %>
-</div>
+

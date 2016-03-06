@@ -43,7 +43,7 @@ module ApplicationHelper
         end
         # name = "View #{model.class.to_s}" 
         id = model.id
-        controller = "#{model.class.to_s.downcase.pluralize}"
+        controller = "#{model.class.to_s.underscore.pluralize}"
         
         path = @path + "/" + controller
         # options[:class] ? options[:class] += ' pjax' : options[:class] = 'pjax'
@@ -57,7 +57,7 @@ module ApplicationHelper
     def gravatar_for(user, options = { size: 80 })
         gravatar_id = Digest::MD5::hexdigest(user.email.downcase)
         size = options[:size]
-        gravatar_url = "https://secure.gravatar.com/avatar/#{gravatar_id}?s=#{size}"
+        gravatar_url = "https://secure.gravatar.com/avatar/#{gravatar_id}?s=#{size}?d=identicon?f=y"
         image_tag(gravatar_url, alt: user.name, class: "gravatar")
     end
     def unfollow(user)
@@ -152,12 +152,11 @@ module ApplicationHelper
                 @payroll_admins = @current_agency.payroll_admins
                 @send_btn = "Ask Payroll"
                 @job = current_user.employee.current_job if @user.assigned?
-                @company = current_user.employee.current_job.company if @user.assigned?
                 @header = "<h3 class='strong'>Do you have a question about your hours? </h3> <p class='text-center text-info'>Ask payroll now!</p>".html_safe
                 @btn_header = @type.to_s.titleize
                 @question = "Do you have a question about your hours?"
-                @fa_icon = "<i class='fa fa-question fa-1x fa-border'></i>".html_safe
-                @subject = @btn_header + " TimesheetID# #{timesheet.id}"
+                @fa_icon = "<i class='fa fa-question fa-fw'></i>".html_safe
+                @subject = @btn_header + " ##{timesheet.id}"
                 @msg_placeholder = "Ask your question here"
                 if size == :small
                     @link = "<a type='button' data-toggle='modal' data-target='#myModal'>#{@fa_icon} </a>"
@@ -170,6 +169,13 @@ module ApplicationHelper
             render "employee/conversations/modal", users: @users, admins: @payroll_admins, company_admins: @company_admins, type: @type, message: @message, subject: @subject, button: @button, msg_placeholder: @msg_placeholder, small_btn: @small_btn
             # render "employee/conversations/form", users: @users, admins: @admins, company_admins: @company_admins, type: @type, message: @message, subject: @subject, header: @header, button: @button
         end
+    end
+    
+    def convo_icon(conversation)
+        conversation.is_read?(@signed_in) ? "<i class='fa fa-envelope'></i>".html_safe : "<i class='fa fa-envelope-o'></i>".html_safe
+    end
+    def convo_class(conversation)
+        conversation.is_read?(current_user) ? "read" : "unread"
     end
     
 end

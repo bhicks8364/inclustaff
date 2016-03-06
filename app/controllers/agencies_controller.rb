@@ -128,7 +128,7 @@ class AgenciesController < ApplicationController
       end
     end
     def pundit_user
-      current_admin
+      @signed_in
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_agency

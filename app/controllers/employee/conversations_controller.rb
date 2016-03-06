@@ -6,9 +6,36 @@ class Employee::ConversationsController < ApplicationController
   def index
     @conversations = current_user.mailbox.conversations
   end
+  
+  def inbox
+    @conversations = current_user.mailbox.inbox
+    render action: :index
+  end
+
+  def sent
+    @conversations = current_user.mailbox.sentbox
+    render action: :index
+  end
+
+  def trash
+    @conversations = current_user.mailbox.trash
+    render action: :index
+  end
 
   def show
     @conversation = current_user.mailbox.conversations.find(params[:id])
+    @conversation.mark_as_read(current_user)
+  end
+  
+  def mark_as_unread
+    @conversation = current_user.mailbox.conversations.find(params[:id])
+    if @conversation.is_read?(current_user) 
+      @conversation.mark_as_unread(current_user) 
+    else
+      @conversation.mark_as_read(current_user)
+    end
+    @color = @conversation.is_read?(current_user) ? "read" : "unread"
+    @icon = @conversation.is_read?(current_user) ? "<i class='fa fa-envelope'></i>".html_safe : "<i class='fa fa-envelope-o'></i>".html_safe
   end
 
   def new

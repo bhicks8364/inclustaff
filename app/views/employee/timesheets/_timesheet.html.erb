@@ -3,7 +3,7 @@
   <p class='pull-right' data-behavior='timesheet-company'>
 		  <%= timesheet.company.name %> 
 		</p>
-  <div id='view-timesheet' class="btn-toolbar" role="toolbar" aria-label="...">
+  <div id='view-timesheet' class="btn-group" role="group" aria-label="...">
 	 <div class="btn-group" role="group" aria-label="...">
 		 <%= link_to(employee_timesheet_path(timesheet), data: {toggle: "tooltip", placement: "top", title: "View Timesheet"}, class: '') do %>
     		<i class="fa fa-calendar-times-o fa-1x"></i>
@@ -25,7 +25,7 @@
 			</span>
 		<% end %>
 	</div>
-	<div class="">
+	<div class="timesheet">
 	  
 	  <p class='lead pull-center' data-behavior='timesheet-employee'>
 			  <%= timesheet.employee.name %><small> <%=timesheet.job.title %></small>
@@ -48,28 +48,14 @@
 				 Approved by: <%= timesheet.user_approved %></small></p>
 				 <% end %>
 				 
-				 <div class="btn-toolbar" role="toolbar" aria-label="...">
-            
-            <div class="btn-group" role="group" aria-label="...">
-              <%= link_to(employee_job_path(timesheet.job), data: {toggle: "tooltip", placement: "top", title: "View Your Current Job"}, class: "" ) do %>
-        					  <i class="fa fa-briefcase fa-1x"></i>
-        			<% end %>
-            </div>
-            <div class="btn-group" role="group" aria-label="...">
-              <%= link_to(employee_timesheet_path(timesheet, format: :pdf), data: {toggle: "tooltip", placement: "top", title: "Download PDF" }) do %>
-      					  <i class="fa fa-download fa-1x"></i>
+				 <div class="btn-group" role="group" aria-label="...">
+    
+              <%= link_to(employee_timesheet_path(timesheet, format: :pdf), data: {toggle: "tooltip", placement: "top", title: "Download PDF" }, class: "btn btn-default") do %>
+      					  <i class="fa fa-download fa-1x"></i> Download PDF
       				<% end %>
-            </div>
-            <div class="btn-group" role="group" aria-label="...">
-            	
-            </div>
-            
-            
-            
+      				<%= convo_for(timesheet: timesheet, type: :timesheet_question, back_to: @redirect_path) %>	
           </div>
-			
-			
 		</div>
-		<%= convo_for(timesheet: timesheet, type: :timesheet_question, back_to: employee_timesheets_path) %>	
+		
 </div>
 	

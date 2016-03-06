@@ -1,7 +1,7 @@
-<div class="col-md-12">
+<div class="">
 	
 	<%= render 'admin/shared/welcome/agency_setup' if @current_admin.sign_in_count == 1 || @current_agency.subdomain == "demo" %> 
-	<h2 class='text-right metal bold'>  <span class='label label-success black'>Sales Goal &nbsp;<%= number_to_currency(@current_agency.weekly_sales_goal) %></span> <%  if policy(@current_agency).update? %> <%= link_to(edit_agency_path(@current_agency), class: '') do %> <span class='small pul-right'><i class='fa fa-pencil fa-fw'></i></span>	<% end %>	<% end %></h2>
+	
 	<h1 class='page-header white'>Owner Dashboard</h1>
 	<div class="tabs-wrapper">
 		<div class="clearfix">
@@ -15,7 +15,7 @@
 		<div class="tab-content">
 			<div class="tab-pane fade in active" id="tab-home">
 				<div class='col-md-12'>
-				<%  if policy(@current_agency).update? %> <%= link_to(edit_agency_path(@current_agency), class: 'btn btn-primary pull-right') do %> <span><i class='fa fa-pencil fa-fw'></i>	Edit Agency</span>	<% end %>	<% end %>
+				<%  if policy(@current_agency).update? %> <%= link_to(edit_agency_path(@current_agency), class: 'btn btn-default pull-right') do %> <span><i class='fa fa-pencil fa-fw'></i>	Edit Agency</span>	<% end %>	<% end %>
 				<% if @current_agency.companies.blank? %>
 	       		<h2 class=''>Getting Started</h2>
 	       			<div class='col-md-4'>
@@ -28,24 +28,24 @@
 	       			</div>
 	       			<% else %>
 				
-					<div class='col-md-4'>
+					<div class='col-md-3'>
 						<%= render "admin/shared/alerts/open_orders", orders: @current_agency.orders %>
 						<div class="alert alert-info fade in text-center open-order">
-							<p class='lead bold metal green'><i class="fa fa-usd fa-fw"></i> &nbsp; Current Revenue: <%= number_to_currency(@current_agency.current_revenue) %>  </span> <br>
+							<p class='lead  green'><i class="fa fa-usd fa-fw"></i> &nbsp; Current Revenue: <%= number_to_currency(@current_agency.current_revenue) %>  </span> <br>
 						</div>
 						<div class="alert alert-info fade in text-center open-order">
-							<p class='lead bold metal'><i class="fa fa-usd fa-fw"></i> &nbsp; Last Week Billing: <%= number_to_currency(@current_agency.last_week_billing) %>  </span> <br>
+							<p class='lead '><i class="fa fa-usd fa-fw"></i> &nbsp; Last Week Billing: <%= number_to_currency(@current_agency.last_week_billing) %>  </span> <br>
 						</div>
 					</div>
 						<% end %>
-		 			<div class='col-md-8 well well-sm grey'>
+		 			<div class='col-md-9 well well-sm grey'>
 		                <h3 class='text-center'>Sales progress for this week <span class='label label-success pull-right'> <%= number_to_currency(@current_agency.current_billing) %></span></h3>
 		                <div class="progress">
 		                  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<%= @current_agency.percent_to_sales_goal %>" aria-valuemin="0" aria-valuemax="100" style="min-width: 4em; width: <%= number_to_percentage(@current_agency.percent_to_sales_goal, precision: 2)%>">
 		                    <span class=""><%= number_to_percentage(@current_agency.percent_to_sales_goal, precision: 2)%> </span>
 		                  </div>
 		                </div>
-		                
+		                <h4 class='text-right '>  <span class='label label-success black'>Sales Goal &nbsp;<%= number_to_currency(@current_agency.weekly_sales_goal) %></span> </h4>
 	       			</div>
 	       			
        			</div>
@@ -89,9 +89,9 @@
 	       			
 			</div>
 			<div class="tab-pane fade" id="tab-invoices">
-				<div class='col-md-12'>
+				<div class='col-md-4'>
 					<h2 class=''>Unpaid Invoices</h2>
-					<div class="col-md-4">
+					<div class="well well-sm">
 				     <% @current_agency.invoices.unpaid.order(:week).each do |invoice| %>
 						<%= link_to(admin_invoice_path(invoice), class: "") do %>
 					       <div data-behavior="invoice" data-id="<%= invoice.id %>" class=''>
@@ -103,8 +103,12 @@
 					  <% end %>
 					  <p class='lead'>Unpaid Balance: <span class='pull-right'><%= number_to_currency(@current_agency.invoices.unpaid.sum(:total)) %></span></p>
 				    </div>
-				    
+				</div>
+				<div class='col-md-8'>
+					<div class="well well-sm table-responsive">
+				     <%= render "admin/invoices/table", invoices: @current_agency.invoices.unpaid.order(:week) %>
 				    </div>
+				</div>
 			</div>
 		
 		</div>

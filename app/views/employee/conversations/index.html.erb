@@ -1,3 +1,13 @@
+<hr />
+
+<%= link_to inbox_employee_conversations_path do %> Inbox (<%= current_user.mailbox.inbox.unread(current_user).count %>) <%end %>|
+<%= link_to all_employee_conversations_path do %>All Conversations (<%= current_user.mailbox.conversations.count %>) <%end %>|
+<%= link_to sent_employee_conversations_path do %>Sent (<%= current_user.mailbox.sentbox.count %>) <%end %>|
+<%= link_to trash_employee_conversations_path do %>Trash (<%= current_user.mailbox.trash.count %>)<%end %>
+
+<hr />
+
+Total: <%= @conversations.count %>
 <h1>
   <div class="pull-right">
     <%= link_to "New Conversation", new_employee_conversation_path, class: 'btn btn-primary' %>
@@ -5,14 +15,9 @@
 
   All Conversations
 </h1>
+<div class='well conversation-list'>
+  <%= render partial: "employee/conversations/conversation", collection: @conversations %>
+</div>
 
 
-<% @conversations.each do |conversation| %>
-  <hr />
-  <div>
-    <%= link_to employee_conversation_path(conversation) do %>
-      <h5><strong><%= conversation.subject %></strong></h5>
-      <p> To: <%= (conversation.recipients - [current_user]).map(&:name).join(", ") %></p>
-    <% end %>
-  </div>
-<% end %>
+

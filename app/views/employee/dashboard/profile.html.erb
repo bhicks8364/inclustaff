@@ -1,4 +1,4 @@
-<div class='col-md-12 lightbox-long'>
+<div class='col-md-12'>
 <!--NAV TABS-->
     <div id='profile-nav' class=''>
         <!-- Nav tabs -->
@@ -21,7 +21,7 @@
                     <address class="">
                         <%= @user.address %><br>
                         <%= @user.city %>, <%= @user.state %> <%= @user.zipcode %><br>
-                        <i class="fa fa-phone-square"></i>  <%= @employee.phone_number || link_to "Add Phone Number", edit_employee_employee_path(@employee)  %>
+                        <i class="fa fa-phone-square"></i>  <%= @employee.phone_number.present? ? @employee.phone_number : "#{link_to "Add Phone Number", edit_employee_employee_path(@employee)}"  %>
                     </address>
                     <div class='btn-group'>
                         <%= link_to "Edit Profile", edit_employee_employee_path(@employee), class: 'btn btn-primary' %>

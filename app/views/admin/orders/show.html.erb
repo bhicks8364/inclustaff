@@ -42,7 +42,7 @@
       <strong>Company Manager</strong><br>
       <%=
          link_to_if(@order.manager.nil?, "Add Manager", { controller: "admin/orders", action: "edit", id: @order }) do
-           link_to(@order.manager.name, @order.manager)
+           signed_in_link_to(@order.manager.name, @order.manager)
          end
       %>
       </p>
@@ -50,7 +50,7 @@
         <strong>Account Manager</strong><br>
       <%=
          link_to_if(@order.account_manager.nil?, "Add Account Manager", { controller: "admin/orders", action: "edit", id: @order }) do
-           link_to(@order.account_manager.name, admin_admin_path(@order.account_manager))
+           signed_in_link_to(@order.account_manager.name, @order.account_manager)
          end
       %>
       </p>

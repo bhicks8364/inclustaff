@@ -6,7 +6,7 @@
 
   <% timesheets.each do |timesheet| %>
     <div class=''>
-      <%= timesheet_collaspe(timesheet) %>
+      <%= timesheet_user(timesheet) %>
        <div class='collapse' id="collapseTimesheet_<%=timesheet.id%>">
            <%= render 'admin/timesheets/timesheet', timesheet: timesheet %>
         </div>

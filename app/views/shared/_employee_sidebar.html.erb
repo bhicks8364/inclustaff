@@ -1,47 +1,42 @@
-<div class="col-md-2" id="nav-col">
-				<section id="col-left">
-					<div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">	
-						<ul class="nav nav-pills nav-stacked">
+<a href="#menu-toggle" class="toggle-sidebar sidebar-button" id="menu-toggle"><i id="sidebar-icon" class='fa fa-arrow-circle-o-left fa-2x'></i> </a>
+<!-- Sidebar -->
+<div id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+        <li><%= link_to employee_home_path do %>
+            <i class="fa fa-dashboard"></i> 
+            <span>Dashboard</span>
+            <% end %>
+        </li>
+        <li><%= link_to employee_profile_path do %>
+			<i class="fa fa-user"></i>
+				<span>Profile</span>
+			<% end %>
+		</li>
+		<% if current_user.employee.assigned? %>
+		<li><%= link_to employee_job_path(current_user.current_job) do %>
+			<i class="fa fa-users"></i>
+				<span>Current Job</span>
+			<% end %>
+		</li>
+		<li><%= link_to employee_timesheets_path do %>
+			<i class="fa fa-clock-o"></i>
+				<span>Timesheets</span>
+			<% end %>
+		</li>
+        <li><%= link_to employee_shifts_path do %>
+            <i class="fa fa-calendar"></i>
+            <span>Shift Calendar</span>
+            <% end %>
+        </li>
+		<% else %>
+		<li><%= link_to employee_job_board_path do %>
+			<i class="fa fa-briefcase"></i>
+				<span>Job Postings</span>
+			<% end %>
+		</li>
+		<% end %>
 
-									<li><%= link_to timeclock_path do %>
-										<i class="fa fa-dashboard"></i>
-											<span>Dashboard</span>
-										<% end %>
-									</li>
-									<li><%= link_to home_path do %>
-										<i class="fa fa-home"></i>
-											<span>Home</span>
-										<% end %>
-									</li>
-									<li><%= link_to current_user do %>
-										<i class="fa fa-user"></i>
-											<span>Profile</span>
-										<% end %>
-									</li>
-									
-									<% if current_user.employee.assigned? %>
-									
-									<li><%= link_to jobs_path  do %>
-										<i class="fa fa-briefcase"></i>
-											<span>Jobs</span>
-										<% end %>
-									</li>
-
-									
-									<li><%= link_to timesheets_path do %>
-										<i class="fa fa-file-text-o"></i>
-											<span>Timesheets</span>
-										<% end %>
-									</li>
-									
-									
-									<li><%= link_to current_user.current_job do %>
-										<i class="fa fa-users"></i>
-											<span>Current Job</span>
-										<% end %>
-									</li>
-									<% end %>
-						</ul>
-					</div>
-				</section>
-			</div>
+	    <li><%= link_to "<i class='fa fa-power-off'></i> Sign Out".html_safe, destroy_user_session_path, method: :delete  %></li>
+    </ul>
+</div>
+<!-- /#sidebar-wrapper -->

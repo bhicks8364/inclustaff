@@ -4,15 +4,16 @@ class Admin::AdminsController < ApplicationController
 
   def index
     @admins = Admin.all.order(last_name: :asc)
+    authorize(@admins)
     # @admins = @current_agency.agency_admins.order(role: :asc)
     # @admins = @company.admins.order(last_name: :asc) if @company.present?
     # @admins = @agency.admins.order(last_name: :asc) if @agency.present?
-    skip_authorization
+    
   end
 
   def new
     @admin = Admin.new
-    skip_authorization
+    authorize(@admin)
   end
 
   def create
@@ -22,28 +23,31 @@ class Admin::AdminsController < ApplicationController
     else
       redirect_to admin_admins_path, notice: 'Unable to add admin'
     end
-    skip_authorization
+    
   end
 
   def follow
     @admin = Admin.find(params[:id])
+    authorize(@admin)
     @event = current_admin.events.create(action: "followed", eventable: @admin)
     if @event.save
       redirect_to admin_admins_path, notice: 'You are now following ' + "#{@admin.name}"
     else
       redirect_to admin_admins_path, notice: 'Unable to follow ' + "#{@admin.name}"
     end
-    skip_authorization
+    
   end
 
 
   def edit
     @admin = Admin.find(params[:id])
-    skip_authorization
+    authorize(@admin)
+    
   end
   def update
     @admin = Admin.find(params[:id])
-    skip_authorization
+    authorize(@admin)
+    
     respond_to do |format|
       if @admin.update(admin_params)
         format.html { redirect_to admin_admin_path(@admin), notice: 'Admin info was successfully updated.' }
@@ -57,23 +61,21 @@ class Admin::AdminsController < ApplicationController
 
   def show
     @admin = Admin.find(params[:id])
+    authorize(@admin)
     @events = @admin.events
-
-    # @employees = @current_agency.employees.assigned
-    @candidates = Employee.unassigned
+    @orders = @admin.job_orders 
     @open_agency_orders = @current_agency.orders.needs_attention
-    @orders = @admin.account_orders if @admin.account_manager?
-    @orders = @current_agency.orders if @admin.owner? || @admin.payroll?
-    @recruiter_jobs = @admin.recruiter_jobs if @admin.recruiter?
+    # @employees = @current_agency.employees.assigned
+    # @candidates = Employee.unassigned
+    # @orders = @current_agency.orders if @admin.owner? || @admin.payroll?
+    # @recruiter_jobs = @admin.recruiter_jobs if @admin.recruiter?
 
-    @jobs = Job.includes(:timesheets) if @admin.owner? || @admin.payroll? || @admin.account_manager?
-    @timesheets = @current_agency.timesheets if @admin.owner? || @admin.payroll?
-
-    skip_authorization
+    @jobs = @admin.jobs.includes(:employee)
+    @timesheets = @admin.timesheets 
   end
 
   private
-
+    
   def admin_params
     params.require(:admin).permit(:first_name, :last_name, :email, :username, :role, :company_id, :agency_id, :password, :password_confirmation)
   end

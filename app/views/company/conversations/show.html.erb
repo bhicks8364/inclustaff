@@ -6,7 +6,7 @@
     <hr />
 
     <% @conversation.receipts_for(current_company_admin).order(created_at: :asc).each do |receipt| %>
-      <div>
+      <div class='<%= receipt.is_read? ? "text-muted bg-info" : "bold bg-success"%> pad'>
         <div>
           <div class="pull-right"><%= local_time_ago(receipt.created_at) %></div>
           <strong><%= receipt.message.sender.name %></strong>

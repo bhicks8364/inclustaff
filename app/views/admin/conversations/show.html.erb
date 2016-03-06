@@ -5,16 +5,16 @@
     <h1><%= @conversation.subject %></h1>
     <hr />
 
-    <% @conversation.receipts_for(current_admin).order(created_at: :asc).each do |receipt| %>
-      <div>
+    <%= div_for @conversation.receipts_for(current_admin).order(created_at: :asc) do |receipt| %>
+      <div class="<% receipt.is_read? ? "read" : "unread" %>">
         <div>
-          <%= read = receipt.is_unread? %>
           <div class="pull-right"><%= local_time_ago(receipt.created_at) %></div>
-          <strong><%= receipt.message.sender.name %></strong>
+          <div class="pull-right"><%= local_time_ago(receipt.updated_at) %></div>
+          <strong><%= signed_in_link_to receipt.message.sender.name, receipt.message.sender if receipt.message.sender.id != current_admin.id %></strong>
         </div>
         <p><%= simple_format receipt.message.body %></p>
+        <span class="text-danger pull-right"><%= receipt.is_read? %></span>
       </div>
-
       <hr />
     <% end %>
 
@@ -36,3 +36,6 @@
     <% end %>
   </div>
 </div>
+
+
+

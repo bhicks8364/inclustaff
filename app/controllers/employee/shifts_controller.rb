@@ -3,6 +3,10 @@ class Employee::ShiftsController < ApplicationController
   before_action :set_employee
   before_action :set_job
   layout 'employee'
+  
+  def index
+    @shifts = @job.shifts
+  end
 
   def show
     @shift = @job.shifts.find(params[:id])

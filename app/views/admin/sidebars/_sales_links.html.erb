@@ -1,8 +1,7 @@
-<li><%= link_to "<i class='fa fa-dashboard fa-fw'></i> Sales Dashboard".html_safe, admin_account_manager_path %></li>
-<li><%= link_to "<i class='fa fa-building-o fa-fw'></i> Companies".html_safe, admin_companies_path %></li>
-<li><%= link_to "<i class='fa fa-briefcase fa-fw'></i> Job Orders".html_safe, admin_orders_path %></li>
-<li><%= link_to "<i class='fa fa-money fa-fw'></i> Invoices".html_safe, admin_invoices_path %></li>
-<li><%= link_to "<i class='fa fa-pause-circle fa-fw'></i> Inactive Job Orders".html_safe, inactive_admin_orders_path %></li>
-<li role="separator" class="divider"></li>
-<li><%= link_to "<i class='fa fa-plus-square fa-fw'></i> New Company".html_safe, new_admin_company_path if policy(Company).create?  %></li>
-<li><%= link_to "<i class='fa fa-plus-square-o fa-fw'></i> New Job Order".html_safe, new_admin_order_path if policy(Order).create? %></li>
+<li><%= link_to "<i class='fa fa-dashboard'></i> Sales Dashboard".html_safe, admin_account_manager_path %></li>
+<li><%= link_to "<i class='fa fa-building-o'></i> Companies".html_safe, admin_companies_path %></li>
+<li><%= link_to "<i class='fa fa-briefcase'></i> Job Orders".html_safe, admin_orders_path %></li>
+<li><%= link_to "<i class='fa fa-money'></i> Invoices".html_safe, admin_invoices_path %></li>
+<li><%= link_to "<i class='fa fa-pause-circle'></i> Inactive Job Orders".html_safe, inactive_admin_orders_path %></li>
+<li><%= link_to "<i class='fa fa-plus-square'></i> New Company".html_safe, new_admin_company_path if policy(Company).create?  %></li>
+<li><%= link_to "<i class='fa fa-plus-square-o'></i> New Job Order".html_safe, new_admin_order_path if policy(Order).create? %></li>

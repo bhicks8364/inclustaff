@@ -8,8 +8,35 @@ class Admin::ConversationsController < ApplicationController
     @sent_box = current_admin.mailbox.sentbox
   end
 
+  def inbox
+    @conversations = current_admin.mailbox.inbox
+    render action: :index
+  end
+
+  def sent
+    @conversations = current_admin.mailbox.sentbox
+    render action: :index
+  end
+
+  def trash
+    @conversations = current_admin.mailbox.trash
+    render action: :index
+  end
+
   def show
     @conversation = current_admin.mailbox.conversations.find(params[:id])
+    @conversation.mark_as_read(current_admin)
+  end
+  
+  def mark_as_unread
+    @conversation = current_admin.mailbox.conversations.find(params[:id])
+    if @conversation.is_read?(current_admin) 
+      @conversation.mark_as_unread(current_admin) 
+    else
+      @conversation.mark_as_read(current_admin)
+    end
+    @color = @conversation.is_read?(current_admin) ? "read" : "unread"
+    @icon = @conversation.is_read?(current_admin) ? "<i class='fa fa-envelope'></i>".html_safe : "<i class='fa fa-envelope-o'></i>".html_safe
   end
 
   def new
@@ -18,6 +45,7 @@ class Admin::ConversationsController < ApplicationController
     @users = User.all
     gon.candidates = @users.available
     gon.employees = @users.assigned
+    # THis isn't working. Only pulling Agency Admins
     gon.admins_display = @admins.map(&:mention_data) + @company_admins.map(&:mention_data)
     gon.company_admins_display = @company_admins.map(&:mention_data)
   end

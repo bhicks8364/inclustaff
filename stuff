@@ -4,3 +4,5 @@ sleepy-bayou-7553
 Apartment::Tenant.switch!('testing')
 Apartment::Tenant.switch!('gtrjobs')
 Apartment::Tenant.switch!('demo')
+
+rake routes | grep user

@@ -1,10 +1,8 @@
-<div class='col-md-12'>
-  <%= request.path %> <hr>
-  <%= @redirect_path %>
-  <hr>
+<div class='home'>
+  
   <% if @employee.assigned? && @job.present? %>
-    <div class="col-md-4">
-      <div class="panel panel-default">
+      
+      <div class="col-md-4 panel panel-default">
         <div class="panel-body">
           <h2><%= @user.name %></h2>
           <%= render 'users/user', user: @user %>
@@ -24,9 +22,9 @@
           
         </div>
       </div>
-    </div>
 
-    <div class="col-md-4">
+    <div class="col-md-8 well">
+      
       <div class="panel panel-default">
 
         <div class="panel-body">
@@ -36,13 +34,65 @@
 
       </div>
     </div>
-    <div class="col-md-4 well well-sm">
-      <%= convo_for %>
+    <div class='col-md-4 well'>
+        <p>Reports</p>
+          <div class="btn-group" role="group">
+            <btn btn-primary type="btn btn-primary" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              CSVs
+              <span class="caret"></span>
+            </btn btn-primary>
+              <ul class="dropdown-menu">
+                  <li class='bold'><i class='fa fa-file-excel-o fa-fw'></i> Timesheets </li>
+                  <li><%= link_to  "Current Week", employee_timesheets_path(@company, format: :csv, scope: "current_week") if @company.present? %></li>
+                  <li><%= link_to  "Last Week", employee_timesheets_path(@company, format: :csv, scope: "last_week") if @company.present? %></li>
+                  <li><%= link_to  "All Timesheets", employee_timesheets_path(@company, format: :csv, scope: "all") if @company.present? %></li>
+              </ul>
+          </div>
+          <div class="btn-group" role="group">
+            <btn btn-primary type="btn btn-primary" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              PDFs
+              <span class="caret"></span>
+            </btn btn-primary>
+              <ul class="dropdown-menu">
+                <li class='bold'><i class='fa fa-file-pdf-o fa-fw'></i> Documents</li>
+                  <li><%= link_to "Employment Verification Letter", employee_job_path(@employee.current_job, format: :pdf) %></li>
+                  <li class='bold'><i class='fa fa-file-pdf-o fa-fw'></i> Timesheets</li>
+                  <li><%= link_to  "Current Week", employee_timesheets_path(@company, format: :pdf, scope: "current_week") if @company.present? %></li>
+                  <li><%= link_to  "Last Week", employee_timesheets_path(@company, format: :pdf, scope: "last_week") if @company.present? %></li>
+                  <li><%= link_to  "All Timesheets", employee_timesheets_path(@company, format: :pdf, scope: "all") if @company.present? %></li>
+              </ul>
+          </div>
+        <div class="btn-group" role="group" aria-label="...">
+         
+          <div class="btn-group" role="group">
+            <btn btn-primary type="btn btn-primary" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Job Orders
+              <span class="caret"></span>
+            </btn btn-primary>
+            <ul class="dropdown-menu">
+              <li><%= link_to "<i class='fa fa-plus-square fa-fw'></i> &nbsp; Add Work History".html_safe, new_work_history_path, class: "" %></li>
+              <li><%= link_to "<i class='fa fa-briefcase fa-fw'></i> &nbsp; View Resume".html_safe, work_histories_path, class: "" %></li>
+              <li> <%= link_to "<i class='fa fa-clock-o fa-fw'></i> View Timesheets".html_safe, employee_timesheets_path, class: ""%></li>
+              <li><%= link_to(employee_conversations_path, class: "") do %>
+              			<i class='fa fa-usd fa-fw'></i> Messages
+              <% end %></li>
+            </ul>
+          </div>
+          
+        </div>
+        
+      </div>
+    <div class="col-md-8 well well-sm">
+      <h3><strong><%= current_job_status(@job) %></strong></h3>
+      
       <div class="panel panel-default">
         <div class="panel-body text-center">
           <% if @employee.on_shift? || @employee.on_break? %>
             <%= link_to "You're Currently #{@employee.current_shift.state.titleize}", employee_shift_path(@employee.current_shift), class: 'btn btn-primary' %>
-            <h3><strong><%= shift_times(@employee.current_shift)%></strong></h3>
+            
+          <% elsif @employee.shifts.worked_today.any? %>
+          <h3>Back already? <br> <small>You already worked today.</small></h3>
+            <%= render 'employee/jobs/clock', job: @job if policy(@job).clock_in? %>
           <% else %>
             <h3><%= @job.title %></h3>
             <%= render 'employee/jobs/clock', job: @job if policy(@job).clock_in? %>
@@ -51,7 +101,7 @@
       </div>
     </div>
   <% else %>
-    <div class="col-md-3">
+    <div class="col-md-4">
       <div class="">
         <div class="">
           <h2><%= @user.name %></h2>
@@ -64,13 +114,17 @@
       </div>
     </div>
     
-    <div class="col-md-5 well well-sm">
-     
+    <div class="col-md-8 well well-sm">
+     <div class=''>
+      <%= render "employee/jobs/active", active_jobs: @employee.jobs.currently_working %>
+    </div>
       <h2 class='text-info'>Recent Activity</h2>
       <%= render @employee.events %>
       <%= render @employee.job_events %>
+      <hr>
+      <%= convo_for %>
     </div>
-    <div class="col-md-3 border well well-sm">
+    <div class="col-md-4 border well well-sm">
       <% if @employee.availability.present? %>
       <p class='lead text-info'>Your Availability</p>
         <%= render 'employee/employees/availability', employee: @employee %>

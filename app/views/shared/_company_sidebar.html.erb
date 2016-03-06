@@ -1,21 +1,19 @@
-<div class="col-sm-3 col-md-2 sidebar">
-<p>    Welcome, <%= @admin.first_name %></p>
-    <ul class="nav nav-sidebar">
-        <li class="active"><%= link_to "Company Dashboard", dashboard_path %><span class="sr-only">(current)</span></a></li>
-        <li><%= link_to "Departments", orders_path %></li>
-        <li><%= link_to "Jobs ", jobs_path %></li>
-        <li><%= link_to "Timesheets ", timesheets_path %></li>
-        <li><%= link_to "Add New Department", new_order_path %></li>
-        <li><%= link_to "Add Employee", new_employee_path %></li>
-        <li><%= link_to "Add Company", new_company_path %></li>
+<a href="#menu-toggle" class="toggle-sidebar sidebar-button" id="menu-toggle"><i id="sidebar-icon" class='fa fa-arrow-circle-o-left fa-2x'></i> </a>
+<!-- Sidebar -->
+<div id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+        <li><%= link_to "<i class='fa fa-users'></i> Current Employees".html_safe, company_jobs_path %></li>
+        <li><%= link_to "<i class='fa fa-pause-circle-o'></i> Pending Approval".html_safe, archived_company_jobs_path if policy(Order).index? %></li>
+        <li><%= link_to "<i class='fa fa-file-text'></i> Timesheets".html_safe, company_timesheets_path %></li>
+        <li><%= link_to "<i class='fa fa-calendar'></i> Shift Calendar".html_safe, company_shifts_path %></li>
+        <li><%= link_to "<i class='fa fa-clock-o'></i> Company Timeclock".html_safe, company_timeclock_path %></li>
+        <li><%= link_to "<i class='fa fa-university'></i>View All Job Orders".html_safe, company_orders_path %></li>
+        <li><%= link_to "<i class='fa fa-usd'></i> Invoices".html_safe, company_invoices_path %></li>
+        <li class="<%=@current_company_admin.events.unread.happened_after(Date.yesterday).any? ? "green" : "" %>"><%= link_to "<i class='fa fa-bell'></i> Recent Activity".html_safe, events_path %></li>
+        <li><%= link_to "<i class='fa fa-users'></i> Company Users".html_safe, company_company_admins_path %></li>
+        <li><%= link_to "<i class='fa fa-dashboard'></i> Dashboard".html_safe, company_dashboard_path %></li>
+        <li><%= link_to "<i class='fa fa-commenting'></i> Messages".html_safe, company_conversations_path %></li>
         
     </ul>
-    <ul class="nav nav-sidebar">
-        <li><a href="">Nav item again</a></li>
-        <li><a href="">One more nav</a></li>
-        <li><a href="">Another nav item</a></li>
-    </ul>
 </div>
-
-
-          
+<!-- /#sidebar-wrapper -->

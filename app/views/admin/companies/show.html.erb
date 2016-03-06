@@ -97,6 +97,7 @@
       <div class='col-md-3'>
         <h3>Account Manager: <% if @company.current_account_manager.present? %><%= @company.current_account_manager.name %><% else %>None<% end %></h3>
         <div class='well'>
+          <h3>Skills</h3>
          <% @company.skills.each do |skill| %>
            <%= link_to skill.name, skill, class: "button" %><br>
          <% end %>
@@ -157,9 +158,7 @@
      </div>
      <div class='col-md-12'>
       <p class='lead text-center'>Hours by Employee <small> Last 4 weeks</small></p>
-      <%= column_chart @company.jobs.active.map{|job|
-                {name: job.employee.name, data: job.shifts.group_by_week(:time_in, range: 4.weeks.ago.midnight..Time.current, format: "%m/%d").sum(:time_worked)}
-            }, xtitle: "Week", ytitle: "Total Hours", library: {height: 300, width: 1000} %>
+      <%= column_chart @company.shifts.sum(:time_worked), xtitle: "Week", ytitle: "Total Hours", library: {height: 300, width: 1000} %>
     </div>
   </div>
   <div role="tabpanel" class="tab-pane fade" id="invoices">

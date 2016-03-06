@@ -1,17 +1,9 @@
-
-<li class='dropdown'>
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class='fa fa-usd fa-fw'></i> Payroll</a>
-  <ul class="dropdown-menu">
-    <li><%= link_to "<i class='fa fa-usd fa-fw'></i> Payroll Dashboard".html_safe, admin_payroll_path, class: "navbar-link" if @current_admin.payroll? || @current_admin.owner? %></li>
-    <li class=''><%= link_to "<i class='fa fa-calendar-o fa-fw'></i> Last Week Timesheets".html_safe, last_week_admin_timesheets_path if policy(Timesheet).index? %></li>
-    <li class=''><%= link_to "<i class='fa fa-calendar fa-fw'></i> Current Timesheets".html_safe, admin_timesheets_path if policy(Timesheet).index? %></li>
-    <li class=''><%= link_to "<i class='fa fa-history fa-fw'></i> Past Timesheets".html_safe, past_admin_timesheets_path if policy(Timesheet).index? %></li>
-    <li class=''><%= link_to "<i class='fa fa-clock-o fa-fw'></i> Current Shifts".html_safe, admin_shifts_path if policy(Shift).index? %></li>
-    <li><%= link_to "<i class='fa fa-money fa-fw'></i> Invoices".html_safe, admin_invoices_path if policy(Invoice).index? %></li>
-    <li role="separator" class="divider"></li>
-    <li class=''><%= link_to "<i class='fa fa-wrench fa-fw'></i> &nbsp; Working Employees".html_safe, admin_jobs_path if policy(Job).index? %></li>
-    <li class=''><%= link_to "<i class='fa fa-users fa-fw'></i> &nbsp; Candidate List".html_safe, users_path if policy(User).index? %></li>
-    <li><%= link_to "<i class='fa fa-pause-circle-o fa-fw'></i> Pending Jobs".html_safe, inactive_admin_jobs_path if policy(Order).index? %></li>
-  </ul>
-</li>
+<li><%= link_to "<i class='fa fa-usd'></i> &nbsp; Payroll Dashboard".html_safe, admin_payroll_path %></li>
+<li><%= link_to "<i class='fa fa-calendar'></i> &nbsp; Timesheets".html_safe, admin_timesheets_path if policy(Timesheet).index? %></li>
+<li><%= link_to "<i class='fa fa-clock-o'></i> &nbsp; Shift Calendar".html_safe, admin_shifts_path if policy(Shift).index? %></li>
+<li><%= link_to "<i class='fa fa-money'></i> &nbsp; Invoices".html_safe, admin_invoices_path if policy(Invoice).index? %></li>
+<li><%= link_to "<i class='fa fa-file-o'></i>  &nbsp; ACA Reports".html_safe, report_admin_employees_path %></li>
+<li><%= link_to "<i class='fa fa-wrench'></i> &nbsp; Employees".html_safe, admin_jobs_path if policy(Job).index? %></li>
+<li><%= link_to "<i class='fa fa-users'></i> &nbsp; Candidate List".html_safe, users_path if policy(User).index? %></li>
+<li><%= link_to "<i class='fa fa-pause-circle-o'></i> &nbsp; Pending Jobs".html_safe, inactive_admin_jobs_path if policy(Order).index? %></li>
 

@@ -13,11 +13,6 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   before_action :set_current, :set_mailer_host, :set_gon
-  before_action :set_redirect_path, if: :signed_in?
-
-  def set_redirect_path
-    @redirect_path = request.path
-  end
   def set_current
     subdomains = request.subdomains
     @current_agency = Agency.where(subdomain: subdomains).first if vaild_subdomain?(request)

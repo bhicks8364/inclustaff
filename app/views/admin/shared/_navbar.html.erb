@@ -2,77 +2,41 @@
   <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
+      
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <%= link_to root_url, id: "nav-logo", class: "navbar-brand" do %>
-        <%= @current_agency.name %>
-      <% end %>
+    <%= link_to "<i class='fa fa-users fa-fw'></i> #{@current_agency.name}".html_safe, root_path, class: "navbar-brand" %>
     </div>
-
-
+    
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <% if admin_signed_in? %>
-
-      <ul class="nav navbar-nav navbar-left">
-        <%= render "admin/sidebars/payroll_links" if @current_admin.payroll? || @current_admin.owner? %>
-
-      </ul>
-      <% end %>
-      <ul class="nav navbar-nav">
-        <% if @current_admin.recruiter? || @current_admin.owner? %>
+      <ul class="nav navbar-nav navbar-right">
+        <%= render "admin/sidebars/reports" %>
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class='fa fa-street-view fa-fw'></i> Recruiting</a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-user fa-lg"></i> </a>
           <ul class="dropdown-menu">
-            <%= render "admin/sidebars/recruiter_links" if @current_admin.recruiter? || @current_admin.owner? %>
-          </ul>
-        </li>
-        <% end %>
-        <% if @current_admin.account_manager? || @current_admin.owner? %>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class='fa fa-usd fa-fw'></i> Sales</a>
-          <ul class="dropdown-menu">
-            <%= render "admin/sidebars/sales_links" if @current_admin.account_manager?  || @current_admin.owner? %>
-          </ul>
-        </li>
-        <% end %>
-
-
-      </ul>
-      <ul class='nav navbar-nav navbar-right'>
-        <%= render "admin/sidebars/reports" if @current_admin.payroll? || @current_admin.owner? %>
-        <li><%= link_to admin_conversations_path do %><i class="fa fa-comments-o"></i> <span class="badge badge-default"><%= current_admin.mailbox.inbox.count %></span><% end %></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-users"></i> </a>
-          <ul class="dropdown-menu">
+            <li><%= link_to admin_conversations_path do %><i class="fa fa-comments-o"></i> Messages <span class="badge badge-default"><%= current_admin.mailbox.inbox.count %></span><% end %></li>
             <li class=''><%= link_to "<i class='fa fa-user-plus fa-fw'></i> New Agency Admin".html_safe, new_admin_admin_path if policy(Admin).create?%></li>
             <li class=''><%= link_to "<i class='fa fa-plus-square-o fa-fw'></i> New Company Admin".html_safe, new_admin_company_admin_path if policy(CompanyAdmin).create?%></li>
             <li class=''><%= link_to "<i class='fa fa-plus-square fa-fw'></i> New Employee".html_safe, new_user_registration_path if policy(User).create? %></li>
             <li role="separator" class="divider"></li>
-            <li class=''><%= link_to "<i class='fa fa-list fa-fw'></i> &nbsp; Agency Users".html_safe, admin_admins_path if policy(Admin).index? %></li>
+            <li class=''><%= link_to "<i class='fa fa-list fa-fw'></i> &nbsp; Agency Users".html_safe, admin_admins_path   %></li>
             <li class=''><%= link_to "<i class='fa fa-list-alt fa-fw'></i> &nbsp; Company Users".html_safe, admin_company_admins_path if policy(User).index? %></li>
             <li class=''><%= link_to "<i class='fa fa-wrench fa-fw'></i> &nbsp; Working Employees".html_safe, admin_jobs_path if policy(Job).index? %></li>
             <li class=''><%= link_to "<i class='fa fa-users fa-fw'></i> &nbsp; Candidate List".html_safe, users_path if policy(User).index? %></li>
+          
           </ul>
         </li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class='gravatar'><%=gravatar_for(@current_admin, options = { size: 25 })%></span> &nbsp; <%= @current_admin.first_name %></a>
-          <ul class="dropdown-menu">
-            <li class=''><%= link_to "<i class='fa fa-user fa-fw'></i> View Profile ".html_safe, admin_admin_path(@current_admin) %></li>
-            <li class=''><%= link_to "<i class='fa fa-edit fa-fw'></i> Edit Profile ".html_safe, edit_admin_admin_path(@current_admin) %></li>
-            <li><%= link_to "<i class='fa fa-bell fa-fw'></i> Recent Activity".html_safe, events_path, class: 'button' if @current_admin.events.unread.happened_after(Date.yesterday).any? %></li>
-            <li><%= link_to "<i class='fa fa-home fa-fw'></i> Agency Home Page".html_safe, @current_agency %></li>
-            <li><%= link_to "<i class='fa fa-commenting fa-fw'></i> Messages".html_safe, comments_path %></li>
-            <li><%= link_to "<i class='fa fa-flag fa-fw'></i> Notifications".html_safe, events_path %></li>
-          </ul>
+        <li><%= link_to admin_admin_path(@current_admin) do %>
+            <%= gravatar_for(@current_admin, size: 25) %> <%= @current_admin.name %>
+            <% end %>
         </li>
   			<li><%= link_to "<i class='fa fa-power-off fa-fw' data-placement='right' data-toggle='tooltip' title='Sign Out'></i>".html_safe, destroy_admin_session_path, method: :delete  %></li>
   		</ul>
-
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>

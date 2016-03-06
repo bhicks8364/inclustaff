@@ -1,11 +1,15 @@
+<li><%= link_to "<i class='fa fa-dashboard'></i> #{@current.role} Dashboard".html_safe, root_path, class: "navbar-link" %></li>
+<li><%= link_to "<i class='fa fa-globe'></i> Sales".html_safe, admin_account_manager_path, class: "navbar-link" if @current_admin.owner? %></li>
+<li><%= link_to "<i class='fa fa-street-view'></i> Recruiting".html_safe, admin_recruiter_path, class: "navbar-link" if @current_admin.owner? %></li>
+<li><%= link_to "<i class='fa fa-usd'></i> Payroll".html_safe, admin_payroll_path, class: "navbar-link" if @current_admin.owner? %></li>
+<li><%= link_to "<i class='fa fa-building-o'></i> Companies".html_safe, admin_companies_path %></li>
+<li><%= link_to "<i class='fa fa-briefcase'></i> Job Orders".html_safe, admin_orders_path %></li>
+<li><%= link_to "<i class='fa fa-money'></i> Invoices".html_safe, admin_invoices_path %></li>
+<li><%= link_to "<i class='fa fa-pause-circle'></i> Inactive Job Orders".html_safe, inactive_admin_orders_path %></li>
+<li><%= link_to "<i class='fa fa-plus-square'></i> New Company".html_safe, new_admin_company_path if policy(Company).create?  %></li>
+<li><%= link_to "<i class='fa fa-plus-square-o'></i> New Job Order".html_safe, new_admin_order_path if policy(Order).create? %></li>
+<li role="separator" class="divider"></li>
+<li class=''><%= link_to "<i class='fa fa-wrench'></i> &nbsp; Working Employees".html_safe, admin_jobs_path if policy(Job).index? %></li>
+<li class=''><%= link_to "<i class='fa fa-users'></i> &nbsp; Candidate List".html_safe, users_path if policy(User).index? %></li>
+<li><%= link_to "<i class='fa fa-pause-circle-o'></i> Pending Jobs".html_safe, inactive_admin_jobs_path if policy(Order).index? %></li>
 
-
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class='fa fa-dashboard fa-lg' data-placement='right' data-toggle='tooltip' title='Dashboards'></i></a>
-  <ul class="dropdown-menu">
-    <li><%= link_to "<i class='fa fa-dashboard fa-fw'></i> #{@current.role} Dashboard".html_safe, root_path, class: "navbar-link" %></li>
-    <li><%= link_to "<i class='fa fa-globe fa-fw'></i> Sales".html_safe, admin_account_manager_path, class: "navbar-link" if @current_admin.owner? %></li>
-    <li><%= link_to "<i class='fa fa-street-view fa-fw'></i> Recruiting".html_safe, admin_recruiter_path, class: "navbar-link" if @current_admin.owner? %></li>
-    <li><%= link_to "<i class='fa fa-usd fa-fw'></i> Payroll".html_safe, admin_payroll_path, class: "navbar-link" if @current_admin.owner? %></li>
-  </ul>
-</li>
