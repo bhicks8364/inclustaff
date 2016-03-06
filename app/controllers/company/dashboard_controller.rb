@@ -20,7 +20,7 @@ class Company::DashboardController < ApplicationController
       @admin = CompanyAdmin.find(params[:id])
   end
   def timeclock
-    @clocked_in = @company.jobs.includes(:employee).at_work.order("employees.last_name").distinct
+    @clocked_in = @company.jobs.includes(:employee).at_work.order("employees.last_name")
     @clocked_out = @company.jobs.currently_working.without_current_shifts.order("employees.last_name")
     # 'entered_code' -> NOT WORKING ATM - Want to do somekind of find_by_code_and_clockin_in all in one thingy
     # @entered_code = params[:code] if params[:code].present?
