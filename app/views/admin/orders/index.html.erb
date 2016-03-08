@@ -32,25 +32,6 @@
 				<% end %>
 		  	</div>
 		</div>
-		<div class='row'>
-			<div class='col-md-12 well well-sm'>
-				<div class='col-md-5' id="map" style='width: 400px; height: 500px;'></div>
-				<div class='col-md-7 well'>
-				    <% @order_months.sort.each do |month, orders| %>
-				    <h2 class='bold text-center'><%= month.strftime('%B') %></h2>
-				    <hr>
-				    <%= div_for @orders do |order| %>
-				        <p><strong><%= title_count(order) %></strong>
-				        needed by <%= order.needed_by.to_date.to_s(:long) %></p>
-				    <% end %>
-				  <% end %>
-				</div>
-			</div>
-		</div>
-
-
-
-
 
 </div>
 

@@ -25,10 +25,8 @@
 	 			</div>
 			</div>
 			<div class="tab-pane fade in" id="tab-aca">
-				<div class='col-md-12'>
-			        <%= link_to "ACA Reports", report_admin_employees_path, class: "btn btn-primary btn-lg pull-right" %>
-			        
-			        <h2>ACA Settings</h2>
+				<div class='col-md-8'>
+			        <h2>ACA Information</h2>
 	                <p>Measurement Period: <%= @current_agency.preferences['aca_measurement_period'] %></p>
 	                <p>Administrative Period: <%= @current_agency.preferences['aca_administrative_period'] %></p>
 	                <p>Stability Period: <%= @current_agency.preferences['aca_stability_period'] %></p>
@@ -36,6 +34,9 @@
 	            	      <i class='fa fa-pencil fa-fw'></i>
 	            			<span>Edit Agency</span>
 	            		<% end %>
+				</div>
+				<div class='col-md-4'>
+					<%= link_to "ACA Reports", report_admin_employees_path, class: "btn btn-primary btn-lg pull-right" %>
 				</div>
 			</div>
 			<div class="tab-pane fade" id="tab-admins">

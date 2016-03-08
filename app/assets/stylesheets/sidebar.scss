@@ -5,21 +5,27 @@
  */
 
 /* Toggle Styles */
-.sidebar-button {
-    background: transparent;
-    color: #ccc;
+#sidebar-icon {
+    opacity: .5;
+    // background: transparent;
+    color: $trans-white;
     // position: relative;
     // margin-left: 15px;
     margin-bottom: -2px;
     margin-top: -2px
 }
-.sidebar-icon:hover { 
+#sidebar-icon:hover { 
     color: $blue;
 }
-.sidebar-icon.toggled {
+#sidebar-icon.toggled {
+    opacity: .9;
     color: $blue;
-    // margin-left: -25px;
-    
+    margin-left: 25px;
+}
+#sidebar-icon.toggled:hover {
+    opacity: .99;
+    color: $trans-white;
+    margin-left: 25px;
 }
 #wrapper {
     padding-left: 0;
@@ -150,22 +156,4 @@
         position: relative;
         margin-right: 0;
     }
-}
-.rotate {
-
-/* Safari */
--webkit-transform: rotate(-180deg);
-
-/* Firefox */
--moz-transform: rotate(-180deg);
-
-/* IE */
--ms-transform: rotate(-180deg);
-
-/* Opera */
--o-transform: rotate(-180deg);
-
-/* Internet Explorer */
-filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
-
 }

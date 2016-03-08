@@ -1,17 +1,17 @@
-<div class='col-md-12 lightbox-long'>
-    <%= search_form_for [:admin, @q], class: 'form-inline' do |f| %>
-  <%= f.search_field :employee_last_name_or_employee_first_name_cont , class: 'form-control', placeholder: "Search by name"%>
+<h1><%= pluralize(@jobs.active.count, "Active Job")%> </h1>
+<div class='col-md-12 well'>
+    <%= search_form_for [:admin, @q], class: 'form col-md-3' do |f| %>
+  <%= f.search_field :employee_last_name_or_employee_first_name_or_employee_email_or_employee_phone_number_cont , class: 'form-control', placeholder: "Search by name/phone number"%>
+  <%= f.search_field :employee_last_name_cont , class: 'form-control', placeholder: "Search by last name"%>
+  <%= f.search_field :recruiter_name_cont , class: 'form-control', placeholder: "Search by recruiter"%>
+  <%= f.text_field :pay_rate_gt, class: 'form-control', placeholder: "Pay Rate Greater Than"%>
+  <%= f.text_field :pay_rate_lt, class: 'form-control', placeholder: "Pay Rate Less Than"%>
   <%= f.submit %>
-  <%= link_to 'Clear Search', admin_jobs_path, class: 'btn btn-primary btn-sm' %>
+  <%= link_to 'Clear', admin_jobs_path, class: 'button' %>
 <% end %>
-        <div class='col-md-3'>
-           <%= pie_chart @jobs.group('jobs.state').count, 
-			   		library: {backgroundColor: "#ccc", legend: {position: "bottom"}, is3D: true, title: "Jobs by Current Status"}%>
-        </div>
+        
     <div class='col-md-9'>
         <% if @jobs.active.any? %>
-        
-    <h1><%= pluralize(@jobs.active.count, "Active Job")%> </h1>
     <%= render 'admin/jobs/table', jobs: @jobs.active %>
     <% else %>
    <h1 class='page-header'>
@@ -21,6 +21,10 @@
     
     
     <%= link_to 'View Inactive', inactive_admin_jobs_path, class: 'btn btn-primary' %>
+    </div>
+    <div class='col-md-4'>
+       <%= pie_chart @jobs.group('jobs.state').count, 
+		   		library: {backgroundColor: "#ccc", legend: {position: "bottom"}, is3D: true, title: "Jobs by Current Status"}%>
     </div>
     
 </div>

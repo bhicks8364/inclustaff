@@ -4,10 +4,9 @@ class Admin::ConversationsController < ApplicationController
   layout 'admin_layout'
 
   def index
-    @conversations = current_admin.mailbox.conversations
-    @sent_box = current_admin.mailbox.sentbox
+    @conversations = current_admin.mailbox.inbox
   end
-
+  
   def inbox
     @conversations = current_admin.mailbox.inbox
     render action: :index
@@ -29,7 +28,7 @@ class Admin::ConversationsController < ApplicationController
   end
   
   def mark_as_unread
-    @conversation = current_admin.mailbox.conversations.find(params[:id])
+    @conversation = current_admin.mailbox.inbox.find(params[:id])
     if @conversation.is_read?(current_admin) 
       @conversation.mark_as_unread(current_admin) 
     else

@@ -9,7 +9,7 @@ class AgencyTimesheetPdf < Prawn::Document
         # @subtotal = price(@timesheets.map(&:gross_pay).sum)
         @view = view_context
         @color ||= @timesheets.approved.any? ? "cccccc" : "ff0000"
-        @status ||= @timesheets.approved.any? ? "Approved by: #{@timesheets.last.user_approved}" : ""
+        # @status ||= @timesheets.approved.any? ? "Approved by: #{@timesheets.last.user_approved}" : ""
         super()
         text @agency.name, color: "cccccc", style: :bold, align: :center, size: 12
         move_down 20

@@ -6,18 +6,18 @@ class Admin::JobsController < ApplicationController
 
 
   def index
-
+    @jobs = @current_admin.jobs.where(state: "Currently Working").includes(:employee)
     if params[:employee_id]
       @employee = Employee.find(params[:employee_id])
       @jobs = @employee.jobs.where(state: "Currently Working")
     else
 
-      @q = Job.includes(:employee).order(created_at: :desc).ransack(params[:q])  if @current_agency.present?
+      @q = Job.includes(:employee, :recruiter).order(created_at: :desc).ransack(params[:q])  if @current_agency.present?
       @q = @current_admin.jobs.includes(:employee).order(created_at: :desc).ransack(params[:q])  if @current_admin.recruiter?
       if params[:q].present?
         @jobs = @q.result(distinct: true).paginate(page: params[:page], per_page: 5)
       end
-      @jobs = @current_admin.jobs.where(state: "Currently Working").includes(:employee)
+      
       authorize @jobs
     end
 

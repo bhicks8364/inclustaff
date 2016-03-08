@@ -50,6 +50,7 @@ $trans-white: rgba(255, 255, 255, 0.45);
 
 body {
   background-color: rgba(0, 0, 0, .2);
+  // background-image: url(light_bg.png);
   padding-top: 70px;
   padding-bottom: 80px;
   height: 100%;
@@ -155,11 +156,11 @@ h1, h2, h3, h4, h5, h6 {
   // max-width: 310px;
   vertical-align: middle;
 }
-#company-navbar {
-  background-color: $trans-white;
-  vertical-align: middle;
-  margin: 0px;
-}
+// #company-navbar {
+//   background-color: $trans-white;
+//   vertical-align: middle;
+//   margin: 0px;
+// }
 
 .hide-this {
   display: none;

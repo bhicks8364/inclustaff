@@ -1,25 +1,22 @@
-<div class='col-md-12'>
+<div class=''>
     
     <h1>ACA Reporting</h1>
     <div class='col-md-4'></div>
-    <div class='col-md-4'>
-    <% @employees.worked_this_year.distinct.sorted_by_total_hours.each do |employee| %>
+    <div class='col-md-8'>
+    <%= div_for @employees.worked_this_year.distinct.sorted_by_total_hours, class: "well well-sm" do |employee| %>
         
-        <%= link_to employee.name, admin_employee_path(employee) %>  - <%= employee.total_hours.round(2) %>
-        <br>
-        (Average: <%= employee.average_weekly_hours %> Days: <%= employee.days_from_initial_start %>)
+        <h3><%= link_to employee.name, admin_employee_path(employee) %>   <small> Total hours: <%= employee.total_hours.round(2) %></small></h3>
+        <p class="">Average hours per week: <%= employee.average_weekly_hours %> <span class='pull-right'>Days: <%= employee.days_from_initial_start %></span></p>
         <%= link_to aca_admin_employee_path(employee), class: "aca-link" do %>
-            <i class='fa fa-folder-open'></i>
-        <% end %>
-        <% employee.current_report.each do |k, v| %>
+        
+        <% employee.year_report.each do |k, v| %>
              <li class='list-group-item list-group-item-info'><strong><%=  k.stamp("2015") %> </strong> -  Total Hours: <%= v.round(2) %>
              </li>
              <%= aca_progress(v, 1560) %>
              <% end %>
-             
+             <% end %>
              <br>
     
     <% end %>
     </div>
-    <div class='col-md-4'></div>
 </div>

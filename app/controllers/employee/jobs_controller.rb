@@ -30,7 +30,7 @@ class Employee::JobsController < ApplicationController
       format.json
       format.pdf {
         send_data EmploymentVerificationPdf.new(@employee, view_context, @signed_in, @current_agency).render,
-          filename: "#{@timesheet.week_ending}-#{@employee.name}-timesheet.pdf",
+          filename: "##{@employee.name}-employment-verification-letter.pdf",
           type: "application/pdf",
           disposition: :inline
       }

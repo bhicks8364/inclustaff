@@ -23,7 +23,7 @@
     <%= render 'employee/shared/navbar' if current_user.role != "Candidate" %>
     <%= render 'employee/shared/timeclock_navbar' if current_user.role == "Candidate" %>
     
-    <div class="toggled" id="wrapper">
+    <div class="" id="wrapper">
       
       
       <%= render 'demo/employee_how_to' if @current_agency.present?  %>
@@ -48,16 +48,11 @@
     </div>
     <!-- /#wrapper -->
         <!-- Menu Toggle Script -->
-        <script>
+    <script>
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
-        $("#menu-toggle").toggleClass("toggled");
-        $("#sidebar-icon").toggleClass("rotate");
-    });
-    $("#show-pricing").click(function(e) {
-        e.preventDefault();
-        $("#inclustaff-pricing").toggleClass("hide-this");
+        $("#sidebar-icon").toggleClass("fa-rotate-180 toggled");
     });
     </script>
   </body>

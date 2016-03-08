@@ -147,7 +147,7 @@ class Employee < ActiveRecord::Base
   end
 
   def year_report
-    shifts.group_by_week(:time_in, range: initial_start_date...Time.current).sum(:time_worked)
+    shifts.group_by_year(:time_in, range: initial_start_date...Time.current).sum(:time_worked)
   end
 
 
@@ -164,7 +164,7 @@ class Employee < ActiveRecord::Base
   #   shifts.group_by_year(:time_in, range: Time.current.beginning_of_year.midnight...Time.current).sum(:time_worked)
   # end
   def current_report
-    shifts.group_by_year(:time_in, range: initial_start_date...Time.current).sum(:time_worked)
+    shifts.group_by_week(:time_in, range: initial_start_date...Time.current).sum(:time_worked)
   end
 
 

@@ -1,4 +1,4 @@
-<div class='col-md-12 lightbox-long'>
+<div class=''>
   <h1 class='black'> Invoices for <strong><% if @company.present? %> <%= link_to @company.name, admin_company_path(@company) %>  <% else %><%=@current_agency.name %><% end %></strong></h1>
   <div class='col-md-3'>
     <h2><strong>Unpaid</strong></h2>
@@ -26,7 +26,7 @@
   <div class='col-md-9'>
     <div class='table-responsive'>
       
-      <table class='table table-hover inv_datatable'>
+      <table class='table table-hover datatable'>
         <thead>
           <tr>
             <th></th>

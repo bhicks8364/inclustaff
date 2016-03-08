@@ -25,14 +25,15 @@ class Company::Shifts::BreaksController < ApplicationController
     
   end
   def start
+    @shift = Shift.find(params[:shift_id])
     skip_authorization
-
-    @current_break = @shift.current_break
+    @current_break = @shift.breaks.last if @shift.breaks.last.present?
     if @current_break.nil?
       @current_break = @shift.breaks.create!(time_in: Time.current)
+      
     end
-
-    @shift.update(state: "On Break")
+    # @shift.update(state: "On Break")
+    
     
     respond_to do |format|
       if @shift.on_break?
@@ -50,11 +51,12 @@ class Company::Shifts::BreaksController < ApplicationController
   end
 
   def stop
+    @shift = Shift.find(params[:shift_id])
     skip_authorization
-
-    @current_break = @shift.current_break
+    
+    @current_break = @shift.breaks.last 
     @current_break.update(time_out: Time.current)
-    @shift.update(state: "Clocked In")
+    # @shift.update(state: "Clocked In")
     @shift_break = @shift.breaks.last
     respond_to do |format|
       if @shift.clocked_in?
@@ -85,7 +87,7 @@ class Company::Shifts::BreaksController < ApplicationController
   private
 
     def set_shift
-      @shift = current_company_admin.company.shifts.find(params[:shift_id])
+      @shift = Shift.find(params[:shift_id])
       @employee = @shift.employee
     end
     def shift_break_params

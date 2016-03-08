@@ -1,7 +1,7 @@
 <div id="conversation_<%= conversation.id%>" class="<%= convo_class(conversation) %>">
     <%= link_to employee_conversation_path(conversation) do %>
-    <%= link_to "#{convo_icon(conversation)}".html_safe, mark_as_unread_employee_conversation_path(conversation), id: "toogle-read", class: "pull-right", method: :patch, remote: true %>
       <h5><strong><%= conversation.subject %></strong></h5>
       <p> To: <%= (conversation.recipients - [current_user]).map(&:name).join(", ") %></p>
     <% end %>
+    <%= link_to "#{convo_icon(conversation)}".html_safe, mark_as_unread_employee_conversation_path(conversation), id: "toogle-read", class: "pull-right", method: :patch, remote: true %>
 </div>

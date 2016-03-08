@@ -25,7 +25,7 @@ class Admin::OrdersController < ApplicationController
     end
     if @q.nil?
       
-    @order_months = @current_agency.orders.group_by { |t| t.needed_by.beginning_of_month }
+    # @order_months = @current_agency.orders.group_by { |t| t.needed_by.beginning_of_month }
     @hash = Gmaps4rails.build_markers(@orders) do |order, marker|
           marker.lat order.latitude
           marker.lng order.longitude
@@ -35,7 +35,7 @@ class Admin::OrdersController < ApplicationController
     gon.order = @hash
     else
       @orders = @current_agency.orders.paginate(page: params[:page], per_page: 25)
-      @order_months = @orders.group_by { |t| t.needed_by.beginning_of_month }
+      # @order_months = @orders.group_by { |t| t.needed_by.beginning_of_month }
     end
     
     # @q.build_condition if @q.conditions.empty?
@@ -57,20 +57,19 @@ class Admin::OrdersController < ApplicationController
   end
   
   def search
-    @q = Order.includes(:company).active.order(needed_by: :desc).ransack(params[:q]) if @current_admin.owner? || @current_admin.payroll? || @current_admin.account_manager?
+    @q = Order.includes(:company).active.order(needed_by: :desc).ransack(params[:q]) 
     @q = Order.includes(:company).needs_attention.order(needed_by: :desc).ransack(params[:q]) if @current_admin.recruiter?
-    @q = Order.includes(:company).needs_attention.order(needed_by: :desc).ransack(params[:q]) if @q.nil?
     @orders = @q.result(distinct: true).paginate(page: params[:page], per_page: 25)
     @q.build_condition if @q.conditions.empty?
     @q.build_sort if @q.sorts.empty?
-    @order_months = @orders.group_by { |t| t.needed_by.beginning_of_month }
-    @map_orders = @orders.any? ? @orders : @current_agency.orders.active.needs_attention.order(needed_by: :asc)
-     @hash = Gmaps4rails.build_markers(@map_orders) do |order, marker|
-          marker.lat order.latitude
-          marker.lng order.longitude
-          marker.infowindow order.title_company
-          marker.title order.title
-        end
+    # @order_months = @orders.group_by { |t| t.needed_by.beginning_of_month }
+    # @map_orders = @orders.any? ? @orders : @current_agency.orders.active.needs_attention.order(needed_by: :asc)
+    # @hash = Gmaps4rails.build_markers(@map_orders) do |order, marker|
+    #       marker.lat order.latitude
+    #       marker.lng order.longitude
+    #       marker.infowindow order.title_company
+    #       marker.title order.title
+    #     end
     authorize @orders, :index?
   end
   

@@ -19,7 +19,7 @@
   <tbody>
     <% @companies.each do |company| %>
       <tr>
-        <td><%= company.agency_id %><%= link_to company.name, admin_company_path(company), class: '' %></td>
+        <td><%= link_to company.name, admin_company_path(company), class: '' %></td>
         <td><%= company.contact_name %></td>
         <td><%= company.current_timesheets.try(:count) %> / <%= company.jobs.active.try(:count) %></td>
         <td><%= company.timesheets.current_week.any? ? number_to_currency(company.timesheets.current_week.sum(:total_bill) ) : "N/A"%></td>

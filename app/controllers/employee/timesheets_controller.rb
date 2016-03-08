@@ -22,7 +22,7 @@ class Employee::TimesheetsController < ApplicationController
       format.pdf {
         # This is just a placeholder. Should be more like a paystub that employees can print/save
         send_data EmployeeTimesheetPdf.new(@employee, @pdf_timesheets, view_context, @scoped_params, @signed_in, @current_agency).render,
-          filename: "#{@timesheet.week_ending}-#{@employee.name}-timesheet.pdf",
+          filename: "#{@employee.name}-time-report.pdf",
           type: "application/pdf",
           disposition: "inline"
       }

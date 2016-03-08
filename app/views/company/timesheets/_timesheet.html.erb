@@ -1,43 +1,25 @@
-
-<div class="col-md-12 <%= timesheet.approved? ? 'bg-success' : 'bg-info' %> pad" data-behavior="timesheet" data-id="<%= timesheet.id %>">
-		<%= link_to(company_timesheet_path(timesheet), class: '') do %>
+<div class="timesheet pad <%= timesheet.approved? ? 'bg-success' : 'bg-info' %> pad" data-behavior="timesheet" data-id="<%= timesheet.id %>">
+	
+  	<span class='text-success' data-behavior='timesheet-state'>
+	  <%= timesheet.state.titleize %>
+	</span>
+	<%= link_to(company_timesheet_path(timesheet), class: 'pull-right') do %>
 			<i class="fa fa-calendar-times-o fa-1x"></i>
 			<%= timesheet.week_begin %>  -  <%= timesheet.week_ending %>
 		<% end %>
-  	<span class='pull-right text-success' data-behavior='timesheet-state'>
-		  <%= timesheet.state.titleize %>
-		</span>
-	<div class="conversation-user">
-		<% if timesheet.approved? %>
-		
-		<h4 class='text-left'>
-			<%= timesheet.employee.name %>
-		
-		</h4>
-		<% else %>
-		<h4 class='text-left bold'>
-			<%= timesheet.employee.name %> <small><%=timesheet.job.title %></small>
-			
-		</h4>
-		<% end %>
-	</div>
+	
+	<p class=''>
+		<%= timesheet.employee.name %><br> <small><%=timesheet.job.title %></small>
+	</p>
+	<p class='pull-right'>	Total Hours:	<%= timesheet.total_hours.round(2) %></p>
+	<p class="">
+		<span class='bold'>	Gross Pay:	<%= number_to_currency(timesheet.gross_pay) %><br>Total Bill:	<%= number_to_currency(timesheet.total_bill) %></strong>
+	</p>
+	<div class='btn-group'><%= render 'company/timesheets/tool_buttons', timesheet: timesheet %></div>
+	<% if timesheet.approved? %>
+		<p class='text-right' data-behavior='user-approved'>
+			<small> Approved by: <%= timesheet.user_approved %></small>
+		</p>
+	<% end %>
+</div>	
 
-		<div class="col-md-6 col-sm-6 col-xs-6">
-			<p class=''>		<strong>	Regular Hours:	<%= timesheet.reg_hours.round(2) %></strong>        </p>
-			<p class=''>		<strong>	Overtime Hours:	<%= timesheet.ot_hours.round(2) %></strong>			</p>
-		</div>
-		<div class="col-md-6">
-			<p class=''><strong>	Gross Pay:	<%= number_to_currency(timesheet.gross_pay) %></strong>
-        </p>
-			<p class=''>	<strong>	Total Bill:	<%= number_to_currency(timesheet.total_bill) %></strong>	</p>
-		</div>
-		
-	
-			<% if timesheet.approved? %>
-				<p class='text-right' data-behavior='user-approved'>
-					<small> Approved by: <%= timesheet.user_approved %></small>
-				</p>
-			<% end %>
-			<%= render 'company/timesheets/tool_buttons', timesheet: timesheet %>
-	</div>	
-	

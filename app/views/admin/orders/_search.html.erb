@@ -1,9 +1,5 @@
 <div class='row'>
     <%= search_form_for @q, class: '', url: search_admin_orders_path, html: { method: :post } do |f| %>
-      <%= f.condition_fields do |c| %>
-        <%= render "condition_fields", f: c %>
-      <% end %>
-     <%= link_to_add_fields "<i class='fa fa-plus-square fa-1x fa-pull-right'></i> Add Search Field".html_safe, f, :condition %>
       
           <%= f.search_field :notes_or_title_or_company_name_cont, class: "form-control", placeholder: "Search Job Orders"%>
         
@@ -13,7 +9,7 @@
             Sort By <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-            <li><%= sort_link(@q, :company_name) %></li>
+            <li><%= sort_link(@q, "companies.name") %></li>
             <li><%= sort_link(@q, :industry) %></li>
             <li><%= sort_link(@q, :title) %></li>
             <li><%= sort_link(@q, :needed_by) %></li>

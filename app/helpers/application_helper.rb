@@ -98,7 +98,7 @@ module ApplicationHelper
     end
     
     def convo_for(options={})
-        date = (Time.current.end_of_week + 1.day).stamp("Monday 12/18")
+        date = (Time.current.beginning_of_week).stamp("Monday 12/18")
         
         @header = options[:header]
         @admins = options[:admins]
@@ -117,7 +117,7 @@ module ApplicationHelper
             @company_admins = @company.admins.real_users
             @users = User.none
             @header = "Send A Reminder"
-            @button = "<i class='fa fa-bell-o' data-placement='top' data-toggle='popover' title='#{@header}'></i>"
+            @button = "<i class='fa fa-bell-o' data-placement='top' data-toggle='tooltip' title='#{@header}'></i>"
             
             @subject = "Timesheet Reminder"
             @message = "Please remember to have all timesheets for last week approved the end of the day on #{date}. Thank you! "

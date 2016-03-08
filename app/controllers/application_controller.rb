@@ -24,8 +24,10 @@ class ApplicationController < ActionController::Base
     @on_shift = @current_company.jobs.on_shift.order(time_in: :asc) if @current_company.present?
     @new_starts = @current_agency.employees.new_starts.order(created_at: :desc) if @current_agency.present?
     @new_starts = @current_company.employees.new_starts.order(created_at: :desc) if @current_company.present?
-    @current = @current_user || @current_admin || @current_company_admin
-    @signed_in = @current
+    # @current = @current_user || @current_admin || @current_company_admin
+    @signed_in = current_user if user_signed_in?
+    @signed_in = current_admin if admin_signed_in?
+    @signed_in = current_company_admin if company_admin_signed_in?
     @company_admins = CompanyAdmin.real_users
     @admins = Admin.all
     display_admins = @admins.map(&:mention_data) 

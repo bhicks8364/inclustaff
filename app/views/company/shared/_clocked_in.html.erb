@@ -14,9 +14,9 @@
 			</div>
 		</li>
 		<li id='clocked-in-count' class="item-header">
-			You have <%= pluralize(@current.jobs.on_shift.try(:count), 'employee') %> clocked in.
+			You have <%= pluralize(@signed_in.jobs.on_shift.try(:count), 'employee') %> clocked in.
 		</li>
-			<% @current.jobs.on_shift.order(updated_at: :desc).each do |job| %>
+			<% @signed_in.jobs.on_shift.order(updated_at: :desc).each do |job| %>
 		<div id='in-job-<%= job.id %>'>
 			
 			<%= link_to(company_shift_path(job.current_shift), class: "list-group-item list-group-item-info") do %>

@@ -1,11 +1,11 @@
 <%= render 'admin/shared/welcome/candidates' if @current_admin.sign_in_count == 1 || @current_agency.demo? %> 
-<div class='col-md-12 metal'>
-		<div class="col-md-9 well well-sm">
+<div class='col-md-12'>
+		<div class="col-md-6 well well-sm">
 			<%= link_to "<i class='fa fa-user-plus fa-fw fa-pull-left'></i> Add Employee".html_safe, new_user_registration_path, class: 'btn btn-primary pull-right' %>
 			<h1 class='text-info'>Available Candidates</h1>
 			<hr>
 			<div class="table-responsive">
-				<table class="table table-bordered">
+				<table class="table table-bordered datatable">
 					<thead>
 						<tr>
 							<th></th>
@@ -15,7 +15,7 @@
 					</thead>
 					<tbody>
 						<%= content_tag_for(:tr, @users) do |user| %>
-						<td></td>
+						  <td></td>
 							<td> <%= render 'modal', user: user %></td>
 							<td>	<%= user.employee.desired_job_type %>	</td>
 						<% end %>
@@ -23,8 +23,18 @@
 				</table>
 			</div>
 		</div>
-		<div class='col-md-3 well'>
-				<div class='form'>
+		
+		
+		
+
+<div class='col-md-6' style='width: 400px;'>
+  <div id="map" style='width: 400px; height: 400px;'></div>
+</div>
+
+</div>
+
+<div class='row'>
+				<div class='col-md-8'>
 			<%= form_for @import, url: import_users_path, multipart: true do |f| %>
 				
 				<% if @import.errors.full_messages.each do |msg| %>
@@ -41,18 +51,7 @@
 			</div>
 				<%= link_to "<i class='fa fa-file-excel-o fa-fw'></i> Export CSV".html_safe, users_path(@users, format: :csv), class: 'btn btn-primary' %>
 				<%= link_to "<i class='fa fa-user-times fa-fw'></i> DNS List".html_safe, dns_list_users_path, class: 'btn btn-danger' %>
-				
-			</div>
-		
-		
-
-<div class='col-md-8' style='width: 500px;'>
-  <div id="map" style='width: 800px; height: 400px;'></div>
-</div>
-
-</div>
-
-
+		</div>
 
 
 

@@ -43,7 +43,7 @@ class Shift < ActiveRecord::Base
   belongs_to :employee
   belongs_to :timesheet, counter_cache: true
   has_one :employee, through: :job
-  has_one :current_break, ->{ where(time_out: nil).where.not(time_in: nil) }, class_name: "Break"
+  # has_one :current_break, ->{ where(time_out: nil).where.not(time_in: nil) }, class_name: "Break"
   belongs_to :company, class_name: "Company", foreign_key: "company_id"
   has_many :breaks
   has_many :comments, as: :commentable
@@ -64,7 +64,7 @@ class Shift < ActiveRecord::Base
 
   validates :job_id, presence: true
   validates :time_in, presence: true
-  default_scope  { order(time_in: :asc)}
+  # default_scope  { order(time_in: :asc)}
   scope :with_recent_comments,    -> { joins(:comments).merge(Comment.payroll_week)}
   scope :with_break,    -> { where.not(breaks: [])}
   scope :with_no_break, -> { where(breaks: [])}

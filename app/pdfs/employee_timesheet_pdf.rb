@@ -10,7 +10,7 @@ class EmployeeTimesheetPdf < Prawn::Document
         @color ||= @pdf_timesheets.last.approved? ? "cccccc" : "ff0000" if @pdf_timesheets.any?
         @status ||= @pdf_timesheets.last.approved? ? "Approved by: #{@pdf_timesheets.last.user_approved}" : "" if @pdf_timesheets.any?
         super()
-        text @agency.name, color: "cccccc", style: :bold, align: :center, size: 12
+        text @current_agency.name, color: "cccccc", style: :bold, align: :center, size: 12
         move_down 20
         move_down 20
         text @pdf_timesheets.last.time_frame if @scope != "all" if @pdf_timesheets.any?

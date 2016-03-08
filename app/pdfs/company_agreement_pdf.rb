@@ -7,7 +7,6 @@ class CompanyAgreementPdf < Prawn::Document
         @signed_in = signed_in
         @current_agency = current_agency
         @view = view_context
-        stroke_axis
 
         text "<color rgb='a6a6a6'>Company ID ##{@company.id}</color>", inline_format: true, font: "Courier"
         y_position = cursor + 30
