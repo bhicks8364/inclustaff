@@ -14,6 +14,7 @@
 #  supervisor    :string
 #  phone_number  :string
 #  pay           :string
+#  pay_period    :string
 #
 
 class WorkHistory < ActiveRecord::Base
@@ -21,7 +22,7 @@ class WorkHistory < ActiveRecord::Base
     include ArelHelpers::ArelTable
     include ArelHelpers::JoinAssociation
     acts_as_taggable
-    validates :start_date,  presence: true
+    validates :start_date, :employer_name, :title,  presence: true
     validates :end_date, presence: true, if: :not_current?
     after_save :set_employee_tags
     before_save :set_listed_skills

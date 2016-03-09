@@ -1,11 +1,14 @@
 <div class='col-md-12'>
-    <h1 class='metal bold page-header'><%= @current_agency.try(:name) %> <small> Current Positions</small></h1>
+    
+    <h1 class='page-header'><%= @current_agency.try(:name) %> <small> Current Positions</small></h1>
     
     <div class='well'>
     <%= search_form_for @q, class: 'form-inline', url: public_job_board_path  do |f| %>
-  <%= f.search_field :notes_or_title_or_company_name_cont , class: 'form-control', placeholder: "Search Job Orders"%>
-  <%= f.submit %>
-<% end %>
+        <%= f.search_field :notes_or_title_or_company_name_cont , class: 'form-control', placeholder: "Search Job Orders"%>
+        <%= f.search_field :min_pay_gt, class: 'form-control', placeholder: "Minimum Pay Rate"%>
+        <%= f.submit %>
+        <%= link_to "Reset", public_job_board_path %>
+    <% end %>
 
         <div class='table-responsive'>
             <table class='table table-hover'>
@@ -20,7 +23,7 @@
                 <tbody>
                     <% @orders.each do |order| %>
                     <tr>
-                        <td><%= order.published_at.stamp("11-12-2015") %> </td>
+                        <td><%=industry_sym(order)%> &nbsp; <%= order.published_at.stamp("11-12-2015") %> </td>
                         <td><%= link_to order.title, public_job_path(order) %></td>
                         <td><%= order.location %></td>
                         <td><%= pay_range(order) %></td>

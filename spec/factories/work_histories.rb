@@ -14,6 +14,7 @@
 #  supervisor    :string
 #  phone_number  :string
 #  pay           :string
+#  pay_period    :string
 #
 
 FactoryGirl.define do

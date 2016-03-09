@@ -4,11 +4,12 @@
    <p class='demo' data-toggle="tooltip" data-placement="left" title="<%= job.employee.first_name %>'s time clock code - (visible in DEMO mode only)">
         <%= job.employee.code  %></p>
     <% elsif @current_agency.demo? %>
-    <p class='demo' data-toggle="tooltip" data-placement="left" title="Last clocked in: <%=  job.last_clock_in %>">
-        <span id='job-sym'><%= job_sym(job)%> </span>  <%=  job.name %> <br>
+    <span class='demo' data-toggle="tooltip" data-placement="left" title="Last clocked in: <%= job.current_shift.present? ? job.current_shift.updated_at.stamp("Monday, 11/12 at 9:00am") :  job.last_clock_in %>">
+    <span id='job-sym'><%= job_sym(job)%> </span> <br> <%= job.employee.name %>
     <small><%= job.title %></small>
-    </p>
+    </span>
     <% end %>
+    <br>
     <div class='btn btn-<%= job_class(job)%> btn-lg btn-block <%= current_company_admin.timeclock? ? 'bg-danger' : 'hide-this' %>' data-behavior="code-button_<%= job.id %>">
        <span id='job-sym'><%= job_sym(job)%></span>  <%=  job.name %>
     </div>

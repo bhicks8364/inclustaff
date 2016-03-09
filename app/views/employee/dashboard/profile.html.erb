@@ -5,7 +5,7 @@
         <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
         <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
-        <li role="presentation"><a href="#work_history" aria-controls="work_history" role="tab" data-toggle="tab">Work History</a></li>
+        <li role="presentation"><a href="#work_history" aria-controls="work_history" role="tab" data-toggle="tab"> Resume</a></li>
         <% if @employee.jobs.any? %><li role="presentation"><a href="#jobs-tab" aria-controls="jobs" role="tab" data-toggle="tab">Jobs</a></li><% end %>
         <% if @employee.assigned? %>
         <li role="presentation"><a href="#current-job" aria-controls="current-job" role="tab" data-toggle="tab">Current Job</a></li>
@@ -25,7 +25,7 @@
                     </address>
                     <div class='btn-group'>
                         <%= link_to "Edit Profile", edit_employee_employee_path(@employee), class: 'btn btn-primary' %>
-                        <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
+                        <%= link_to "Add Work History", new_employee_work_history_path(redirect_to: employee_profile_path), class: 'btn btn-primary' %>
                     </div>
                 </div>
                 <div class='col-md-6'>

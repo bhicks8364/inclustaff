@@ -1,5 +1,9 @@
 <a class='button' data-toggle="modal" data-target="#mod_<%= user.id %>">
-	<%= gravatar_for(user) %> <%=emp_popover(user.employee)%>
+  <% if user.assigned? %>
+<span id='job-sym'><%= job_sym(user.employee.current_job)%> </span>  <%= user.name %>
+<% else %>
+<%=emp_popover(user.employee)%>
+<% end %>
 </a>
 
 <!-- Modal -->
@@ -17,6 +21,7 @@
              <%= render 'users/user', user: user %>
           </div>
           <div class="col-md-7">
+            <%=emp_popover(user.employee)%>
             <% if user.employee.work_histories.any? %>
             <p class='text-info '>Recent Work History</p>
             <%= render partial: 'work_histories/work_history', collection: user.employee.work_histories.order(:start_date).last(3)  %>

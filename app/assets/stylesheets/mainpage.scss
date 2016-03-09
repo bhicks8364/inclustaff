@@ -276,3 +276,40 @@ input.file-field {
   text-shadow: 2px 2px 0 white,
                4px 4px 0 black;
 }
+
+// #new-user-btn {
+//     // height: 100px;
+//     // width: 300px;
+//     margin: auto;
+//     .fa-ul {
+//         vertical-align: middle;
+//     }
+// }
+// #apply {
+//     vertical-align: middle;
+//     line-height: 2.2em;
+//     font-size: 2.2em;
+//     text-align: center;
+//     margin: auto;
+// }
+// #interested {
+//     vertical-align: top;
+//     line-height: 1.1em;
+//     font-size: 1.1em;
+//     text-align: left;
+//     // margin: 3px;
+// }
+// #existing-user-btn {
+//     margin: auto;
+    
+// }
+// #no-account {
+//     text-align: left;
+//     vertical-align: top;
+//     line-height: 1.1em;
+//     font-size: 1.1em;
+//     // margin: 3px;
+// }
+.btn:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}

@@ -89,30 +89,33 @@ module OrdersHelper
     end
     
     def industry_sym(order)
+        @str = ""
         case order.industry
         when "General Labor"
-            "<i class='fa fa-cude fa-fw'></i>"
+            @str = "<i class='fa fa-cude fa-fw' "
         when "Retail"
-            "<i class='fa fa-shopping-cart fa-fw'></i>"
+            @str = "<i class='fa fa-shopping-cart fa-fw' "
         when "Logistics"
-            "<i class='fa fa-truck fa-fw'></i>"
+            @str =  "<i class='fa fa-truck fa-fw' "
         when "Warehouse"
-            "<i class='fa fa-industry fa-fw'></i>"
+            @str =   "<i class='fa fa-industry fa-fw' "
         when "Medical"
-            "<i class='fa fa-ambulance fa-fw'></i>"
+            @str = "<i class='fa fa-ambulance fa-fw' "
         when "Food Service"
-            "<i class='fa fa-cutlery fa-fw'></i>"
+            @str = "<i class='fa fa-cutlery fa-fw' "
         when "Office"
-          "<i class='fa fa-briefcase fa-fw'></i>"
+            @str = "<i class='fa fa-briefcase fa-fw' "
         when "Manufacturing"
-          "<i class='fa fa-wrench fa-fw'></i>"
+            @str = "<i class='fa fa-wrench fa-fw' "
         when "IT"
-          "<i class='fa fa-laptop fa-fw'></i>"
+            @str = "<i class='fa fa-laptop fa-fw' "
         when "Sales"
-          "<i class='fa fa-usd fa-fw'></i>"
+            @str = "<i class='fa fa-usd fa-fw' "
         else
-          "<i class='fa fa-question fa-fw'></i>"
+            @str = "<i class='fa fa-question fa-fw' "
         end
+        @str += "data-toggle='tooltip' data-placement='bottom' title='#{order.industry}'></i>"
+        @str.html_safe
     end
     
     def order_status(order)

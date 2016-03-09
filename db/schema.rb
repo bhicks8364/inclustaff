@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160221181336) do
+ActiveRecord::Schema.define(version: 20160308225120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -554,6 +554,7 @@ ActiveRecord::Schema.define(version: 20160221181336) do
     t.string  "supervisor"
     t.string  "phone_number"
     t.string  "pay"
+    t.string  "pay_period"
   end
 
   add_foreign_key "mailboxer_conversation_opt_outs", "mailboxer_conversations", column: "conversation_id", name: "mb_opt_outs_on_conversations_id"

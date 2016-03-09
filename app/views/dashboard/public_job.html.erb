@@ -1,23 +1,43 @@
-<%= link_to "Back to Search", public_job_board_path, class: "btn btn-primary btn-sm pull-center" %>
-<h1><%= @order.title %> <small class='pull-right'><%= @order.industry %></small></h1>
-<div class='col-md-4 well'>
-    
-    <p><%= @order.shift %></p>
-    <hr>
-    <p class='lead'><%= pay_range(@order) %></p>
-    
-    <%= stwb(@order) %>
-    <%= heavy_lifting(@order) %>
-    
-    <h4 class=''>Desired Skills</h4>
-    <%= div_for @order.skills do |skill| %>
-        <%= skill.name %>
-    <% end %>
-    <hr>
-    <p><strong>Job Type</strong> <br><%= @order.est_duration %> </p>
-    <p><strong>Education</strong> <br> <%= @order.certifications %> </p>
+<div class='row'>
+    <hr />
+    <div class='col-md-6'>
+        <%= link_to new_user_session_path, class: "btn btn-info btn-lg btn-block" do %>
+            <span id="interested">Interested in this position..?</span>
+            <span id="apply">Sign In Now!</span>
+        <% end %>
+    </div>
+    <div class='col-md-6'>
+        <%= link_to new_user_registration_path, id: "new-user-btn", class: "btn btn-info btn-lg btn-block" do %>
+            <span id="no-account">Don't have an account?</span>
+            <span id="apply">Sign Up!</span>
+        <% end %>
+    </div>
 </div>
-<div class='col-md-8 well'>
-    <%= markdownify(@order.notes) %>
-    <%= link_to "Sign In to Apply!", new_user_session_path, class: "btn btn-info btn-lg pull-right" %>
+<hr />
+<div class-'row'>
+    <div class='col-md-4 well'>
+        <h3 class='bold'>Pay Range:<br> <%= pay_range(@order) %></h3>
+        <%= stwb(@order) %>
+        <%= heavy_lifting(@order) %>
+        <h3 class='bold'>Shift: <br> <%= @order.shift %></h3>
+        <hr>
+        <p><strong>Job Type: </strong> <%= @order.est_duration %> </p>
+        <p><strong>Education:</strong>  <%= @order.certifications.present? ? @order.certifications : "Entry Level" %> </p>
+        <p class='bold'>Desired Skills</p>
+        <ul class='fa-ul'>
+        <% @order.skills.each do |skill| %>
+            <li><%= skill.name %></li>
+        <% end %>
+         </ul>
+        
+        <hr>
+        <%= link_to "Back to Search", public_job_board_path, class: "btn btn-primary btn-lg btn-block" %>
+    </div>
+    <div class='col-md-8 '>
+        
+        <div class="well">
+            <h1 class=''><span class=''><%= industry_sym(@order) %></span> <%= @order.title %> </h1>
+            <%= markdownify(@order.notes) %>
+        </div>
+    </div>
 </div>

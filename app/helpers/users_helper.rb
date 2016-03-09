@@ -68,9 +68,9 @@ module UsersHelper
     end
     
     def check_in(user)
-        if user.employee.unassigned?
-            if user.checked_in_at.present? && user.checked_in_at > Date.today.beginning_of_day
-                "<span class='green button' data-placement='top' data-toggle='tooltip' title='Available as of: #{user.checked_in_at.stamp("12/18")}'>
+        if user.employee.unassigned?  && user.checked_in_at.present?
+            if user.checked_in_at > Date.today.midnight
+                "<span class='green' data-placement='top' data-toggle='tooltip' title='Available as of: #{user.checked_in_at.stamp("12/18")}'>
                   <i class='fa fa-check fa-1x'></i>
                 </span>
                 ".html_safe

@@ -26,7 +26,7 @@ class SkillsController < ApplicationController
     # Product.search "peantu butta", suggest: true
     
     # @skills = Skill.select(:name).distinct
-    @skills = Skill.all
+    @skills = Skill.all.distinct
     @import = Skill::Import.new
     # gon.skills = @shifts
     # @emp_skills = Skill.employee.includes(:skillable).order(:name)

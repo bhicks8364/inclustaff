@@ -77,9 +77,8 @@
         <div role="tabpanel" class="tab-pane fade" id="week-totals">
             <h4>Week Totals</h4>
             <strong>Hours: </strong><%= @job.current_timesheet.try(:total_hours) || 0.00 %><br>
-            <strong>Gross pay: </strong><%= number_to_currency(@job.current_timesheet.try(:total_hours) || 0) %><br>
-            <strong>Gross pay: </strong><%= number_to_currency(@job.current_timesheet.try(:gross_pay) || 0) %><br>
-            <strong>Total bill: </strong><%= number_to_currency(@job.total_gross_bill) %>
+            <strong> Hours: </strong><%= number_to_currency(@job.current_timesheet.try(:total_hours) || 0) %><br>
+            <strong>Pay: </strong><%= number_to_currency(@job.current_timesheet.try(:gross_pay) || 0) %><br>
             
             <strong>Gross this week:</strong> <%= number_to_currency(@job.current_week_pay) %><br>
             
@@ -88,7 +87,6 @@
             <h4>Grand Totals</h4>
             <strong>Hours: </strong><%= @job.total_hours %><br>
             <strong>Pay: </strong><%= number_to_currency(@job.total_gross_pay) %><br>
-            <strong>Total bill: </strong><%= number_to_currency(@job.total_gross_bill) %>
             <%= render "employee/shifts/shift_calendar", shifts: @job.shifts.current_week %>
         </div>
     </div>

@@ -40,7 +40,7 @@ class Company::Shifts::BreaksController < ApplicationController
         if current_company_admin.timeclock?
           format.html { redirect_to root_path}
         else
-          format.html { redirect_to company_timeclock_path, notice: "'#{@employee.first_name}' is now '#{ @shift.state}'"}
+          format.html { redirect_to company_timeclock_path, notice: "#{@employee.first_name} is now #{ @shift.state}"}
         end
         format.js
       else
@@ -63,7 +63,7 @@ class Company::Shifts::BreaksController < ApplicationController
         if current_company_admin.timeclock?
           format.html { redirect_to root_path}
         else
-          format.html { redirect_to company_timeclock_path, notice: "'#{@employee.first_name}' is now '#{ @shift.state}'"}
+          format.html { redirect_to company_timeclock_path, notice: "#{@employee.first_name} is now #{ @shift.state}"}
         end
         format.js
       else
