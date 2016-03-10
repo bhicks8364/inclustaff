@@ -1,0 +1,15 @@
+<%= div_for admin, class: "col-md-6 border" do %>
+    <h3 class="bold"><%= admin.name %> <span class='small pull-right'><%= admin.current_billing %></span></h3>
+    <hr>
+    <% admin.companies.with_current_timesheets.includes(:orders, :jobs).order('companies.name').distinct.each do |company| %>
+    <p class='bold green'><%= company.name %>    </p>
+        <ul class='fa-ul'>
+        <% company.jobs.with_current_timesheets.distinct.each do |job| %>
+            <li><%= job_sym(job) %> <%= job.employee.name %> <span class="pull-right"><%= number_to_currency(job.current_timesheet.total_bill) %></span></li>
+        <% end %>
+         </ul>
+         <p class="bold green text-right"><%= number_to_currency(company.current_billing) %></p>
+         <hr>
+         
+    <% end %>
+<% end %>

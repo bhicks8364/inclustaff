@@ -110,7 +110,14 @@ class Company < ActiveRecord::Base
     def fulladdress
       "#{address} #{city}, #{state}"
     end
-
+    
+    # TODO
+    #This account manager thing needs fixed. There really only needs to be one per company but there may be cases 
+    # where an AM gets fired and their existing Job Orders commissions would be split among all the remaining AMs. 
+    # (like a "House Account") Idk right now. Frickin HStore. -_-
+    def account_manager
+      Admin.find(account_manager_ids).first
+    end
     def current_account_manager
       if preferences['current_account_manager'].present?
         Admin.find(preferences['current_account_manager'])
@@ -128,17 +135,17 @@ class Company < ActiveRecord::Base
     end
 
     def current_payroll_cost
-       timesheets.current_week.sum(:gross_pay)
+       timesheets.current_week.distinct.sum(:gross_pay)
     end
     def current_billing
-       timesheets.current_week.sum(:total_bill)
+       timesheets.current_week.distinct.sum(:total_bill)
     end
     def last_week_billing
-        timesheets.last_week.sum(:total_bill)
+        timesheets.last_week.distinct.sum(:total_bill)
     end
 
     def set_payroll_cost!
-        cost = timesheets.current_week.sum(:total_bill)
+        cost = timesheets.current_week.distinct.sum(:total_bill)
         update(balance: cost)
     end
 

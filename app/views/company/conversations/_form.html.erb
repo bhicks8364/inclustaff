@@ -1,11 +1,11 @@
 <h2><%= @header %></h2>
 <%= form_tag company_conversations_path, method: :post do %>
-
+<%= @admin %>
 <%= hidden_field_tag :redirect_to, @back_to.present? ? @back_to : root_path %>
     <div class="form-group">
             <% if admins.any? %>
             <div class="form-group">
-            <%= select_tag :admin_ids, options_from_collection_for_select(admins, :id, :name), class: "selectize", multiple: true, placeholder: "Admins" %>
+            <%= select_tag :admin_ids, options_from_collection_for_select(admins, :id, :name_role), class: "selectize", multiple: true, placeholder: "Admins" %>
             </div>
             <% end %>
             <% if company_admins.any? %>

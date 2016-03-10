@@ -8,7 +8,7 @@
         <th>Title</th>
         <th>Pay Range</th>
         <th>Make A Placement</th>
-        
+        <th></th>
       </tr>
     </thead>
   
@@ -26,6 +26,7 @@
           <%else%><%= status_tag(order) %> <% end %> 
           <%= order_status(order) %> 
           </td>
+          <td><%= order.account_manager.name %></td>
         </tr>
       <% end %>
     </tbody>

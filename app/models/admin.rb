@@ -98,7 +98,7 @@ class Admin < ActiveRecord::Base
 
   def phone_number;     agency.phone_number; end
   def to_s;             name; end
-  def name_role;        "#{name} #{role}"; end
+  def name_role;        "#{name} <small> #{role} </small>".html_safe; end
   def agency?;          agency_id? && company_id.nil?;  end
   def company?;         company_id?;  end
   def account_manager?; role == "Account Manager"; end

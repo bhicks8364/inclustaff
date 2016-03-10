@@ -82,7 +82,7 @@ class Order < ActiveRecord::Base
 
     # CALLBACKS
     after_initialize :defaults
-    before_validation :set_mark_up, :set_account_manager
+    before_validation :set_mark_up
     after_save :set_note_skills
     # before_save :set_needed_by, if: :urgent?
 
@@ -123,7 +123,7 @@ class Order < ActiveRecord::Base
       self.jobs_count = 0 if self.jobs_count.nil?
       self.aca_type = "Variable-Hour" if aca_type.nil?
       self.requirements = {} if requirements.nil?
-      self.account_manager = company.current_account_manager if company.present? && account_manager_id.nil?
+      self.account_manager = company.current_account_manager if account_manager_id.nil?
     end
     def set_account_manager
       self.account_manager = Admin.account_managers.first

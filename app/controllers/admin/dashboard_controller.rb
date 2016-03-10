@@ -98,4 +98,11 @@ class Admin::DashboardController < ApplicationController
       @shifts = @current_agency.shifts.current_week
       skip_authorization
     end
+    
+    def commissions
+      @orders = @current_agency.orders.includes(:jobs, :company, :timesheets).distinct
+      @account_managers = @current_agency.admins.account_managers
+      skip_authorization
+    end
+    
 end

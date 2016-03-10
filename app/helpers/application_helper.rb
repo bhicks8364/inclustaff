@@ -132,8 +132,11 @@ module ApplicationHelper
         elsif company_admin_signed_in?
             if @type == :general || @type.nil?
                 @admins = Admin.all
+                @account_manager = options[:admin]
                 @company_admins = @current_company.admins.real_users - [current_company_admin]
                 @users = @current_company.users
+                
+                
             end
             render "company/conversations/form", users: @users, admins: @admins, company_admins: @company_admins, type: @type, message: @message, subject: @subject
         elsif user_signed_in?
@@ -152,7 +155,7 @@ module ApplicationHelper
                 @payroll_admins = @current_agency.payroll_admins
                 @send_btn = "Ask Payroll"
                 @job = current_user.employee.current_job if @user.assigned?
-                @header = "<h3 class='strong'>Do you have a question about your hours? </h3> <p class='text-center text-info'>Ask payroll now!</p>".html_safe
+                @header = "<h4 class='strong'>Do you have a question about your hours? </h4> <p class='text-center text-info'>Ask payroll now!</p>".html_safe
                 @btn_header = @type.to_s.titleize
                 @question = "Do you have a question about your hours?"
                 @fa_icon = "<i class='fa fa-question fa-fw'></i>".html_safe

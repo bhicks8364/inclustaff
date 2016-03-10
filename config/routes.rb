@@ -55,7 +55,6 @@ Rails.application.routes.draw do
       collection do
         post :import
         get :dns_list
-
       end
       member do
         post :follow
@@ -66,6 +65,7 @@ Rails.application.routes.draw do
 
     # ADMIN ----> /admin
     namespace :admin do
+      get 'commissions', to: 'dashboard#commissions'
       get  'agency_access' => 'dashboard#agency_view'
       get  'payroll' => 'dashboard#payroll'
       get  'dashboard' => 'dashboard#home'

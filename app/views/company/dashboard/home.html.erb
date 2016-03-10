@@ -1,29 +1,25 @@
 <div class=''>
  <h1 class='simple'><%= @current_company.name %></h1>
 <div class='row'>
-  	<div class='col-md-9 ' data-behavior='timesheet-list'>
+  	<div class='col-md-8 well well-sm' data-behavior='timesheet-list'>
   	 
-  <h2 class='bold'> Welcome, <%= current_company_admin.name %>!</h2>
+  <h2 class=''> Welcome, <%= current_company_admin.name %>!</h2>
   <%= render 'company/orders/table', orders: @current_company.orders %>
-    <div class='well well-sm'>
-      <div class=''>
-				<h4>Timesheets waiting for approval</h4>
-				<% @current_company.timesheets.needing_approval.each do |timesheet| %>
-					<%= render "company/timesheets/timesheet", timesheet: timesheet if company_admin_signed_in? %>
-				<% end %>
+    <div class='col-md-12'>
+      <div class='well well-sm'>
+				<h3 class='text-center'>Timesheets waiting for your approval</h3>
+				<%= render 'company/timesheets/table', timesheets: @current_company.timesheets.needing_approval %>
 			</div>
 			<div class='well well-sm'>
 				<h4>Timesheets for this week</h4>
-				<% @current_company.current_timesheets.each do |timesheet| %>
-					<%= render "company/timesheets/timesheet", timesheet: timesheet %>
-				<% end %>
+				<%= render 'company/timesheets/table', timesheets: @current_company.current_timesheets %>
 			</div>
       
     </div>
   </div>
-  <div class='col-md-3 well'>
-    
-    <%= convo_for(header: "Send A Message", back_to: company_dashboard_path) %>
+  <div class='col-md-4 well well-sm'>
+    <strong>You Account Manager: </strong> <br><%= @current_company.account_manager.name %> <br><span class="small"><%= @current_company.account_manager.email %></span>
+    <%= convo_for(admins: @current_company.account_manager, back_to: company_dashboard_path) %>
     
     <div class='well well-sm'>
     <% if @current_company.invoices.unpaid.any?  %>
