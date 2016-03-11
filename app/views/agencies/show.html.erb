@@ -17,7 +17,7 @@
         <h1 class='simple'><%= @agency.name %></h1>
         <div class='col-md-4 well well-sm'>
             <% if @agency.logo_url.present? %>
-            <%= image_tag(@agency.logo_url, class: "img-zoom border", alt: "img-#{@agency.id}") %> 
+            <%= image_tag(@agency.logo_url, class: "img-zoom border bullet-icon", alt: "img-#{@agency.id}") %> 
             <% else %>
             <%= image_tag(Faker::Placeholdit.image("250x250", "jpg", "ffffff", "000", "#{@agency.name}")) %>
             <% end %>
