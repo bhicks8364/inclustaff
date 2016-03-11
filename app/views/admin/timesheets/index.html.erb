@@ -1,22 +1,16 @@
-<span class='pull-right text-muted'><% if @timesheets.current_week.any? %><small>Week Ending <%= @timesheets.current_week.first.week_ending %></small> <% end %></span>
-<%= render "admin/timesheets/search" %>
-<div class='col-md-12' data-behavior='timesheet-list'>
-	<h1 class='text-center'>Current Timesheets </h1>
-	<div class='col-md-6'>
-		<h2 class='text-center'>Approved Timesheets </h2>
-		<% if @timesheets.approved.any? %>
-		
-		<%= render "admin/timesheets/calendar", timesheets: @timesheets.approved %>
-		<% else %>
-		<h3>No approved timesheets to display.</h3>
-		<% end %>
-	</div>
-	<div class='col-md-6'>
-		<h2 class='text-center'>Pending Timesheets </h2>
-		<% if @timesheets.pending.any? %>
-		<%= render "admin/timesheets/table", timesheets: @timesheets.pending %>
-		<% else %>
-		<h3>No pending timesheets to display.</h3>
-		<% end %>
+<div class="mainpage pad">
+	<h1 class='bold'>Timesheets </h1>
+	<h3 class='text-right text-muted'><% if @timesheets.current_week.any? %><small>Week Ending <%= @timesheets.current_week.first.week_ending %></small> <% end %></h3>
+	<hr>
+	<%= render "admin/timesheets/search" %>
+	<div class='c' data-behavior='timesheet-list'>
+		<div class=''>
+			<% if @timesheets.approved.any? %>
+			
+			<%= render "admin/timesheets/table", timesheets: @timesheets %>
+			<% else %>
+			<h3>No timesheets to display.</h3>
+			<% end %>
+		</div>
 	</div>
 </div>

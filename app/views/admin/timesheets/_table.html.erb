@@ -3,12 +3,11 @@
 <div class='table-responsive'>
 <table  id="<%= timesheets.last.approved? ? 'approved' : 'pending' %>" class="table table-bordered table-hover">
 	<thead>
-		<th class='text-center'><i class="fa fa-calendar"></i> Week</th>
-		<% if @employee.nil? %> <th class='text-center'><i class="fa fa-user"></i>  Employee</th><% end %>
-		<th class='text-center'><i class="fa fa-money"></i>  Pay</th>
-		<th class='text-center'><i class="fa fa-clock-o"></i>  Hours</th>
-		<th class='text-center'><i class="fa fa-hourglass-start"></i> Status</th>
-		
+		<th><%= @q.present? ? sort_link(@q, :week, 'Week') : "Week" %></th>
+		<th><%= @q.present? ? sort_link(@q, :employee_last_name, 'Employee') : "Employee" %></th>
+		<th><%= @q.present? ? sort_link(@q, :gross_pay, 'Pay') : "Pay" %></th>
+		<th><%= @q.present? ? sort_link(@q, :total_hours, 'Hours') : "Hours" %></th>
+		<th><%= @q.present? ? sort_link(@q, :state, "<i class='fa fa-hourglass-start'></i> Status".html_safe, default_order: :asc)  : "Status" %></th>
 	</thead>
 	<tbody>
 	
@@ -19,7 +18,7 @@
 		<% if @employee.nil? %><td class='text-left'><%= link_to timesheet.employee.name, admin_job_path(timesheet.job), class: 'bold' %> <br> <%= link_to "#{truncate(timesheet.order.title, length: 15)}", admin_order_path(timesheet.order), class: 'small'  %></td><% end %>
 			<td class='text-center'><%= timesheet.gross_pay.present? ? pay_for(timesheet) : timesheet.shifts.last.state.upcase %></td>
 			<td class='text-center'><%= timesheet.total_hours.present? ? hours_for(timesheet) : timesheet.shifts.last.state.upcase %></td>
-			<td class='text-center'><a class='btn btn-primary' data-behavior="timesheet-toggle"><% if timesheet.approved? %><span data-behavior="approve-button" > <i class="fa fa-times fa-lg"></i> <span data-behavior='timesheet-state'><%= timesheet.state.upcase %></span><% else %><span data-behavior="approve-button" > <i class="fa fa-check fa-lg"></i> <span  data-behavior='timesheet-state'><%= timesheet.state.upcase %></span></span><% end %>	</a></td>
+			<td class='text-center'><a class='button' data-behavior="timesheet-toggle"><% if timesheet.approved? %><span data-behavior="approve-button" > <i class="fa fa-times fa-lg"></i> <span data-behavior='timesheet-state'><%= timesheet.state.upcase %></span><% else %><span data-behavior="approve-button" > <i class="fa fa-check fa-lg"></i> <span  data-behavior='timesheet-state'><%= timesheet.state.upcase %></span></span><% end %>	</a></td>
 		</tr>
 		
 		<% end %>

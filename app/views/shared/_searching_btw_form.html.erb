@@ -1,0 +1,10 @@
+<%= form_tag(@redirect_to, :class => "form-inline black") do %>
+ 
+  <%= text_field_tag(:date1, params[:date1]) %>
+  
+      <%= label_tag(:date2, "and", :class => "white") %>
+ 
+  <%= text_field_tag(:date2, params[:date2]) %>
+ 
+  <%= submit_tag("Search", :class => "btn btn-primary black") %>
+<% end %>

@@ -185,11 +185,13 @@ input.file-field {
   background-color: $primary-color;
 }
 .mainpage {
-  min-height: 100%;
+  min-height: 1000px;
   width: 100%;
+  margin-top: -5px;
+  padding-top: 15px;
   // opacity: .4;
   padding-bottom: 50px;
-  background-color: rgba(255, 255, 255, 0.47);
+  background-color: rgba(255, 255, 255, 0.67);
   // background-color: #cccccc;
 }
 
@@ -333,3 +335,10 @@ input.file-field {
 .css2 { font-size: 1.2em; }
 .css3 { font-size: 1.4em; }
 .css4 { font-size: 1.6em; }
+
+.lg-image {
+    max-height: 200px;
+    max-width: 200px;
+    margin: 10px;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}

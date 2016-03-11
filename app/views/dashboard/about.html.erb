@@ -1,5 +1,10 @@
-<div class='col-md-12 aboutpage'>
- <h2 class='page-header bold  '>From the first punch to the final invoice...IncluStaff does it all.</h2>
+<div class='col-md-12 mainpage'>
+ <h2 class='text-center'>From the first punch to the final invoice...IncluStaff does it all.</h2>
+
+  <div class='col-md-3'>
+    <%= link_to "<h3><i class='fa fa-search fa-fw'></i> Job Search</h3>".html_safe, public_job_board_path, class: "btn btn-primary btn-lg btn-block" %>
+  </div>
+ 
   <!-- Nav tabs -->
   <ul class="nav nav-tabs nav-justified" role="tablist">
     <li role="presentation" class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">Overview</a></li>
@@ -10,9 +15,21 @@
   <!-- Tab panes -->
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane fade in active" id="overview">
-        <hr>
-        <div class='col-md-10'>
+       
+        <div class='col-md-12'>
+            <div class='col-md-6'>
+                <%= image_tag("TimesheetExample.jpg", class: "lg-image") %>
+            
+            
+                <%= image_tag("vrold.gif", class: "lg-image") %>
+            </div>
+            <div class='col-md-6'>
+                <%= image_tag("Timecard_Sample3.jpg", class: "lg-image") %>
+            
+                <%= image_tag("timesheet-webinar2.png", class: "lg-image") %>
+            </div>
         </div>
+         <hr>
         <div class='col-md-6'>
              <p class='lead'>Avoid costly mistakes - eliminate data entry errors, expensive extra payrolls, <i>no-bill</i> paychecks & more</p>
             <p>Save thousands of dollars and countless hours in payroll alone! For example, 48 hours a week spent in time collection 

@@ -1,8 +1,8 @@
 <div class='payroll-boxes'>
 	
-	<div class="col-md-12">
+	<div class="">
 		<% if @timesheets.last_week.pending.none? %>
-		<div class=' col-md-6'>	  	
+		<div class="">	  	
 			<p class='lead'>
 				All timesheets for last week have been approved.<br>
 				<span class="list-group-item"><%= @timesheets.last_week.approved.distinct.try(:count) %> Approved </span>
@@ -14,27 +14,27 @@
   		<% else %>
   		
   		
-  		<div class=' well col-md-6' data-behavior='timesheet-list'>	  	
+  		<div class="" data-behavior='timesheet-list'>	  	
 			<%= render 'admin/timesheets/table', timesheets: @current_agency.timesheets.needing_approval.distinct %>
 		</div>
   		
   		
 	
-	<div class='col-md-4 '>
+	<div class="">
 	  	<p class='lead'>There are still <%= pluralize(@current_agency.timesheets.needing_approval.distinct.count, "pending timesheets") %> from last week.</p>
 	  	<%= div_for @current_agency.companies.with_late_timesheets.distinct do |company| %>
 	  	<%= link_to company.name, admin_company_timesheets_path(company) %>
 	  	<div class='btn-group'><%= convo_for(company: company, type: :timesheet_reminder) %></div>
 	  	<% end %>
 	  </div>
-	<div class='col-md-3'>
+	<div class='nope-3'>
 		<h4 class='text-center'><%= 1.week.ago.end_of_week.stamp("Week ending: Nov 20th") %></h4>
    		<%= pie_chart Timesheet.last_week.group('timesheets.state').distinct.count, 
    		library: {backgroundColor: "#ccc", legend: {position: "bottom"}, is3D: true, title: "Last Week"}%>
    	</div>
 	<% end %>
 	
-	<div class="col-md-6">
+	<div class="">
 		<div class='center'>
 			<% if @new_starts.any? %>
 			<h3> <i class="fa fa-users fa-fw"></i> &nbsp; New Employees</h3>

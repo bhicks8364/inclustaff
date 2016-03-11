@@ -24,8 +24,6 @@ class Admin::TimesheetsController < ApplicationController
         else
             @q = @current_admin.timesheets.ransack(params[:q])
             @timesheets = @q.result.includes(:job, :employee)
-            @q.build_condition if @q.conditions.empty?
-            @q.build_sort if @q.sorts.empty?
             gon.timesheets = @timesheets
             authorize @timesheets
         end

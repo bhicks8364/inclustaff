@@ -49,10 +49,3 @@ class Timesheet
 
 jQuery ->
   new TimesheetList $("[data-behavior='timesheet-list']")
-      
-      
-      
-      
-      
-      
-      

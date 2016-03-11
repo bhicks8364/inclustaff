@@ -1,3 +1,14 @@
+ <%= form_tag("/admin/shifts", :method => "get", :class => "form-inline black") do %>
+ 
+  <%= text_field_tag(:date1, params[:date1]) %>
+  
+      <%= label_tag(:date2, "and", :class => "white") %>
+ 
+  <%= text_field_tag(:date2, params[:date2]) %>
+ 
+  <%= submit_tag("Search", :class => "btn btn-primary black") %>
+   <%= link_to "Clear", admin_shifts_path, class: 'btn btn-tiny' %>
+<% end %>
  <% if @start_time.present? && @end_time.present?  %>
 
     You are searching for events occurring after :

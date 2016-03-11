@@ -1,8 +1,14 @@
-<div class='col-md-12'>
+<div class='col-md-12 mainpage'>
 	<% if @current_agency.present? %>
-	<h1 class='metal bold'>Welcome to <%= @current_agency.name %>'s Client Portal </h1>
-	<div class='col-md-3'>
-        
+		<%= image_tag("biz-img-1.png") %>
+	<h1 class=' page-header bold'>Welcome to <%= @current_agency.name %>'s Client Portal </h1>
+	<hr/>
+	<div class='col-md-5'>
+        <% if @current_agency.logo_url.present? %>
+            <%= image_tag(@current_agency.logo_url, class: "agency-logo", alt: "img-#{@current_agency.id}") %> 
+        <% else %>
+         <%= image_tag("logo.png", class: "img-zoom agency-logo", alt: "img-#{@current_agency.id}") %> 
+        <% end %>
     </div>
 	<div class='col-md-6'>
 	
@@ -15,7 +21,7 @@
 				<li><i class="fa-li fa fa-check-square"></i> Set-up multiple admin accounts </li>
 				<li><i class="fa-li fa fa-check-square"></i> Approve timesheets instantly </li>
 			</ul>
-			<div class='metal'>
+			<div class=''>
 	        	 <%= link_to "<i class='fa fa-sign-in fa-fw'></i> Client Sign-In".html_safe, new_company_admin_session_path, class: 'btn btn-primary btn-lg home-button' %>
 	        </div>
 	    </div>

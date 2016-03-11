@@ -247,10 +247,7 @@ h1, h2, h3, h4, h5, h6 {
   background-color: rgb(217, 237, 247);
 }
 
-#nav-logo {
-  font-weight: bold;
 
-}
 .pad {
   padding: 8px;
 }
@@ -268,14 +265,19 @@ h1 {
 .logo-img {
   max-height: 50px;
 }
+.agency-logo {
+  max-height: 150px;
+}
 
 
 
 
 // JUST NOT DEALING WITH THE FOOTER ATM
 .footer {
-  // margin-bottom: 0px;
-  margin-top: 10px;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  min-height: 80px;
+  background-color: $trans-white;
 }
 // .navbar-static-bottom {
 //     border-radius: 0;
@@ -342,23 +344,15 @@ td.day:hover {
 }
 
 
-
-
-// #main-alerts {
-//   // margin: 25px;
-//   padding: 10px;
-//   background-color: $light-green;
-// }
-// #admin-sidebar {
-//   display: inline-block;
-//   background-color: black;
-//   width: 200px;
-//   margin: auto;
-// }
-// #admin-sidebar-nav {
-//   background-color: $light-green;
-// }
-
 .order-alerts {
   max-width: 300px;
+}
+
+// SEARCH FORMS
+.search-box {
+  max-width: 90%;
+  margin: 10px;
+}
+.btn.inline {
+      vertical-align: top;
 }
