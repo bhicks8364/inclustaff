@@ -11,5 +11,5 @@
 <% end %>
 <div class="col-xs-8">
     <h3>Orders By Day</h3>
-    <%= line_chart @orders.group_by_day(:needed_by, format: "%B %d, %Y").count, discrete: true %>
+    <%= line_chart @orders.needs_attention.group_by_day(:needed_by, format: "%B %d, %Y").count, discrete: true %>
   </div>

@@ -1,10 +1,10 @@
 <div class="field">
   <%= f.attribute_fields do |a| %>
-    <%= a.attribute_select associations: [:company] %>
+    <%= a.attribute_select collection: @orders.ransackable_attributes, class: "form-control" %>
   <% end %>
-  <%= f.predicate_select %>
+  <%= f.predicate_select collection: @orders.ransortable_attributes, class: "form-control" %>
   <%= f.value_fields do |v| %>
-    <%= v.text_field :value %>
+    <%= v.text_field :value, class: "form-control" %>
   <% end %>
-  <%= link_to "remove", '#', class: "remove_fields" %>
+  <%= link_to "<i class='fa fa-minus-square'></i>".html_safe, '#', class: "remove_fields" %>
 </div>

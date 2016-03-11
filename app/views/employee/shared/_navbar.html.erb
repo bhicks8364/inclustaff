@@ -8,8 +8,8 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <%= link_to root_url, id: "nav-logo", class: "navbar-brand" do %>
-			       <%= @current_agency.name %>
+      <%= link_to root_url, class: 'logo' do %>
+				<%= image_tag("logo.png", class: 'logo-img') %>
 			 <% end %>
     </div>
     
@@ -17,49 +17,18 @@
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-		<ul class="nav navbar-nav">
-			<li> <%= link_to "<i class='fa fa-dashboard fa-lg'></i>".html_safe, employee_profile_path %></li>
-			<li class="dropdown">
-			  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= @current_user.role %> Toolbox <span class="caret"></span></a>
-			  <ul class="dropdown-menu">
-			   <li><%= link_to employee_home_path do %>
-					<i class="fa fa-dashboard"></i>
-						<span>Dashboard</span>
-					<% end %>
-				</li>
-				<li><%= link_to employee_profile_path do %>
-					<i class="fa fa-user"></i>
-						<span>Profile</span>
-					<% end %>
-				</li>
-				<% if current_user.employee.assigned? %>
-				<li><%= link_to employee_timesheets_path do %>
-					<i class="fa fa-clock-o"></i>
-						<span>Timesheets</span>
-					<% end %>
-				</li>
-
-				<li><%= link_to employee_job_path(current_user.current_job) do %>
-					<i class="fa fa-users"></i>
-						<span>Current Job</span>
-					<% end %>
-				</li>
-				<% else %>
-				<li><%= link_to employee_job_board_path do %>
-					<i class="fa fa-briefcase"></i>
-						<span>Job Postings</span>
-					<% end %>
-				</li>
-				<% end %>
-
-			    <li role="separator" class="divider"></li>
-			    <li><%= link_to "<i class='fa fa-power-off'></i> Sign Out".html_safe, destroy_user_session_path, method: :delete  %></li>
-			  </ul>
-			</li>
-
-      <li><%= link_to employee_conversations_path do %><i class="fa fa-comments-o"></i> <span class="badge badge-default"><%= current_user.mailbox.inbox.count %></span><% end %></li>
+		<ul class="nav navbar-nav navbar-right">
+			<li><%= link_to employee_profile_path do %>
+            <%= gravatar_for(@current_user, size: 25) %> <%= @current_user.name %>
+            <% end %>
+        </li>
+  			<li><%= link_to "<i class='fa fa-power-off fa-lg' data-placement='bottom' data-toggle='tooltip' title='Sign Out'></i>".html_safe, destroy_user_session_path, method: :delete  %></li>
+			<li> <%= link_to "<i class='fa fa-toolbox fa-lg'></i>".html_safe, employee_job_path(@current_user.current_job) if @current_user.current_job.present? %></li>
+			<% if current_user.mailbox.inbox.unread(current_user).any? %>
+        <li><%= link_to inbox_user_conversations_path do %><i class="fa fa-comments-o"></i> Messages <span class="badge badge-default"><%= current_user.mailbox.inbox.unread(current_user).count %></span><% end %></li>
+        <% end %>
 		</ul>
-
+		
 
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

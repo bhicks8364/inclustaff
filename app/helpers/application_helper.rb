@@ -1,5 +1,6 @@
 module ApplicationHelper
     require 'html/pipeline'
+    include ActsAsTaggableOn::TagsHelper
     def markdownify(content)
         pipeline_context = {gfm: true}
         pipeline = HTML::Pipeline.new [
@@ -34,19 +35,17 @@ module ApplicationHelper
     end
     
     def signed_in_link_to(name, model, options = {})
-        if @signed_in.class.to_s == "CompanyAdmin"
-            @path = "company"
-        elsif admin_signed_in?
-            @path = "admin"
-        elsif user_signed_in?
-            @path = "employee"
-        end
-        # name = "View #{model.class.to_s}" 
         id = model.id
-        controller = "#{model.class.to_s.underscore.pluralize}"
-        
-        path = @path + "/" + controller
-        # options[:class] ? options[:class] += ' pjax' : options[:class] = 'pjax'
+        controller = model.class.to_s.underscore.pluralize
+            if company_admin_signed_in?
+                @path = "company" + "/" + controller
+            elsif admin_signed_in?
+                @path = "admin" + "/" + controller
+            elsif user_signed_in?
+                @path = "employee" + "/" + controller
+            end
+        path = @path 
+
         link_to name, { controller: path, action: 'show', id: id}, options
     end
     
@@ -94,7 +93,7 @@ module ApplicationHelper
       fields = f.send("#{type}_fields", new_object, child_index: id) do |builder|
         render(type.to_s + "_fields", f: builder)
       end
-      link_to(name, '#', class: "add_fields", data: {id: id, fields: fields.gsub("\n", "")})
+      link_to(name, '#', class: "add_fields btn btn-default", data: {id: id, fields: fields.gsub("\n", "")})
     end
     
     def convo_for(options={})

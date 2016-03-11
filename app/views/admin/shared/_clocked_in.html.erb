@@ -1,5 +1,5 @@
 <li id='clocked-in-nav' class="dropdown hidden-xs">
-	<a class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+	<a class="navbar-link dropdown-toggle" data-toggle="dropdown">
 		<i class="fa fa-clock-o fa-fw fa-pull-left"></i>
 		<span class="count" id="clocked-in-count">
 			
@@ -16,18 +16,14 @@
 		</li>
 		<li id='clocked-in-count' class="item-header dark">
 			You have <%= pluralize(@signed_in.jobs.on_shift.try(:count), 'employee') %> clocked in.
+			<% @signed_in.companies.with_current_timesheets.each do |company| %>
 		</li>
-			<% @signed_in.jobs.on_shift.order(updated_at: :desc).each do |job| %>
-		<div id='in-job-<%= job.id %>'>
-			 
-			<%= link_to(admin_shift_path(job.current_shift), class: "list-group-item list-group-item-info") do %>
-			<%= job.name_title %>
-			<% end %>
-			
-			
-		</div>
-		<% end %>
-		
+		<li><% company.jobs.on_shift.order(updated_at: :desc).each do |job| %>
+					<div id='in-job-<%= job.id %>'>
+				<%= link_to(admin_shift_path(job.current_shift), class: "list-group-item list-group-item-info") do %><%= job.name_title %>	<% end %>
+						<% end %>
+					</div>
+				<% end %></li>
 		
 	</ul>
 </li>

@@ -1,0 +1,17 @@
+<div class=''>
+    <%= link_to "Back to search", public_job_board_path, class: 'btn btn-default' %>
+  <h1 class='text-center'> <%= @orders.count %> available positions </h1>
+    <div class='col-md-12 well'>
+        <h4>Open Job Orders</h4>
+        <%= div_for(@orders) do |order| %>
+            <%= link_to public_job_path(order) do %>
+                            <%= order.title %><br>
+                            <span class='job-description'><%= truncate(order.notes, length: 130)%></span>
+                        <% end %>
+        <% end %>
+    </div>
+
+
+
+
+</div>

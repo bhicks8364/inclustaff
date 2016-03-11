@@ -19,15 +19,15 @@
     </div>
 </div>
 <div class='row'>
-    
-    <div class='floating-box scroll600'>
+    <hr />
+    <div class='col-md-6'>
         <%= render 'infoboxes'  %>
     </div>
-    <div class="floating-box">
+    <div class="col-md-6">
         <h2><%= @admin.first_name %>'s Companies</h2>
         <%= render 'admin/shared/company_collapse', companies: @admin.companies.distinct %>
     </div>
-    <div class='pie-chart'>
+    <div class="col-md-6">
         <%= pie_chart @jobs.group('jobs.state').count, library: {backgroundColor: "#ccc", legend: {position: "right"}, is3D: true, title: "Jobs by Current Status"}%>
     </div>
 </div>

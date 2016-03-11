@@ -1,41 +1,54 @@
-<div class='col-md-12'>
-    
-    <h1 class='page-header'><%= @current_agency.try(:name) %> <small> Current Positions</small></h1>
-    
+<div class='col-md-12 lighterbox'>
+<h1 class='text-center page-header'>Search Current Positions</h1>
+<% if params[:q].present? && params[:q][:notes_or_title_cont].present? %>
     <div class='well'>
-    <%= search_form_for @q, class: 'form-inline', url: public_job_board_path  do |f| %>
-        <%= f.search_field :notes_or_title_or_company_name_cont , class: 'form-control', placeholder: "Search Job Orders"%>
-        <%= f.search_field :min_pay_gt, class: 'form-control', placeholder: "Minimum Pay Rate"%>
-        <%= f.submit %>
-        <%= link_to "Reset", public_job_board_path %>
+    <p class=' lead text-center text-info'>
+        <%= highlight("You searched for: <br> #{params[:q][:notes_or_title_cont]}", "#{params[:q][:notes_or_title_cont]}", 
+    highlighter: '<strong>\1</strong>') %>
+    </p>
+    
+    </div>
     <% end %>
-
-        <div class='table-responsive'>
-            <table class='table table-hover'>
-                <thead>
-                    <tr>
-                    <th>Posting Date</th>
-                    <th>Job Title</th>
-                    <th>Location</th>
-                    <th>Pay</th>
-                </tr>
-                </thead>
-                <tbody>
-                    <% @orders.each do |order| %>
-                    <tr>
-                        <td><%=industry_sym(order)%> &nbsp; <%= order.published_at.stamp("11-12-2015") %> </td>
-                        <td><%= link_to order.title, public_job_path(order) %></td>
-                        <td><%= order.location %></td>
-                        <td><%= pay_range(order) %></td>
-                        
+    <div class='col-md-3 bg-info pad'>
+        <%= search_form_for @q, class: 'form-group', url: public_job_board_path  do |f| %>
+            <%= f.search_field :notes_or_title_cont, class: 'form-control', placeholder: "Search by keyword" %>
+            <hr>
+            <%= f.submit class: 'btn btn-default' %>
+            <%= link_to "Reset", public_job_board_path, class: 'btn btn-default' %>
+            
+        <% end %>
+    </div>
+    <div class='col-md-9'>
+        <div class='well'>
+            <div class='table-responsive'>
+                <table class='table table-hover table-bordered'>
+                    <thead>
+                        <tr style="background-color:white;">
+                        <th><%= sort_link(@q, :published_at, 'Date', default_order: :desc) %></th>
+                        <th><%= sort_link(@q, :title, 'Details') %></th>
+                        <th><%= sort_link(@q, :location, 'City')%></th>
+                        <th><%= sort_link(@q, :min_pay, 'Pay') %></th>
                     </tr>
-                    <% end %>
-                </tbody>
-            </table>
-            <%= will_paginate(@orders) %>
+                    </thead>
+                    <tbody>
+                        <% @orders.each do |order| %>
+                        <tr style="color:<%= cycle("#333", "#666", "#999", name: "colors") %>">
+                            <td> <%= order.published_at.stamp("11-12-2015") %> </td>
+                            <td><%= link_to public_job_path(order) do %>
+                                    <%= order.title %><br>
+                                    <span class='job-description'><%= truncate(order.notes, length: 50)%></span>
+                                <% end %>
+                                
+                            </td>
+                            
+                            <td><%= order.location %>                  </td>
+                            <td><%= pay_range(order) %></td>
+                        </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+                <%= will_paginate(@orders) %>
+            </div>
         </div>
     </div>
-    
-    
-    
 </div>

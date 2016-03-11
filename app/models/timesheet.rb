@@ -44,7 +44,7 @@ class Timesheet < ActiveRecord::Base
 
   validates_associated :shifts
 
-  delegate :name_title, :mark_up, :mark_up_percent, :pay_rate, :bill_rate, :ot_rate, :agency, :company, :manager, :recruiter, :current_shift, :account_manager, :order_id, to: :job
+  delegate :name_title, :pay_rate, :bill_rate, :ot_rate, :agency, :company, :manager, :recruiter, :current_shift, :account_manager, :order_id, to: :job
   delegate :ssn, to: :employee
   before_save :total_timesheet, if: :clocked_out?
   before_create :defaults
@@ -148,7 +148,7 @@ class Timesheet < ActiveRecord::Base
 
   def defaults
     self.state = "pending" if state.nil?
-    self.week = Date.today if week.nil?
+    self.week = Date.today.beginning_of_week if week.nil?
     self.reg_hours = 0 if reg_hours.nil?
     self.ot_hours = 0 if ot_hours.nil?
     self.gross_pay = 0 if gross_pay.nil?
@@ -178,6 +178,10 @@ class Timesheet < ActiveRecord::Base
     if shifts.any?
       shifts.last.time_out
     end
+  end
+  
+  def mark_up
+    (gross_pay / total_bill).round(2)
   end
 
   def user_approved
@@ -252,6 +256,11 @@ class Timesheet < ActiveRecord::Base
   def total_timesheet
     if shifts.any?
       hours = shifts.sum(:time_worked)
+      self.total_hours = hours
+    else
+      hours = reg_hours + ot_hours
+      self.total_hours = hours
+    end
       if hours > 40
         self.reg_hours = 40
         self.ot_hours = hours - 40
@@ -264,9 +273,8 @@ class Timesheet < ActiveRecord::Base
         self.ot_hours = 0
         self.gross_pay = pay
         self.total_bill = pay * job.mark_up
-
       end
-    end
+    
   end
 
   def week_ending

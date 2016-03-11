@@ -70,6 +70,7 @@ class Order < ActiveRecord::Base
   include ArelHelpers::ArelTable
   include ArelHelpers::JoinAssociation
   acts_as_taggable
+  
   store_accessor :requirements, :agency_approval, :company_approval, :years_of_experience, :certifications, :requirement_1, :requirement_2, :requirement_3, :requirement_4
   # VALIDATIONS
   validates_associated :company
@@ -146,6 +147,27 @@ class Order < ActiveRecord::Base
         end
       end
     end
+    # def self.ransackable_attributes(auth_object = nil)
+    #   if auth_object == :admin
+    #     # whitelist all attributes for admin
+    #     super & %w(with_current_timesheets priority newly_added mark_up bwc_code active number_needed address needed_by aca_type mobile_time_clock_enabled title notes min_pay max_pay heavy_lifting education requirements industry shift est_duration stwb bg_check)
+    #   else
+    #     # whitelist only the title and body attributes for other users
+    #     super & %w(title notes min_pay max_pay)
+    #   end
+    # end
+    
+    # def self.ransortable_attributes(auth_object = nil)
+    #   if auth_object == :admin
+    #     # whitelist all attributes for admin
+    #     super & %w(with_current_timesheets priority newly_added mark_up bwc_code active number_needed address needed_by aca_type mobile_time_clock_enabled title notes min_pay max_pay heavy_lifting education requirements industry shift est_duration stwb bg_check)
+    #   else
+    #     # whitelist only the title and body attributes for other users
+    #     super & %w(title notes min_pay max_pay heavy_lifting education requirements industry shift est_duration stwb bg_check address)
+    #   end
+    # end
+    
+    
     def status
         if overdue?
             "Overdue"

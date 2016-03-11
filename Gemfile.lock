@@ -7,15 +7,14 @@ GIT
 
 GIT
   remote: git://github.com/activerecord-hackery/ransack.git
-  revision: d9f516f9185cf7eb7c9853a942493460e304857e
-  branch: rails-4.2
+  revision: 367558412879754fd08ecf2085bec0d48440bd7c
   specs:
-    ransack (1.2.4)
-      actionpack (~> 4.2.0)
-      activerecord (~> 4.2.0)
-      activesupport (~> 4.2.0)
+    ransack (1.7.0)
+      actionpack (>= 3.0)
+      activerecord (>= 3.0)
+      activesupport (>= 3.0)
       i18n
-      polyamorous (~> 1.1)
+      polyamorous (~> 1.2)
 
 GIT
   remote: git://github.com/mailboxer/mailboxer.git

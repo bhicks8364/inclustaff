@@ -186,12 +186,12 @@ module OrdersHelper
     end
     def dt_req(order)
         if order.dt_req?
-            "<i class='fa fa-certificate fa-fw' data-toggle='tooltip' data-placement='right' title='#{order.dt_req} Drug test required'></i>".html_safe
+            "<i class='fa fa-certificate fa-lg' data-toggle='tooltip' data-placement='right' title='#{order.dt_req} Drug test required'></i>".html_safe
         end
     end
     def bg_check(order)
         if order.dt_req?
-            "<i class='fa fa-certificate fa-fw' data-toggle='tooltip' data-placement='right' title='#{order.dt_req} Drug test required'></i>".html_safe
+            "<i class='fa fa-user-secret fa-lg' data-toggle='tooltip' data-placement='right' title='#{order.bg_check}'></i>  Background check required".html_safe
         end
     end
     def pay_range(order)

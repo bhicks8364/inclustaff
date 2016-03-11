@@ -213,12 +213,20 @@ class Admin < ActiveRecord::Base
   def billing_difference
     current_billing - last_week_billing
   end
+  
+  def avg_mark_up
+    if timesheets.current_week.any?
+      timesheets.current_week.distinct.average(:mark_up).round(2)
+    else
+      0.00
+    end
+  end
 
   def current_commission
     if timesheets.current_week.any?
       pay = timesheets.current_week.distinct.sum(:gross_pay)
       bill = timesheets.current_week.distinct.sum(:total_bill)
-      (bill - pay) * 0.15  #FAKE COMMISSION RATE
+      (bill - pay) /2 * 0.05  #FAKE COMMISSION RATE
     else
       0.00
     end

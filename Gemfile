@@ -43,7 +43,8 @@ gem 'mailboxer', github: 'mailboxer/mailboxer'
 gem 'mandrill-api', '~> 1.0', '>= 1.0.53', require: 'mandrill'
 gem 'paranoia', '~> 2.1.0'
 gem 'pundit', '~> 1.0.1' # USER AUTHORIZATION
-gem 'ransack', github: 'activerecord-hackery/ransack', branch: 'rails-4.2'
+gem 'ransack', github: 'activerecord-hackery/ransack'
+# gem 'ransack', github: 'activerecord-hackery/ransack', branch: 'rails-4.2'
 gem 'receipts', '~> 0.1.3'
 gem 'refile', '~> 0.5.5', require: ['refile/rails', 'refile/image_processing']
 gem 'refile-mini_magick', '~> 0.2.0'

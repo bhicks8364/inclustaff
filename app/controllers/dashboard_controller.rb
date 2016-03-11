@@ -77,7 +77,7 @@ class DashboardController < ApplicationController
       @applications = @events.applications
       render "employee/dashboard/home"
     end
-    @orders = Order.needs_attention.order(:needed_by).paginate(page: params[:page], per_page: 15)
+    @orders = Order.published.order(:needed_by).paginate(page: params[:page], per_page: 15)
 
 
     skip_authorization
@@ -110,32 +110,48 @@ class DashboardController < ApplicationController
 
   end
   def public_job_board
-    if @current_agency.present?
-      @q = @current_agency.orders.published.order(published_at: :asc).ransack(params[:q]) 
-    
-      
-      @orders = @q.result(distinct: true).paginate(page: params[:page], per_page: 25) 
-    else
-      @orders = Order.published
-    end
     skip_authorization
+    @tags = Order.published.tag_counts_on(:tags)
+    @q = @current_agency.orders.published.ransack(params[:q]) 
+    @orders = @q.result(distinct: true).paginate(page: params[:page], per_page: 25) 
+    # @q.build_sort if @q.sorts.empty?
+    # @q.build_condition if @q.conditions.empty?
   end
   def public_job
     @order = @current_agency.orders.find(params[:id])
     skip_authorization
   end
+  def tag_cloud
+    @tags = Order.published.tag_counts_on(:tags)
+  end
+  def tag
+    if params[:q]
+      @orders = @current_agency.orders.published.tagged_with(params[:q])
+    else
+      @orders = @current_agency.orders.published
+    end
+    skip_authorization
+  end
+  def all_tags
+    if params[:q]
+      @orders = @current_agency.orders.published.tagged_with(params[:q])
+    else
+      @orders = @current_agency.orders.published
+    end
+    skip_authorization
+  end
   
 
-  def agency_view
-      @current_admin = current_admin if admin_signed_in?
-      @agency = @current_admin.agency
-      @employees = @agency.employees
-      @timesheets = @agency.timesheets
-      gon.employees = @employees
-      gon.company = @company
-      gon.timesheets = @timesheets
-      skip_authorization
-  end
+  # def agency_view
+  #     @current_admin = current_admin if admin_signed_in?
+  #     @agency = @current_admin.agency
+  #     @employees = @agency.employees
+  #     @timesheets = @agency.timesheets
+  #     gon.employees = @employees
+  #     gon.company = @company
+  #     gon.timesheets = @timesheets
+  #     skip_authorization
+  # end
 
 
   private
@@ -153,6 +169,10 @@ class DashboardController < ApplicationController
      def pundit_user
        current_admin || current_company_admin || current_user
      end
+     
+    def set_ransack_auth_object
+      admin_signed_in? ? :admin : nil
+    end
 
 
 

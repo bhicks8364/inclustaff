@@ -25,8 +25,8 @@ Rails.application.routes.draw do
     get 'sign_in' => 'dashboard#sign_in_page'
     get 'public_job_board' => 'dashboard#public_job_board'
     # TAGS
-    get 'tags' => 'admin/dashboard#all_tags'
-    get 'tags/:tag', to: 'admin/dashboard#tag', as: :tag
+    get 'tags' => 'dashboard#all_tags'
+    get 'tags/:tag', to: 'dashboard#tag', as: :tag
     # CHARTS
     get 'paid_invoices', to: 'charts#paid_invoices'
     get 'companies_balance', to: 'charts#companies_balance'

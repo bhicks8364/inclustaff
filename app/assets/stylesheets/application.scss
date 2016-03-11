@@ -261,7 +261,13 @@ h1, h2, h3, h4, h5, h6 {
 h1 {
   font-family: 'Lato', sans-serif;
 }
-
+.logo {
+  height: 60px;
+  padding: 2px;
+}
+.logo-img {
+  max-height: 50px;
+}
 
 
 

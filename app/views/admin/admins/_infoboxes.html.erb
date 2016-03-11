@@ -23,8 +23,9 @@
 	<% else %>
 	<p class='bold'>No users to show.</p>
 	<% end %>
-	<div class="recent-activity">
 		<h4>Recent Activity</h4>
+	<div class="recent-activity scroll500">
+	
 		<% if @events.any? %>
 		<div class="scroll600">
 			<% @events.order(created_at: :desc).limit(10).each do |event| %>

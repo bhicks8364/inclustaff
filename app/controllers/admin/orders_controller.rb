@@ -59,7 +59,11 @@ class Admin::OrdersController < ApplicationController
   def search
     @q = Order.includes(:company).active.order(needed_by: :desc).ransack(params[:q]) 
     @q = Order.includes(:company).needs_attention.order(needed_by: :desc).ransack(params[:q]) if @current_admin.recruiter?
-    @orders = @q.result(distinct: true).paginate(page: params[:page], per_page: 25)
+    # @orders = @q.result(distinct: true).paginate(page: params[:page], per_page: 25)
+    @orders = @q.result(distinct: true)
+              .includes(:company)
+              .joins(:company)
+              .page(params[:page])
     @q.build_condition if @q.conditions.empty?
     @q.build_sort if @q.sorts.empty?
     # @order_months = @orders.group_by { |t| t.needed_by.beginning_of_month }

@@ -38,7 +38,10 @@ class Company::TimesheetsController < ApplicationController
   	end 
  
   end
-
+  def new
+    @timesheet = Timesheet.new(week: Date.today.beginning_of_week)
+    skip_authorization
+  end
 
   def show
     # authorize @timesheet
@@ -49,7 +52,7 @@ class Company::TimesheetsController < ApplicationController
     @current_shift = @timesheet.shifts.clocked_in.last if @timesheet.clocked_in?
     gon.timesheet = @timesheet
     gon.pay = @timesheet.gross_pay
-    gon.status = @timesheet.shifts.last.state.titleize
+    gon.status = @timesheet.shifts.last.state.titleize if @timesheet.shifts.any?
     respond_to do |format|
       format.html
       format.json
@@ -96,9 +99,10 @@ class Company::TimesheetsController < ApplicationController
     @timesheet = Timesheet.new(timesheet_params)
     # authorize @timesheet
 
+    skip_authorization
     respond_to do |format|
       if @timesheet.save
-        format.html { redirect_to @timesheet, notice: 'Timesheet was successfully created.' }
+        format.html { redirect_to company_timesheet_path(@timesheet), notice: 'Timesheet was successfully created.' }
         format.json { render :show, status: :created, location: @timesheet }
       else
         format.html { render :new }
