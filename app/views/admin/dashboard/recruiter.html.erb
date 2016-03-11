@@ -19,36 +19,31 @@
 					<div class="tab-content">
 						<div class="tab-pane fade in active" id="tab-home">
 							<div class='row'>
-								<div class="col-md-6 well well-sm">
-									<div class="floating-box">
-										<%= render "admin/shared/alerts/open_orders", orders: @orders %>
-									</div>
-									<div class="floating-box">
-									  <h4 class='text-center'>Current Leaders <br> <small>Based on current billing</small></h4>
-									  <%= column_chart recruiter_ranking_path, ytitle: "Current Billing", xtitle: "Recruiters", library: {isStacked: true, backgroundColor: "#e5dbcf"} %>
-									</div>
-									<div class='floating-box'>
-										<h4 class='text-info'>Current Billings by Recruiter</h4>
-								        <div class="fa-ul">
-								        <% @current_agency.admins.recruiters.sorted_by_current_billing.each do |admin| %>
-								            <% if admin.id == current_admin.id %> <li class="bg-success"> <% else %><li class=""><% end %>
-								                <%= link_to admin.name, admin_admin_path(admin) %> <span class="bold pull-right"><%= number_to_currency(admin.current_billing) %></span> 
-								            </li>
-								        <% end %>
-								        </div>
-									</div>
+								<div class="col-md-3 well well-sm text-center">
+									<%= render "admin/shared/alerts/open_orders", orders: @orders %>
 								</div>
-							
-							
+								<div class='col-md-3'>
+							        <div class="fa-ul">
+							        <%= div_for @current_agency.admins.recruiters.sorted_by_current_billing, class: "well well-sm" do |admin| %>
+							            <% if admin.id == current_admin.id %> <li class="bg-success"> <% else %><li class=""><% end %>
+							                <%= link_to admin.name, admin_admin_path(admin) %> <span class=""><%= number_to_currency(admin.current_billing) %></span> 
+							            </li>
+							        <% end %>
+							        </div>
+							    </div>
+							   <div class="col-md-6 well well-sm">
+									<h4 class='text-center'> Open Job Orders <small>by industry</small></h4>
+									<%= pie_chart @orders.group('orders.industry').count, library: {backgroundColor: "#ccc", is3D: true}%>
+								</div>
 							</div>
 							<div class='row'>
 								<div class="col-md-6 well well-sm">
 									<%= line_chart @current_agency.orders.needs_attention.group_by_day(:needed_by, format: "%x").sum(:number_needed), library: {title: "Open Positions by Day"}, xtitle: "Needed By Date", ytitle: "Number of Positions" %>
 								</div>
 								<div class="col-md-6 well well-sm">
-									<h4 class='text-center'> Open Job Orders <small>by industry</small></h4>
-									<%= pie_chart @orders.group('orders.industry').count, library: {backgroundColor: "#ccc", is3D: true}%>
-								</div>
+									  <h4 class='text-center'>Current Leaders <br> <small>Based on current billing</small></h4>
+									  <%= column_chart recruiter_ranking_path, ytitle: "Current Billing", xtitle: "Recruiters", library: {isStacked: true, backgroundColor: "#e5dbcf"} %>
+									</div>
 							</div>
 							
 						</div>
