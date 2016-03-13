@@ -337,8 +337,11 @@ input.file-field {
 .css4 { font-size: 1.6em; }
 
 .lg-image {
-    max-height: 200px;
-    max-width: 200px;
-    margin: 10px;
+    max-height: 300px;
+    max-width: 300px;
+    margin: auto;
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+.shadow {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.10);
 }

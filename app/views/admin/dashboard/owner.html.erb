@@ -1,8 +1,8 @@
-<div class="">
+<div class="col-md-12 mainpage">
 	
 	<%= render 'admin/shared/welcome/agency_setup' if @current_admin.sign_in_count == 1 || @current_agency.subdomain == "demo" %> 
 	
-	<h1 class='page-header white'>Owner Dashboard</h1>
+	<h1 class='page-header simple'>Owner Dashboard</h1>
 	<div class="tabs-wrapper">
 		<div class="clearfix">
 			<ul class="nav nav-tabs">
@@ -14,8 +14,9 @@
 		</div>
 		<div class="tab-content">
 			<div class="tab-pane fade in active" id="tab-home">
-				<div class='col-md-12'>
+				<div class='col-md-12 well shadow'>
 				<%  if policy(@current_agency).update? %> <%= link_to(edit_agency_path(@current_agency), class: 'btn btn-default pull-right') do %> <span><i class='fa fa-pencil fa-fw'></i>	Edit Agency</span>	<% end %>	<% end %>
+				<hr>
 				<% if @current_agency.companies.blank? %>
 	       		<h2 class=''>Getting Started</h2>
 	       			<div class='col-md-4'>

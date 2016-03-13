@@ -8,7 +8,7 @@
 			<%= timesheet.week_begin %>  -  <%= timesheet.week_ending %>
 		<% end %>
 	
-	<p class=''>
+	<p class='lead'>
 		<%= timesheet.employee.name %><br> <small><%=timesheet.job.title %></small>
 	</p>
 	<p class='pull-right'>	Total Hours:	<%= timesheet.total_hours.round(2) %></p>

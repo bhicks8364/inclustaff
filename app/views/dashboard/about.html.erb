@@ -1,9 +1,7 @@
 <div class='col-md-12 mainpage'>
- <h2 class='text-center'>From the first punch to the final invoice...IncluStaff does it all.</h2>
+ <h1 class='text-center simple'>About</h1>
 
-  <div class='col-md-3'>
-    <%= link_to "<h3><i class='fa fa-search fa-fw'></i> Job Search</h3>".html_safe, public_job_board_path, class: "btn btn-primary btn-lg btn-block" %>
-  </div>
+<hr>
  
   <!-- Nav tabs -->
   <ul class="nav nav-tabs nav-justified" role="tablist">
@@ -15,28 +13,32 @@
   <!-- Tab panes -->
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane fade in active" id="overview">
-       
-        <div class='col-md-12'>
-            <div class='col-md-6'>
-                <%= image_tag("TimesheetExample.jpg", class: "lg-image") %>
-            
-            
-                <%= image_tag("vrold.gif", class: "lg-image") %>
+        
+        <div class='row well'>
+            <h1 class='bold simple'>Are you still collecting timesheets that look like this?</h1>
+            <hr>
+            <div class='col-md-4'>
+                <%= image_tag("TimesheetExample.jpg", class: "lg-image img-zoom") %>
             </div>
-            <div class='col-md-6'>
-                <%= image_tag("Timecard_Sample3.jpg", class: "lg-image") %>
-            
-                <%= image_tag("timesheet-webinar2.png", class: "lg-image") %>
+            <div class='col-md-4'>
+                <%= image_tag("Timecard_Sample3.jpg", class: "lg-image img-zoom") %>
             </div>
+            <div class='col-md-4'>
+                <%= image_tag("timesheet-webinar2.png", class: "lg-image img-zoom") %>
+            </div>
+            <hr>
         </div>
-         <hr>
-        <div class='col-md-6'>
+          <hr>
+        <div class='col-md-6 well'>
+             <%= image_tag("buried.jpg", class: "lg-image center") %>
+             <hr>
              <p class='lead'>Avoid costly mistakes - eliminate data entry errors, expensive extra payrolls, <i>no-bill</i> paychecks & more</p>
             <p>Save thousands of dollars and countless hours in payroll alone! For example, 48 hours a week spent in time collection 
             and verification can be reduced to a few quick button clicks. 
             At just $12 per hour that’s a savings of over $30,000 per year!!</p>
         </div>
         <div class='col-md-6'>
+            <hr>
             <p class='lead'>
                 Gain a true competitive advantage
             </p>
