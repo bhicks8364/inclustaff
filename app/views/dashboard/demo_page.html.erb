@@ -1,19 +1,20 @@
-<div class='col-md-12 lightbox-long'>
+<div class='col-md-12 mainpage shadow'>
     <h3 class='text-center text-muted'>This is a DEMO account.</h3>
-    <h1 class='text-center page-header text-info metal bold'> Go ahead & have a look around!   </h1>
+    <h1 class='text-center page-header text-info  bold'> Go ahead & have a look around!   </h1>
     <hr>
     <p class='lead text-center bold'>Select the portal you'd like to try</p>
     <div class='col-md-4 text-center'>
-    	<%= link_to "<h3 class='metal'> Agency</h3> ".html_safe, new_admin_session_path, class: 'btn btn-primary btn-lg btn-block ' %>
-   
+    	<%= link_to "<h3 class=''> Agency</h3> ".html_safe, new_admin_session_path, class: 'btn btn-primary btn-lg btn-block ' %>
     </div>
     <div class='col-md-4 text-center'>
-    	<%= link_to "<h3 class='metal'> Company</h3> ".html_safe, new_company_admin_session_path, class: 'btn btn-primary btn-lg btn-block ' %>
-   
+    	<%= link_to "<h3 class=''> Company</h3> ".html_safe, new_company_admin_session_path, class: 'btn btn-primary btn-lg btn-block ' %>
     </div>
     <div class='col-md-4 text-center'>
-    	<%= link_to "<h3 class='metal'> Employee</h3> ".html_safe, new_user_session_path, class: 'btn btn-primary btn-lg btn-block ' %>
-   
+    	<%= link_to "<h3 class=''> Employee</h3> ".html_safe, new_user_session_path, class: 'btn btn-primary btn-lg btn-block ' %>
     </div>
-        
+
+<div class='col-md-12 text-center'>
+    <hr>
+    <%= render 'prelaunch' %>
+</div>
 </div>

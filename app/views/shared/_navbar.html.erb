@@ -28,12 +28,13 @@
             <li><%= link_to "Contact", contact_path %></li>
           </ul>
         </li>
+        
         <% if !signed_in? && @current_agency.present?  %>
         <li><%= link_to "Job Search", public_job_board_path %></li>
         <li><%= link_to "Client Login", sign_in_path %></li>
         <% end %>
       </ul>
-      
+      <a href='http://demo.inclustaff.com' class='btn btn-success btn-lg navbar-btn navbar-right'>Try a Demo Agency! </a>
      
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

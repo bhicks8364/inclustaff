@@ -1,12 +1,9 @@
-<div class='' id='prelaunch'>
-  <%= simple_form_for @inquiry, html: {class: 'form-inline'} do |f| %>
+  <%= simple_form_for @inquiry, html: {id: "prelaunch", class: 'form-inline'} do |f| %>
     <%= f.error_notification %>
-    <div class='form-group'>
       <%= f.input :name, placeholder: "Full Name", label: false, autofocus: true, input_html: {class: "form-control"} %>
       <%= f.input :email, placeholder: "Email Address", label: false %>
       <%= f.input :agency_name, placeholder: "Company Name", label: false %>
-    </div>
-  
     <%= f.submit 'Tell Me More', class: 'btn btn-success inline' %>
   <% end %>
-</div>
+  
+  

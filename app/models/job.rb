@@ -238,7 +238,14 @@ class Job < ActiveRecord::Base
         self.vacation = {} if vacation.nil?
         self.title = order.title  if title.nil?
     end
-
+    def clock_out!
+        if current_shift.present?
+            current_shift.update(
+              time_out: Time.current,
+              state: "Clocked Out",
+              week: Date.today.beginning_of_week )
+        end
+    end
 
     def current_week_pay
 
