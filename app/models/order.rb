@@ -124,7 +124,7 @@ class Order < ActiveRecord::Base
       self.jobs_count = 0 if self.jobs_count.nil?
       self.aca_type = "Variable-Hour" if aca_type.nil?
       self.requirements = {} if requirements.nil?
-      self.account_manager = company.current_account_manager if account_manager_id.nil?
+      # self.account_manager = company.current_account_manager if account_manager_id.nil?
     end
     def set_account_manager
       self.account_manager = Admin.account_managers.first

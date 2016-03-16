@@ -4,13 +4,13 @@
             <%= render "company/timesheets/search" %>
             <h4 class='text-center'><strong>Pending Timesheets</strong></h4>
             <div id=''>
-                <%= render "company/timesheets/table", timesheets: @timesheets.pending || "There are no pending timesheets for this week yet." %>
+                <%= render "company/timesheets/table", timesheets: @timesheets.pending.distinct || "There are no pending timesheets for this week yet." %>
             </div>
         </div>
         <div class='col-md-12 scroll500 well'>
             <h4 class='text-center'><strong>Approved Timesheets</strong></h4>
             <div id=''>
-                <%= render "company/timesheets/table", timesheets: @timesheets.approved || "There are no approved timesheets for this week yet." %>
+                <%= render "company/timesheets/table", timesheets: @timesheets.approved.distinct || "There are no approved timesheets for this week yet." %>
             </div>
         </div>
     </div>

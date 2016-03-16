@@ -1,9 +1,28 @@
-<%= search_form_for [:company, @q] do |f| %>
-
-
-  <%= f.search_field :employee_first_name_or_employee_last_name_cont, placeholder: "Search by employee" %>
-
-  <%= f.button do %>
-      <i class="fa fa-search"></i>
+<div class='text-center search-box'>
+  <% if params[:q].present? && params[:q][:notes_or_title_cont].present? %>
+    <p class=' lead text-center text-info'>   <%= highlight("You searched for: <br> #{params[:q][:notes_or_title_cont]}", "#{params[:q][:notes_or_title_cont]}", 
+    highlighter: '<strong>\1</strong>') %>
+    </p>
     <% end %>
-<% end %>
+    <%= search_form_for [:company, @q] do |f| %>
+    <div class="form-inline">
+        <%= f.search_field :employee_first_name_or_employee_last_name_cont, placeholder: "Search by employee", class: "form-control inline" %>
+        <%= f.button class: "btn btn-default inline" do %> <i class='fa fa-search fa-fw'></i> <% end %>
+    
+    <% end %>
+      <%= link_to "Reset", admin_timesheets_path, class: 'btn btn-default inline' %>
+        <button type="button" class="btn btn-default inline dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Sort By <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><%= sort_link(@q, :week) %></li>
+            <li><%= sort_link(@q, :state) %></li>
+            <li><%= sort_link(@q, :employee_last_name) %></li>
+            <li><%= sort_link(@q, :employee_first_name) %></li>
+            <li><%= sort_link(@q, :needed_by) %></li>
+            <li><%= sort_link(@q, :total_hours) %></li>
+            <li><%= sort_link(@q, :gross_pay) %></li>
+            <li><%= sort_link(@q, :total_bill) %></li>
+        </ul>
+    </div>
+</div>
