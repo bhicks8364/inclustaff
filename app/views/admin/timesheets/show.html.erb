@@ -1,21 +1,27 @@
-<div class='col-md-12 lightbox-long'>
-
+<div class='col-md-12 mainpage'>
 <div class='btn-group'>
+<%= link_to 'Add A Timesheet', new_admin_job_timesheet_path(@job), class: 'btn btn-primary' %>
+<%= link_to "#{@timesheet.employee.name}", admin_job_path(@job), class: 'btn btn-primary' %>
     <%= link_to "<i class='fa fa-download fa-md'></i> Download PDF".html_safe, admin_timesheet_path(@timesheet, format: :pdf), class: 'btn btn-primary' %>
     <%= link_to 'All Timesheets', admin_job_timesheets_path(@job), class: 'btn btn-primary' %>
     <%= link_to 'View Invoice', admin_invoice_path(@timesheet.invoice), class: 'btn btn-primary' %>
        <%= link_to 'Download Invoice PDF', admin_company_invoice_path(@timesheet.company, @timesheet.invoice, format: :pdf), class: 'btn btn-primary' %>
 </div>
+
+<hr>
+
     <div class='col-md-4 '>
         <h2>For the week of:<strong><br><%= @timesheet.week_begin %> - <%= @timesheet.week_ending %></strong></h2>
     </div>
     <div class='col-md-8 ' data-behavior="timesheet-list">
       <%= render @timesheet %>
     </div>
+    <% if @shifts.present? %>
     <div class='col-md-12'>
       <h3> Shifts</h3>
        <%= render 'admin/shifts/table' %>
     </div>
+    <% end %>
     
 </div>
 

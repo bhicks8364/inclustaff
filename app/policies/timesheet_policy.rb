@@ -17,6 +17,9 @@ class TimesheetPolicy < ApplicationPolicy
   def past?
     user.present?
   end
+  def create?
+    user.admin? || user.company_admin?
+  end
   def approve?
     user.admin? || user.company_admin?
   end
@@ -24,8 +27,12 @@ class TimesheetPolicy < ApplicationPolicy
     return true if user.admin? || user.company_admin?
     user.employee? && record.job_id == user.employee.current_job.id
   end
+  def edit
+    update?
+  end
   def update?
-    return true if user.admin? && record.pending?
+    true
+    # return true if user.admin? && record.pending?
     
   end
   def destroy?

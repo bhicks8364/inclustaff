@@ -39,34 +39,29 @@ class Timesheet < ActiveRecord::Base
   has_many :events, as: :eventable
   has_one :recruiter, through: :job, class_name: "Admin"
   include ArelHelpers::ArelTable
-
+  validates :job_id, uniqueness: { scope: :week,
+    message: "should have only one timesheet per week" }
   accepts_nested_attributes_for :shifts, reject_if: :all_blank, allow_destroy: true
-
+  validates :week, :job_id, presence: true
   validates_associated :shifts
-
   delegate :name_title, :pay_rate, :bill_rate, :ot_rate, :agency, :company, :manager, :recruiter, :current_shift, :account_manager, :order_id, to: :job
   delegate :ssn, to: :employee
   before_save :total_timesheet, if: :clocked_out?
   after_initialize :defaults
 
-  after_save :update_company_balance!, if: :has_a_job?
-  before_create :set_job, unless: :has_a_job?
+  after_save :update_company_balance!, if: :total_bill_changed?
+  # before_create :set_job, unless: :has_a_job?
   before_save :set_total_hours
   # I dont think setting the invoice has to happen before_save. Maybe just before create?
   before_save :set_invoice, unless: :has_invoice?
   after_save :update_invoice!, if: :has_invoice?
 
   def has_a_job?
-    job.present?
+    job_id.present?
   end
   def has_invoice?
     invoice.present?
   end
-
-  def set_job
-    self.job = shifts.first.job
-  end
-
   def self.by_recruiter(admin_id)
     joins(:job).where(jobs: { recruiter_id: admin_id })
   end
@@ -148,7 +143,7 @@ class Timesheet < ActiveRecord::Base
 
   def defaults
     self.state = "pending" if state.nil?
-    self.week = Date.today.beginning_of_week if week.nil?
+    self.week = week.beginning_of_week if week.present?
     self.reg_hours = 0 if reg_hours.nil?
     self.ot_hours = 0 if ot_hours.nil?
     self.gross_pay = 0 if gross_pay.nil?
@@ -254,7 +249,11 @@ class Timesheet < ActiveRecord::Base
   end
 
   def total_timesheet
+      if shifts.any?
       hours = shifts.sum(:time_worked)
+      else
+        hours = reg_hours + ot_hours
+      end
       if hours > 40
         self.total_hours = hours
         self.reg_hours = 40

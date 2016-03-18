@@ -42,6 +42,12 @@ module TimesheetsHelper
             data-content='#{ timesheet.week_ending } - #{ number_to_currency(timesheet.total_bill) }'></i>".html_safe
         end
     end
+    def timesheet_collaspe(timesheet)
+      title = user_signed_in? ? "#{number_to_currency(timesheet.gross_pay)}" : "#{timesheet.employee.name}"
+      "<a class='button' role='button' data-toggle='collapse' href='#collapseTimesheet_#{timesheet.id}' aria-expanded='false' aria-controls='collapseTimesheet_#{timesheet.id}'>
+        #{timesheet_sym(timesheet)} <small>#{truncate(title)}</small>
+      </a>".html_safe
+    end
     def timesheet_user(timesheet)
         if timesheet.approved?
             "<span class='green'>#{timesheet_popover(timesheet)}</span>".html_safe

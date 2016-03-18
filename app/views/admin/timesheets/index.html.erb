@@ -1,9 +1,16 @@
-<div class="mainpage pad">
+<div class='btn-group'>
+	<%= link_to "Calendar", admin_shifts_path, class: "btn btn-info" %>
+	<% if @job.present?  %>
+	<%= link_to "New Timesheet", new_admin_job_timesheet_path(@job), class: "btn btn-info" %>
+	<% else %>
+	<%= link_to "New Timesheet", new_admin_timesheet_path, class: "btn btn-info" %>
+	<% end %>
+</div>
+<div class="col-md-12">
 	<h1 class='bold'>Timesheets </h1>
 	<h3 class='text-right text-muted'><% if @timesheets.current_week.any? %><small>Week Ending <%= @timesheets.current_week.first.week_ending %></small> <% end %></h3>
 	<hr>
-	<%= render "admin/timesheets/search" %>
-	<div class='c' data-behavior='timesheet-list'>
+	<div class='well' data-behavior='timesheet-list'>
 		<div class=''>
 			<% if @timesheets.approved.any? %>
 			
@@ -13,4 +20,7 @@
 			<% end %>
 		</div>
 	</div>
+</div>
+<div class='col-md-12 mainpage'>
+	<%= render "admin/timesheets/calendar", timesheets: @timesheets %>
 </div>

@@ -27,10 +27,11 @@
 
 
   <%= f.input :vacation, class: "form-inline" do %>
-    <%= f.select :number_of_days, [ "1", "2", "3", "4", "5"], class: "form-control" %>
-    <%= f.select :milestone_1, [ "1000", "1500", "2000", "2500", "3000"], class: "form-control" %>
-    <%= f.select :milestone_2, [ "1000", "1500", "2000", "2500", "3000"], class: "form-control" %>
-    <%= f.select :milestone_3, [ "1000", "1500", "2000", "2500", "3000"], class: "form-control" %>
+    <%= f.input_field :number_of_days, as: :select, collection: [ "1", "2", "3", "4", "5"], selected: "2", class: "form-control", label: false %>
+    <%= f.input_field :milestone_1, as: :select, collection:  [ "1000", "1500", "2000", "2500", "3000"], selected: "1000", class: "form-control", label: false %>
+    <%= f.input_field :milestone_2, as: :select, collection:  [ "1000", "1500", "2000", "2500", "3000"], selected: "2000", class: "form-control", label: false %>
+    
+    <%= f.input_field :milestone_3, as: :select, collection:  [ "1000", "1500", "2000", "2500", "3000"], selected: "3000", class: "form-control", label: false %>
   <% end %>
    </div>
 

@@ -113,15 +113,17 @@ class Admin::TimesheetsController < ApplicationController
 
   def show
     authorize @timesheet
-    @shifts = @timesheet.shifts
     @employee = @timesheet.employee
     @job = @timesheet.job
-    @last_complete_shift = @timesheet.shifts.clocked_out.last
-    @current_shift = @timesheet.shifts.clocked_in.last if @timesheet.clocked_in?
-    gon.timesheet = @timesheet
-    gon.shifts = @shifts
-    gon.pay = @timesheet.gross_pay
-    gon.status = @timesheet.shifts.last.state.titleize
+    if @timesheet.shifts.any?
+        @shifts = @timesheet.shifts
+        @last_complete_shift = @shifts.clocked_out.last
+        @current_shift = @shifts.clocked_in.last if @timesheet.clocked_in?
+        gon.timesheet = @timesheet
+        gon.shifts = @shifts
+        gon.pay = @timesheet.gross_pay
+        gon.status = @timesheet.state
+    end
     
     respond_to do |format|
       format.html
@@ -137,6 +139,13 @@ class Admin::TimesheetsController < ApplicationController
   end
 
   def new
+      if params[:job_id]
+          @job = Job.find(params[:job_id])
+          @timesheet = @job.timesheets.new
+      else
+          @timesheet = Timesheet.new
+      end
+      skip_authorization
   end
 
   def approve
@@ -160,16 +169,26 @@ class Admin::TimesheetsController < ApplicationController
 
   def edit
     @job = @timesheet.job
-    authorize @timesheet
+    skip_authorization
+    # authorize @timesheet
   end
 
   def create
-    @timesheet = Timesheet.new(timesheet_params)
-    @timesheet.shifts.last
-    authorize @timesheet
+      if params[:job_id]
+          @job = Job.find(params[:job_id])
+          @timesheet = @job.timesheets.new(timesheet_params)
+          week_start = @timesheet.week.beginning_of_week
+        @timesheet.week = week_start
+      else
+          @timesheet = Timesheet.new(timesheet_params)
+          week_start = @timesheet.week.beginning_of_week
+            @timesheet.week = week_start
+      end
+    
+    skip_authorization
     respond_to do |format|
       if @timesheet.save
-        format.html { redirect_to admin_timesheets_path(@timesheet), notice: 'Timesheet was successfully created.' }
+        format.html { redirect_to admin_timesheet_path(@timesheet), notice: 'Timesheet was successfully created.' }
         format.json { render :show, status: :created, location: @timesheet }
       else
         format.html { render :new }
@@ -182,6 +201,8 @@ class Admin::TimesheetsController < ApplicationController
   # PATCH/PUT /timesheets/1.json
   def update
     @timesheet.update(timesheet_params)
+    week_start = @timesheet.week.beginning_of_week
+    @timesheet.week = week_start
     authorize @timesheet
     respond_to do |format|
       if @timesheet.update(timesheet_params)

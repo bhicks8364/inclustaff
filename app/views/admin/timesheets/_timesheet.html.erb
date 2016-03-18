@@ -1,8 +1,9 @@
 
-<div class="timesheet lighterbox" data-behavior="timesheet" data-id="<%= timesheet.id %>">
+<div class="timesheet" data-behavior="timesheet" data-id="<%= timesheet.id %>">
   <p class='pull-right' data-behavior='timesheet-company'>
 		  <%= timesheet.company.name %> 
 		</p>
+		
   <div id='view-timesheet' class="btn-toolbar" role="toolbar" aria-label="...">
 	 <div class="btn-group" role="group" aria-label="...">
 		 <%= link_to(admin_timesheet_path(timesheet), data: {toggle: "tooltip", placement: "top", title: "View Timesheet"}, class: '') do %>
@@ -13,17 +14,9 @@
   </div>
   	
 	<div class=""  data-behavior='timesheet-state'>
-		<% if timesheet.approved? %>
-	  	<span class='label label-success black pull-right'>
-				<i class='fa fa-calendar-check-o fa-1x'></i>
-				<%= timesheet.state.upcase %>
-			</span>
-		<% else %>
-		  <span class='label label-danger black pull-right'>
-  			<i class='fa fa-calendar-times-o fa-1x'></i>
-  			<%= timesheet.state.upcase %>
-			</span>
-		<% end %>
+	  <div class='text-right'><a class='button' data-behavior="timesheet-toggle"><% if timesheet.approved? %><span data-behavior="approve-button" > <i class="fa fa-times fa-lg"></i> <span data-behavior='timesheet-state'><%= timesheet.state.upcase %></span><% else %><span data-behavior="approve-button" >
+	     <i class="fa fa-check fa-lg"></i> <span  data-behavior='timesheet-state'><%= timesheet.state.upcase %></span></span><% end %>	</a></div>
+		
 	</div>
 	<div class="bg-white">
 	  

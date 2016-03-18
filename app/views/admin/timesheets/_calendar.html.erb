@@ -6,14 +6,13 @@
 
   <% timesheets.each do |timesheet| %>
     <div class=''>
-      <%= timesheet_user(timesheet) %>
+      <%= timesheet_collaspe(timesheet) %>
        <div class='collapse' id="collapseTimesheet_<%=timesheet.id%>">
-           <%= render 'admin/timesheets/timesheet', timesheet: timesheet %>
+           <%= link_to admin_timesheet_path(timesheet) do %>
+             <%= number_to_currency(timesheet.gross_pay) %>
+           <% end %>
         </div>
-      <div class=''>
-        
-
-      </div>
+      
       
     </div>
   <% end %>

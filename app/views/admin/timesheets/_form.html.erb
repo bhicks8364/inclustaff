@@ -1,37 +1,30 @@
  <div class="col-md-12 dark white">
-     <% if @job.present? %>
-  <h2>  <%= @job.name_title %> </h2>
     
-    <% end %>
+ 
+    
+  
+
 
 <%= simple_form_for( [:admin, @timesheet]) do |f| %>
-<h4><%= @timesheet.time_frame %></h4>
-  <%= f.error_notification %>
-  
-
-      
-      <%= f.input :reg_hours, disabled: true, label: 'Regular Hours', wrapper_html: { class: 'col-md-4'}, input_html: { class: 'form-control col-md-6'}  %>
-      <%= f.input :ot_hours, disabled: true, label: 'Overtime Hours', wrapper_html: { class: 'col-md-4'}, input_html: { class: 'form-control col-md-6'}  %>
-      <%= f.input :gross_pay, label: 'Gross Pay', wrapper_html: { class: 'col-md-4'}, input_html: { class: 'form-control'}, disabled: true %>
-
-
-  <div class='dark' id='shifts'>
-    <%= f.simple_fields_for :shifts do |shift| %>
-     
-      <%= render 'shift_fields', f: shift %>
-    <% end %>
-    <div class='links'>
-      <%= link_to_add_association 'add shift', f, :shifts, class: 'btn btn-primary' %>
+<%= f.error_notification %>
+    <div class='form-group'>
+      <%= f.input :week, class: "form-control" %>
+       <% if @job.present? %>
+        <h2>  <%= @job.name_title %> </h2>
+       <%= f.hidden_field :job_id, value: @job.id %>
+       <% else %>
+        <%= f.association :job, collection: Job.currently_working.without_current_timesheet.includes(:employee).order("employees.last_name"), prompt: "Choose an Employee" %>
+       <% end %>
     </div>
-    
-  </div>
-
-  
-<hr>
-
-  <div class="form-actions">
-    <%= f.button :submit, class: 'btn btn-success pull-right' %>
-  </div>
+    <div class='form-group'>
+    <%= f.input :reg_hours, label: 'Regular Hours', wrapper_html: { class: 'col-md-4'}, input_html: { class: 'form-control col-md-6'}  %>
+    <%= f.input :ot_hours, label: 'Overtime Hours', wrapper_html: { class: 'col-md-4'}, input_html: { class: 'form-control col-md-6'}  %>
+    <%= f.input :gross_pay, label: 'Gross Pay', wrapper_html: { class: 'col-md-4'}, input_html: { class: 'form-control'}, disabled: true %>
+    </div>
+    <hr>
+    <div class='btn-group'>
+        <%= f.submit %>
+    </div>
 <% end %>
 
-  </div>
+</div>

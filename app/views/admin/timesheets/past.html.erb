@@ -1,8 +1,7 @@
-<div class='col-md-12'>
+
  <%= render "admin/timesheets/search" %>
- <div class='col-md-6'>
-    <%= render 'shared/searching_between' %>
-  </div>
+ 
+ <div class='col-md-12'>
  <h1>Past Timesheets</h1>
  <%= render "admin/timesheets/table", timesheets: @timesheets.distinct %>
     <div class='btn-group'>
