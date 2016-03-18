@@ -7,7 +7,7 @@
     <tr>
       <th>Company</th>
       <th>Job Title</th> 
-      <th>Pay rate</th> 
+      <th>Current Pay</th> 
       <th>Total Hours</th>
       <th>Total Gross</th>
       <th>Total Bill</th>
@@ -25,9 +25,9 @@
       
       <% end %>
         <td><%= job.company.name %></td>
-        <td><%= job_sym(job) %> <%= link_to job.employee.name, admin_job_path(job) %><br> <small><%= job.title %></small></td>
+        <td><%= job_sym(job) %> <%= link_to job.employee.name, admin_job_path(job) %><br> <small><%= job.title %> &nbsp; (<%=number_to_currency(job.pay_rate)%>)</small></td>
         
-        <td><%= number_to_currency(job.pay_rate) %></td>
+        <td><%= job.current_week_pay %></td>
         <td><%= job.total_hours.round(2) %></td>
         <td><%= number_to_currency(job.total_gross_pay) %></td>
         <td><%= number_to_currency(job.total_gross_bill) %></td>

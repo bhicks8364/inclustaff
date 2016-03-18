@@ -144,11 +144,20 @@
         <% end %>  
         </ul>
       </div>
-      
-      <%= link_to(edit_admin_company_path(@company), class: "btn btn-primary") do %>
-				<i class='fa fa-pencil'></i>
-					Edit Company
-				<% end %>
+      <div class='btn-group'>
+      <%= link_to(new_admin_company_order_path(@company), class: "btn btn-primary") do %>
+			  <i class='fa fa-plus'></i>
+				New Job Order
+			<% end %>
+			<%= link_to(edit_admin_company_path(@company), class: "btn btn-primary") do %>
+			  <i class='fa fa-pencil'></i>
+				Edit Company
+			<% end %>
+			<%= link_to(edit_admin_company_path(@company), class: "btn btn-primary") do %>
+			  <i class='fa fa-pencil'></i>
+				Edit Company
+			<% end %>
+      </div>    
 		</div>
   </div>
   <div role="tabpanel" class="tab-pane fade" id="employees">
@@ -156,9 +165,12 @@
      <div class='table-responsive'>
        <%= render 'admin/shifts/week_calendar', shifts: @company.shifts.current_week %>
      </div>
-     <div class='col-md-12'>
-      <p class='lead text-center'>Hours by Employee <small> Last 4 weeks</small></p>
-      <%= column_chart @company.shifts.sum(:time_worked), xtitle: "Week", ytitle: "Total Hours", library: {height: 300, width: 1000} %>
+      <div class='col-md-12 well well-sm'>
+        <p class='lead text-center'>Hours by Employee <small> Last 4 weeks</small></p>
+        <hr>
+    <%= column_chart @company.jobs.includes(:timesheets).distinct.map{|job|
+            {name: job.name_title, data: job.timesheets.group_by_week('timesheets.week', range: 4.weeks.ago.midnight...Time.current, format: "%m/%d").sum(:total_hours)}
+        }, library: {title: "Employee Hours per Week"}, xtitle: "Week", ytitle: "Total Hours" %>
     </div>
   </div>
   <div role="tabpanel" class="tab-pane fade" id="invoices">

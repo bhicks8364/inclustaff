@@ -1,7 +1,17 @@
-<div class=''>
+<div class='row'>
+  <div class='col-md-4 well well-sm'>
+    <h2>Employees</h2>
+  </div>
+  <div class='col-md-4 well well-sm'>
+    <h2>Employees</h2>
+  </div>
+  <div class='col-md-4 well well-sm'>
+    <h2>Employees</h2>
+  </div>
+</div>
  <h1 class='simple'><%= @current_company.name %></h1>
 <div class='row'>
-  	<div class='col-md-8 well well-sm' data-behavior='timesheet-list'>
+<div class='col-md-8 well well-sm' data-behavior='timesheet-list'>
   	 
   <h2 class=''> Welcome, <%= current_company_admin.name %>!</h2>
   <%= render 'company/orders/table', orders: @current_company.orders %>
@@ -43,6 +53,4 @@
     <%= render 'company/shifts/one_day_calendar', shifts: @shifts if @shifts.present? %>
   </div>
   
-</div>
-
 </div>

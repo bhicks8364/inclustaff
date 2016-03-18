@@ -81,7 +81,7 @@ class Timesheet < ActiveRecord::Base
   scope :approaching_overtime, -> { where('reg_hours > 36') }
   scope :current_week, ->{ joins(:shifts).merge(Shift.current_week) }
   scope :past, -> { joins(:shifts).merge(Shift.past) }
-
+  scope :over_50, -> { where(Timesheet[:total_hours].gteq(50))}
   scope :overtime_errors, -> { where('reg_hours > 40') }
   scope :needing_approval, -> { last_week.pending }
   def self.worked_before(date)

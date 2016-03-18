@@ -45,6 +45,7 @@ class Event < ActiveRecord::Base
     scope :comments, -> { where(action: 'commented')}
     scope :looking_for_work, -> { where(action: 'looking_for_work').joins(:user => :employee).merge(Employee.available)}
     scope :job_approvals, -> { where(action: 'approved', eventable_type: 'Job')}
+    scope :assignment_ended, -> { where(action: 'assignment_ended', eventable_type: 'Job')}
     scope :job_rejections, -> { where(action: 'declined', eventable_type: 'Job')}
     scope :timesheet_approvals, -> { where(action: 'approved', eventable_type: 'Timesheet')}
     scope :clock_outs, -> { where(action: 'clocked_out')}

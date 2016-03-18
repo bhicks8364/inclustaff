@@ -4,11 +4,15 @@
 	<%= event.admin.try(:first_name) %>
 	<%= event.company_admin.try(:first_name)  %>
     <strong>	<%= event.action.humanize.downcase %></strong>
-    a <%= event.eventable_type.downcase %> for
     <% end %>
+    <% if event.eventable.present? %>
+     a <%= event.eventable_type.downcase %> for
     <%=  signed_in_link_to event.eventable.name, event.eventable %> <small> at <%= event.eventable.company.name %></small>
 		<span class='label label-success black pull-right'>
 		    <%= event.created_at.stamp('11/13') %>
 		</span>
+	<% else %>
+	a deleted timesheet.
+	<% end %>
 
 <% end %>

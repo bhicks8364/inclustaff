@@ -14,7 +14,7 @@ jQuery ->
     "scrollY": 500,
     # "ordering": true,
     #"order": [[ 0, "desc" ]],
-    "info":     true
+    # "info":     true
   # $('#employees-datatable').dataTable
   #   sPaginationType: "full_numbers",
   #   "paging":   false,

@@ -1,5 +1,5 @@
 
-
+<%= link_to "Calendar", admin_shifts_path %>
 <div class="col-md-12 mainpage">
 	<%= render 'admin/shared/welcome/payroll_dashboard' if @current_admin.sign_in_count == 1 || @current_agency.subdomain == "demo" %> 
 
@@ -19,7 +19,7 @@
 		<div class="tab-content">
 			<div class="tab-pane fade in active" id="tab-home">
 				<div class='mainpage '>
-	       			<div class='col-md-12 shadow'>
+	       			<div class='col-md-12'>
 	       				
 	       				<%= render 'admin/infoboxes/payroll_boxes' %>
 	       			</div>

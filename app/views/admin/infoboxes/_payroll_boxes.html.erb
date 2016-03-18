@@ -20,14 +20,14 @@
   		
   		
 	
-	<div class="">
+	<div class="col-md-6">
 	  	<p class='lead'>There are still <%= pluralize(@current_agency.timesheets.needing_approval.distinct.count, "pending timesheets") %> from last week.</p>
 	  	<%= div_for @current_agency.companies.with_late_timesheets.distinct do |company| %>
 	  	<%= link_to company.name, admin_company_timesheets_path(company) %>
 	  	<div class='btn-group'><%= convo_for(company: company, type: :timesheet_reminder) %></div>
 	  	<% end %>
 	  </div>
-	<div class='nope-3'>
+	<div class='col-md-6'>
 		<h4 class='text-center'><%= 1.week.ago.end_of_week.stamp("Week ending: Nov 20th") %></h4>
    		<%= pie_chart Timesheet.last_week.group('timesheets.state').distinct.count, 
    		library: {backgroundColor: "#ccc", legend: {position: "bottom"}, is3D: true, title: "Last Week"}%>

@@ -11,9 +11,9 @@
     
     <div class='col-md-9'>
         <%= render "admin/charts/owner_charts" if @admin.owner? %>
-    <%= render "admin/charts/account_manager_charts", admin: @admin if @admin.account_manager? %>
-    <%= render "admin/charts/recruiter_charts", recruiter: @admin if @admin.recruiter? %>
-    <%= render "admin/charts/payroll_charts", admin: @admin if @admin.payroll? %>
+        <%= render "admin/charts/account_manager_charts", admin: @admin if @admin.account_manager? %>
+        <%= render "admin/charts/recruiter_charts", recruiter: @admin if @admin.recruiter? %>
+        <%= render "admin/charts/payroll_charts", admin: @admin if @admin.payroll? %>
         <div class='col-md-4 fa-ul'><%= render 'admin/shared/clocked_in' if  @admin.jobs.on_shift.any? %> </div>
         <div class='col-md-4 fa-ul'><%= render 'admin/shared/on_break' if @admin.jobs.on_break.any? %>  </div>
     </div>

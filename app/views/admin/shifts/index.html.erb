@@ -1,18 +1,17 @@
-<div class='col-md-12 lightbox-long metal'>
-  <h3>Shifts<br><small>Showing <%= @shifts.count %> out of <%= Shift.count %> total</small>
-  </h3>
+<div class='col-md-12 mainpage'>
+  <h3>Shifts</h3>
   
-  <div class='col-md-6'>
+  <div class='form-inline text-center'>
+    <p><small>Showing <%= @shifts.count %> out of <%= Shift.count %> total</small></p>
     <%= render 'shared/searching_between' %>
   </div>
- 
-  <div class='col-md-6 form-inline well well-sm text-center'>
-     <%= render 'search' %>
-  </div>
-
-<%= render 'table' %>
-
-
+<div class="well well-sm scroll400">
+  <%= render 'calendar', shifts: @shifts %>
+</div>
+<hr>
+<div class="well well-sm scroll400">
+  <%= render 'table' %>
+</div>
 
 
 </div>
