@@ -8,12 +8,10 @@
         <h3><%= link_to employee.name, admin_employee_path(employee) %>   <small> Total hours: <%= employee.total_hours.round(2) %></small></h3>
         <p class="">Average hours per week: <%= employee.average_weekly_hours %> <span class='pull-right'>Days: <%= employee.days_from_initial_start %></span></p>
         <%= link_to aca_admin_employee_path(employee), class: "aca-link" do %>
-        
-        <% employee.year_report.each do |k, v| %>
-             <li class='list-group-item list-group-item-info'><strong><%=  k.stamp("2015") %> </strong> -  Total Hours: <%= v.round(2) %>
+        <p>Start Date:<br> <%= employee.initial_start_date.present? ?  employee.initial_start_date.stamp("Monday, October 21, 2016") : "No start date" %></p>
+             <li class='list-group-item list-group-item-info'>Total Hours: <%= employee.year_report.round(2) %> <small>(1560 needed within one year)</small>
              </li>
-             <%= aca_progress(v, 1560) %>
-             <% end %>
+             <%= aca_progress(employee.year_report, 1560) %>
              <% end %>
              <br>
     

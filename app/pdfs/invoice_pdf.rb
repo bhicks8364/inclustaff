@@ -14,24 +14,25 @@ class InvoicePdf < Prawn::Document
         text "Due Date: #{@invoice.due_by.stamp('11/12/2016') }", :color => @color, align: :right
         text @status, :color => "#ccc", align: :left, size: 16
         
+        text "#{@invoice.timesheets.first.try :time_frame}"
         
-        move_down 20
-        text "For staffing services provided by: #{@current_agency.name }", size: 30, style: :bold, :align => :center, :size => 18
         move_down 10
         text "Invoice Id #:#{@invoice.id }", :align => :right
         move_down 10
         text "Invoice for #{@company.name }", :align => :left
-        move_down 20
-        text "Subtotal: #{@view.number_to_currency(@subtotal)}", style: :bold, align: :right, size: 16
-        move_down 20
+        move_down 10
         text "#{helpers.pluralize(@invoice.timesheets.count, 'timesheet')}", align: :right, size: 14
         move_down 2
         stroke_horizontal_rule
-        timesheets
         
+        timesheets
+        stroke_horizontal_rule
+        move_down 20
+        text "Subtotal: #{@view.number_to_currency(@subtotal)}", style: :bold, align: :right, size: 16
         move_down 30
         stroke_horizontal_rule
-        
+        move_down 20
+        text "For staffing services provided by: #{@current_agency.name }", size: 18, style: :bold, :align => :center
        
         move_down 20
     end
@@ -59,9 +60,9 @@ class InvoicePdf < Prawn::Document
     
     
     def timesheets2
-        @t = [["ID", "Type", "Employee", "Bill Rate", "Hours", "Total Bill"]]
-        @invoice.timesheets.map do |timesheet|
-           @t <<  [timesheet.id, timesheet.order.industry, timesheet.employee.name, price(timesheet.bill_rate), timesheet.total_hours.round(2), price(timesheet.total_bill)]
+        @t = [["Dept.", "Name", "Bill", "Hours", "Total"]]
+        @invoice.timesheets.includes(:job => :employee).order("employees.last_name").map do |timesheet|
+           @t <<  [timesheet.order.title, timesheet.employee.name, price(timesheet.job.bill_rate), timesheet.total_hours.round(2), price(timesheet.total_bill)]
         end
         @t
     end

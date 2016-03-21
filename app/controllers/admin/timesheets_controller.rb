@@ -129,7 +129,7 @@ class Admin::TimesheetsController < ApplicationController
       format.html
       format.json
       format.pdf {
-        send_data TimesheetPdf.new(@timesheet, view_context).render,
+        send_data TimesheetPdf.new(@timesheet, view_context, @current_agency).render,
           filename: "#{@timesheet.week_ending}-#{@employee.name}-timesheet.pdf",
           type: "application/pdf",
           disposition: :inline
@@ -139,11 +139,14 @@ class Admin::TimesheetsController < ApplicationController
   end
 
   def new
+      
       if params[:job_id]
           @job = Job.find(params[:job_id])
           @timesheet = @job.timesheets.new
+          @redirect_to = admin_job_timesheets_path(@job)
       else
           @timesheet = Timesheet.new
+          @redirect_to = edit_multiple_admin_timesheets_path
       end
       skip_authorization
   end
@@ -158,12 +161,17 @@ class Admin::TimesheetsController < ApplicationController
       @timesheet.update(approved_by: approved_by, approved_by_type: approved_by_type, state: state)
       user_approved = @timesheet.approved? ? @timesheet.user_approved : @timesheet.state
       current_admin.events.create(action: state, eventable: @timesheet)
-     
-      render json: { id: @timesheet.id, approved: @timesheet.approved?, name: @timesheet.employee.name,
-                    state: @timesheet.state.upcase, user_approved: user_approved, clocked_in: @timesheet.clocked_in? }
-    	else
-      render json: { id: @timesheet.id, approved: @timesheet.approved?, clocked_in: @timesheet.clocked_in?, name: @timesheet.employee.name,
-                    state: @timesheet.state.upcase, user_approved: user_approved }
+        respond_to do |format|
+            if @timesheet.save
+                format.js
+                format.json {render json: { id: @timesheet.id, approved: @timesheet.approved?, name: @timesheet.employee.name,
+                            state: @timesheet.state.upcase, user_approved: user_approved, clocked_in: @timesheet.clocked_in? }}
+            else
+                format.js
+                format.json {render json: { id: @timesheet.id, approved: @timesheet.approved?, clocked_in: @timesheet.clocked_in?, name: @timesheet.employee.name,
+                            state: @timesheet.state.upcase, user_approved: user_approved }}
+            end
+        end
     end
   end
 
@@ -188,7 +196,11 @@ class Admin::TimesheetsController < ApplicationController
     skip_authorization
     respond_to do |format|
       if @timesheet.save
-        format.html { redirect_to admin_timesheet_path(@timesheet), notice: 'Timesheet was successfully created.' }
+          if params[:redirect_to].present?
+              format.html { redirect_to admin_job_timesheets_path(@timesheet.job, anchor: "timesheet_#{@timesheet.id}"), notice: 'Timesheet was successfully updated.' }
+          else
+              format.html { redirect_to admin_job_timesheets_path(@timesheet.job, anchor: "timesheet_#{@timesheet.id}"), notice: 'Timesheet was successfully updated.' }
+          end
         format.json { render :show, status: :created, location: @timesheet }
       else
         format.html { render :new }
@@ -196,23 +208,47 @@ class Admin::TimesheetsController < ApplicationController
       end
     end
   end
+  
+  def edit_multiple
+    #   @companies = @current_agency.companies.with_current_timesheets.order("companies.name").distinct
+      @redirect_to = edit_multiple_admin_timesheets_path
+      @timesheets = @current_agency.timesheets.includes(:job, :order, :company).order(week: :asc).pending.distinct
+      skip_authorization
+  end
+  
+  def update_multiple
+      skip_authorization
+  end
 
   # PATCH/PUT /timesheets/1
   # PATCH/PUT /timesheets/1.json
   def update
+      
     @timesheet.update(timesheet_params)
     week_start = @timesheet.week.beginning_of_week
     @timesheet.week = week_start
     authorize @timesheet
     respond_to do |format|
       if @timesheet.update(timesheet_params)
-        format.html { redirect_to admin_timesheet_path(@timesheet), notice: 'Timesheet was successfully updated.' }
+          if params[:redirect_to].present?
+              format.html { redirect_to edit_multiple_admin_timesheets_path(anchor: "timesheet_#{@timesheet.id}"), notice: 'Timesheet was successfully updated.' }
+          else
+              format.html { redirect_to admin_job_timesheets_path(@timesheet.job, anchor: "timesheet_#{@timesheet.id}"), notice: 'Timesheet was successfully updated.' }
+          end
         format.json { render :show, status: :ok, location: @timesheet }
       else
         format.html { render :edit }
         format.json { render json: @timesheet.errors, status: :unprocessable_entity }
       end
     end
+  end
+  def delete_all_shifts
+      @timesheet = Timesheet.find(params[:timesheet_id])
+      @shifts = @timesheet.shifts
+      @shifts.map(&:destroy)
+      @timesheet.update(state: "pending")
+      skip_authorization
+      redirect_to edit_multiple_admin_timesheets_path(anchor: "timesheet_#{@timesheet.id}"), notice: 'Timesheet was successfully updated.' 
   end
 
   # DELETE /timesheets/1
@@ -248,7 +284,7 @@ class Admin::TimesheetsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def timesheet_params
-      params.require(:timesheet).permit(:week, :job_id, :reg_hours, :ot_hours, :gross_pay, 
+      params.require(:timesheet).permit(:week, :job_id, :reg_hours, :ot_hours, :gross_pay, :reg_bill_rate, :ot_bill_rate, 
         :shifts_attributes => [:id, :state, :job_id, :needs_adj, :employee_id, :note, 
         :time_in, :time_out, :break_out, :break_in, :break_duration, :in_ip, :out_ip, :_destroy])
     end

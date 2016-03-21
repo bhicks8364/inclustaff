@@ -15,10 +15,11 @@
 #  shifts_count     :integer
 #  total_bill       :decimal(, )
 #  invoice_id       :integer
-#  adjustments      :hstore
 #  approved_by_type :string
 #  total_hours      :decimal(, )
 #  week             :date
+#  reg_bill_rate    :decimal(, )
+#  ot_bill_rate     :decimal(, )
 #
 # Indexes
 #
@@ -44,14 +45,15 @@ class Timesheet < ActiveRecord::Base
   accepts_nested_attributes_for :shifts, reject_if: :all_blank, allow_destroy: true
   validates :week, :job_id, presence: true
   validates_associated :shifts
-  delegate :name_title, :pay_rate, :bill_rate, :ot_rate, :agency, :company, :manager, :recruiter, :current_shift, :account_manager, :order_id, to: :job
+  delegate :name_title, :pay_rate, :ot_rate, :agency, :company, :manager, :recruiter, :current_shift, :account_manager, :order_id, to: :job
   delegate :ssn, to: :employee
+
   before_save :total_timesheet, if: :clocked_out?
   after_initialize :defaults
-
+  
   after_save :update_company_balance!, if: :total_bill_changed?
   # before_create :set_job, unless: :has_a_job?
-  before_save :set_total_hours
+  before_save :set_total_hours, :set_bill_rates, :calculate_billing
   # I dont think setting the invoice has to happen before_save. Maybe just before create?
   before_save :set_invoice, unless: :has_invoice?
   after_save :update_invoice!, if: :has_invoice?
@@ -74,7 +76,7 @@ class Timesheet < ActiveRecord::Base
   scope :this_year,    -> { joins(:shifts).merge(Shift.this_year)}
   scope :last_week,    -> { joins(:shifts).merge(Shift.last_week)}
   scope :approaching_overtime, -> { where('reg_hours > 36') }
-  scope :current_week, ->{ joins(:shifts).merge(Shift.current_week) }
+  scope :current_week, ->{ where(week: Time.current.to_date.beginning_of_week)}
   scope :past, -> { joins(:shifts).merge(Shift.past) }
   scope :over_50, -> { where(Timesheet[:total_hours].gteq(50))}
   scope :overtime_errors, -> { where('reg_hours > 40') }
@@ -86,8 +88,11 @@ class Timesheet < ActiveRecord::Base
     includes(:shifts).where(Shift[:time_in].gteq(date))
   end
   def self.occurring_between(date1, date2)
-    includes(:shifts).where(Shift[:time_in].gteq(date1)
+    where(Shift[:time_in].gteq(date1)
       .and(Shift[:time_in].lteq(date2)))
+  end
+  def self.for_the_week_of(date=Time.current.to_date)
+    where(Timesheet[:week].eq(date.beginning_of_week))
   end
   def receipt
     
@@ -147,6 +152,18 @@ class Timesheet < ActiveRecord::Base
     self.reg_hours = 0 if reg_hours.nil?
     self.ot_hours = 0 if ot_hours.nil?
     self.gross_pay = 0 if gross_pay.nil?
+    
+  end
+  def set_bill_rates
+ 
+    self.reg_bill_rate = job.mark_up if reg_bill_rate.nil?
+    self.ot_bill_rate = job.mark_up if ot_bill_rate.nil?
+  end
+  
+  def calculate_billing
+    reg_billing = job.pay_rate * reg_hours * reg_bill_rate
+    ot_billing = job.pay_rate * ot_hours * ot_bill_rate
+    self.total_bill = reg_billing + ot_billing
   end
 
   def set_total_hours
@@ -166,7 +183,9 @@ class Timesheet < ActiveRecord::Base
   end
 
   def last_clock_in
-    shifts.last.time_in
+    if shifts.any?
+      shifts.last.time_in
+    end
   end
 
   def last_clock_out
@@ -175,10 +194,6 @@ class Timesheet < ActiveRecord::Base
     end
   end
   
-  def mark_up
-    (gross_pay / total_bill).round(2)
-  end
-
   def user_approved
     if approved? && approved_by_type == "Admin"
       Admin.find(approved_by).name
@@ -260,17 +275,17 @@ class Timesheet < ActiveRecord::Base
         self.ot_hours = hours - 40
         ot_rate = job.pay_rate * 1.5
         self.gross_pay = job.pay_rate * self.reg_hours + self.ot_hours * ot_rate
-        self.total_bill = gross_pay * job.mark_up
       else
         self.total_hours = hours
         pay = job.pay_rate * hours
         self.reg_hours = hours
         self.ot_hours = 0
         self.gross_pay = pay
-        self.total_bill = pay * job.mark_up
       end
-    
   end
+  
+  
+  
 
   def week_ending
     week.end_of_week.stamp("1/22/2016")

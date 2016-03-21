@@ -28,12 +28,13 @@
         <td><%= shift.time_worked.round(2) %></td>
         <td><%= number_to_currency(shift.pay_rate) %></td>
         <td><%= number_to_currency(shift.earnings) %></td>
-       <% if policy(shift).edit? %>
-        <td class='text-center'><%= link_to(edit_admin_shift_path(shift), class: "button" ) do %>
+      
+        <td class='text-center'>
+          <%= link_to(edit_admin_shift_path(shift), class: "button" ) do %>
 						<i class="fa fa-edit"></i>
 				<% end %>
-				<%= link_to '<i class="fa fa-trash red"></i>'.html_safe, admin_shift_path(shift), method: :delete, data: { confirm: 'Are you sure you want to delete this shift?' }, class: "button" %></td>
-      <% end %>
+				<%= link_to '<i class="fa fa-trash red"></i>'.html_safe, admin_shift_path(shift), method: :delete, data: { confirm: 'Are you sure you want to delete this shift?' }, class: "button" %>
+				</td>
       </tr>
     <% end %>
   </tbody>

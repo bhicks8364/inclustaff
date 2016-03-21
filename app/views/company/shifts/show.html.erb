@@ -7,9 +7,9 @@
     <%= @employee.name %>
   </h1>
 </div>
-<div class='col-md-8 lightbox'>
+<div class='col-md-8'>
   <% if @shift.past? %>
-    <h3 class='white text-center'> <i class="fa fa-calendar"></i> You are currently reviewing a shift from <%= distance_of_time_in_words(@shift.time_in, Time.current, include_seconds: true) %> ago</h3>
+    <h3 class='text-center'> <i class="fa fa-calendar"></i> You are currently reviewing a shift from <%= distance_of_time_in_words(@shift.time_in, Time.current, include_seconds: true) %> ago</h3>
   <% end %>
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
@@ -23,6 +23,7 @@
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="home">
       <div class='col-md-6 well'>
+        
         <div class='' data-behavior="company-job-list">
           <h4>CODE: <%= @employee.code %></h4>
           <p data-behavior='shift-state'>

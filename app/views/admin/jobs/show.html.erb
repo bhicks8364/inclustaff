@@ -3,10 +3,7 @@
   <%else%>
 <div class='col-md-12 mainpage' data-behavior="job-list" >
   <div class='' data-behavior="job" data-id="<%= @job.id %>">
-    <div data-behavior="job-state"><h2 class='text-right'><span class='label label-success'><%= @job.state %></span></h2></div>
-    <div class='page-header'>
-     <h1><%= @job.name_title %></h1>
-    </div>
+    
    <div class='col-md-4 text-center'>
       <h4><%= @job.company.name %></h4>
    </div>
@@ -31,21 +28,26 @@
 
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="job">
+    
+    <div class='pad bg-info'>
+     <h2><%= @job.name_title %> <span data-behavior="job-state" class='label label-success pull-right'><%= @job.state %></span></h2>
+      <h3> Last timesheet date: <%= @job.timesheets.order(week: :desc).last.week_ending if @job.timesheets.any? %></h3>
+    </div>
     <div class='col-md-8 well well-sm'>
     <h4><strong>Interview Notes:</strong></h4>
           <%= markdownify(@job.description) %>
          <% if @job.recruiter.present? %>
           <h5>Recruiter: <%= link_to @job.recruiter.name, admin_admin_path(@job.recruiter) %></h5>
         <% end %>
-          <%= link_to(admin_job_path(@job, format: :pdf), class: 'btn btn-primary') do %>
-            	<i class="fa fa-download fa-md"></i> Candidate Sheet
-            <% end %>
+          
        
             <% if @job.active? %>
         <h4><%= @job.title %><small><%= number_to_currency(@job.pay_rate) %></small></h4>
           <% else %>
           <h3 class='bold metal'> This position is currently inactive.</h3>
         <% end %>
+        
+
 
          </div>
       <div class='col-md-4 well well-sm'>
@@ -80,23 +82,23 @@
           </div>
 
           <% end %>
-          <div class=''>
-          <% if @job.settings['drive_pay'].present? || @job.settings['ride_pay'].present? %>
-            <h3>Pay Differentials</h3>
-            Drive Pay: <%= @job.settings['drive_pay']  %><br>
-            Ride Pay: <%= @job.settings['ride_pay'] if @job.settings %><br>
-          <% end %>
-          </div>
+         
       </div>
+      <div class='col-md-8'>
+            <hr>
+          <%= column_chart @job.timesheets.group_by_week(:week, range: @employee.initial_start_date.beginning_of_week.midnight..Time.current, format: "%a, %m/%d").sum(:total_hours), xtitle: "Week", ytitle: "Total Hours", library: {height: 300, width: 900} %>
+        </div>
   </div>
 <div role="tabpanel" class="tab-pane fade" id="timesheets">
   <h3>Timesheets</h3>
-  <%= link_to "New Timesheet", new_admin_job_timesheet_path(@job), class: "btn btn-success" %>
+  <div class='well'>
   <div class='btn-group'>
+    <%= link_to "New Timesheet", new_admin_job_timesheet_path(@job), class: "btn btn-success" %>
     <%= link_to "Timesheets", admin_job_timesheets_path(@job), class: "btn btn-success" %>
     <%= link_to "Past Timesheets", past_admin_job_timesheets_path(@job), class: "btn btn-success" %>
   </div>
-  <div class='col-md-10' data-behavior='timesheet-list'>
+  </div>
+  <div class='col-md-12' data-behavior='timesheet-list'>
     <%= render "admin/timesheets/table", timesheets: @timesheets %>
   </div>
 </div>

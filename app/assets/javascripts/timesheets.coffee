@@ -34,18 +34,18 @@ class Timesheet
 
   handleToggleSuccess: (data) =>
     if data.approved
-      @item.removeClass('bg-info').addClass('bg-success')
-      @item.find("[data-behavior='approve-button']").html "<i class='fa fa-times fa-lg'></i> #{data.state}"
+      @item.toggleClass('approved')
+      @item.find("[data-behavior='approve-button']").html "<i class='fa fa-clock-o green fa-fw'></i> #{data.state}"
       @item.prependTo("#approved");
       @item.find("[data-behavior='user-approved']").html "<small>Approved by: #{data.user_approved}</small>"
     else
-      @item.removeClass('bg-success').addClass('bg-info')
-      @item.find("[data-behavior='approve-button']").html "<i class='fa fa-check fa-lg'></i> #{data.state}"
+      @item.toggleClass('approved')
+      @item.find("[data-behavior='approve-button']").html "<i class='fa fa-clock-o red fa-fw'></i> #{data.state}"
       @item.prependTo("#pending");
       @item.find("[data-behavior='user-approved']").html ""
 
     if data.clocked_in
-      alert("#{data.name} is currently clocked in. Please clock them out before editing their timesheet.")
+      @item.find("[data-behavior='user-approved']").text("#{data.name} is currently clocked in. Please clock them out before editing their timesheet.")
 
 jQuery ->
   new TimesheetList $("[data-behavior='timesheet-list']")

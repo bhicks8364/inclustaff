@@ -79,160 +79,134 @@ class Order < ActiveRecord::Base
 
   validates :company_id,  presence: true
   validates :needed_by, presence: true
-
-
-    # CALLBACKS
-    after_initialize :defaults
-    before_validation :set_mark_up
-    after_save :set_note_skills
-    # before_save :set_needed_by, if: :urgent?
-
+  # CALLBACKS
+  after_initialize :defaults
+  before_validation :set_mark_up
+  after_save :set_note_skills
   #  GEOCODER
   geocoded_by :address
   after_validation :set_address, :geocode
+  # NESTED ATTRIBUTES
+  accepts_nested_attributes_for :jobs
+  
+  accepts_nested_attributes_for :skills, reject_if: :all_blank, allow_destroy: true
 
+  # SCOPES
+  scope :needing_company_approval, -> { where("requirements ? :key", :key => 'company_approval')}
+  scope :needing_agency_approval, -> { where("requirements ? :key", :key => 'agency_approval')}
+  scope :active, -> { where(active: true)}
+  scope :inactive, -> { where(active: false)}
+  scope :urgent, -> { where(urgent: true)}
+  scope :with_active_jobs, -> { joins(:jobs).merge(Job.active)}
+  scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.current_week)}
+  scope :off_shift, -> { joins(:jobs).merge(Job.off_shift)}
+  scope :needs_attention, -> { active.where(Order[:number_needed].gt(Order[:jobs_count])) }
+  scope :priority, -> { needs_attention.where(Order[:needed_by].lteq(Time.current + 3.days))}
+  scope :newly_added, -> { needs_attention.where(Order[:created_at].gteq(Time.current - 1.day))}
+  scope :overdue, -> { needs_attention.where(Order[:needed_by].lteq(Time.current))}
+  scope :published, -> { needs_attention.where(Order[:published_at].lteq(Time.current))}
+  scope :unpublished, -> { needs_attention.where(Order[:published_at].eq(nil))}
+  scope :long,    -> { where(NamedFunction.new("LENGTH", [Order[:notes]]).gt(200))}
+  def self.filled
+    OrderQueryBuilder.new.filled
+  end
+  def defaults
+    self.needed_by = Date.today + 5.days if self.needed_by.nil?
+    # Just putting this in here until I figure out how to format bootstrap datepicker
+    self.active = true if self.active.nil?
+    self.urgent = false if self.urgent.nil?
+    self.jobs_count = 0 if self.jobs_count.nil?
+    self.aca_type = "Variable-Hour" if aca_type.nil?
+    self.requirements = {} if requirements.nil?
+    # self.account_manager = company.current_account_manager if account_manager_id.nil?
+  end
+  def set_account_manager
+    self.account_manager = Admin.account_managers.first
+  end
 
-    # NESTED ATTRIBUTES
-    accepts_nested_attributes_for :jobs
-    
-    accepts_nested_attributes_for :skills, reject_if: :all_blank, allow_destroy: true
-
-    # SCOPES
-    scope :needing_company_approval, -> { where("requirements ? :key", :key => 'company_approval')}
-    scope :needing_agency_approval, -> { where("requirements ? :key", :key => 'agency_approval')}
-    scope :active, -> { where(active: true)}
-    scope :inactive, -> { where(active: false)}
-    scope :urgent, -> { where(urgent: true)}
-    scope :with_active_jobs, -> { joins(:jobs).merge(Job.active)}
-    scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.current_week)}
-    scope :off_shift, -> { joins(:jobs).merge(Job.off_shift)}
-    scope :needs_attention, -> { active.where(Order[:number_needed].gt(Order[:jobs_count])) }
-    scope :priority, -> { needs_attention.where(Order[:needed_by].lteq(Time.current + 3.days))}
-    scope :newly_added, -> { needs_attention.where(Order[:created_at].gteq(Time.current - 1.day))}
-    scope :overdue, -> { needs_attention.where(Order[:needed_by].lteq(Time.current))}
-    scope :published, -> { needs_attention.where(Order[:published_at].lteq(Time.current))}
-    scope :unpublished, -> { needs_attention.where(Order[:published_at].eq(nil))}
-    scope :long,    -> { where(NamedFunction.new("LENGTH", [Order[:notes]]).gt(200))}
-    def self.filled
-      OrderQueryBuilder.new.filled
-    end
-    def defaults
-      self.needed_by = Date.today + 5.days if self.needed_by.nil?
-      # Just putting this in here until I figure out how to format bootstrap datepicker
-      self.active = true if self.active.nil?
-      self.urgent = false if self.urgent.nil?
-      self.jobs_count = 0 if self.jobs_count.nil?
-      self.aca_type = "Variable-Hour" if aca_type.nil?
-      self.requirements = {} if requirements.nil?
-      # self.account_manager = company.current_account_manager if account_manager_id.nil?
-    end
-    def set_account_manager
-      self.account_manager = Admin.account_managers.first
-    end
-
-    def set_mark_up
-      self.title = title.titleize
-      if max_pay.present? && mark_up.nil?
-        case max_pay
-        when (8..10)
-          self.mark_up = 1.5
-        when (11..12)
-          self.mark_up = 1.55
-        when (12..18)
-          self.mark_up = 1.60
-        when (18..30)
-          self.mark_up = 1.65
-        else
-          self.mark_up = 1.55
-        end
+  def set_mark_up
+    self.title = title.titleize
+    if max_pay.present? && mark_up.nil?
+      case max_pay
+      when (8..10)
+        self.mark_up = 1.5
+      when (11..12)
+        self.mark_up = 1.55
+      when (12..18)
+        self.mark_up = 1.60
+      when (18..30)
+        self.mark_up = 1.65
+      else
+        self.mark_up = 1.55
       end
     end
-    # def self.ransackable_attributes(auth_object = nil)
-    #   if auth_object == :admin
-    #     # whitelist all attributes for admin
-    #     super & %w(with_current_timesheets priority newly_added mark_up bwc_code active number_needed address needed_by aca_type mobile_time_clock_enabled title notes min_pay max_pay heavy_lifting education requirements industry shift est_duration stwb bg_check)
-    #   else
-    #     # whitelist only the title and body attributes for other users
-    #     super & %w(title notes min_pay max_pay)
-    #   end
-    # end
-    
-    # def self.ransortable_attributes(auth_object = nil)
-    #   if auth_object == :admin
-    #     # whitelist all attributes for admin
-    #     super & %w(with_current_timesheets priority newly_added mark_up bwc_code active number_needed address needed_by aca_type mobile_time_clock_enabled title notes min_pay max_pay heavy_lifting education requirements industry shift est_duration stwb bg_check)
-    #   else
-    #     # whitelist only the title and body attributes for other users
-    #     super & %w(title notes min_pay max_pay heavy_lifting education requirements industry shift est_duration stwb bg_check address)
-    #   end
-    # end
-    
-    
-    def status
-        if overdue?
-            "Overdue"
-        elsif priority?
-           "Priority"
-        elsif needs_attention?
-            "Open"
-        elsif filled?
-           "Filled"
-        elsif inactive?
-            "Inactive"
-        else
-            ""
-        end
-      
-    end
-    def inactive?
-      active == false
-    end
-    
-    def to_param
-      "#{id}-#{title.parameterize }"
-    end
-    
-    def needs_agency_approval?; requirements['agency_approval'] == "true"; end
-    def needs_company_approval?;  requirements['company_approval'] == "true";  end
-    def needs_approval?;  needs_agency_approval? || needs_company_approval?;  end
-
-    def send_approval_notifications!
-      # TODO
-      # sends notification to the account manager if needs_agency_approval?
-      # send notifications to the manager if needs_company_approval?
-    end
-
-    def set_address
-      self.address = "#{company.address} #{company.city}, #{company.state}" if address.blank? && company.present?
-    end
-
-    def self.by_recruiter(admin_id)
-        joins(:jobs).where( :jobs => { :recruiter_id => admin_id } )
-    end
-    def self.with_no_timesheets
-      where(active: true)
-    end
-
-    def pay_range
-      "#{min_pay} - #{max_pay}"
-    end
-    def location
-      "#{company.city}, #{company.state}"
-    end
-    def not_urgent?
-      urgent == false
-    end
-    def overdue?
-      needs_attention? && needed_by <= Date.today
-    end
-    def priority?
-      needs_attention? && needed_by <= Date.today + 1.week
-    end
-    def set_needed_by
-      if needed_by.nil?
-        self.needed_by = Date.today
+  end
+  
+  def status
+      if overdue?
+          "Overdue"
+      elsif priority?
+         "Priority"
+      elsif needs_attention?
+          "Open"
+      elsif filled?
+         "Filled"
+      elsif inactive?
+          "Inactive"
+      else
+          ""
       end
+    
+  end
+  def inactive?
+    active == false
+  end
+  
+  def to_param
+    "#{id}-#{title.parameterize }"
+  end
+  
+  def needs_agency_approval?; requirements['agency_approval'] == "true"; end
+  def needs_company_approval?;  requirements['company_approval'] == "true";  end
+  def needs_approval?;  needs_agency_approval? || needs_company_approval?;  end
+
+  def send_approval_notifications!
+    # TODO
+    # sends notification to the account manager if needs_agency_approval?
+    # send notifications to the manager if needs_company_approval?
+  end
+
+  def set_address
+    self.address = "#{company.address} #{company.city}, #{company.state}" if address.blank? && company.present?
+  end
+
+  def self.by_recruiter(admin_id)
+      joins(:jobs).where( :jobs => { :recruiter_id => admin_id } )
+  end
+  def self.with_no_timesheets
+    where(active: true)
+  end
+
+  def pay_range
+    "#{min_pay} - #{max_pay}"
+  end
+  def location
+    "#{company.city}, #{company.state}"
+  end
+  def not_urgent?
+    urgent == false
+  end
+  def overdue?
+    needs_attention? && needed_by <= Date.today
+  end
+  def priority?
+    needs_attention? && needed_by <= Date.today + 1.week
+  end
+  def set_needed_by
+    if needed_by.nil?
+      self.needed_by = Date.today
     end
+  end
 
   def needs_attention?
     active? && number_needed > jobs.active.count

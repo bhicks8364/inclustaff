@@ -102,12 +102,14 @@ Rails.application.routes.draw do
       end
 
       resources :timesheets do
-        resources :comments
+        get 'delete_all_shifts'
         collection do
+          get 'edit_multiple'
+          put 'update_multiple'
           get 'past'
           get 'last_week'
         end
-
+        resources :shifts 
       end
       resources :employees do
         member do

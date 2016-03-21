@@ -1,0 +1,20 @@
+<div class='col-md-4'>
+    <h3 class='white'>By Week <small>over 30 hours</small></h3>
+    <div class='list-group scroll300'><% employee.current_report.each do |k, v| %>
+         <li class='list-group-item list-group-item-info'><strong><%=  k.stamp("Oct 2, 2015") %> </strong> -  Total Hours: <%= v.round(2) %>
+                 
+         </li>
+        <%= aca_progress(v, 30) %>
+         <% end %>
+    </div>
+</div>
+<div class='col-md-4'>
+    <h3 class='white'>By Month <small>over 130 hours</small></h3>
+    <div class=' list-group scroll300'><% employee.timesheets.group_by_month(:week, range: employee.initial_start_date...Time.current).sum(:total_hours).each do |k, v| %>
+         <li class='list-group-item list-group-item-info'><strong><%=  k.stamp("October 2015") %> </strong> -  Total Hours: <%= v.round(2) %>
+         </li>
+         <%= aca_progress(v, 130) %>
+         <% end %>
+    </div>
+</div>
+

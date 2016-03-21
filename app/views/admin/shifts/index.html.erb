@@ -1,17 +1,27 @@
 <div class='col-md-12 mainpage'>
+  <% if @timesheet.present? %>
+  <h3>Shifts for <%= @timesheet.name %></h3>
+  <div class="well well-sm scroll400">
+    <%= render 'table' %>
+  </div>
+  <div class="well well-sm scroll400">
+    <%= render 'wk_calendar', shifts: @shifts %>
+  </div>
+  <% else %>
   <h3>Shifts</h3>
-  
   <div class='form-inline text-center'>
     <p><small>Showing <%= @shifts.count %> out of <%= Shift.count %> total</small></p>
     <%= render 'shared/searching_between' %>
   </div>
-<div class="well well-sm scroll400">
-  <%= render 'calendar', shifts: @shifts %>
-</div>
-<hr>
-<div class="well well-sm scroll400">
-  <%= render 'table' %>
-</div>
+  <div class="well well-sm scroll400">
+    <%= render 'calendar', shifts: @shifts %>
+  </div>
+  <hr>
+  <div class="well well-sm scroll400">
+    <%= render 'table' %>
+  </div>
+  <% end %>
+  
 
 
 </div>

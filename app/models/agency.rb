@@ -80,7 +80,7 @@ class Agency < ActiveRecord::Base
   end
 
   def shifts
-    Shift.order(updated_at: :desc)
+    Shift.order(time_in: :desc)
   end
 
   def timesheets
@@ -89,6 +89,10 @@ class Agency < ActiveRecord::Base
 
   def current_timesheets
     Timesheet.current_week.order(week: :desc)
+  end
+  
+  def billing_for(week_of=Date.today)
+    Timesheet.occurring_between(week.beginning_of_week, week.end_of_week)
   end
 
   def current_billing

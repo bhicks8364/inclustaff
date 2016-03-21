@@ -54,9 +54,10 @@ class Company < ActiveRecord::Base
     has_many :shift_comments, through: :shifts, source: 'comments'
 
     scope :with_pending_jobs, -> { joins(:orders => :jobs).merge(Job.pending_approval)}
+    scope :with_active_jobs, -> { joins(:orders => :jobs).merge(Job.currently_working)}
     scope :with_open_orders, -> { joins(:orders).merge(Order.needs_attention)}
     scope :with_balance, -> { where(Company[:balance].gt(0).and(Company[:balance].not_eq(nil))) }
-    scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.current_week)}
+    scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.current_week.distinct)}
     scope :ordered_by_current_bill, -> { includes(:current_timesheets).order('timesheets.total_bill') }
     scope :with_late_timesheets, -> { joins(:timesheets).merge(Timesheet.needing_approval)}
     store_accessor :preferences, :current_account_manager

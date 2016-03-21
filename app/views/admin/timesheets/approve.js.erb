@@ -1,0 +1,4 @@
+$("#timesheet_<%=@timesheet.id%>").toggleClass("approved");
+$("#user-approved_<%=@timesheet.id%>").html("<small> Approved by: <%= @timesheet.approved? ? @timesheet.user_approved : "" %></small>");
+$("#timesheet_<%=@timesheet.id%>_state").html("<%=@timesheet.state.upcase%>");
+$("#btn_<%=@timesheet.id%>").hide();

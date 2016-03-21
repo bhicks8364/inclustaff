@@ -1,7 +1,7 @@
 
 <% if timesheets.present? %>
 <div class='table-responsive'>
-<table  id="<%= timesheets.last.approved? ? 'approved' : 'pending' %>" class="table table-bordered table-hover">
+<table id="<%= timesheets.last.approved? ? 'approved' : 'pending' %>" class="table table-bordered table-hover">
 	<thead>
 		<th class='white'><%= @q.present? ? sort_link(@q, :week, 'Week') : "Week" %></th>
 		<% if @employee.nil? %><th class='white'><%= @q.present? ? sort_link(@q, :employee_last_name, 'Employee') : "Employee" %></th><% end %>
@@ -13,7 +13,7 @@
 	
 	
 		<% timesheets.order(week: :desc).each do |timesheet| %>
-		<tr data-behavior="timesheet" data-id="<%= timesheet.id %>" class="<%= timesheet.approved? ? 'bg-success' : 'bg-info' %>">
+		<tr id="timesheet_<%= timesheet.id %>" data-behavior="timesheet" data-id="<%= timesheet.id %>" class="<%= timesheet.approved? ? 'bg-success' : 'bg-info' %>">
 			<td><strong><%= link_to timesheet.week_ending, admin_timesheet_path(timesheet), class: 'button' %></strong></td>
 		<% if @employee.nil? %><td class='text-left'><%= link_to timesheet.employee.name, admin_job_path(timesheet.job), class: 'bold' %> <br> <%= link_to "#{truncate(timesheet.order.title, length: 15)}", admin_order_path(timesheet.order), class: 'small'  %></td><% end %>
 			<td class='text-center'><%= timesheet.gross_pay.present? ? pay_for(timesheet) : timesheet.shifts.last.state.upcase %></td>

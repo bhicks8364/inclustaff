@@ -31,10 +31,11 @@
 class Job < ActiveRecord::Base
     belongs_to :employee
     belongs_to :order, counter_cache: true
+    has_one :company, through: :order
     has_many :timesheets
     has_many :shifts
     has_one :current_shift,-> { where.not(state: "Clocked Out") }, class_name: 'Shift'
-    has_one :current_timesheet,-> { where(Timesheet[:week].eq(Date.today.beginning_of_week))  }, class_name: 'Timesheet'
+    has_one :current_timesheet,-> { where(Timesheet[:week].eq(Time.current.to_date.beginning_of_week))  }, class_name: 'Timesheet'
     belongs_to :recruiter, class_name: "Admin", foreign_key: "recruiter_id"
     has_many :comments, as: :commentable
     has_many :events, as: :eventable
@@ -77,18 +78,17 @@ class Job < ActiveRecord::Base
     scope :with_recent_comments,    -> { joins(:comments).merge(Comment.payroll_week)}
     scope :with_notes,    -> { where(NamedFunction.new("LENGTH", [Job[:description]]).gt(2))}
     scope :active, -> { where(active: true)}
-    scope :with_employee, ->  { includes(:employee) }
     scope :have_ended, -> { where(Job[:end_date].not_eq(nil)) }
     scope :inactive, -> { where(active: false)}
-    scope :pending_approval,      -> { where(state: "Pending Approval")}
-    scope :currently_working,     -> { where(state: "Currently Working")}
-    scope :ended_assignments,     -> { where(state: "Assignment Ended")}
-    scope :already_working,     -> { where(state: "Already Working")}
-    scope :declined_by_agency,    -> { where(state: "Declined by agency")}
-    scope :declined_by_company,   -> { where(state: "Declined by company")}
-    scope :declined_by_candidate, -> { where(state: "Declined by candidate")}
-    scope :declined,    -> { where(state: ["Declined by agency", "Declined by company", "Declined by candidate"])}
-    scope :new_start, -> { where(Job[:start_date].gteq(Date.today.beginning_of_week)) }
+    scope :pending_approval,      -> { includes(:employee).where(state: "Pending Approval")}
+    scope :currently_working,     -> { includes(:employee).where(state: "Currently Working")}
+    scope :ended_assignments,     -> { includes(:employee).where(state: "Assignment Ended")}
+    scope :already_working,     -> { includes(:employee).where(state: "Already Working")}
+    scope :declined_by_agency,    -> { includes(:employee).where(state: "Declined by agency")}
+    scope :declined_by_company,   -> { includes(:employee).where(state: "Declined by company")}
+    scope :declined_by_candidate, -> { includes(:employee).where(state: "Declined by candidate")}
+    scope :declined,    -> { includes(:employee).where(state: ["Declined by agency", "Declined by company", "Declined by candidate"])}
+    scope :new_start, -> { includes(:employee).where(Job[:start_date].gteq(Date.today.beginning_of_week)) }
 
     # THESE WORKED!!!
     scope :on_shift, -> { includes(:employee).joins(:shifts).merge(Shift.clocked_in)}
@@ -157,7 +157,6 @@ class Job < ActiveRecord::Base
     end
     
     def on_shift?
-        # status == "Clocked In"
         shifts.clocked_in.any?
     end
     def on_break?
@@ -248,26 +247,16 @@ class Job < ActiveRecord::Base
     end
 
     def current_week_pay
-
-        if shifts.current_week.any?
-            hours = shifts.current_week.sum(:time_worked)
-            if hours > 40
-                reg_hours = 40
-                ot_hours = hours - 40
-                ot_rate = pay_rate * 1.5
-                pay_rate * reg_hours + ot_hours * ot_rate
-            else
-                pay_rate * hours
-            end
+        if timesheets.current_week.any?
+            timesheets.current_week.sum(:gross_pay)
         else
             0.00
         end
-
     end
 
     def current_week_hours
-        if shifts.current_week.any?
-            shifts.current_week.sum(:time_worked)
+        if timesheets.current_week.any?
+            timesheets.current_week.sum(:total_hours)
         else
             0.00
         end
@@ -287,7 +276,7 @@ class Job < ActiveRecord::Base
     end
 
     def total_hours
-        shifts.sum(:time_worked)
+        timesheets.sum(:total_hours)
     end
     def first_day
         if shifts.any?
@@ -298,15 +287,7 @@ class Job < ActiveRecord::Base
     end
 
     def total_gross_pay
-        hours = shifts.sum(:time_worked)
-        if hours > 40
-            reg_hours = 40
-            ot_hours = hours - 40
-            ot_rate = pay_rate * 1.5
-            pay_rate * reg_hours + ot_hours * ot_rate
-        else
-            pay_rate * hours
-        end
+        timesheets.sum(:gross_pay)
     end
 
     def total_gross_bill

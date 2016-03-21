@@ -124,9 +124,10 @@ class Employee < ActiveRecord::Base
   scope :newly_added, -> { where("employees.created_at >= ?", 3.days.ago) }
 
   def initial_start_date
-    if shifts.any?
-      shifts.order(:time_in).first.time_in
-
+    if timesheets.any?
+      timesheets.order(week: :desc).last.week
+    else
+      jobs.any? ? jobs.last.start_date : Date.today
     end
   end
   def days_from_initial_start
@@ -147,7 +148,7 @@ class Employee < ActiveRecord::Base
   end
 
   def year_report
-    shifts.group_by_year(:time_in, range: initial_start_date...Time.current).sum(:time_worked)
+    timesheets.sum(:total_hours)
   end
 
 
@@ -155,7 +156,7 @@ class Employee < ActiveRecord::Base
     shifts.any? ? shifts.last.state.humanize : "No Shifts"
   end
   def total_hours
-      shifts.sum(:time_worked)
+      timesheets.sum(:total_hours)
   end
   def self.sorted_by_total_hours
     all.sort_by(&:total_hours).reverse!
@@ -164,10 +165,8 @@ class Employee < ActiveRecord::Base
   #   shifts.group_by_year(:time_in, range: Time.current.beginning_of_year.midnight...Time.current).sum(:time_worked)
   # end
   def current_report
-    shifts.group_by_week(:time_in, range: initial_start_date...Time.current).sum(:time_worked)
+    timesheets.any? ? timesheets.group_by_week(:week, range: initial_start_date...Time.current).sum(:total_hours) : []
   end
-
-
 
   def current_timesheet
     if timesheets.current_week.any?

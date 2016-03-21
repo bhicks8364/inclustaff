@@ -19,9 +19,9 @@
   <tbody>
     <% jobs.each do |job| %>
     <% if job.on_shift? %>
-    <tr class="success">
+    <tr class="bg-success">
       <% else%>
-    <tr class="info">
+    <tr class="bg-info">
       
       <% end %>
         <td><%= job.company.name %></td>

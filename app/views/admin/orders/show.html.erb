@@ -5,14 +5,14 @@
     <div class=''>
       <h3 class='text-center'><%= lg_status_tag(@order) %> <%= status_msg(@order) %></h3>
          <hr>
-  <h4 class='text-info text-center'> <span class='label label-info black'><%= @order.needs_approval? ? "Requires Pre-Approval" : "" %></span></h4>
+  <p class='text-info text-center'> <span class='label label-info black'>
+    <%= @order.needs_approval? ? "Requires Pre-Approval" : "" %></span></p>
      
      <p class='text-center'><%= @order.address %> <%= render "order_map", order: @order %></p>
       <p class='lead'>Needed: <%= @order.number_needed %> <br>
         Active: <%= @order.jobs.active.count %><br>
         Open: <%= @order.open_jobs %>
       </p>
-       
       <p class='lead'><strong>ACA Type:</strong> <br><%= @order.aca_type %></p>
        
       <div class=''>

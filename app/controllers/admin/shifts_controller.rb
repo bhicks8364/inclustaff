@@ -5,17 +5,22 @@ class Admin::ShiftsController < ApplicationController
   layout "admin_layout"
 
   def index
-    Chronic.time_class = Time.zone
-    @start_time = Chronic.parse(params[:date1])
-    @end_time = Chronic.parse(params[:date2])
-    if @start_time.present? && @end_time.present?
-      @shifts = Shift.occurring_between(@start_time, @end_time).distinct
-    elsif @start_time.present?
-      @shifts = Shift.worked_after(@start_time).distinct
-    elsif @end_time.present?
-      @shifts = Shift.worked_before(@end_time).distinct
+    if params[:timesheet_id].present?
+      @timesheet = Timesheet.find(params[:timesheet_id])
+      @shifts = @timesheet.shifts.order(time_in: :desc)
     else
-      @shifts = Shift.all
+      Chronic.time_class = Time.zone
+      @start_time = Chronic.parse(params[:date1])
+      @end_time = Chronic.parse(params[:date2])
+      if @start_time.present? && @end_time.present?
+        @shifts = Shift.occurring_between(@start_time, @end_time).distinct
+      elsif @start_time.present?
+        @shifts = Shift.worked_after(@start_time).distinct
+      elsif @end_time.present?
+        @shifts = Shift.worked_before(@end_time).distinct
+      else
+        @shifts = Shift.all
+      end
     end
 
     # gon.shifts = @shifts
@@ -191,7 +196,11 @@ class Admin::ShiftsController < ApplicationController
       end
     end
   end
-
+  def delete_all
+      @timesheet = Timesheet.find(params[:timesheet_id])
+      @shifts = @timesheet.shifts
+      @shifts.map(&:destroy)
+  end
   # DELETE /shifts/1
   # DELETE /shifts/1.json
   def destroy
@@ -199,7 +208,7 @@ class Admin::ShiftsController < ApplicationController
 
     @shift.destroy
     respond_to do |format|
-      format.html { redirect_to admin_shifts_path, notice: 'Shift was successfully destroyed.' }
+      format.html { redirect_to edit_multiple_admin_timesheets_path, notice: 'Shift was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

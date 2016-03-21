@@ -15,10 +15,11 @@
 #  shifts_count     :integer
 #  total_bill       :decimal(, )
 #  invoice_id       :integer
-#  adjustments      :hstore
 #  approved_by_type :string
 #  total_hours      :decimal(, )
 #  week             :date
+#  reg_bill_rate    :decimal(, )
+#  ot_bill_rate     :decimal(, )
 #
 # Indexes
 #

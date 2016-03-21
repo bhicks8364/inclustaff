@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160308225120) do
+ActiveRecord::Schema.define(version: 20160318202721) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -480,10 +480,11 @@ ActiveRecord::Schema.define(version: 20160308225120) do
     t.integer  "shifts_count"
     t.decimal  "total_bill"
     t.integer  "invoice_id"
-    t.hstore   "adjustments"
     t.string   "approved_by_type"
     t.decimal  "total_hours"
     t.date     "week"
+    t.decimal  "reg_bill_rate"
+    t.decimal  "ot_bill_rate"
   end
 
   add_index "timesheets", ["approved_by_type"], name: "index_timesheets_on_approved_by_type", using: :btree
