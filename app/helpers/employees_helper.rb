@@ -18,6 +18,9 @@
 #  desired_shift    :string
 #  availability     :hstore
 #  dns              :boolean          default(FALSE)
+#  exsisting_hours  :decimal(, )      default(0.0)
+#  aca_hours        :decimal(, )      default(0.0)
+#  status           :string           default("New")
 #
 # Indexes
 #

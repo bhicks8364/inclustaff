@@ -11,16 +11,20 @@
     </div>
   <% end %>
 
+ <% if @order.present? %>
   <h4><strong>Job Information</strong></h4>
   <%= @order.title %> <br> <%= @company.name %>
+  <% end %>
   <div class='form-group'>
     <%= f.association :recruiter, collection: @current_agency.recruiters.order(:last_name), prompt: "Select Recruiter", label: false if !current_admin.recruiter? %>
-    <%= f.association :employee, collection: @current_agency.employees.available.order(:last_name), prompt: "Select Employee", label: false %>
+    <%= f.association :employee, collection: @current_agency.employees.available.order(:last_name), prompt: "Select Employee", label: false, required: true %>
+    <%= f.association :order, collection: @current_agency.orders.needs_attention.order(:title), prompt: "Select Job Order", label: false, required: true if @order.nil? %>
 
     <%= f.input :title, placeholder: "Job Title", required: true, label: false %>
     <%= f.input :description, as: :text, placeholder: "Interview Notes", data: {behavior: ''}, input_html: { rows: 10, class: "myatwho" }, label: false %>
-    <%= f.input :start_date, as: :string, input_html: { class: 'datepicker' }, placeholder: "Start date", required: true, label: false %>
-    <%= f.input :pay_rate, as: :decimal, placeholder: "Pay Rate", label: false, input_html: {value: @order.min_pay} %>
+    <%= f.input :start_date, default: Date.tomorrow, as: :date, hint: "Today is #{Time.current.stamp("Monday May 25th, 2016") }", end_year: Date.today.year + 1, start_year: Date.today.year, order: [:month, :day, :year], wrapper_html: {class: "form-inline"}, label: "When do they start?", label_html: { class: 'needed_by' } %>
+    <%= f.input :pay_rate, as: :decimal, placeholder: "Pay Rate", label: false, input_html: {value: @order.min_pay} if @order.present? %>
+    <%= f.input :pay_rate, as: :decimal, placeholder: "Pay Rate", label: false, input_html: {min: 8.10} if @order.nil? %>
   </div>
 
   <div class='form-group'>
@@ -41,7 +45,9 @@
   </div>
 
   <div class='form-actions'>
+    <% if @order.present? %>
     <%= f.submit "Send for Approval", class: 'btn btn-primary' if @order.needs_approval? && params[:action] != 'edit' %>
+    <% end %>
     <%= f.submit "Assign Now", class: 'btn btn-success' if params[:action] != 'edit' %>
     <%= f.submit "Save Changes", class: 'btn btn-success' if params[:action] == 'edit' %>
   </div>

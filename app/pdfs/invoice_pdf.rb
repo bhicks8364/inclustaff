@@ -60,9 +60,9 @@ class InvoicePdf < Prawn::Document
     
     
     def timesheets2
-        @t = [["Dept.", "Name", "Bill", "Hours", "Total"]]
+        @t = [["Dept.", "Name", "Bill", "Hours", "Total", "Adj"]]
         @invoice.timesheets.includes(:job => :employee).order("employees.last_name").map do |timesheet|
-           @t <<  [timesheet.order.title, timesheet.employee.name, price(timesheet.job.bill_rate), timesheet.total_hours.round(2), price(timesheet.total_bill)]
+           @t <<  [timesheet.order.title, timesheet.employee.name, price(timesheet.job.bill_rate), timesheet.total_hours.round(2), price(timesheet.total_bill), price(timesheet.adjustments.sum(:amount))]
         end
         @t
     end

@@ -3,5 +3,4 @@
       <h5><strong><%= conversation.subject %></strong></h5>
       <p> To: <%= (conversation.recipients - [current_admin]).map(&:name).join(", ") %></p>
     <% end %>
-    <%= link_to "#{convo_icon(conversation)}".html_safe, mark_as_unread_admin_conversation_path(conversation), id: "toogle-read", class: "pull-right", method: :patch, remote: true %>
 </div>

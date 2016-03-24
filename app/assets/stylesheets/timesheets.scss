@@ -4,6 +4,7 @@
 .timesheet {
   background-color: #ccc;
   padding: 8px;
+  border: solid 2px black;
   &:target {
     background-color: #ccc;
   }
@@ -11,6 +12,16 @@
 }
 .approved {
   background-color: $light-green;
+}
+.company {
+  border: solid 0.5px black;
+  padding: 2px;
+}
+.reminder {
+  margin-left: 38px;
+  a{
+    text-align: right;
+  }
 }
 // .timeline {
 //   list-style: none;

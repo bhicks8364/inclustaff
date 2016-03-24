@@ -20,6 +20,7 @@
 #  week             :date
 #  reg_bill_rate    :decimal(, )
 #  ot_bill_rate     :decimal(, )
+#  week_ending      :date
 #
 # Indexes
 #

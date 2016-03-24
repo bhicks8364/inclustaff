@@ -8,28 +8,33 @@
     <%= div_for @timesheets, class: "col-md-12" do |timesheet| %>
     
         <div class="col-md-12 <%= timesheet.approved? ? "approved" : "" %>" data-behavior="timesheet" data-id="<%= timesheet.id %>" id="timesheet_<%=timesheet.id%>">
-            <h3><%= timesheet.time_frame %></h3>
-            <h2><%= timesheet.name %> <span class='small pull-right text-muted' id='timesheet_<%=timesheet.id%>_state'><%=timesheet.state.upcase%></span> </h2>
+            <p><%= timesheet.time_frame %> <span class='small text-muted pull-right' id='timesheet_<%=timesheet.id%>_state'><%=timesheet.state.upcase%></span></p>
+            <h3><%= timesheet.name %> <span class='small pull-right'><%= number_to_currency(timesheet.pay_rate) %></span> </h3>
+            <span class='text-success'><%= timesheet.company.name %>   -   <%= number_to_currency(timesheet.gross_pay) %></span>
+            <%= link_to edit_admin_timesheet_path(timesheet) do %>  <span class='text-info small pull-right'>Bill rates: <%= timesheet.reg_bill_rate %> | <%= timesheet.ot_bill_rate %> </span><% end %>
         <%= simple_form_for( [:admin, timesheet]) do |f| %>
            <div class='form-group'>
                 <% if timesheet.shifts.any? %>
-                    <%= f.input :reg_hours, inline_label: 'Regular', wrapper_html: { class: 'col-md-4'}, input_html: { class: 'form-control'}, disabled: true  %>
-                    <%= f.input :ot_hours, label: 'Overtime', wrapper_html: { class: 'col-md-4'}, input_html: { class: 'form-control'}, disabled: true  %>
+                    <%= f.input :reg_hours, inline_label: 'Regular', wrapper_html: { class: 'col-md-6'}, input_html: { class: 'form-control', max: 40}, disabled: true  %>
+                    <%= f.input :ot_hours, label: 'Overtime', wrapper_html: { class: 'col-md-6'}, input_html: { class: 'form-control'}, disabled: true  %>
                 <% else %>
-                    <%= f.input :reg_hours, label: 'Regular', wrapper_html: { class: 'col-md-4'}, input_html: { class: 'form-control'}  %>
-                    <%= f.input :ot_hours, label: 'Overtime', wrapper_html: { class: 'col-md-4'}, input_html: { class: 'form-control'}  %>
+                    <%= f.input :reg_hours, label: 'Regular', wrapper_html: { class: 'col-md-6'}, input_html: { class: 'form-control', max: 40}  %>
+                    <%= f.input :ot_hours, label: 'Overtime', wrapper_html: { class: 'col-md-6'}, input_html: { class: 'form-control'}  %>
                 <%= hidden_field_tag :redirect_to, @redirect_to %>
                
                 <% end %>
             </div>
-    	      <div class='timesheet-actions btn-group col-md-4'>
-    	          <span id='btn_<%=timesheet.id%>' class='small'><%= link_to "Approve".html_safe, approve_admin_timesheet_path(timesheet), class: "btn btn-default", method: :patch, remote: true, data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Saving..."} if timesheet.pending? %></span>
+            
+    	      <div class='timesheet-actions btn-group text-center'>
+    	          <%= link_to 'Add Adjustment', new_admin_timesheet_adjustment_path(timesheet), class: 'btn btn-default' %>
+    	          <span id="btn_<%=timesheet.id%>" class="small"><%= link_to "Approve".html_safe, approve_admin_timesheet_path(timesheet), class: "btn btn-default", method: :patch, remote: true, data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Saving..."} if timesheet.pending? %></span>
         	     <% if timesheet.shifts.none? %>
-        	     <%= f.button :button, "Save".html_safe, class: "btn btn-info inline", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Saving..."} %>
+        	     <%= f.button :button, "Save".html_safe, class: "btn btn-default", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Saving..."} %>
         	     <% else %>
         	     <%= link_to "Delete All Shifts", admin_timesheet_delete_all_shifts_path(timesheet, redirect_to: "edit_multiple_admin_timesheets_path"), class: 'btn btn-primary'%>
-        	         <%= link_to "Edit #{pluralize(timesheet.shifts.count, "shift")}", admin_timesheet_shifts_path(timesheet), class: "btn btn-info inline" %>
+        	         <%= link_to "Edit #{pluralize(timesheet.shifts.count, "shift")}", admin_timesheet_shifts_path(timesheet), class: "btn btn-default" %>
         	     <% end %>
+        	     
                 </div>
             <% end %>
         </div>

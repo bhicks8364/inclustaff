@@ -109,6 +109,7 @@ Rails.application.routes.draw do
           get 'past'
           get 'last_week'
         end
+        resources :adjustments, module: :timesheets
         resources :shifts 
       end
       resources :employees do

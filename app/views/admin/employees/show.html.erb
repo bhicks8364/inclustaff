@@ -30,8 +30,8 @@
       <div class="tab-content">
         <!--HOME TAB-->
       <div role="tabpanel" class="tab-pane fade in active" id="home">
-        <div class='col-md-12'>
-            <div class='col-md-3'>
+        <div class='row'>
+            <div class='col-md-3 well well-sm'>
                 <%= render "users/user", user: @user %>
                 <p class="user-address">
                     <%= @user.address %><br>
@@ -39,8 +39,21 @@
                     <small><%= user_phone(@user) %></small>  <br>
                     <small><%=user_email(@user)%></small>
                 </p>
+                <p>Availablility</p>
+                    <%= render 'admin/employees/availability', employee: @employee %>
             </div>
-            <div class='col-md-6'>
+            <div class='col-md-3 well well-sm'>
+                 <div  id='skills' class=''>
+                 <% @employee.skills.each do |skill| %>
+                  <%= render "admin/skills/skill", skill: skill %>
+                <% end %>
+                </div>
+    
+                 <div class=''>
+                   <%= render partial: "admin/skills/form", locals: {skillable: @employee} %>
+                 </div>
+            </div>
+            <div class='col-md-6 well well-sm'>
                 <p>Current Job Assignment</p>
                  <%= div_for @employee.jobs.active, class: "well" do |job| %>
                  <span class='pull-right text-muted small'>Pay rate: <%= number_to_currency(job.pay_rate) %></span>
@@ -50,32 +63,19 @@
                   Total gross: <%= number_to_currency(job.total_gross_pay) %> <br>   </p>
                 <% end %>
             </div>
-            <div class='col-md-3'>
-                <p>Availablility</p>
-                <%= render 'admin/employees/availability', employee: @employee %>
-            </div>
-            <div class='col-md-12'>
+            <div class='col-md-9'>
                 <hr>
-              <%= column_chart @employee.jobs.active.map{|job| {name: job.title_company, data: job.timesheets.group_by_week(:week, range: @employee.initial_start_date.beginning_of_week.midnight..Time.current, format: "%a, %m/%d").sum(:total_hours)}}, xtitle: "Week", ytitle: "Total Hours", library: {height: 300, width: 1000} %>
+              <%= column_chart @employee.jobs.active.map{|job| {name: job.title_company, data: job.timesheets.group_by_week(:week, range: @employee.initial_start_date.beginning_of_week.midnight..Time.current, format: "%m/%d").sum(:total_hours)}}, xtitle: "Week", ytitle: "Total Hours", library: {} %>
             </div>
         </div>
+        
     </div>
     <div role="tabpanel" class="tab-pane fade" id="matching_orders">
          <h2 class="text-center">Matching Job Orders  </h2>
         <div class='col-md-9 black'>
               <%= render 'admin/orders/table', orders: @employee.matching_orders %>
         </div>
-        <div class='col-md-3'>
-             <div  id='skills' class=''>
-             <% @employee.skills.each do |skill| %>
-              <%= render "admin/skills/skill", skill: skill %>
-            <% end %>
-            </div>
-
-             <div class=''>
-               <%= render partial: "admin/skills/form", locals: {skillable: @employee} %>
-             </div>
-        </div>
+        
     </div>
       <!--EMPLOYEE PROFILE TAB-->
     <div role="tabpanel" class="tab-pane fade" id="payroll">
@@ -135,9 +135,9 @@
       </div>
       <div role="tabpanel" class="tab-pane fade" id="shifts">
         <div class='col-md-12'>
-          <% if @employee.assigned? && @employee.shifts.any? %>
+          <% if @employee.assigned? && @employee.shifts.current_week.any? %>
           	<h1>Shift Calendar</h1>
-              <%= render 'admin/shifts/calendar', shifts: @employee.shifts %>
+              <%= render 'admin/shifts/wk_calendar', shifts: @employee.shifts.current_week %>
             <% else %>
             <h3> <%= @employee.first_name %> has not clocked in yet.</h3>
           <% end %>
@@ -154,24 +154,24 @@
             <%= timeline  @employee.work_history_data %>
             <%= render 'work_histories/table' %>
             <% else %>
-            <p>No Work History Available.</p>
+            <p>No Resume Available.</p>
             <% end %>
         </div>
         
-        <div class='col-md-2'>
+        <div class='col-md-3'>
             <h4>Tags</h4>
               <%= highlight(@employee.tag_list.to_s, ActsAsTaggableOn::Tag.all.map(&:name), highlighter: '<a href="/tags?tag=\1" class="">\1</a>') %>
         </div>
          <% if @employee.jobs.have_ended.any? %>
-     <div class='col-md-10'>
-              <h5 class='text-center'>Past Job Assignments</h5>
+     <div class='col-md-9'>
+              <h3 class='text-center'>Past Job Assignments</h3>
         <% @employee.jobs.inactive.each do |job| %>
        
-          <%= job.company %> <small> <%= job.title %></small>
-          <small> Assignment duration: <%= distance_of_time_in_words(job.start_date, job.end_date, include_seconds: true) if job.end_date.present? %></small>
+          <p><%= job.company %> <span class='pull-right'> <%= job.title %></span></p>
+          <span class=""> Assignment duration: <%= distance_of_time_in_words(job.start_date, job.end_date, include_seconds: true) if job.end_date.present? %></span>
           <p><%= job.start_date.stamp('11/12') %> - <%= job.end_date.stamp('11/12') %></p>
             <% if job.comments.unread.any? %>
-               <div class='' data-behavior='comment-list'>
+               <div class='well' data-behavior='comment-list'>
                     <strong>Unread Comments</strong>
                     <% job.comments.unread.each do |comment| %>
                         <%= render 'comments/comment', comment: comment %>

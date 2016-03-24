@@ -20,6 +20,7 @@
 #  week             :date
 #  reg_bill_rate    :decimal(, )
 #  ot_bill_rate     :decimal(, )
+#  week_ending      :date
 #
 # Indexes
 #
@@ -39,16 +40,17 @@ class Timesheet < ActiveRecord::Base
   has_many :comments, as: :commentable
   has_many :events, as: :eventable
   has_one :recruiter, through: :job, class_name: "Admin"
+  has_many :adjustments
   include ArelHelpers::ArelTable
   validates :job_id, uniqueness: { scope: :week,
     message: "should have only one timesheet per week" }
   accepts_nested_attributes_for :shifts, reject_if: :all_blank, allow_destroy: true
   validates :week, :job_id, presence: true
-  validates_associated :shifts
+  # validates_associated :shifts
   delegate :name_title, :pay_rate, :ot_rate, :agency, :company, :manager, :recruiter, :current_shift, :account_manager, :order_id, to: :job
   delegate :ssn, to: :employee
 
-  before_save :total_timesheet, if: :clocked_out?
+  before_validation :total_timesheet, if: :clocked_out?
   after_initialize :defaults
   
   after_save :update_company_balance!, if: :total_bill_changed?
@@ -149,6 +151,7 @@ class Timesheet < ActiveRecord::Base
   def defaults
     self.state = "pending" if state.nil?
     self.week = week.beginning_of_week if week.present?
+    self.week_ending = week.end_of_week if week.present?
     self.reg_hours = 0 if reg_hours.nil?
     self.ot_hours = 0 if ot_hours.nil?
     self.gross_pay = 0 if gross_pay.nil?
@@ -287,16 +290,14 @@ class Timesheet < ActiveRecord::Base
   
   
 
-  def week_ending
-    week.end_of_week.stamp("1/22/2016")
-  end
+  
 
   def week_begin
     week.stamp("1/22/2016")
   end
 
   def time_frame
-    "#{week_begin} - #{week_ending}"
+    "#{week_begin} - #{week_ending.stamp("1/22/2016")}"
   end
   def employee_bill
     bill = total_bill || 0

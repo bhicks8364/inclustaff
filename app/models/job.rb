@@ -42,7 +42,7 @@ class Job < ActiveRecord::Base
 
     delegate :user, to: :employee
     delegate :manager, to: :order
-    delegate :title, to: :order
+    # delegate :title, to: :order
     delegate :mark_up, to: :order
     delegate :company, to: :order
     delegate :agency, to: :order

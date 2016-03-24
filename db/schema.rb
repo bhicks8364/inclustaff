@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160318202721) do
+ActiveRecord::Schema.define(version: 20160322110344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,22 @@ ActiveRecord::Schema.define(version: 20160318202721) do
   add_index "activities", ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type", using: :btree
   add_index "activities", ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type", using: :btree
   add_index "activities", ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type", using: :btree
+
+  create_table "adjustments", force: :cascade do |t|
+    t.integer  "timesheet_id"
+    t.string   "adj_type"
+    t.decimal  "amount",       default: 0.0
+    t.decimal  "pay_rate"
+    t.decimal  "bill_rate"
+    t.decimal  "hours",        default: 0.0
+    t.boolean  "taxable",      default: false
+    t.integer  "entered_by"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.decimal  "bill_amount",  default: 0.0
+  end
+
+  add_index "adjustments", ["timesheet_id"], name: "index_adjustments_on_timesheet_id", using: :btree
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -222,6 +238,9 @@ ActiveRecord::Schema.define(version: 20160318202721) do
     t.string   "desired_shift"
     t.hstore   "availability"
     t.boolean  "dns",              default: false
+    t.decimal  "exsisting_hours",  default: 0.0
+    t.decimal  "aca_hours",        default: 0.0
+    t.string   "status",           default: "New"
   end
 
   add_index "employees", ["availability"], name: "index_employees_on_availability", using: :btree
@@ -485,6 +504,7 @@ ActiveRecord::Schema.define(version: 20160318202721) do
     t.date     "week"
     t.decimal  "reg_bill_rate"
     t.decimal  "ot_bill_rate"
+    t.date     "week_ending"
   end
 
   add_index "timesheets", ["approved_by_type"], name: "index_timesheets_on_approved_by_type", using: :btree

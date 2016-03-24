@@ -277,7 +277,7 @@ class Admin::JobsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def job_params
-      params.require(:job).permit(:order, :recruiter_id, :title, :active, :description,
+      params.require(:job).permit(:order_id, :recruiter_id, :title, :active, :description,
       :start_date, :pay_rate, :end_date, :order_id, :employee_id, :drive_pay, :ride_pay, :state,
       :number_of_days, :milestone_1, :milestone_2, :milestone_3)
     end

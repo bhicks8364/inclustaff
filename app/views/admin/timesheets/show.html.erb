@@ -1,4 +1,7 @@
 <div class='col-md-12 mainpage'>
+    <%= link_to 'Add Adjustment', new_admin_timesheet_adjustment_path(@timesheet), class: 'btn btn-primary' %>
+     <%= link_to 'View Adjustments', admin_timesheet_adjustments_path(@timesheet), class: 'btn btn-primary' %>
+    
 <div class='btn-group'>
     <%= link_to "Delete All Shifts", admin_timesheet_delete_all_shifts_path(@timesheet), class: 'btn btn-primary' if @timesheet.shifts.any?%>
 <%= link_to 'Add A Timesheet', new_admin_job_timesheet_path(@job), class: 'btn btn-primary' %>
@@ -16,9 +19,19 @@
     <div class='col-md-4 '>
         <h2>For the week of:<strong><br><%= @timesheet.week_begin %> - <%= @timesheet.week_ending %></strong></h2>
     </div>
+     <% if @timesheet.adjustments.any? %>
+    <div class='col-md-8 well'>
+        <% @timesheet.adjustments.each do |adjustment| %>
+            <p> <%= adjustment.creator.try(:name) %> <%= number_to_currency(adjustment.amount) %>  (<%= adjustment.adj_type %>) - <small><%= time_ago_in_words(adjustment.created_at) %> ago</small></p>
+            <%= link_to "<i class='fa fa-trash'></i>".html_safe, admin_timesheet_adjustment_path(@timesheet, adjustment), method: :delete, class: "pull-right" %>
+            <hr>
+        <% end %>
+    </div>
+    <% end %>
     <div class='col-md-8 ' data-behavior="timesheet-list">
       <%= render @timesheet %>
     </div>
+   
     <% if @shifts.present? %>
     <div class='col-md-12'>
       <h3> Shifts</h3>

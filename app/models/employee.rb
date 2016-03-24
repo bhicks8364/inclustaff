@@ -18,6 +18,9 @@
 #  desired_shift    :string
 #  availability     :hstore
 #  dns              :boolean          default(FALSE)
+#  exsisting_hours  :decimal(, )      default(0.0)
+#  aca_hours        :decimal(, )      default(0.0)
+#  status           :string           default("New")
 #
 # Indexes
 #
@@ -156,7 +159,7 @@ class Employee < ActiveRecord::Base
     shifts.any? ? shifts.last.state.humanize : "No Shifts"
   end
   def total_hours
-      timesheets.sum(:total_hours)
+      timesheets.sum(:total_hours) + exsisting_hours
   end
   def self.sorted_by_total_hours
     all.sort_by(&:total_hours).reverse!
@@ -191,8 +194,12 @@ class Employee < ActiveRecord::Base
   def check_assigned
     if current_job.present?
       self.assigned = true
-    else
+      self.status = "Working"
+    elsif available?
       self.assigned = false
+      self.status = "Available"
+    elsif dns?
+      self.status = "DNS"
     end
     true
   end
