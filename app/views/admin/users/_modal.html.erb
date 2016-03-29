@@ -1,0 +1,50 @@
+<a class='button' data-toggle="modal" data-target="#mod_<%= user.id %>">
+  <% if user.assigned? %>
+<span id='job-sym'><%= job_sym(user.employee.current_job)%> </span>  <%= user.name %>
+<% else %>
+<%=emp_popover(user.employee)%>
+<% end %>
+</a>
+
+<!-- Modal -->
+<div class="modal fade" id="mod_<%= user.id %>" tabindex="-1" role="dialog" aria-labelledby="#<%= user.employee.name %>">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class=' modal-title'><%= link_to user.name, admin_user_path(user) %></h3> 
+      </div>
+           
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-5">
+             <%= render 'admin/users/user', user: user %>
+          </div>
+          <div class="col-md-7">
+            <%=emp_popover(user.employee)%>
+            <% if user.employee.work_histories.any? %>
+            <p class='text-info '>Recent Work History</p>
+            <%= render partial: 'admin/work_histories/work_history', collection: user.employee.work_histories.order(:start_date).last(3)  %>
+            <% else %>
+            <p class='text-danger '>No Recent Work History</p>
+            <% end %>
+            <% if user.employee.jobs.any? %>
+              <% user.employee.jobs.each do |job| %>
+                <%= link_to job.title, admin_job_path(job) %> - <%= job.state %><br>
+                <small>Worked for <%= job.days_worked %> - Ended: <%= job.end_date.present? ? time_ago_in_words(job.end_date) : job.state %> </small>
+              <% end %>
+            <% end %>
+          </div>
+          
+        </div>
+      </div>
+       
+
+      <div class="modal-footer">
+         <p class=''><strong>Available as of: </strong> <span id='<%=user.id%>-updated-available-at'><%= user.checked_in_at? ? "#{time_ago_in_words(user.checked_in_at)} ago" : "" %></span></p>
+        
+  				
+      </div>
+    </div>
+  </div>
+</div>

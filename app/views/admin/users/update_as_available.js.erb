@@ -1,0 +1,2 @@
+$("#<%=@user.id%>-updated-available-at").text("<%= time_ago_in_words(@user.checked_in_at) %> ago");
+$("#<%=@user.id%>-updated-available-at-icon").html("<%=j check_in(@user) %>");

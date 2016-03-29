@@ -1,30 +1,16 @@
-<div class="col-md-12 lightbox">
-	<div class='col-md-8 lighterbox'>
-		<h2 class='page-header text-center'>	<%= @employees.assigned.count %> Active Employees</h2>
-	</div>
-	<div class='col-md-4 lighterbox metal text-center pull-right '>
-		<h4 class='text-left bold'>Import</h4>
-			<%= form_for @import, url: import_admin_employees_path, multipart: true do |f| %>
-					<%= f.file_field :import, class: 'file-field' %>
-				  <%= f.submit "Upload" %>
-			<% end %>
-	
-		<div class='btn-group'>
-			<%= link_to(admin_employees_path(@employees, format: :csv), class: 'btn btn-primary') do %>
+<div class="col-md-12 mainpage">
+	<div class='btn-group'>
+		<%= link_to(admin_employees_path(@employees, format: :csv), class: 'btn btn-primary') do %>
 			<i class='fa fa-file-excel-o fa-fw'></i> Export
 		<% end %>
 		<%= link_to "<i class='fa fa-user-plus fa-fw'></i> Add Employee".html_safe, new_user_registration_path, class: 'btn btn-primary' %>
-		</div>	
-		
-	</div>
-	<div class="col-md-12 lightbox">
-		
-
-		
+	</div>	
+		<h2 class='page-header text-center'>	<%= @employees.assigned.count %> Active Employees</h2>
 			<div class="table-responsive">
 				<table id='' class="table table-hover ">
 					<thead>
 						<tr>
+							<th>Company</th>
 							<th>Employee</th>
 							<th>Title</th>
 							<th>Week Gross</th>
@@ -39,7 +25,10 @@
 							 	<% else %>
 							  	<tr class="bg-info">
 				        <% end %>
-							<td><%= link_to employee.name, admin_employee_path(employee), class: "" %></td>
+				        <td><%= employee.company %></td>
+							<td><%= link_to employee.name, admin_employee_path(employee), class: "" %><br>
+							<small><%= employee.ssn %></small>
+							</td>
 							<td><%= employee.title %></td>
 							<td><%= number_to_currency(employee.current_timesheet.try(:gross_pay) || 0) %> </td>
 							<td><%= number_to_currency(employee.current_job.try(:total_gross_pay) || 0) %> </td>

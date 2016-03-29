@@ -1,4 +1,4 @@
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Company Information</button>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm"><%= company.name %></button>
 
 <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
   <div class="modal-dialog modal-sm">
@@ -13,7 +13,7 @@
           <strong><%= link_to company.contact.name, company.contact if company.contact.present? %></strong><br>
          <%= company.contact_email %>
         
-        <p class=''> Account Manager: <%= link_to company.current_account_manager.name, admin_admin_path(company.current_account_manager) %> </p>
+        <p class=''> Account Manager: <%= link_to company.account_manager.name, admin_admin_path(company.account_manager) if company.account_manager.present? %> </p>
     </div>
   </div>
 </div>

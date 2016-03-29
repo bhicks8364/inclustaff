@@ -2,8 +2,8 @@
 <div class="" data-behavior="job-list">
 <div data-behavior="job" data-id="<%= job.id %>">
   <%= div_for job do %>
-    <%= job_sym(job) %>
-    <%= render "users/modal", user: job.employee.user %>
+    
+    <%= render "admin/users/modal", user: job.employee.user %>
   <% end %>
 </div>
 </div>

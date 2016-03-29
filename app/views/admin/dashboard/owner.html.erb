@@ -15,8 +15,8 @@
 		<div class="tab-content">
 			<div class="tab-pane fade in active" id="tab-home">
 				<div class='col-md-12 well shadow'>
+					
 				<%  if policy(@current_agency).update? %> <%= link_to(edit_agency_path(@current_agency), class: 'btn btn-default pull-right') do %> <span><i class='fa fa-pencil fa-fw'></i>	Edit Agency</span>	<% end %>	<% end %>
-				<hr>
 				<% if @current_agency.companies.blank? %>
 	       		<h2 class=''>Getting Started</h2>
 	       			<div class='col-md-4'>
@@ -28,7 +28,9 @@
 					  	</div>
 	       			</div>
 	       			<% else %>
-				
+					<div class='col-md-12 well well-sm shadow'>
+	       				<%= line_chart   Company.uniq.map { |c| { name: c.name, data: c.invoices.group_by_month(:week, range: Date.current.beginning_of_year...Date.current, format: "%B %Y").sum(:total) }  }, discrete: true %>
+	       			</div>
 					<div class='col-md-3'>
 						<%= render "admin/shared/alerts/open_orders", orders: @current_agency.orders %>
 						<div class="alert alert-info fade in text-center open-order">
@@ -39,7 +41,7 @@
 						</div>
 					</div>
 						<% end %>
-		 			<div class='col-md-9 well well-sm grey'>
+		 			<div class='col-md-9 well well-sm shadow'>
 		                <h3 class='text-center'>Sales progress for this week <span class='label label-success pull-right'> <%= number_to_currency(@current_agency.current_billing) %></span></h3>
 		                <div class="progress">
 		                  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<%= @current_agency.percent_to_sales_goal %>" aria-valuemin="0" aria-valuemax="100" style="min-width: 4em; width: <%= number_to_percentage(@current_agency.percent_to_sales_goal, precision: 2)%>">
@@ -47,8 +49,12 @@
 		                  </div>
 		                </div>
 		                <h4 class='text-right '>  <span class='label label-success black'>Sales Goal &nbsp;<%= number_to_currency(@current_agency.weekly_sales_goal) %></span> </h4>
+	       				<hr>
+	       				<%= pie_chart Employee.group(:status).count %>
 	       			</div>
-	       			
+	       			<div class='col-md-12 well well-sm shadow'>
+	       				<%= line_chart   Company.uniq.map { |c| { name: c.name, data: c.invoices.group_by_month(:week, range: Date.current.beginning_of_year...Date.current, format: "%B %Y").sum(:total) }  }, discrete: true %>
+	       			</div>
        			</div>
 			</div>
 			
@@ -62,9 +68,9 @@
 						<%= link_to "New Admin Account", new_admin_admin_path, class: 'btn btn-success' %>
        				</div>
        			</div>
-       			<div class="col-md-3">
+       			<div class="col-md-4">
 					<h3 class="white"><strong>Admins</strong></h3>
-				    <div class="scroll500">
+				    <div class="well">
 				    	<% @current_agency.admins.order(:last_name).each do |admin| %>
 							<%= link_to(admin_admin_path(admin), class: "list-group-item") do %>
 						       <div data-behavior="admin" data-id="<%= admin.id %>" class=''>
@@ -84,14 +90,20 @@
 				        {name: company.name, data: company.timesheets.group_by_week(:week, range: 2.weeks.ago.beginning_of_week.midnight..Time.current.beginning_of_week, format: "%b %d %y").sum(:total_bill)}
 				    }, library: {isStacked: true, backgroundColor: "#e5dbcf", legend: {position: "right"}, title: "Weekly Billings by Company"} %>
 				</div>
-					
-       				<div class="col-md-6">
-		 				<%= render "admin/infoboxes/leaderboxes" %>
-		 			</div>
-	       			
+   				<div class="col-md-12">
+	 				<%= render "admin/infoboxes/leaderboxes" %>
+	 			</div>
+       			<div class='col-md-12 well well-sm shadow'>
+       				<%= line_chart   Company.uniq.map { |c| { name: c.name, data: c.invoices.group_by_month(:week, range: Date.current.beginning_of_year...Date.current, format: "%B %Y").sum(:total) }  }, discrete: true %>
+       			</div>
 			</div>
 			<div class="tab-pane fade" id="tab-invoices">
-				<div class='col-md-4'>
+				<div class='col-md-8'>
+					<div class="well well-sm table-responsive">
+				     <%= render "admin/invoices/table", invoices: @current_agency.invoices.unpaid.order(:week) %>
+				    </div>
+				</div>
+				<div class='col-md-6'>
 					<h2 class=''>Unpaid Invoices</h2>
 					<div class="well well-sm">
 				     <% @current_agency.invoices.unpaid.order(:week).each do |invoice| %>
@@ -106,9 +118,19 @@
 					  <p class='lead'>Unpaid Balance: <span class='pull-right'><%= number_to_currency(@current_agency.invoices.unpaid.sum(:total)) %></span></p>
 				    </div>
 				</div>
-				<div class='col-md-8'>
-					<div class="well well-sm table-responsive">
-				     <%= render "admin/invoices/table", invoices: @current_agency.invoices.unpaid.order(:week) %>
+				<div class='col-md-6'>
+					<h2 class=''>Current Invoices</h2>
+					<div class="well well-sm">
+				     <% @current_agency.invoices.current_week.order(:week).each do |invoice| %>
+						<%= link_to(admin_invoice_path(invoice), class: "") do %>
+					       <div data-behavior="invoice" data-id="<%= invoice.id %>" class=''>
+					      <strong> <%= invoice.company.name %></strong>
+					     	 <span class='label label-success pull-right black'>
+					     	 	<%= invoice.balance > 0.00 ? number_to_currency(invoice.balance) : "NEW!" %>
+					       </div>
+					       <% end %>
+					  <% end %>
+					  <p class='lead'>Unpaid Balance: <span class='pull-right'><%= number_to_currency(@current_agency.invoices.current_week.sum(:total)) %></span></p>
 				    </div>
 				</div>
 			</div>

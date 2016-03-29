@@ -1,4 +1,4 @@
-<%= div_for(order, class: 'lightbox') do %>
+<%= div_for(order) do %>
 <div class=''><%= link_to title_for(order), admin_order_path(order), class: 'black' %> <span class='pull-right'><%= status_tag(order)%></span> 
 <%= heavy_lifting(order) %>
 </div>

@@ -1,18 +1,14 @@
-<div class='col-md-12 lightbox'>
-<h3 class='text-center'>New Job Order</h3>
+<div class='col-md-12 mainpage'>
+<%= render 'admin/companies/company_contact', company: @company if @company.present? %>
       
     <% if @company.present? %>
-        <h2 class='text-center'><strong><%= link_to @company.name, admin_company_path(@company) %></strong></h2>
-    <div class='text-center'>
-        <%= render 'admin/companies/company_contact', company: @company %>
-    </div>
-    <%end%>
-
+        <h2 class='text-center'>New Job Order for <%= link_to @company.name, admin_company_path(@company) %></h2>
         
-        <div class='well'>
+    <% else %>
+        <h3 class='text-center'>New Job Order</h3>
+        <% end %>
              
             <%= render 'form' %>
-        </div>
 
 </div>
 

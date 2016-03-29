@@ -47,6 +47,7 @@
 //= require pending_approval
 //= require emp_jobs
 //= require company_jobs
+//= require adjustments
 
 
 $(document).ready(function(){

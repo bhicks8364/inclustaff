@@ -1,9 +1,9 @@
 
-  <%= div_for(@active_jobs, class: 'well') do |job| %>
+  <%= div_for(jobs, class: 'well') do |job| %>
 
   <% if job.on_shift? %>
 
-   <h4><%= link_to job.employee.name, job.employee %> | <%= link_to job.title, job %> </h4>
+   <h4><%= link_to job.employee.name, admin_employee_path(job.employee) %> | <%= link_to job.title, admin_job_path(job) %> </h4>
   
     Hours: <%= job.current_week_hours %>  | Pay:  <%= job.current_week_pay ? number_to_currency(job.current_week_pay) : "$0.00" %> 
   
@@ -12,12 +12,12 @@
    <p>Time In: <%= job.last_clock_in ? job.last_clock_in.strftime("%I:%M %p") : "No Shifts Yet" %>  
 
   <% else %>
-  <h4><%= link_to job.employee.name, job.employee %>   |    <%= link_to job.title, job %> </h4>
+  <h4><%= link_to job.employee.name, admin_employee_path(job.employee) %> | <%= link_to job.title, admin_job_path(job) %> </h4>
    THIS WEEK <br> Hours: <%= job.current_week_hours %>  | Pay:  <%= job.current_week_pay ? number_to_currency(job.current_week_pay) : "$0.00" %> 
 <span class="label label-danger label-large pull-right"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Clocked Out</span>
     
 
-   <p>Last Clock In: <%= job.last_clock_in ? job.last_clock_in.strftime("%I:%M %p") : "No Shifts Yet" %>    |     Last Clock Out: <%= job.last_clock_out ? job.last_clock_out.strftime("%I:%M %p") : "No Shifts Yet" %></p>
+   <p>Last Clock In: <%= job.last_clock_in %>    |     Last Clock Out: <%= job.last_clock_out  %></p>
 
 
    <% end %>
@@ -48,9 +48,8 @@
 
  <% end %>
    
-  <% if job.current_timesheet != nil %>  
-  <%= link_to "<span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span>     View Timesheet".html_safe, timesheet_path(job.current_timesheet), class: "btn btn-info btn-sm" %>
-  <% end %>
+  <% if job.current_timesheet.present? %>  <%= link_to "View Timesheet".html_safe, admin_timesheet_path(job.current_timesheet), class: "btn btn-default" %>  <% end %>
+  <%= link_to "Add Timesheet".html_safe, new_admin_job_timesheet_path(job), class: "btn btn-default" %>
   <% end %>
 
 <hr>

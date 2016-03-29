@@ -1,6 +1,6 @@
 <div class="well">
  
-<%= simple_form_for [:admin, @shift], html: { class: 'form' } do |f| %>
+<%= simple_form_for [:admin, shift], html: { class: 'form' } do |f| %>
 <div class="form-group black">
     <label class='white' for="TimeIn">Time In: </label>
     <%= f.datetime_select :time_in, ampm: true, default: Time.current %>    
@@ -8,7 +8,7 @@
 
 <div class="form-contol black">
    <div class="field">
-    <%= f.input :state, as: :select, collection: ["Clocked In", "Clocked Out", "On Break"], selected: @shift.state, label: false %>
+    <%= f.input :state, as: :select, collection: ["Clocked In", "Clocked Out", "On Break"], selected: shift.state, label: false %>
   </div>
 </div>
 

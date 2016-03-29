@@ -74,15 +74,13 @@ class Order < ActiveRecord::Base
   store_accessor :requirements, :agency_approval, :company_approval, :years_of_experience, :certifications, :requirement_1, :requirement_2, :requirement_3, :requirement_4
   # VALIDATIONS
   validates_associated :company
-  validates :title, :number_needed,  presence: true
-  validates :mark_up, :min_pay, :max_pay, :account_manager_id,  presence: true
+  validates :title, :number_needed, :company_id, :needed_by, :mark_up, :min_pay, :max_pay, :account_manager_id,  presence: true
 
-  validates :company_id,  presence: true
-  validates :needed_by, presence: true
   # CALLBACKS
   after_initialize :defaults
   before_validation :set_mark_up
   after_save :set_note_skills
+  before_save :titlize_title, if: :title_changed?
   #  GEOCODER
   geocoded_by :address
   after_validation :set_address, :geocode
@@ -120,12 +118,16 @@ class Order < ActiveRecord::Base
     self.requirements = {} if requirements.nil?
     # self.account_manager = company.current_account_manager if account_manager_id.nil?
   end
+  
   def set_account_manager
     self.account_manager = Admin.account_managers.first
   end
-
-  def set_mark_up
+  
+  def titlize_title
     self.title = title.titleize
+  end
+  
+  def set_mark_up
     if max_pay.present? && mark_up.nil?
       case max_pay
       when (8..10)
@@ -163,7 +165,7 @@ class Order < ActiveRecord::Base
   end
   
   def to_param
-    "#{id}-#{title.parameterize }"
+    "#{id}-#{title_company.parameterize }"
   end
   
   def needs_agency_approval?; requirements['agency_approval'] == "true"; end

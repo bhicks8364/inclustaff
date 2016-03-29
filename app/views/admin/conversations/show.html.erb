@@ -1,13 +1,13 @@
 <p><%= link_to "Back to all conversations", admin_conversations_path %></p>
 
 <div class="row">
-  <div class="col-sm-9 well">
+  <div class="col-sm-9 pad">
     <h1><%= @conversation.subject %></h1>
     <hr />
 
     <%= div_for @conversation.receipts_for(current_admin).order(created_at: :asc) do |receipt| %>
       <div class="<% receipt.is_read? ? "read" : "unread" %>">
-        <div>
+        <div class="">
           
           <div class="pull-right"><%= local_time_ago(receipt.updated_at) %></div>
           <strong><%= receipt.message.sender.name %></strong>
@@ -31,7 +31,7 @@
   <div class="col-sm-3">
     <h5>In this conversation</h5>
     <% @conversation.participants.each do |participant| %>
-      <div><%= participant.name %></div>
+      <div><%= signed_in_link_to participant.name, participant %></div>
     <% end %>
   </div>
 </div>

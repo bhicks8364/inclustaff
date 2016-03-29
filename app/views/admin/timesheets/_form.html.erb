@@ -11,7 +11,8 @@
        <% end %>
     </div>
     <div class='form-group'>
-     <%= f.input :week, as: :date, order: [:month, :day, :year] %>
+    <%= f.input :week, default: Date.today.beginning_of_week, as: :date, hint: "Today is #{Time.current.stamp("Monday May 25th, 2016") }",
+       order: [:month, :day, :year], wrapper_html: {class: "form-inline"}, label: "Choose a pay week", label_html: { class: 'needed_by' } %>
     <%= f.input :reg_hours, label: 'Regular Hours', wrapper_html: { class: 'col-md-4'}, input_html: { class: 'form-control col-md-6'}  %>
     <%= f.input :ot_hours, label: 'Overtime Hours', wrapper_html: { class: 'col-md-4'}, input_html: { class: 'form-control col-md-6'}  %>
     <%= f.input :gross_pay, label: 'Gross Pay', wrapper_html: { class: 'col-md-4'}, input_html: { class: 'form-control'}, disabled: true %>

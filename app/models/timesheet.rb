@@ -163,6 +163,8 @@ class Timesheet < ActiveRecord::Base
     self.ot_bill_rate = job.mark_up if ot_bill_rate.nil?
   end
   
+  
+  
   def calculate_billing
     reg_billing = job.pay_rate * reg_hours * reg_bill_rate
     ot_billing = job.pay_rate * ot_hours * ot_bill_rate
@@ -277,13 +279,17 @@ class Timesheet < ActiveRecord::Base
         self.reg_hours = 40
         self.ot_hours = hours - 40
         ot_rate = job.pay_rate * 1.5
-        self.gross_pay = job.pay_rate * self.reg_hours + self.ot_hours * ot_rate
+        if adjustments.none?
+          self.gross_pay = job.pay_rate * self.reg_hours + self.ot_hours * ot_rate
+        end
       else
         self.total_hours = hours
         pay = job.pay_rate * hours
         self.reg_hours = hours
         self.ot_hours = 0
-        self.gross_pay = pay
+        if adjustments.none?
+          self.gross_pay = pay
+        end
       end
   end
   

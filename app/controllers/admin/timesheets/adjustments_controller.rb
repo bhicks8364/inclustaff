@@ -18,11 +18,15 @@ class Admin::Timesheets::AdjustmentsController < ApplicationController
     
     def create
         @adjustment = @timesheet.adjustments.new(adjustment_params)
+        if @adjustment.vacation?
+          @adjustment.bill_rate = 0
+          @adjustment.bill_amount = 0
+        end
         skip_authorization
         @adjustment.save
       respond_to do |format|
         format.js 
-        format.html { redirect_to admin_timesheet_adjustments_path(@timesheet), notice: "Adjustment was successfully added to #{@timesheet.id}." }
+        format.html { redirect_to admin_timesheet_path(@timesheet), notice: "Adjustment was successfully added to #{@timesheet.id}." }
         format.json { head :no_content }
       end
     end
@@ -32,7 +36,7 @@ class Admin::Timesheets::AdjustmentsController < ApplicationController
         skip_authorization
         respond_to do |format|
             # format.js
-            format.html { redirect_to admin_timesheet_adjustments_path(@timesheet), notice: 'Adjustment was successfully destroyed.' }
+            format.html { redirect_to admin_timesheet_path(@timesheet), notice: 'Adjustment was successfully destroyed.' }
             format.json { head :no_content }
         end
     

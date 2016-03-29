@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Employee:</strong>
+  <%= @direct_deposit.employee.name %>
+</p>
+
+<p>
+  <strong>Account number:</strong>
+  <%= @direct_deposit.account_number %>
+</p>
+
+<p>
+  <strong>Routing number:</strong>
+  <%= @direct_deposit.routing_number %>
+</p>
+
+<p>
+  <strong>Acct confirmation:</strong>
+  <%= @direct_deposit.acct_confirmation %>
+</p>
+
+<p>
+  <strong>Admin:</strong>
+  <%= @direct_deposit.admin.name %>
+</p>
+
+<p>
+  <strong>Effective date:</strong>
+  <%= @direct_deposit.effective_date %>
+</p>
+
+<p>
+  <strong>Account type:</strong>
+  <%= @direct_deposit.account_type %>
+</p>
+
+<%= link_to 'Edit', edit_admin_employee_direct_deposit_path(@employee, @direct_deposit) %> |
+<%= link_to 'Back', admin_employee_direct_deposits_path(@employee) %>

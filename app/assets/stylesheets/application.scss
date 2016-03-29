@@ -50,7 +50,7 @@ $trans-white: rgba(255, 255, 255, 0.45);
 
 body {
   // background-color: rgba(0, 0, 0, .2);
-  // background-image: url(light_bg.png);
+  background-image: url(white-wood.jpg);
   padding-top: 70px;
   // padding-bottom: 80px;
   height: 100%;
@@ -62,7 +62,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .form-control {
-  border: 1px solid #C5C5C5;
+  border: 2px solid #C5C5C5;
   box-shadow: none;
   border-radius: 0.25em;
   -webkit-appearance: none;
@@ -154,14 +154,8 @@ h1, h2, h3, h4, h5, h6 {
 
 
 #navlogo {
-  // max-width: 310px;
   vertical-align: middle;
 }
-// #company-navbar {
-//   background-color: $trans-white;
-//   vertical-align: middle;
-//   margin: 0px;
-// }
 
 .hide-this {
   display: none;
@@ -203,11 +197,12 @@ h1, h2, h3, h4, h5, h6 {
 
 // ///////////////////////////////////////
 // NAVBAR
+
 .navbar.navbar-default {
   // border: none;
   font-family: 'Lato', sans-serif;
   // background-color: rgb(230, 230, 230);
-  height: 65px;
+  height: 75px;
   // font-height: 2em;
   .container {
     margin-top: 10px;
@@ -246,6 +241,8 @@ h1, h2, h3, h4, h5, h6 {
 #bs-example-navbar-collapse-1 > ul > li.dropdown.open > ul > li:hover {
   background-color: rgb(217, 237, 247);
 }
+
+
 
 
 .pad {
@@ -307,8 +304,13 @@ td.day:hover {
 }
 .gravatar {
   // float: left;
-  // display: block;
-  // margin-bottom: 5px;
+  display: inline-block;
+  margin: 5px;
+}
+.user-header {
+  margin-left: 15px;
+  display: inline-block;
+  text-align: right;
 }
 .user {
   max-width: 284px;

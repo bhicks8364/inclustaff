@@ -8,7 +8,7 @@ class Admin::ConversationsController < ApplicationController
   end
   
   def inbox
-    @conversations = current_admin.mailbox.inbox
+    @conversations = current_admin.mailbox.inbox.unread(current_admin)
     render action: :index
   end
 

@@ -78,4 +78,22 @@ module TimesheetsHelper
             Bill: #{number_to_currency(timesheet.total_bill)} '>#{number_to_currency(timesheet.gross_pay)}</span>".html_safe
         end
     end
+    
+    def timesheet_select(range=(6.months.ago.to_date..Date.today.to_date) )
+        months = range.to_a.map(&:beginning_of_month).uniq
+        months.map { |date| date.stamp("3/12/2016") } 
+
+        weeks = months.flat_map { |date|
+        m_weeks = [date]
+        until (week = date + 1.week) && week.month > date.month
+        m_weeks << week
+        end
+        m_weeks
+        }
+        weeks
+    end
+    
+    
+    
+    
 end

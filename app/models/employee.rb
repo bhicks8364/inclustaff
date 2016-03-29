@@ -39,6 +39,7 @@ class Employee < ActiveRecord::Base
   belongs_to :user
   has_many :skills, as: :skillable
   has_many :events, :through => :user
+  has_many :direct_deposits
   has_many :job_events, :through => :jobs, source: 'events'
   has_many :work_histories
   has_one :agency, through: :user

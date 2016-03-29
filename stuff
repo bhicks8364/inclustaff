@@ -6,3 +6,39 @@ Apartment::Tenant.switch!('gtrjobs')
 Apartment::Tenant.switch!('demo')
 
 rake routes | grep user
+
+
+Company 
+- REQUIRED FIELDS -
+-> :name, :contact_name,
+
+
+Order 
+- REQUIRED FIELDS -
+-> :title, :number_needed, :company_id, :needed_by, :mark_up, :min_pay, :max_pay, :account_manager_id
+
+
+
+
+
+GOOGLE MAPS
+<script type='text/javascript'>
+handler = Gmaps.build('Google');
+handler.buildMap({
+    provider: {
+      disableDefaultUI: true,
+      zoom: 6
+      // pass in other Google Maps API options here
+    },
+    internal: {
+      id: 'map'
+    }
+  },
+  function(){
+    markers = handler.addMarkers(<%=raw @hash.to_json %>);
+    handler.bounds.extendWith(markers);
+    handler.fitMapToBounds();
+  }
+);
+
+</script>

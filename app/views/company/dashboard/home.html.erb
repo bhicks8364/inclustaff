@@ -10,7 +10,6 @@
   </div>
   <div class='col-md-4 well well-sm text-center'>
     <h2>Pending Approval<br> <span class="text-info"><%= @current_company.timesheets.needing_approval.count %></span></h2>
-    <%= @current_company.jobs.on_break.count %>
   </div>
 </div>
  <h1 class='simple'><%= @current_company.name %></h1>
@@ -32,8 +31,8 @@
     </div>
   </div>
   <div class='col-md-4 well well-sm'>
-    <strong>You Account Manager: </strong> <br><%= @current_company.account_manager.name %> <br><span class="small"><%= @current_company.account_manager.email %></span>
-    <%= convo_for(admins: @current_company.account_manager, back_to: company_dashboard_path) %>
+    <strong>You Account Manager: </strong> <br><%= @current_company.account_manager.try(:name) %> <br><span class="small"><%= @current_company.account_manager.try(:email) %></span>
+    <%= convo_for(admins: @current_company.account_manager, back_to: company_dashboard_path) if @current_company.account_manager.present? %>
     
     <div class='well well-sm'>
     <% if @current_company.invoices.unpaid.any?  %>

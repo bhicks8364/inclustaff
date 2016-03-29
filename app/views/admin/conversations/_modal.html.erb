@@ -1,6 +1,6 @@
 <!-- Button trigger modal -->
 <a type="button" class="" data-toggle="modal" data-target="#myModal">
-  <%= @button.html_safe %>
+  <%= @button.try(:html_safe) || "button" %>
 </a>
 
 <!-- Modal -->

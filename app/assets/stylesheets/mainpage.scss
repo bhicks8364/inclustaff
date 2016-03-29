@@ -183,16 +183,19 @@ input.file-field {
   background-color: $primary-color;
 }
 .mainpage {
-  min-height: 1000px;
-  width: 100%;
-  margin-top: -5px;
-  padding-top: 15px;
-  // opacity: .4;
-  padding-bottom: 50px;
-  background-color: rgba(255, 255, 255, 0.67);
-  // background-color: #cccccc;
+    min-height: 1000px;
+    width: 100%;
+    margin-top: -25px;
+    padding-top: 25px;
+    padding-bottom: 70px;
+    background-color: rgba(255, 255, 255, 0.68);
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
 }
-
+.admin-email {
+    font-size: 2em;
+}
 .pulse {
     // border: 1px solid black;
     // width: 400px;
@@ -211,9 +214,6 @@ input.file-field {
     50% {font-size: 30px;}
 }
 .rainbow {
-    // width: 100px;
-    // height: 100px;
-    // background-color: red;
     position: relative;
     /* Chrome, Safari, Opera */
     -webkit-animation-name: example;

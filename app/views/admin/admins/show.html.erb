@@ -1,15 +1,24 @@
-
-<div class='row'>
-    <div class='col-md-3'>
-        <h1> <%= @admin.online? ? "<i class='fa fa-user green'></i>".html_safe : "<i class='fa fa-user text-muted'></i>".html_safe %>  <%= @admin.name %></h1>
-        <p class='lead'>  <%= @admin.role %>    <br> <small><%= @admin.email %></small> </p>
-            <p> Current Commission: <%= number_to_currency(@admin.current_commission) %></p>
-        <br>
-        Last seen: <%= @admin.last_sign_in_at.present? ? @admin.last_sign_in_at.stamp("11/12 at 11:15am") : "Yet to sign in" %>
-        <hr>
+<div class='row mainpage'>
+    <div class='col-md-8 well well-sm'>
+        <h1 class=''><%=gravatar_for(@admin)%><%= @admin.name %> <span class='small pull-right'><%= @admin.role %> </span>   </h1>
+        <p><span class='pull-right admin-email'> <%= @admin.email %></span></p>
+        
+        
     </div>
-    
-    <div class='col-md-9'>
+    <div class='col-md-4 well well-sm'>
+            <p> Current Commission: <%= number_to_currency(@admin.current_commission) %></p>
+             <p> Top Company: <%= @admin.companies.ordered_by_current_bill.first.name %> <br>
+             (<%= number_to_currency(@admin.companies.ordered_by_current_bill.first.current_billing) %>)</p>
+             
+        
+        </p>
+    </div>
+    <div class='col-md-12 well'>
+        
+        <div class="col-md-4">
+            <h2><%= @admin.first_name %>'s Companies</h2>
+            <%= render 'admin/shared/company_collapse', companies: @admin.companies.distinct %>
+        </div>
         <%= render "admin/charts/owner_charts" if @admin.owner? %>
         <%= render "admin/charts/account_manager_charts", admin: @admin if @admin.account_manager? %>
         <%= render "admin/charts/recruiter_charts", recruiter: @admin if @admin.recruiter? %>
@@ -17,19 +26,12 @@
         <div class='col-md-4 fa-ul'><%= render 'admin/shared/clocked_in' if  @admin.jobs.on_shift.any? %> </div>
         <div class='col-md-4 fa-ul'><%= render 'admin/shared/on_break' if @admin.jobs.on_break.any? %>  </div>
     </div>
-</div>
-<div class='row'>
-    <hr />
-    <div class='col-md-6'>
+    <div class='col-md-4'>
+        <%= @admin.online? ? "<i class='fa fa-user green'></i>".html_safe : "<i class='fa fa-user text-muted'></i>".html_safe %>
+        Last seen: <%= @admin.last_sign_in_at.present? ? @admin.last_sign_in_at.stamp("11/12 at 11:15am") : "Yet to sign in" %>
         <%= render 'infoboxes'  %>
-    </div>
-    <div class="col-md-6">
-        <h2><%= @admin.first_name %>'s Companies</h2>
-        <%= render 'admin/shared/company_collapse', companies: @admin.companies.distinct %>
-    </div>
-    <div class="col-md-6">
+    
         <%= pie_chart @jobs.group('jobs.state').count, library: {backgroundColor: "#ccc", legend: {position: "right"}, is3D: true, title: "Jobs by Current Status"}%>
     </div>
 </div>
-
 

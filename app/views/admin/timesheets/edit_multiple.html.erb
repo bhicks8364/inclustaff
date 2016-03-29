@@ -20,11 +20,23 @@
                 <% else %>
                     <%= f.input :reg_hours, label: 'Regular', wrapper_html: { class: 'col-md-6'}, input_html: { class: 'form-control', max: 40}  %>
                     <%= f.input :ot_hours, label: 'Overtime', wrapper_html: { class: 'col-md-6'}, input_html: { class: 'form-control'}  %>
-                <%= hidden_field_tag :redirect_to, @redirect_to %>
+                
                
                 <% end %>
+                <%= hidden_field_tag :redirect_to, @redirect_to %>
             </div>
-            
+            <% if timesheet.shifts.any? %>
+            <a class="btn btn-primary" role="button" data-toggle="collapse" href="#collapseTimesheet<%= timesheet.id %>Shifts" aria-expanded="false" aria-controls="collapseTimesheet<%= timesheet.id %>Shifts">
+              Link with href
+            </a>
+            <div class="collapse" id="collapseTimesheet<%= timesheet.id %>Shifts">
+                 <% f.fields_for :shifts do |shift| %>
+              <div class="well">
+                    <%= render "admin/timesheets/shift_fields", f: shift %>
+              </div>
+               <% end %>
+            </div>
+            <% end %>
     	      <div class='timesheet-actions btn-group text-center'>
     	          <%= link_to 'Add Adjustment', new_admin_timesheet_adjustment_path(timesheet), class: 'btn btn-default' %>
     	          <span id="btn_<%=timesheet.id%>" class="small"><%= link_to "Approve".html_safe, approve_admin_timesheet_path(timesheet), class: "btn btn-default", method: :patch, remote: true, data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Saving..."} if timesheet.pending? %></span>

@@ -18,6 +18,7 @@ class Admin::AdminsController < ApplicationController
 
   def create
     @admin = Admin.invite! admin_params.merge(agency_id: @current_agency.id)
+    skip_authorization
     if @admin.persisted?
       redirect_to admin_admins_path, notice: 'You just added ' + "#{@admin.name}" + " as a #{@admin.role}. They will receive an email with further instructions."
     else

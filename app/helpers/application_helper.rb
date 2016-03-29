@@ -120,14 +120,21 @@ module ApplicationHelper
             
             @subject = "Timesheet Reminder"
             @message = "Please remember to have all timesheets for last week approved the end of the day on #{date}. Thank you! "
+            @redirect_to = admin_payroll_path
         end
         if admin_signed_in?
             if @type == :general || @type.nil?
                 @admins = Admin.all
                 @company_admins = CompanyAdmin.all
                 @users = User.all
+                render "admin/conversations/form", users: @users, admins: @admins, company_admins: @company_admins, type: @type, message: @message, subject: @subject
+            elsif @type == :timesheet_reminder
+                render "admin/conversations/modal", users: @users, admins: @admins, company_admins: @company_admins, type: @type, message: @message, subject: @subject
+            
             end
-            render "admin/conversations/modal", users: @users, admins: @admins, company_admins: @company_admins, type: @type, message: @message, subject: @subject
+            
+            
+            
         elsif company_admin_signed_in?
             if @type == :general || @type.nil?
                 @admins = Admin.all

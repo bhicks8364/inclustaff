@@ -1,6 +1,7 @@
 <%= div_for admin, class: "col-md-6 border" do %>
     <h3 class="bold"><%= admin.name %> <span class='small pull-right'><%= number_to_currency(admin.current_billing) %></span></h3>
     <p>Average Mark Up: <%= admin.avg_mark_up %></p>
+     <p>Total Hours: <%= admin.timesheets.current_week.sum(:total_hours) %></p>
     <hr>
     <% admin.companies.with_current_timesheets.includes(:orders, :jobs).order('companies.name').distinct.each do |company| %>
     <p class='bold green'><%= link_to company.name, admin_company_path(company) %>    </p>

@@ -84,6 +84,17 @@ Rails.application.routes.draw do
           post :follow
         end
       end
+      resources :users do
+        collection do
+          post :import
+          get :dns_list
+        end
+        member do
+          post :follow
+          patch :grant_editing
+          patch :update_as_available
+        end
+      end
 
       resources :companies do
         resources :invoices
@@ -121,7 +132,7 @@ Rails.application.routes.draw do
           get 'autocomplete'
           post 'import'
         end
-
+        resources :direct_deposits
         resources :skills
         resources :shifts
         resources :work_histories

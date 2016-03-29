@@ -9,7 +9,17 @@
 	  	</div>
    	</div>
 <% end %>
-<div class="col-xs-8">
-    <h3>Orders By Day</h3>
-    <%= line_chart @orders.needs_attention.group_by_day(:needed_by, format: "%B %d, %Y").count, discrete: true %>
-  </div>
+<div class="col-xs-12">
+	<h3>Open Job Orders By Day</h3>
+	<%= line_chart admin.job_orders.needs_attention.group_by_day(:needed_by, format: "%b %d, %y").count, discrete: true %>
+</div>
+<div class="col-xs-12 well shadow">
+	<h3><%= admin.first_name %>'s Total Billings by Month</h3>
+	<%= area_chart admin.invoices.group_by_month(:week, format: "%b %d, %Y", range: Date.current.beginning_of_year...Date.current,).sum(:total), discrete: true %>
+</div>
+<div class="col-xs-12 shadow">
+	<h3><%= admin.first_name %>'s Company Billings by Week</h3>
+	<%= line_chart admin.companies.distinct.map { |company|
+	    {name: company.name, data: company.invoices.group_by_week(:week, range: Date.current - 6.months...Date.current, format: "%b %d, %Y").sum(:total), discrete: true}
+	} %>
+</div>

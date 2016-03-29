@@ -18,5 +18,11 @@
 #
 
 module WorkHistoriesHelper
+    def may_contact(work_history)
+        if work_history.may_contact?
+        "<span class=''><i class='fa fa-phone fa-lg' data-toggle='tooltip' data-placement='right' title='This employer may be contacted at #{work_history.phone_number}'></i> </span>".html_safe
+        else
+        end
+    end
     
 end

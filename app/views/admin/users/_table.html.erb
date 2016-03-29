@@ -1,0 +1,29 @@
+<div class="table-responsive">
+				<table id='' class="table table-bordered">
+					<thead>
+						<tr>
+							<th><i class='fa fa-cogs fa-1x fa-fw pull-center'></i></th>
+							<th><span>User</span></th>
+							<th><span>Address</span></th>
+							<th>Check-in</th>
+						</tr>
+					</thead>
+					<tbody>
+						<%= content_tag_for(:tr, users) do |user| %>
+						<td><span id='<%=user.id%>-follow-user-icon'>
+								<%= link_to "<i class='fa fa-star'></i>".html_safe, follow_user_path(user), method: :post, remote: true, class: "button" if !current_admin.is_following?(user) %>
+							</span></td>
+							<td>	<%= link_to user.name, user, class: "button" %>	</td>
+						
+							<td>	<%= user.city %>, <%= user.state %>	</td>
+							<td id='<%=user.id%>-updated-available-at-icon'>
+								<%= check_in(user) %>
+							</td>
+						<% end %>
+					
+					
+					
+					
+					</tbody>
+				</table>
+			</div>

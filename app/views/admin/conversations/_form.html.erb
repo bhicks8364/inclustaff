@@ -28,5 +28,6 @@
 
   <div class="form-group">
     <%= submit_tag "Send Message", class: "btn btn-primary" %>
+    <%= hidden_field_tag :redirect_to, @redirect_to %>
   </div>
 <% end %>

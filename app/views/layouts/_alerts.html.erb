@@ -1,6 +1,4 @@
-<% if alert || notice %>
 <div id="main-alerts">
 <% if alert %><div class='main-alerts bg-danger'><p class="text-center lead text-danger"><%= flash.alert %></p></div><% end %>
 <% if notice %><div class='main-alerts bg-info'><p class="text-center lead text-info"><%= flash.notice %></p></div><% end %>
 </div>
-<% end %>

@@ -19,7 +19,7 @@
 		<div class="tab-content">
 			<div class="tab-pane fade in active" id="tab-home">
 				<div class='mainpage'>
-	       			<div class='col-md-6'>
+	       			<div class='row'>
 	       				
 	       				<%= render 'admin/infoboxes/payroll_boxes' %>
 	       			</div>
@@ -57,7 +57,10 @@
        			</div>
 			</div>
 			<div class="tab-pane fade in" id="tab-employees">
-			    <div class='col-md-12'>
+				<div class='col-md-4'>
+					<%= convo_for %>
+				</div>
+			    <div class='col-md-8'>
 			        <h2>Active Employees</h2>
 					<%= render 'admin/employees/table', employees: @current_agency.employees.assigned %>
 					 

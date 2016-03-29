@@ -212,7 +212,7 @@ class Admin::TimesheetsController < ApplicationController
   def edit_multiple
     #   @companies = @current_agency.companies.with_current_timesheets.order("companies.name").distinct
       @redirect_to = edit_multiple_admin_timesheets_path
-      @timesheets = @current_agency.timesheets.includes(:job, :order, :company).order(week: :asc).pending.distinct
+      @timesheets = @current_agency.timesheets.includes(:job, :order, :company).order(week: :asc).current_week.distinct
       skip_authorization
   end
   

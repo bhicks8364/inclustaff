@@ -30,6 +30,7 @@ class Company < ActiveRecord::Base
     include ArelHelpers::ArelTable
     include ArelHelpers::JoinAssociation
     belongs_to :agency
+    belongs_to :account_manager, class_name: "Admin", foreign_key: "admin_id"
     has_many :admins, class_name: "CompanyAdmin", foreign_key: "company_id", dependent: :destroy
     has_many :events, through: :admins
     has_many :payroll_admins, -> { where role: "Payroll" }, through: :agency, class_name: "Admin"
@@ -60,23 +61,24 @@ class Company < ActiveRecord::Base
     scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.current_week.distinct)}
     scope :ordered_by_current_bill, -> { includes(:current_timesheets).order('timesheets.total_bill') }
     scope :with_late_timesheets, -> { joins(:timesheets).merge(Timesheet.needing_approval)}
-    store_accessor :preferences, :current_account_manager
-
-    accepts_nested_attributes_for :orders
+    # Pretty sure these arent being used...we'll see
+    # store_accessor :preferences, :current_account_manager
+    # accepts_nested_attributes_for :orders
     def comments
       timesheet_comments + job_comments + shift_comments
     end
-
-    after_create :send_notification_email
-    after_create :create_company_admin
+    
+    # send_notification_email isn't hooked up. Maybe just internal mail. Conversation or Event or idk?
+    # after_create :send_notification_email, :create_company_admin
 
     validates :name,  presence: true, length: { maximum: 50 }
     # validates :agency_id,  presence: true
-    validates :contact_name,  presence: true, length: { maximum: 20 }
-    VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-    validates :contact_email, presence: true, length: { maximum: 255 },
-                    format: { with: VALID_EMAIL_REGEX },
-                    uniqueness: { case_sensitive: false }
+    
+    # validates :contact_name,  presence: true, length: { maximum: 20 }
+    # VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+    # validates :contact_email, presence: true, length: { maximum: 255 },
+                    # format: { with: VALID_EMAIL_REGEX },
+                    # uniqueness: { case_sensitive: false }
 
 
     def create_company_admin
@@ -106,27 +108,10 @@ class Company < ActiveRecord::Base
       end
     end
     def to_param
-      "#{id}-#{name.parameterize }"
+      "#{id}-#{name.parameterize}"
     end
     def fulladdress
       "#{address} #{city}, #{state}"
-    end
-    
-    # TODO
-    #This account manager thing needs fixed. There really only needs to be one per company but there may be cases 
-    # where an AM gets fired and their existing Job Orders commissions would be split among all the remaining AMs. 
-    # (like a "House Account") Idk right now. Frickin HStore. -_-
-    def account_manager
-      Admin.find(account_manager_ids).first
-    end
-    def current_account_manager
-      if preferences['current_account_manager'].present?
-        Admin.find(preferences['current_account_manager'])
-      elsif account_managers.any?
-        account_managers.last
-      else
-        Admin.account_managers.first
-      end
     end
     def self.by_account_manager(admin_id)
         joins(:orders).where(orders: { account_manager_id: admin_id })

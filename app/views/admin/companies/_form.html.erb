@@ -2,7 +2,7 @@
 
   <h4>Account Manager</h4>
   <%= f.input :preferences, class: "" do %>
-    <%= f.input :current_account_manager, collection: @current_agency.admins.account_managers.order(:last_name), include_blank: false, class: "form-control" %>
+    <%= f.association :account_manager, collection: @current_agency.admins.account_managers.order(:last_name), include_blank: false, class: "form-control" %>
   <% end %>
 
   <hr />

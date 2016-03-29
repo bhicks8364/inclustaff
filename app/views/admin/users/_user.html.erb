@@ -1,0 +1,11 @@
+<%= div_for(user) do %>
+
+   <p class=''> <% if @user.nil? %><%= user.name %><br>
+   <small class='text-muted'><%= user.city %>, <%= user.state %></small><% end %></p> 
+ 
+  <p class='pull-right'> Employee Details <br> <i class="fa fa-wrench"></i> <%= user.employee.desired_job_type %><br>
+  <i class="fa fa-clock-o"></i>  <%= user.employee.desired_shift %></p>
+  <p class='user-actions'><span id='<%=user.id%>-updated-available-at-icon'><%= check_in(user) %></span> <span id='<%=user.id%>-follow-user-icon'><%= follow(user) if !user_signed_in? %></span></p>
+   
+  
+<% end %>

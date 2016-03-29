@@ -1,37 +1,9 @@
-<div class="col-md-12 ">
-
-<h1><%= @employee.first_name %> Work Histories</h1>
-
-<div class='table-responsive'>
-  <table id='work-table' class='table table-bordered'>
-  <thead>
-    <tr>
-      <th>Employer</th>
-      <th>Title</th>
-      <th>Start date</th>
-      <th>End date</th>
-      <th>Pay</th>
-      <th><span><i class="fa fa-cog"></i></span></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @work_histories.each do |work_history| %>
-      <tr>
-       
-        <td><%= link_to work_history.employer_name, employee_work_history_path(work_history) %></td>
-        <td><%= work_history.title %></td>
-        <td><%= work_history.start_date.stamp('11/2011') %></td>
-        <td><%= work_history.end_date.stamp('11/2011') %></td>
-        <td><%= number_to_currency(work_history.pay) %></td>
-        <td><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_employee_work_history_path(work_history), class: 'btn btn-primary' %></td>
-        
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="col-md-12">
+  <%=link_to "Add Work History", new_employee_work_history_path(@employee), class: 'btn btn-default' %>
+  <h1><%= @employee.first_name %> Work Histories</h1>
+  <hr>
+<%= render partial: "employee/work_histories/work_history", collection: @work_histories %>
 </div>
 
-<%=link_to "Add Work History", new_employee_work_history_path(@employee), class: 'btn btn-primary' %>
 
-</div>
+

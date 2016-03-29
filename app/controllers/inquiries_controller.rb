@@ -47,8 +47,13 @@ class InquiriesController < ApplicationController
   skip_authorization
     respond_to do |format|
       if @inquiry.save
-        format.html { redirect_to root_path, notice: "Thanks for your interest! We'll be contacting you shortly." }
-        format.json { render :show, status: :created, location: @inquiry }
+        if ENV['RAILS_ENV'] == "production"
+          format.html { redirect_to "http://demo.inclustaff.com", notice: "Thanks for your interest! We'll be contacting you shortly. In the mean time, take our demo out for a spin!" }
+          format.json { render :show, status: :created, location: @inquiry }
+        else
+          format.html { redirect_to "http://demo.inclustaff-bhicks8364.c9.io", notice: "Thanks for your interest! We'll be contacting you shortly. In the mean time, take our demo out for a spin!" }
+          format.json { render :show, status: :created, location: @inquiry }
+        end
       else
         format.html { render :new }
         format.json { render json: @inquiry.errors, status: :unprocessable_entity }

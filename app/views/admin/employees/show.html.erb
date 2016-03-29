@@ -1,12 +1,10 @@
-<div class='col-md-12'>
-<p id="user-role">  <strong><% if @user.can_edit? %> <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> <% end %></strong> </p> 
-        <% if @employee.dns? %>
-        <div class="alert alert-danger fade in text-center">
-    		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-    		<i class="fa fa-exclamation-triangle fa-fw fa-lg"></i>
-    			<h2><strong>Marked as DNS</strong>  </h2> 
-	    </div>
+<div class='col-md-12 mainpage'>
+    <% if @employee.direct_deposits.none? %>
+        <%= link_to new_admin_employee_direct_deposit_path(@employee) do %>
+            <h1 class="bold text-center text-danger">Needs Direct Deposit </h1>
         <% end %>
+    <% end %>
+        <% if @employee.dns? %>   <h1 class="bold text-center text-danger">Marked as DNS</h1>   <% end %>
         
  <h2 class="page-header text-center"><%= @user.name %>'s Employee Profile  </h2>
 <!--NAV TABS-->
@@ -24,7 +22,7 @@
         <% else %>
         <li role="presentation"><a href="#matching_orders" aria-controls="matching_orders" role="tab" data-toggle="tab">Recommended Positions</a></li>
         <% end %>
-        <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+        <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Edit</a></li>
       </ul>
       <!--TABS START HERE-->
       <div class="tab-content">
@@ -33,6 +31,7 @@
         <div class='row'>
             <div class='col-md-3 well well-sm'>
                 <%= render "users/user", user: @user %>
+                <p id="user-role">  <strong><% if @user.can_edit? %> <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> <% end %></strong> </p> 
                 <p class="user-address">
                     <%= @user.address %><br>
                     <%= @user.city %>, <%= @user.state %> <%= @user.zipcode %><br>
@@ -54,7 +53,11 @@
                  </div>
             </div>
             <div class='col-md-6 well well-sm'>
+                <h2><%= @employee.status %></h2>
+                <% if @employee.current_job.present? %>
                 <p>Current Job Assignment</p>
+                <p class="lead"><%= @employee.current_job.title %></p>
+                <% end %>
                  <%= div_for @employee.jobs.active, class: "well" do |job| %>
                  <span class='pull-right text-muted small'>Pay rate: <%= number_to_currency(job.pay_rate) %></span>
                   <%= link_to job.title, admin_job_path(job), class: "bold" %> <br>
@@ -63,7 +66,7 @@
                   Total gross: <%= number_to_currency(job.total_gross_pay) %> <br>   </p>
                 <% end %>
             </div>
-            <div class='col-md-9'>
+            <div class='col-md-12'>
                 <hr>
               <%= column_chart @employee.jobs.active.map{|job| {name: job.title_company, data: job.timesheets.group_by_week(:week, range: @employee.initial_start_date.beginning_of_week.midnight..Time.current, format: "%m/%d").sum(:total_hours)}}, xtitle: "Week", ytitle: "Total Hours", library: {} %>
             </div>
@@ -72,27 +75,25 @@
     </div>
     <div role="tabpanel" class="tab-pane fade" id="matching_orders">
          <h2 class="text-center">Matching Job Orders  </h2>
-        <div class='col-md-9 black'>
+        <div class='col-md-12'>
               <%= render 'admin/orders/table', orders: @employee.matching_orders %>
         </div>
-        
     </div>
       <!--EMPLOYEE PROFILE TAB-->
     <div role="tabpanel" class="tab-pane fade" id="payroll">
-         <h2 class="text-center">Payroll Information  </h2>
-         
+        <h2 class="text-center">Payroll Information  </h2>
         <div class='col-md-4'>
+            <%= link_to "Add Direct Deposit", new_admin_employee_direct_deposit_path(@employee), class: "btn btn-default" %>
             <p><%= @employee.ssn %></p>
+        </div>
+        <div class='col-md-4'>
             <p>
                 <strong>Current sign in at:</strong> <%= @user.current_sign_in_at %> <br>
                 <strong>Current sign in IP:</strong>  <%= @user.current_sign_in_ip %>
-            </p>
-            <p>
+               <hr>
                 <strong>Last sign in at:</strong> <%= @user.last_sign_in_at %> <br>
                 <strong>Last sign in IP:</strong>  <%= @user.last_sign_in_ip %>
             </p>
-          
-           
         </div>
     </div>
      <% if @employee.timesheets.any? %>
@@ -100,7 +101,6 @@
     <div role="tabpanel" class="tab-pane fade" id="aca">
         <div class='col-md-12'>
             <h2 class="text-center">ACA Information  </h2>
-           
         <%= link_to "View ACA Report", aca_admin_employee_path(@employee), class: "btn btn-primary btn-lg" %>
         <h3 class=''>Days since initial start date: <%= @employee.days_from_initial_start %></h3>
             <h3 class=''>Average Hours per week: <%= @employee.average_weekly_hours %></h3>
@@ -135,6 +135,7 @@
       </div>
       <div role="tabpanel" class="tab-pane fade" id="shifts">
         <div class='col-md-12'>
+            
           <% if @employee.assigned? && @employee.shifts.current_week.any? %>
           	<h1>Shift Calendar</h1>
               <%= render 'admin/shifts/wk_calendar', shifts: @employee.shifts.current_week %>
@@ -199,27 +200,17 @@
      
       <!--SETTINGS TAB ADMIN ONLY ----> 
         <div role="tabpanel" class="tab-pane fade" id="settings">
-            <div class='col-md-4'>
-            <%= link_to "Edit Employee", edit_admin_employee_path(@employee), class: 'btn btn-primary' %>
-            <%= link_to "View User", @employee.user, class: 'btn btn-primary' %>
-            <%= link_to "Edit User", edit_user_registration_path(@employee.user), class: 'btn btn-primary' %>
+            <div class='btn-group'>
+                <%= link_to "View User", admin_user_path(@employee.user), class: 'btn btn-primary' %>
+                <%= link_to "Edit User", edit_admin_user_path(@employee.user), class: 'btn btn-primary' %>
+            </div>
+            <div class='col-md-12 well'>
+                <%= render "admin/employees/form" %>
+            </div>
              
-            </div>
-             <% if @current_job.present? %>
-            <div class='col-md-4 scroll400' data-behavior='comment-list'>
-                <h3>Job Comments</h3>
-                <div id='job_<%=@current_job.id %>'>
-                    <% @employee.job_comments.order(created_at: :asc).each do |comment| %>
-                      <%= render "comments/comment", comment: comment %>
-                    <% end %>
-                </div>
-               
-                <%= render partial: "comments/form", locals: {commentable: @current_job} %>
-            </div>
-            <% end %>
-            <div class='col-md-4 scroll400' data-behavior='comment-list'>
+            <div class='col-md-6 scroll400' data-behavior='comment-list'>
                 <h3>Employee Comments</h3>
-                <div id='employee_<%=@employee.id%>'>
+                <div id='comment-list'>
                     <% @employee.comments.order(created_at: :asc).each do |comment| %>
                         <%= render "comments/comment", comment: comment %>
                     <% end %>

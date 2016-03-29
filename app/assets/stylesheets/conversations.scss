@@ -1,5 +1,5 @@
 .read {
-  background-color: rgba(205, 243, 201, 0.88);
+  background-color: rgb(226, 226, 226);
   color: rgb(38, 117, 19);
   
 }
@@ -7,4 +7,7 @@
 .unread {
   background-color: rgba(205, 243, 201, 0.88);
   color: rgb(38, 117, 19);
+}
+.convo {
+  border: solid 1px black;
 }

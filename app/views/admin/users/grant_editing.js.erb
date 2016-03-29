@@ -1,0 +1,6 @@
+$("#updated-at").html("<%= time_ago_in_words(@user.updated_at) %>");
+<% if @user.can_edit %>
+$('#user-role').html(" <span class='glyphicon glyphicon-ok-circle' aria-hidden='true'></span>");
+<%else%>
+$('#user-role').html(" <span class='glyphicon glyphicon-remove-circle' aria-hidden='true'></span>");
+<%end%>

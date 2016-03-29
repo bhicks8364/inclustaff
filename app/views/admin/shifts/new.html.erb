@@ -1,4 +1,4 @@
 <h3 class="page-header">
   <strong> <%= @current_admin.name %>  <small> <%= @company.name %></small></strong>
 </h3>
-<%= render 'form' %>
+<%= render 'form', shift: @shift %>

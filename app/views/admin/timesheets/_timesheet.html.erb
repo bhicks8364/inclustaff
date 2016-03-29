@@ -1,9 +1,9 @@
 
 <div class="col-md-12 <%= timesheet.approved? ? 'bg-success' : 'bg-danger'%>" data-behavior="timesheet" data-id="<%= timesheet.id %>">
-  <p class='pull-right' data-behavior='timesheet-company'>
+  <% if @timesheet.nil? %>
+  <p class='text-right' data-behavior='timesheet-company'>
 		  <%= timesheet.company.name %> 
 		</p>
-		
   <div id='view-timesheet' class="btn-toolbar" role="toolbar" aria-label="...">
 	 <div class="btn-group" role="group" aria-label="...">
 		 <%= link_to(admin_timesheet_path(timesheet), data: {toggle: "tooltip", placement: "top", title: "View Timesheet"}, class: '') do %>
@@ -12,7 +12,7 @@
   		<% end %>
   	</div>
   </div>
-  	
+  	<% end %>
 	<div class=""  data-behavior='timesheet-state'>
 	  <div class='text-right'><a class='button' data-behavior="timesheet-toggle"><% if timesheet.approved? %><span data-behavior="approve-button" > <i class="fa fa-times fa-lg"></i> <span data-behavior='timesheet-state'><%= timesheet.state.upcase %></span><% else %><span data-behavior="approve-button" >
 	     <i class="fa fa-check fa-lg"></i> <span  data-behavior='timesheet-state'><%= timesheet.state.upcase %></span></span><% end %>	</a></div>

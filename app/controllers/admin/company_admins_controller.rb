@@ -87,9 +87,31 @@ class Admin::CompanyAdminsController < ApplicationController
     @company_admin = CompanyAdmin.new
     skip_authorization
   end
+  
+  def edit
+    @company_admin = CompanyAdmin.find(params[:id])
+    skip_authorization
+  end
+  def update
+    @company_admin = CompanyAdmin.find(params[:id])
+    skip_authorization
+    respond_to do |format|
+      if @company_admin.update(company_admin_params)
+        format.html { redirect_to admin_company_admins_path, notice: 'Company Admin was successfully updated.' }
+        format.json { render :show, status: :ok, location: @company_admin }
+      else
+        format.html { render :edit }
+        format.json { render json: @company_admin.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 
   def create
-    @company_admin = CompanyAdmin.invite! company_admin_params
+    # @company_admin = CompanyAdmin.invite! company_admin_params
+    @company_admin = CompanyAdmin.new(company_admin_params) 
+    @company_admin.password = "password"
+    @company_admin.password_confirmation = "password"
+    @company_admin.save
     if @company_admin.persisted?
       redirect_to admin_company_admins_path, notice: 'You just added ' + "#{@company_admin.name}" + " as a #{@company_admin.role} at #{@company_admin.company.name}. They will receive an email with further instructions."
     else

@@ -11,27 +11,28 @@
         
        
     </div>
-    
+    <div class="hide-this" id="VacationAdj">
+        <div class="form-group">
+            <%= f.input :pay_rate, input_html: {value: @timesheet.job.pay_rate}, wrapper_html: {class: "col-md-4"} %>
+            <%= f.input :bill_rate, input_html: {value: @timesheet.job.bill_rate}, wrapper_html: {class: "col-md-4"} %>
+            <%= f.input :hours, wrapper_html: {class: "col-md-4"}, label: "Enter Vacation Hours" %>
+        </div>
+    </div>
+    <div class="hide-this" id="GasAdj">
+        <div class="form-group">
+            <%= f.input :amount, wrapper_html: {class: "col-md-6"}  %>
+        </div>
+    </div>
+    <div class="hide-this" id="GasAdj">
+        <div class="form-group">
+            <%= f.input :amount, wrapper_html: {class: "col-md-6"}  %>
+        </div>
+    </div>
+    <%= f.input :taxable, wrapper_html: {class: "col-md-6"}, input_html: { default: true } %>
+    <%= f.input :bill_amount, wrapper_html: {class: "col-md-6"}  %>
+    <%= f.submit %>
    
     
-<button type="button" class="btn btn-primary btn-lg pull-right" data-toggle="modal" data-target=".bs-example-modal-lg"> Continue </button>
-
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content col-md-12 well">
-    <div class="form-group">
-        <%= f.input :pay_rate, input_html: {value: @timesheet.job.pay_rate}, wrapper_html: {class: "col-md-4"} %>
-        <%= f.input :bill_rate, input_html: {value: @timesheet.job.bill_rate}, wrapper_html: {class: "col-md-4"} %>
-        <%= f.input :hours, wrapper_html: {class: "col-md-4"} %>
-    </div>
-    <div class="form-group">
-        <%= f.input :amount, wrapper_html: {class: "col-md-6"}  %>
-        <%= f.input :taxable, as: :select, wrapper_html: {class: "col-md-6"}   %>
-        <%= f.submit %>
-    </div>
-    </div>
-  </div>
-</div>
  <% end %>
  </div>
 </div>
