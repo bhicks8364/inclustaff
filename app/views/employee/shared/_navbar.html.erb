@@ -25,7 +25,7 @@
   			<li><%= link_to "<i class='fa fa-power-off fa-lg' data-placement='bottom' data-toggle='tooltip' title='Sign Out'></i>".html_safe, destroy_user_session_path, method: :delete  %></li>
 			<li> <%= link_to "<i class='fa fa-toolbox fa-lg'></i>".html_safe, employee_job_path(@current_user.current_job) if @current_user.current_job.present? %></li>
 			<% if current_user.mailbox.inbox.unread(current_user).any? %>
-        <li><%= link_to inbox_user_conversations_path do %><i class="fa fa-comments-o"></i> Messages <span class="badge badge-default"><%= current_user.mailbox.inbox.unread(current_user).count %></span><% end %></li>
+        <li><%= link_to inbox_employee_conversations_path do %><i class="fa fa-comments-o"></i> Messages <span class="badge badge-default"><%= current_user.mailbox.inbox.unread(current_user).count %></span><% end %></li>
         <% end %>
 		</ul>
 		
