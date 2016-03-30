@@ -4,50 +4,47 @@
 		<%= link_to "<i class='fa fa-file-excel-o fa-fw'></i> Export CSV".html_safe, admin_users_path(@users, format: :csv), class: 'btn btn-default' %>
 		<%= link_to "<i class='fa fa-user-times fa-fw'></i> DNS List".html_safe, dns_list_admin_users_path, class: 'btn btn-default' %>
 	</div>
-		<div class="col-md-6 well well-sm">
-			<%= link_to "<i class='fa fa-user-plus fa-fw fa-pull-left'></i> Add Employee".html_safe, new_user_registration_path, class: 'btn btn-primary pull-right' %>
-			<h1 class='text-info'>Available Candidates</h1>
-			<hr>
-			<div class="table-responsive">
-				<table class="table table-bordered datatable">
-					<thead>
-						<tr>
-							<th></th>
-							<th>User</th>
-							<th>Job-type</th>
-						</tr>
-					</thead>
-					<tbody>
-						<%= content_tag_for(:tr, @users) do |user| %>
-						  <td></td>
-							<td> <%= render 'admin/users/modal', user: user %></td>
-							<td>	<%= user.employee.desired_job_type %>	</td>
-						<% end %>
-					</tbody>
-				</table>
-			</div>
-		</div>
-
-	<div class='row'>
-			<div class='col-md-8'>
-		<%= form_for @import, url: import_admin_users_path, multipart: true do |f| %>
-			
-			<% if @import.errors.full_messages.each do |msg| %>
-				<div class='alert alert-danger'>
-				<div><%= msg %></div>
+	<div class="col-md-9 well well-sm">
+		<%= link_to "<i class='fa fa-user-plus fa-fw fa-pull-left'></i> Add Employee".html_safe, new_user_registration_path, class: 'btn btn-primary pull-right' %>
+		<h1 class='text-info'>Available Candidates</h1>
+		<hr>
+		<div class="table-responsive">
+			<table class="table table-bordered datatable">
+				<thead>
+					<tr>
+						<th></th>
+						<th>User</th>
+						<th>Job-type</th>
+					</tr>
+				</thead>
+				<tbody>
+					<%= content_tag_for(:tr, @users) do |user| %>
+					  <td></td>
+						<td> <%= render 'admin/users/modal', user: user %></td>
+						<td>	<%= user.employee.desired_job_type %>	</td>
 					<% end %>
-				</div>
-			<% end %>
-			<div class='border'><p class='text-info small'>last_name	first_name	email	address	city	state	zipcode</p></div>
-				<%= f.hidden_field :agency_id, value: @current_agency.id %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class='col-md-3'>
+		<%= form_for @import, url: import_admin_users_path, multipart: true do |f| %>
+		
+		<% if @import.errors.full_messages.each do |msg| %>
+			<div class='alert alert-danger'>
+			<div><%= msg %></div>
+				<% end %>
+			</div>
+		<% end %>
+		<div class="form-group">
+			<%= f.hidden_field :agency_id, value: @current_agency.id %>
 			<%= f.file_field :file %>
-				<%= f.submit "Upload" %>
-			<% end %>
+			<%= f.submit "Upload" %>
+		<% end %>
 		</div>
 			
+		<p class='text-info small'>last_name	first_name	email	address	city	state	zipcode</p>
 	</div>
-
-
 </div>
 
 

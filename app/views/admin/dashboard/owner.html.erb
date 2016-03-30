@@ -28,9 +28,6 @@
 					  	</div>
 	       			</div>
 	       			<% else %>
-					<div class='col-md-12 well well-sm shadow'>
-	       				<%= line_chart   Company.uniq.map { |c| { name: c.name, data: c.invoices.group_by_month(:week, range: Date.current.beginning_of_year...Date.current, format: "%B %Y").sum(:total) }  }, discrete: true %>
-	       			</div>
 					<div class='col-md-3'>
 						<%= render "admin/shared/alerts/open_orders", orders: @current_agency.orders %>
 						<div class="alert alert-info fade in text-center open-order">
@@ -51,6 +48,9 @@
 		                <h4 class='text-right '>  <span class='label label-success black'>Sales Goal &nbsp;<%= number_to_currency(@current_agency.weekly_sales_goal) %></span> </h4>
 	       				<hr>
 	       				<%= pie_chart Employee.group(:status).count %>
+	       			</div>
+	       			<div class='col-md-12 well well-sm shadow'>
+	       				<%= line_chart   Admin.account_managers.uniq.map { |c| { name: c.name, data: c.invoices.group_by_month(:week, range: Date.current.beginning_of_year...Date.current, format: "%B %Y").sum(:total) }  }, discrete: true %>
 	       			</div>
 	       			<div class='col-md-12 well well-sm shadow'>
 	       				<%= line_chart   Company.uniq.map { |c| { name: c.name, data: c.invoices.group_by_month(:week, range: Date.current.beginning_of_year...Date.current, format: "%B %Y").sum(:total) }  }, discrete: true %>

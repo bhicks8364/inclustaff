@@ -1,6 +1,9 @@
-<h1>New Direct Deposit</h1>
 
-<%= render 'form' %>
+<div class="col-md-12 mainpage">
+    <h1>New Direct Deposit</h1>
 
-<%= link_to 'Back', admin_employee_path(@employee) %>
-<%= link_to "#{@employee.name}", admin_employee_direct_deposits_path(@employee) %>
+    <%= render 'form' %>
+    
+    <%= link_to 'Back', admin_employee_path(@employee) %>
+    <%= link_to "#{@employee.name}", admin_employee_direct_deposits_path(@employee) %>
+</div>

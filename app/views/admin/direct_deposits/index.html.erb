@@ -1,7 +1,8 @@
+<div class="col-md-12 mainpage">
 <p id="notice"><%= notice %></p>
 
-<h1>Listing Direct Deposit Accounts for <%= @employee.name %></h1>
-
+<h1>Listing Direct Deposit Accounts for <%= link_to @employee.name, admin_employee_path(@employee) %></h1>
+<hr>
 <table class="table table-bordered">
   <thead>
     <tr>
@@ -32,3 +33,4 @@
 <br>
 
 <%= link_to 'Add Account', new_admin_employee_direct_deposit_path(@employee) %>
+</div>
