@@ -6,7 +6,7 @@
   padding: 8px;
   border: solid 2px black;
   &:target {
-    background-color: #ccc;
+    background-color: $light-green;
   }
   
 }

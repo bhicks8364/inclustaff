@@ -6,18 +6,18 @@
 
 /* Toggle Styles */
 #sidebar-icon {
-    opacity: .5;
+    // opacity: .5;
     // background: transparent;
     color: $trans-white;
     // position: relative;
-    // margin-left: 15px;
-    margin-bottom: -2px;
-    margin-top: -2px
+    margin-bottom: 2px;
+    margin-top: 5px
 }
 #sidebar-icon:hover { 
     color: $blue;
 }
 #sidebar-icon.toggled {
+    margin-right: 15px;
     opacity: .9;
     color: $blue;
     margin-left: 25px;
@@ -41,7 +41,8 @@
 
 
 #sidebar-wrapper {
-    background-color: $trans-white;
+    // background-color: $trans-white;
+    background: rgba(255,255,255,0.7);
     z-index: 1000;
     position: fixed;
     left: 230px;
@@ -84,7 +85,8 @@
     margin: 0;
     padding: 0;
     list-style: none;
-    background: $trans-white;
+    
+    // background: $trans-white;
     border-radius: 0px 10px 10px 0px;
     -moz-border-radius: 0px 10px 10px 0px;
     -webkit-border-radius: 0px 10px 10px 0px;
@@ -104,7 +106,9 @@
 .sidebar-nav li a:hover {
     text-decoration: none;
     color: $blue;
-    background: rgba(255,255,255,0.9);
+    font-weight: bold;
+    // background: rgba(255,255,255,0.9);
+    background: rgba(225,225,225,.8);
     border-radius: 0px 10px 10px 0px;
     -moz-border-radius: 0px 10px 10px 0px;
     -webkit-border-radius: 0px 10px 10px 0px;

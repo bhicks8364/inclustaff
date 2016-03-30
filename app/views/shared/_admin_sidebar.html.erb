@@ -1,6 +1,6 @@
 <a href="#menu-toggle" class="toggle-sidebar sidebar-button" id="menu-toggle"><i id="sidebar-icon" class='fa fa-arrow-circle-o-left fa-2x'></i> </a>
 <!-- Sidebar -->
-<div id="sidebar-wrapper">
+<div class="shadow" id="sidebar-wrapper">
     <ul class="sidebar-nav">
         <%= render "admin/sidebars/owner_links" if @current_admin.owner? %>
         <%= render "admin/sidebars/payroll_links" if @current_admin.payroll? %>

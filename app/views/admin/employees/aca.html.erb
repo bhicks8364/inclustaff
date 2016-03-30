@@ -1,6 +1,6 @@
 
 <div class='row'>
-    <div class='col-md-12 well well-sm'>
+    <div class='col-md-8 well well-sm'>
         <h1 class='page-header'><%= link_to @employee.name, admin_employee_path(@employee) %>'s ACA Report       </h1>
         
         <h3>Insurance Eligiblity Report</h3>
@@ -8,9 +8,16 @@
          <hr>
     <p><span class='label label-primary pull-right'><%= @employee.total_hours.round(2) %> Total Hours</span></p>
         <h3 class=''>Average Hours per week: <%= @employee.average_weekly_hours %></h3>
-        <h2>Start Date:<br> <%= @employee.initial_start_date.present? ?  @employee.initial_start_date.stamp("Monday, October 21, 2016") : "No start date" %></h2>
+       
+    </div>
+    <div class='col-md-4 well well-sm'>
+         <h2>Start Date:<br> <%= @employee.initial_start_date.present? ?  @employee.initial_start_date.stamp("Monday, October 21, 2016") : "No start date" %></h2>
         <h3>Days from initial start date: <%= @employee.days_from_initial_start %></h3>
-        <p>Week count: <%= @employee.timesheets.count %></p>
+    <p>Week count: <%= @employee.timesheets.count %></p>
+    </div>
+    <div class='col-md-12'>
+        <hr>
+      <%= column_chart @employee.jobs.active.map{|job| {name: job.title_company, data: job.timesheets.group_by_week(:week, range: @employee.initial_start_date.beginning_of_week.midnight..Time.current, format: "%m/%d").sum(:total_hours)}}, xtitle: "Week", ytitle: "Total Hours", library: {} %>
     </div>
 </div>
 

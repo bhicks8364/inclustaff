@@ -3,8 +3,7 @@
 	<i class="fa fa-check-square fa-fw green"></i>
 	<%= user_signed_in? ? "You" : event.user.name %> 
 	<% if event.eventable.present? %>
-		
-	    <strong>	<%= event.action.humanize.downcase %></strong>
+		<%= event.action.humanize.downcase %> to
 	    <%= link_to event.eventable.title.titleize, event  %>
 			
 		<% else %>
