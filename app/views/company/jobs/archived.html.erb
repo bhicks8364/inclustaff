@@ -1,6 +1,7 @@
-<% if @archived_jobs.any? %>
+<div class="col-md12 mainpage shadow">
+    <% if @archived_jobs.any? %>
 <%= div_for @archived_jobs.distinct do |job| %>
-    <h3><%= job.employee.name %> - <%= job.state %></h3>
+    <h1><%= job.employee.name %> - <%= job.state %></h1>
      <%= render job.comments %>
 <% end %>  
 <% else %>
@@ -8,4 +9,5 @@
 <% end %>
 
 
+</div>
 
