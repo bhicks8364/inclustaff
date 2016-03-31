@@ -1,21 +1,22 @@
-<div class=''>
-  <h1 class='black'> Invoices for <strong><% if @company.present? %> <%= link_to @company.name, admin_company_path(@company) %>  <% else %><%=@current_agency.name %><% end %></strong></h1>
-  <div class='col-md-3'>
-    <h2><strong>Unpaid</strong></h2>
-    <div class='scroll500'>
+<div class='col-md-12 mainpage shadow'>
+  <h1 class='simple'> Invoices for <strong><% if @company.present? %> <%= link_to @company.name, admin_company_path(@company) %>  <% else %><%=@current_agency.name %><% end %></strong></h1>
+  <div class='col-md-3 well well-sm shadow'>
+    <h2 class="text-center">Unpaid</strong></h2>
+    <div class=''>
     <% if @company.present? %>
     <% @invoices.unpaid.each do |invoice| %>
       <%= inv_timesheets_collaspe(invoice) %><br>
-      <div class='black collapse' id="collapseInv_<%=invoice.id%>">
+      <div class='collapse' id="collapseInv_<%=invoice.id%>">
          <%= render 'admin/invoices/invoice', invoice: invoice %>
       </div>
     <% end %>
     <% else %>
       <% @current_agency.companies.includes(:invoices).order(:name).each do |company| %>
-       <h3> <%= company.name %></h3>
+       <h3> <%= company.name %>
+       <%= company.account_manager.try(:name) || "Unassigned" %></h3>
           <% company.invoices.unpaid.order(week: :desc).each do |invoice| %>
           <%= inv_timesheets_collaspe(invoice) %><br>
-          <div class='black collapse' id="collapseInv_<%=invoice.id%>">
+          <div class='collapse' id="collapseInv_<%=invoice.id%>">
              <%= render 'admin/invoices/invoice', invoice: invoice %>
           </div>
           <% end %>
@@ -23,40 +24,29 @@
     <% end %>
     </div>
   </div>
-  <div class='col-md-9'>
+  <div class='col-md-9 well well-sm shadow'>
     <div class='table-responsive'>
-      
-      <table class='table table-hover datatable'>
+      <table class='table table-hover'>
         <thead>
           <tr>
-            <th></th>
-            <th>Company</th>
             <th>Week</th>
-            <th>Due by</th>
-            <th>Paid</th>
+            <th>Company</th>
             <th>Total</th>
-            <th>Amt paid</th>
             <th>Paid on</th>
           </tr>
         </thead>
-      
         <tbody>
-          <% @invoices.order(week: :desc).each do |invoice| %>
-          
-          
+          <% @invoices.each do |invoice| %>
             <tr>
-              <td id='mark-paid-<%=invoice.id%>'><%= link_to mark_as_paid_admin_invoice_path(invoice), method: :patch, remote: true, id: 'pay-button', class: 'button' do %><%= inv_sym(invoice) %> <% end %></td>
-              <td><%= invoice.company.name %></td>
-              <td> <%= link_to invoice.week_ending, admin_invoice_path(invoice) %></td>
-              <td><%= invoice.due_by.stamp('11/13') %></td>
-              <td><%= invoice.state %></td>
-              <td><%= number_to_currency(invoice.total) %></td>
-              <td><%= number_to_currency(invoice.amt_paid) %></td>
+              <td class="text-center" id='mark-paid-<%=invoice.id%>'> <%= link_to mark_as_paid_admin_invoice_path(invoice), method: :patch, remote: true, id: 'pay-button', class: 'button' do %><%= inv_sym(invoice) %> &nbsp; <%= invoice.week_ending.stamp('11/13') %><% end %></td>
+              <td><%= link_to invoice.company.name, admin_invoice_path(invoice) %></td>
+              <td><strong><%= number_to_currency(invoice.total) %></strong><br><small><%= number_to_currency(invoice.amt_paid) %></small></td>
               <td><%= invoice.paid_on %></td>
           </tr>
           <% end %>
         </tbody>
       </table>
+      <%= will_paginate @invoices %>
     </div>
   </div>
 </div>
