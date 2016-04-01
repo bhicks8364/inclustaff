@@ -1,7 +1,7 @@
 <div class='row'>
     <div class='col-md-8  well well-sm'>
         <%= render 'admin/shared/alerts/job_status', jobs: @jobs.inactive %>
-        <%= pie_chart @jobs.inactive.group('jobs.state').count, 
+        <%= pie_chart @jobs.group('jobs.state').count, 
 		   		library: {backgroundColor: "#ccc", legend: {position: "bottom"}, is3D: true, title: "Jobs by Current Status"}%>
     </div>
     <div class='col-md-4 well well-sm'>

@@ -28,9 +28,9 @@ class Admin::JobsController < ApplicationController
   def inactive
     if params[:order_id]
       @order = Order.find(params[:order_id])
-      @jobs = @order.jobs.inactive
+      @jobs = @order.jobs
     else
-      @jobs = @current_agency.jobs.inactive
+      @jobs = Job.all
     end
     authorize @jobs, :index?
   end

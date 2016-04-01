@@ -1,13 +1,13 @@
 
 
-<div class="col-md-12 mainpage">
+<div class="col-md-12 mainpage shadow">
 	<%= render 'admin/shared/welcome/payroll_dashboard' if @current_admin.sign_in_count == 1 || @current_agency.subdomain == "demo" %> 
-
+		<h1 class='bold text-center'>Payroll Dashboard</h1>
 	<div class="tabs-wrapper">
 			
 		<div class="clearfix">
-			<h1 class='bold pull-left simple'>Payroll Dashboard</h1>
-			<ul class="nav nav-tabs pull-right">
+		
+			<ul class="nav nav-tabs">
 			  <li class="active"><a href="#tab-home" data-toggle="tab">Dashboard</a></li>
 			  <li class=""><a href="#tab-timesheets" data-toggle="tab">Timesheets</a></li>
 			  <li class=""><a href="#tab-aca" data-toggle="tab">ACA</a></li>

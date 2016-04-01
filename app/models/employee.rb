@@ -254,14 +254,14 @@ class Employee < ActiveRecord::Base
 
   def current_job_hours
     if current_job.present?
-      current_job.shifts.sum(:time_worked)
+      current_job.timesheets.sum(:total_hours)
     else
       0
     end
   end
 
   def total_all_hours
-      shifts.sum(:time_worked)
+      timesheets.sum(:total_hours)
   end
   def matching_orders
      @matching_orders ||= Order.needs_attention.tagged_with([tag_list], :any => true)

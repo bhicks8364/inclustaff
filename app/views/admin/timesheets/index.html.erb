@@ -1,4 +1,4 @@
-<div class="col-md-12 mainpage">
+<div class="col-md-12 mainpage shadow">
 	<div class='btn-group'>
 		<%= link_to "Current Payroll", edit_multiple_admin_timesheets_path, class: "btn btn-info" %>
 		<% if @job.present?  %>
@@ -8,18 +8,18 @@
 		<% end %>
 	</div>
 	<hr>
-	<h1 class='bold'>Timesheets </h1>
-	<h3 class='text-right text-muted'><% if @timesheets.current_week.any? %><small>Week Ending <%= @timesheets.current_week.first.week_ending %></small> <% end %></h3>
+	<h1 class='bold'>Timesheets <% if @timesheets.current_week.any? %><small>Week Ending <%= @timesheets.current_week.first.week_ending.stamp("3/21") %></small> <% end %></h1>
 	<hr>
 	<div class='well' data-behavior='timesheet-list'>
 		<div class='pad'>
 			<% if @timesheets.any? %>
-			
+				<%= will_paginate @timesheets %>
 			<%= render "admin/timesheets/table", timesheets: @timesheets %>
 			<% else %>
 			<h3>No timesheets to display.</h3>
 			<% end %>
 		</div>
+	
 	</div>
 <hr>
 	<%= render "admin/timesheets/calendar", timesheets: @timesheets %>
