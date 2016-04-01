@@ -10,6 +10,7 @@
 			  <li class=""><a href="#tab-invoices" data-toggle="tab">Invoices</a></li>
 			  <li class=""><a href="#tab-admins" data-toggle="tab">Admins</a></li>
 			  <li class=""><a href="#tab-leaderboard" data-toggle="tab">Stats</a></li>
+			  <li class=""><a href="#tab-edit" data-toggle="tab">Edit</a></li>
 			</ul>
 		</div>
 		<div class="tab-content">
@@ -28,7 +29,7 @@
 					  	</div>
 	       			</div>
 	       			<% else %>
-					<div class='col-md-3'>
+					<div class='paper'>
 						<%= render "admin/shared/alerts/open_orders", orders: @current_agency.orders %>
 						<div class="alert alert-info fade in text-center open-order">
 							<p class='lead  green'><i class="fa fa-usd fa-fw"></i> &nbsp; Current Revenue: <%= number_to_currency(@current_agency.current_revenue) %>  </span> <br>
@@ -38,7 +39,7 @@
 						</div>
 					</div>
 						<% end %>
-		 			<div class='col-md-9 well well-sm shadow'>
+		 			<div class='col-md-9 paper'>
 		                <h3 class='text-center'>Sales progress for this week <span class='label label-success pull-right'> <%= number_to_currency(@current_agency.current_billing) %></span></h3>
 		                <div class="progress">
 		                  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<%= @current_agency.percent_to_sales_goal %>" aria-valuemin="0" aria-valuemax="100" style="min-width: 4em; width: <%= number_to_percentage(@current_agency.percent_to_sales_goal, precision: 2)%>">
@@ -47,7 +48,7 @@
 		                </div>
 		                <h4 class='text-right '>  <span class='label label-success black'>Sales Goal &nbsp;<%= number_to_currency(@current_agency.weekly_sales_goal) %></span> </h4>
 	       				<hr>
-	       				<%= pie_chart Employee.group(:status).count %>
+	       			
 	       			</div>
 	       			<div class='col-md-12 well well-sm shadow'>
 	       				<%= line_chart   Admin.account_managers.uniq.map { |c| { name: c.name, data: c.invoices.group_by_month(:week, range: Date.current.beginning_of_year...Date.current, format: "%B %Y").sum(:total) }  }, discrete: true %>
@@ -92,6 +93,7 @@
 				</div>
    				<div class="col-md-12">
 	 				<%= render "admin/infoboxes/leaderboxes" %>
+	 					<%= pie_chart Employee.group(:status).count %>
 	 			</div>
        			<div class='col-md-12 well well-sm shadow'>
        				<%= line_chart   Company.uniq.map { |c| { name: c.name, data: c.invoices.group_by_month(:week, range: Date.current.beginning_of_year...Date.current, format: "%B %Y").sum(:total) }  }, discrete: true %>
@@ -133,6 +135,9 @@
 					  <p class='lead'>Unpaid Balance: <span class='pull-right'><%= number_to_currency(@current_agency.invoices.current_week.sum(:total)) %></span></p>
 				    </div>
 				</div>
+			</div>
+			<div class="tab-pane fade" id="tab-edit">
+				<%= render "agencies/form", agency: @current_agency %>
 			</div>
 		
 		</div>

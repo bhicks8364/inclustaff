@@ -1,42 +1,59 @@
-<div class='col-md-12 mainpage'>
-    <div class='btn-group'>
-        <%= link_to "<i class='fa fa-floppy-o fa-fw'></i> Save PDF".html_safe, admin_timesheet_path(@timesheet, format: :pdf), class: 'btn btn-default' %>
-        <%= link_to "<i class='fa fa-trash fa-fw'></i> Delete Shifts".html_safe, admin_timesheet_delete_all_shifts_path(@timesheet), class: 'btn btn-default' if @timesheet.shifts.any?%>
-        <%= link_to "<i class='fa fa-edit fa-fw'></i> Edit".html_safe, edit_admin_timesheet_path(@timesheet), class: 'btn btn-default'  if @timesheet.shifts.none? %>
-    </div>
-    <div class='btn-group'>
-    <%= link_to "<i class='fa fa-trash fa-fw'></i> Invoice ".html_safe, admin_invoice_path(@timesheet.invoice), class: 'btn btn-default' %>
-    <%= link_to 'Download Invoice PDF', admin_company_invoice_path(@timesheet.company, @timesheet.invoice, format: :pdf), class: 'btn btn-default' %>
-    </div>
-    <div class='btn-group'>
-        <%= link_to "#{@timesheet.employee.name}", admin_job_path(@job), class: 'btn btn-default' %>
+<div class='col-md-12 mainpage shadow'>
+    <div class="btn-group btn-group-justified" role="group">
+        <%= link_to "View #{@employee.first_name}'s Profile", admin_job_path(@job), class: 'btn btn-default' %>
         <%= link_to 'Add A Timesheet', edit_admin_timesheet_path(@timesheet), class: 'btn btn-default' %>
         <%= link_to 'View All Timesheets', admin_job_timesheets_path(@job), class: 'btn btn-default' %>
     </div>
-
-     <hr>
-     
-    <div class='col-md-6 well'>
-        <%= link_to 'Add Adjustment', new_admin_timesheet_adjustment_path(@timesheet), class: 'btn btn-default' %>
+    <div class='col-md-8 well well-sm shadow'>
+        <h2 class="simple"><%= @company.name %></h2>
+        <p class='text-info'><%= @timesheet.reg_bill_rate == @timesheet.ot_bill_rate ? "Bill Rate: #{@timesheet.reg_bill_rate}" : "Bill Rate: #{@timesheet.reg_bill_rate} | OT Bill Rate: #{@timesheet.ot_bill_rate}" %></p>
+        <hr>
+        <div class='shadow' data-behavior="timesheet-list">
+            <%= render @timesheet %>
+        </div>
+    </div>
+    <div class='col-md-4 pad shadow light'>
+        <div class="btn-group text-center" role="group">
+            <%= link_to "<i class='fa fa-floppy-o fa-fw'></i> Save PDF".html_safe, admin_timesheet_path(@timesheet, format: :pdf), class: 'btn btn-default btn-lg btn-block' %>
+            <%= link_to "<i class='fa fa-trash fa-fw'></i> Delete Shifts".html_safe, admin_timesheet_delete_all_shifts_path(@timesheet), class: 'btn btn-default btn-lg btn-block' if @timesheet.shifts.any?%>
+            <%= link_to "<i class='fa fa-edit fa-fw'></i> Edit".html_safe, edit_admin_timesheet_path(@timesheet), class: 'btn btn-default btn-lg btn-block'  if @timesheet.shifts.none? %>
+       </div>
+       <hr>
+        <div class="well well-sm shadow">
+            <p class="text-info bold">Timesheet Breakdown</p>
+            <p class='bold'><%= @timesheet.reg_hours * @timesheet.pay_rate %> + <%= @timesheet.ot_hours * @timesheet.ot_rate %>  + <%= @timesheet.adj_total %>  = <%= @timesheet.gross_pay %></p>
+        </div>
         <% if @timesheet.adjustments.any? %>
-        <h3 class='text-warning'>Adjustments</h3>
+        <h3 class='text-info bold text-center'>Adjustments</h3>
         <%= div_for @timesheet.adjustments do |adjustment| %>
-            <p> <%= number_to_currency(adjustment.amount) %>  (<%= number_to_currency(adjustment.bill_amount) %>) <br> <small>Added by: <%= adjustment.creator.try(:name) %> <%= time_ago_in_words(adjustment.created_at) %> ago</small>
+        <p class="lead bold"><%= adjustment.adj_type %> </p>
+            <p>Pay: <%= number_to_currency(adjustment.amount) %>  (Bill: <%= number_to_currency(adjustment.bill_amount) %>) <br>
+            <span class="small text-muted">Added by: <%= adjustment.creator.try(:name) %></span>
             <%= link_to "<i class='fa fa-trash'></i>".html_safe, admin_timesheet_adjustment_path(@timesheet, adjustment), method: :delete, class: "pull-right" %></p>
-            <hr>
         <% end %>
         <% end %>
+        <%= link_to 'Add Adjustment', new_admin_timesheet_adjustment_path(@timesheet), class: 'btn btn-default btn-lg btn-block' %>
+        <hr>
+        <h3 class='text-info bold text-center'>Invoice</h3>
+        <div class="btn-group text-center" role="group" aria-label="...">
+            <%= link_to "<i class='fa fa-money fa-fw'></i> View Invoice ".html_safe, admin_invoice_path(@timesheet.invoice), class: 'btn btn-default  btn-lg btn-block' %>
+            <%= link_to "<i class='fa fa-download fa-fw'></i> Save Invoice as PDF".html_safe, admin_company_invoice_path(@timesheet.company, @timesheet.invoice, format: :pdf), class: 'btn btn-default  btn-lg btn-block' %>
+        </div>
+        <h3 class='text-info bold text-center'>Bill Rates</h3>
+        <% if @timesheet.reg_bill_rate == @timesheet.ot_bill_rate %>
+           <p><strong> Bill Rate:</strong> <br> <%= @timesheet.reg_bill_rate %> </p>
+        <% else %>
+        
+        <p><strong>Bill Rate: </strong> <br><%= @timesheet.reg_bill_rate %><br>
+        <strong>OT Bill Rate:</strong> <br> <%= @timesheet.ot_bill_rate %></p>
+            
+        <% end %>
     </div>
-   
-    <div class='col-md-6' data-behavior="timesheet-list">
-      <%= render @timesheet %>
-    </div>
-   
     <% if @timesheet.shifts.any?  %>
     <div class='col-md-12'>
         <%= link_to "Edit Shift Times", admin_timesheet_shifts_path(@timesheet), class: "btn btn-info btn-sm" %>
       <h3> Shifts</h3>
-       <%= render 'admin/shifts/table' %>
+       <%= render 'admin/shifts/table', shifts: @shifts %>
     </div>
     <% end %>
     

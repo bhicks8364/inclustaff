@@ -82,11 +82,13 @@
       <!--EMPLOYEE PROFILE TAB-->
     <div role="tabpanel" class="tab-pane fade" id="payroll">
         <h2 class="text-center">Payroll Information  </h2>
-        <div class='col-md-4'>
+        <div class='col-md-4 well'>
             <%= link_to "Add Direct Deposit", new_admin_employee_direct_deposit_path(@employee), class: "btn btn-default" %>
-            <p><%= @employee.ssn %></p>
+            <% @employee.direct_deposits.each do |direct_deposit| %>
+               Routing: <%= direct_deposit.routing_number %> | Account Number: <%= direct_deposit.account_number %>
+            <% end %>
         </div>
-        <div class='col-md-4'>
+        <div class='col-md-4 well'>
             <p>
                 <strong>Current sign in at:</strong> <%= @user.current_sign_in_at %> <br>
                 <strong>Current sign in IP:</strong>  <%= @user.current_sign_in_ip %>
@@ -109,7 +111,8 @@
       </div>
       <!--TIMESHEETS TAB-->
       <div role="tabpanel" class="tab-pane fade" id="timesheets">
-        <div class='col-md-12'>
+        <div class='col-md-12' data-behavior='timesheet-list'>
+            <h1><%= @employee.first_name %>'s Timesheets</h1>
         <% if @employee.timesheets.any? %>
             <%= render 'admin/timesheets/table', timesheets: @employee.timesheets %>
         <% else %>

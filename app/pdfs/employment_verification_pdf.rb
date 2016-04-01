@@ -9,7 +9,7 @@ class EmploymentVerificationPdf < Prawn::Document
         if @current_state == "Currently Working"
             @color = "green"
         else
-            @color = "cccccc"
+            @color = "#ccc"
         end
         # @pdf_timesheets = pdf_timesheets
         @view = view_context
@@ -17,21 +17,23 @@ class EmploymentVerificationPdf < Prawn::Document
         # @status ||= @pdf_timesheets.last.approved? ? "Approved by: #{@pdf_timesheets.last.user_approved}" : "" if @pdf_timesheets.any?
         super()
         
-        text "Employee Verifcation for #{@employee.name}", style: :bold, align: :left, size: 16
-        text @current_agency.name, style: :bold, align: :center, size: 18
+        text "Employee Verification for #{@employee.name}", style: :bold, align: :left, size: 12
+        stroke_horizontal_rule
+        move_down 5
+        text @current_agency.name, style: :bold, align: :center, size: 12
         move_down 5
         stroke_horizontal_rule
         move_down 5
-        text @current_state, color: @color, align: :right, size: 14
+        text @current_state, color: @color, align: :right, size: 12
         move_down 20
         
         stroke_horizontal_rule
         move_down 5
         @employee.jobs.includes(:shifts).order('shifts.week').each do |j|
             move_down 15
-            text "Company: #{j.company.name}", style: :bold, align: :left, size: 16
+            text "Company: #{j.company.name}", style: :bold, align: :left, size: 12
             move_down 2
-            text " #{j.state}", color: @color, style: :bold, align: :left, size: 16
+            text " #{j.state}", color: @color, style: :bold, align: :left, size: 12
             move_down 2
             text "#{j.title}: #{j.shifts.order(:time_in).first.work_date} - #{j.shifts.order(:time_in).last.work_date}"
             move_down 3

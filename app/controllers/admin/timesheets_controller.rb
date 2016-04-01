@@ -177,6 +177,7 @@ class Admin::TimesheetsController < ApplicationController
 
   def edit
     @job = @timesheet.job
+    @employee = @timesheet.employee
     skip_authorization
     # authorize @timesheet
   end
@@ -269,6 +270,7 @@ class Admin::TimesheetsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_timesheet
       @timesheet = Timesheet.find(params[:id])
+      @company = @timesheet.company
       skip_authorization
     end
     

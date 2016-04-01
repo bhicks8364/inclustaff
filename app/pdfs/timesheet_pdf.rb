@@ -17,7 +17,7 @@ class TimesheetPdf < Prawn::Document
         text "Dates: #{@timesheet.time_frame }", :color => @color, align: :left, size: 14
         text @status, :color => "#ccc", align: :right, size: 16
         move_down 20
-        text " #{@company.name } - #{@job_order.title }", size: 30, style: :bold, :align => :center, :size => 18
+        text " #{@company.name } - #{@job_order.title }", size: 30, style: :bold, :align => :center
         stroke_horizontal_rule
         move_down 5
         text " #{@current_agency.name }", align: :left, size: 14
@@ -28,7 +28,7 @@ class TimesheetPdf < Prawn::Document
         text "#{helpers.pluralize(@timesheet.shifts.count, 'shift')}", align: :right, size: 14
         move_down 2
         stroke_horizontal_rule
-        timesheets
+        
         
         move_down 30
         stroke_horizontal_rule

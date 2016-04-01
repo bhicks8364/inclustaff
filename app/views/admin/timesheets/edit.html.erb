@@ -1,5 +1,6 @@
-<div class='col-md-12 mainpage'>
-<h1>Editing Timesheet</h1>
+<div class='col-md-12 mainpage shadow'>
+<h1 class="simple bold pad">Editing Timesheet for <%= link_to @employee.name, admin_employee_path(@employee) %></h1>
+<h3 class="pad bold text-right"><%= link_to @company.name, admin_company_path(@company) %></h3>
 
   
         <%= render 'form' %>

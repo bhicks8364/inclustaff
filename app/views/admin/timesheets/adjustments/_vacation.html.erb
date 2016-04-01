@@ -1,0 +1,7 @@
+<div class="hide-this" id="VacationAdj">
+    <div class="form-group">
+        <%= f.input :pay_rate, input_html: {value: @timesheet.job.pay_rate}, wrapper_html: {class: "col-md-4"} %>
+        <%= f.input :bill_rate, input_html: {value: @timesheet.job.bill_rate}, wrapper_html: {class: "col-md-4"} %>
+        <%= f.input :hours, wrapper_html: {class: "col-md-4"}, label: "Enter Vacation Hours" %>
+    </div>
+</div>

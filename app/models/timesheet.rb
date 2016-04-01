@@ -50,7 +50,7 @@ class Timesheet < ActiveRecord::Base
   delegate :name_title, :pay_rate, :ot_rate, :agency, :company, :manager, :recruiter, :current_shift, :account_manager, :order_id, to: :job
   delegate :ssn, to: :employee
 
-  before_validation :total_timesheet, if: :clocked_out?
+  before_save :total_timesheet, if: :clocked_out?
   after_initialize :defaults
   
   after_save :update_company_balance!, if: :total_bill_changed?
@@ -267,6 +267,10 @@ class Timesheet < ActiveRecord::Base
   def mark_up_percent
     (mark_up * 100 - 100).to_i.to_s + "%"
   end
+  
+  def adj_total
+    adjustments.any? ? adjustments.sum(:amount) : 0
+  end
 
   def total_timesheet
       if shifts.any?
@@ -279,16 +283,14 @@ class Timesheet < ActiveRecord::Base
         self.reg_hours = 40
         self.ot_hours = hours - 40
         ot_rate = job.pay_rate * 1.5
-        if adjustments.none?
-          self.gross_pay = job.pay_rate * self.reg_hours + self.ot_hours * ot_rate
-        end
+        self.gross_pay = job.pay_rate * self.reg_hours + self.ot_hours * ot_rate + adj_total
       else
         self.total_hours = hours
         pay = job.pay_rate * hours
         self.reg_hours = hours
         self.ot_hours = 0
         if adjustments.none?
-          self.gross_pay = pay
+          self.gross_pay = pay + adj_total
         end
       end
   end

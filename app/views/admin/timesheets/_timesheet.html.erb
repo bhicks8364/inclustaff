@@ -1,5 +1,5 @@
 
-<div class="col-md-12 <%= timesheet.approved? ? 'bg-success' : 'bg-danger'%>" data-behavior="timesheet" data-id="<%= timesheet.id %>">
+<div class="col-md-12 pad <%= timesheet.approved? ? 'bg-success' : 'bg-danger'%>" data-behavior="timesheet" data-id="<%= timesheet.id %>">
   <% if @timesheet.nil? %>
   <p class='text-right' data-behavior='timesheet-company'>
 		  <%= timesheet.company.name %> 

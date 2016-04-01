@@ -9,31 +9,13 @@ a:hover {
   cursor: pointer;
 }
 
-// PANELS
-div.panel.panel-primary {
-  border-color: #fff;
-  // border-color: rgba(34, 69, 63, 0.95);
-    .panel-heading {
-    // color: #fff;
-    background-color: rgba(34, 69, 63, 0.75);
-    border-color: #fff;
-    // border: none;
-    
-  }
+.paper {
+  background-color: $trans-white;
+  box-shadow: 0 12px 12px 0 rgba(0,0,0,0.24), 0 12px 50px 0 rgba(0,0,0,0.15);
+  padding: 3px;
+  max-width: 500px;
+  margin: 3px;
 }
-.list-group-item-success {
-  background-color: rgba(34, 69, 63, 0.75);
-}
-.red {
-  color: red;
-}
-.carousel-image {
-  // width: 400px;
-  margin:auto;
-  // height: 400px;
-  opacity: 0.5;
-}
-
 div.comment {
   margin: 5px;
   padding: 5px;
@@ -169,4 +151,13 @@ li.dashboard {
 }
 .order-row {
   vertical-align: bottom;
+}
+
+#demo-nav {
+  background-color: rgba(255, 255, 255, .9);
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24);
+}
+
+.light {
+  background-color: rgba(255, 255, 255, .8);
 }

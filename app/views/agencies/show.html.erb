@@ -11,10 +11,10 @@
 
 <!--IF A COMPANY ADMIN IS NOT SIGNED IN-->
 <% elsif admin_signed_in? %>
-    <h1 class='text-center'>Welcome to IncluStaff, <%= @agency.name %>!</h1>
     
-    <div class='row'>
-        <h1 class='simple'><%= @agency.name %></h1>
+    
+    <div class='col-md-12 mainpage'>
+        <h1 class='text-center simple'>Welcome to IncluStaff, <%= @agency.name %>!</h1>
         <div class='col-md-4 well well-sm'>
             <% if @agency.logo_url.present? %>
             <%= image_tag(@agency.logo_url, class: "img-zoom border bullet-icon", alt: "img-#{@agency.id}") %> 
@@ -122,7 +122,7 @@
                 <% @agency.companies.each do |company| %>
                     <h4><%= link_to company.name, admin_company_path(company) %> <small><%= number_to_currency(company.current_billing) %></small></h4>
                     Open: <%=company.orders.needs_attention.count %> | Filled: <%= company.orders.filled.count %> <br>
-                    Acct Manager: <%= company.current_account_manager.try(:name)%><br>
+                    Acct Manager: <%= company.account_manager.try(:name) || "Unassigned" %><br>
                     <% company.admins.each do |company_admin| %>
                         <%= link_to company_admin.name, company_admin %> <small><%= company_admin.role %></small><br>
                     <% end %>

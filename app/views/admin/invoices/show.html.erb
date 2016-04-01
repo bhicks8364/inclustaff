@@ -1,5 +1,5 @@
  
-<div class='col-md-12 lightbox-long'>
+<div class='col-md-12 mainpage shadow'>
   <div class='btn-group'>
   <% if @invoice.unpaid? %>
   <%= link_to 'Mark As Paid', mark_as_paid_admin_invoice_path(@invoice), method: :patch, remote: true, id: 'pay-button', class: 'btn btn-primary' %>

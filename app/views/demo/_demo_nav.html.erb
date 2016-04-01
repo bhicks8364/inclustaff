@@ -1,4 +1,4 @@
-<nav class="navbar demo-nav">
+<nav class="navbar demo-nav" id="demo-nav">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-demo-navbar-collapse-1" aria-expanded="false">
@@ -15,7 +15,7 @@
             <p class='navbar-text'><a class="demo-link" data-toggle="modal" data-target="#WelcomeDemoModal">  <span class='how-to'>How To  <i class="fa fa-arrow-right fa-fw"></i></span> </a></p>
             <ul class="nav navbar-nav">
                 <% if admin_signed_in? %>
-                <li class='' data-toggle="tooltip" data-placement="bottom" title="Add A New Company"><a class="demo-link" data-toggle="modal" data-target="#companyDemoModal">   <i class="fa fa-building fa-2x"></i> </a> </li>
+                <li class='' data-toggle="tooltip" data-placement="bottom" title="Add A New Company"><a class="demo-link" data-toggle="modal" data-target="#agencyDemoModal">   <i class="fa fa-building fa-2x"></i> </a> </li>
                 <li class='' data-toggle="tooltip" data-placement="bottom" title="Create Job Orders"><a class="demo-link" data-toggle="modal" data-target="#jobOrderDemoModal">   <i class="fa fa-plus-square fa-2x"></i> </a> </li>
                 <li class='' data-toggle="tooltip" data-placement="bottom" title="Create User Accounts"><a class="demo-link" data-toggle="modal" data-target="#usersDemoModal">   <i class="fa fa-user-plus fa-2x"></i> </a> </li>
                 <li class='' data-toggle="tooltip" data-placement="bottom" title="View Time Clock"><a class="demo-link" data-toggle="modal" data-target="#clockDemoModal">   <i class="fa fa-clock-o fa-2x"></i> </a> </li>
@@ -27,7 +27,7 @@
                 <li class='' data-toggle="tooltip" data-placement="bottom" title="View Invoices"><a class="demo-link" data-toggle="modal" data-target="#invoiceDemoModal">   <i class="fa fa-usd fa-2x"></i> </a> </li>
                 <% end %>
                 <% if user_signed_in? %>
-                <li class='' data-toggle="tooltip" data-placement="bottom" title="START HERE"> <a class="demo-link" data-toggle="modal" data-target="#companyWelcomeDemoModal">  <i class="fa fa-question-circle fa-2x"></i> </a> </li>
+                <li class='' data-toggle="tooltip" data-placement="bottom" title="START HERE"> <a class="demo-link" data-toggle="modal" data-target="#employeeWelcomeDemoModal">  <i class="fa fa-question-circle fa-2x"></i> </a> </li>
                 <li class='' data-toggle="tooltip" data-placement="bottom" title="Applying"><a class="demo-link" data-toggle="modal" data-target="#employeeProfileDemoModal">   <i class="fa fa-user fa-2x"></i> </a> </li>
                 <li class='' data-toggle="tooltip" data-placement="bottom" title="Clocking In & Out"><a class="demo-link" data-toggle="modal" data-target="#clockDemoModal">   <i class="fa fa-clock-o fa-2x"></i> </a> </li>
                 <li class='' data-toggle="tooltip" data-placement="bottom" title="Pay Reports & Docs"><a class="demo-link" data-toggle="modal" data-target="#reportsDemoModal">   <i class="fa fa-cloud-download fa-2x"></i> </a> </li>

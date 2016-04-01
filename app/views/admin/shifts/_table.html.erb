@@ -15,7 +15,7 @@
   </thead>
 
   <tbody>
-    <% @shifts.order(:time_in).reverse_order.each do |shift| %>
+    <% shifts.order(:time_in).reverse_order.each do |shift| %>
       <% if shift.clocked_in? %>
         <tr class="bg-success">
       <% else %>
