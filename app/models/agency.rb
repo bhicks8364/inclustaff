@@ -92,7 +92,7 @@ class Agency < ActiveRecord::Base
   end
   
   def billing_for(week_of=Date.today)
-    Timesheet.occurring_between(week.beginning_of_week, week.end_of_week)
+    Timesheet.occurring_between(week_of.beginning_of_week, week_of.end_of_week)
   end
 
   def current_billing

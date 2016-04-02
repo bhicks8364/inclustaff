@@ -27,7 +27,7 @@
                     
       <div class="input-group">
         <span class="input-group-addon"><i class='fa fa-usd'></i></span>
-        <%= f.input :pay_rate, label: false, :input_html => {value: number_with_precision(f.object.pay_rate, precision: 2) } %>
+        <%= f.input :pay_rate, label: false, input_html: {value: number_with_precision(f.object.pay_rate, precision: 2) } %>
         <span class="input-group-addon">/hr</span>
       </div>
     </div>

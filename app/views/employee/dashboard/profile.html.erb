@@ -1,4 +1,4 @@
-<div class='col-md-12'>
+<div class='col-md-12 mainpage shadow'>
 <!--NAV TABS-->
     <div id='profile-nav' class=''>
         <!-- Nav tabs -->
@@ -15,7 +15,7 @@
         </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane fade in active" id="home">
-                <div class='col-md-6'>
+                <div class='col-md-6 well'>
                     <h2><%= @employee.name %></h2>
                    Address
                     <address class="">
@@ -24,12 +24,12 @@
                         <i class="fa fa-phone-square"></i>  <%= @employee.phone_number.present? ? @employee.phone_number : "#{link_to "Add Phone Number", edit_employee_employee_path(@employee)}".html_safe  %>
                     </address>
                     <div class='btn-group'>
+                        <%= convo_for(timesheet: @employee.current_timesheet, type: :timesheet_question) if @employee.current_timesheet.present? %>
                         <%= link_to "Edit Profile", edit_employee_employee_path(@employee), class: 'btn btn-primary' %>
                         <%= link_to "Add Work History", new_employee_work_history_path(redirect_to: employee_profile_path), class: 'btn btn-primary' %>
                     </div>
                 </div>
-                <div class='col-md-6'>
-                    <%= convo_for(timesheet: @employee.current_timesheet, type: :timesheet_question) if @employee.current_timesheet.present? %>
+                <div class='col-md-4 well shadow'>
                     <% if @employee.skills %>
                        <h4 class='text-center'>Skills</h4>
                         <div id='skills' class='center'>
@@ -38,9 +38,7 @@
                           <% end %>
                          </div>
                       <% else %>
-                      <div id='no-skills'>
-
-                      </div>
+                      <div id='no-skills'>                 </div>
                        <h3 class="text-center text-info"> You dont have any skills entered. </h3>
                           <blockquote>
                               <p class='bold text-success'>Adding your skills to your profile wil help us fit you with the best possible position.</p>

@@ -1,3 +1,5 @@
+<%=link_to "Search Invoices", admin_invoices_path, class: "btn btn-default" %>
+<hr>
 <table class='table table-hover'>
         <thead>
           <tr>
@@ -19,7 +21,7 @@
             <tr>
               <td id='mark-paid-<%=invoice.id%>'><%= link_to mark_as_paid_admin_invoice_path(invoice), method: :patch, remote: true, id: 'pay-button', class: 'btn btn-default' do %><%= invoice.state %> <% end %></td>
               <td><%= invoice.company.name %></td>
-              <td> <%= inv_sym(invoice) %> &nbsp; <%= link_to invoice.week_ending, admin_invoice_path(invoice) %></td>
+              <td> <%= inv_sym(invoice) %> &nbsp; <%= link_to invoice.week_ending.stamp('11/13'), admin_invoice_path(invoice) %></td>
               <td><%= invoice.due_by.stamp('11/13') %></td>
               <td><%= invoice.state %></td>
               <td><%= number_to_currency(invoice.total) %></td>

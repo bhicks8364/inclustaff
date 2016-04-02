@@ -26,6 +26,8 @@ class DashboardController < ApplicationController
       @candidates = @current_agency.users.available
        @orders = @current_agency.orders.order(:needed_by).paginate(page: params[:page], per_page: 15)
       if current_admin.owner?
+        @q = @current_agency.invoices.includes(:company).ransack(params[:q])
+        @invoices = @q.result(distinct: true).paginate(page: params[:page], per_page: 15)
         render 'admin/dashboard/owner'
       elsif current_admin.account_manager?
         @q = Order.includes(:company, :jobs).ransack(params[:q])

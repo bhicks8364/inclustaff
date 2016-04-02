@@ -1,143 +1,145 @@
-<div class='col-md-4'>
-    <h1 class='text-center'><%= @shift.work_date %>  </h1>
-    <h3 class='text-center'><span class='' id='shift-times'><%= shift_times(@shift) %></span></h3>
-    <hr>
-    <h1 class="text-center">
-        <span id='shift-sym'><%= shift_sym(@shift) %></span>
-        <%= link_to @employee.name, admin_employee_path(@employee) %>  
-    </h1>
-    <h2><%= link_to @company.name, admin_company_path(@company) %>  </h2>
-    
-</div>
-<div class='col-md-8 lightbox-long'>
-<% if @shift.past? %>
-<h3 class='white text-center'> <i class="fa fa-calendar"></i> You are currently reviewing a shift from <%= distance_of_time_in_words(@shift.time_in, Time.current, include_seconds: true) %> ago</h3>
-<% end %>
-  <!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
-    <li role="presentation"><a href="#break" aria-controls="break" role="tab" data-toggle="tab">Breaks</a></li>
-    <li role="presentation"><a href="#location" aria-controls="location" role="tab" data-toggle="tab">Location</a></li>
-    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
-    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
-  </ul>
-  <!-- Tab panes -->
-  <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="home">
-        <div class='col-md-6'> 
-            <dl class="dl-horizontal">
-              <dt>Company</dt>
-              <dd><%= @company.name %></dd>
-              <dt>Job Title</dt>
-              <dd><%= @job.title %></dd>
-              <dt>Pay Rate</dt>
-              <dd><%= number_to_currency(@job.pay_rate) %>/hr</dd>
-            </dl>
-            <dl class="dl-horizontal">
-              <dt>Recruiter</dt>
-              <dd><%= @job.recruiter.try(:name) %></dd>
-              <dt>Account Manager</dt>
-              <dd><%= @order.account_manager.try(:name) %></dd>
-            </dl>
-            
-        </div>
-        <div class='col-md-6'>
-            <table class="table">
-                <tr>
-                  <td class=""> <strong>Total Hours</strong></td>
-                  <td class=""> <strong>Total Earnings</strong></td>
-                </tr>
-                <tr>
-                  <td class=""><%= @shift.hours_worked %></td>
-                  <td class=""><%= @shift.paid_breaks? ? number_to_currency(@shift.with_paid_breaks) : number_to_currency(@shift.with_unpaid_breaks) %></td>
-                </tr>
-                <tr>
-                  <td class="">Break type: <%= @shift.paid_breaks? ? "PAID" : "UNPAID" %></td>
-                  <td class="">Pay rate: <%= number_to_currency(@shift.pay_rate) %></td>
-                </tr>
-            </table>
-            <div class=''>
-                <p class='lead'><%= markdownify(@shift.note) %></p>
+<div class='col-md-12 mainpage'>
+    <div class='col-md-4 well'>
+        <p class="lead text-info text-center"><span id='shift-sym'><%= shift_sym(@shift) %></span></p>
+        <h1 class='text-center'><%= @shift.work_date %>  </h1>
+        <h3 class='text-center'><span class='' id='shift-times'><%= shift_times(@shift) %></span></h3>
+        <hr>
+        <h1 class="text-center">
+            <%= link_to @employee.name, admin_employee_path(@employee) %>  
+        </h1>
+    </div>
+    <div class='col-md-8 well'>
+    <% if @shift.past? %>
+    <h3 class='white text-center'> <i class="fa fa-calendar"></i> You are currently reviewing a shift from <%= distance_of_time_in_words(@shift.time_in, Time.current, include_seconds: true) %> ago</h3>
+    <% end %>
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
+        <li role="presentation"><a href="#break" aria-controls="break" role="tab" data-toggle="tab">Breaks</a></li>
+        <% if @shift.out_ip.present? %><li role="presentation"><a href="#location" aria-controls="location" role="tab" data-toggle="tab">Location</a></li><% end %>
+        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
+        <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+        <li role="presentation"><a href="#edit-tab" aria-controls="edit-tab" role="tab" data-toggle="tab">Edit</a></li>
+      </ul>
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="home">
+            <div class='col-md-6'> 
+                <dl class="dl-horizontal">
+                  <dt>Company</dt>
+                  <dd><%= link_to @company.name, admin_company_path(@company) %></dd>
+                  <dt>Job Title</dt>
+                  <dd><%= link_to @job.title, admin_job_path(@job) %></dd>
+                  <dt>Pay Rate</dt>
+                  <dd><%= number_to_currency(@job.pay_rate) %>/hr</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                  <dt>Recruiter</dt>
+                  <dd><%= @job.recruiter.try(:name) %></dd>
+                  <dt>Account Manager</dt>
+                  <dd><%= @order.account_manager.try(:name) %></dd>
+                </dl>
+            </div>
+            <div class='col-md-6'>
+                <table class="table">
+                    <tr>
+                      <td class=""> <strong>Total Hours</strong></td>
+                      <td class=""> <strong>Total Earnings</strong></td>
+                    </tr>
+                    <tr>
+                      <td class=""><%= @shift.hours_worked %></td>
+                      <td class=""><%= @shift.paid_breaks? ? number_to_currency(@shift.with_paid_breaks) : number_to_currency(@shift.with_unpaid_breaks) %></td>
+                    </tr>
+                    <tr>
+                      <td class="">Break type: <%= @shift.paid_breaks? ? "PAID" : "UNPAID" %></td>
+                      <td class="">Pay rate: <%= number_to_currency(@shift.pay_rate) %></td>
+                    </tr>
+                </table>
+                <div class=''>
+                    <p class='lead'><%= markdownify(@shift.note) %></p>
+                </div>
             </div>
         </div>
-    </div>
-    <div role="tabpanel" class="tab-pane" id="location">
-        <div class='col-md-4'>
-            <dl class="dl-horizontal">
-              <dt>Latitude</dt>
-              <dd><%= @shift.latitude %></dd>
-              <dt>Longitude</dt>
-              <dd><%= @shift.longitude %></dd>
-            </dl>
-            
-        </div>
-        <div class='col-md-4'>
-            <dl class="dl-horizontal">
-              <dt>Clock-In IP Address</dt>
-              <dd><%= @shift.in_ip %></dd>
-              <dt>Clock-Out IP Address</dt>
-              <dd><%= @shift.out_ip %></dd>
-            </dl>
-        </div>
-        <div class='col-md-4'>
-            <%= image_tag "http://maps.google.com/maps/api/staticmap?size=250x300&sensor=false&zoom=12&markers=#{@shift.latitude}%2C#{@shift.longitude}",
-        class: "img-zoom" %>
-        
-        </div>
-    </div>
-    <div role="tabpanel" class="tab-pane" id="break">
-        <div class="col-md-12 ">
-            <h2>Break Details</h2>
-            <div id='shift-break-times'>
-            </div>
-            <div class=''>
-                <%= on_break_for(@shift) %>
+        <div role="tabpanel" class="tab-pane" id="location">
+            <div class='col-md-4'>
+                <dl class="dl-horizontal">
+                  <dt>Latitude</dt>
+                  <dd><%= @shift.latitude %></dd>
+                  <dt>Longitude</dt>
+                  <dd><%= @shift.longitude %></dd>
+                </dl>
                 
-        		<% if @shift.paid_breaks? %>
-        			<h4> PAID BREAKS </h4>
-        			<%= number_to_currency(@shift.with_paid_breaks) %>
-        			 Total Break Time: <%= (@shift.break_duration).round(2) %>
-        		<% else %>
-        		<h4> UNPAID BREAKS </h4>
-        		<%= number_to_currency(@shift.with_unpaid_breaks) %>
-        		<br>
-        		 Total Break Time: <%= (@shift.break_duration).round(2) %>
-        		 <h4> PAID BREAKS </h4>
-        			<%= number_to_currency(@shift.with_paid_breaks) %>
-        		<% end %>
-        	</div>
-        </div>
-    </div>
-    <div role="tabpanel" class="tab-pane" id="messages">
-        <div class='col-md-12'>
-        <div class='col-md-6'>
-            <h2>Comments</h2>
-            <div data-behavior='comment-list' class='scroll300' id='comment-list'>
-                <% @shift.comments.unread.order(created_at: :desc).each do |comment| %>
-                    <%= render 'comments/comment', comment: comment %>
-                <% end %>
             </div>
-            <%= render partial: "comments/form", locals: {commentable: @shift} %>
-         </div>
-        </div>
-              
+            <div class='col-md-4'>
+                <dl class="dl-horizontal">
+                  <dt>Clock-In IP Address</dt>
+                  <dd><%= @shift.in_ip %></dd>
+                  <dt>Clock-Out IP Address</dt>
+                  <dd><%= @shift.out_ip %></dd>
+                </dl>
+            </div>
+            <div class='col-md-4'>
+                <%= image_tag "http://maps.google.com/maps/api/staticmap?size=250x300&sensor=false&zoom=12&markers=#{@shift.latitude}%2C#{@shift.longitude}",
+            class: "screenshot" %>
             
-        
-        
-    </div>
-    <div role="tabpanel" class="tab-pane" id="settings">
-        <div class="btn-group btn-group-vertical" role="group" aria-label="...">
-            <%= link_to '<i class="fa fa-user"></i> Employee'.html_safe, admin_employee_path(@employee), class: "btn btn-primary" %> 
-            <%= link_to '<i class="fa fa-briefcase"></i> Job'.html_safe, admin_job_path(@job), class: "btn btn-primary" %> 
-            <%= link_to '<i class="fa fa-clock-o"></i> Timesheet'.html_safe, admin_timesheet_path(@shift.timesheet), class: "btn btn-primary" %>
-            <%= link_to '<i class="fa fa-building-o"></i> Company'.html_safe, admin_company_path(@company), class: "btn btn-primary" %> 
-            <%= link_to '<i class="fa fa-pencil"></i> Edit'.html_safe, edit_admin_shift_path(@shift), class: "btn btn-primary" %>
-            <%= link_to '<i class="fa fa-trash"></i> Delete'.html_safe, admin_shift_path(@shift), method: :delete, data: { confirm: 'Are you sure you want to delete this shift?' }, class: "btn btn-primary" %>
+            </div>
         </div>
-        
+        <div role="tabpanel" class="tab-pane" id="break">
+            <div class="col-md-12 ">
+                <h2>Break Details</h2>
+                <div id='shift-break-times'>
+                </div>
+                <div class=''>
+                    <%= on_break_for(@shift) %>
+                    
+            		<% if @shift.paid_breaks? %>
+            			<h4> PAID BREAKS </h4>
+            			<%= number_to_currency(@shift.with_paid_breaks) %>
+            			 Total Break Time: <%= (@shift.break_duration).round(2) %>
+            		<% else %>
+            		<h4> UNPAID BREAKS </h4>
+            		<%= number_to_currency(@shift.with_unpaid_breaks) %>
+            		<br>
+            		 Total Break Time: <%= (@shift.break_duration).round(2) %>
+            		 <h4> PAID BREAKS </h4>
+            			<%= number_to_currency(@shift.with_paid_breaks) %>
+            		<% end %>
+            	</div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="messages">
+            <div class='col-md-12'>
+            <div class='col-md-6'>
+                <h2>Comments</h2>
+                <div data-behavior='comment-list' class='scroll300' id='comment-list'>
+                    <% @shift.comments.unread.order(created_at: :desc).each do |comment| %>
+                        <%= render 'comments/comment', comment: comment %>
+                    <% end %>
+                </div>
+                <%= render partial: "comments/form", locals: {commentable: @shift} %>
+             </div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="settings">
+            <div class="col-md-6">
+                <div class="btn-group" role="group" aria-label="...">
+                    <%= link_to '<i class="fa fa-pencil"></i> Edit'.html_safe, edit_admin_shift_path(@shift), class: "btn btn-primary" %>
+                    <%= link_to '<i class="fa fa-trash"></i> Delete'.html_safe, admin_shift_path(@shift), method: :delete, data: { confirm: 'Are you sure you want to delete this shift?' }, class: "btn btn-primary" %>
+                </div>
+            </div>
+            <div class="col-md-6 ">
+                <div class="btn-group" role="group" aria-label="...">
+                    <%= link_to '<i class="fa fa-clock-o"></i> Timesheet'.html_safe, admin_timesheet_path(@shift.timesheet), class: "btn btn-primary" %>
+                    <%= link_to '<i class="fa fa-building-o"></i> Company'.html_safe, admin_company_path(@company), class: "btn btn-primary" %> 
+                    <%= link_to '<i class="fa fa-briefcase"></i> Job'.html_safe, admin_job_path(@job), class: "btn btn-primary" %> 
+                </div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="edit-tab">
+            <%= render 'form', shift: @shift %>
+        </div>
+      </div>
     </div>
-  </div>
-
 </div>
 
 

@@ -33,6 +33,11 @@ class Company::OrdersController < ApplicationController
   def create
     @order = @company.orders.new(order_params)
     @order.agency = @current_agency
+    if @company.account_manager.present?
+      @order.account_manager = @company.account_manager
+    else
+      @company.account_manager = @current_agency.admins.account_managers.first
+    end
     @admin.events.create(action: "submitted", eventable: @order)
     skip_authorization
     

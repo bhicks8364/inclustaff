@@ -1,6 +1,6 @@
-<div class='col-md-12'>
+<div class='col-md-12 mainpage shadow'>
     <h2><strong><%= @job.name_title %></strong></h2>
-          <h4 class='text-center'>
+          <h4 class='bold text-center'>
               <span class='pull-left'><%= @job.start_date.strftime("%B %e, %Y ") %></span>
               <span><%= @job.company.name %></span>
           <span class='pull-right'><%= number_to_currency(@job.pay_rate) %>/ hr</span>

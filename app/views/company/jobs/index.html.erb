@@ -1,12 +1,13 @@
-<div class='col-md-12 mainpage'>
-  <%= link_to "Archived", archived_company_jobs_path %>
+<div class='col-md-12 mainpage shadow'>
+  <div class="btn-group">
+    <%= link_to "Archived", archived_company_jobs_path, class: "btn btn-default" %>
+  </div>
   <% if @jobs %>
   <h1>Active Jobs <small><%= @company.name %></small></h1>
-  <div id="" class="table-responsive">
+  <div id="" class=" col-md-10 table-responsive">
     <table id="" class="table table-bordered">
     <thead>
       <tr>
-     
         <th>Status</th>
         <th>Employee</th>
         <th>Title</th>
@@ -15,10 +16,8 @@
         <th>Hours this week</th>
         <th>Pay this week</th>
         <th>Total Hours</th>
-
       </tr>
     </thead>
-  
     <tbody>
       <%= content_tag_for(:tr, @jobs.active) do |job| %>
       <% if job.on_shift? %>

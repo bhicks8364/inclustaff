@@ -6,8 +6,7 @@ class Company::ShiftsController < ApplicationController
 
   def index
     @jobs = @company_admin.company.jobs.includes(:shifts).paginate(:page => params[:page], :per_page => 5) if @company_admin.present?
-      @shifts = @company.shifts
-    # gon.shifts = @shifts
+    @shifts = @company.shifts
     authorize @shifts
   end
 
@@ -45,10 +44,9 @@ class Company::ShiftsController < ApplicationController
   def create
     @shift = Shift.new(shift_params)
     authorize @shift
-
     respond_to do |format|
       if @shift.save
-        format.html { redirect_to company_shifts_path, anchor: "job_#{@shift.job_id}", notice: "Sucessfully created a shift for " + "#{@shift.employee.name}" }
+        format.html { redirect_to :back, anchor: "job_#{@shift.job_id}", notice: "Sucessfully created a shift for " + "#{@shift.employee.name}" }
         format.json { render :show, status: :created, location: @shift }
       else
         format.html { render :new }
@@ -60,28 +58,19 @@ class Company::ShiftsController < ApplicationController
   def clock_out
     @shift = Shift.find(params[:id])
     if @shift.clock_in?
-    
       @shift.update(time_out: Time.current,
                     state: "Clocked Out",
                     out_ip: "#{@current_company_admin.name}", week: Date.today.beginning_of_week )
-
       respond_to do |format|
         if @shift.save
-
           @current_company_admin.events.create(action: "clocked_out", eventable: @shift, user_id: @shift.employee.user_id)
-
-
           format.json { render json: { id: @shift.id, clocked_in: @shift.clocked_in?, clocked_out: @shift.clocked_out?,
                                        state: @shift.state, time_out: @shift.time_out.strftime("%l:%M%P"),
                                        out_ip: @shift.out_ip, time_in: @shift.time_in.strftime("%l:%M%P"),
                                        in_ip: @shift.in_ip } }
-
         else
-
           format.html { render :edit }
           format.json { render json: @shift.errors, status: :unprocessable_entity }
-
-
         end
       end
     end

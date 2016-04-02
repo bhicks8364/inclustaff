@@ -1,6 +1,6 @@
 <a href="#menu-toggle" class="toggle-sidebar sidebar-button" id="menu-toggle"><i id="sidebar-icon" class='fa fa-arrow-circle-o-left fa-2x'></i> </a>
 <!-- Sidebar -->
-<div id="sidebar-wrapper">
+<div class="shadow" id="sidebar-wrapper">
     <ul class="sidebar-nav">
         <li><%= link_to "<i class='fa fa-users'></i> Current Employees".html_safe, company_jobs_path %></li>
         <li><%= link_to "<i class='fa fa-pause-circle-o'></i> Pending Approval".html_safe, archived_company_jobs_path if policy(Order).index? %></li>

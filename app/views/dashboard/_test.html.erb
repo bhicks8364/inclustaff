@@ -1,5 +1,4 @@
-<div class=''>
-
+<div class='col-md-12'>
   <!-- Nav tabs -->
   <ul class="nav nav-tabs nav-justified" role="tablist">
     <li role="presentation" class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">Overview</a></li>
@@ -9,24 +8,18 @@
     <li role="presentation"><a href="#customers" aria-controls="customers" role="tab" data-toggle="tab">Your Customers</a></li>
     <li role="presentation"><a href="#employees" aria-controls="employees" role="tab" data-toggle="tab">Your Employees</a></li>
     <li role="presentation"><a href="#aca" aria-controls="aca" role="tab" data-toggle="tab">ACA Compliance</a></li>
-
   </ul>
-
   <!-- Tab panes -->
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane fade in active" id="overview">
       <h1 class='text-info text-center  '>From the first punch to the final invoice...IncluStaff does it all.</h1>
-      
       <%= render 'front_info' %>
     </div>
-
     <div role="tabpanel" class="tab-pane fade" id="sales">
       <h1 class='text-info'>Sales</h1>
-
       <div class='col-md-6'>
         <%= image_tag("sales-dash.png", class: 'screenshot') %>
       </div>
-
       <%= render 'manager' %>
     </div>
 

@@ -94,6 +94,7 @@ class Order < ActiveRecord::Base
   scope :needing_agency_approval, -> { where("requirements ? :key", :key => 'agency_approval')}
   scope :active, -> { where(active: true)}
   scope :inactive, -> { where(active: false)}
+  scope :newly_added, -> { where(Order[:created_at].gteq(Date.today.beginning_of_week)) }
   scope :urgent, -> { where(urgent: true)}
   scope :with_active_jobs, -> { joins(:jobs).merge(Job.active)}
   scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.current_week)}

@@ -1,10 +1,21 @@
   
-  <div class="">
+  <div class="well col-md-12">
     <%= simple_form_for [:company, @order], html: { class: 'form' } do |f| %>
 	<%= f.error_notification %>
-	<div class='col-md-8 well well-sm'>
+	 <% if @order.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@order.errors.count, "error") %> prohibited this job from being saved:</h2>
+
+      <ul>
+      <% @order.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+	<div class='col-md-8 well well-sm shadow'>
 		<%= f.association :company, as: :select, collection: @current_admin.companies.distinct, label: false, prompt: "Choose a company" if @company.nil? %>
-		<%= f.input :industry, as: :select,	collection: [ "Manufacturing", "General Labor", "Office", "Sales", "IT", "Retail", "Logistics", "Warehouse", "Medical", "Food Service"], label: false,	prompt: "Select an industry"  %>
+		<%= f.input :industry, as: :select, autofocus: true,	collection: [ "Manufacturing", "General Labor", "Office", "Sales", "IT", "Retail", "Logistics", "Warehouse", "Medical", "Food Service"], label: false,	prompt: "Select an industry"  %>
 		<%= f.input :title, placeholder: "Job Title", label: false  %>
 		<%= f.input :address, placeholder: "You can leave this blank if same as company address.", label: "Jobsite Location" %>
 		<div class='form-group text-center'>
@@ -32,21 +43,22 @@
 			</div>
 		</div>
 	</div>
-	<div class='col-md-4 well'>
+	<div class='col-md-4 well shadow'>
 		<p class='lead'>How many positions?</p>
 		<%= f.input :number_needed, as: :select, label: false, collection: 1..30, input_html: {class: 'form-control'}, include_blank: false    %>
 		<p class='lead'>Pay Rate <small>per hour</small></p>
+		<p class="text-center"><small>Minimum Wage: $8.10/hr</small></p>
 		<div class='form-group'>
 			<div class="input-group">
 				<span class="input-group-addon"><i class='fa fa-usd'></i></span>
-					<%= f.input :min_pay, label: false, :input_html => {placeholder: "Minimum Pay", class: "form-control" } %>
+					<%= f.input :min_pay, label: false, :input_html => {placeholder: "Minimum Pay", class: "form-control", min: number_with_precision(8.10, precision: 2)} %>
 				<span class="input-group-addon">/hr</span>
 			</div>
 		</div>
 		<div class='form-group'>
 			<div class="input-group">
 				<span class="input-group-addon"><i class='fa fa-usd'></i></span>
-					<%= f.input :max_pay, label: false, :input_html => {placeholder: "Maximum Pay", class: "form-control" } %>
+					<%= f.input :max_pay, label: false, :input_html => {placeholder: "Maximum Pay", class: "form-control", min: number_with_precision(8.10, precision: 2) } %>
 				<span class="input-group-addon">/hr</span>
 			</div>
 		</div>

@@ -1,9 +1,8 @@
-<div id="sign_in_page" class="mainpage">
-  <div class="col-md-12">
-    <div class="col-md-3"></div>
-  	<div class="col-md-6">
+<div id="sign_in_page" class="mainpage shadow">
+  <div class="col-md-12 well shadow">
+    <h2 class='text-center bold'>Select who you would like to sign in as.</h2>
+    
   	   <% if @current_agency.subdomain == "demo" %>
-<h2 class='text-center'>Select who you would like to sign in as.</h2>
 <div class='col-md-6 text-center well'>
   <h3>Potential Candidate</h3>
   <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
@@ -31,7 +30,7 @@
 </div>
 
 <%else%>
-  		<div class="lightbox">
+  		<div class="lightbox shadow">
   			<h2>Employee Sign In</h2>
   			
   			<%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), defaults: { input_html: { class: 'form-control' } }) do |f| %>
@@ -57,6 +56,5 @@
   		<% end %>
   	</div>	
   </div>
-</div>
 
 </div>

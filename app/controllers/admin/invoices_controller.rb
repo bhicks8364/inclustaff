@@ -5,9 +5,11 @@ class Admin::InvoicesController < ApplicationController
   def index
     if params[:company_id]
       @company = Company.includes(:invoices).find(params[:company_id])
-      @invoices = @company.invoices.order(week: :desc).paginate(:page => params[:page], :per_page => 30).distinct
+      @invoices = @company.invoices.order(week: :desc).paginate(:page => params[:page], :per_page => 10).distinct
     else
-      @invoices = @current_agency.invoices.includes(:company).order(week: :desc).paginate(:page => params[:page], :per_page => 30).distinct
+      @q = @current_admin.invoices.ransack(params[:q])
+        @invoices = @q.result.order(week: :desc).page(params[:page])
+      # @invoices = @current_agency.invoices.includes(:company).order(week: :desc).paginate(:page => params[:page], :per_page => 30).distinct
     end
     skip_authorization
   end

@@ -1,6 +1,44 @@
 <div class='col-md-12 mainpage shadow'>
   <h1 class='simple'> Invoices for <strong><% if @company.present? %> <%= link_to @company.name, admin_company_path(@company) %>  <% else %><%=@current_agency.name %><% end %></strong></h1>
-  <div class='col-md-3 well well-sm shadow'>
+  <div class="form-inline">
+    <%= search_form_for [:admin, @q] do |f| %>
+      <%= f.search_field :company_name, class: "form-control", placeholder: "Search by company" %>
+      <%= f.button class: "btn btn-default btn-inline" do %>
+          <i class="fa fa-search"></i>
+        <% end %>
+    <% end %>
+    </div>
+  
+  <div class='col-md-12 well well-sm shadow'>
+    <div class='table-responsive'>
+      <table class='table table-hover'>
+        <thead>
+          <tr>
+            <th><%= sort_link(@q, :week) %></th>
+            <th><%= sort_link(@q, :company_name) %></th>
+            <th><%= sort_link(@q, :total) %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @invoices.each do |invoice| %>
+            <tr>
+              <td id='mark-paid-<%=invoice.id%>'>
+                 <%= link_to mark_as_paid_admin_invoice_path(invoice), method: :patch, remote: true, id: 'pay-button', class: 'button' do %>
+                <%= invoice.week_ending.stamp('11/13') %> <br>
+              <small><%= invoice.paid_on %></small>
+              <% end %></td>
+              <td><%= link_to invoice.company.name, admin_invoice_path(invoice) %></td>
+              <td><strong><%= number_to_currency(invoice.total) %></strong><br><small><%= number_to_currency(invoice.amt_paid) %></small></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%= will_paginate @invoices %>
+    </div>
+  </div>
+</div>
+
+  <div class='col-md-3 well well-sm shadow scroll500'>
     <h2 class="text-center">Unpaid</strong></h2>
     <div class=''>
     <% if @company.present? %>
@@ -12,8 +50,8 @@
     <% end %>
     <% else %>
       <% @current_agency.companies.includes(:invoices).order(:name).each do |company| %>
-       <h3> <%= company.name %>
-       <%= company.account_manager.try(:name) || "Unassigned" %></h3>
+       <h3> <%= link_to company.name, admin_company_path(company) %>
+       <small>%= company.account_manager.try(:name) || "Unassigned" %></small></h3>
           <% company.invoices.unpaid.order(week: :desc).each do |invoice| %>
           <%= inv_timesheets_collaspe(invoice) %><br>
           <div class='collapse' id="collapseInv_<%=invoice.id%>">
@@ -24,29 +62,3 @@
     <% end %>
     </div>
   </div>
-  <div class='col-md-9 well well-sm shadow'>
-    <div class='table-responsive'>
-      <table class='table table-hover'>
-        <thead>
-          <tr>
-            <th>Week</th>
-            <th>Company</th>
-            <th>Total</th>
-            <th>Paid on</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @invoices.each do |invoice| %>
-            <tr>
-              <td class="text-center" id='mark-paid-<%=invoice.id%>'> <%= link_to mark_as_paid_admin_invoice_path(invoice), method: :patch, remote: true, id: 'pay-button', class: 'button' do %><%= inv_sym(invoice) %> &nbsp; <%= invoice.week_ending.stamp('11/13') %><% end %></td>
-              <td><%= link_to invoice.company.name, admin_invoice_path(invoice) %></td>
-              <td><strong><%= number_to_currency(invoice.total) %></strong><br><small><%= number_to_currency(invoice.amt_paid) %></small></td>
-              <td><%= invoice.paid_on %></td>
-          </tr>
-          <% end %>
-        </tbody>
-      </table>
-      <%= will_paginate @invoices %>
-    </div>
-  </div>
-</div>

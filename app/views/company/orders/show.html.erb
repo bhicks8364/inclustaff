@@ -1,4 +1,5 @@
-<div class='col-md-12 mainpage'> 
+<div class='col-md-12 mainpage shadow'> 
+<h1 class='bold'> <%= title_for(@order) %> <small><%= @order.address %> <%= render "order_map", order: @order %></small> </h1>
   <div class="btn-group pull-right">
     <button type="button" class="btn btn-info black dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <i class='fa fa-cogs'></i> Admin
@@ -10,15 +11,12 @@
       <% if policy(@order).destroy? %><li><%= link_to "<i class='fa fa-trash' data-toggle='tooltip' data-placement='right' title='Delete Order'></i>&nbsp; Delete".html_safe, company_order_path(@order), method: :delete, data: { confirm: 'Are you sure?' }, class: "" %></li><% end %>
     </ul>
   </div>
-   <h1 class=''> <%= title_for(@order) %> <small><%= @order.address %> <%= render "order_map", order: @order %></small> </h1>
-  <div class='col-md-2'>
-    <div class=''>
+  <div class='col-md-2 text-center well well-sm'>
       <h3><%= lg_status_tag(@order) %></h3>
        <strong>Shift:</strong>
       <%= @order.shift %> <br>
       <strong>Pay Range:</strong><br>
       <%= number_to_currency(@order.min_pay) %> - <%= number_to_currency(@order.max_pay) %><hr>
-
       <strong>Company Manager</strong><br>
       <%=
          link_to_if(@order.manager.nil?, "Add Manager", { controller: "company/orders", action: "edit", id: @order }) do
@@ -28,31 +26,24 @@
       <br>
       <strong>Account Manager</strong><br>
       <%= @order.account_manager.try(:name) || "Unavailable" %>
-    </div>
-    
   </div>
  
-
-
-
-<div class='col-md-10' id="">
-
+<div class='col-md-10 well'>
   <!-- Nav tabs -->
   <ul id="" class="nav nav-tabs nav-justified" role="tablist">
     <li role="presentation" class="active"><a href="#order" aria-controls="order" role="tab" data-toggle="tab">Order Info.</a></li>
     <li role="presentation"><a href="#description" aria-controls="description" role="tab" data-toggle="tab">Job Description</a></li>
-<% if @order.timesheets.any? %><li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li><% end %>
-<% if @order.jobs.currently_working.any? %><li role="presentation"><a href="#active-jobs" aria-controls="active-jobs" role="tab" data-toggle="tab"> Employees</a></li><% end %>
-<% if @order.jobs.pending_approval.any? %><li role="presentation"><a href="#presented" aria-controls="presented" role="tab" data-toggle="tab">Presented Candidates</a></li><% end %>
+  <% if @order.timesheets.any? %><li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li><% end %>
+  <% if @order.jobs.currently_working.any? %><li role="presentation"><a href="#active-jobs" aria-controls="active-jobs" role="tab" data-toggle="tab"> Employees</a></li><% end %>
+  <% if @order.jobs.pending_approval.any? %><li role="presentation"><a href="#presented" aria-controls="presented" role="tab" data-toggle="tab">Presented Candidates</a></li><% end %>
   </ul>
-  
-  <div class="tab-content ">
+  <div class="tab-content">
     <div role="tabpanel" class="tab-pane fade in active" id="order">
-      <div class='col-md-3'>
+      <div class='col-md-4 well'>
         <% if @order.skills.count < 1 %>
            <h4 id='no-skills' class="text-center">This job order has no skills entered.</h4>
           <% end %>
-          <div  id='skills' class=''>
+          <div  id='skills' class='pad'>
             <%= render @order.skills %>
           </div>
           <div class='form-inline'>
@@ -60,16 +51,12 @@
           </div>
       </div>
     
-    <div class='col-md-3'>
+    <div class='col-md-4 well'>
       <%= skills_popover(@order.skills) %>
       <%= heavy_lifting(@order) %>
       <br><strong><%= @order.stwb ? "STWB Required" : "" %></strong><br>
-  
-        
     <strong>Drug Test </strong><br>
     <%= @order.dt_req %><br>
-  
-
     <strong>Background Check </strong><br>
     <%= @order.bg_check %><br>
 
@@ -79,14 +66,11 @@
     <strong>Pay Range:</strong><br>
     <%= @order.pay_range %>
    </div>
-  <div class='col-md-3'>
+  <div class='col-md-4 well'>
      <strong>Mentioned Admins:</strong>
   <p> <%= @order.mentioned_admins.map{|p| p.name.titleize}.join(", ")  %></p>
       <strong>Requested Employees</strong>
       <p><%= @order.requested_employees.map {|p| p.name.titleize}.join(", ") %></p>
-     
-      
-   
      <strong>Tags</strong>
       
      <p><%= @order.tag_list %></p>

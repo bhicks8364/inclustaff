@@ -1,8 +1,8 @@
-<div class="col-md-12 mainpage">
-  <h1>
-  <div class="pull-right">
+<div class="col-md-12 mainpage shadow">
+  <h1 class="page-header simple bold">
+  <span class="pull-right">
     <%= link_to "New Conversation", new_company_conversation_path, class: 'btn btn-primary' %>
-  </div>
+  </span>
 
   All Conversations
 </h1>
@@ -10,10 +10,11 @@
 
 <% @conversations.each do |conversation| %>
   <hr />
-  <div>
+  <div class="<%= conversation.is_read?(current_company_admin) ? "read" : "unread" %> col-md-8 border shadow">
+    <p class="text-info"><%= conversation.is_read?(current_company_admin) ? "read" : "unread" %> </p>
     <%= link_to company_conversation_path(conversation) do %>
       <h5><strong><%= conversation.subject %></strong></h5>
-      <p> To: <%= (conversation.recipients - [current_company_admin]).map(&:name).join(", ") %></p>
+      <p> To: <%= (conversation.recipients - [current_company_admin]).map(&:name).join(", ") %> <br><small><%= time_ago_in_words(conversation.updated_at)%></small></p>
     <% end %>
   </div>
 <% end %>

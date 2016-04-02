@@ -208,6 +208,12 @@ Rails.application.routes.draw do
           post :follow
         end
       end
+      resources :admins do
+        member do
+          post :mention
+          post :follow
+        end
+      end
 
       resources :orders do
         collection do

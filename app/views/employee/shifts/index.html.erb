@@ -1,11 +1,7 @@
-
-  <h3> Shift Calendar</h3>
- 
-<%= render "employee/shifts/calendar", shifts: @shifts %>
-
-
-<h3 class="text-center">Shifts this week</h3>
-<table id="shifts" class="table">
+<div class='col-md-12 mainpage shadow'>
+<h1 class="text-center bold">Shifts this week</h1>
+<div class="well">
+  <table id="shifts" class="table">
   <thead>
     <tr>
       <th>Work Date</th>
@@ -19,14 +15,13 @@
 
     </tr>
   </thead>
-
   <tbody>
     <% @shifts.each do |shift| %>
       <tr>
-        <td><%= shift.time_in.strftime("%m/%d/%y") %></td>
+        <td><%= shift.week.stamp("Mon 3/12")%></td>
         <td><%= shift.time_in.strftime("%I:%M %p") %></td>
         <td><%= shift.clocked_out? ? shift.time_out.strftime("%I:%M %p") : "Clocked In" %></td>
-        <td><%= shift.job.title %></td>
+        <td><%= shift.job.title_company %></td>
         <td><%= shift.time_worked %></td>
         <td><%= number_to_currency(shift.pay_rate) %></td>
         <td><%= link_to "<span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span>     View".html_safe, employee_shift_path(shift), class: "btn btn-default btn-sm" %></td>
@@ -36,6 +31,10 @@
     <% end %>
   </tbody>
 </table>
+</div>
+<hr>
+<h3> Shift Calendar</h3>
+<hr>
+<%= render "employee/shifts/calendar", shifts: @shifts %>
 
-
-
+</div>

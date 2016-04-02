@@ -1,4 +1,5 @@
-<h1>New Conversation</h1>
+<div class="col-md-12 mainpage shadow">
+  <h1>New Conversation</h1>
 
 <%= form_tag company_conversations_path, method: :post do %>
   <h5>Recipients</h5>
@@ -34,3 +35,5 @@
     <%= submit_tag "Send Message", class: "btn btn-primary" %>
   </div>
 <% end %>
+
+</div>

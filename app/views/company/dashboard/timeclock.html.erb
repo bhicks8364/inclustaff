@@ -1,6 +1,6 @@
-<div class="col-md-12 mainpage" data-behavior='company-job-list'>
+<div class="col-md-12 mainpage shadow" data-behavior='company-job-list'>
     <h1 class='text-center'><%= @company.name %>'s Timeclock</h1>
-    <div class='col-md-6 well well-sm'>
+    <div class='col-md-6 well well-sm shadow'>
          <h2>Clocked In</h2>
          <% if @clocked_in.any? %>
          <div class='text-center' id='clocked_in_list'>
@@ -10,7 +10,7 @@
         </div>
         <% end %>
     </div>
-    <div class='col-md-6 well well-sm'>
+    <div class='col-md-6 well well-sm shadow'>
          <h2>Clocked Out</h2>
          <% if @clocked_out.any? %>
          <div class='text-center' id='clocked_out_list'>

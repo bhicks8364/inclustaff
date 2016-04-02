@@ -32,7 +32,7 @@ class Invoice < ActiveRecord::Base
     has_many :comments, as: :commentable
     has_many :events, as: :eventable
     # before_save :total_amount
-    after_initialize :defaults
+    before_validation :defaults
     
     validate :date_paid_cannot_be_in_the_future
  

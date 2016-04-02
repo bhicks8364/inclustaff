@@ -1,4 +1,4 @@
-<div class="col-md12 mainpage shadow">
+<div class="col-md-12 mainpage shadow">
     <% if @archived_jobs.any? %>
 <%= div_for @archived_jobs.distinct do |job| %>
     <h1><%= job.employee.name %> - <%= job.state %></h1>

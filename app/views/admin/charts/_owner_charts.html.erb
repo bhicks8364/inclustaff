@@ -2,6 +2,6 @@
 
 <div class="pad bg-info">
    <%= column_chart @current_agency.companies.order('name').map{|company|
-	        {name: company.name, data: company.invoices.group_by_week(:week, range: 2.weeks.ago.beginning_of_week.midnight..Time.current.beginning_of_week, format: "%b %y").sum(:total_bill)}
+	        {name: company.name, data: company.invoices.group_by_week(:week, range: 4.weeks.ago.beginning_of_week.midnight...Time.current.beginning_of_week, format: "%b %y").sum(:total)}
 	    }, library: {isStacked: true, backgroundColor: "#e5dbcf", legend: {position: "right"}, title: "Weekly Billings by Company"} %>
 </div>

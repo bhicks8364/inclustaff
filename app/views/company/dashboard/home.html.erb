@@ -1,4 +1,4 @@
-<div class="col-md-12 mainpage">
+<div class="col-md-12 mainpage shadow">
   <div class='row'>
     <div class='col-md-4 well well-sm text-center'>
       <h2>Active Employees <br>
@@ -13,10 +13,9 @@
       <h2>Pending Approval<br> <span class="text-info"><%= @current_company.timesheets.needing_approval.count %></span></h2>
     </div>
   </div>
-   <h1 class='simple'><%= @current_company.name %></h1>
   <div class='row'>
-  <div class='col-md-8 well well-sm' data-behavior='timesheet-list'>
-    	 
+  <div class='col-md-8 well' data-behavior='timesheet-list'>
+    	 <h1 class='simple'><%= @current_company.name %></h1>
     <h2 class=''> Welcome, <%= current_company_admin.name %>!</h2>
     <%= render 'company/orders/table', orders: @current_company.orders %>
       <div class='col-md-12'>

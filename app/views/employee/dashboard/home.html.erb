@@ -1,4 +1,4 @@
-<div class='col-md-12 mainpage shadow>
+<div class='col-md-12 mainpage shadow'>
   
   <% if @employee.assigned? && @job.present? %>
       
@@ -107,14 +107,18 @@
           <h2><%= @user.name %></h2>
           <%= render 'users/user', user: @user %>
         </div>
-        <div class='btn-group'>
-          <%= link_to "Add Work History", new_employee_work_history_path, class: 'btn btn-primary' if @employee.unassigned? %>
-          <%= link_to "View Job Posting", employee_job_board_path, class: 'btn btn-primary' if @employee.unassigned? %>
+       <div class=''>
+         <%= link_to "Create Resume", new_employee_work_history_path, class: 'btn btn-primary btn-lg btn-block' if @employee.unassigned? && @employee.work_histories.none? %>
+       </div>
+          <hr>
+           <div class='btn-group'>
+          <%= link_to "Update Resume", new_employee_work_history_path, class: 'btn btn-primary btn-lg btn-block' if @employee.unassigned?  && @employee.work_histories.any? %>
+          <%= link_to "View Job Posting", employee_job_board_path, class: 'btn btn-primary btn-lg btn-block' if @employee.unassigned? %>
         </div>
       </div>
     </div>
     
-    <div class="col-md-8 well well-sm">
+    <div class="col-md-8 well well-sm shadow">
      <div class=''>
       <%= render "employee/jobs/active", active_jobs: @employee.jobs.currently_working %>
     </div>

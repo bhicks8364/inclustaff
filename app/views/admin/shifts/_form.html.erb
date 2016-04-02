@@ -1,42 +1,36 @@
 <div class="well">
- 
-<%= simple_form_for [:admin, shift], html: { class: 'form' } do |f| %>
-<div class="form-group black">
-    <label class='white' for="TimeIn">Time In: </label>
-    <%= f.datetime_select :time_in, ampm: true, default: Time.current %>    
-</div>
-
-<div class="form-contol black">
-   <div class="field">
-    <%= f.input :state, as: :select, collection: ["Clocked In", "Clocked Out", "On Break"], selected: shift.state, label: false %>
-  </div>
-</div>
-
-<div class="form-group black clocked-out">
-  <div class="field time-out-field">
-      <label class='white' for="TimeOut">Time Out: </label>
-       <%= f.datetime_select :time_out, ampm: true, default: nil %>
-  </div>
-</div>
-<div class='form-group'>
-     <div class="input-group">
-        <span class="input-group-addon"><i class='fa fa-usd'></i></span>
-        <%= f.input :pay_rate, label: false, :input_html => {value: number_with_precision(f.object.pay_rate, precision: 2) } %>
-        <span class="input-group-addon">/hr</span>
-      </div>
-</div>
-   <div class='form-group'>
-       <%= f.input :paid_breaks, as: :select %>
-       
-       <%= f.input :break_duration, disabled: true %>
-   </div>
-<div class="form-group">
-    <%= f.input :note, placeholder: "Add a note.", input_html: {rows: 2, class: "form-control"}, label: false %>
-</div>
-
-<div class="form-actions">
-
-<%= f.button :submit, "Save", class: "btn btn-success" %>
-</div>
-<% end %>
+    <%= simple_form_for [:admin, shift], html: { class: 'form' } do |f| %>
+        <div class="form-group black">
+            <label class='white' for="TimeIn">Time In: </label>
+            <%= f.datetime_select :time_in, ampm: true, default: Time.current %>    
+        </div>
+        <div class="form-contol black">
+           <div class="field">
+            <%= f.input :state, as: :select, collection: ["Clocked In", "Clocked Out", "On Break"], selected: shift.state, label: false %>
+          </div>
+        </div>
+        <div class="form-group black clocked-out">
+          <div class="field time-out-field">
+              <label class='white' for="TimeOut">Time Out: </label>
+               <%= f.datetime_select :time_out, ampm: true, default: nil %>
+          </div>
+        </div>
+        <div class='form-group'>
+             <div class="input-group">
+                <span class="input-group-addon"><i class='fa fa-usd'></i></span>
+                <%= f.input :pay_rate, label: false, :input_html => {value: number_with_precision(f.object.pay_rate, precision: 2) } %>
+                <span class="input-group-addon">/hr</span>
+              </div>
+        </div>
+           <div class='form-group'>
+               <%= f.input :paid_breaks, as: :select %>
+               <%= f.input :break_duration, disabled: true %>
+           </div>
+        <div class="form-group">
+            <%= f.input :note, placeholder: "Add a note.", input_html: {rows: 2, class: "form-control"}, label: false %>
+        </div>
+        <div class="form-actions">
+            <%= f.button :submit, "Save", class: "btn btn-success" %>
+        </div>
+    <% end %>
 </div>

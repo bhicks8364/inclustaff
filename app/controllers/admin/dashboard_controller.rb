@@ -7,6 +7,8 @@ class Admin::DashboardController < ApplicationController
       @jobs = @current_agency.jobs 
       @orders = Order.all.paginate(page: params[:page], per_page: 15)
       @timesheets = Timesheet.order(updated_at: :desc) 
+      @q = @current_agency.invoices.includes(:company).ransack(params[:q])
+      @invoices = @q.result(distinct: true)
       skip_authorization
     end
     def recruiter

@@ -1,4 +1,4 @@
-<div class='col-md-12 mainpage'>
+<div class='col-md-12 mainpage shadow'>
   <div class="btn-group">
     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <i class='fa fa-files-o fa-fw'></i> Reports
@@ -126,10 +126,7 @@
       </div>
        
     </div>
-   
-        
         <div class='panel panel-success col-md-6 '>
-         
       <div class="panel-heading">
         <h3 class="panel-title">Nearby Candidates</h3>
       </div>
@@ -146,7 +143,7 @@
           </div>
         </div>
           <hr>
-          <%= link_to "Candidate List", users_path, class: "btn btn-primary pull-right" %>
+          <%= link_to "Candidate List", admin_users_path, class: "btn btn-primary pull-right" %>
         <% else %>
         <div class='col-md-6 '>
         <% if @order.jobs.any? %>

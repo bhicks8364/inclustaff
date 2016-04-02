@@ -1,5 +1,5 @@
 
-<div class='col-md-12 lightbox'>
+<div class='col-md-12 mainpage shadow'>
     <% if @event.timesheet? %>
 <h3> Timesheet!</h3>
 <%= render "admin/timesheets/timesheet", timesheet: @timesheet if admin_signed_in? %>
@@ -33,33 +33,32 @@
     </div>
 	
 
-   <div class='col-md-12 bg-white'>
-	  	<div class="col-md-4">
-	  	    	<h3><%= signed_in_link_to @order.title, @order %></h3>
-	  	    	<h4>Pay range: <%= pay_range(@order) %></h4>
-    	    <%= @order.tag_list %>
-    	</div>
-    	<div class="col-md-4 bg-white">
+   <div class='row'>
+    	<div class="col-md-6 well">
     		<h3><%= signed_in_link_to @employee.name, @employee %></h3>
     	    <%= @employee.tag_list || "No employee tags" %>
     	    	<h4>Preferred job type:  <%= @employee.desired_job_type %></h4>
     	    	<h4>Preferred shift:  <%= @employee.desired_shift %></h4>
     	</div>
-        <div class='col-md-4 bg-white'>
-            
-        <% if @employee.unassigned? && @order.needs_attention? %>
-            <%= render 'job_form' %>
-        <% end %>
-        </div>
-        <div class='col-md-6'>
+        <div class="col-md-6 well">
+	  	    	<h3><%= signed_in_link_to @order.title, @order %></h3>
+	  	    	<h4>Pay range: <%= pay_range(@order) %></h4>
+    	    <%= @order.tag_list %>
+    	</div>
+    </div>
+     <div class='row'>
+        <div class='col-md-8 well'>
           <h3>Job Description</h3>
-         
             <% if @order.notes.length > 5 %>
             <p><%= markdownify(@order.notes) %></p>
             <% else %>
             <p class='text-center'>Specific job details unavailable.</p>
             <% end %>
-      
+        </div>
+        <div class='col-md-4 well shadow'>
+        <% if @employee.unassigned? && @order.needs_attention? %>
+            <%= render 'job_form' %>
+        <% end %>
         </div>
    </div>
 

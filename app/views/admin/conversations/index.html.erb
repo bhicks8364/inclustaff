@@ -1,4 +1,4 @@
-Total: <%= @conversations.count %>
+<div class="col-md-12 mainpage shadow">
 <h1>
   <div class="pull-right">
     <%= link_to "New Conversation", new_admin_conversation_path, class: 'btn btn-primary' %>
@@ -10,7 +10,6 @@ Total: <%= @conversations.count %>
 <%= link_to all_admin_conversations_path do %>All Conversations (<%= current_admin.mailbox.conversations.count %>) <%end %>|
 <%= link_to sent_admin_conversations_path do %>Sent (<%= current_admin.mailbox.sentbox.count %>) <%end %>|
 <%= link_to trash_admin_conversations_path do %>Trash (<%= current_admin.mailbox.trash.count %>)<%end %>
-
 <hr />
 
 
@@ -18,5 +17,6 @@ Total: <%= @conversations.count %>
   <%= render partial: "admin/conversations/conversation", collection: @conversations %>
 </div>
 
+</div>
 
 

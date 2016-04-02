@@ -33,7 +33,7 @@
             <%= render 'layouts/alerts' %>
               <div class="row">
                   <div class="col-lg-12">
-                    <%= render 'demo/demo_nav' if current_company_admin.role != "Timeclock" && !@current_agency.demo? %>
+                    <%= render 'demo/demo_nav' if current_company_admin.role != "Timeclock" && @current_agency.demo? %>
                     <%= render 'demo/company_how_to' if @current_agency.present?  %>
                     <%= yield %>
                   </div>

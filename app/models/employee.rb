@@ -53,11 +53,12 @@ class Employee < ActiveRecord::Base
   has_many :timesheets, :through => :jobs
   attachment :resume, extension: ["pdf", "doc", "docx"]
 
-  accepts_nested_attributes_for :jobs
   accepts_nested_attributes_for :user
   accepts_nested_attributes_for :skills, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :work_histories, reject_if: :all_blank, allow_destroy: true
-
+  
+  # RANSACK
+  ransack_alias :job, :job_title_or_description_cont
   # This isnt working right. Think I should use arrays for this or maybe a new model all together. idk
   store_accessor :availability, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday
 
