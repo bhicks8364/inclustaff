@@ -94,7 +94,7 @@ class Company::OrdersController < ApplicationController
       params.require(:order).permit(:id, :address, :min_pay, :max_pay, :pay_frequency, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title, :notes, 
       :number_needed, :needed_by, :urgent, :active, :dt_req, :bg_check, :stwb, :heavy_lifting, :shift, :est_duration, :tag_list, :aca_type,
       :education, :industry, :years_of_experience, :certifications, :requirement_1, :requirement_2, :requirement_3, :requirement_4, 
-      :published_at, :published_by, :expires_at, :company_approval, :agency_approval, :mobile_time_clock_enabled,
+      :published_at, :published_by, :expires_at, :company_approval, :agency_approval, :mobile_time_clock_enabled, :job_description, :shift_start, :shift_end,
       jobs_attributes: [:order_id, :title, :description, :start_date, :id, :employee_id, :active], 
       skills_attributes: [:id, :skillable_type, :skillable_id, :name, :required, :_destroy])
     end

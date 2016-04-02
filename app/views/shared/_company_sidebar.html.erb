@@ -9,7 +9,7 @@
         <li><%= link_to "<i class='fa fa-clock-o'></i> Company Timeclock".html_safe, company_timeclock_path %></li>
         <li><%= link_to "<i class='fa fa-university'></i>View All Job Orders".html_safe, company_orders_path %></li>
         <li><%= link_to "<i class='fa fa-usd'></i> Invoices".html_safe, company_invoices_path %></li>
-        <li class="<%=@current_company_admin.events.unread.happened_after(Date.yesterday).any? ? "green" : "" %>"><%= link_to "<i class='fa fa-bell'></i> Recent Activity".html_safe, events_path %></li>
+        <li class="<%=@current_company_admin.events.unread.happened_after(Date.yesterday).any? ? "green" : "" %>"><%= link_to "<i class='fa fa-bell'></i> Recent Activity".html_safe, company_events_path %></li>
         <li><%= link_to "<i class='fa fa-users'></i> Company Users".html_safe, company_company_admins_path %></li>
         <li><%= link_to "<i class='fa fa-dashboard'></i> Dashboard".html_safe, company_dashboard_path %></li>
         <li><%= link_to "<i class='fa fa-commenting'></i> Messages".html_safe, company_conversations_path %></li>

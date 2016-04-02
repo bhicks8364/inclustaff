@@ -195,6 +195,15 @@ Rails.application.routes.draw do
           patch :mark_as_unread
         end
       end
+      resources :events do
+        member do
+          patch :mark_as_read
+        end
+        collection do
+          get :search, action: :index
+          post :mark_all_as_read
+        end
+      end
     end
     # END ADMIN
 
@@ -264,7 +273,17 @@ Rails.application.routes.draw do
           patch :mark_as_unread
         end
       end
+      resources :events do
+        member do
+          patch :mark_as_read
+        end
+        collection do
+          get :search, action: :index
+          post :mark_all_as_read
+        end
+      end
     end
+    
     # END COMPANY_ADMIN
 
     # EMPLOYEE ---> /employee

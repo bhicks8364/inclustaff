@@ -39,6 +39,12 @@
 #  published_by              :integer
 #  expires_at                :datetime
 #  mobile_time_clock_enabled :boolean          default(FALSE)
+#  shift_start               :datetime
+#  shift_end                 :datetime
+#  account_manager_notes     :text
+#  job_description           :text
+#  payroll_code              :string
+#  status                    :string
 #
 # Indexes
 #
@@ -70,7 +76,7 @@ class Order < ActiveRecord::Base
   include ArelHelpers::ArelTable
   include ArelHelpers::JoinAssociation
   acts_as_taggable
-  
+  has_paper_trail
   store_accessor :requirements, :agency_approval, :company_approval, :years_of_experience, :certifications, :requirement_1, :requirement_2, :requirement_3, :requirement_4
   # VALIDATIONS
   validates_associated :company
@@ -78,7 +84,7 @@ class Order < ActiveRecord::Base
 
   # CALLBACKS
   after_initialize :defaults
-  before_validation :set_mark_up
+  before_validation :set_mark_up, :set_status
   after_save :set_note_skills
   before_save :titlize_title, if: :title_changed?
   #  GEOCODER
@@ -145,28 +151,28 @@ class Order < ActiveRecord::Base
     end
   end
   
-  def status
+  def set_status
       if overdue?
-          "Overdue"
+        self.status = "Overdue"
       elsif priority?
-         "Priority"
+         self.status = "Priority"
       elsif needs_attention?
-          "Open"
+         self.status = "Open"
       elsif filled?
-         "Filled"
+         self.status = "Filled"
       elsif inactive?
-          "Inactive"
+         self.status = "Inactive"
       else
-          ""
+         self.status = "Unknown"
       end
-    
   end
+  
   def inactive?
     active == false
   end
   
   def to_param
-    "#{id}-#{title_company.parameterize }"
+    "#{id}-#{title.parameterize }"
   end
   
   def needs_agency_approval?; requirements['agency_approval'] == "true"; end

@@ -8,7 +8,7 @@ class Company::JobsController < ApplicationController
 
       @admin = current_company_admin
       @company = @admin.company
-      @jobs = @company.jobs.active.order(title: :asc)
+      @jobs = @company.jobs.currently_working.order(title: :asc)
       authorize @jobs
 
   end
@@ -16,7 +16,7 @@ class Company::JobsController < ApplicationController
   def archived
     @admin = current_company_admin
     @company = @admin.company
-    @archived_jobs = @company.jobs.inactive
+    @archived_jobs = @company.jobs.pending_approval
 
     authorize @archived_jobs, :index?
   end

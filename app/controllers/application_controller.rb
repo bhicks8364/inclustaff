@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   before_action :set_current, :set_mailer_host, :set_gon
+  before_filter :set_paper_trail_whodunnit
   def set_current
     subdomains = request.subdomains
     @current_agency = Agency.where(subdomain: subdomains).first if vaild_subdomain?(request)
@@ -54,6 +55,9 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     root_path
+  end
+  def user_for_paper_trail
+    signed_in? ? @signed_in.name : 'Public user' 
   end
 
   def current_agency

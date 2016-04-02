@@ -1,0 +1,18 @@
+<%= div_for event do %>
+<i class="fa fa-times fa-fw"></i>
+<% if @admin.nil? && @candidates.nil?  %>
+	<%= event.admin.try(:first_name) %>
+	<%= event.company_admin.try(:first_name)  %>
+    <strong>	<%= event.action.humanize.downcase %></strong>
+    <% end %>
+    <% if event.eventable.present? %>
+     a <%= event.eventable_type.downcase %> for
+    <%=  signed_in_link_to event.eventable.name, event.eventable %> <small> at <%= event.eventable.company.name %></small>
+		<span class='label label-danger black pull-right'>
+		    <%= event.created_at.stamp('11/13') %>
+		</span>
+	<% else %>
+	a deleted timesheet.
+	<% end %>
+
+<% end %>

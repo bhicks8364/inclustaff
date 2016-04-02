@@ -1,0 +1,30 @@
+ <%= form_tag("/company/events", :method => "get", :class => "form-inline black") do %>
+ 
+  <%= text_field_tag(:date1, params[:date1]) %>
+  
+      <%= label_tag(:date2, "and", :class => "white") %>
+ 
+  <%= text_field_tag(:date2, params[:date2]) %>
+ 
+  <%= submit_tag("Search", :class => "btn btn-default") %>
+   <%= link_to "Clear", company_events_path, class: 'btn btn-default' %>
+<% end %>
+ <% if @start_time.present? && @end_time.present?  %>
+
+    You are searching for events occurring after :
+    <h5><strong><%=  @start_time.stamp('11/12/2013 at 11:30am')%></strong>
+
+    and before :
+   <strong><%= @end_time.present? ? @end_time.stamp('11/12/2013 at 11:30am') : @end_time %></strong></h5>
+
+<% elsif @start_time.present? && @end_time.nil? %>
+
+    You are searching for events occurring after:
+    <strong><%=  @start_time.stamp('11/12/2013 at 11:30am')%></strong>
+<% elsif @end_time.present? && @start_time.nil? %>
+
+
+You are searching for events occurring before:
+    <strong><%= @end_time.present? ? @end_time.stamp('11/12/2013 at 11:30am') : @end_time %></strong>
+
+<% end %>

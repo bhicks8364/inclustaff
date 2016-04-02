@@ -5,38 +5,17 @@
   // color: black;
   margin: auto;
 }
-// #inquiry_agency_name {
-//   max-width: 200px;
-// }
-// #inquiry_name {
-//   max-width: 200px;
-// }
-.order-form {
-  background-color: red;
-}
-// .order_needed_by {
-//   display: block;
-//   margin-left: auto;
-//   margin-right: auto;
-//   // width: 100%;
 
-// }
 .half {
   width: 50%;
   margin: 5px;
 }
-// #order_needed_by_3i {
-//   width: 33%;
-// }
-// #order_needed_by_2i {
-//   width: 33%;
-// }
-// #order_needed_by_1i {
-//   width: 33%;
-// }
 .fill {
   width: 100%;
   horizonal-align: middle;
+}
+.form-inline > label {
+  margin-right: 10px;
 }
 
 #new_work_history > div:nth-child(5) > div.col-md-6 > div {

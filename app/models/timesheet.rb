@@ -41,6 +41,8 @@ class Timesheet < ActiveRecord::Base
   has_many :events, as: :eventable
   has_one :recruiter, through: :job, class_name: "Admin"
   has_many :adjustments
+  has_paper_trail
+  
   include ArelHelpers::ArelTable
   validates :job_id, uniqueness: { scope: :week,
     message: "should have only one timesheet per week" }

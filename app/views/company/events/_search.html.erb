@@ -1,0 +1,16 @@
+<h4 class='text-center'>Search time range</h4>
+
+
+<%= form_tag("/events", :method => "get", :class => "form-inline black") do %>
+ 
+  <%= text_field_tag(:date1, params[:date1]) %>
+  
+      <%= label_tag(:date2, "and", :class => "white") %>
+ 
+  <%= text_field_tag(:date2, params[:date2]) %>
+ 
+  <%= submit_tag("Search", :class => "btn btn-default") %>
+   <%= link_to "Clear", events_path, class: 'btn btn-default' %>
+<% end %>
+
+ 

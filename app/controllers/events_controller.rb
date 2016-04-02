@@ -41,6 +41,7 @@ class EventsController < ApplicationController
       # @events = @signed_in.events.unread
     end
     
+    
     # @q = Event.includes(:eventable).ransack(params[:q]) 
     # if params[:q].present?
     #   @events = @q.result(distinct: true).paginate(page: params[:page], per_page: 5)
@@ -48,7 +49,7 @@ class EventsController < ApplicationController
     # @events = Event.none
     # end
     if company_admin_signed_in?
-      render 'company/dashboard/events'
+      render 'company/events/index'
     end
       
    

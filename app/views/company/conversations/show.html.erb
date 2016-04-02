@@ -30,7 +30,14 @@
     </div>
     <h5>In this conversation</h5>
     <% @conversation.participants.each do |participant| %>
+    <% if participant.employee? && participant.current_job.present? %>
+      <div><%= link_to participant.name, company_job_path(participant.current_job) %></div>
+    <% elsif participant.employee? %>
+      <div><%= participant.name %></div>
+    <% else %>
       <div><%= signed_in_link_to(participant.name, participant) %></div>
+    <% end %>
+      
     <% end %>
   </div>
 </div>

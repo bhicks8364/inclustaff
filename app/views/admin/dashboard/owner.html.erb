@@ -1,6 +1,5 @@
 <div class="col-md-12 mainpage shadow">
 	<%= render 'admin/shared/welcome/agency_setup' if @current_admin.sign_in_count == 1 || @current_agency.subdomain == "demo" %> 
-	<h1 class='page-header simple'>Owner Dashboard</h1>
 	<div class="tabs-wrapper">
 		<div class="clearfix">
 			<ul class="nav nav-tabs">
@@ -14,7 +13,8 @@
 		<div class="tab-content">
 			<div class="tab-pane fade in active" id="tab-home">
 				<div class='col-md-12 well shadow'>
-					<div class="">
+					<h1 class='page-header simple'>Owner Dashboard</h1>
+					<div class='col-md-4 well'>
 						<h1><%= pluralize(@current_agency.orders.newly_added.count , "new order") %></h1>
 					</div>
 				<% if @current_agency.companies.blank? %>

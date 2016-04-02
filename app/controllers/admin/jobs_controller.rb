@@ -204,8 +204,7 @@ class Admin::JobsController < ApplicationController
       @job.active = false
       @job.state = "Pending Approval"
       current_admin.events.create(action: "presented", eventable: @job)
-    else
-      @job.state = "Currently Working"
+  
     end
 
     respond_to do |format|

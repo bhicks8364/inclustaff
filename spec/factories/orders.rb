@@ -40,6 +40,12 @@
 #  published_by              :integer
 #  expires_at                :datetime
 #  mobile_time_clock_enabled :boolean          default(FALSE)
+#  shift_start               :datetime
+#  shift_end                 :datetime
+#  account_manager_notes     :text
+#  job_description           :text
+#  payroll_code              :string
+#  status                    :string
 #
 # Indexes
 #

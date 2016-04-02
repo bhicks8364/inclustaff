@@ -1,4 +1,4 @@
-<div class="col-md-12 mainpage">
+<div class="col-md-12 mainpage shadow">
   
   <h1 class="bold"><%= @company.name %></h1>
   <hr>
@@ -11,12 +11,12 @@
     <li role="presentation"><a href="#company-contacts" aria-controls="company-contacts" role="tab" data-toggle="tab">Accounts</a></li>
     <li role="presentation"><a href="#invoices" aria-controls="invoices" role="tab" data-toggle="tab">Invoices</a></li>
     <li role="presentation"><a href="#timesheets" aria-controls="timesheets" role="tab" data-toggle="tab">Timesheets</a></li>
-    <li role="presentation"><a href="#edit-company-tab" aria-controls="edit-company-tab" role="tab" data-toggle="tab"><span><i class="fa fa-edit fa-fw"></i><</span>/a></li>
+    <li role="presentation"><a href="#edit-company-tab" aria-controls="edit-company-tab" role="tab" data-toggle="tab"><span><i class="fa fa-edit fa-fw"></i> Edit </span></a></li>
   </ul>
 
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="home">
-    <div class='col-md-3 well'>
+    <div class='col-md-4 well'>
       <% if @company.orders.blank? %>
       <div id="no-orders-alert" class="alert alert-danger text-center" role="alert">
         <i class="fa fa-exclamation-triangle fa-2x"></i>
@@ -37,7 +37,7 @@
         <a href="mailto:#"><%= @company.contact_email %></a>
       </address>
       </div>
-      <div class='col-md-6 well'>
+      <div class='col-md-4 well'>
         <p>Reports</p>
           <div class="btn-group" role="group">
             <btn btn-primary type="btn btn-primary" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -96,7 +96,7 @@
         
       </div>
      
-      <div class='col-md-3'>
+      <div class='col-md-4'>
         <h3>Account Manager: <% if @company.account_manager.present? %><%= @company.account_manager.name %><% else %>None<% end %></h3>
         <div class='well'>
           <h3>Skills</h3>
@@ -115,19 +115,19 @@
   </div>
 
   <div role="tabpanel" class="tab-pane fade " id="company-contacts">
-    <div class='col-md-4'>
+    <div class='col-md-6'>
       <div class='company-contacts'>
         <h3>Company Contacts</h3>
          <%= render 'admin/companies/company_users' %>
       </div>
     </div>
-    <div class='col-md-4'>
+    <div class='col-md-6'>
       <%= link_to "Add Company Admin", new_admin_company_admin_path, class: "btn btn-primary btn-lg" %>
     </div>
   </div>
 
   <div role="tabpanel" class="tab-pane fade" id="pending-approval">
-    <div class='col.md-12'>
+    <div class='col.md-12 well'>
       <h3>Pending Approval</h3>
       <%= render 'admin/jobs/pending_list', jobs: @company.jobs.pending_approval %>
     </div>
@@ -164,7 +164,7 @@
   </div>
   <div role="tabpanel" class="tab-pane fade" id="employees">
     <h3>This week</h3>
-     <div class='table-responsive'>
+     <div class='table-responsive well'>
        <%= render 'admin/shifts/week_calendar', shifts: @company.shifts.current_week %>
      </div>
       <div class='col-md-12 well well-sm'>
@@ -213,7 +213,7 @@
     </div>
   </div>
   <div role="tabpanel" class="tab-pane fade" id="edit-company-tab">
-    <div class="col-md-18 well">
+    <div class="col-md-12 well">
       <%= render "form" %>
     </div>
   </div>

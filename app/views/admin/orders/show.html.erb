@@ -1,4 +1,5 @@
 <div class='col-md-12 mainpage shadow'>
+  
   <div class="btn-group">
     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <i class='fa fa-files-o fa-fw'></i> Reports
@@ -135,7 +136,7 @@
               <% @near_by.each do |user| %>
                 <li class='list-group-item' data-placement='right' data-toggle='tooltip' title='<%= user.skills.map(&:name).join(', ')%>'>
                   <%=users_tooltip(user)%> 
-                <%= link_to user.name, user %> (<%= user.distance.round(2) %> miles)</li>
+                <%= link_to user.name, admin_user_path(user) %> (<%= user.distance.round(2) %> miles)</li>
               <% end %>
             <% else %>
               <h3 class='text-center'>No nearby candidates.</h3>

@@ -1,0 +1,11 @@
+<%= div_for event do %>
+<i class="fa fa-times red fa-fw"></i>
+<%= event.admin.try(:first_name) %>
+<%= event.company_admin.try(:first_name) if !current_page?('/company_admins') %>
+    <strong>	<%= event.action.humanize.downcase %></strong>
+   <%=  signed_in_link_to event.eventable.name, event.eventable %>
+		<span class='label label-danger black pull-right'>
+		    <%= event.created_at.stamp('11/13') %>
+		</span>
+
+<% end %>

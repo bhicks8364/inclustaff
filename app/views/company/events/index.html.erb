@@ -1,0 +1,29 @@
+  <div class='col-md-12 mainpage shadow'>
+    <div class='col-md-12 form-inline text-center'>
+      <%= render 'company/events/searching_between' %>
+    </div>
+  <div class='col-md-6 well shadow'>
+    <h1>Timesheet Approvals</h1>
+    <% @events.timesheet_approvals.limit(10).each do |event| %>
+      <% if lookup_context.template_exists?(event.action, "company/events/activities", true) %>
+        <%= render partial: "company/events/activities/#{event.action}", locals: {event: event} %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class='col-md-6 well shadow'>
+    <h1>Job Approvals</h1>
+    <% @events.job_approvals.each do |event| %>
+      <% if lookup_context.template_exists?(event.action, "company/events/activities", true) %>
+        <%= render partial: "company/events/activities/#{event.action}", locals: {event: event} %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class='col-md-6 well shadow'>
+    <h1>Recently Ended</h1>
+    <% @events.job_approvals.each do |event| %>
+      <% if lookup_context.template_exists?(event.action, "company/events/activities", true) %>
+        <%= render partial: "company/events/activities/#{event.action}", locals: {event: event} %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

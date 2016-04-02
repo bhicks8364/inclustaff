@@ -56,7 +56,7 @@ gem 'stamp', '~> 0.6.0'
 gem 'time_difference', '~> 0.4.2'
 gem 'underscore-rails', '~> 1.8.3'
 gem 'will_paginate', '~> 3.0.6'
-
+gem 'paper_trail'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'annotate', '~> 2.7'
