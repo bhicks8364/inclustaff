@@ -38,7 +38,7 @@
 				</div>
 				<div class="tab-pane fade in" id="tab-charts">
 					<div class='row'>
-						<% if @open_orders.any? %>
+						<% if @open_orders.present? %>
 						<div class="col-md-6 well well-sm">
 							<%= line_chart @open_orders.group_by_day(:needed_by, format: "%x").sum(:number_needed), library: {title: "Open Positions by Day"}, xtitle: "Needed By Date", ytitle: "Number of Positions" %>
 						</div>
