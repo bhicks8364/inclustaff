@@ -81,7 +81,11 @@
    <!--JOB DESCRIPTION TAB-->
   <div role="tabpanel" class="tab-pane fade" id="description">
     <h1> Job Description</h1>
-    <div class=''>
+    <div class='well'>
+      <%= markdownify(@order.job_description) %>
+    </div>
+    <div class='well well-sm'>
+      <h2>Notes</h2>
       <%= markdownify(@order.notes) %>
     </div>
   </div>

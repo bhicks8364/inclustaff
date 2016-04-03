@@ -76,7 +76,7 @@
 							<h3 class='text-info'>New Job Orders</h3>
 							<% if @current_admin.job_orders.newly_added.any? %>
 						<% @current_admin.job_orders.newly_added.order(:created_at).limit(10).each do |job_order| %>
-							<p class="bold"><%= link_to job_order.title_company, admin_order_path(order), class: "bold" %><br>
+							<p class="bold"><%= link_to job_order.title_company, admin_order_path(job_order), class: "bold" %><br>
 							<p><%=job_order.account_manager.name %>	<span class='label label-success pull-right'> <%= job_order.created_at.stamp('11/13') %></span>	</p>
 			            <% end %>
 			            <% else %>

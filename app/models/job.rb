@@ -221,6 +221,9 @@ class Job < ActiveRecord::Base
     def populate_current_timesheets
         self.timesheets.create(week: Date.current.beginning_of_week.to_date, reg_hours: 40, ot_hours: 5)
     end
+    def populate_weekly_timesheet(date)
+        self.timesheets.create(week: date.beginning_of_week.to_date, reg_hours: 40, ot_hours: 5)
+    end
     
     def name
         employee.name

@@ -92,6 +92,11 @@
 			<%= f.input :account_manager_notes, as: :text, label: false, placeholder: "Admin Notes - These notes wil not be included on job postings but will remain searchable for admins.", 
 				input_html: {id: "autocomplete", data: { behavior: "autocomplete_order_notes" }, rows: 10, class: "form-control" }  %>
 			<div class='col-md-6 form-group'>
+		  		<h4 class='bold'>Management</h4>
+		  		<%= f.association :manager, collection: @company.admins.real_users.order(:last_name), prompt: "Select Company Manager", label: "Assign Company Manager" if @company.present? %>
+				<%= f.association :account_manager, collection: @current_agency.admins.account_managers.order(:last_name), disabled: false, label: false, prompt: "Select Account Manager" if !current_admin.account_manager? %>
+			</div>
+			<div class='col-md-6 form-group'>
 				<h3>Post to Job Board</h3>
 				
 					<%= f.input :published_at, wrapper_html: {class: "form-inline"}, default: Date.today, as: :date, end_year: Date.today.year + 1, start_year: Date.today.year, order: [:month, :day, :year], label: "Published Date" %>
