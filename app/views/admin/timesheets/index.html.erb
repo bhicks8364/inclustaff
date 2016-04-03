@@ -7,6 +7,7 @@
 		<%= link_to "New Timesheet", new_admin_timesheet_path, class: "btn btn-info" %>
 		<% end %>
 	</div>
+	<%= render 'admin/timesheets/search' %>
 	<hr>
 	<h1 class='bold'>Timesheets <% if @timesheets.current_week.any? %><small>Week Ending <%= @timesheets.current_week.first.week_ending.stamp("3/21") %></small> <% end %></h1>
 	<hr>

@@ -7,7 +7,7 @@
 		<% if @employee.nil? %><th class='white'><%= @q.present? ? sort_link(@q, :employee_last_name, 'Employee') : "Employee" %></th><% end %>
 		<th class='white'><%= @q.present? ? sort_link(@q, :gross_pay, 'Pay') : "Pay" %></th>
 		<th class='white'><%= @q.present? ? sort_link(@q, :total_hours, 'Hours') : "Hours" %></th>
-		<th class='white'><%= @q.present? ? sort_link(@q, :state, "<i class='fa fa-hourglass-start'></i> Status".html_safe, default_order: :asc)  : "Status" %></th>
+		<th class='white'><%= @q.present? ? sort_link(@q, :state, "<i class='fa fa-hourglass-start'></i> Status".html_safe)  : "Status" %></th>
 	</thead>
 	<tbody>
 	

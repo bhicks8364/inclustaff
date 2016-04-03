@@ -94,6 +94,7 @@ class Admin::TimesheetsController < ApplicationController
         elsif @end_time.present?
           @timesheets = Timesheet.worked_before(@end_time).distinct
         end
+        # render action: :index
 		gon.timesheets = @timesheets
 		authorize @timesheets
 		respond_to do |format|
@@ -106,13 +107,14 @@ class Admin::TimesheetsController < ApplicationController
 	    @q = @current_admin.timesheets.last_week.ransack(params[:q])
         @timesheets = @q.result.includes(:job, :employee).paginate(page: params[:page], per_page: 10)
         gon.timesheets = @timesheets
+       
         authorize @timesheets, :index?
 # 		@timesheets = Timesheet.last_week.distinct
 # 		authorize @timesheets, :index?
 		respond_to do |format|
-      format.html
-      format.csv { send_data @timesheets.to_csv, filename: "last-week-timesheets-export-#{Time.current}-#{@current_agency.name}.csv" }
-  	end
+          format.html
+          format.csv { send_data @timesheets.to_csv, filename: "last-week-timesheets-export-#{Time.current}-#{@current_agency.name}.csv" }
+      	end
 	end
 
   def show

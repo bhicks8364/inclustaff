@@ -165,6 +165,7 @@ desc "Create 25 employees with random names and addresses"
 	require 'populator'
 	require 'ffaker'
 	password = "password"
+		Apartment::Tenant.switch!('demo')
 	  User.populate 50 do |user|
 		user.first_name = FFaker::Name.first_name
 		user.last_name = FFaker::Name.last_name

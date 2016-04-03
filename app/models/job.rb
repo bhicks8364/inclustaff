@@ -105,7 +105,7 @@ class Job < ActiveRecord::Base
         includes(:employee, :current_shift).where( :shifts => { :job_id => nil } )
     end
     def self.without_current_timesheet
-        includes(:employee, :current_timesheet).where( :timesheets => { :job_id => nil } )
+        currently_working.includes(:employee, :current_timesheet).where( :timesheets => { :job_id => nil } )
     end
     # MAIL - not setup yet
     def send_notifications!
@@ -216,6 +216,10 @@ class Job < ActiveRecord::Base
             time_out = time_in + num.hours + rand(1...60).minutes
             self.shifts.create(week: week_beginning, time_in: time_in, time_out: time_out, state: "Clocked Out", out_ip: user.current_sign_in_ip)
         end
+    end
+    
+    def populate_current_timesheets
+        self.timesheets.create(week: Date.current.beginning_of_week.to_date, reg_hours: 40, ot_hours: 5)
     end
     
     def name
