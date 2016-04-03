@@ -27,7 +27,7 @@
         </div>
     </div>
     <%= div_for @pending_timesheets, class: "col-md-12" do |timesheet| %>
-    <%= link_to timesheet.name, admin_timesheet_delete_all_shifts_path(timesheet, redirect_to: "edit_multiple_admin_timesheets_path"), class: 'btn btn-default'%>
+    <%= link_to timesheet.name, admin_timesheet_path(timesheet), class: 'btn btn-default'%>
         <div class="col-md-12 <%= timesheet.approved? ? "approved" : "" %>" data-behavior="timesheet" data-id="<%= timesheet.id %>" id="timesheet_<%=timesheet.id%>">
             <p> <span class='small text-muted pull-right' id='timesheet_<%=timesheet.id%>_state'><%=timesheet.state.upcase%></span></p>
             <h3><%= timesheet.time_frame %> <span class='small pull-right'><%= number_to_currency(timesheet.pay_rate) %></span> </h3>
