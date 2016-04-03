@@ -1,4 +1,4 @@
-<div class='row'>
+<div class='search'>
     <%= search_form_for @q, class: '', url: search_admin_orders_path, html: { method: :post } do |f| %>
       
           <%= f.search_field :notes_or_title_cont, class: "form-control", placeholder: "Search Job Orders"%>

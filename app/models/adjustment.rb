@@ -24,7 +24,7 @@ class Adjustment < ActiveRecord::Base
     belongs_to :timesheet
     belongs_to :creator, class_name: "Admin", foreign_key: "entered_by"
     before_save :calculate_amount, :set_bill_amount
-    
+    has_paper_trail
     def vacation?; adj_type == "Vacation" end;
     def bonus?; adj_type == "Bonus" end;
     def gas?; adj_type == "Gas" end;

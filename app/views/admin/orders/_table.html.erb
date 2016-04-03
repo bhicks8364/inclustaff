@@ -3,12 +3,12 @@
   <table id="" class="table table-bordered table-hover">
     <thead>
       <tr>
-        <% if @company.nil? %><th> Company</th><%end %>
-        <th>Fill Date</th>
-        <th>Title</th>
-        <th>Pay Range</th>
-        <th>Make A Placement</th>
-        <th></th>
+        <% if @company.nil? %><th> <%= @q.present? ? sort_link(@q, :company_name, 'Company', default_order: :desc) : "Company" %></th><%end %>
+        <th><%= @q.present? ? sort_link(@q, :needed_by, 'Fill Date') : "Fill Date" %></th>
+        <th><%= @q.present? ? sort_link(@q, :title, 'Title') : "Title" %></th>
+        <th><%= @q.present? ? sort_link(@q, :min_pay, 'Pay') : "Pay" %></th>
+        <th><%= @q.present? ? sort_link(@q, :status, 'Status') : "Status" %></th>
+        <th><%= @q.present? ? sort_link(@q, :account_manager_last_name, 'Account Manager') : "Account Manager" %></th>
       </tr>
     </thead>
   

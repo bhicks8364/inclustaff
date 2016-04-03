@@ -1,146 +1,136 @@
-<div class="col-md-12 mainpage">
-
-	<h1 class='page-header text-center'>Sales Dashboard</h1>
-  
-  <div class="">
-				<div class="tabs-wrapper">
-					<div class="clearfix">
-					
-						<ul class="nav nav-tabs">
-						  <li class="active"><a href="#tab-home" data-toggle="tab">Sales Dashboard</a></li>
-						  <li class=""><a href="#tab-events" data-toggle="tab"> Recent Activity</a></li>
-						  <li class=""><a href="#tab-job-orders" data-toggle="tab">Open Job Orders</a></li>
-						  <li class=""><a href="#tab-calendar" data-toggle="tab">Calendar</a></li>
-							<li class=""><a href="#tab-candidates" data-toggle="tab">Current Candidates</a></li>
-							<li class=""><a href="#tab-applications" data-toggle="tab">Applications</a></li>
-						</ul>
+<div class="col-md-12 mainpage shadow">
+  	<div class="">
+		<div class="tabs-wrapper">
+			<div class="clearfix">
+			
+				<ul class="nav nav-tabs">
+				  <li class="active"><a href="#tab-home" data-toggle="tab">Sales Dashboard</a></li>
+				  <li class=""><a href="#tab-events" data-toggle="tab"> Recent Activity</a></li>
+				  <li class=""><a href="#tab-job-orders" data-toggle="tab">Open Job Orders</a></li>
+				  <li class=""><a href="#tab-calendar" data-toggle="tab">Calendar</a></li>
+				  <li class=""><a href="#tab-charts" data-toggle="tab">Charts</a></li>
+				</ul>
+			</div>
+			
+			<div class="tab-content">
+				<div class="tab-pane fade in active" id="tab-home">
+					<div class='row'>
+					<div class="col-md-3 well well-sm">
+						<%= render "admin/shared/alerts/open_orders", orders: @orders %>
+						
+					</div>
+					<div class="col-md-6 well well-sm">
+					  <h4 class='text-center'>Current Leaders <small>Based on current billing</small></h4>
+					  <%= pie_chart account_managers_ranking_path, ytitle: "Current Billing", xtitle: "Account Managers", library: {isStacked: true, backgroundColor: "#e5dbcf"} %>
+					</div>
+					<div class='col-md-3'>
+						<h4 class='text-center'>Current Billings by Account Manager</h4>
+				        <div class="fa-ul">
+				        <% @current_agency.admins.account_managers.sorted_by_current_billing.each do |admin| %>
+				            <% if admin.id == current_admin.id %> <li class="bg-success"> <% else %><li class=""><% end %>
+				                <%= link_to admin.name, admin_admin_path(admin) %> <span class="bold pull-right"><%= number_to_currency(admin.current_billing) %></span> 
+				            </li>
+				        <% end %>
+				        </div>
+					</div>
 					</div>
 					
-					<div class="tab-content">
-						<div class="tab-pane fade in active" id="tab-home">
-							<div class='row'>
-							<div class="col-md-3 well well-sm">
-								<%= render "admin/shared/alerts/open_orders", orders: @orders %>
-								
-							</div>
-							<div class="col-md-6 well well-sm">
-							  <h4 class='text-center'>Current Leaders <small>Based on current billing</small></h4>
-							  <%= pie_chart account_managers_ranking_path, ytitle: "Current Billing", xtitle: "Account Managers", library: {isStacked: true, backgroundColor: "#e5dbcf"} %>
-							</div>
-							<div class='col-md-3'>
-								<h4 class='text-center'>Current Billings by Account Manager</h4>
-						        <div class="fa-ul">
-						        <% @current_agency.admins.account_managers.sorted_by_current_billing.each do |admin| %>
-						            <% if admin.id == current_admin.id %> <li class="bg-success"> <% else %><li class=""><% end %>
-						                <%= link_to admin.name, admin_admin_path(admin) %> <span class="bold pull-right"><%= number_to_currency(admin.current_billing) %></span> 
-						            </li>
-						        <% end %>
-						        </div>
-							</div>
-							</div>
-							<div class='row'>
-								<div class="col-md-6 well well-sm">
-									<%= line_chart @current_agency.orders.needs_attention.group_by_day(:needed_by, format: "%x").sum(:number_needed), library: {title: "Open Positions by Day"}, xtitle: "Needed By Date", ytitle: "Number of Positions" %>
-								</div>
-								<div class="col-md-6 well well-sm">
-									<h4 class='text-center'> Open Job Orders <small>by industry</small></h4>
-									<%= pie_chart @orders.group('orders.industry').count, library: {backgroundColor: "#ccc", is3D: true}%>
-								</div>
-							</div>
-							
+				</div>
+				<div class="tab-pane fade in" id="tab-charts">
+					<div class='row'>
+						<div class="col-md-6 well well-sm">
+							<%= line_chart @open_orders.group_by_day(:needed_by, format: "%x").sum(:number_needed), library: {title: "Open Positions by Day"}, xtitle: "Needed By Date", ytitle: "Number of Positions" %>
 						</div>
-						<div class="tab-pane fade in" id="tab-events">
-							<div class='col-md-12'>
-								 <h2>Recent Activity</h2>
-								<div class="col-md-4 well well-sm">
-									<h3 class='text-info'>Looking for work</h3>
-									<% if Event.looking_for_work.any? %>
-								<% Event.assignment_ended.order(:created_at).limit(10).each do |event| %>
-								<%= event.action %>
-					              <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
-					                <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
-					              <% end %>
-					            <% end %>
-					            <% else %>
-					            	<p class='lead bold'>No candidates to show.</p>
-					            	
-					            <% end %>
-					            
-								</div>
-								<div class="col-md-4 well well-sm">
-									<h3 class='text-success'>Job Approvals</h3>
-									<% if Event.job_approvals.any? %>
-								<% Event.job_approvals.order(:created_at).limit(10).each do |event| %>
-					              <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
-					                <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
-					              <% end %>
-					            <% end %>
-					            <br>
-					            <% else %>
-					            	<p class='lead bold'>No recent approvals.</p>
-					            
-					            <% end %>
-					            	
-					            </div>
-					            <div class="col-md-4 well well-sm">
-					            <h3 class='text-danger'>Job Declines</h3>
-					            <% if Event.job_rejections.any? %>
-								<% Event.job_rejections.order(:created_at).limit(10).each do |event| %>
-					              <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
-					                <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
-					              <% end %>
-					            <% end %>
-					            
-					            <% else %>
-					            	<p class='lead bold'>No recent declines.</p>
-					            
-					            <% end %>
-								</div>
-								
-							</div>
-						</div>
-						<div class="tab-pane fade in" id="tab-job-orders">
-							<div class='col-md-12'>
-								<h3 class='text-center'><%= pluralize(@orders.count, "Open Job Orders") %></h3>
-								<div class="col-md-10">
-										<%= render 'admin/orders/table', orders: @orders %>
-										<%= will_paginate @orders %>
-								</div>
-								<div class="col-md-2">
-										<%= render "admin/shared/alerts/open_orders", orders: @orders %>
-								</div>
-							</div>
-							
-						</div>
-						<div class="tab-pane fade" id="tab-candidates">
-							<div class="col-md-12">
-								<h3>Candidate List</h3>
-								<%= render 'users/table', users: @candidates.order(:checked_in_at).limit(50) %>
-							</div>
-						</div>	 
-						
-						<div class="tab-pane fade" id="tab-calendar">
-							<div class="col-md-12">
-							  	<%= render 'admin/infoboxes/recruiting_calendar' %>
-						  	</div>
-						</div>
-						<div class="tab-pane fade" id="tab-applications">
-							<div class="col-md-12">
-							<% if Event.applications.any? %>
-							<h3>Recent Applications</h3>
-							<% Event.applications.order(created_at: :desc).each do |event| %>
-							  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
-							    <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
-							  <% end %>
-							<% end %>
-							<% else %>
-							<h3>Sorry, there're are currently no applications.</h3>
-							<% end %>
-							</div>
+						<div class="col-md-6 well well-sm">
+							<h4 class='text-center'> Open Job Orders <small>by industry</small></h4>
+							<%= pie_chart @orders.group('orders.industry').count, library: {backgroundColor: "#ccc", is3D: true}%>
 						</div>
 					</div>
 				</div>
+				<div class="tab-pane fade in" id="tab-calendar">
+					<div class='col-md-12'>
+						 <h2 class="bold"> Calendar</h2>
+						 <div class="sales-calendar">
+						 	<%= render "admin/shared/sales_calendar", job_orders: @orders %>
+						 </div>
+					</div>
+				</div>
+				<div class="tab-pane fade in" id="tab-events">
+					<div class='col-md-12'>
+						 <h2 class="bold">Recent Activity</h2>
+						 <div class="row">
+						<div class="col-md-6 well well-sm">
+							<h3 class='text-info'>New Companies</h3>
+							<% if @current_admin.companies.newly_added.any? %>
+						<% @current_admin.companies.newly_added.order(:created_at).limit(10).each do |company| %>
+							<p class=""><%= link_to company.name, admin_company_path(company), class: "bold" %><br>
+							<%=company.account_manager.name %>	<span class='label label-success pull-right'> <%= company.created_at.stamp('11/13') %></span>	</p>
+			            <% end %>
+			            <% else %>
+			            	<p class='lead bold'>No new job orders.</p>
+			            <% end %>
+						</div>
+						<div class="col-md-6 well well-sm">
+							<h3 class='text-info'>New Job Orders</h3>
+							<% if @current_admin.job_orders.newly_added.any? %>
+						<% @current_admin.job_orders.newly_added.order(:created_at).limit(10).each do |job_order| %>
+							<p class="bold"><%= link_to job_order.title_company, admin_order_path(order), class: "bold" %><br>
+							<p><%=job_order.account_manager.name %>	<span class='label label-success pull-right'> <%= job_order.created_at.stamp('11/13') %></span>	</p>
+			            <% end %>
+			            <% else %>
+			            	<p class='lead bold'>No new job orders.</p>
+			            <% end %>
+						</div>
+						</div>
+						<div class="row">
+						<div class="col-md-6 well well-sm">
+							<h3 class='text-success'>Job Approvals</h3>
+							<% if Event.job_approvals.any? %>
+						<% Event.job_approvals.order(:created_at).limit(10).each do |event| %>
+			              <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+			                <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
+			              <% end %>
+			            <% end %>
+			            <br>
+			            <% else %>
+			            	<p class='lead bold'>No recent approvals.</p>
+			            
+			            <% end %>
+			            	
+			            </div>
+			            <div class="col-md-6 well well-sm">
+			            <h3 class='text-danger'>Job Declines</h3>
+			            <% if Event.job_rejections.any? %>
+						<% Event.job_rejections.order(:created_at).limit(10).each do |event| %>
+			              <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+			                <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
+			              <% end %>
+			            <% end %>
+			            
+			            <% else %>
+			            	<p class='lead bold'>No recent declines.</p>
+			            
+			            <% end %>
+						</div>
+						</div>
+					</div>
+				</div>
+				<div class="tab-pane fade in" id="tab-job-orders">
+					<div class='col-md-12'>
+						<h3 class=' bold text-center'><%= pluralize(@orders.needs_attention.count, "Open Job Orders") %></h3>
+						<div class="col-md-10 well">
+								<%= render 'admin/orders/table', orders: @orders.needs_attention %>
+								<%= will_paginate @orders %>
+						</div>
+						<div class="col-md-2">
+								<%= render "admin/shared/alerts/open_orders", orders: @orders %>
+						</div>
+					</div>
+					
+				</div>
+			</div>
 		</div>
+	</div>
 </div>
 
 

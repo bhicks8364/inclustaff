@@ -42,3 +42,32 @@ handler.buildMap({
 );
 
 </script>
+
+
+
+????????????????
+<div class="tab-pane fade" id="tab-candidates">
+	<div class="col-md-12 well">
+		<h3>Candidate List</h3>
+		<%= render 'users/table', users: @candidates.order(:checked_in_at).limit(50) %>
+	</div>
+</div>
+<div class="tab-pane fade" id="tab-calendar">
+	<div class="col-md-12 well">
+	  	<%= render 'admin/infoboxes/recruiting_calendar' %>
+  	</div>
+</div>
+<div class="tab-pane fade" id="tab-applications">
+	<div class="col-md-12 well">
+	<% if Event.applications.any? %>
+	<h3>Recent Applications</h3>
+	<% Event.applications.order(created_at: :desc).each do |event| %>
+	  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+	    <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
+	  <% end %>
+	<% end %>
+	<% else %>
+	<h3>Sorry, there're are currently no applications.</h3>
+	<% end %>
+	</div>
+</div>

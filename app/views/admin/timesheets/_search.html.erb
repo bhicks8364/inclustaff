@@ -5,24 +5,13 @@
     </p>
     <% end %>
     <%= search_form_for @q, class: '', url: admin_timesheets_path  do |f| %>
+    <%= hidden_field_tag :redirect_to, @redirect_to %>
     <div class="form-inline">
         <%= f.search_field :employee_first_name_or_employee_last_name_cont, placeholder: "Search by employee", class: "form-control inline" %>
         <%= f.button class: "btn btn-default inline" do %> <i class='fa fa-search fa-fw'></i> <% end %>
     
     <% end %>
       <%= link_to "Reset", admin_timesheets_path, class: 'btn btn-default inline' %>
-        <button type="button" class="btn btn-default inline dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Sort By <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-            <li><%= sort_link(@q, :week) %></li>
-            <li><%= sort_link(@q, :state) %></li>
-            <li><%= sort_link(@q, :employee_last_name) %></li>
-            <li><%= sort_link(@q, :employee_first_name) %></li>
-            <li><%= sort_link(@q, :needed_by) %></li>
-            <li><%= sort_link(@q, :total_hours) %></li>
-            <li><%= sort_link(@q, :gross_pay) %></li>
-            <li><%= sort_link(@q, :total_bill) %></li>
-        </ul>
+       
     </div>
 </div>

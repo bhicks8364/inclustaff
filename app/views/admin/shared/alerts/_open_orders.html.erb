@@ -2,28 +2,28 @@
 	<%= link_to admin_orders_path do %>
 	<div class="alert alert-info fade in">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-		<i class="fa fa-exclamation-triangle fa-fw fa-lg"></i>
+		<i class="fa fa-exclamation-triangle fa-fw fa-fw"></i>
 			<span class=''><%= pluralize(orders.needs_attention.count, 'open job order') %> </span>   
 	</div>
 	<% end %>
-	<%= link_to admin_orders_path do %>
+	<%= link_to overdue_admin_orders_path do %>
 		<div class="alert alert-<%= orders.overdue.any? ? "danger" : "info" %> fade in">
 			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-			<i class="fa fa-exclamation-triangle fa-fw fa-lg"></i>
+			<i class="fa fa-exclamation-triangle fa-fw fa-fw"></i>
 				<span class=''><%= pluralize(orders.overdue.count, 'overdue job order') %> </span>   
 		</div>
 	<% end %>
 	<%= link_to admin_orders_path do %>
 		<div class="alert alert-<%= orders.priority.any? ? "danger" : "info" %> fade in">
 			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-			<i class="fa fa-exclamation-triangle fa-fw fa-lg"></i>
+			<i class="fa fa-exclamation-triangle fa-fw fa-fw"></i>
 				<span class=''><%= pluralize(orders.priority.count, 'priority job order') %> </span> 
 		</div>
 		<% end %>
 	<%= link_to admin_orders_path do %>
-	<div class="alert alert-<%= orders.active.any? ? "danger" : "info" %> fade in">
+	<div class="alert alert-<%= orders.newly_added.any? ? "success" : "info" %> fade in">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-			<span class=''><i class="fa fa-info fa-fw fa-lg"></i>		<%= orders.active.count %> Active Job Orders </span> 
+			<span class=''><i class="fa fa-info fa-fw fa-fw"></i>		<%= orders.newly_added.count %> New Job Orders </span> 
 	</div>
 	<% end %>
 </div>

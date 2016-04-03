@@ -214,13 +214,13 @@ class Admin < ActiveRecord::Base
     current_billing - last_week_billing
   end
   
-  def avg_mark_up
-    if timesheets.current_week.any?
-      timesheets.current_week.distinct.average(:mark_up).round(2)
-    else
-      0.00
-    end
-  end
+  # def avg_mark_up
+  #   if timesheets.current_week.any?
+  #     timesheets.current_week.distinct.average(:mark_up).round(2)
+  #   else
+  #     0.00
+  #   end
+  # end
 
   def current_commission
     if timesheets.current_week.any?

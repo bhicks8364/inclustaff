@@ -25,8 +25,9 @@ class Admin::DashboardController < ApplicationController
         skip_authorization
     end
     def account_manager
-      @q = @current_admin.job_orders.active.needs_attention.order(needed_by: :asc).paginate(page: params[:page], per_page: 15).ransack(params[:q]) 
+      @q = @current_admin.job_orders.order(needed_by: :asc).paginate(page: params[:page], per_page: 15).ransack(params[:q]) 
       @orders = @q.result
+      @open_orders = @current_admin.job_orders.needs_attention
       @candidates = User.available
       
 
@@ -95,7 +96,7 @@ class Admin::DashboardController < ApplicationController
     end
     
     def payroll
-      @timesheets = @current_agency.timesheets.includes(:job, :shifts).distinct
+      @timesheets = @current_agency.timesheets.includes(:job).distinct
       @jobs = @current_agency.jobs.all
       @shifts = @current_agency.shifts.current_week
       skip_authorization

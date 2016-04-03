@@ -107,10 +107,14 @@ class Admin::CompanyAdminsController < ApplicationController
   end
 
   def create
-    # @company_admin = CompanyAdmin.invite! company_admin_params
-    @company_admin = CompanyAdmin.new(company_admin_params) 
-    @company_admin.password = "password"
-    @company_admin.password_confirmation = "password"
+    if sending_an_invite?
+      @company_admin = CompanyAdmin.invite! company_admin_params
+      current_admin.events.create(action: "invited", eventable: @company_admin)
+    else
+      @company_admin = CompanyAdmin.new(company_admin_params) 
+      @company_admin.password = "password"
+      @company_admin.password_confirmation = "password"
+    end
     @company_admin.save
     if @company_admin.persisted?
       redirect_to admin_company_admins_path, notice: 'You just added ' + "#{@company_admin.name}" + " as a #{@company_admin.role} at #{@company_admin.company.name}. They will receive an email with further instructions."
@@ -120,7 +124,9 @@ class Admin::CompanyAdminsController < ApplicationController
     skip_authorization
   end
   private
-
+  def sending_an_invite?
+    params[:commit] == "Send Invite"
+  end
   def company_admin_params
     params.require(:company_admin).permit(:first_name, :last_name, :email, :username, :role, :company_id, :password, :password_confirmation)
   end

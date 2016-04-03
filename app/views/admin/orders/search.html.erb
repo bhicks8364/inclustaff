@@ -1,9 +1,18 @@
-    <h1>Search Job Orders</h1>
-    
+<div class="col-md-12 mainpage shadow">
+	 <h1 class="bold">Search Job Orders</h1>
+	<div class="col-md-6">
+		<%= render 'admin/orders/search' %>
+	</div>
 	<div class='row'>
 		<div class="col-md-9 well well-sm">
 			<%= render 'admin/orders/table', orders: @orders %>
 			<%= will_paginate @orders %>
 		</div>
-		
+		<div class='col-md-3 well well-sm'>
+			<%= render 'admin/shared/alerts/open_orders', orders: @orders %>
+		<%= link_to(admin_orders_path(@orders, format: :csv), class: 'btn btn-primary') do %>
+		  		<i class="fa fa-file-excel-o fa-lg"></i> Export CSV
+		  	<% end %>
+		</div>
 	</div>
+</div>

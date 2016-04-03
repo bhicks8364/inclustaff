@@ -57,13 +57,13 @@ class Company < ActiveRecord::Base
     scope :with_pending_jobs, -> { joins(:orders => :jobs).merge(Job.pending_approval)}
     scope :with_active_jobs, -> { joins(:orders => :jobs).merge(Job.currently_working)}
     scope :with_open_orders, -> { joins(:orders).merge(Order.needs_attention)}
+    scope :with_overdue_orders, -> { joins(:orders).merge(Order.overdue)}
     scope :with_balance, -> { where(Company[:balance].gt(0).and(Company[:balance].not_eq(nil))) }
     scope :with_current_timesheets, -> { joins(:timesheets).merge(Timesheet.current_week.distinct)}
     scope :ordered_by_current_bill, -> { includes(:current_timesheets).order('timesheets.total_bill') }
     scope :with_late_timesheets, -> { joins(:timesheets).merge(Timesheet.needing_approval)}
-    # Pretty sure these arent being used...we'll see
-    # store_accessor :preferences, :current_account_manager
-    # accepts_nested_attributes_for :orders
+    scope :newly_added, -> { where(Company[:created_at].gteq(Date.today.beginning_of_week)) }
+
     def comments
       timesheet_comments + job_comments + shift_comments
     end

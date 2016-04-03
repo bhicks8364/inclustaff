@@ -3,20 +3,17 @@
 	<div class="tabs-wrapper">
 		<div class="clearfix">
 			<ul class="nav nav-tabs">
-			  <li class="active"><a href="#tab-home" data-toggle="tab">Dashboard</a></li>
+			  <li class="active"><a href="#tab-home" data-toggle="tab">Owner Dashboard</a></li>
 			  <li class=""><a href="#tab-invoices" data-toggle="tab">Invoices</a></li>
 			  <li class=""><a href="#tab-admins" data-toggle="tab">Admins</a></li>
 			  <li class=""><a href="#tab-leaderboard" data-toggle="tab">Stats</a></li>
-			  <%  if policy(@current_agency).update? %> <li class=""><a href="#tab-edit" data-toggle="tab">Edit</a></li><% end %>
+			  <%  if policy(@current_agency).update? %> <li class="pull-right"><a href="#tab-edit" data-toggle="tab">Edit</a></li><% end %>
 			</ul>
 		</div>
 		<div class="tab-content">
 			<div class="tab-pane fade in active" id="tab-home">
 				<div class='col-md-12 well shadow'>
-					<h1 class='page-header simple'>Owner Dashboard</h1>
-					<div class='col-md-4 well'>
-						<h1><%= pluralize(@current_agency.orders.newly_added.count , "new order") %></h1>
-					</div>
+					
 				<% if @current_agency.companies.blank? %>
 	       		<h2 class=''>Getting Started</h2>
 	       			<div class='col-md-4'>
@@ -50,6 +47,9 @@
 	       			
 	       			<h2>Company Billings</h2>
 	       				<%= line_chart   Company.uniq.map { |c| { name: c.name, data: c.invoices.group_by_month(:week, range: Date.current.beginning_of_year...Date.current, format: "%B %Y").sum(:total) }  }, discrete: true %>
+	       			<div class='col-md-4 well'>
+						<h1><%= pluralize(@current_agency.orders.newly_added.count , "new order") %></h1>
+					</div>
 	       			</div>
        			</div>
 			</div>

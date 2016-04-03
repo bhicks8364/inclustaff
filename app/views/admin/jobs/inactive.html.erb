@@ -1,10 +1,13 @@
-<div class='row'>
-    <div class='col-md-8  well well-sm'>
+<div class='col-md-12 mainpage shadow'>
+    <div class='col-md-4  well well-sm'>
         <%= render 'admin/shared/alerts/job_status', jobs: @jobs.inactive %>
-        <%= pie_chart @jobs.group('jobs.state').count, 
-		   		library: {backgroundColor: "#ccc", legend: {position: "bottom"}, is3D: true, title: "Jobs by Current Status"}%>
+        
     </div>
     <div class='col-md-4 well well-sm'>
+        <%= pie_chart @jobs.group('jobs.state').count, library: {backgroundColor: "#ccc", legend: {position: "bottom"}, is3D: true, title: "Jobs by Current Status"}%>
+    </div>
+    <div class='col-md-4 well well-sm'>
+        
         <h1 class=''>Pending</h1>
         <% if @jobs.pending_approval.any? %>
         <% @jobs.pending_approval.each do |job| %>
@@ -30,9 +33,7 @@
         <h1 class=''>No declined jobs to display. </h1>
         <% end %>
     </div>
-</div>    
-<div class='row'>
-    <div class='col-md-8'>
+    <div class='col-md-12 well well-sm'>
         <h1 class=''>Ended</h1>
         <% if @jobs.ended_assignments.any? %>
         <%= render 'admin/jobs/table', jobs: @jobs.ended_assignments %>

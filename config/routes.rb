@@ -142,6 +142,7 @@ Rails.application.routes.draw do
         collection do
           post 'import'
           get 'inactive'
+          get 'overdue'
           match 'search' => 'orders#search', via: [:get, :post], as: :search
         end
         resources :skills

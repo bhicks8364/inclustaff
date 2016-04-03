@@ -44,9 +44,11 @@
                 <%= timeline  @employee.work_history_data, width: "100%", height: "300px" %>
             </div>
             <% end %>
-            <%= column_chart @employee.jobs.includes(:timesheets).distinct.map{|job|
-            {name: job.name_title, data: job.timesheets.group_by_week('timesheets.week', range: 4.weeks.ago.midnight...Time.current, format: "%m/%d").sum(:total_hours)}
-        }, library: {title: "Employee Hours per Week"}, xtitle: "Week", ytitle: "Total Hours" %>
+            <% if @employee.timesheets.any?  %>
+                <%= column_chart @employee.jobs.includes(:timesheets).distinct.map{|job|
+                {name: job.name_title, data: job.timesheets.group_by_week('timesheets.week', range: 4.weeks.ago.midnight...Time.current, format: "%m/%d").sum(:total_hours)}
+            }, library: {title: "Employee Hours per Week"}, xtitle: "Week", ytitle: "Total Hours" %>
+            <% end %>
         </div>
    
         

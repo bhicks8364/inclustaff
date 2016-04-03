@@ -87,7 +87,7 @@
 			
 		  	<div class='col-md-6 form-group'>
 		  		<h4 class='bold'>Management</h4>
-		  		<%= f.association :manager, collection: @current_company.admins.order(:last_name), prompt: "Select Company Manager", label: "Assign Company Manager" if @current_company.present? %>
+		  		<%= f.association :manager, collection: @current_company.admins.real_users.order(:last_name), prompt: "Select Company Manager", label: "Assign Company Manager" if @current_company.present? %>
 				<%= f.hidden_field :account_manager, input_html: {value: @current_company.account_manager}, disabled: true, label: false, prompt: "Select Account Manager" if @current_company.present? %>
 			</div>
 			<div class='col-md-6 form-group'>

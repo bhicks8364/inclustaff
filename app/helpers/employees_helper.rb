@@ -40,6 +40,13 @@ module EmployeesHelper
         "<span class='' data-toggle='tooltip' 
         title='#{ employee.skills.map {|p| p.name.titleize}.join(', ')}'>#{employee.name}</span>".html_safe
     end
+    def emp_sym(employee)
+        if employee.available?
+            "<span class='text-info' data-toggle='tooltip' title='#{ employee.skills.map {|p| p.name.titleize}.join(', ')}'><i class='fa fa-user text-success'></i> #{employee.name}</span>".html_safe
+        else
+            "<span class='text-success' data-toggle='tooltip' title='#{ employee.status }'><i class='fa fa-cog'></i> #{employee.name}</span>".html_safe
+        end
+    end
     def aca_progress(employee_hours, eligiblity_hours)
             x = (employee_hours / eligiblity_hours * 100).round(2)
             if x < 70
@@ -50,7 +57,7 @@ module EmployeesHelper
                 color = "success"
             end
           "<div class='progress'><div class='progress-bar progress-bar-#{color}' role='progressbar' aria-valuenow='#{ x }' aria-valuemin='0' aria-valuemax='100' style='width: #{x}%; max-width: 100%;'>
-              <spn class='black'><strong>#{ x >= 100 ? "Eligible" : "Not Eligible" }</strong>  #{x}% </span>
+              <span class='black'><strong>#{ x >= 100 ? "Eligible" : "Not Eligible" }</strong>  #{x}% </span>
           </div></div>".html_safe
     end
     def aca_for(employee)

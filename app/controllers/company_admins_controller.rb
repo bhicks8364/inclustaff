@@ -90,6 +90,7 @@ class CompanyAdminsController < ApplicationController
     
     
     private
+    
     def determine_layout
       if admin_signed_in?
         "admin_layout"

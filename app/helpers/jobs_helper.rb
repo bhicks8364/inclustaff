@@ -39,7 +39,7 @@ module JobsHelper
       elsif job.on_shift?
         "<i class='fa fa-cog fa-spin'></i>".html_safe 
       else
-        "<i class='fa fa-user'></i>".html_safe 
+        "<i class='fa fa-cog'></i>".html_safe 
       end
   end
   def job_class(job)

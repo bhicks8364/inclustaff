@@ -1,34 +1,42 @@
 <div class='col-md-12'>
-	<div class="col-md-6 well">
+	<div class="col-md-3 well">
 		<% if @timesheets.last_week.pending.none? %>
 			<p class='lead'>
 				All timesheets for last week have been approved.<br>
-				<span class="list-group-item"><%= @timesheets.last_week.approved.distinct.try(:count) %> Approved </span>
+				<span class="list-group-item"><%= @timesheets.last_week.approved.distinct.try(:count) %> Approved |
+				<%= @timesheets.last_week.pending.distinct.try(:count) %> Pending</span>
 			</p>
 			<%= link_to(last_week_admin_timesheets_path(@timesheets.last_week, format: :csv), class: 'btn btn-success') do %>
 	  			<i class="fa fa-upload fa-fw"></i> Export
 	  		<% end %>
   		<% else %>
 	  	<p class='lead'>There are still <%= pluralize(@current_agency.timesheets.needing_approval.distinct.count, "pending timesheets") %> from last week.</p>
-	  	<%= div_for @current_agency.companies.with_late_timesheets.distinct do |company| %>
-		  	<%= link_to company.name, admin_company_timesheets_path(company) %>    <span class="reminder"><%= convo_for(company: company, type: :timesheet_reminder) %></span>
+	  	<p class="small text-center">Click the <i class="fa fa-bell-o fa-lg"></i> to send a reminder.</p>
+	  	<%= div_for @current_agency.companies.with_late_timesheets.distinct, class: "" do |company| %>
+		  	<%= link_to company.name, admin_company_timesheets_path(company) %>    <span class="pull-right"><%= convo_for(company: company, type: :timesheet_reminder) %></span>
 	  	<% end %>
 	<% end %>
 	</div>
-	<div class="col-md-6 well">
-			<% if @new_starts.any? %>
-			<h3> <i class="fa fa-users fa-fw"></i> &nbsp; New Employees</h3>
-			<div class="list-group">
-				<% @new_starts.limit(3).each do |employee| %>
-			<%= link_to "<i class='fa fa-user fa-fw'></i> &nbsp; #{employee.name}".html_safe, admin_employee_path(employee), class: "list-group-item list-group-item-info" %>
-			<% end %>
-			</div>	
-			<% else %>
-			
-			<p> <i class="fa fa-users fa-fw"></i> &nbsp; There are no new employees at this time.</p>
-			<% end %>
-			<%= link_to(new_user_registration_path, class: 'btn btn-primary btn-lg btn-block') do %>
-  				<i class="fa fa-user-plus fa-fw"></i> Add Employee
-  			<% end %>
+	
+	<div class="col-md-6">
+		<h4 class='text-center'><%= Date.today.end_of_week.stamp("Week ending: Nov 20th") %></h4>
+   		<%= pie_chart Timesheet.current_week.distinct.group('timesheets.state').count, 
+   		library: {legend: {position: "right"}, is3D: true, title: "This Week"}%>
+		
 	</div>
+	<div class='col-md-3'>
+		<ul class="fa-ul">
+			<li><%= link_to "<i class='fa fa-pause-circle'></i> Current Payroll".html_safe, edit_multiple_admin_timesheets_path, class: "navbar-link" %></li>
+			<li><%= link_to "<i class='fa fa-history'></i> All Timesheets".html_safe, admin_timesheets_path, class: "navbar-link" %></li>
+			<li><%= link_to "<i class='fa fa-history'></i> Last Week Timesheets".html_safe, last_week_admin_timesheets_path, class: "navbar-link" %></li>
+			<li><%= link_to "<i class='fa fa-plus'></i> New Timesheet".html_safe, new_admin_timesheet_path if policy(Timesheet).create?  %></li>
+		</ul>
+	</div>
+</div>
+<div class="row">
+	<div class='col-md-6'>
+   		<h4 class='text-center'><%= Date.today.end_of_week.stamp("Week ending: Nov 20th") %></h4>
+   		<%= column_chart Timesheet.current_week.distinct.group('timesheets.state').count, 
+   		library: {legend: {position: "right"}, is3D: true, title: "This Week"}%>
+   	</div>
 </div>

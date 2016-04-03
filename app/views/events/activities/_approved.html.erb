@@ -1,10 +1,13 @@
 <%= div_for event do %>
 <i class="fa fa-check fa-fw"></i>
-<% if @admin.nil? && @candidates.nil?  %>
-	<%= event.admin.try(:first_name) %>
+
+   <% if admin_signed_in? && @current_admin.id == event.admin.try(:id) %>
+   You
+   <% else %>
+   	<%= event.admin.try(:first_name) %>
 	<%= event.company_admin.try(:first_name)  %>
-    <strong>	<%= event.action.humanize.downcase %></strong>
     <% end %>
+     <strong>	<%= event.action.humanize.downcase %></strong>
     <% if event.eventable.present? %>
      a <%= event.eventable_type.downcase %> for
     <%=  signed_in_link_to event.eventable.name, event.eventable %> <small> at <%= event.eventable.company.name %></small>

@@ -1,9 +1,5 @@
 <a class='button' data-toggle="modal" data-target="#mod_<%= user.id %>">
-  <% if user.assigned? %>
-<span id='job-sym'><%= job_sym(user.employee.current_job)%> </span>  <%= user.name %>
-<% else %>
-<%=emp_popover(user.employee)%>
-<% end %>
+<%= emp_sym(user.employee) %>
 </a>
 
 <!-- Modal -->
@@ -42,8 +38,6 @@
 
       <div class="modal-footer">
          <p class=''><strong>Available as of: </strong> <span id='<%=user.id%>-updated-available-at'><%= user.checked_in_at? ? "#{time_ago_in_words(user.checked_in_at)} ago" : "" %></span></p>
-        
-  				
       </div>
     </div>
   </div>

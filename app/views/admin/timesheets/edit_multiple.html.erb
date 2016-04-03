@@ -1,12 +1,32 @@
 <div class="col-md-12 mainpage shadow">
-<div class='btn-group'>
-	<%= link_to "Current Payroll", edit_multiple_admin_timesheets_path, class: "btn btn-info" %>
-	<%= link_to "New Timesheet", new_admin_timesheet_path, class: "btn btn-info" %>
-</div>
-<h1 class="text-center">Current Payroll</h1>
-
-<hr>
-    <%= div_for @timesheets, class: "col-md-12" do |timesheet| %>
+    <h1 class="text-center">Current Payroll</h1>
+    <%= render 'admin/timesheets/search' %>
+    <hr>
+    <div class='col-md-6 btn-group'>
+    	<%= link_to "Current Payroll", edit_multiple_admin_timesheets_path, class: "btn btn-default" %>
+    	<%= link_to "New Timesheet", new_admin_timesheet_path, class: "btn btn-default" %>
+    	
+    </div>
+    
+    
+    <div class="col-md-6">
+        <a class="btn btn-success text-right" role="button" data-toggle="collapse" href="#review" aria-expanded="false" aria-controls="review">
+        Review Payroll
+        </a>
+        <div class="collapse" id="review">
+            <div class='well' data-behavior='timesheet-list'>
+                <div class='pad' id='approved'>
+                    <% if @approved_timesheets.any? %>
+                    <%= will_paginate @approved_timesheets %>
+                    <%= render "admin/timesheets/table", timesheets: @approved_timesheets %>
+                    <% else %>
+                    <h3>No approved timesheets to display.</h3>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%= div_for @pending_timesheets, class: "col-md-12" do |timesheet| %>
     <%= link_to timesheet.name, admin_timesheet_delete_all_shifts_path(timesheet, redirect_to: "edit_multiple_admin_timesheets_path"), class: 'btn btn-default'%>
         <div class="col-md-12 <%= timesheet.approved? ? "approved" : "" %>" data-behavior="timesheet" data-id="<%= timesheet.id %>" id="timesheet_<%=timesheet.id%>">
             <p> <span class='small text-muted pull-right' id='timesheet_<%=timesheet.id%>_state'><%=timesheet.state.upcase%></span></p>
@@ -24,16 +44,7 @@
                 <% end %>
                 <%= hidden_field_tag :redirect_to, @redirect_to %>
             </div>
-            <% if timesheet.shifts.any? %>
-            <a class="btn btn-default" role="button" data-toggle="collapse" href="#collapseTimesheet<%= timesheet.id %>Shifts" aria-expanded="false" aria-controls="collapseTimesheet<%= timesheet.id %>Shifts">
-              View (<%=pluralize(timesheet.shifts.count, "shift")%>)
-            </a>
-            <div class="collapse" id="collapseTimesheet<%= timesheet.id %>Shifts">
-              <div class="well">
-                    <%= render "admin/shifts/table", shifts: timesheet.shifts %>
-              </div>
-            </div>
-            <% end %>
+            
     	      <div class='timesheet-actions btn-group text-center'>
     	          <%= link_to 'Add Adjustment', new_admin_timesheet_adjustment_path(timesheet), class: 'btn btn-default' %>
     	          <span id="btn_<%=timesheet.id%>" class="small"><%= link_to "Approve".html_safe, approve_admin_timesheet_path(timesheet), data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Approving..."} , class: "btn btn-default", method: :patch, remote: true if timesheet.pending? %></span>
@@ -43,6 +54,16 @@
         	     <%= link_to "Delete All Shifts", admin_timesheet_delete_all_shifts_path(timesheet, redirect_to: "edit_multiple_admin_timesheets_path"), class: 'btn btn-default'%>
         	     <% end %>
                 </div>
+                <% if timesheet.shifts.any? %>
+                <a class="btn btn-default" role="button" data-toggle="collapse" href="#collapseTimesheet<%= timesheet.id %>Shifts" aria-expanded="false" aria-controls="collapseTimesheet<%= timesheet.id %>Shifts">
+                  View shifts
+                </a>
+                <div class="collapse" id="collapseTimesheet<%= timesheet.id %>Shifts">
+                  <div class="well">
+                        <%= render "admin/shifts/table", shifts: timesheet.shifts %>
+                  </div>
+                </div>
+                <% end %>
             <% end %>
         </div>
     <% end %>

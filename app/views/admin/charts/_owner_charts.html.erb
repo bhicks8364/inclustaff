@@ -1,7 +1,10 @@
 
 
 <div class="pad bg-info">
-   <%= column_chart @current_agency.companies.order('name').map{|company|
-	        {name: company.name, data: company.invoices.group_by_week(:week, range: 4.weeks.ago.beginning_of_week.midnight...Time.current.beginning_of_week, format: "%b %y").sum(:total)}
-	    }, library: {isStacked: true, backgroundColor: "#e5dbcf", legend: {position: "right"}, title: "Weekly Billings by Company"} %>
+   <%= line_chart @current_agency.companies.order('name').map{|company|
+	        {name: company.name, data: company.invoices.group_by_week(:week, range: Time.current.beginning_of_year.midnight...Time.current.beginning_of_week, format: "%x").sum(:total)}
+	    }, library: {isStacked: true, legend: {position: "bottom"}, title: "Weekly Billings by Company"} %>
+</div>
+<div class="pad bg-info">
+   <%= line_chart @current_agency.invoices.group_by_week(:week, range: Time.current.beginning_of_year.midnight...Time.current.beginning_of_week, format: "%x").sum(:total), library: {title: "Total Billings by Week"} %>
 </div>

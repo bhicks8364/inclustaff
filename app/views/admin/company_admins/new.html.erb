@@ -1,4 +1,4 @@
-<div class='lightbox'>
+<div class='mainpage shadow'>
   <div class="col-md-12">
       <div class="col-md-3"></div>
     	<div class="col-md-6">
@@ -17,7 +17,8 @@
             </div>
 
             <div class="form-actions">
-              <%= f.button :submit, "Add Admin" %>
+              <%= f.button :submit, "Add Now" %>
+              <%= f.button :submit, "Send an Invite", class: 'btn btn-primary', data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Sending Invite...".html_safe}%>
             </div>
           <% end %>
 

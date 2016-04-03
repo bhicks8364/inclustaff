@@ -1,8 +1,8 @@
 <div class="well well-sm">
-	<h4>Following Admins</h4>
+	<h4>Following</h4>
 <% if @admin.events.following_admin.any? %>
 
-	<ul class='fa-ul'>
+	<ul class='fa-ul scroll500'>
 		<% @admin.events.following_admin.each do |event| %>
 		<li><i class='fa fa-user'></i> <%= link_to event.eventable.name, admin_admin_path(event.eventable) %>
 		<%= link_to "<i class='fa fa-user-times red'></i>".html_safe, event, class: "pull-right button", method: :delete, data: { confirm: 'Are you sure?', toggle: "tooltip", position: "right" }, title: "Unfollow" %></li>
@@ -11,31 +11,19 @@
 <% else %>
 	<p class='bold'>No admins to show.</p>
 <% end %>
-	<h4>Following Users</h4>
+	
 	<% if @admin.events.following_candidates.any? %>
-	<ul class='fa-ul'>
+	<h4>Following Users</h4>
+	<ul class='fa-ul scroll500'>
 	<% @admin.events.following_candidates.each do |event| %>
-	<li><i class='fa fa-user'></i> <%= link_to event.eventable.name, event.eventable %>
-	<%= link_to "<i class='fa fa-user-times red'></i>".html_safe, event, class: "pull-right button small", method: :delete, data: { confirm: "Are you sure?", toggle: "tooltip", position: "right" }, title: "Unfollow" %>
+	<li><%= link_to event.eventable do %><%= render "admin/users/modal", user: event.eventable %><% end %>
+	<%= link_to "<i class='fa fa-user-times'></i>".html_safe, event, class: "pull-right button small text-danger", method: :delete, data: { confirm: "Are you sure?", toggle: "tooltip", position: "right" }, title: "Unfollow" %>
 	</li>
 	<% end %>
 	</ul>
 	<% else %>
 	<p class='bold'>No users to show.</p>
 	<% end %>
-		<h4>Recent Activity</h4>
-	<div class="recent-activity scroll500">
 	
-		<% if @events.any? %>
-		<div class="scroll600">
-			<% @events.order(created_at: :desc).limit(10).each do |event| %>
-				<% if lookup_context.template_exists?(event.action, "events/activities", true) %>
-					<%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
-				<% end %>
-			<% end %>
-		</div>
-		<% else %>
-		<p class='bold'>No activity to show.</p>
-		<% end %>
-	</div>
+		
 </div>

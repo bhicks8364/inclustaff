@@ -126,17 +126,17 @@ module OrdersHelper
     
     def order_status(order)
         if order.overdue?
-            "<span class='red'>Overdue</span>".html_safe
+            "<span class='red'>#{order.status}</span>".html_safe
         elsif order.priority?
-            "<span class='red'>Priority</span>".html_safe
+            "<span class='red'>#{order.status}</span>".html_safe
         elsif order.needs_attention?
-            "<span class='green'>Open</span>".html_safe
+            "<span class='green'>#{order.status}</span>".html_safe
         elsif order.filled?
-            "<span class='bold'>Filled</span>".html_safe
+            "<span class='bold'>#{order.status}</span>".html_safe
         elsif order.inactive?
-            "<span class='red'>Inactive</span>".html_safe
+            "<span class='red'>#{order.status}</span>".html_safe
         else
-            ""
+            "#{order.status}"
         end
     end
     

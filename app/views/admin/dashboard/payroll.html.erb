@@ -2,13 +2,12 @@
 
 <div class="col-md-12 mainpage shadow">
 	<%= render 'admin/shared/welcome/payroll_dashboard' if @current_admin.sign_in_count == 1 || @current_agency.subdomain == "demo" %> 
-		<h1 class='bold text-center'>Payroll Dashboard</h1>
 	<div class="tabs-wrapper">
 			
 		<div class="clearfix">
 		
 			<ul class="nav nav-tabs">
-			  <li class="active"><a href="#tab-home" data-toggle="tab">Dashboard</a></li>
+			  <li class="active"><a href="#tab-home" data-toggle="tab">Payroll Dashboard</a></li>
 			  <li class=""><a href="#tab-timesheets" data-toggle="tab">Timesheets</a></li>
 			  <li class=""><a href="#tab-aca" data-toggle="tab">ACA</a></li>
 			  <li class=""><a href="#tab-calendar" data-toggle="tab">Calendar</a></li>
@@ -20,15 +19,8 @@
 			<div class="tab-pane fade in active" id="tab-home">
 				<div class='mainpage'>
 	       			<div class='row'>
-	       				
 	       				<%= render 'admin/infoboxes/payroll_boxes' %>
 	       			</div>
-	       			<div class='col-md-6'>
-				   		<h4 class='text-center'><%= Date.today.end_of_week.stamp("Week ending: Nov 20th") %></h4>
-				   		<%= pie_chart Employee.group(:status).count, 
-				   		library: {width: 400, height: 400, is3D: true, title: "Employees by Status"}%>
-				   	</div>
-	       			
 	 			</div>
 			</div>
 			<div class="tab-pane fade in" id="tab-aca">
@@ -57,51 +49,68 @@
        			</div>
 			</div>
 			<div class="tab-pane fade in" id="tab-employees">
-				<div class='col-md-4'>
-					<%= convo_for %>
-				</div>
-			    <div class='col-md-8'>
+				
+			   	<div class='col-md-8'>
 			        <h2>Active Employees</h2>
 					<%= render 'admin/employees/table', employees: @current_agency.employees.assigned %>
-					 
 				</div>
+				<div class="col-md-4 well">
+						<% if @new_starts.any? %>
+						<h3> <i class="fa fa-users fa-fw"></i> &nbsp; New Employees</h3>
+						<div class="list-group">
+							<% @new_starts.limit(5).each do |employee| %>
+						<%= link_to "<i class='fa fa-user fa-fw'></i> &nbsp; #{employee.name}".html_safe, admin_employee_path(employee), class: "list-group-item list-group-item-info" %>
+						<% end %>
+						</div>	
+						<% else %>
+						
+						<p class="bold"> <i class="fa fa-users fa-fw"></i> &nbsp; There are no new starts at this time.</p>
+						<p class="text-center">Most Recent Placements</p>
+						<%= div_for @current_agency.jobs.currently_working.includes(:company).order(start_date: :desc).limit(3), class: "well well-sm" do |job| %>
+							<%= link_to "<i class='fa fa-user fa-fw'></i> &nbsp; #{job.name}".html_safe, admin_job_path(job) %> <span class="pull-right"><%= job.start_date.stamp("3/12") %></span> 
+						<% end %>
+						<% end %>
+						<%= link_to(new_user_registration_path, class: 'btn btn-primary btn-lg btn-block') do %>
+			  				<i class="fa fa-user-plus fa-fw"></i> Add Employee
+			  			<% end %>
+				</div>
+				
 			</div>
 			<div class="tab-pane fade in" id="tab-timesheets">
-				<div class='col-md-3 text-center'>
-					  	
-					<div class='btn-group'>
-						<%= link_to(admin_timesheets_path, class: "btn btn-success") do %>
-						<span class=""><%= @timesheets.current_week.approved.distinct.try(:count) %> Approved </span>
-						<% end %>
-						<%= link_to(admin_timesheets_path, class: "btn btn-danger ") do %>
-						<span class=""><%= @timesheets.current_week.pending.distinct.try(:count) %> Pending </span>
-						<% end %>
+				<div class='col-md-12 text-center'>
+					<div class="col-md-6">
+						<h3 class=''>Last Week <small><%= @timesheets.last_week.first.try(:time_frame) %></small></h3>
+						<div class='btn-group'>	
+						<%= link_to(last_week_admin_timesheets_path, class: "btn btn-success") do %>
+							<span class=""><%= @timesheets.last_week.approved.distinct.try(:count) %> Approved </span>
+							<% end %>
+							<%= link_to(admin_timesheets_path, class: "btn btn-danger ") do %>
+							<span class=""><%= @timesheets.last_week.pending.distinct.try(:count) %> Pending </span>
+							<% end %>
+						</div>
 					</div>
-					<div class="" data-behavior='timesheet-list'>	  
+					<div class="col-md-6">
+						<h3 class=''>This Week <small><%= @timesheets.current_week.first.try(:time_frame) %></small></h3>
+						<div class='btn-group'>
+							<%= link_to(admin_timesheets_path, class: "btn btn-success") do %>
+							<span class=""><%= @timesheets.current_week.approved.distinct.try(:count) %> Approved </span>
+							<% end %>
+							<%= link_to(admin_timesheets_path, class: "btn btn-danger ") do %>
+							<span class=""><%= @timesheets.current_week.pending.distinct.try(:count) %> Pending </span>
+							<% end %>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 well well-sm" data-behavior='timesheet-list'>	  
 					<h3 class=''>Last Week <small>pending approval</small></h3>	
 						<%= render 'admin/timesheets/table', timesheets: @current_agency.timesheets.needing_approval.distinct %>
 					</div>
-					<hr>
-					<h3 class=''>This Week</h3>
-					<div class='btn-group'>	
-					<%= link_to(last_week_admin_timesheets_path, class: "btn btn-success") do %>
-						<span class=""><%= @timesheets.last_week.approved.distinct.try(:count) %> Approved </span>
-						<% end %>
-						<%= link_to(admin_timesheets_path, class: "btn btn-danger ") do %>
-						<span class=""><%= @timesheets.last_week.pending.distinct.try(:count) %> Pending </span>
-						<% end %>
-					</div>
-				</div>
-			    <div class='col-md-9 well well-sm' data-behavior='timesheet-list'>
+			    <div class='col-md-6 well well-sm' data-behavior='timesheet-list'>
 			        <h2>Current Timesheets</h2>
 					<%= render 'admin/timesheets/table', timesheets: @timesheets.current_week.distinct.order(updated_at: :desc) %>
 					 
 				</div>
-				<div class='col-md-9'>
-			   		<h4 class='text-center'><%= Date.today.end_of_week.stamp("Week ending: Nov 20th") %></h4>
-			   		<%= pie_chart Timesheet.current_week.distinct.group('timesheets.state').count, 
-			   		library: {backgroundColor: "#ccc", legend: {position: "right"}, is3D: true, title: "This Week"}%>
-			   	</div>
+				
 			   	
 			</div>
 			<div class="tab-pane fade" id="tab-calendar">

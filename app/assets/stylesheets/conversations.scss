@@ -9,5 +9,9 @@
   color: rgb(38, 117, 19);
 }
 .convo {
-  border: solid 1px black;
+  // border: solid 1px #ccc;
+  padding: 3px;
+  .reminder {
+    vertical-align: middle;
+  }
 }

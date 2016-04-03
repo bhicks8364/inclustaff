@@ -1,7 +1,12 @@
 <%= div_for event do %>
 	<i class="fa fa-user fa-fw"></i>
-	<%= event.admin.try(:first_name) if !current_page?('/admins/:id') %>
-	<%= event.company_admin.try(:first_name) if !current_page?('/company_admins/:id') %>
+	<% if admin_signed_in? && @current_admin.id == event.admin.try(:id) %>
+   You
+   <% else %>
+   	<%= event.admin.try(:first_name) %>
+   	<%= event.user.try(:first_name) %>
+	<%= event.company_admin.try(:first_name)  %>
+    <% end %>
     	<strong><%= event.action.humanize.downcase %> </strong> 
     	<% if event.eventable_type == "Admin" %>
     		<%= link_to event.eventable.name, admin_admin_path(event.eventable) %> 

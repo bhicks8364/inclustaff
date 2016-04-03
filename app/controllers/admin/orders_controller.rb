@@ -8,7 +8,7 @@ class Admin::OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
-    @q = Order.includes(:company).active.order(needed_by: :desc).ransack(params[:q]) if @current_admin.owner? || @current_admin.payroll? || @current_admin.account_manager?
+    @q = Order.includes(:company).order(needed_by: :desc).ransack(params[:q]) if @current_admin.owner? || @current_admin.payroll? || @current_admin.account_manager?
     @q = Order.includes(:company).order(needed_by: :desc).ransack(params[:q]) if @current_admin.recruiter?
     
     @import = Order::Import.new
@@ -50,22 +50,27 @@ class Admin::OrdersController < ApplicationController
     
     
   end
-  
+  def overdue
+    @q = @current_admin.job_orders.includes(:company, :account_manager).overdue.order(needed_by: :asc).ransack(params[:q]) if @current_admin.owner?
+    @orders = @q.result.paginate(page: params[:page], per_page: 10)
+    @import = Order::Import.new
+    authorize @orders, :index?
+    render action: :index
+  end
   def inactive
     @inactive = @current_admin.job_orders.inactive
     authorize @inactive, :index?
   end
   
   def search
-    @q = Order.includes(:company).active.order(needed_by: :desc).ransack(params[:q]) 
-    @q = Order.includes(:company).needs_attention.order(needed_by: :desc).ransack(params[:q]) if @current_admin.recruiter?
-    # @orders = @q.result(distinct: true).paginate(page: params[:page], per_page: 25)
-    @orders = @q.result(distinct: true)
-              .includes(:company)
-              .joins(:company)
-              .page(params[:page])
-    @q.build_condition if @q.conditions.empty?
-    @q.build_sort if @q.sorts.empty?
+    @q = @current_admin.job_orders.includes(:company, :account_manager).all.order(needed_by: :asc).ransack(params[:q]) if @current_admin.owner?
+    @orders = @q.result.paginate(page: params[:page], per_page: 10)
+    # @q = Order.includes(:company).order(needed_by: :desc).ransack(params[:q]) 
+    # # @q = Order.includes(:company).needs_attention.order(needed_by: :desc).ransack(params[:q]) if @current_admin.recruiter?
+    # # @orders = @q.result(distinct: true).paginate(page: params[:page], per_page: 25)
+    # @orders = @q.result(distinct: true).page(params[:page])
+    # @q.build_condition if @q.conditions.empty?
+    # @q.build_sort if @q.sorts.empty?
     # @order_months = @orders.group_by { |t| t.needed_by.beginning_of_month }
     # @map_orders = @orders.any? ? @orders : @current_agency.orders.active.needs_attention.order(needed_by: :asc)
     # @hash = Gmaps4rails.build_markers(@map_orders) do |order, marker|
@@ -225,14 +230,20 @@ class Admin::OrdersController < ApplicationController
     def order_import_params
         params.require(:order_import).permit(:file, :company_id)
     end
-
+#  shift_start               :datetime
+#  shift_end                 :datetime
+#  account_manager_notes     :text
+#  job_description           :text
+#  payroll_code              :string
+#  status                    :string
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
       params.require(:order).permit(:id, :address, :min_pay, :max_pay, :pay_frequency, :company_id, :agency_id, :account_manager_id, :manager_id, :mark_up, :title, :notes, 
       :number_needed, :needed_by, :urgent, :active, :dt_req, :bg_check, :stwb, :heavy_lifting, :shift, :est_duration, :tag_list, :aca_type,
       :education, :industry, :years_of_experience, :certifications, :requirement_1, :requirement_2, :requirement_3, :requirement_4, 
-      :published_at, :published_by, :expires_at, :company_approval, :agency_approval, :mobile_time_clock_enabled,
+      :published_at, :published_by, :expires_at, :company_approval, :agency_approval, :mobile_time_clock_enabled, :shift_start, :shift_end, :account_manager_notes,
+      :job_description, :payroll_code, :status,
       jobs_attributes: [:order_id, :title, :description, :start_date, :id, :employee_id, :active], 
       skills_attributes: [:id, :skillable_type, :skillable_id, :name, :required, :_destroy])
     end

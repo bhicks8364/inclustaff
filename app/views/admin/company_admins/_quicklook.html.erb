@@ -1,14 +1,49 @@
 <div class="tabs-wrapper">
 	<div class="clearfix">
-		<ul class="nav nav-tabs pull-right">
-			<li class="active"><a href="#tab-users" data-toggle="tab">Employees</a></li>
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#tab-home" data-toggle="tab">Employees</a></li>
+			<li class=""><a href="#tab-users" data-toggle="tab">Employees</a></li>
 			<li><a href="#tab-products" data-toggle="tab">Timesheets</a></li>
 			<li><a href="#tab-todo" data-toggle="tab">Open Orders</a></li>
 			<li><a href="#tab-archived" data-toggle="tab">Messages</a></li>
 		</ul>
 	</div>
 	<div class="tab-content">
-		<div class="tab-pane fade in active" id="tab-users">
+		<div class="tab-pane fade in active" id="tab-home">
+			<div class='col-md-4 well'>
+		        
+		        
+		
+		        <%= @company_admin.email %>
+		        <%= @company_admin.last_sign_in_ip if admin_signed_in? %>
+		        <br>
+		        <%= @company_admin.last_sign_in_at.present? ? @company_admin.last_sign_in_at.stamp("11/12 at 11:15am") : "Yet to sign in" %>
+		
+		    <%= link_to "Edit", edit_admin_company_admin_path(@company_admin), class: "btn btn-primary" %>
+		    </div>
+		    <div class='col-md-4 well'>
+      <% if @company.orders.blank? %>
+      <div id="no-orders-alert" class="alert alert-danger text-center" role="alert">
+        <i class="fa fa-exclamation-triangle fa-2x"></i>
+        <br>
+        <br>
+      <h4 class='text-center'> <%= @company.name %> doesn't have any job orders. </h4>
+      <h4 class='text-center'>Please add a new job order below.</h4>
+      	<%= link_to "Add Job Order", new_admin_company_order_path(@company), class: 'btn btn-primary btn-lg' %>
+      </div>
+      <% end %>
+      <address class="">
+        <%= @company.address %><br>
+        <%= @company.city %>, <%= @company.state %> <%= @company.zipcode %><br>
+        <abbr title="Phone">PH:</abbr>  <%= @company.phone_number || "Unavailable"  %>
+      </address>
+      <address class="">
+        <strong><%= @company.contact_name %></strong><br>
+        <a href="mailto:#"><%= @company.contact_email %></a>
+      </address>
+      </div>
+		</div>
+		<div class="tab-pane fade in" id="tab-users">
 		<h2>	Job Orders <%= @company_admin.first_name %> is managing</h2>
 			<%= div_for @company_admin.managed_orders, class: "managed-order" do |order| %>
 	             <%= info_popover(order) %> <%= signed_in_link_to order.title, order %>

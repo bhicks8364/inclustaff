@@ -4,9 +4,9 @@
         <div class="panel-heading" role="tab" id="heading<%=company.id%>">
           <% if company.orders.any? %>
           <h4 class="panel-title">
-            <%= company.name %> 
-            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#company_collapse<%=company.id%>" aria-expanded="true" aria-controls="company_collapse<%=company.id%>">
-             <br> <p class='text-danger'><%= company_status(company) %> <i class="fa fa-caret-down"></i></p>
+            <span class="pull-left"><%= company.name %> </span>
+            <a class="text-right" role="button" data-toggle="collapse" data-parent="#accordion" href="#company_collapse<%=company.id%>" aria-expanded="true" aria-controls="company_collapse<%=company.id%>">
+             <br> <span class='text-danger'><%= company_status(company) %> <i class="fa fa-caret-down"></i></span>
             </a>
           </h4>
         </div>

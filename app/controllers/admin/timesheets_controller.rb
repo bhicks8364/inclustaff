@@ -103,8 +103,12 @@ class Admin::TimesheetsController < ApplicationController
 	end
 	
 	def last_week
-		@timesheets = Timesheet.last_week.distinct
-		authorize @timesheets, :index?
+	    @q = @current_admin.timesheets.last_week.ransack(params[:q])
+        @timesheets = @q.result.includes(:job, :employee).paginate(page: params[:page], per_page: 10)
+        gon.timesheets = @timesheets
+        authorize @timesheets, :index?
+# 		@timesheets = Timesheet.last_week.distinct
+# 		authorize @timesheets, :index?
 		respond_to do |format|
       format.html
       format.csv { send_data @timesheets.to_csv, filename: "last-week-timesheets-export-#{Time.current}-#{@current_agency.name}.csv" }
@@ -212,9 +216,13 @@ class Admin::TimesheetsController < ApplicationController
   
   def edit_multiple
     #   @companies = @current_agency.companies.with_current_timesheets.order("companies.name").distinct
-      @redirect_to = edit_multiple_admin_timesheets_path
-      @timesheets = @current_agency.timesheets.includes(:job, :order, :company).order(week: :asc).current_week.distinct
-      skip_authorization
+    @redirect_to = edit_multiple_admin_timesheets_path
+    
+    @q = @current_agency.timesheets.includes(:job, :order, :company).order(week: :asc).current_week.distinct.ransack(params[:q])
+    @timesheets = @q.result.includes(:job, :employee).paginate(page: params[:page], per_page: 10)
+    @approved_timesheets = @current_agency.timesheets.includes(:job, :order, :company).order(week: :asc).current_week.approved.distinct.paginate(page: params[:page], per_page: 10)
+    @pending_timesheets = @current_agency.timesheets.includes(:job, :order, :company).order(week: :asc).current_week.pending.distinct.paginate(page: params[:page], per_page: 10)
+    skip_authorization
   end
   
   def update_multiple

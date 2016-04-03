@@ -21,6 +21,7 @@
 class DirectDeposit < ActiveRecord::Base
     belongs_to :employee
     belongs_to :admin
+    has_paper_trail
     
     validates :routing_number, presence: true, length: { is: 9 }
     validates :account_number, confirmation: true
