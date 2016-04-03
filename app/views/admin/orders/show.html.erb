@@ -222,8 +222,15 @@
       </div>
       <div role="tabpanel" class="tab-pane fade" id="description">
         <h2><%=  @order.title %></h2>
+        <div class='well'>
+          <%= markdownify(@order.job_description) %>
+        </div>
         <div class='well well-sm'>
+          Notes:
           <%= markdownify(@order.notes) %>
+          <hr>
+          Admin Notes:
+          <%= markdownify(@order.account_manager_notes) %>
         </div>
       </div>
     </div>
