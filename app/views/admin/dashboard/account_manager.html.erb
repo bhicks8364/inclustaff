@@ -38,9 +38,11 @@
 				</div>
 				<div class="tab-pane fade in" id="tab-charts">
 					<div class='row'>
+						<% if @open_orders.any? %>
 						<div class="col-md-6 well well-sm">
 							<%= line_chart @open_orders.group_by_day(:needed_by, format: "%x").sum(:number_needed), library: {title: "Open Positions by Day"}, xtitle: "Needed By Date", ytitle: "Number of Positions" %>
 						</div>
+						<% end %>
 						<div class="col-md-6 well well-sm">
 							<h4 class='text-center'> Open Job Orders <small>by industry</small></h4>
 							<%= pie_chart @orders.group('orders.industry').count, library: {backgroundColor: "#ccc", is3D: true}%>
