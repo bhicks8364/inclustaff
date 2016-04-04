@@ -211,10 +211,10 @@ class Admin::TimesheetsController < ApplicationController
     #   @companies = @current_agency.companies.with_current_timesheets.order("companies.name").distinct
     @redirect_to = edit_multiple_admin_timesheets_path
     
-    @q = @current_agency.timesheets.includes(:job, :order, :company).order(week: :asc).current_week.distinct.ransack(params[:q])
+    @q = @current_agency.timesheets.includes(:job, :order, :company).order(week: :asc).last_week.distinct.ransack(params[:q])
     @timesheets = @q.result.includes(:job, :employee).paginate(page: params[:page], per_page: 10)
-    @approved_timesheets = @current_agency.timesheets.includes(:job, :order, :company).order(week: :asc).current_week.approved.distinct.paginate(page: params[:page], per_page: 10)
-    @pending_timesheets = @current_agency.timesheets.includes(:job, :order, :company).order(week: :asc).current_week.pending.distinct.paginate(page: params[:page], per_page: 10)
+    @approved_timesheets = @current_agency.timesheets.includes(:job, :order, :company).order(week: :asc).last_week.approved.distinct.paginate(page: params[:page], per_page: 10)
+    @pending_timesheets = @current_agency.timesheets.includes(:job, :order, :company).order(week: :asc).last_week.pending.distinct.paginate(page: params[:page], per_page: 10)
     skip_authorization
   end
   
