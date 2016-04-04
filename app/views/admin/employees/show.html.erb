@@ -91,6 +91,8 @@
             </ul>
         </div>
         <div class='col-md-4 well'>
+            <% if @user.current_sign_in_at.present? %>
+            
             <p>
                 <strong>Current sign in at:</strong> <%= @user.current_sign_in_at.stamp("Monday 3/12") %> <br>
                 <strong>Current sign in IP:</strong>  <%= @user.current_sign_in_ip %>
@@ -98,6 +100,7 @@
                 <strong>Last sign in at:</strong> <%= @user.last_sign_in_at.stamp("Monday 3/12") %> <br>
                 <strong>Last sign in IP:</strong>  <%= @user.last_sign_in_ip %>
             </p>
+            <% end %>
         </div>
     </div>
      <% if @employee.timesheets.any? %>
