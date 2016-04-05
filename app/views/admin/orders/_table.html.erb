@@ -3,7 +3,7 @@
   <table id="" class="table table-bordered table-hover">
     <thead>
       <tr>
-        <% if @company.nil? %><th> <%= @q.present? ? sort_link(@q, :company_name, 'Company', default_order: :desc) : "Company" %></th><%end %>
+        <% if @company.nil? %><th> <%= @q.present? ? sort_link(@q, :company_name, 'Company') : "Company" %></th><%end %>
         <th><%= @q.present? ? sort_link(@q, :needed_by, 'Fill Date') : "Fill Date" %></th>
         <th><%= @q.present? ? sort_link(@q, :title, 'Title') : "Title" %></th>
         <th><%= @q.present? ? sort_link(@q, :min_pay, 'Pay') : "Pay" %></th>

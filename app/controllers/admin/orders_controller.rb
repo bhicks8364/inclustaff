@@ -63,10 +63,11 @@ class Admin::OrdersController < ApplicationController
   end
   
   def search
-    @q = @current_admin.job_orders.includes(:company, :account_manager).all.order(needed_by: :asc).ransack(params[:q]) if @current_admin.owner?
+    @q = @current_admin.job_orders.includes(:company, :account_manager).all.order(needed_by: :asc).ransack(params[:q]) if !@current_admin.recruiter?
+     @q = Order.includes(:company).needs_attention.order(needed_by: :desc).ransack(params[:q]) if @current_admin.recruiter?
     @orders = @q.result.paginate(page: params[:page], per_page: 10)
     # @q = Order.includes(:company).order(needed_by: :desc).ransack(params[:q]) 
-    # # @q = Order.includes(:company).needs_attention.order(needed_by: :desc).ransack(params[:q]) if @current_admin.recruiter?
+   
     # # @orders = @q.result(distinct: true).paginate(page: params[:page], per_page: 25)
     # @orders = @q.result(distinct: true).page(params[:page])
     # @q.build_condition if @q.conditions.empty?

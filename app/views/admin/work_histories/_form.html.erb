@@ -18,11 +18,13 @@
           <%= f.input :supervisor, placeholder: "Supervisor name" %>
           <%= f.input :phone_number, placeholder: "Phone number" %>
         </div>
-        <div class="col-md-6">
-          <%= f.input :start_date, as: :string, input_html: {class: 'datepicker'}, placeholder: "start_date" %>
-        </div>
-        <div class="col-md-6">
-          <%= f.input :end_date, as: :string, input_html: {class: 'datepicker'}, placeholder: "End date" %>
+        <div class="form-group">
+            <%= f.input :start_date, wrapper_html: {class: "form-inline col-md-6"},
+      				default: Date.today, as: :date,
+      				order: [:month, :day, :year] %>
+            <%= f.input :end_date, wrapper_html: {class: "form-inline col-md-6"},
+      				default: Date.today, as: :date,
+      				 order: [:month, :day, :year] %>
         </div>
       </div>
     </div>
