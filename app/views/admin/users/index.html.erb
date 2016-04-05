@@ -1,10 +1,10 @@
 <%= render 'admin/shared/welcome/candidates' if @current_admin.sign_in_count == 1 || @current_agency.demo? %> 
-<div class='col-md-12 mainpage'>
+<div class='col-md-12 mainpage shadow'>
 	<div class="btn-group">
 		<%= link_to "<i class='fa fa-file-excel-o fa-fw'></i> Export CSV".html_safe, admin_users_path(@users, format: :csv), class: 'btn btn-default' %>
 		<%= link_to "<i class='fa fa-user-times fa-fw'></i> DNS List".html_safe, dns_list_admin_users_path, class: 'btn btn-default' %>
 	</div>
-	<div class="col-md-9 well well-sm">
+	<div class="col-md-10 well well-sm">
 		<%= link_to "<i class='fa fa-user-plus fa-fw fa-pull-left'></i> Add Employee".html_safe, new_user_registration_path, class: 'btn btn-primary pull-right' %>
 		<h1 class='text-info'>Available Candidates</h1>
 		<hr>
@@ -27,7 +27,7 @@
 			</table>
 		</div>
 	</div>
-	<div class='col-md-3'>
+	<div class='col-md-2'>
 		<%= form_for @import, url: import_admin_users_path, multipart: true do |f| %>
 		
 		<% if @import.errors.full_messages.each do |msg| %>

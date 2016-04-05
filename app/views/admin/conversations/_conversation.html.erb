@@ -1,7 +1,6 @@
 <div id="conversation_<%= conversation.id%>" class="convo pad <%= convo_class(conversation) %>">
     <%= link_to admin_conversation_path(conversation) do %>
       <h5><strong><%= conversation.subject %></strong></h5>
-      <%= conversation.is_unread?(current_admin) %>
       <p class='small text-right'> <%= (conversation.recipients - [current_admin]).map(&:name).join(", ") %></p>
     <% end %>
 </div>

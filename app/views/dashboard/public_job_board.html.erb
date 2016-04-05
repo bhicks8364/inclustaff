@@ -1,4 +1,4 @@
-<div class='col-md-12 mainpage'>
+<div class='col-md-12 mainpage shadow'>
 <h1 class='text-center page-header'>Search Current Positions</h1>
 <% if params[:q].present? && params[:q][:notes_or_title_cont].present? %>
     <div class='well'>
@@ -19,7 +19,6 @@
         <% end %>
         <hr/>
         
-        <%= render 'shared/searching_between' %>
     </div>
     <div class='col-md-9'>
         <div class='well'>
@@ -39,7 +38,7 @@
                             <td> <%= order.published_at.stamp("11-12-2015") %> </td>
                             <td><%= link_to public_job_path(order) do %>
                                     <%= order.title %><br>
-                                    <span class='job-description'><%= truncate(order.notes, length: 50)%></span>
+                                    <span class='job-description'><%= truncate(order.job_description, length: 50)%></span>
                                 <% end %>
                                 
                             </td>

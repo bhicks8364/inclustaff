@@ -4,6 +4,6 @@
 <li><%= link_to "<i class='fa fa-money'></i> &nbsp; Invoices".html_safe, admin_invoices_path if policy(Invoice).index? %></li>
 <li><%= link_to "<i class='fa fa-file-o'></i>  &nbsp; ACA Reports".html_safe, report_admin_employees_path %></li>
 <li><%= link_to "<i class='fa fa-wrench'></i> &nbsp; Employees".html_safe, admin_jobs_path if policy(Job).index? %></li>
-<li><%= link_to "<i class='fa fa-users'></i> &nbsp; Candidate List".html_safe, users_path if policy(User).index? %></li>
+<li><%= link_to "<i class='fa fa-users'></i> &nbsp; Candidate List".html_safe, admin_users_path if policy(User).index? %></li>
 <li><%= link_to "<i class='fa fa-pause-circle-o'></i> &nbsp; Pending Jobs".html_safe, inactive_admin_jobs_path if policy(Order).index? %></li>
 

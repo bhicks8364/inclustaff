@@ -18,15 +18,15 @@ class SkillsController < ApplicationController
   # GET /skills.json
   def index
     @q = Skill.includes(:skillable).ransack(params[:q])
-    @searched_skills = @q.result(distinct: true) if params[:q].present?
-    @employee_skills = Skill.employee.includes(:skillable).order(:name)
-    @order_skills = Skill.job_order.includes(:skillable).order(:name)
+    @skills = @q.result(distinct: true)
+    @employee_skills = @skills.employee.includes(:skillable).order(:name)
+    @order_skills = @skills.job_order.includes(:skillable).order(:name)
     # query = params[:q].presence || "*"
     # @skills = Skill.search query, suggest: true
     # Product.search "peantu butta", suggest: true
     
     # @skills = Skill.select(:name).distinct
-    @skills = Skill.all.distinct
+    # @skills = Skill.all.distinct
     @import = Skill::Import.new
     # gon.skills = @shifts
     # @emp_skills = Skill.employee.includes(:skillable).order(:name)

@@ -223,7 +223,8 @@
       <div role="tabpanel" class="tab-pane fade" id="description">
         <h2><%=  @order.title %></h2>
         <div class='well'>
-          <%= markdownify(@order.job_description) %>
+          <!--<%= markdownify(@order.job_description) %>-->
+          <%= highlight(@order.job_description, Skill.job_order.map(&:name), highlighter: '<a href="/tags?tag=\1">\1</a>') %>
         </div>
         <div class='well well-sm'>
           Notes:

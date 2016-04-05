@@ -1,9 +1,10 @@
-<div class='col-md-12 lightbox'>
+<div class='col-md-12 mainpage shadow'>
 <%= link_to(update_all_skills_path, method: :post, class: "table-link") do %>
 	<span class="fa-stack">
 		<i class="fa fa-square fa-stack-2x"></i>
 		<i class="fa fa-bookmark-o fa-stack-1x fa-inverse"></i>
 	</span>
+	 Refresh All
 <% end %>
 
 
@@ -14,34 +15,21 @@
 <% end %>
 
    <%= render 'skills/search' %>
-  <div class='col-md-4'>
+  <div class='col-md-4 well'>
   <h4>Job Order Skills</h4>
   <%= div_for(@order_skills) do |skill| %>
+  <%= link_to admin_order_path(skill.skillable) do %>
     <strong><%= skill.name %></strong> - <%= skill.skillable.title_company %>
+    <% end %>
 
   <% end %>
   </div>
   
-  <div class='col-md-4'>
-  <h4>Employee Skills</h4>
+  <div class='col-md-4 well'>
+  <h4>Candidate Skills</h4>
   <%= div_for(@employee_skills) do |skill| %>
     <strong><%= skill.name %></strong> - <%= skill.skillable.name %>
 
   <% end %>
   </div>
-  <div class='col-md-6'>
-    <h4>Searched Skills</h4>
-    <%= div_for(@searched_skills) do |skill| %>
-    <%= skill.skillable.try(:name) || skill.skillable.try(:title) %>
-      <%= link_to skill.name, tag_path(skill.name), class: 'btn btn-success' %>
-    <% end %>
-  </div>
-  <div class='col-md-6'>
-    <h4>General Skills</h4>
-    <%= div_for(Skill.general.limit(20)) do |skill| %>
-    <%= skill.skillable.try(:name) || skill.skillable.try(:title) %>
-      <%= link_to skill.name, tag_path(skill.name), class: 'btn btn-success' %>
-    <% end %>
-  </div>
-  
 </div>

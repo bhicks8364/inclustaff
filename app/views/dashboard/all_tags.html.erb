@@ -1,13 +1,30 @@
-<div class=''>
+<div class='col-md-12 mainpage shadow'>
     <%= link_to "Back to search", public_job_board_path, class: 'btn btn-default' %>
   <h1 class='text-center'> <%= @orders.count %> available positions </h1>
     <div class='col-md-12 well'>
         <h4>Open Job Orders</h4>
         <%= div_for(@orders) do |order| %>
-            <%= link_to public_job_path(order) do %>
-                            <%= order.title %><br>
-                            <span class='job-description'><%= truncate(order.notes, length: 130)%></span>
-                        <% end %>
+            <% if !signed_in? %>
+                <%= link_to public_job_path(order) do %>
+                    <%= order.title %><br>
+                    <span class='job-description'><%= truncate(order.notes, length: 130)%></span>
+                <% end %>
+            <% elsif admin_signed_in? %>
+                <%= link_to admin_order_path(order) do %>
+                   <%= order.title %><br>
+                    <span class='job-description'><%= truncate(order.notes, length: 130)%></span>
+                <% end %>
+            <% elsif company_admin_signed_in? %>
+                <%= link_to company_order_path(order) do %>
+                   <%= order.title %><br>
+                    <span class='job-description'><%= truncate(order.notes, length: 130)%></span>
+                <% end %>
+            <% elsif user_signed_in? %>
+                <%= link_to user_order_path(order) do %>
+                   <%= order.title %><br>
+                    <span class='job-description'><%= truncate(order.notes, length: 130)%></span>
+                <% end %>
+            <% end %>
         <% end %>
     </div>
 

@@ -7,10 +7,13 @@
     	<%= link_to "New Timesheet", new_admin_timesheet_path, class: "btn btn-default" %>
     	
     </div>
+    <hr>
     
-    
-    <div class="col-md-6">
-        <a class="btn btn-success text-right" role="button" data-toggle="collapse" href="#review" aria-expanded="false" aria-controls="review">
+    <div class="col-md-12 well">
+        <h2 class="text-center bold"><span class="">Approved: <%= @approved_timesheets.count %> | Pending: <%= @pending_timesheets.count %> </span> <span class="pull-right">Total: <%= @timesheets.count %></span></h2>
+        <hr>
+        <a class="btn btn-success" role="button" data-toggle="collapse" href="#review" aria-expanded="false" aria-controls="review">
+        
         Review Payroll
         </a>
         <div class="collapse" id="review">
