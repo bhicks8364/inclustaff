@@ -38,7 +38,7 @@ class Company::EventsController < ApplicationController
     elsif @end_time.present?
       @events = @current_company.events.happened_before(@end_time).order(created_at: :desc).distinct
     else
-      # @events = @current_company.events.all.order(created_at: :desc)
+      @events = @current_company.events.all.order(created_at: :desc)
       # @events = @signed_in.events.unread
     end
     
