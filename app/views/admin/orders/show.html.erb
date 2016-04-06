@@ -32,34 +32,9 @@
   </div>
   <h1 class=""><%= @order.active? ? @order.title : "Inactive" %></h1>
   <h2 class='text-warning'> <%= link_to @company.name, admin_company_path(@company), class: "button" %> </h2>
-  <div class='col-md-2'>
-      <h3 class='text-center'><%= lg_status_tag(@order) %> <%= status_msg(@order) %></h3>
-      <p class='text-info text-center'> <span class='label label-info black'>
-    <%= @order.needs_approval? ? "Requires Pre-Approval" : "Direct Report" %></span></p>
-     <p class='text-center'><%= @order.address %> <%= render "order_map", order: @order %></p>
-      <p class='lead'>Needed: <%= @order.number_needed %> <br>
-        Active: <%= @order.jobs.active.count %><br>
-        Open: <%= @order.open_jobs %>
-      </p>
-      <p class='lead'><strong>ACA Type:</strong> <br><%= @order.aca_type %></p>
-      <div class=''>
-         <strong>Tags</strong>
-         <p><%= highlight(@order.tag_list.to_s, @order.tag_list, highlighter: '<a href="/tags?tag=\1">\1</a>') %></p>
-      </div>
-      <p class='text-warning'><strong>Company Manager</strong><br>
-      <%= link_to_if(@order.manager.nil?, "Add Manager", { controller: "admin/orders", action: "edit", id: @order }) do signed_in_link_to(@order.manager.name, @order.manager) end %>
-      </p>
-      <p class=''>
-        <strong>Account Manager</strong><br>
-      <%=
-         link_to_if(@order.account_manager.nil?, "Add Account Manager", { controller: "admin/orders", action: "edit", id: @order }) do
-           signed_in_link_to(@order.account_manager.name, @order.account_manager)  end  %> 
-      </p>
-      <strong>Mark Up </strong>
-    <%= @order.mark_up_percent %>
-  </div>
+  
 
-<div class='col-md-10' id="">
+<div class='col-md-12' id="">
   <!-- Nav tabs -->
   <ul id="" class="nav nav-tabs nav-justified" role="tablist">
     <li role="presentation" class="active"><a href="#order" aria-controls="order" role="tab" data-toggle="tab">Order Info.</a></li>
@@ -73,13 +48,20 @@
     <% end %>
     <li role="presentation"><a href="#description" aria-controls="description" role="tab" data-toggle="tab">Description</a></li>
     <li role="presentation"><a href="#applications" aria-controls="applications" role="tab" data-toggle="tab">Applicants</a></li>
+    <li role="presentation"><a href="#history" aria-controls="history" role="tab" data-toggle="tab">History</a></li>
   </ul>
   
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane fade in active" id="order">
-      
-      <div class='col-md-8'>
-        <div class='well'>
+      <div class='col-md-4 well'>
+          <h3 class='text-center'><%= lg_status_tag(@order) %></h3>
+          <p class='text-info text-center'> <span class='label label-info black'>
+        <%= @order.needs_approval? ? "Requires Pre-Approval" : "Direct Report" %></span></p>
+         <p class='text-center'><%= @order.address %> <%= render "order_map", order: @order %></p>
+          
+      </div>
+      <div class='col-md-4 well'>
+        <%= status_msg(@order) %>
           <p class='lead'>
            <strong><%= @order.shift %></strong> <br> <%= pay_range(@order) %>        
           </p>
@@ -97,8 +79,8 @@
           </p>
           <p class='lead'><strong>Requirements:</strong> <br><%= @order.requirements['certifications'] %></p>
         </div>
-      </div>
-      <div class='col-md-4 well well-sm'>
+      <div class='col-md-4 well'>
+        <h3>Skills</h3>
           <% if @order.skills.count < 1 %>
              <h4 id='no-skills' class="text-center">This job order has no skills entered.</h4>
             <% end %>
@@ -108,6 +90,28 @@
           <div class='form-group'>
             <%= render partial: "admin/skills/form", locals: {skillable: @order} %>
           </div>
+       </div>
+       <div class="col-md-6 well">
+         <p class='lead'>Needed: <%= @order.number_needed %> <br>
+            Active: <%= @order.jobs.active.count %><br>
+            Open: <%= @order.open_jobs %>
+          </p>
+          <p class='lead'><strong>ACA Type:</strong> <br><%= @order.aca_type %></p>
+          <div class=''>
+             <strong>Tags</strong>
+             <p><%= highlight(@order.tag_list.to_s, @order.tag_list, highlighter: '<a href="/tags?tag=\1">\1</a>') %></p>
+          </div>
+          <p class='text-warning'><strong>Company Manager</strong><br>
+          <%= link_to_if(@order.manager.nil?, "Add Manager", { controller: "admin/orders", action: "edit", id: @order }) do signed_in_link_to(@order.manager.name, @order.manager) end %>
+          </p>
+          <p class=''>
+            <strong>Account Manager</strong><br>
+          <%=
+             link_to_if(@order.account_manager.nil?, "Add Account Manager", { controller: "admin/orders", action: "edit", id: @order }) do
+               signed_in_link_to(@order.account_manager.name, @order.account_manager)  end  %> 
+          </p>
+          <strong>Mark Up </strong>
+        <%= @order.mark_up_percent %>
        </div>
      
   </div>
@@ -226,13 +230,16 @@
           <!--<%= markdownify(@order.job_description) %>-->
           <%= highlight(@order.job_description, Skill.job_order.map(&:name), highlighter: '<a href="/tags?tag=\1">\1</a>') %>
         </div>
-        <div class='well well-sm'>
+        <div class='well'>
           Notes:
           <%= markdownify(@order.notes) %>
           <hr>
           Admin Notes:
           <%= markdownify(@order.account_manager_notes) %>
         </div>
+      </div>
+      <div role="tabpanel" class="tab-pane fade" id="history">
+        <%= render 'history', order: @order %>
       </div>
     </div>
   </div>

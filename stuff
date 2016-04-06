@@ -8,6 +8,11 @@ Apartment::Tenant.switch!('demo')
 rake routes | grep user
 
 
+ps aux|grep 'rails'|grep -v 'grep'|awk '{ print $2 }'|xargs kill -9
+// This will kill any running rails process.
+
+
+
 Company 
 - REQUIRED FIELDS -
 -> :name, :contact_name,

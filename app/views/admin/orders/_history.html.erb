@@ -1,0 +1,19 @@
+
+<div class="col-md-12 well">
+    <h1>History for <%= order.title %></h1>
+    <p>Version count: <%= order.versions.size %></p>
+    <div class="list-group">
+        <% order.versions.each do |order_version| %>
+            <li class="list-group-item">
+                <%= order_version.version_author %> <br><%= order_version.event %>
+                <br>
+                <% if order_version.changeset == {} %>
+                    <p class="small text-muted">No changes were recorded.</p>
+                <% else %>
+                <p class="small text-muted">Changes were recorded.</p>
+                <% end %>
+                
+            </li>
+        <% end %>
+    </div>
+</div>
