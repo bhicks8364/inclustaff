@@ -5,7 +5,7 @@ namespace :db do
 	require 'populator'
 	require 'ffaker'
 	require 'faker'
-		    Apartment::Tenant.switch!('ontimestaffing')
+		    Apartment::Tenant.switch!('demo')
 			Order.populate(10) do |order|
 				order.company_id = 1...5
 				order.agency_id = 18

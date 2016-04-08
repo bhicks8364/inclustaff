@@ -18,7 +18,7 @@
 		<% if @employee.nil? %><td class='text-left'><%= link_to timesheet.employee.name, admin_job_path(timesheet.job), class: 'bold' %> <br> <%= link_to "#{truncate(timesheet.order.title, length: 15)}", admin_order_path(timesheet.order), class: 'small'  %></td><% end %>
 			<td class='text-center'><%= timesheet.gross_pay.present? ? pay_for(timesheet) : timesheet.shifts.last.state.upcase %></td>
 			<td class='text-center'><%= timesheet.total_hours.present? ? hours_for(timesheet) : timesheet.shifts.last.state.upcase %></td>
-			<td class='text-center'><a class='button' data-behavior="timesheet-toggle"><% if timesheet.approved? %><span data-behavior="approve-button" > <i class="fa fa-times fa-lg"></i> <span data-behavior='timesheet-state'><%= timesheet.state.upcase %></span><% else %><span data-behavior="approve-button" > <i class="fa fa-check fa-lg"></i> <span  data-behavior='timesheet-state'><%= timesheet.state.upcase %></span></span><% end %>	</a></td>
+			<td class='text-center'><a class='button' data-behavior="timesheet-toggle"><% if timesheet.approved? %><span data-behavior="approve-button" > <i class="fa fa-check fa-fw"></i> <span data-behavior='timesheet-state'><%= timesheet.state.upcase %></span><% else %><span data-behavior="approve-button" > <i class="fa fa-clock-o fa-fw"></i> <span  data-behavior='timesheet-state'><%= timesheet.state.upcase %></span></span><% end %>	</a></td>
 		</tr>
 		
 		<% end %>

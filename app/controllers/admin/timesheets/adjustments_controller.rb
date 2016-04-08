@@ -48,6 +48,6 @@ class Admin::Timesheets::AdjustmentsController < ApplicationController
       @timesheet = Timesheet.find(params[:timesheet_id])
     end
     def adjustment_params
-      params.require(:adjustment).permit(:timesheet_id, :adj_type, :amount, :pay_rate, :bill_rate, :hours, :taxable, :entered_by)
+      params.require(:adjustment).permit(:timesheet_id, :adj_type, :amount, :pay_rate, :bill_rate, :hours, :taxable, :entered_by, :bill_amount)
     end
 end

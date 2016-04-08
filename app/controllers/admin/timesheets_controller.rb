@@ -55,7 +55,7 @@ class Admin::TimesheetsController < ApplicationController
             
             end 
             @csv_timesheets = @pdf_timesheets
-            format.csv { send_data @csv_timesheets.to_csv, filename: "timesheets-export-#{Time.now}-inclustaff.csv" }
+            format.csv { send_data @csv_timesheets.to_csv, filename: "timesheets-export-#{Time.current}-inclustaff.csv" }
             
             
         end
@@ -79,18 +79,25 @@ class Admin::TimesheetsController < ApplicationController
         @start_time = Chronic.parse(params[:date1])
         @end_time = Chronic.parse(params[:date2])
         if @start_time.present? && @end_time.present?
-          @timesheets = Timesheet.occurring_between(@start_time, @end_time).distinct
+          @timesheets = Timesheet.past.occurring_between(@start_time, @end_time).distinct
         elsif @start_time.present?
-          @timesheets = Timesheet.worked_after(@start_time).distinct
+          @timesheets = Timesheet.past.worked_after(@start_time).distinct
         elsif @end_time.present?
-          @timesheets = Timesheet.worked_before(@end_time).distinct
+          @timesheets = Timesheet.past.worked_before(@end_time).distinct
         end
+        @scope = "past"
         # render action: :index
 		gon.timesheets = @timesheets
 		authorize @timesheets
 		respond_to do |format|
       format.html
       format.csv { send_data @timesheets.distinct.to_csv, filename: "past-timesheets-export-#{Time.current}-inclustaff.csv" }
+      format.pdf {
+                    send_data AgencyTimesheetPdf.new(@current_agency, @timesheets, view_context,  @scope, @signed_in).render,
+                    filename: "#{@current_agency.name}-#{@scope}-#{Time.current}.pdf",
+                    type: "application/pdf",
+                    disposition: :inline
+                }
   	end 
 	end
 	
@@ -98,16 +105,33 @@ class Admin::TimesheetsController < ApplicationController
 	    @q = @current_admin.timesheets.last_week.ransack(params[:q])
         @timesheets = @q.result.includes(:job, :employee).paginate(page: params[:page], per_page: 10)
         gon.timesheets = @timesheets
-       
         authorize @timesheets, :index?
-# 		@timesheets = Timesheet.last_week.distinct
-# 		authorize @timesheets, :index?
 		respond_to do |format|
           format.html
           format.csv { send_data @timesheets.to_csv, filename: "last-week-timesheets-export-#{Time.current}-#{@current_agency.name}.csv" }
       	end
 	end
-
+    def search
+        @redirect_to = search_admin_timesheets_path
+        Chronic.time_class = Time.zone
+        @start_time = Chronic.parse(params[:date1])
+        @end_time = Chronic.parse(params[:date2])
+        if @start_time.present? && @end_time.present?
+          @timesheets = @current_admin.timesheets.occurring_between(@start_time, @end_time).distinct
+        elsif @start_time.present?
+          @timesheets = @current_admin.timesheets.worked_after(@start_time).distinct
+        elsif @end_time.present?
+          @timesheets = @current_admin.timesheets.worked_before(@end_time).distinct
+        end
+        @q = @current_admin.timesheets.ransack(params[:q])
+        @timesheets = @q.result.includes(:job, :employee).paginate(page: params[:page], per_page: 30) if @q.present?
+        gon.timesheets = @timesheets
+        authorize @timesheets, :index?
+		respond_to do |format|
+          format.html
+          format.csv { send_data @timesheets.to_csv, filename: "last-week-timesheets-export-#{Time.current}-#{@current_agency.name}.csv" }
+      	end
+    end
   def show
     authorize @timesheet
     @employee = @timesheet.employee
@@ -211,10 +235,10 @@ class Admin::TimesheetsController < ApplicationController
     #   @companies = @current_agency.companies.with_current_timesheets.order("companies.name").distinct
     @redirect_to = edit_multiple_admin_timesheets_path
     
-    @q = @current_agency.timesheets.includes(:job, :order, :company).order(week: :asc).last_week.distinct.ransack(params[:q])
+    @q = @current_agency.timesheets.last_week.includes(:job, :order, :company).distinct.ransack(params[:q])
     @timesheets = @q.result.includes(:job, :employee).paginate(page: params[:page], per_page: 10)
-    @approved_timesheets = @current_agency.timesheets.includes(:job, :order, :company).order(week: :asc).last_week.approved.distinct.paginate(page: params[:page], per_page: 10)
-    @pending_timesheets = @current_agency.timesheets.includes(:job, :order, :company).order(week: :asc).last_week.pending.distinct.paginate(page: params[:page], per_page: 10)
+    @approved_timesheets = @timesheets.approved.distinct.paginate(page: params[:page], per_page: 10)
+    @pending_timesheets = @timesheets.pending.distinct.paginate(page: params[:page], per_page: 10)
     skip_authorization
   end
   
@@ -233,7 +257,7 @@ class Admin::TimesheetsController < ApplicationController
     respond_to do |format|
       if @timesheet.update(timesheet_params)
           if params[:redirect_to].present?
-              format.html { redirect_to edit_multiple_admin_timesheets_path(anchor: "timesheet_#{@timesheet.id}"), notice: 'Timesheet was successfully updated.' }
+              format.html { redirect_to params[:redirect_to], notice: 'Timesheet was successfully updated.' }
           else
               format.html { redirect_to admin_job_timesheets_path(@timesheet.job, anchor: "timesheet_#{@timesheet.id}"), notice: 'Timesheet was successfully updated.' }
           end

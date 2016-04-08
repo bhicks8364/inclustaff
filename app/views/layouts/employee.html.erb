@@ -20,6 +20,7 @@
   </head>
 
   <body>
+    <%= render 'layouts/google_analytics' %>
     <%= render 'employee/shared/navbar' if current_user.role != "Candidate" %>
     <%= render 'employee/shared/timeclock_navbar' if current_user.role == "Candidate" %>
     

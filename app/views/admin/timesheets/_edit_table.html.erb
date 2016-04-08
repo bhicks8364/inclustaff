@@ -1,0 +1,66 @@
+    <div class='col-md-12 mainpage shadow'>
+        
+        <div class='table-responsive'>
+            <table id="<%= timesheets.last.approved? ? 'approved' : 'pending' %>" class="table table-bordered">
+            	<thead>
+            		<th class=''><%= @q.present? ? sort_link(@q, :week, 'Week') : "Week" %></th>
+            		<th class=''><%= @q.present? ? sort_link(@q, :company_name, 'Company') : "Company" %></th>
+            		<th><%= @q.present? ? sort_link(@q, :employee_last_name, 'Employee') : "Employee" %></th>
+            		<th><%= @q.present? ? sort_link(@q, :reg_hours, 'Reg') : "Reg" %> |	<%= @q.present? ? sort_link(@q, :ot_hours, 'OT') : "OT" %></th>
+            		<th class=''><%= @q.present? ? sort_link(@q, :gross_pay, 'Pay') : "Pay" %></th>
+            		<th class=''><%= @q.present? ? sort_link(@q, :total_hours, 'Hours') : "Hours" %></th>
+            	    <th class="text-center">Actions</th>
+            	</thead>
+            	<tbody>
+            	
+            	
+            		<% timesheets.order(week: :desc).each do |timesheet| %>
+                	<%= simple_form_for( [:admin, timesheet]) do |f| %>
+                		<%= hidden_field_tag :redirect_to, @redirect_to %>
+                		<tr id="timesheet_<%= timesheet.id %>" data-behavior="timesheet" data-id="<%= timesheet.id %>" class="<%= timesheet.approved? ? 'bg-success' : 'bg-info' %>">
+                		    <td><strong><%= link_to timesheet.week_ending.stamp("3/12"), admin_timesheet_path(timesheet), class: 'button' %></strong></td>
+                		    <td><%= link_to timesheet.company.name, admin_company_timesheets_path(timesheet.company), class: 'button' %></strong></td>
+                		    <td><strong><%= link_to timesheet.employee.name, admin_employee_path(timesheet.employee), class: 'button' %></td>
+                		    
+                		<% if timesheet.shifts.any? %>
+                		<td class="text-center"><%= f.input :reg_hours, label: 'Regular', label_html: { class: 'inline'}, wrapper_html: { class: 'col-md-6'}, disabled: true, input_html: { class: 'form-control', max: 40}  %>
+                            <%= f.input :ot_hours, inline_label: 'Overtime', wrapper_html: { class: 'col-md-6'}, label_html: { class: 'inline'}, input_html: { class: 'form-control'}, disabled: true %>
+                            </td>
+                        <% else %>
+                            <td class="text-center"><%= f.input :reg_hours, label: 'Regular', label_html: { class: 'inline'}, wrapper_html: { class: 'col-md-6'}, input_html: { class: 'form-control', max: 40}  %>
+                            <%= f.input :ot_hours, label: 'Overtime', label_html: { class: 'inline'}, input_html: { class: 'form-control'}, wrapper_html: { class: 'col-md-6'}  %>
+                            
+                            </td>
+                        <% end %>
+            			<td class='text-center'><%= timesheet.total_hours.present? ? hours_for(timesheet) : timesheet.shifts.last.state.upcase %></td>
+                		<td class='text-center'><%= timesheet.gross_pay.present? ? pay_for(timesheet) : timesheet.shifts.last.state.upcase %></td>
+            	        <td class='text-center'>
+            	                <div class="btn-group" role="group" aria-label="...">
+            	                    <%= f.button :button, "Save".html_safe, class: "btn btn-default btn-sm", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Saving..."} %>
+                                  
+                                
+                                  <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      <i class="fa fa-cogs fa-fw"></i>
+                                      <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                    <li><%= link_to "<i class='fa fa-plus fa-fw'></i>".html_safe, new_admin_timesheet_adjustment_path(timesheet), data: {toggle: "tooltip", placement: "left", disable_with: "<i class='fa fa-spinner fa-spin'></i> Loading..."}, title: "Add Adjustment", class: '' %></li>
+                                    <li><%= link_to "<i class='fa fa-trash fa-fw'></i>".html_safe, admin_timesheet_delete_all_shifts_path(timesheet, redirect_to: "edit_multiple_admin_timesheets_path"), data: {toggle: "tooltip", placement: "left", disable_with: "<i class='fa fa-spinner fa-spin'></i> Loading..."}, title: "Delete shifts", class: '' if timesheet.shifts.any? %>
+                                        <%= link_to "<i class='fa fa-edit fa-fw'></i>".html_safe, edit_admin_timesheet_path(timesheet), class: "", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Loading..."} if timesheet.shifts.none? %>
+                                    </li>
+                                    </ul>
+                                  </div>
+                                  <span id="btn_<%=timesheet.id%>" class="">
+                	                  <%= link_to "Approve".html_safe, approve_admin_timesheet_path(timesheet, redirect_to: "search_admin_timesheets_path"), data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Approving..."},
+                	                  class: "btn btn-default btn-sm", method: :patch, remote: true if timesheet.pending? %></span>
+                                </div>
+        	            </td>
+            		<% end %>
+            			</tr>
+            		<% end %>
+            	</tbody>
+            </table>
+        </div>
+        
+    </div>

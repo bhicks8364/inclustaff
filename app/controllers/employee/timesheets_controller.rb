@@ -37,9 +37,6 @@ class Employee::TimesheetsController < ApplicationController
    
     @last_complete_shift = @timesheet.shifts.clocked_out.last
     @current_shift = @timesheet.shifts.clocked_in.last if @timesheet.clocked_in?
-    gon.timesheet = @timesheet
-    gon.pay = @timesheet.gross_pay
-    gon.status = @timesheet.shifts.last.state.titleize
     respond_to do |format|
       format.html
       format.json

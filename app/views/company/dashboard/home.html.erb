@@ -14,23 +14,40 @@
     </div>
   </div>
   <div class='row'>
-  <div class='col-md-8 well' data-behavior='timesheet-list'>
-    	 <h1 class='simple'><%= @current_company.name %></h1>
-    <h2 class=''> Welcome, <%= current_company_admin.name %>!</h2>
-    <%= render 'company/orders/table', orders: @current_company.orders %>
+  <div class='col-md-9 well' data-behavior='timesheet-list'>
+    
+    	 <h1 class='bold'><%= @current_company.name %></h1>
+    
+   
       <div class='col-md-12'>
+        <h2 class=''> Welcome, <%= current_company_admin.name %>!</h2>
+        
+       <%= link_to "Approve #{pluralize(@current_company_admin.timesheets.pending.count, 'pending timesheets')}".html_safe, approve_all_company_timesheets_path, method: :patch,
+    id: "approve_all", class: "btn btn-success" if @current_company_admin.timesheets.pending.any? %>
+    <hr>
+        <% if  @current_company.timesheets.needing_approval.any? %>
         <div class='well well-sm'>
   				<h3 class='text-center'>Timesheets waiting for your approval</h3>
   				<%= render 'company/timesheets/table', timesheets: @current_company.timesheets.needing_approval %>
   			</div>
+  			<% end %>
+  			
   			<div class='well well-sm'>
+  			  	<% if @current_company.current_timesheets.any? %>
   				<h4>Timesheets for this week</h4>
   				<%= render 'company/timesheets/table', timesheets: @current_company.current_timesheets %>
+  			<% else %>
+  			<h4>No timesheets for this week yet.</h4>
+  			<% end %>
+  			</div>
+  			<div class='well well-sm'>
+  			  <%= render 'company/orders/table', orders: @current_company.orders %>
   			</div>
         
       </div>
+       
     </div>
-    <div class='col-md-4 well well-sm'>
+    <div class='col-md-3 well well-sm'>
       <strong>You Account Manager: </strong> <br><%= @current_company.account_manager.try(:name) %> <br><span class="small"><%= @current_company.account_manager.try(:email) %></span>
       <%= convo_for(admins: @current_company.account_manager, back_to: company_dashboard_path) if @current_company.account_manager.present? %>
       

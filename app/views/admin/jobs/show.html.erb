@@ -31,7 +31,11 @@
     
     <div class='pad bg-info'>
      <h2><%= @job.name_title %> <span data-behavior="job-state" class='label label-success pull-right'><%= @job.state %></span></h2>
-      <h3> Last timesheet date: <%= @job.timesheets.order(week: :desc).last.week_ending if @job.timesheets.any? %></h3>
+     <% if @job.timesheets.any? %>
+      <h3> Last timesheet date: <%= @job.timesheets.order(week: :desc).first.week_ending.stamp("3/21/2016")  %></h3>
+      <% else %>
+      <h3> <%= @employee.name %> has no timesheets.</h3>
+      <% end %>
     </div>
     <div class='col-md-8 well well-sm'>
     <h4><strong>Interview Notes:</strong></h4>
@@ -44,7 +48,7 @@
             <% if @job.active? %>
         <h4><%= @job.title %><small><%= number_to_currency(@job.pay_rate) %></small></h4>
           <% else %>
-          <h3 class='bold metal'> This position is currently inactive.</h3>
+          <h3 class='bold'> This position is currently inactive.</h3>
         <% end %>
         
 

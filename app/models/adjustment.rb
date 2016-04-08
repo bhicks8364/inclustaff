@@ -23,15 +23,23 @@
 class Adjustment < ActiveRecord::Base
     belongs_to :timesheet
     belongs_to :creator, class_name: "Admin", foreign_key: "entered_by"
-    before_save :calculate_amount, :set_bill_amount
+    before_save :set_bill_amount
+    after_save :updated_timesheet!
+    
     has_paper_trail
     def vacation?; adj_type == "Vacation" end;
     def bonus?; adj_type == "Bonus" end;
     def gas?; adj_type == "Gas" end;
+    def rate_adj?; adj_type == "Rate Adj" end;
         
     
     def set_bill_amount
-        if vacation? 
+        if rate_adj?
+            self.amount = hours * pay_rate
+            self.bill_amount = hours * bill_rate
+            self.taxable = true
+        elsif vacation? 
+            self.amount = hours * pay_rate
             self.bill_amount = 0
             self.taxable = true
         elsif bonus?
@@ -42,12 +50,6 @@ class Adjustment < ActiveRecord::Base
             self.taxable = false
         else
             self.bill_amount = amount * bill_rate
-        end
-    end
-    def calculate_amount
-        if hours > 0 
-            self.amount = hours * pay_rate
-            self.bill_amount = hours * bill_rate
         end
     end
     

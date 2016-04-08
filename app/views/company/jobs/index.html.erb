@@ -4,7 +4,7 @@
   </div>
   <% if @jobs %>
   <h1>Active Jobs <small><%= @company.name %></small></h1>
-  <div id="" class=" col-md-10 table-responsive">
+  <div id="" class=" col-md-12 table-responsive">
     <table id="" class="table table-bordered">
     <thead>
       <tr>
@@ -16,6 +16,7 @@
         <th>Hours this week</th>
         <th>Pay this week</th>
         <th>Total Hours</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -33,6 +34,7 @@
           <td><%= job.current_week_hours.round(2) %></td>
           <td><%= number_to_currency(job.current_week_pay) %></td>
           <td class='bold'><%= job.total_hours.round(2) %></td>
+          <td><%= link_to "Add Timesheet", new_company_job_timesheet_path(job) %></td>
         </tr>
       <% end %>
     </tbody>

@@ -52,16 +52,15 @@
             <% end %>
 
         </div>
-        
-          
-        </div>
-        <div class='row well well-sm'>
-          <%= render 'company/shifts/calendar', shifts: @job.shifts  %>
+        <div class='well well-sm'>
+          <%= column_chart @job.timesheets.group_by_week(:week, range: @job.start_date.beginning_of_week.midnight..Time.current, format: "%a, %m/%d").sum(:total_hours), 
+          xtitle: "Week", ytitle: "Total Hours", library: {} %>
+         </div>
          </div>
       </div>
       <div role="tabpanel" class="tab-pane fade" id="timesheets" data-behavior='timesheet-list'>
         <h2 class='text-center'>Timesheets</h2>
-        
+        <%= link_to "<i class='fa fa-calendar-plus-o fa-fw'></i> New Timesheet".html_safe, new_company_timesheet_path if policy(Timesheet).create? %>
         <div class='col-md-6'>
           <h4 class='text-center'>Approved</h4>
            
@@ -86,8 +85,8 @@
             <% end %>
          
         </div>
-        <div class='row'>
-          <%= render 'company/shifts/wk_calendar', shifts: @job.current_timesheet.shifts if @job.current_timesheet.present? %>
+        <div class='col-md-12'>
+          <%= render 'company/timesheets/calendar', timesheets: @job.timesheets if @job.timesheets.any? %>
         </div>
       </div>
       

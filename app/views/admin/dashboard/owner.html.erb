@@ -47,9 +47,7 @@
 	       			
 	       			<h2>Company Billings</h2>
 	       				<%= line_chart   Company.uniq.map { |c| { name: c.name, data: c.invoices.group_by_month(:week, range: Date.current.beginning_of_year...Date.current, format: "%B %Y").sum(:total) }  }, discrete: true %>
-	       			<div class='col-md-4 well'>
-						<h1><%= pluralize(@current_agency.orders.newly_added.count , "new order") %></h1>
-					</div>
+	       			
 	       			</div>
        			</div>
 			</div>

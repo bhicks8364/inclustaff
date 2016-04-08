@@ -15,11 +15,13 @@
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
     <%= favicon_link_tag 'incluStaff_twitter_logo.png' %>
     <%= javascript_include_tag 'application', "//www.google.com/jsapi", "chartkick", "charts" %>
-
+    
     <%= csrf_meta_tags %>
   </head>
 
   <body>
+    <%= render 'layouts/google_analytics' %>
+    
     <%= render 'company/shared/navbar' if current_company_admin.role != "Timeclock" %>
     <%= render 'company/shared/timeclock_navbar' if current_company_admin.role == "Timeclock" %>
     <div class="" id="wrapper">

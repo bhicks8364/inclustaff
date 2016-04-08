@@ -32,6 +32,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-usd fa-fw"></i> Payroll </a>
           <ul class="dropdown-menu">
             <li><%= link_to "<i class='fa fa-pause-circle'></i> Current Payroll".html_safe, edit_multiple_admin_timesheets_path, class: "navbar-link" %></li>
+            <li><%= link_to "<i class='fa fa-search'></i> Search".html_safe, search_admin_timesheets_path, class: "navbar-link" %></li>
             <li><%= link_to "<i class='fa fa-history'></i> All Timesheets".html_safe, admin_timesheets_path, class: "navbar-link" %></li>
             <li><%= link_to "<i class='fa fa-history'></i> Last Week Timesheets".html_safe, last_week_admin_timesheets_path, class: "navbar-link" %></li>
             <li><%= link_to "<i class='fa fa-plus'></i> New Timesheet".html_safe, new_admin_timesheet_path if policy(Timesheet).create?  %></li>

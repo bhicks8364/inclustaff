@@ -1,0 +1,21 @@
+<div class="">
+
+	<%= month_calendar(attribute: :week, events: timesheets) do |date, timesheets| %>
+	
+  <div class='cal-date'><%= date %></div>
+
+  <% timesheets.each do |timesheet| %>
+    <div class=''>
+      <%= timesheet_collaspe(timesheet) %>
+       <div class='collapse' id="collapseTimesheet_<%=timesheet.id%>">
+           <%= link_to admin_timesheet_path(timesheet) do %>
+             <%= number_to_currency(timesheet.gross_pay) %>
+           <% end %>
+        </div>
+      
+      
+    </div>
+  <% end %>
+<% end %>
+
+</div>

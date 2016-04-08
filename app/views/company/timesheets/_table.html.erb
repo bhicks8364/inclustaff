@@ -7,7 +7,7 @@
 		<th class='text-center'><i class="fa fa-money"></i>  Pay</th>
 		<th class='text-center'><i class="fa fa-clock-o"></i>  Hours</th>
 		<th class='text-center'><i class="fa fa-hourglass-start"></i> Status</th>
-		
+		<th></th>
 	</thead>
 	<tbody>
 	
@@ -15,10 +15,16 @@
 		<% timesheets.order(week: :desc).each do |timesheet| %>
 		<tr data-behavior="timesheet" data-id="<%= timesheet.id %>" class="<%= timesheet.approved? ? 'bg-success' : 'bg-info' %>">
 			<td><strong><%= link_to timesheet.week_ending, company_timesheet_path(timesheet), class: 'button' %></strong></td>
-		<% if @employee.nil? %><td class='text-left'><%= link_to timesheet.employee.name, company_job_path(timesheet.job), class: 'bold' %> <br> <%= link_to "#{truncate(timesheet.order.title, length: 15)}", company_order_path(timesheet.order), class: 'small'  %></td><% end %>
+		<% if @employee.nil? %><td class='text-left'><%= link_to timesheet.employee.name, company_job_path(timesheet.job), class: 'bold' %> <br> <%= link_to "#{truncate(timesheet.order.title, length: 20)}", company_order_path(timesheet.order), class: 'small'  %></td><% end %>
 			<td class='text-center'><%= timesheet.gross_pay.present? ? pay_for(timesheet) : timesheet.shifts.last.state.upcase %></td>
 			<td class='text-center'><%= timesheet.total_hours.present? ? hours_for(timesheet) : timesheet.shifts.last.state.upcase %></td>
-			<td class='text-center'><a class='btn btn-primary' data-behavior="company-timesheet-toggle"><% if timesheet.approved? %><span data-behavior="approve-button" > <i class="fa fa-times fa-lg"></i> <span data-behavior='timesheet-state'><%= timesheet.state.upcase %></span><% else %><span data-behavior="approve-button" > <i class="fa fa-check fa-lg"></i> <span  data-behavior='timesheet-state'><%= timesheet.state.upcase %></span></span><% end %>	</a></td>
+			<td class='text-center'>
+				<% if timesheet.current? %>	<a class='btn btn-primary' data-behavior="company-timesheet-toggle"><% if timesheet.approved? %><span data-behavior="approve-button" > <i class="fa fa-check fa-fw"></i> <span data-behavior='timesheet-state'><%= timesheet.state.upcase %></span><% else %><span data-behavior="approve-button" > <i class="fa fa-clock-o fa-fw"></i> <span  data-behavior='timesheet-state'><%= timesheet.state.upcase %></span></span><% end %>	</a>
+			<% elsif !timesheet.current? && timesheet.pending? %>	<a class='btn btn-primary' data-behavior="company-timesheet-toggle"><% if timesheet.approved? %><span data-behavior="approve-button" > <i class="fa fa-check fa-fw"></i> <span data-behavior='timesheet-state'><%= timesheet.state.upcase %></span><% else %><span data-behavior="approve-button" > <i class="fa fa-clock-o fa-fw"></i> <span  data-behavior='timesheet-state'><%= timesheet.state.upcase %></span></span><% end %>	</a>
+			<%else%>
+			<%= timesheet.state %>
+			<% end %>
+			<td><%= link_to "delete", company_timesheet_path(timesheet), method: :delete, class: 'button' %></td>
 		</tr>
 		
 		<% end %>

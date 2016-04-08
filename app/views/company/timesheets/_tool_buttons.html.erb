@@ -12,15 +12,28 @@
 					
 				
 				<% end %>
- 
-  			<a class='button' data-behavior="company-timesheet-toggle" >
-				<span data-behavior="approve-button" >
-		          <% if timesheet.approved? %>
-					  <i class="fa fa-times fa-fw"></i>
-		          <% else %>
-					  <i class="fa fa-check fa-fw"></i>
-		          <% end %>
-			    </span>
-			</a>
+ <% if timesheet.pending? && timesheet.current? %>
+  	<a class='button' data-behavior="company-timesheet-toggle" >
+		<span data-behavior="approve-button" >
+          <% if timesheet.approved? %>
+			  <i class="fa fa-times fa-fw"></i>
+          <% else %>
+			  <i class="fa fa-check fa-fw"></i>
+          <% end %>
+	    </span>
+	</a>
+	<% elsif !timesheet.current? && timesheet.pending? %>
+	<a class='button' data-behavior="company-timesheet-toggle" >
+		<span data-behavior="approve-button" >
+          <% if timesheet.approved? %>
+			  <i class="fa fa-times fa-fw"></i>
+          <% else %>
+			  <i class="fa fa-check fa-fw"></i>
+          <% end %>
+	    </span>
+	</a>
+	<% else %>
+	
+	<% end %>
     </div>
 </div>

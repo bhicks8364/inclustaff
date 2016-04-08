@@ -82,7 +82,7 @@ class Timesheet < ActiveRecord::Base
   scope :approaching_overtime, -> { where('reg_hours > 36') }
   scope :current_week, ->{ where(week: Time.current.to_date.beginning_of_week)}
   # scope :past, -> { joins(:shifts).merge(Shift.past) }
-  scope :past, -> { where(Timesheet[:week].lteq(Date.today.beginning_of_week.to_date))}
+  scope :past, -> { where(Timesheet[:week].lt(Date.today.beginning_of_week.to_date))}
   scope :over_50, -> { where(Timesheet[:total_hours].gteq(50))}
   scope :overtime_errors, -> { where('reg_hours > 40') }
   scope :needing_approval, -> { last_week.pending }
@@ -177,9 +177,9 @@ class Timesheet < ActiveRecord::Base
   
   
   def calculate_billing
-    reg_billing = job.pay_rate * reg_hours * reg_bill_rate
-    ot_billing = job.pay_rate * ot_hours * ot_bill_rate
-    self.total_bill = reg_billing + ot_billing
+    reg_billing = reg_hours * bill_rate
+    ot_billing = ot_hours * ot_bill
+    self.total_bill = reg_billing + ot_billing + adj_bill_total
   end
 
   def set_total_hours
@@ -232,6 +232,17 @@ class Timesheet < ActiveRecord::Base
       end
     end
   end
+  
+   # IMPORT TO CSV
+  def self.assign_from_row(row)
+    w = Chronic.parse(row[:week]).present? ? Chronic.parse(row[:week]).beginning_of_week : Date.current.beginning_of_week
+    timesheet = Timesheet.where(week: w, job_id: row[:job_id]).first_or_initialize
+    timesheet.assign_attributes row.to_hash.slice(:job_id, :reg_hours, :ot_hours)
+    timesheet.week = w
+    timesheet.state = "pending"
+
+    timesheet
+  end
 
   def current?
      week == Date.today.beginning_of_week
@@ -282,7 +293,18 @@ class Timesheet < ActiveRecord::Base
   def adj_total
     adjustments.any? ? adjustments.sum(:amount) : 0
   end
-
+  def adj_bill_total
+    adjustments.any? ? adjustments.sum(:bill_amount) : 0
+  end
+  
+  def bill_rate
+    pay_rate * reg_bill_rate
+  end
+  
+  def ot_bill
+    ot_rate * ot_bill_rate
+  end
+  
   def total_timesheet
       if shifts.any?
       hours = shifts.sum(:time_worked)
@@ -294,17 +316,21 @@ class Timesheet < ActiveRecord::Base
         self.reg_hours = 40
         self.ot_hours = hours - 40
         ot_rate = job.pay_rate * 1.5
-        self.gross_pay = job.pay_rate * self.reg_hours + self.ot_hours * ot_rate + adj_total
+        self.gross_pay = pay_rate * self.reg_hours + ot_hours * ot_rate + adj_total
       else
         self.total_hours = hours
         pay = job.pay_rate * hours
         self.reg_hours = hours
         self.ot_hours = 0
-        if adjustments.none?
+        if adjustments.any?
           self.gross_pay = pay + adj_total
+        else
+          self.gross_pay = pay
         end
       end
   end
+  
+  
   
   
   

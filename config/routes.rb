@@ -119,6 +119,7 @@ Rails.application.routes.draw do
           put 'update_multiple'
           get 'past'
           get 'last_week'
+          match 'search' => 'timesheets#search', via: [:get, :post], as: :search
         end
         resources :adjustments, module: :timesheets
         resources :shifts 
@@ -245,6 +246,10 @@ Rails.application.routes.draw do
       resources :timesheets do
         member do
           patch 'approve'
+        end
+        collection do
+          post 'import'
+          patch 'approve_all'
         end
         resources :comments
       end

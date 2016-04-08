@@ -1,13 +1,17 @@
 
- <%= render "admin/timesheets/search" %>
+
+ <div class='col-md-12 mainpage shadow'>
+   <%= render "admin/timesheets/search" %>
+  <%= render "shared/searching_btw_form", search_path: search_admin_timesheets_path %>
  
- <div class='col-md-12'>
  <h1>Past Timesheets</h1>
  <%= render "admin/timesheets/table", timesheets: @timesheets.distinct %>
     <div class='btn-group'>
      <%= link_to(past_admin_timesheets_path(@timesheets, format: :csv), class: 'btn btn-primary') do %>
 			  					<i class="fa fa-file-excel-o fa-lg"></i> Export CSV
-			  				
+			  				<% end %>
+			  <%= link_to(past_admin_timesheets_path(@timesheets, format: :pdf), class: 'btn btn-primary') do %>
+			  					<i class="fa fa-file-pdf-o fa-lg"></i> Export PDF
 			  				<% end %>
     </div>
    

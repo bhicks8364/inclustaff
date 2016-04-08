@@ -1,0 +1,22 @@
+
+<div class="col-md-12 well">
+    <h3>Timesheet history <br> <%= timesheet.name if @timesheet.nil? %> <small>week ending: <%= timesheet.week_ending.stamp("3/21") %></small></h3>
+    <p>Version count: <%= timesheet.versions.size %></p>
+    <div class="fa-ul">
+        <% timesheet.versions.order(created_at: :desc).each do |timesheet_version| %>
+            <li class="">
+               
+                 <p class="small text-info"> <%= timesheet_version.version_author %>
+                  <br><%= timesheet_version.event %> <%= time_ago_in_words(timesheet_version.created_at) %> ago </p>
+                
+                <% if timesheet_version.changeset == {} %>
+                    <p class="small text-muted">No changes were recorded.</p>
+                <% else %>
+                <p class="small text-muted">Changes were recorded.</p>
+                <% end %>
+               <hr>
+                
+            </li>
+        <% end %>
+    </div>
+</div>

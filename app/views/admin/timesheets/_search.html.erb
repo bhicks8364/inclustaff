@@ -4,7 +4,7 @@
     highlighter: '<strong>\1</strong>') %>
     </p>
     <% end %>
-    <%= search_form_for @q, class: '', url: admin_timesheets_path  do |f| %>
+    <%= search_form_for @q, class: '', url: search_admin_timesheets_path  do |f| %>
     <%= hidden_field_tag :redirect_to, @redirect_to %>
     <div class="form-inline">
         <%= f.search_field :employee_first_name_or_employee_last_name_cont, placeholder: "Search by employee", class: "form-control inline" %>

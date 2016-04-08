@@ -21,18 +21,8 @@ class AgencyTimesheetPdf < Prawn::Document
         move_down 20
         stroke_horizontal_rule
         move_down 5
-        move_down 30
         text "Copy prepared by: #{@signed_in.name}", color: "cccccc", style: :bold, align: :right, size: 10
-        start_new_page
-        text @agency.name, color: "cccccc", style: :bold, align: :center, size: 12
-        move_down 20
-        text @timesheets.last.time_frame if @scope != "all"
-        move_down 20
-        stroke_horizontal_rule
-        company_table
         
-        
-
     end
     def timesheet_table
         move_down 10
@@ -50,7 +40,7 @@ class AgencyTimesheetPdf < Prawn::Document
         if @scope == "all"
             @t = [["Company", "Week", "Employee", "Pay Rate", "Hours", "Gross Pay", "Approved by"]]
             @timesheets.map do |timesheet|
-               @t <<  [timesheet.company.name, timesheet.week_ending, "#{timesheet.employee.name} #{timesheet.employee.id}", price(timesheet.pay_rate), timesheet.total_hours.round(2), price(timesheet.gross_pay), timesheet.user_approved.titleize]
+               @t <<  [timesheet.company.name, timesheet.week_ending, "#{timesheet.employee.name}", price(timesheet.pay_rate), timesheet.total_hours.round(2), price(timesheet.gross_pay), timesheet.user_approved.titleize]
             total += timesheet.gross_pay
             end
             @t << ["", "", "", "", "Total", price(total)]
@@ -59,7 +49,7 @@ class AgencyTimesheetPdf < Prawn::Document
             total = 0
             @t = [["Company", "Employee", "Pay Rate", "Hours", "Gross Pay", "Approved by"]]
             @timesheets.map do |timesheet|
-               @t <<  [timesheet.company.name, "#{timesheet.employee.name} #{timesheet.employee.id}", price(timesheet.pay_rate), timesheet.total_hours.round(2), price(timesheet.gross_pay), timesheet.user_approved.titleize]
+               @t <<  [timesheet.company.name, "#{timesheet.employee.name}", price(timesheet.pay_rate), timesheet.total_hours.round(2), price(timesheet.gross_pay), timesheet.user_approved.titleize]
                total += timesheet.gross_pay
             end
             @t << ["", "", "", "", "Total", price(total)]

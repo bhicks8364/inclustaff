@@ -1,5 +1,5 @@
-<div class='col-md-12 white'>
-  <div class='col-md-3'>
+<div class='col-md-12 mainpage shadow'>
+  <div class='col-md-3 well'>
       <span id='balance'>
      <h4><strong>Balance:</strong> <%= number_to_currency(@invoice.balance) %></h4>
      </span>
@@ -49,7 +49,7 @@
      <div class='list-group'>
       <% @invoice.timesheets.each do |timesheet| %>
      <%= link_to company_timesheet_path(timesheet) do %>
-         <li class='list-group-item list-group-item-success'><%= timesheet.week_ending %> - <%= timesheet.employee_bill %> - <small><%= timesheet.state %></small></li>
+         <li class='list-group-item list-group-item-success shadow'><%= timesheet.week_ending %> - <%= timesheet.employee_bill %> - <small><%= timesheet.state %></small></li>
         <% end %>
     <% end %>
       </div>

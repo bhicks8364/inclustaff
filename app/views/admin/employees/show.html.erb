@@ -5,7 +5,9 @@
         <% end %>
     <% end %>
         <% if @employee.dns? %>   <h1 class="bold text-center text-danger">Marked as DNS</h1>   <% end %>
-        
+        <div class="well">
+            <h2>Job count: <%= @employee.jobs.count %></h2>
+        </div>
  <h2 class="page-header bold text-center"><%= @user.name %>'s Employee Profile  </h2>
 <!--NAV TABS-->
     <div id='profile-nav' class=''>

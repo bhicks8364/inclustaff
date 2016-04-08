@@ -1,5 +1,5 @@
 class Company::TimesheetsController < ApplicationController
-  before_action :set_timesheet, only: [:show, :destroy, :approve]
+  before_action :set_timesheet, only: [:show, :destroy, :approve, :edit, :update]
   before_action :authenticate_company_admin!
   layout 'company_layout'
 
@@ -14,6 +14,7 @@ class Company::TimesheetsController < ApplicationController
       @q = @company.timesheets.ransack(params[:q])
       @timesheets = @q.result.includes(:job, :employee)
     end
+    @import = Timesheet::Import.new
     gon.timesheets = @timesheets
     authorize @timesheets
     
@@ -39,7 +40,13 @@ class Company::TimesheetsController < ApplicationController
  
   end
   def new
-    @timesheet = Timesheet.new(week: Date.today.beginning_of_week)
+    @job = Job.find(params[:job_id]) if params[:job_id]
+    if @job.present?
+      @timesheet = @job.timesheets.new
+    else
+      @timesheet = Timesheet.new
+    end
+    @jobs = @current_company_admin.jobs.includes(:employee, :order)
     skip_authorization
   end
 
@@ -85,7 +92,39 @@ class Company::TimesheetsController < ApplicationController
     end
   end
 
-    
+  def import
+      @import  = Timesheet::Import.new(timesheet_import_params)
+      @imported_count
+      if @import.save
+        @q = @current_company_admin.timesheets.ransack(params[:q])
+        @timesheets = @current_company_admin.timesheets
+        redirect_to company_timesheets_path, notice: "Imported #{@import_count} timesheets."
+      else
+        @q = @current_company_admin.timesheets.ransack(params[:q])
+        @timesheets = @current_company_admin.timesheets
+        flash[:alert] = "There were errors with your CSV file."
+        render action: :index
+      end
+      skip_authorization
+      
+  end
+  
+  def approve_all
+    @timesheets = @current_company_admin.timesheets.pending
+    @timesheet_count = @timesheets.count
+    @timesheets.each do |timesheet|
+      approved_by = timesheet.approved? ? nil : current_company_admin.id
+      approved_by_type = timesheet.approved? ? nil : "CompanyAdmin"
+      state = timesheet.approved? ? 'pending' : 'approved'
+      timesheet.update(approved_by: approved_by, approved_by_type: approved_by_type, state: state)
+      current_company_admin.events.create(action: state, eventable: timesheet)
+    end
+    @q = @current_company_admin.timesheets.ransack(params[:q])
+    @timesheets = @current_company_admin.timesheets
+    @import = Timesheet::Import.new
+    render action: :index, notice: "You approved #{@timesheet_count} timesheets."
+    skip_authorization
+  end
     
 
   # GET /timesheets/1/edit
@@ -96,7 +135,12 @@ class Company::TimesheetsController < ApplicationController
   # POST /timesheets
   # POST /timesheets.json
   def create
-    @timesheet = Timesheet.new(timesheet_params)
+    @job = Job.find(params[:job_id]) if params[:job_id]
+    if @job.present?
+      @timesheet = @job.timesheets.new(timesheet_params)
+    else
+      @timesheet = Timesheet.new(timesheet_params)
+    end
     # authorize @timesheet
 
     skip_authorization
@@ -117,7 +161,7 @@ class Company::TimesheetsController < ApplicationController
     # authorize @timesheet
     respond_to do |format|
       if @timesheet.update(timesheet_params)
-        format.html { redirect_to @timesheet, notice: 'Timesheet was successfully updated.' }
+        format.html { redirect_to company_timesheet_path(@timesheet), notice: 'Timesheet was successfully updated.' }
         format.json { render :show, status: :ok, location: @timesheet }
       else
         format.html { render :edit }
@@ -129,10 +173,10 @@ class Company::TimesheetsController < ApplicationController
   # DELETE /timesheets/1
   # DELETE /timesheets/1.json
   def destroy
-    authorize @timesheet
+    
     @timesheet.destroy
     respond_to do |format|
-      format.html { redirect_to timesheets_url, notice: 'Timesheet was successfully destroyed.' }
+      format.html { redirect_to :back, notice: 'Timesheet was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -141,16 +185,19 @@ class Company::TimesheetsController < ApplicationController
   def pundit_user
     current_company_admin
   end
-    # Use callbacks to share common setup or constraints between actions.
-    def set_timesheet
-      @timesheet = Timesheet.find(params[:id])
-      authorize @timesheet
-    end
-
+  # Use callbacks to share common setup or constraints between actions.
+  def set_timesheet
+    @timesheet = Timesheet.find(params[:id])
+    skip_authorization
+    # authorize @timesheet
+  end
+  def timesheet_import_params
+    params.require(:timesheet_import).permit(:file)
+  end
     # Never trust parameters from the scary internet, only allow the white list through.
-    def timesheet_params
-      params.require(:timesheet).permit(:week, :job_id, :reg_hours, :ot_hours, :gross_pay, 
-        :shifts_attributes => [:id, :state, :job_id, :needs_adj, :employee_id, :note, 
-        :time_in, :time_out, :break_out, :break_in, :break_duration, :in_ip, :out_ip, :_destroy])
-    end
+  def timesheet_params
+    params.require(:timesheet).permit(:week, :job_id, :reg_hours, :ot_hours, :gross_pay, 
+      :shifts_attributes => [:id, :state, :job_id, :needs_adj, :employee_id, :note, 
+      :time_in, :time_out, :break_out, :break_in, :break_duration, :in_ip, :out_ip, :_destroy])
+  end
 end
