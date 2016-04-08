@@ -37,6 +37,7 @@
         
         <div class="well">
             <h1 class=''><span class=''><%= industry_sym(@order) %></span> <%= @order.title %> </h1>
+            <%= markdownify(@order.job_description) %>
             <%= markdownify(@order.notes) %>
         </div>
     </div>
