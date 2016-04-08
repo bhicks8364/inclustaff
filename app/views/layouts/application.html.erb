@@ -15,12 +15,12 @@
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
     <%= favicon_link_tag 'incluStaff_twitter_logo.png' %>
     <%= javascript_include_tag 'application', "//www.google.com/jsapi", "chartkick", "charts" %>
-
+    <%= render 'layouts/google_analytics' %>
     <%= csrf_meta_tags %>
   </head>
 
   <body>
-    <%= render 'layouts/google_analytics' %>
+    
     <%= render 'shared/navbar' %>
     <%= render 'demo/demo_nav' if @current_agency.present? && @current_agency.demo? && signed_in? %>
 
