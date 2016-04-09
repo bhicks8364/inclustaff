@@ -95,7 +95,7 @@ class AgenciesController < ApplicationController
     respond_to do |format|
       if @agency.update(agency_params)
         if params[:redirect_to].present?
-          format.html { redirect_to root_url, notice: 'Agency was successfully updated.' }
+          format.html { redirect_to params[:redirect_to], notice: 'Agency was successfully updated.' }
           format.json { render :show, status: :ok, location: @agency }
         else
           format.html { redirect_to @agency, notice: 'Agency was successfully updated.' }

@@ -34,9 +34,9 @@
     <%= f.association :contact, include_blank: false %>
     <%= f.input :weekly_sales_goal %>
     </div>
-    <%= hidden_field_tag :redirect_to, @redirect_to %>
+    <%= hidden_field_tag :redirect_to, root_url %>
     <div class="form-actions pull-right">
-      <%= f.button :submit, "Save Changes", class: "btn btn-primary btn-lg", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Saving..."} %>
+      <%= f.button :button, "Save Changes".html_safe, class: "btn btn-primary btn-lg", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Saving..."} %>
     </div>
 
 <% end %>

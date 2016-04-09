@@ -17,9 +17,9 @@
         <h1 class='text-center simple'>Welcome to IncluStaff, <%= @agency.name %>!</h1>
         <div class='col-md-4 well well-sm'>
             <% if @agency.logo_url.present? %>
-            <%= image_tag(@agency.logo_url, class: "img-zoom border bullet-icon", alt: "img-#{@agency.id}") %> 
+            <%= image_tag(@agency.logo_url, class: "bullet-icon", alt: "img-#{@agency.id}") %> 
             <% else %>
-            <%= image_tag(Faker::Placeholdit.image("250x250", "jpg", "ffffff", "000", "#{@agency.name}")) %>
+            <%= image_tag("logo.png", class: "bullet-icon", alt: "default-img-logo")  %>
             <% end %>
             <hr>
             <% if @agency.contact.present? %>
