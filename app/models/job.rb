@@ -89,7 +89,6 @@ class Job < ActiveRecord::Base
     scope :declined_by_candidate, -> { includes(:employee).where(state: "Declined by candidate")}
     scope :declined,    -> { includes(:employee).where(state: ["Declined by agency", "Declined by company", "Declined by candidate"])}
     scope :new_start, -> { includes(:employee).where(Job[:start_date].gteq(Date.today.beginning_of_week)) }
-
     # THESE WORKED!!!
     scope :on_shift, -> { includes(:employee).joins(:shifts).merge(Shift.clocked_in)}
     scope :at_work, -> { includes(:employee).joins(:shifts).merge(Shift.at_work)}
@@ -102,7 +101,7 @@ class Job < ActiveRecord::Base
     scope :worked_this_week, -> { joins(:timesheets).merge(Timesheet.this_week) }
     scope :worked_last_week, -> { joins(:timesheets).merge(Timesheet.last_week) }
     def self.without_current_shifts
-        includes(:employee, :current_shift).where( :shifts => { :job_id => nil } )
+        currently_working.includes(:employee, :current_shift).where( :shifts => { :job_id => nil } )
     end
     def self.without_current_timesheet
         currently_working.includes(:employee, :current_timesheet).where( :timesheets => { :job_id => nil } )

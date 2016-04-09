@@ -17,8 +17,8 @@
     	        <% end %>
 				<td><%= link_to "<i class='fa fa-user fa-lg fa-fw'></i> #{employee.name}".html_safe, admin_employee_path(employee), class: "" %></td>
 				<td><%= employee.title %></td>
-				<td><%= number_to_currency(employee.timesheets.for_the_week_of.try(:gross_pay) || 0) %> </td>
-				<td><%= number_to_currency(employee.current_job.try(:total_gross_pay) || 0) %> </td>
+				<td><%= number_to_currency(employee.current_pay) %> </td>
+				<td><%= number_to_currency(employee.ytd_gross_pay) %> </td>
 				</tr>
 			<% end %>
 			

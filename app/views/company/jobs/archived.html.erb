@@ -1,11 +1,11 @@
 <div class="col-md-12 mainpage shadow">
-    <% if @archived_jobs.any? %>
-<%= div_for @archived_jobs.distinct do |job| %>
-    <h1><%= job.employee.name %> - <%= job.state %></h1>
+    <% if @pending_approval.any? %>
+<%= div_for @pending_approval.distinct, class: "well" do |job| %>
+    <h3 class='bold'><%= link_to job.employee.name, company_job_path(job) %> <span class="badge"><%= job.state %></span></h3>
      <%= render job.comments %>
 <% end %>  
 <% else %>
-<h2>No Inactive Jobs</h2>
+<h2>No Pending Jobs</h2>
 <% end %>
 
 

@@ -1,0 +1,126 @@
+<div class='col-md-12 mainpage shadow'>
+  
+<% if @job.active? %>
+<h1 class='text-right bold text-success'><%= @job.state %></h1>
+<h2> <strong><%= @employee.name %></strong> <small> <%= @job.title %></small></h2>
+<% else %>
+<h1 class='text-right text-warning bold'><%= @job.state %></h1>
+<h2> <strong><%= @employee.name %></strong> <small> <%= @job.title %></small></h2>
+<% end %>
+
+<div class='company-profile-nav'>
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#job-tab" aria-controls="job-tab" role="tab" data-toggle="tab">Job Information</a></li>
+    <li role="presentation"><a href="#editing" aria-controls="editing" role="tab" data-toggle="tab">Approval</a></li>
+    <li role="presentation"><a href="#comments" aria-controls="comments" role="tab" data-toggle="tab">Comments</a></li>
+   
+  </ul>
+  
+  <div class="tab-content">
+      <div role="tabpanel" class="tab-pane fade in active" id="job-tab">
+        <div class='col-md-12'>
+          <div class='col-md-4 well'>
+           
+              <% if @job.active? %>
+                <h4>Total Hours: <%= @job.total_hours %></h4>
+                <h4>Total Gross Pay: <%= number_to_currency(@job.timesheets.sum(:gross_pay)) %></h4>
+                <hr>
+                <p><strong>Gross this week:</strong> <%= number_to_currency(@job.current_week_pay) %></p>
+                <p><strong>Hours this week : </strong><%= @job.current_week_hours %></p>
+              <% else %>
+              <h3><%= @employee.first_name %>'s Past Positions</h3>
+                <% if @employee.work_histories.any? %>
+                <% @employee.work_histories.each do |work_history| %>
+                  <%= work_history.employer_name %>
+                <% end %>
+                <% else %>
+                  <p class='bold'>No past work history.</p>
+                <% end %>
+              <% end %>
+          </div>
+          <div class='col-md-6 well'>
+            <% if @job.active? %>
+                <p class='lead'><strong>First day:</strong> <%= @job.first_day.stamp("Monday December 25th, 2016") %></p>
+              <strong>Pay rate:</strong>  <%= number_to_currency(@job.pay_rate, :unit => "$") %><br>
+            <h4><%= @job.title %><small><%= number_to_currency(@job.pay_rate) %></small></h4>
+              <% else %>
+              <h3> This position is currently inactive.</h3>
+            <% end %>
+            </div>
+        </div>
+      </div>
+      
+      
+      <div role="tabpanel" class="tab-pane fade" id="editing">
+        <div class='col-md-12'>
+          <div class='col-md-5 well'>
+             <p class='lead'>Interview Notes:</p> 
+             <p class='metal'><%= @job.description.length > 1 ? @job.description : "No interview notes to show" %></p>
+          <hr>
+          </div>
+          <div class='col-md-5 well'>
+              <%= simple_form_for [:company, @job] do |f| %>
+                <% if @job.errors.any? %>
+                  <div id="error_explanation">
+                    <h2><%= pluralize(@job.errors.count, "error") %> prohibited this job from being saved:</h2>
+              
+                    <ul>
+                      <% @job.errors.full_messages.each do |message| %>
+                        <li><%= message %></li>
+                      <% end %>
+                    </ul>
+                  </div>
+                <% end %>
+                 <%= f.input :title, disabled: true %>
+               <%= f.input :state, as: :select, collection: ['Pending Approval', 'Currently Working', 'Declined by company', 'Other - requires note'], hint: "Choose 'Currently Working' to accept #{@job.name}", include_blank: false %>
+               
+                <%= f.input :description, as: :text, placeholder: "Interview Notes", data: {behavior: ''}, input_html: { rows: 10, class: "myatwho" }, label: false %>
+                
+                <%= f.input :active %>
+                <%= f.submit %>
+              <% end %>
+          </div>
+          <div class='col-md-2'>
+              <%= link_to 'Edit', edit_company_job_path(@job), class: 'btn btn-primary btn-lg' %> 
+              Timeclock Code: <%= @employee.code %>
+              
+            <div class='well well-sm text-center'>
+              <h4 class='text-center'><%= @current_agency.name %><br> <small>Contact List</small></h4>
+              <h4 class='text-left'>Account Manager:</h4>
+              <%= @job.account_manager.try(:name) %><br>
+              <small><%= @job.account_manager.try(:phone_number) %> <br> <%= @job.account_manager.try(:email) %></small><br>
+            <h4 class='text-left'>Recruiter:</h4>
+            <%= @job.recruiter.try(:name) %><br>
+             <small> <%= @job.recruiter.try(:email) %></small><br>
+             <h4 class='text-left'>Payroll:</h4><%= @current_agency.payroll_admin.first.try(:name) %><br>
+             <small><%= @current_agency.payroll_admin.first.try(:email) %></small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div role="tabpanel" class="tab-pane fade" id="comments">
+           <div class='col-md-12'>
+             
+             <div class='col-md-4'>
+                <h2>Comments</h2>
+                <div data-behavior='comment-list' class='scroll300' id='comment-list'>
+                    <% @job.comments.unread.order(created_at: :desc).each do |comment| %>
+                        <%= render 'comments/comment', comment: comment %>
+                    <% end %>
+                </div>
+                <%= render partial: "comments/form", locals: {commentable: @job} %>
+             </div>
+          </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+  

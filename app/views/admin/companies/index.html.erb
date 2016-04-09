@@ -21,7 +21,7 @@
       <tr>
         <td><%= link_to company.name, admin_company_path(company), class: '' %></td>
         <td><%= company.contact_name %></td>
-        <td><%= company.current_timesheets.try(:count) %> / <%= company.jobs.active.try(:count) %></td>
+        <td> <%= company.current_timesheets.try(:count) %> / <%= company.jobs.currently_working.try(:count) %></td>
         <td><%= company.timesheets.current_week.any? ? number_to_currency(company.timesheets.current_week.sum(:total_bill) ) : "N/A"%></td>
         <td><%= number_to_currency(company.invoices.unpaid.sum(:total) ) %></td>
         <td><%= company.account_manager.try(:name) || "No Account Manager" %></td>

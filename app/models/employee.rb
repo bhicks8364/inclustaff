@@ -250,19 +250,15 @@ class Employee < ActiveRecord::Base
 
 
   def ytd_gross_pay
-    if timesheets.any?
-      timesheets.sum(:gross_pay)
-    else
-      0
-    end
+    timesheets.any? ? timesheets.sum(:gross_pay) : 0
+  end
+  
+  def current_pay
+    current_timesheet.present? ? current_timesheet.gross_pay : 0
   end
 
   def current_job_hours
-    if current_job.present?
-      current_job.timesheets.sum(:total_hours)
-    else
-      0
-    end
+    current_job.present? ? current_job.timesheets.sum(:total_hours) : 0
   end
 
   def total_all_hours

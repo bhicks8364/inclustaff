@@ -38,7 +38,7 @@ class Company < ActiveRecord::Base
     has_many :orders, dependent: :destroy
     has_many :skills, through: :orders
     has_many :jobs, through: :orders
-    has_many :active_jobs, -> { where active: true }, through: :orders, class_name: "Job"
+    has_many :pending_jobs, -> { where state: "Pending Approval" }, through: :orders, class_name: "Job"
     has_many :employees, through: :jobs
     has_many :users, through: :employees
     has_many :shifts, through: :jobs
@@ -72,7 +72,7 @@ class Company < ActiveRecord::Base
     # after_create :send_notification_email, :create_company_admin
 
     validates :name,  presence: true, length: { maximum: 50 }
-    # validates :agency_id,  presence: true
+    validates :agency_id,  presence: true
     
     # validates :contact_name,  presence: true, length: { maximum: 20 }
     # VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i

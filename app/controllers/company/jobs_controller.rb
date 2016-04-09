@@ -14,11 +14,10 @@ class Company::JobsController < ApplicationController
   end
 
   def archived
-    @admin = current_company_admin
-    @company = @admin.company
-    @archived_jobs = @company.jobs.pending_approval
-
-    authorize @archived_jobs, :index?
+    @company = @current_company
+    @pending_approval = @company.pending_jobs
+    skip_authorization
+    # authorize @pending_approval, :index?
   end
 
   def show
@@ -26,6 +25,9 @@ class Company::JobsController < ApplicationController
     @employee = @job.employee
     @company = @job.company
     @order = @job.order
+    if @job.pending_approval?
+      render "company/jobs/pending" 
+    end
     @current_timesheet = @job.current_timesheet
 
     @current_shift = @job.shifts.clocked_in.last if @job.on_shift?
