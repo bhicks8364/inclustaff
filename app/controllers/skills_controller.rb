@@ -19,8 +19,8 @@ class SkillsController < ApplicationController
   def index
     @q = Skill.includes(:skillable).ransack(params[:q])
     @skills = @q.result(distinct: true)
-    @employee_skills = @skills.employee.includes(:skillable).order(:name)
-    @order_skills = @skills.job_order.includes(:skillable).order(:name)
+    @employee_skills = @skills.employee.includes(:skillable).order(:name).distinct
+    @order_skills = @skills.job_order.includes(:skillable).order(:name).distinct
     # query = params[:q].presence || "*"
     # @skills = Skill.search query, suggest: true
     # Product.search "peantu butta", suggest: true

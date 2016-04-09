@@ -1,11 +1,12 @@
 <div class='col-md-12 mainpage shadow'>
     <div class="btn-group btn-group-justified" role="group">
         <%= link_to "View #{@employee.first_name}'s Profile", admin_job_path(@job), class: 'btn btn-default' %>
-        <%= link_to 'Add A Timesheet', edit_admin_timesheet_path(@timesheet), class: 'btn btn-default' %>
+        <%= link_to 'Add A Timesheet', new_admin_job_timesheet_path(@job), class: 'btn btn-default' %>
         <%= link_to 'View All Timesheets', admin_job_timesheets_path(@job), class: 'btn btn-default' %>
     </div>
     <div class='col-md-8 well well-sm shadow'>
         <h2 class="bold"><%= @company.name %></h2>
+        <%= link_to 'Edit Timesheet', edit_admin_timesheet_path(@timesheet), class: 'btn btn-default pull-right' %>
         <hr>
         <div class='shadow' data-behavior="timesheet-list">
             <%= render @timesheet %>
@@ -26,7 +27,13 @@
             <p class='text-info'>Adjustments: <%= @timesheet.adjustments.sum(:bill_amount) %></p>
             <p class='bold'><%= @timesheet.reg_hours * @timesheet.bill_rate %> + <%= @timesheet.ot_hours * @timesheet.ot_bill %>  + <%= @timesheet.adjustments.sum(:bill_amount) %>  = <%= number_to_currency @timesheet.total_bill %></p>
         </div>
-        
+         <% if @timesheet.shifts.any?  %>
+    <div class='col-md-12'>
+        <%= link_to "Edit Shift Times", admin_timesheet_shifts_path(@timesheet), class: "btn btn-info btn-sm" %>
+      <h3> Shifts</h3>
+       <%= render 'admin/shifts/table', shifts: @shifts %>
+    </div>
+    <% end %>
     </div>
     <div class='col-md-4 pad shadow light'>
         <div class="well">
@@ -63,13 +70,7 @@
             <%= render "history", timesheet: @timesheet %>
         </div>
     </div>
-    <% if @timesheet.shifts.any?  %>
-    <div class='col-md-12'>
-        <%= link_to "Edit Shift Times", admin_timesheet_shifts_path(@timesheet), class: "btn btn-info btn-sm" %>
-      <h3> Shifts</h3>
-       <%= render 'admin/shifts/table', shifts: @shifts %>
-    </div>
-    <% end %>
+   
     
 </div>
 

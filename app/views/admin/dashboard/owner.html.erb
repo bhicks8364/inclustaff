@@ -44,7 +44,7 @@
 		                </div>
 		                <h4 class='text-right '>  <span class='label label-success black'>Sales Goal &nbsp;<%= number_to_currency(@current_agency.weekly_sales_goal) %></span> </h4>
 	       				<hr>
-	       			
+	       			<%= render "admin/dashboard/orders_by_company", companies: @current_agency.companies %>
 	       			<h2>Company Billings</h2>
 	       				<%= line_chart   Company.uniq.map { |c| { name: c.name, data: c.invoices.group_by_month(:week, range: Date.current.beginning_of_year...Date.current, format: "%B %Y").sum(:total) }  }, discrete: true %>
 	       			

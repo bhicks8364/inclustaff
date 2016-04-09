@@ -240,7 +240,12 @@ class Timesheet < ActiveRecord::Base
     timesheet.assign_attributes row.to_hash.slice(:job_id, :reg_hours, :ot_hours)
     timesheet.week = w
     timesheet.state = "pending"
-
+    if timesheet.ot_hours.blank?
+      timesheet.ot_hours = 0
+    end
+    if timesheet.reg_hours.blank?
+      timesheet.reg_hours = 0
+    end
     timesheet
   end
 

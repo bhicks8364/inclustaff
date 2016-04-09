@@ -54,7 +54,7 @@
         
   </div>
   <div role="tabpanel" class="tab-pane fade" id="positions">
-      <div class="col-md-12">
+      <div class="col-md-12 well">
           <h3>Suggested Positions</h3>
           <%= render 'admin/orders/table', orders: @employee.matching_orders if admin_signed_in? %>
           <%= render 'employee/orders/open_table', orders: @employee.matching_orders if user_signed_in? %>

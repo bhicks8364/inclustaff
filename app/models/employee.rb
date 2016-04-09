@@ -76,7 +76,12 @@ class Employee < ActiveRecord::Base
   after_initialize :set_defaults
   before_save :check_assigned
   
-
+  def self.without_direct_deposit
+      includes(:direct_deposits).where( :direct_deposits => { :employee_id => nil } )
+  end  
+  
+  scope :working, -> { where(status: 'Working')}
+  scope :needing_dd, -> { without_direct_deposit.where(status: 'Working').joins(:timesheets).merge(Timesheet.current_week)}
   def available?
     current_job.nil? && dns == false
   end
@@ -95,8 +100,7 @@ class Employee < ActiveRecord::Base
     end
   end
 
-# employees.each {|e| e.update(desired_job_type: "Full-time")}
-
+  
 
   # VALIDATIONS
   # validates :first_name,  presence: true, length: { maximum: 20 }

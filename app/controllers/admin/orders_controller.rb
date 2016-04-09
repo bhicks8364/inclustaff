@@ -8,8 +8,8 @@ class Admin::OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
-    @q = Order.includes(:company).order(needed_by: :desc).ransack(params[:q]) if @current_admin.owner? || @current_admin.payroll? || @current_admin.account_manager?
-    @q = Order.includes(:company).order(needed_by: :desc).ransack(params[:q]) if @current_admin.recruiter?
+    @q = Order.includes(:company).ransack(params[:q]) if @current_admin.owner? || @current_admin.payroll? || @current_admin.account_manager?
+    @q = Order.needs_attention.includes(:company).ransack(params[:q]) if @current_admin.recruiter?
     
     @import = Order::Import.new
     if params[:company_id]
@@ -24,7 +24,6 @@ class Admin::OrdersController < ApplicationController
       @orders = @orders.tagged_with(params[:tag])
     end
     if @q.nil?
-      
     # @order_months = @current_agency.orders.group_by { |t| t.needed_by.beginning_of_month }
     @hash = Gmaps4rails.build_markers(@orders) do |order, marker|
           marker.lat order.latitude

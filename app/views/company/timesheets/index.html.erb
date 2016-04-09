@@ -1,7 +1,10 @@
 <div class='col-md-12' data-behavior='timesheet-list'>
     <div class='col-md-12 well well-sm'>
+        
 		<%= form_for @import, url: import_company_timesheets_path, multipart: true do |f| %>
-		<div class="col-md-8">
+		<div class="col-md-6 well">
+		    <h4 class="bold text-center">Import Timesheets as CSV</h4>
+		    <hr>
 		<% if @import.errors.any? %>
 			<div class='alert alert-error'>
     		<% @import.errors.full_messages.each do |msg| %>
@@ -9,21 +12,34 @@
     		<% end %>
 			</div>
 		<% end %>
-		<p><%= @current_company_admin.jobs.pluck(:id) %></p>
+		
     		<div class="form-group">
     			<%= f.file_field :file %>
     			<%= f.submit "Upload" %>
     		</div>
+    		
 		<% end %>
 	
 		</div>
-		<div class="col-md-4">	
-		<ul class="fa-ul">
-		    <li>Week</li>
-		    <li>Job_id</li>
-		    <li>Reg_hours</li>
-		    <li>Ot_hours</li>
-		</ul>
+		<div class="col-md-6">	
+		<div class="col-md-4 well well-sm">
+		    <h5 class="bold">Required Fields</h5>
+		    <ul class="fa-ul">
+    		    <li>Week</li>
+    		    <li>Job_id</li>
+    		    <li>Reg_hours</li>
+    		    <li>Ot_hours</li>
+    		</ul>
+		</div>
+		<div class="col-md-8 well">
+		    <h5 class="bold text-center">Employees without current timesheets.</h5>
+		    <ul class="fa-ul scroll300">
+    		    <li class=""><p class="small bold">Name <span class="pull-right">Job_id</span></p></li>
+		    <% @current_company_admin.jobs.without_current_timesheet.each do |job| %>
+		        <li class=""><p><%= job.name %> <span class="pull-right text-info"><%= job.id %></span></p></li>
+		    <% end %>
+		    </ul>
+		</div>
 		</div>
 	</div>
    <div class='row'>
@@ -35,7 +51,7 @@
             <% else %>
             <%= link_to "<i class='fa fa-check fa-fw'></i>Approve All Timesheets".html_safe, approve_all_company_timesheets_path, method: :patch, id: "approve_all", class: "btn btn-success" %>
             <% end %>
-            <div class="scroll500">
+            <div class="well scroll500">
                 <%= render "company/timesheets/table", timesheets: @timesheets.pending.distinct  || "There are no pending timesheets for this week yet." %>
             </div>
         <% else %>

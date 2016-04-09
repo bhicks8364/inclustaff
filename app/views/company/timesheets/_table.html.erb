@@ -22,9 +22,12 @@
 				<% if timesheet.current? %>	<a class='btn btn-primary' data-behavior="company-timesheet-toggle"><% if timesheet.approved? %><span data-behavior="approve-button" > <i class="fa fa-check fa-fw"></i> <span data-behavior='timesheet-state'><%= timesheet.state.upcase %></span><% else %><span data-behavior="approve-button" > <i class="fa fa-clock-o fa-fw"></i> <span  data-behavior='timesheet-state'><%= timesheet.state.upcase %></span></span><% end %>	</a>
 			<% elsif !timesheet.current? && timesheet.pending? %>	<a class='btn btn-primary' data-behavior="company-timesheet-toggle"><% if timesheet.approved? %><span data-behavior="approve-button" > <i class="fa fa-check fa-fw"></i> <span data-behavior='timesheet-state'><%= timesheet.state.upcase %></span><% else %><span data-behavior="approve-button" > <i class="fa fa-clock-o fa-fw"></i> <span  data-behavior='timesheet-state'><%= timesheet.state.upcase %></span></span><% end %>	</a>
 			<%else%>
-			<%= timesheet.state %>
+			<%= timesheet.state.titleize %>
 			<% end %>
-			<td><%= link_to "delete", company_timesheet_path(timesheet), method: :delete, class: 'button' %></td>
+			<td>
+				<%= link_to "Edit", edit_company_timesheet_path(timesheet), class: 'btn btn-default btn-sm' %>
+				<%= link_to "Delete", company_timesheet_path(timesheet), method: :delete, class: 'btn btn-default btn-sm' if timesheet.current? %>
+				</td>
 		</tr>
 		
 		<% end %>

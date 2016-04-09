@@ -94,7 +94,6 @@ class Company::TimesheetsController < ApplicationController
 
   def import
       @import  = Timesheet::Import.new(timesheet_import_params)
-      @imported_count
       if @import.save
         @q = @current_company_admin.timesheets.ransack(params[:q])
         @timesheets = @current_company_admin.timesheets
