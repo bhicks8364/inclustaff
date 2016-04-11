@@ -16,7 +16,7 @@ class Break < ActiveRecord::Base
   belongs_to :shift
 
   before_create :set_paid
-  before_save :set_duration, :update_shift_state
+  before_save :set_duration
   
 
   def set_paid
@@ -28,11 +28,4 @@ class Break < ActiveRecord::Base
     self.duration = TimeDifference.between(time_in, time_out).in_hours if time_out_changed?
   end
   
-  def update_shift_state
-    if time_out.present?
-      shift.update(state: "Clocked In")
-    else
-      shift.update(state: "On Break")
-    end
-  end
 end

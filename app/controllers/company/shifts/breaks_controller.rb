@@ -11,15 +11,17 @@ class Company::Shifts::BreaksController < ApplicationController
     skip_authorization
   end
   def update
-    # @shift_break = @shift.breaks.find(params[:id])
+    @shift_break = @shift.breaks.find(params[:id])
+    @shift_break.update(shift_break_params)
+    
     skip_authorization
     respond_to do |format|
-      if @shift.on_break?
-        format.html { redirect_to company_shift_path(@shift), notice: 'On Break!' }
+      if @shift_break.update(shift_break_params)
+        format.html { redirect_to company_shift_path(@shift), notice: 'Updated!' }
         format.json { render :show, status: :ok, location: @shift }
       else
-        format.html { render :edit }
-        format.json { render json: @shift.errors, status: :unprocessable_entity }
+        format.html { redirect_to company_shift_path(@shift), notice: 'Not Updated!' }
+        format.json { render :show, status: :ok, location: @shift }
       end
     end
     
