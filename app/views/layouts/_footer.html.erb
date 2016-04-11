@@ -1,11 +1,12 @@
 
-<nav class="navbar navbar-default footer">
+<nav class="navbar navbar-default footer ">
   <div class="container">
           <a href="https://twitter.com/IncluStaff" class="twitter-follow-button navbar-btn navbar-left" data-show-count="false" data-size="large" data-show-screen-name="false">Follow @IncluStaff</a>
     <p class="navbar-text navbar-right">IncluStaff  <small>&copy; 2016</small>  </p>
     <span><script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
     <script type="IN/FollowCompany" data-id="10429181"></script></span>
-  	<% if signed_in? %>
+  <div class="fb-like" data-href="https://www.facebook.com/inclustaff" data-width="100" data-layout="button" data-action="like" data-show-faces="true" data-share="true"></div>
+    	<% if signed_in? %>
   		<p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link"><%= @signed_in.name %></a></p>
   	<% end %>
   </div>

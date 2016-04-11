@@ -20,7 +20,7 @@
   </head>
 
   <body>
-    
+    <%= render 'layouts/facebook' %>
     <%= render 'shared/navbar' %>
     <%= render 'demo/demo_nav' if @current_agency.present? && @current_agency.demo? && signed_in? %>
 

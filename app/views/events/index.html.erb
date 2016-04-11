@@ -1,16 +1,12 @@
 <div class='col-md-12 mainpage shadow'>
-  <div class='col-md-6'>
-    <%= render 'shared/searching_between' %>
-  </div>
- 
-  <div class='col-md-6 form-inline text-center'>
+  <div class='col-md-12 text-center well'>
      <%= render 'events/search' %>
   </div>
   
   <div class='col-md-6'>
     <h3 class=''><i class="fa fa-file-text-o fa-fw"></i><strong>&nbsp; Agency Events</strong></h3>
   
-    <% @events.admin.each do |event| %>
+    <% @events.admin.limit(15).each do |event| %>
       <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
         <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
       <% end %>
@@ -20,7 +16,16 @@
      <h3 class=''><i class="fa fa-file-text-o fa-fw"></i><strong>&nbsp; Company Events</strong></h3>
    
   
-    <% @events.company_admin.each do |event| %>
+    <% @events.company_admin.limit(15).each do |event| %>
+      <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+        <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class='col-md-6'>
+    <h3 class=''><i class="fa fa-file-text-o fa-fw"></i><strong>&nbsp; Payroll Events</strong></h3>
+  
+    <% @events.imports.limit(15).each do |event| %>
       <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
         <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
       <% end %>
@@ -32,7 +37,7 @@
   <div class='col-md-6'>
     <h3 class=''><i class="fa fa-file-text-o fa-fw"></i><strong>&nbsp; Availability List</strong></h3>
   
-    <% @events.looking_for_work.each do |event| %>
+    <% @events.looking_for_work.limit(15).each do |event| %>
       <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
         <%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
       <% end %>

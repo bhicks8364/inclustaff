@@ -32,13 +32,13 @@ class Company::EventsController < ApplicationController
     @start_time = Chronic.parse(params[:date1])
     @end_time = Chronic.parse(params[:date2])
     if @start_time.present? && @end_time.present?
-      @events = @current_company.events.occurring_between(@start_time, @end_time).order(created_at: :desc).distinct
+      @events = @current_company.admin_events.occurring_between(@start_time, @end_time).order(created_at: :desc).paginate(:page => params[:page], :per_page => 10).distinct
     elsif @start_time.present?
-      @events = @current_company.events.happened_after(@start_time).order(created_at: :desc).distinct
+      @events = @current_company.admin_events.happened_after(@start_time).order(created_at: :desc).paginate(:page => params[:page], :per_page => 10).distinct
     elsif @end_time.present?
-      @events = @current_company.events.happened_before(@end_time).order(created_at: :desc).distinct
+      @events = @current_company.admin_events.happened_before(@end_time).order(created_at: :desc).paginate(:page => params[:page], :per_page => 10).distinct
     else
-      @events = @current_company.events.all.order(created_at: :desc)
+      @events = @current_company.admin_events.all.order(created_at: :desc).paginate(:page => params[:page], :per_page => 10).distinct
       # @events = @signed_in.events.unread
     end
     

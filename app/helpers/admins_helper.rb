@@ -52,4 +52,24 @@ module AdminsHelper
     def role_tag(admin)
             "<span class='' data-toggle='tooltip' data-placement='right' title='#{admin.role}'>#{admin.name}</span>".html_safe
     end
+    def commision_rate(admin)
+        timesheets = admin.timesheets.current_week.distinct
+        hours = timesheets.sum(:total_hours)
+        if hours >= 500
+            rate = 0.05
+        else
+            rate = 0.025
+        end
+    end
+    def current_commission_for(admin)
+        timesheets = admin.timesheets.current_week.distinct
+        if timesheets.any?
+            pay = timesheets.sum(:gross_pay)
+            bill = timesheets.sum(:total_bill)
+            (bill - pay) /2 * commision_rate(admin)
+            
+        else
+            0.00
+        end
+    end
 end

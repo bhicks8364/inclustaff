@@ -32,7 +32,7 @@ class Company < ActiveRecord::Base
     belongs_to :agency
     belongs_to :account_manager, class_name: "Admin", foreign_key: "admin_id"
     has_many :admins, class_name: "CompanyAdmin", foreign_key: "company_id", dependent: :destroy
-    has_many :events, through: :admins
+    # has_many :events, through: :admins
     has_many :payroll_admins, -> { where role: "Payroll" }, through: :agency, class_name: "Admin"
     has_many :invoices
     has_many :orders, dependent: :destroy
@@ -53,7 +53,8 @@ class Company < ActiveRecord::Base
     has_many :job_comments, through: :jobs, source: 'comments'
     has_many :timesheet_comments, through: :timesheets, source: 'comments'
     has_many :shift_comments, through: :shifts, source: 'comments'
-
+    has_many :events, as: :eventable
+    
     scope :with_pending_jobs, -> { joins(:orders => :jobs).merge(Job.pending_approval)}
     scope :with_active_jobs, -> { joins(:orders => :jobs).merge(Job.currently_working)}
     scope :with_open_orders, -> { joins(:orders).merge(Order.needs_attention)}

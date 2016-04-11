@@ -2,7 +2,7 @@
 <div class='col-md-12 mainpage shadow'>
   <div class='btn-group'>
   <% if @invoice.unpaid? %>
-  <%= link_to 'Mark As Paid', mark_as_paid_admin_invoice_path(@invoice), method: :patch, remote: true, id: 'pay-button', class: 'btn btn-primary' %>
+  <%= link_to 'Mark As Paid', mark_as_paid_admin_invoice_path(@invoice), method: :patch, id: "pay-button-#{@invoice.id}", class: 'btn btn-primary' %>
   <% end %>
   <%= link_to 'Download PDF', admin_company_invoice_path(@company, @invoice, format: :pdf), class: 'btn btn-primary' %>
     <%= link_to 'Edit', edit_admin_company_invoice_path(@company, @invoice), class: 'btn btn-primary' %>
@@ -13,7 +13,7 @@
 
   <h4 id='example'>
     
-    <strong>Invoice Number:</strong> #<%= @current_agency.id %>-<%= @invoice.id %></h4>
+    <strong>Invoice Number:</strong> #<%= @invoice.company.id %>-<%= @invoice.id %></h4>
   <h3 class=''>
       <%= link_to @invoice.company.name, admin_company_path(@invoice.company) %>
     </h3>
@@ -21,22 +21,22 @@
    
    
     <h2  class='text-center'> 
-   <span id='inv-sym'>
+   <span id='inv-sym-<%=@invoice.id%>'>
      <%= inv_sym(@invoice) %> 
    </span>
-     <span id='paid-on'>
+     <span id='paid-on-<%=@invoice.id%>'>
        <%= @invoice.paid_on %>
      </span>
     </h2>
 
   <h2>
-     <span id='status'>
+     <span id='status-<%=@invoice.id%>'>
        <%= @invoice.paid? ? "Paid" : "Due by: #{@invoice.due_by.stamp('12/18/2015')}" %>
      </span>
     </h2>
 <hr>
 <h3><span class='pull-center'>
-    <strong>Balance:</strong> <span id='balance'><%= number_to_currency(@invoice.balance) %> </span>
+    <strong>Balance:</strong> <span id='balance-<%=@invoice.id%>'><%= number_to_currency(@invoice.balance) %> </span>
   </span></h3>
 <p class='lead text-left'>
   <span class=''>
@@ -47,7 +47,7 @@
   
   <p class='lead'>
     <strong>Amount paid:</strong>
-    <span id='amt-paid'>
+    <span id='amt-paid-<%=@invoice.id%>'>
       <%= number_to_currency(@invoice.amt_paid) %>
     </span>
     

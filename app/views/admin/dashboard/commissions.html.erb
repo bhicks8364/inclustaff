@@ -1,7 +1,36 @@
-<h1>Commissions</h1>
-<hr>
-<h2>Account Managers</h2>
+<div class="col-md-12 mainpage shadow">
+    <h1 class='bold'>Commissions</h1>
+   
+    
+    <div class="well shadow">
+  <table id="" class="table display">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Current Rate</th>
+      <th>Total Hours</th>
+      <th>Current Bill</th>
+      <th>Commission</th>
+    </tr>
+  </thead>
 
-<div class='col-md-12 well'>
-    <%= render @account_managers %>
+  <tbody>
+    <% @account_managers.each do |admin| %>
+      <tr>
+        <td><%= link_to admin.name, admin_admin_path(admin), class: '' %></td>
+        <td><%= commision_rate(admin) %></td>
+        <td> <%= admin.timesheets.current_week.sum(:total_hours).round(2) %></td>
+        <td><%= admin.timesheets.current_week.any? ? number_to_currency(admin.timesheets.current_week.sum(:total_bill) ) : "N/A"%></td>
+        <td><%= number_to_currency current_commission_for(admin) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
+     <div class='col-md-12 well'>
+          <h2>Account Managers</h2>
+        <%= render @account_managers %>
+    </div>
+    
+    
 </div>

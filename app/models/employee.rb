@@ -201,7 +201,7 @@ class Employee < ActiveRecord::Base
     if current_job.present?
       self.assigned = true
       self.status = "Working"
-    elsif available?
+    elsif current_job.nil? && !dns?
       self.assigned = false
       self.status = "Available"
     elsif dns?

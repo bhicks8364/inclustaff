@@ -1,9 +1,11 @@
 <div class='col-md-12 mainpage shadow'>
-    <%= link_to "Back to search", public_job_board_path, class: 'btn btn-default' if !signed_in? %>
-  <h1 class='text-center'> <%= @orders.count %> available positions </h1>
-    <div class='col-md-12 well'>
-        <h4>Open Job Orders</h4>
-        <%= div_for(@orders) do |order| %>
+    <p class='text-right'>Today is <%= time_tag(Time.current) %>.</p>
+
+       
+
+    <div class='col-md-6 well'>
+    <h4>Open Job Order</h4>
+        <%= div_for @orders, class: "well border" do |order| %>
             <% if !signed_in? %>
                 <%= link_to public_job_path(order) do %>
                     <%= order.title %><br>
@@ -27,6 +29,8 @@
             <% end %>
         <% end %>
     </div>
+
+    
 
 
 

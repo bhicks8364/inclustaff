@@ -101,7 +101,7 @@ class Job < ActiveRecord::Base
     scope :worked_this_week, -> { joins(:timesheets).merge(Timesheet.this_week) }
     scope :worked_last_week, -> { joins(:timesheets).merge(Timesheet.last_week) }
     def self.without_current_shifts
-        currently_working.includes(:employee, :current_shift).where( :shifts => { :job_id => nil } )
+        includes(:employee, :current_shift).where( :shifts => { :job_id => nil } )
     end
     def self.without_current_timesheet
         currently_working.includes(:employee, :current_timesheet).where( :timesheets => { :job_id => nil } )

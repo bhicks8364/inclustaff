@@ -12,7 +12,8 @@ class Company::TimesheetsController < ApplicationController
       @timesheets = @q.result.includes(:job, :employee)
     else
       @q = @company.timesheets.ransack(params[:q])
-      @timesheets = @q.result.includes(:job, :employee)
+      @timesheets = @current_company_admin.timesheets.includes(:job => :order)
+      # @timesheets = @q.result.includes(:job, :employee)
     end
     @import = Timesheet::Import.new
     gon.timesheets = @timesheets
@@ -82,7 +83,7 @@ class Company::TimesheetsController < ApplicationController
       state = @timesheet.approved? ? 'pending' : 'approved'
       @timesheet.update(approved_by: approved_by, approved_by_type: approved_by_type, state: state)
       user_approved = @timesheet.approved? ? @timesheet.user_approved : @timesheet.state
-      current_company_admin.events.create(action: state, eventable: @timesheet)
+      # current_company_admin.events.create(action: state, eventable: @timesheet)
      
       render json: { id: @timesheet.id, approved: @timesheet.approved?, name: @timesheet.employee.name,
                     state: @timesheet.state.upcase, user_approved: user_approved, clocked_in: @timesheet.clocked_in? }
@@ -104,12 +105,13 @@ class Company::TimesheetsController < ApplicationController
         flash[:alert] = "There were errors with your CSV file."
         render action: :index
       end
+      @current_company_admin.events.create(action: "imported", eventable: @current_company)
       skip_authorization
       
   end
   
   def approve_all
-    @timesheets = @current_company_admin.timesheets.pending
+    @timesheets = @current_company_admin.timesheets.includes(:job => :order).pending
     @timesheet_count = @timesheets.count
     @timesheets.each do |timesheet|
       approved_by = timesheet.approved? ? nil : current_company_admin.id

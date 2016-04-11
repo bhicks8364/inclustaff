@@ -18,6 +18,7 @@
       <ul class="nav navbar-nav">
         <li><%= link_to inbox_admin_conversations_path do %><i class="fa fa-comments-o"></i> Messages <% if current_admin.mailbox.inbox.unread(current_admin).any? %><span class="badge badge-default"><%= current_admin.mailbox.inbox.unread(current_admin).count %></span><% end %> <% end %></li>
           <%= render "admin/sidebars/reports" %>
+          
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
@@ -26,6 +27,7 @@
             <li><%= link_to "<i class='fa fa-plus-square'></i> New Company".html_safe, new_admin_company_path if policy(Company).create?  %></li>
             <li><%= link_to "<i class='fa fa-plus-square-o'></i> New Job Order".html_safe, new_admin_order_path if policy(Order).create? %></li>
             <li><%= link_to "<i class='fa fa-user-plus'></i> New Job".html_safe, new_admin_job_path %></li>
+            <li><%= link_to events_path do %><i class="fa fa-flag"></i> Recent Activity <% end %></li>
           </ul>
         </li>
         <li class="dropdown">

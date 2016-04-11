@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  before_action :set_current, :set_mailer_host, :set_gon
+  before_action :set_current, :set_mailer_host
   before_filter :set_paper_trail_whodunnit
   def set_current
     subdomains = request.subdomains

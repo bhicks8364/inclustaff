@@ -38,7 +38,10 @@ class Employee::DashboardController < ApplicationController
 
   end
   def jobs
-    @orders = @current_agency.orders.needs_attention
+    skip_authorization
+    @tags = @current_agency.orders.published.tag_counts_on(:tags)
+    @q = @current_agency.orders.published.ransack(params[:q]) 
+    @orders = @q.result(distinct: true).paginate(page: params[:page], per_page: 25) 
   end
   def profile
     @skill = @employee.skills.new

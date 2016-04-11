@@ -1,34 +1,43 @@
 <div class='col-md-12 mainpage shadow'>
-  <h1 class='simple'> Invoices for <strong><% if @company.present? %> <%= link_to @company.name, admin_company_path(@company) %>  <% else %><%=@current_agency.name %><% end %></strong></h1>
+  <% if @company.present? %> 
+  <h1 class='bold'> Invoices for <strong><%= link_to @company.name, admin_company_path(@company) %> </strong></h1>
+   <% else %>
+   <h1 class='bold'><%=@current_agency.name %>'s Invoices</h1>
+   <hr>
   <div class="form-inline">
     <%= search_form_for [:admin, @q] do |f| %>
       <%= f.search_field :company_name, class: "form-control", placeholder: "Search by company" %>
-      <%= f.button class: "btn btn-default btn-inline" do %>
+      <%= f.button class: "btn btn-default inline" do %>
           <i class="fa fa-search"></i>
         <% end %>
     <% end %>
     </div>
+    <% end %>
   
   <div class='col-md-12 well well-sm shadow'>
     <div class='table-responsive'>
       <table class='table table-hover'>
         <thead>
           <tr>
-            <th><%= sort_link(@q, :week) %></th>
-            <th><%= sort_link(@q, :company_name) %></th>
-            <th><%= sort_link(@q, :total) %></th>
+            <th><%= @q.present? ? sort_link(@q, :week, 'Week') : "Week" %></th>
+            <th><%= @q.present? ? sort_link(@q, :company_name, 'Company') : "Company" %></th>
+            <th><%= @q.present? ? sort_link(@q, :total, 'Total') : "Total" %></th>
           </tr>
         </thead>
         <tbody>
           <% @invoices.each do |invoice| %>
-            <tr>
-              <td id='mark-paid-<%=invoice.id%>'>
-                 <%= link_to mark_as_paid_admin_invoice_path(invoice), method: :patch, remote: true, id: 'pay-button', class: 'button' do %>
-                <%= invoice.week_ending.stamp('11/13') %> <br>
-              <small><%= invoice.paid_on %></small>
-              <% end %></td>
+            <tr id="inv-row-<%=invoice.id%>" class="<%= invoice.paid ? "bg-info" : "bg-danger" %>">
+              <td>
+                 <%= link_to mark_as_paid_admin_invoice_path(invoice), method: :patch, remote: true, id: "pay-button-#{invoice.id}", class: "button" do %>
+                <%= inv_sym(invoice) %> 
+              <% end %>
+               <span id="inv-sym-<%=invoice.id%>"></span>
+              <%= invoice.week_ending.stamp('11/13') %> <br>
+              <span id='status-<%=invoice.id%>'></span>
+              <span class="small" id='paid-on-<%=invoice.id%>'>       <%= invoice.paid_on %>
+     </span></td>
               <td><%= link_to invoice.company.name, admin_invoice_path(invoice) %></td>
-              <td><strong><%= number_to_currency(invoice.total) %></strong><br><small><%= number_to_currency(invoice.amt_paid) %></small></td>
+              <td><strong><%= number_to_currency(invoice.total) %></strong><br> <span class="small" id='amt-paid-<%=invoice.id%>'><%= number_to_currency(invoice.amt_paid) %></span></td>
           </tr>
           <% end %>
         </tbody>

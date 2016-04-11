@@ -1,16 +1,20 @@
 <%= div_for admin, class: "col-md-12 well" do %>
-    <h3 class="bold"><%= @admin.nil? ? admin.name : "Current Billing" %> <span class='pull-right'><%= number_to_currency(admin.current_billing) %></span></h3>
+    <h3 class="bold"><%= @admin.nil? ? admin.name : "Current Billing" %> <span class='pull-right'> Current Billing: <%= number_to_currency(admin.current_billing) %></span></h3>
      <p>Total Hours: <%= admin.timesheets.current_week.sum(:total_hours).round(2) %></p>
+     <p>Current Commission: <%= number_to_currency current_commission_for(admin) %></p>
     <hr>
     <% admin.companies.with_current_timesheets.includes(:orders, :jobs).order('companies.name').distinct.each do |company| %>
     <p class='bold green'><%= link_to company.name, admin_company_path(company) %>    </p>
         <ul class='fa-ul'>
         <% company.jobs.with_current_timesheets.distinct.each do |job| %>
-            <li><%= job_sym(job) %> <%= link_to job.employee.name, admin_job_path(job) %> <span class="pull-right"><%= number_to_currency(job.current_timesheet.total_bill) %></span></li>
+            <li class='pad bg-info'>
+            <p class="bold">
+                <span class=""><%= job_sym(job) %> <%= link_to job.employee.name, admin_job_path(job) %></span>  <span class="pull-right"><%= number_to_currency(job.current_timesheet.total_bill) %> &nbsp; &nbsp; <span class='small pull-right'><%= job.current_timesheet.total_hours %></span> </p>
+           </li>
+           <br>
         <% end %>
          </ul>
          <p class="bold green text-right"><%= number_to_currency(company.current_billing) %></p>
          <hr>
-         
     <% end %>
 <% end %>

@@ -1,6 +1,6 @@
 class Admin::InvoicesController < ApplicationController
   before_action :set_invoice, only: [:show, :edit, :update, :destroy]
-  layout :determine_layout
+  layout "admin_layout"
 
   def index
     if params[:company_id]
@@ -63,7 +63,7 @@ class Admin::InvoicesController < ApplicationController
     respond_to do |format|
       if @invoice.save
         @company = @invoice.company
-        format.html { redirect_to admin_invoice_path(@company, @invoice), notice: 'Invoice was successfully created.' }
+        format.html { redirect_to admin_company_invoice_path(@company, @invoice), notice: 'Invoice was successfully created.' }
         format.json { render :show, status: :created, location: @invoice }
       else
         format.html { render :new }
@@ -73,18 +73,21 @@ class Admin::InvoicesController < ApplicationController
   end
   
   def mark_as_paid
-    @invoice = Invoice.includes(:company).find(params[:id])
+    @invoice = Invoice.find(params[:id])
+    @company = @invoice.company
+    if @invoice.timesheets_approved?
+      @invoice.mark_as_paid! 
+    end
       skip_authorization
-      if @invoice.unpaid? && @invoice.timesheets_approved?
-        @invoice.mark_as_paid!
-        @company = @invoice.company
-        respond_to do |format|
-          format.js
-        end
+    respond_to do |format|
+      if @invoice.paid
+        format.html { redirect_to admin_company_invoice_path(@company, @invoice), notice: 'Marked as paid!'}
+        format.js
       else
-        flash[:notice] = "Cannot pay invoice until all timesheets are approved."
-      
+        format.html { redirect_to admin_company_invoice_path(@company, @invoice), notice: 'Unable to marked as paid! Make sure all timesheets are approved first.'}
+        format.js
       end
+    end
   end
 
   def update
@@ -110,10 +113,6 @@ class Admin::InvoicesController < ApplicationController
   end
 
   private
-    def determine_layout
-      current_admin.agency? ? "admin_layout" : "application"
-    end
-    
     def set_invoice
       @invoice = Invoice.find(params[:id])
       skip_authorization

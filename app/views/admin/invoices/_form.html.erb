@@ -1,7 +1,7 @@
 <%= simple_form_for [:admin, @company, @invoice] do |f| %>
   <%= f.error_notification %>
 
-  <div class="form-inputs main-box">
+  <div class="form-inputs well">
     <%= f.association :company, collection: @current_agency.companies.order(:name), prompt: "Choose a Company" %>
     
     

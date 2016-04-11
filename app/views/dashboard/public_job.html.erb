@@ -1,3 +1,5 @@
+<div class='col-md-12 mainpage shadow'>
+    <% if !signed_in? %>
 <div class='row'>
     <hr />
     <div class='col-md-6'>
@@ -14,6 +16,7 @@
     </div>
 </div>
 <hr />
+<% end %>
 <div class-'row'>
     <div class='col-md-4 well'>
         <h3 class='bold'>Pay Range:<br> <%= pay_range(@order) %></h3>
@@ -32,6 +35,21 @@
         
         <hr>
         <%= link_to "Back to Search", public_job_board_path, class: "btn btn-primary btn-lg btn-block" %>
+        
+  <div class="well">
+  	 <h4 class='text-center'>Needed Skills</h4>
+  	<div class="scroll600">
+	  <% @order.tags.order(name: :asc).each do |tag| %>
+	  	<%= link_to(tag_path(tag.name), class: "list-group-item list-group-item-info") do  %>
+	    <span><i class="fa fa-square-o fa-fw"></i>  <%= tag.name %></span>
+	   <% end %>
+	  <% end %>
+		</div>
+	<%= link_to 'Clear Search', tags_path, class: ' button pull-right small' %>
+		
+		
+	</div>
+
     </div>
     <div class='col-md-8 '>
         
@@ -41,4 +59,5 @@
             <%= markdownify(@order.notes) %>
         </div>
     </div>
+</div>
 </div>

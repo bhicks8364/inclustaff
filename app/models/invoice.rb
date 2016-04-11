@@ -34,13 +34,15 @@ class Invoice < ActiveRecord::Base
     # before_save :total_amount
     before_validation :defaults
     
-    validate :date_paid_cannot_be_in_the_future
+    # validate :date_paid_cannot_be_in_the_future
  
-      def date_paid_cannot_be_in_the_future
+    def date_paid_cannot_be_in_the_future
         if date_paid.present? && date_paid > Date.today
-          errors.add(:date_paid, "can't be in the future")
+            errors.add(:date_paid, "can't be in the future")
         end
-      end
+    end
+      
+    has_paper_trail
     
     scope :unpaid, -> { where(paid: false)}
     scope :paid, -> { where(paid: true)}
@@ -59,10 +61,10 @@ class Invoice < ActiveRecord::Base
         recruiters.first
     end
     def defaults
-        due = week.present? ? week : Date.today.beginning_of_week 
-        self.total = 0 if total.nil?
-        self.paid = false if self.paid.nil?
-        self.amt_paid = 0 if self.amt_paid.nil?
+        due = week.present? ? week : Date.today.beginning_of_week.to_date 
+        # self.total = 0 if total.nil?
+        # self.paid = false if paid.nil?
+        # self.amt_paid = 0 if amt_paid.nil?
         self.due_by = due + 15.days 
     end
     def self.without_timesheets
@@ -83,8 +85,8 @@ class Invoice < ActiveRecord::Base
         self.timesheets.last.week_ending
     end
     def balance
-        amt = self.amt_paid || 0
-        self.total - amt
+        amt = amt_paid || 0
+        total - amt
     end
     def current?
         week == Date.today.beginning_of_week

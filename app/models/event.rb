@@ -39,6 +39,8 @@ class Event < ActiveRecord::Base
   
     scope :applications, -> { where(action: 'applied').joins(:user).merge(User.available)}
     scope :follows, -> { where(action: 'followed')}
+    scope :imports, -> { where(action: 'imported')}
+    scope :company, -> { where(eventable_type: 'Company')}
     scope :clock_ins, -> { where(action: 'clocked_in')}
     scope :timesheets, -> { where(eventable_type: 'Timesheet')}
     scope :jobs, -> { where(eventable_type: 'Job')}

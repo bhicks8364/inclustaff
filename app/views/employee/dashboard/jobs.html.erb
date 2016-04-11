@@ -1,25 +1,56 @@
 <div class='col-md-12 mainpage shadow'>
-    <h1 class='page-header text-center simple'><%= @current_agency.name %>'s Current Positions</h1>
-    <div class='col-md-4'>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <% if @user.events.any? %>
-                <h3> Your Applications</h3>
-                <div class='list-group'>
-                <% @user.events.applications.each do |event| %>
-                    <%= render partial: "events/activities/employee_applied", locals: {event: event} %>
-                <% end %>
-                </div>
-                
-                <% else %>
-                <div class='text-center'>
-                <h3 class=''> You haven't applied to any jobs yet.</h3>
-                </div>
-                <% end %>
+<h1 class='text-info page-header bold'><%= @current_agency.name %>'s open positions</h1>
+<% if params[:q].present? && params[:q][:notes_or_title_cont].present? %>
+    <div class='well'>
+    <p class=' lead text-center text-info'>
+        <%= highlight("You searched for: <br> #{params[:q][:notes_or_title_cont]}", "#{params[:q][:notes_or_title_cont]}", 
+    highlighter: '<strong>\1</strong>') %>
+    </p>
+    
+    </div>
+    <% end %>
+    <div class='col-md-3 bg-info pad shadow'>
+        <h1 class=''>Search</h1>
+        <%= search_form_for @q, class: 'form-group', url: public_job_board_path  do |f| %>
+            <%= f.search_field :notes_or_title_cont, class: 'form-control', placeholder: "Search by keyword" %>
+            <%= f.submit class: 'btn btn-default' %>
+            <%= link_to "Reset", public_job_board_path, class: 'btn btn-default' %>
+            
+        <% end %>
+        <hr/>
+        
+    </div>
+    <div class='col-md-9'>
+        <div class='well'>
+            <div class='table-responsive'>
+                <table class='table table-hover table-bordered'>
+                    <thead>
+                        <tr style="background-color:white;">
+                        <th><%= sort_link(@q, :published_at, 'Date', default_order: :desc) %></th>
+                        <th><%= sort_link(@q, :title, 'Details') %></th>
+                        <th><%= sort_link(@q, :location, 'City')%></th>
+                        <th><%= sort_link(@q, :min_pay, 'Pay') %></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <% @orders.each do |order| %>
+                        <tr style="color:<%= cycle("#333", "#666", "#999", name: "colors") %>">
+                            <td> <%= order.published_at.stamp("11-12-2015") %> </td>
+                            <td><%= link_to employee_order_path(order) do %>
+                                    <%= order.title %><br>
+                                    <span class='job-description'><%= truncate(order.job_description, length: 50)%></span>
+                                <% end %>
+                                
+                            </td>
+                            
+                            <td><%= order.location %>                  </td>
+                            <td><%= pay_range(order) %></td>
+                        </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+                <%= will_paginate(@orders) %>
             </div>
         </div>
-    </div>
-    <div class='col-md-8 well'>
-        <%= render 'employee/orders/open_table' %>
     </div>
 </div>

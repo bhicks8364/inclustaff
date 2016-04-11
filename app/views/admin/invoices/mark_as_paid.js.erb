@@ -1,8 +1,12 @@
-$("#balance").html("<%= number_to_currency(@invoice.balance) %>");
-$("#mark-paid-<%=@invoice.id%>").html("<%=j inv_sym(@invoice) %>");
-$('#status').html("Paid");
-$('#date-paid').html("<strong>Status:</strong> Paid ");
-$('#pay-button').hide();
-$('#paid-on').html("<%= @invoice.paid_on %>");
-$('#amt-paid').html("<%= number_to_currency(@invoice.amt_paid)  %>");
-$('#inv-sym').html("<span class='green'><i class='fa fa-check' data-toggle='tooltip' data-placement='top' title='<%=@invoice.state%> on <%=@invoice.paid_on%>'></i></span>");
+<% if @invoice.unpaid? && !@invoice.timesheets_approved? %>
+alert("Make sure all timesheets are approved first.");
+<% else %>
+$("#balance-<%=@invoice.id%>").html("<%= number_to_currency(@invoice.balance) %>");
+$('#status-<%=@invoice.id%>').html("<%= @invoice.state %>");
+$('#date-paid-<%=@invoice.id%>').html("<strong>Status:</strong> Paid ");
+$('#pay-button-<%=@invoice.id%>').hide();
+$('#paid-on-<%=@invoice.id%>').html("<%= @invoice.paid_on %>");
+$('#amt-paid-<%=@invoice.id%>').html("<%= number_to_currency(@invoice.amt_paid)  %>");
+$('#inv-sym-<%=@invoice.id%>').html("<span class='green'><i class='fa fa-check' data-toggle='tooltip' data-placement='top' title='<%=@invoice.state%> on <%=@invoice.paid_on%>'></i></span>");
+$('#inv-row-<%=@invoice.id%>').removeClass("bg-danger").addClass("bg-info");
+<% end %>

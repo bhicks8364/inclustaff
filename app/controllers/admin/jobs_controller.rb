@@ -268,6 +268,7 @@ class Admin::JobsController < ApplicationController
       @order = @job.order
       @agency = @order.agency
       @company = @job.company
+      skip_authorization
     end
 
     def pundit_user

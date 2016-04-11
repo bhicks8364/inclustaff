@@ -24,6 +24,7 @@ $font-size-base: 16px;
 $light-green: rgba(205, 243, 201, 0.88);
 $blue: #2A5F79;
 $trans-white: rgba(255, 255, 255, 0.45);
+$white: rgb(255, 255, 255);
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
@@ -272,10 +273,10 @@ h1 {
 
 // JUST NOT DEALING WITH THE FOOTER ATM
 .footer {
-  margin-bottom: 0px;
+  margin-bottom: -3px;
   margin-top: 0px;
   min-height: 80px;
-  background-color: $trans-white;
+  background-color: $white;
 }
 // .navbar-static-bottom {
 //     border-radius: 0;

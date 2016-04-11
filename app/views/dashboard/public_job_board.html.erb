@@ -1,18 +1,18 @@
 <div class='col-md-12 mainpage shadow'>
-<h1 class='text-center page-header'>Search Current Positions</h1>
-<% if params[:q].present? && params[:q][:notes_or_title_cont].present? %>
+<h1 class='text-info page-header bold'><%= @current_agency.name %>'s open positions</h1>
+<% if params[:q].present? && params[:q][:job_description_or_notes_or_title_cont].present? %>
     <div class='well'>
     <p class=' lead text-center text-info'>
-        <%= highlight("You searched for: <br> #{params[:q][:notes_or_title_cont]}", "#{params[:q][:notes_or_title_cont]}", 
+        <%= highlight("You searched for: <br> #{params[:q][:job_description_or_notes_or_title_cont]}", "#{params[:q][:job_description_or_notes_or_title_cont]}", 
     highlighter: '<strong>\1</strong>') %>
     </p>
     
     </div>
     <% end %>
-    <div class='col-md-3 bg-info pad'>
+    <div class='col-md-3 bg-info pad shadow'>
+        <h1 class=''>Search</h1>
         <%= search_form_for @q, class: 'form-group', url: public_job_board_path  do |f| %>
-            <%= f.search_field :notes_or_title_cont, class: 'form-control', placeholder: "Search by keyword" %>
-            <hr>
+            <%= f.search_field :job_description_or_notes_or_title_cont, class: 'form-control', placeholder: "Search by keyword" %>
             <%= f.submit class: 'btn btn-default' %>
             <%= link_to "Reset", public_job_board_path, class: 'btn btn-default' %>
             
@@ -36,13 +36,19 @@
                         <% @orders.each do |order| %>
                         <tr style="color:<%= cycle("#333", "#666", "#999", name: "colors") %>">
                             <td> <%= order.published_at.stamp("11-12-2015") %> </td>
+                            <% if user_signed_in? %>
+                            <td><%= link_to employee_order_path(order) do %>
+                                    <%= order.title %><br>
+                                    <span class='job-description'><%= truncate(order.job_description, length: 50)%></span>
+                                <% end %>
+                            </td>
+                            <% else %>
                             <td><%= link_to public_job_path(order) do %>
                                     <%= order.title %><br>
                                     <span class='job-description'><%= truncate(order.job_description, length: 50)%></span>
                                 <% end %>
-                                
                             </td>
-                            
+                            <% end %>
                             <td><%= order.location %>                  </td>
                             <td><%= pay_range(order) %></td>
                         </tr>

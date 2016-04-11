@@ -28,7 +28,7 @@
 
   <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="job">
-    
+    <h1><%= @employee.status %></h1>
     <div class='pad bg-info'>
      <h2><%= @job.name_title %> <span data-behavior="job-state" class='label label-success pull-right'><%= @job.state %></span></h2>
      <% if @job.timesheets.any? %>
