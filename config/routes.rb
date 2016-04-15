@@ -115,6 +115,7 @@ Rails.application.routes.draw do
       resources :timesheets do
         get 'delete_all_shifts'
         collection do
+          post 'import'
           get 'edit_multiple'
           put 'update_multiple'
           get 'past'
@@ -162,6 +163,7 @@ Rails.application.routes.draw do
         resources :timesheets, shallow: true do
           collection do
             get 'past'
+            post 'import'
           end
           member do
             patch 'approve'

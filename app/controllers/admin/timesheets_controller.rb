@@ -4,6 +4,7 @@ class Admin::TimesheetsController < ApplicationController
 	layout 'admin_layout'
 
     def index
+        @import = Timesheet::Import.new
         @test_timesheets = TimesheetQueryBuilder.new.with_admin_comments_by(@current_admin.id)
         if params[:job_id]
             @job = Job.includes(:employee, :timesheets).find(params[:job_id])
@@ -46,6 +47,14 @@ class Admin::TimesheetsController < ApplicationController
                 else
                     @pdf_timesheets = @current_admin.timesheets.order(week: :asc).distinct
                 end
+                
+                if @scope == "template"
+                    @csv_timesheets = Timesheet.none
+                    format.csv { send_data @csv_timesheets.to_template, filename: "timesheets-export-#{Time.current}-inclustaff.csv" }
+                else
+                    @csv_timesheets = @pdf_timesheets
+                    format.csv { send_data @csv_timesheets.to_csv, filename: "timesheets-export-#{Time.current}-inclustaff.csv" }
+                end
                 format.pdf {
                     send_data AgencyTimesheetPdf.new(@current_agency, @pdf_timesheets, view_context,  @scope, @signed_in).render,
                     filename: "#{@current_agency.name}-#{@scope}-#{Time.current}.pdf",
@@ -54,8 +63,7 @@ class Admin::TimesheetsController < ApplicationController
                 }
             
             end 
-            @csv_timesheets = @pdf_timesheets
-            format.csv { send_data @csv_timesheets.to_csv, filename: "timesheets-export-#{Time.current}-inclustaff.csv" }
+            
             
             
         end
@@ -171,6 +179,23 @@ class Admin::TimesheetsController < ApplicationController
       end
       skip_authorization
   end
+  
+    def import
+      @import  = Timesheet::Import.new(timesheet_import_params)
+      if @import.save
+        @q = @current_admin.timesheets.ransack(params[:q])
+        @timesheets = @current_admin.timesheets
+        redirect_to admin_timesheets_path, notice: "Imported #{@import_count} timesheets."
+      else
+        @q = @current_admin.timesheets.ransack(params[:q])
+        @timesheets = @current_admin.timesheets
+        flash[:alert] = "There were errors with your CSV file."
+        render action: :index
+      end
+      @current_admin.events.create(action: "imported", eventable: @current_agency)
+      skip_authorization
+      
+    end
 
   def approve
     @timesheet = Timesheet.find(params[:id])
@@ -308,7 +333,9 @@ class Admin::TimesheetsController < ApplicationController
       end
         
     end
-
+    def timesheet_import_params
+        params.require(:timesheet_import).permit(:file)
+    end
     # Never trust parameters from the scary internet, only allow the white list through.
     def timesheet_params
       params.require(:timesheet).permit(:week, :job_id, :reg_hours, :ot_hours, :gross_pay, :reg_bill_rate, :ot_bill_rate, 

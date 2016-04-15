@@ -49,6 +49,7 @@ class Agency < ActiveRecord::Base
   has_many :shift_comments, through: :shifts, source: 'comments'
   has_many :timesheet_comments, through: :timesheets, source: 'comments'
   has_many :users
+  has_many :events, as: :eventable
 
   store_accessor :preferences, :aca_measurement_period, :aca_administrative_period, :aca_stability_period, :weekly_sales_goal
 

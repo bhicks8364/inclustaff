@@ -22,24 +22,26 @@
 	
 		</div>
 		<div class="col-md-6">	
-		<div class="col-md-4 well well-sm">
-		    <h5 class="bold">Required Fields</h5>
-		    <ul class="fa-ul">
-    		    <li>Week</li>
-    		    <li>Job_id</li>
-    		    <li>Reg_hours</li>
-    		    <li>Ot_hours</li>
-    		</ul>
-		</div>
-		<div class="col-md-8 well">
-		    <h5 class="bold text-center">Employees without current timesheets.</h5>
-		    <ul class="fa-ul scroll300">
-    		    <li class=""><p class="small bold">Name <span class="pull-right">Job_id</span></p></li>
-		    <% @current_company_admin.jobs.without_current_timesheet.each do |job| %>
-		        <li class=""><p><%= job.name %> <span class="pull-right text-info"><%= job.id %></span></p></li>
-		    <% end %>
-		    </ul>
-		</div>
+    		<div class="col-md-4 well well-sm">
+    		    <h5 class="bold">Required Fields</h5>
+    		    <ul class="fa-ul">
+        		    <li>Week</li>
+        		    <li>Job_id</li>
+        		    <li>Reg_hours</li>
+        		    <li>Ot_hours</li>
+        		</ul>
+    		</div>
+    		<div class="col-md-8 well">
+    		    <h5 class="bold text-center">Employees without current timesheets.</h5>
+    		    <ul class="fa-ul scroll300">
+        		    <li class=""><p class="small bold">Name <span class="pull-right">Job_id</span></p></li>
+    		    <% @current_company_admin.jobs.without_current_timesheet.each do |job| %>
+        		    <%= link_to new_company_job_timesheet_path(job) do %>
+        		        <li class=""><p><%= job.name %> <span class="pull-right text-info"><%= job.id %></span></p></li>
+        		    <% end %>
+    		    <% end %>
+    		    </ul>
+    		</div>
 		</div>
 	</div>
    <div class='row'>

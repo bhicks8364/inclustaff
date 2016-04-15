@@ -218,7 +218,7 @@ class Shift < ActiveRecord::Base
       ot_rate = pay_rate * 1.5
       self.earnings = pay_rate * @payable_hours
       self.time_worked = @payable_hours
-      self.pay_rate = ot_rate
+      # self.pay_rate = ot_rate
     end
   end
 

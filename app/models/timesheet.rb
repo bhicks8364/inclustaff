@@ -223,7 +223,18 @@ class Timesheet < ActiveRecord::Base
 
   # EXPORT TO CSV
   def self.to_csv
-    attributes = %w{id order_id week_ending company employee_name ssn reg_hours ot_hours total_hours pay_rate ot_rate gross_pay state user_approved approved_by_type shifts_count invoice_id}
+    attributes = %w{week_ending company employee_name ssn reg_hours ot_hours total_hours pay_rate ot_rate gross_pay user_approved approved_by_type shifts_count invoice_id}
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+
+      all.each do |timesheet|
+        csv << attributes.map{ |attr| timesheet.send(attr) }
+      end
+    end
+  end
+  
+  def self.to_template
+    attributes = %w{week_ending job_id reg_hours ot_hours}
     CSV.generate(headers: true) do |csv|
       csv << attributes
 
