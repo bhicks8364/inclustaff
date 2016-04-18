@@ -77,11 +77,9 @@ class Timesheet < ActiveRecord::Base
   scope :with_shift_notes,    -> { joins(:shifts).merge(Shift.with_notes)}
   scope :approved, -> { where(state: "approved")}
   scope :pending, -> { where(state: "pending")}
-  # scope :this_year,    -> { joins(:shifts).merge(Shift.this_year)}
-  # scope :last_week,    -> { joins(:shifts).merge(Shift.last_week)}
   scope :approaching_overtime, -> { where('reg_hours > 36') }
   scope :current_week, ->{ where(week: Time.current.to_date.beginning_of_week)}
-  # scope :past, -> { joins(:shifts).merge(Shift.past) }
+  scope :this_week, -> { where(Timesheet[:week].eq(Date.today.beginning_of_week.to_date))}
   scope :past, -> { where(Timesheet[:week].lt(Date.today.beginning_of_week.to_date))}
   scope :over_50, -> { where(Timesheet[:total_hours].gteq(50))}
   scope :overtime_errors, -> { where('reg_hours > 40') }

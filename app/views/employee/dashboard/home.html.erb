@@ -107,8 +107,9 @@
           <h2><%= @user.name %></h2>
           <%= render 'users/user', user: @user %>
         </div>
-       <div class=''>
+       <div class='btn-group'>
          <%= link_to "Create Resume", new_employee_work_history_path, class: 'btn btn-primary btn-lg btn-block' if @employee.unassigned? && @employee.work_histories.none? %>
+         <%= link_to "Enter Availability", edit_employee_employee_path(@employee), class: 'btn btn-success btn-lg btn-block pulse'  if @employee.availability.nil?  %>
        </div>
           <hr>
            <div class='btn-group'>
@@ -118,22 +119,25 @@
       </div>
     </div>
     
-    <div class="col-md-8 well well-sm shadow">
+    <div class="col-md-4 well well-sm shadow">
      <div class=''>
       <%= render "employee/jobs/active", active_jobs: @employee.jobs.currently_working %>
     </div>
-      <h2 class='text-info'>Recent Activity</h2>
-      <%= render @employee.events %>
-      <%= render @employee.job_events %>
+      <h2 class='text-info'>Your Applications</h2>
+      <div class='list-group'>
+    		<% @user.events.applications.each do |event| %>
+    		  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+    		    <%= render partial: "events/activities/employee_applied", locals: {event: event} %>
+    		  <% end %>
+    		<% end %>
+    	</div>
       <hr>
     </div>
-    <div class="col-md-4 border well well-sm">
+    <div class="col-md-4 well well-sm">
       <% if @employee.availability.present? %>
       <p class='lead text-info'>Your Availability</p>
         <%= render 'employee/employees/availability', employee: @employee %>
         <%= link_to "Edit Info", edit_employee_employee_path(@employee), class: 'btn btn-primary pull-right' %>
-      <% else %>
-        <%= link_to "Enter Availability", edit_employee_employee_path(@employee), class: 'btn btn-success btn-lg pulse' %>
       <% end %>
     </div>
     

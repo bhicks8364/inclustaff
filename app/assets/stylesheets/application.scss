@@ -48,7 +48,7 @@ $white: rgb(255, 255, 255);
 @import "conversations";
 @import "timesheets";
 @import url(https://fonts.googleapis.com/css?family=Lato:400,300,700,400italic);
-
+@import "marketing";
 body {
   // background-color: rgba(0, 0, 0, .2);
   background-image: url(white-wood.jpg);
@@ -260,6 +260,7 @@ h1 {
 .logo {
   height: 60px;
   padding: 2px;
+  margin-right: 20px;
 }
 .logo-img {
   max-height: 50px;

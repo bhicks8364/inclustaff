@@ -17,14 +17,16 @@
 		</div>
 		<div class="tab-content">
 			<div class="tab-pane fade in active" id="tab-home">
-				<div class="well">
-					<p>Need Direct Deposit: <%= @current_agency.employees.needing_dd.count %></p>
-				</div>
-				<div class='mainpage'>
+			
+				<div class='col-md-12'>
 	       			<div class='row'>
 	       				<%= render 'admin/infoboxes/payroll_boxes' %>
 	       			</div>
 	 			</div>
+	 			<div class="col-md-4 well">
+					<p>Need Direct Deposit: <%= @current_agency.employees.needing_dd.count %></p>
+					<p>Employees on this payroll: <%= @current_agency.employees.with_current_timesheet.count %></p>
+				</div>
 			</div>
 			<div class="tab-pane fade in" id="tab-aca">
 				<div class='col-md-12'>

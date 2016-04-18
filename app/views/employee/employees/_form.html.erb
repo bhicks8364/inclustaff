@@ -7,6 +7,7 @@
     boolean: :horizontal_boolean
   } do |f| %>
   <%= f.error_notification %>
+  <div class='col-md-12'>
   <div class='col-md-4'>
     <div class="panel panel-default">
       <h3 class="text-center"><strong>Contact Information</strong></h3>
@@ -44,7 +45,7 @@
         <%= f.input :desired_shift, label: "Desired Shift", collection: [ "1st shift", "2nd shift", "3rd shift", "Flexible"], include_blank: false %>
       </div>        
       </div>
-
+    </div>
 
     <%= f.submit "Save", class: 'btn btn-primary btn-lg' %>
 

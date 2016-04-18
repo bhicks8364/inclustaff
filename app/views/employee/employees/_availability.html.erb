@@ -1,23 +1,25 @@
-<ul class='fa-ul'>
+<div class="well">
+  <ul class='fa-ul'>
     <li><%= employee.monday == "Not Available" ? "<i class='fa-li fa fa-calendar-times-o'></i>".html_safe : "<i class='fa-li fa fa-calendar-check-o'></i>".html_safe %>
-     <strong>Monday</strong> - <%= employee.monday %>
+      <strong>Monday</strong> - <%= employee.monday %>
     </li>
     <li><%= employee.tuesday == "Not Available" ? "<i class='fa-li fa fa-calendar-times-o'></i>".html_safe : "<i class='fa-li fa fa-calendar-check-o'></i>".html_safe %>
-     <strong>Tuesday</strong> - <%= employee.tuesday %>
+      <strong>Tuesday</strong> - <%= employee.tuesday %>
     </li>
     <li><%= employee.wednesday == "Not Available" ? "<i class='fa-li fa fa-calendar-times-o'></i>".html_safe : "<i class='fa-li fa fa-calendar-check-o'></i>".html_safe %>
-     <strong>Wednesday</strong> - <%= employee.wednesday %>
+      <strong>Wednesday</strong> - <%= employee.wednesday %>
     </li>
     <li><%= employee.thursday == "Not Available" ? "<i class='fa-li fa fa-calendar-times-o'></i>".html_safe : "<i class='fa-li fa fa-calendar-check-o'></i>".html_safe %>
-     <strong>Thursday</strong> - <%= employee.thursday %>
+      <strong>Thursday</strong> - <%= employee.thursday %>
     </li>
     <li><%= employee.friday == "Not Available" ? "<i class='fa-li fa fa-calendar-times-o'></i>".html_safe : "<i class='fa-li fa fa-calendar-check-o'></i>".html_safe %>
-     <strong>Friday</strong> - <%= employee.friday %>
+      <strong>Friday</strong> - <%= employee.friday %>
     </li>
     <li><%= employee.saturday == "Not Available" ? "<i class='fa-li fa fa-calendar-times-o'></i>".html_safe : "<i class='fa-li fa fa-calendar-check-o'></i>".html_safe %>
-     <strong>Saturday</strong> - <%= employee.saturday %>
+      <strong>Saturday</strong> - <%= employee.saturday %>
     </li>
     <li><%= employee.sunday == "Not Available" ? "<i class='fa-li fa fa-calendar-times-o'></i>".html_safe : "<i class='fa-li fa fa-calendar-check-o'></i>".html_safe %>
-     <strong>Sunday</strong> - <%= employee.sunday %>
+      <strong>Sunday</strong> - <%= employee.sunday %>
     </li>
-</ul>
+  </ul>
+</div>

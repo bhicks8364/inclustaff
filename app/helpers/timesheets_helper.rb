@@ -45,9 +45,9 @@ module TimesheetsHelper
         end
     end
     def timesheet_collaspe(timesheet)
-      title = user_signed_in? ? "#{number_to_currency(timesheet.gross_pay)}" : "#{timesheet.employee.name}"
-      "<a class='button' role='button' data-toggle='collapse' href='#collapseTimesheet_#{timesheet.id}' aria-expanded='false' aria-controls='collapseTimesheet_#{timesheet.id}'>
-        #{timesheet_sym(timesheet)} <small>#{truncate(title)}</small>
+      title = @job.present? ? "#{timesheet.week.stamp("12/18")} - #{timesheet.week_ending.stamp("12/18")}" : "#{timesheet.employee.name}"
+      "<a class='button text-center' role='button' data-toggle='collapse' href='#collapseTimesheet_#{timesheet.id}' aria-expanded='false' aria-controls='collapseTimesheet_#{timesheet.id}'>
+       <span class='small'>#{truncate(title)}</span>
       </a>".html_safe
     end
     def timesheet_user(timesheet)
@@ -91,6 +91,15 @@ module TimesheetsHelper
         m_weeks
         }
         weeks
+    end
+    
+    
+    def text_color_for(timesheet)
+        if timesheet.approved?
+            "text-sucess"
+        else
+            "text-danger"
+        end
     end
     
     

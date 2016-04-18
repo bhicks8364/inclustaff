@@ -64,7 +64,7 @@ class Company::JobsController < ApplicationController
     if @job.off_shift?
       @shift = @job.shifts.create(time_in: Time.current, week: Date.today.beginning_of_week.cweek,
                                   state: "Clocked In",
-                                  in_ip: current_company_admin.current_sign_in_ip)
+                                  in_ip: "")
     current_company_admin.events.create(action: "clocked_in", eventable: @shift, user_id: @shift.employee.user_id)
       respond_to do |format|
           format.html { redirect_to company_timeclock_path }

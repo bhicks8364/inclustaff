@@ -114,6 +114,7 @@ class Admin::CompanyAdminsController < ApplicationController
       @company_admin = CompanyAdmin.new(company_admin_params) 
       @company_admin.password = "password"
       @company_admin.password_confirmation = "password"
+      current_admin.events.create(action: "added", eventable: @company_admin)
     end
     @company_admin.save
     if @company_admin.persisted?

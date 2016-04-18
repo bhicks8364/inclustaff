@@ -2,17 +2,19 @@
 
 	<%= month_calendar(attribute: :week, events: timesheets) do |date, timesheets| %>
 	
-  <div class='cal-date'><%= date %></div>
+  <div class='cal-date bold'><%= date.stamp("4/12") %></div>
 
   <% timesheets.each do |timesheet| %>
-    <div class=''>
+    <div class="<%= text_color_for(timesheet) %>">
+       
       <%= timesheet_collaspe(timesheet) %>
        <div class='collapse' id="collapseTimesheet_<%=timesheet.id%>">
            <%= link_to admin_timesheet_path(timesheet) do %>
              <%= number_to_currency(timesheet.gross_pay) %>
            <% end %>
         </div>
-      
+        <br>
+       <%= timesheet.total_hours %>  
       
     </div>
   <% end %>

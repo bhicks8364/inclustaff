@@ -13,6 +13,13 @@ Rails.application.routes.draw do
     get :contact
     get :about
   end
+  controller :marketing do
+    get :sales
+    get :recruiting
+    get :payroll
+    get :employees
+    get :timetracking
+  end
 
   resources :agencies
   resources :inquiries
@@ -310,6 +317,7 @@ Rails.application.routes.draw do
       end
 
       resources :jobs
+      resources :skills
 
       # Used for the current job
       resources :shifts do
