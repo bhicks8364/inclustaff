@@ -83,8 +83,8 @@ class Order < ActiveRecord::Base
   validates :title, :number_needed, :company_id, :needed_by, :mark_up, :min_pay, :max_pay, :account_manager_id,  presence: true
 
   # CALLBACKS
-  after_initialize :defaults
-  before_validation :set_mark_up, :set_status
+  after_initialize :defaults, :set_status
+  before_validation :set_mark_up
   after_save :set_note_skills
   before_save :titlize_title, if: :title_changed?
   #  GEOCODER
@@ -120,6 +120,7 @@ class Order < ActiveRecord::Base
     # Just putting this in here until I figure out how to format bootstrap datepicker
     self.active = true if self.active.nil?
     self.urgent = false if self.urgent.nil?
+    self.number_needed = 0 if self.number_needed.nil?
     self.jobs_count = 0 if self.jobs_count.nil?
     self.aca_type = "Variable-Hour" if aca_type.nil?
     self.requirements = {} if requirements.nil?
@@ -328,8 +329,10 @@ class Order < ActiveRecord::Base
 
 
   def self.assign_from_row(row, company_id)
-    order = Order.where(id: row[:id], company_id: row[:company_id]).first_or_initialize
-    order.assign_attributes row.to_hash.slice(:title, :min_pay, :max_pay, :number_needed, :needed_by, :notes, :est_duration)
+    # order = Order.where(id: row[:id], company_id: row[:company_id]).first_or_initialize
+    company = Company.find(company_id)
+    order = company.orders.new
+    order.assign_attributes row.to_hash.slice(:title, :min_pay, :max_pay, :number_needed, :needed_by, :notes, :account_manager_id, :job_description, :est_duration)
     order.company_id = company_id
     if order.needed_by.blank?
         order.needed_by = Date.today + 3.days
@@ -341,7 +344,7 @@ class Order < ActiveRecord::Base
 
    # EXPORT TO CSV
   def self.to_csv
-    attributes = %w{id agency_id company_id title min_pay max_pay pay_frequency account_manager_id manager_id mark_up title notes number_needed needed_by urgent active dt_req bg_check stwb heavy_lifting shift est_duration}
+    attributes = %w{id agency_id company_id title min_pay max_pay pay_frequency account_manager_id manager_id mark_up title job_description notes number_needed needed_by urgent active dt_req bg_check stwb heavy_lifting shift est_duration}
     CSV.generate(headers: true) do |csv|
       csv << attributes
 

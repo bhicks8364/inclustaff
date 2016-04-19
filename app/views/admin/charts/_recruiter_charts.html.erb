@@ -1,11 +1,11 @@
 
 
-    <div class='col-md-8 well well-sm'>
+    <div class='col-md-12 well well-sm'>
     <%= column_chart recruiter.companies.distinct.map{|company|
-            {name: company.name, data: company.timesheets.by_recruiter(recruiter.id).group_by_week('timesheets.week', range: 6.weeks.ago.midnight...Time.current, format: "%m/%d").sum(:total_bill)}
+            {name: company.name, data: company.timesheets.by_recruiter(recruiter.id).group_by_week('timesheets.week', range: 6.weeks.ago.midnight...Date.current, format: "%m/%d").sum(:total_bill)}
         }, library: {title: "Company Billings per Week"}, xtitle: "Week", ytitle: "Total Billing" %>
     </div>
-    <div class='col-md-4 well well-sm'>
+    <div class='col-md-6 well well-sm'>
         <h4 class='text-center'>Current Billings by Recruiter</h4>
         <div class="fa-ul">
         <% @current_agency.admins.recruiters.sorted_by_current_billing.each do |admin| %>

@@ -187,11 +187,23 @@ class Admin < ActiveRecord::Base
   end
 
   def current_billing
-    if timesheets.any?
+    if timesheets.current_week.any?
       timesheets.current_week.sum(:total_bill)
     else
       0.00
     end
+  end
+  
+  def current_pay
+    if timesheets.current_week.any?
+      timesheets.current_week.sum(:gross_pay)
+    else
+      0.00
+    end
+  end
+  
+  def current_revenue
+    (current_billing - current_pay) / 2
   end
 
   def last_week_billing

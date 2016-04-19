@@ -1,168 +1,153 @@
-
-<div class='col-md-12 mainpage'>
+<div class='col-md-12 mainpage shadow'>
+    <!--NAV TABS-->
+    <div id='' class='col-md-12'>
     
-  <div class="page-header">
-       <div class='gravatar'><%=gravatar_for(@user)%> </div>
-      <h1 class="user-header"><%= @user.name %> <small><%= @employee.status %></small></h1>
-      </div>
-
-<!--NAV TABS-->
-<div id='' class='col-md-12'>
-
-  <!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
-    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
-   <li role="presentation"><a href="#positions" aria-controls="positions" role="tab" data-toggle="tab">Suggested Positions</a></li>
-    <li role="presentation"><a href="#work_history" aria-controls="work_history" role="tab" data-toggle="tab">Work History</a></li>
-    <li role="presentation"><a href="#applications-tab" aria-controls="applications" role="tab" data-toggle="tab">Applications</a></li>
-    <li role="presentation"><a href="#edit-tab" aria-controls="edit" role="tab" data-toggle="tab">Edit</a></li>
-    
-  </ul>
-  <div class="tab-content">
-    <div role="tabpanel" class="tab-pane fade in active" id="home">
-        <div class='col-md-12 well'>
-            <div class='col-md-6'>
-                <%= render @user %>
-                <% if @job.present? %>
-                <%= render 'admin/jobs/job', job: @job if admin_signed_in? %>
-                <% else %>
-                <p class='lead bold'><%= @employee.first_name %> is currently unassigned. </p>
-                <% end %>
-                
-            </div>
-            <div class='col-md-6'>
-                <h2>Skills</h2>
-                <% @employee.skills.each do |skill| %>
-                    <%= skill.name %><br>
-                <% end %>
-                
-            </div>
-            <% if @employee.work_histories.any?  %>
-            <div class='col-md-12 '>
-                <h2><%= @employee.first_name %>'s Employment Timeline</h2>
-                <%= timeline  @employee.work_history_data, width: "100%", height: "300px" %>
-            </div>
-            <% end %>
-            <% if @employee.timesheets.any?  %>
-                <%= column_chart @employee.jobs.includes(:timesheets).distinct.map{|job|
-                {name: job.name_title, data: job.timesheets.group_by_week('timesheets.week', range: 4.weeks.ago.midnight...Time.current, format: "%m/%d").sum(:total_hours)}
-            }, library: {title: "Employee Hours per Week"}, xtitle: "Week", ytitle: "Total Hours" %>
-            <% end %>
-        </div>
-   
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
+        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
+       <li role="presentation"><a href="#positions" aria-controls="positions" role="tab" data-toggle="tab">Suggested Positions</a></li>
+        <li role="presentation"><a href="#work_history" aria-controls="work_history" role="tab" data-toggle="tab">Work History</a></li>
+        <li role="presentation"><a href="#applications-tab" aria-controls="applications" role="tab" data-toggle="tab">Applications</a></li>
+        <li role="presentation"><a href="#edit-tab" aria-controls="edit" role="tab" data-toggle="tab">Edit</a></li>
         
-  </div>
-  <div role="tabpanel" class="tab-pane fade" id="positions">
-      <div class="col-md-12 well">
-          <h3>Suggested Positions</h3>
-          <%= render 'admin/orders/table', orders: @employee.matching_orders if admin_signed_in? %>
-          <%= render 'employee/orders/open_table', orders: @employee.matching_orders if user_signed_in? %>
-          <h3>Nearby Positions</h3>
-        <div class='list-group'>
-            <% @current_agency.orders.needs_attention.near(@user.fulladdress).limit(3).try(:each) do |order| %>
-                <li><%= link_to order.title, admin_order_path(order) %> (<%= order.distance.round(2) %> miles) <%= order.address %></li>
-            <% end %>
-        </div>
-      </div>
-      
-      
-  </div>
-  <div role="tabpanel" class="tab-pane fade" id="profile">
-     <div class="col-md-6">
-         <%= image_tag "http://maps.google.com/maps/api/staticmap?size=250x300&sensor=false&zoom=16&markers=#{@user.latitude}%2C#{@user.longitude}",
-                    class: "img-zoom" %>
-     </div>
-   
-   
-   
-    <div class='col-md-6'>
-        <% if @skills.any? %>
-     
-           <h4 class='text-center'>Skills</h4>
-
-            <div id='skills' class='center'>
-              <% @skills.each do |skill| %>
-                  <%= render 'admin/skills/skill', skill: skill %>
-              <% end %>
-             
-             </div>
-              
-          <% else %>
-           <h4 id='no-skills' class="center"><%= @employee.first_name %> has no skills entered.</h4>
-              <div id='skills' class='center'>
-                  
-              </div>
-          <% end %>
-          <div class='form-inline'>
-               <%= render partial: "admin/skills/form", locals: {skillable: @employee} %>
-             </div>
-
-      </div>
-    
-    
-  
-    
-
-  </div>
-  <!--WORK HISTORY TAB-->
-  <div role="tabpanel" class="tab-pane fade" id="work_history">
-    <div class='well'>
-    <% if @employee.work_histories.any? %>
-        <div class=' table-responsive'>
-           <%= render 'admin/work_histories/table' %>
-        </div>
-       <% if admin_signed_in? %>
-         <%=link_to "Add Work History", new_admin_employee_work_history_path(@employee), class: 'btn btn-primary' %>
-       <% elsif user_signed_in? %>
-         <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
-       <% end %>
-    <% else %>
-      <p>No Work History Available.</p>
-       <% if admin_signed_in? %>
-         <%=link_to "Add Work History", new_admin_employee_work_history_path(@employee), class: 'btn btn-primary' %>
-       <% elsif user_signed_in? %>
-         <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
-       <% end %>
-    <% end %>
-     </div>
+      </ul>
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active" id="home">
+            <div class='col-md-12 well'>
+                <div class='col-md-6'>
+                    <div class='gravatar'><%=gravatar_for(@user)%> </div>
+                    <h1 class="user-header"><%= @user.name %> </h1>
+                     <%= render "admin/users/user", user: @user %>
+                
+                   <p><small><%= @employee.status %></small></p>
+                    <% if @job.present? %>
+                    <%= render 'admin/jobs/job', job: @job if admin_signed_in? %>
+                    <% else %>
+                    <p class='lead bold'><%= @employee.first_name %> is currently unassigned. </p>
+                    <% end %>
+                    
+                </div>
+                <div class='col-md-6'>
+                    <% if @skills.any? %>
+                       <h4 class='text-center'>Skills</h4>
+                        <div id='skills' class='center'>
+                          <% @skills.each do |skill| %>
+                              <%= render 'admin/skills/skill', skill: skill %>
+                          <% end %>
+                         </div>
+                    <% else %>
+                       <h4 id='no-skills' class="center"><%= @employee.first_name %> has no skills entered.</h4>
+                          <div id='skills' class='center'>
+                          </div>
+                    <% end %>
+                      <div class='form-inline'>
+                           <%= render partial: "admin/skills/form", locals: {skillable: @employee} %>
+                         </div>
+                </div>
+                <% if @employee.work_histories.any?  %>
+                <div class='col-md-12 '>
+                    <h2><%= @employee.first_name %>'s Employment Timeline</h2>
+                    <%= timeline  @employee.work_history_data, width: "100%", height: "300px" %>
+                </div>
+                <% end %>
+                <% if @employee.timesheets.any?  %>
+                    <%= column_chart @employee.jobs.includes(:timesheets).distinct.map{|job|
+                    {name: job.name_title, data: job.timesheets.group_by_week('timesheets.week', range: 4.weeks.ago.midnight...Time.current, format: "%m/%d").sum(:total_hours)}
+                }, library: {title: "Employee Hours per Week"}, xtitle: "Week", ytitle: "Total Hours" %>
+                <% end %>
+            </div>
        
-  </div>
-  <!--APPLICATIONS TAB-->
-  <div role="tabpanel" class="tab-pane fade" id="applications-tab">
-      <% if @user.events.any? %>
-    <h3> Your Applications</h3>
-      <div class='list-group'>
-						<% @user.events.applications.each do |event| %>
-						  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
-						    <%= render partial: "events/activities/employee_applied", locals: {event: event} %>
-						  <% end %>
-						<% end %>
-					</div>
-			<% else %>
-			<h3>No applications to show.</h3>
-			<% end %>
-  </div>
-  <!--SETTINGS TAB-->
-  <div role="tabpanel" class="tab-pane fade" id="edit-tab">
-      <span id='<%=@user.id%>-updated-available-at'>Updated as available: <%= @user.checked_in_at? ? "#{time_ago_in_words(@user.checked_in_at)} ago" : "" %></span>
-      <div class='btn-group'>
-        <% if admin_signed_in? %>        
-                <%= link_to "Employee Profile", admin_employee_path(@employee), class: 'btn btn-primary' %>
-            <% elsif user_signed_in? %>
-                <%= link_to "Dashboard", employee_home_path(@employee), class: 'btn btn-primary' %>
-        <% end %>
-        <%= link_to "Edit User", edit_user_path(@user), class: "btn btn-primary" %>
-     </div>
-    <% if @user.can_edit? %> <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> <% end %> </span> 
-       <h4>User Updated:<span id="updated-at"> <%= time_ago_in_words(@user.updated_at) %> ago</span></h4>
-    <%= link_to "Allow to Edit", grant_editing_user_path(@user), class: "btn btn-primary", method: :patch, remote: true %> 
-    <%= link_to "Edit", edit_user_registration_path(current_user), class: 'btn btn-default' %>  
-   
+            
+      </div>
+      <div role="tabpanel" class="tab-pane fade" id="positions">
+          <div class="col-md-12 well">
+              <h3>Suggested Positions</h3>
+              <%= render 'admin/orders/table', orders: @employee.matching_orders if admin_signed_in? %>
+              <%= render 'employee/orders/open_table', orders: @employee.matching_orders if user_signed_in? %>
+              <h3>Nearby Positions</h3>
+            <div class='list-group'>
+                <% @current_agency.orders.needs_attention.near(@user.fulladdress).limit(3).try(:each) do |order| %>
+                    <li><%= link_to order.title, admin_order_path(order) %> (<%= order.distance.round(2) %> miles) <%= order.address %></li>
+                <% end %>
+            </div>
+          </div>
+          
+          
+      </div>
+      <div role="tabpanel" class="tab-pane fade" id="profile">
+         <div class="col-md-10">
+             <%= image_tag "http://maps.google.com/maps/api/staticmap?size=250x300&sensor=false&zoom=16&markers=#{@user.latitude}%2C#{@user.longitude}",
+                        class: "screenshot" %>
+         </div>
+       
+       
+       
+        
+        
+        
+      
+        
     
-  </div>
-</div>
-</div>
+      </div>
+      <!--WORK HISTORY TAB-->
+      <div role="tabpanel" class="tab-pane fade" id="work_history">
+        <div class='well'>
+        <% if @employee.work_histories.any? %>
+            <div class=' table-responsive'>
+               <%= render 'admin/work_histories/table' %>
+            </div>
+           <% if admin_signed_in? %>
+             <%=link_to "Add Work History", new_admin_employee_work_history_path(@employee), class: 'btn btn-primary' %>
+           <% elsif user_signed_in? %>
+             <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
+           <% end %>
+        <% else %>
+          <p>No Work History Available.</p>
+           <% if admin_signed_in? %>
+             <%=link_to "Add Work History", new_admin_employee_work_history_path(@employee), class: 'btn btn-primary' %>
+           <% elsif user_signed_in? %>
+             <%= link_to "Add Work History", new_work_history_path, class: 'btn btn-primary' %>
+           <% end %>
+        <% end %>
+         </div>
+           
+      </div>
+      <!--APPLICATIONS TAB-->
+      <div role="tabpanel" class="tab-pane fade" id="applications-tab">
+          <% if @user.events.any? %>
+        <h3> Your Applications</h3>
+          <div class='list-group'>
+    						<% @user.events.applications.each do |event| %>
+    						  <% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+    						    <%= render partial: "events/activities/employee_applied", locals: {event: event} %>
+    						  <% end %>
+    						<% end %>
+    					</div>
+    			<% else %>
+    			<h3>No applications to show.</h3>
+    			<% end %>
+      </div>
+      <!--SETTINGS TAB-->
+      <div role="tabpanel" class="tab-pane fade" id="edit-tab">
+          <span id='<%=@user.id%>-updated-available-at'>Updated as available: <%= @user.checked_in_at? ? "#{time_ago_in_words(@user.checked_in_at)} ago" : "" %></span>
+          <div class='btn-group'>
+            <% if admin_signed_in? %>        
+                    <%= link_to "Employee Profile", admin_employee_path(@employee), class: 'btn btn-primary' %>
+                <% elsif user_signed_in? %>
+                    <%= link_to "Dashboard", employee_home_path(@employee), class: 'btn btn-primary' %>
+            <% end %>
+            <%= link_to "Edit User", edit_user_path(@user), class: "btn btn-primary" %>
+         </div>
+        <% if @user.can_edit? %> <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> <% end %> </span> 
+           <h4>User Updated:<span id="updated-at"> <%= time_ago_in_words(@user.updated_at) %> ago</span></h4>
+        <%= link_to "Allow to Edit", grant_editing_user_path(@user), class: "btn btn-primary", method: :patch, remote: true %> 
+        <%= link_to "Edit", edit_user_registration_path(current_user), class: 'btn btn-default' %>  
+       
+        
+          </div>
+        </div>
+    </div>
   
   
   

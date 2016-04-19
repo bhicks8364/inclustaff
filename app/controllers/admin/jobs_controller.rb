@@ -72,7 +72,7 @@ class Admin::JobsController < ApplicationController
   end
 
   def cancel
-    if @job.active? && @job.shifts.any?
+    if @job.active? && @job.timesheets.any?
       @job.update(active: false, end_date: Date.today, state: "Assignment Ended")
       @employee.update(assigned: false)
       # It'd be nice to have them be required to give a reason when ending an assignment
@@ -228,6 +228,7 @@ class Admin::JobsController < ApplicationController
   # PATCH/PUT /jobs/1.json
   def update
     authorize @job
+    
     respond_to do |format|
       if @job.update(job_params)
 

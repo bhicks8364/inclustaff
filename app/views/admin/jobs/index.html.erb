@@ -1,5 +1,6 @@
-<h1><%= pluralize(@jobs.active.count, "Active Job")%> </h1>
-<div class='col-md-12 well'>
+
+<div class='col-md-12 mainpage shadow'>
+    <h1><%= pluralize(@jobs.active.count, "Active Job")%> </h1>
     <%= search_form_for [:admin, @q], class: 'form col-md-3' do |f| %>
   <%= f.search_field :employee_last_name_or_employee_first_name_or_employee_email_or_employee_phone_number_cont , class: 'form-control', placeholder: "Search by name/phone number"%>
   <%= f.search_field :employee_last_name_cont , class: 'form-control', placeholder: "Search by last name"%>

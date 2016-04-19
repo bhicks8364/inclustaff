@@ -7,7 +7,7 @@ class OrderPdf < Prawn::Document
         @view = view_context
         text "#{order.company.name }", size: 30, style: :bold
         move_down 30
-        text "#{order.notes }"
+        text "#{order.job_description }"
         text "#{current_agency.name }"
         text default_message
     end

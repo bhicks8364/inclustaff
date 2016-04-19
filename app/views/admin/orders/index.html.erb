@@ -17,6 +17,7 @@
 		<%= link_to(admin_orders_path(@orders, format: :csv), class: 'btn btn-primary') do %>
 		  		<i class="fa fa-file-excel-o fa-lg"></i> Export CSV
 		  	<% end %>
+		  	<% if @company.present? %>
 		  	<div class='form-inline'>
 		  		<%= form_for @import, url: import_admin_orders_path, multipart: true do |f| %>
 				
@@ -32,6 +33,7 @@
 					<%= f.submit "Upload" %>
 				<% end %>
 		  	</div>
+		  	<% end %>
 		</div>
 
 </div>

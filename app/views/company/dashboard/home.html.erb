@@ -1,20 +1,20 @@
 <div class="col-md-12 mainpage shadow">
   <div class='row'>
     <div class='col-md-4 well well-sm text-center'>
-      <h2>Active Employees <br>
-      <span class="text-info"><%= @current_company.jobs.currently_working.count %></span></h2>
+      <h3>Active Employees <br>
+      <span class="text-info"><%= @current_company.jobs.currently_working.count %></span></h3>
       
     </div>
     <div class='col-md-4 well well-sm text-center'>
-      <h2>Employees Clocked In <br> <span class="text-info"><%= @current_company.jobs.on_shift.count %></span></h2>
+      <h3>Employees Clocked In <br> <span class="text-info"><%= @current_company.jobs.on_shift.count %></span></h3>
       
     </div>
     <div class='col-md-4 well well-sm text-center'>
-      <h2>Pending Approval<br> <span class="text-info"><%= @current_company.jobs.pending_approval.count %></span></h2>
+      <h3>Pending Approval<br> <span class="text-info"><%= @current_company.jobs.pending_approval.count %></span></h3>
     </div>
   </div>
   <div class='row'>
-  <div class='col-md-12 well' data-behavior='timesheet-list'>
+  <div class='col-md-9 well' data-behavior='timesheet-list'>
     
     	 <h1 class='bold'><%= @current_company.name %></h1>
    

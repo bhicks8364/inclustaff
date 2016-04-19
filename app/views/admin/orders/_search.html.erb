@@ -2,10 +2,10 @@
     <%= search_form_for @q, class: 'form-inline', url: search_admin_orders_path, html: { method: :post } do |f| %>
       
           <%= f.search_field :notes_or_job_description_or_title_cont, class: "form-control", placeholder: "Search Job Orders"%>
-        <%= f.search_field :company_name_cont, class: "form-control", placeholder: "Search by Company"%>
-    <div class='btn-group pull-right'>
-        <%= f.submit class: "btn btn-default" do %><i class='fa fa-search'></i><% end %> 
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <%= f.search_field :company_name_cont, class: "form-control", placeholder: "Search by Company" if @company.nil? %>
+    <div class='btn-group'>
+        <%= f.submit class: "btn btn-default btn-inline" do %><i class='fa fa-search'></i><% end %> 
+        <button type="button" class="btn btn-default btn-inline dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Sort By <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">

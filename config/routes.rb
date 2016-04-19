@@ -243,6 +243,7 @@ Rails.application.routes.draw do
       resources :jobs do
         collection do
           get 'archived'
+          get 'pending'
           patch 'clock_out_all'
         end
         member do

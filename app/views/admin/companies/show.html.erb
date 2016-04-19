@@ -94,14 +94,8 @@
 			  <i class='fa fa-plus'></i>
 				New Job Order
 			<% end %>
-			<%= link_to(edit_admin_company_path(@company), class: "btn btn-primary") do %>
-			  <i class='fa fa-pencil'></i>
-				Edit Company
-			<% end %>
-			<%= link_to(edit_admin_company_path(@company), class: "btn btn-primary") do %>
-			  <i class='fa fa-pencil'></i>
-				Edit Company
-			<% end %>
+		
+			
       </div>   
       <div class='col-md-4 well'>
         <p>Reports</p>
@@ -179,9 +173,9 @@
   <div role="tabpanel" class="tab-pane fade" id="invoices">
      <div class='col-md-6'>
        <h3>Balance: <%= number_to_currency(@company.balance) %></h3>
-       <% if @company.invoices.paid.any? %>
+       <% if @company.invoices.any? %>
        <h3>Paid Invoices</h3>
-    <%= render @company.invoices.paid.order(created_at: :desc) %>
+    <%= render partial: "admin/invoices/table", locals: { invoices: @company.invoices.order(created_at: :desc) } %>
     <% else %>
       <h3>No paid invoices to display.</h3>
       <% end %>

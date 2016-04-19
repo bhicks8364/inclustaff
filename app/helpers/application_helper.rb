@@ -97,7 +97,7 @@ module ApplicationHelper
     end
     
     def convo_for(options={})
-        date = (Time.current.beginning_of_week + 1.week).stamp("Monday 12/18")
+        date = (Time.current.beginning_of_week).stamp("Monday 12/18")
         
         @header = options[:header]
         @admins = options[:admins]

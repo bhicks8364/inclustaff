@@ -10,6 +10,7 @@
       <th>Current Rate</th>
       <th>Total Hours</th>
       <th>Current Bill</th>
+      <th> Revenue</th>
       <th>Commission</th>
     </tr>
   </thead>
@@ -20,7 +21,8 @@
         <td><%= link_to admin.name, admin_admin_path(admin), class: '' %></td>
         <td><%= commision_rate(admin) %></td>
         <td> <%= admin.timesheets.current_week.sum(:total_hours).round(2) %></td>
-        <td><%= admin.timesheets.current_week.any? ? number_to_currency(admin.timesheets.current_week.sum(:total_bill) ) : "N/A"%></td>
+        <td><%= number_to_currency admin.current_billing %></td>
+        <td><%= number_to_currency admin.current_revenue %></td>
         <td><%= number_to_currency current_commission_for(admin) %></td>
       </tr>
     <% end %>

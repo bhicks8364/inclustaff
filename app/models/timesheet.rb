@@ -93,14 +93,14 @@ class Timesheet < ActiveRecord::Base
     where(week: start..ending)}
     
   def self.worked_before(date)
-    includes(:shifts).where(Shift[:time_in].lteq(date))
+    where(Timesheet[:week].lteq(date.to_date))
   end
   def self.worked_after(date)
-    includes(:shifts).where(Shift[:time_in].gteq(date))
+    where(Timesheet[:week].gteq(date.to_date))
   end
   def self.occurring_between(date1, date2)
-    where(Shift[:time_in].gteq(date1)
-      .and(Shift[:time_in].lteq(date2)))
+    where(Timesheet[:week].gteq(date1.to_date)
+      .and(Timesheet[:week].lteq(date2.to_date)))
   end
   def self.for_the_week_of(date=Time.current.to_date)
     where(Timesheet[:week].eq(date.beginning_of_week))

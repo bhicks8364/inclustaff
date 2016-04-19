@@ -5,15 +5,14 @@
       <i class='fa fa-files-o fa-fw'></i> Reports
     </button>
     <ul class="dropdown-menu">
-      <li class='text-center'><i class='fa fa-file-pdf-o'></i> PDFs</li>
+      <li class='bold text-center'><i class='fa fa-file-pdf-o'></i> PDFs</li>
       <li><%= link_to  "Current Timesheets", admin_company_timesheets_path(@company, format: :pdf, scope: "current_week")%></li>
       <li><%= link_to  "Last Week Timesheets", admin_company_timesheets_path(@company, format: :pdf, scope: "last_week")%></li>
       <li><%= link_to  "All Timesheets", admin_company_timesheets_path(@company, format: :pdf, scope: "all")%></li>
-      <li class='text-center'><i class='fa fa-file-excel-o'></i> CSVs </li>
+      <li class='bold text-center'><i class='fa fa-file-excel-o'></i> CSVs </li>
       <li><%= link_to  "Current Timesheets", admin_company_timesheets_path(@company, format: :csv, scope: "current_week")%></li>
       <li><%= link_to  "Last Week Timesheets", admin_company_timesheets_path(@company, format: :csv, scope: "last_week")%></li>
       <li><%= link_to  "All Timesheets", admin_company_timesheets_path(@company, format: :csv, scope: "all")  %></li>
-      <li><a href="#">Separated link</a></li>
     </ul>
     <%= link_to "<i class='fa fa-user-plus fa-fw'></i> Make a placement".html_safe, new_admin_order_job_path(@order), class: "btn btn-default" if policy(Job).create? && @order.needs_attention?  %>
     <%= link_to "<i class='fa fa-download fa-fw'></i> Info Sheet ".html_safe, admin_order_path(@order, format: "pdf"), class: "btn btn-default" %>

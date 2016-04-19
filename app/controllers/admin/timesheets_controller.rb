@@ -130,9 +130,11 @@ class Admin::TimesheetsController < ApplicationController
           @timesheets = @current_admin.timesheets.worked_after(@start_time).distinct
         elsif @end_time.present?
           @timesheets = @current_admin.timesheets.worked_before(@end_time).distinct
+        else
+            @timesheets = @current_admin.timesheets
         end
-        @q = @current_admin.timesheets.ransack(params[:q])
-        @timesheets = @q.result.includes(:job, :employee).paginate(page: params[:page], per_page: 30) if @q.present?
+        @q = @timesheets.ransack(params[:q])
+        @timesheets = @q.result.includes(:job, :employee).paginate(page: params[:page], per_page: 30) 
         gon.timesheets = @timesheets
         authorize @timesheets, :index?
 		respond_to do |format|

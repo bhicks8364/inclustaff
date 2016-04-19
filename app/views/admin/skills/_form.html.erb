@@ -1,11 +1,11 @@
 
-<%= simple_form_for [:admin, skillable, Skill.new], :remote => true do |f| %>
+<%= simple_form_for [:admin, skillable, Skill.new], :remote => true, class: "form-inline" do |f| %>
   <%= f.error_notification %>
 
   
-    <%= f.input :name, label: false, placeholder: "Type # for suggestions", input_html: {autocomplete: :off, id: "autocomplete"}%>
+    <%= f.input :name, label: false, placeholder: "Type # for suggestions", input_html: {class: "form-control", autocomplete: :off, id: "autocomplete"}%>
     <% if skillable.class.to_s == "Order" %>
-       <%= f.input :required, label: 'Is this a requirement?' %>
+       <%= f.input :required, label: 'Is this a requirement?', input_html: {class: "form-control"} %>
     <% end %>
    
     
@@ -14,6 +14,6 @@
     <%= f.hidden_field :skillable_type, :value => skillable.class %>
 
  
-    <%= f.button :submit %>
+    <%= f.button :submit, class: "btn-default inline" %>
  
 <% end %>

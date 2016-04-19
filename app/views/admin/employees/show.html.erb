@@ -5,9 +5,7 @@
         <% end %>
     <% end %>
         <% if @employee.dns? %>   <h1 class="bold text-center text-danger">Marked as DNS</h1>   <% end %>
-        <div class="well">
-            <h2>Job count: <%= @employee.jobs.count %></h2>
-        </div>
+        
  <h2 class="page-header bold text-center"><%= @user.name %>'s Employee Profile  </h2>
 <!--NAV TABS-->
     <div id='profile-nav' class=''>
@@ -31,18 +29,21 @@
         <!--HOME TAB-->
       <div role="tabpanel" class="tab-pane fade in active" id="home">
         <div class='row'>
-            <div class='col-md-3 well well-sm'>
-                <%= render "users/user", user: @user %>
+            <div class='col-md-6 well'>
+                 <div class='gravatar'><%=gravatar_for(@user)%> </div>
+                    <h1 class="user-header"><%= @user.name %> </h1>
+                <%= render "admin/users/user", user: @user %>
                 <p class="user-address">
                     <%= @user.address %><br>
                     <%= @user.city %>, <%= @user.state %> <%= @user.zipcode %><br>
                     <small><%= user_phone(@user) %></small>  <br>
                     <small><%=user_email(@user)%></small>
                 </p>
-                <p>Availablility</p>
-                    <%= render 'admin/employees/availability', employee: @employee %>
+                
             </div>
-            <div class='col-md-3 well well-sm'>
+           
+            <div class='col-md-6 well'>
+                <h3>Skills</h3>
                  <div  id='skills' class=''>
                  <% @employee.skills.each do |skill| %>
                   <%= render "admin/skills/skill", skill: skill %>
@@ -52,9 +53,11 @@
                  <div class=''>
                    <%= render partial: "admin/skills/form", locals: {skillable: @employee} %>
                  </div>
+                  <h3>Availablility</h3>
+                    <%= render 'admin/employees/availability', employee: @employee %>
             </div>
-            <div class='col-md-6 well well-sm'>
-                <h2><%= @employee.status %></h2>
+            <% if @employee.jobs.any? %>
+            <div class='col-md-6 well'>
                 <% if @employee.current_job.present? %>
                 <p>Current Job Assignment</p>
                 <p class="lead"><%= @employee.current_job.title %></p>
@@ -66,11 +69,13 @@
                   <p class=''>Total hours: <%= job.total_hours %> <br>
                   Total gross: <%= number_to_currency(job.total_gross_pay) %> <br>   </p>
                 <% end %>
+                
             </div>
             <div class='col-md-12'>
                 <hr>
               <%= column_chart @employee.jobs.active.map{|job| {name: job.title_company, data: job.timesheets.group_by_week(:week, range: @employee.initial_start_date.beginning_of_week.midnight..Time.current, format: "%m/%d").sum(:total_hours)}}, xtitle: "Week", ytitle: "Total Hours", library: {} %>
             </div>
+            <% end %>
         </div>
         
     </div>
@@ -83,7 +88,7 @@
       <!--EMPLOYEE PROFILE TAB-->
     <div role="tabpanel" class="tab-pane fade" id="payroll">
         <h2 class="text-center">Payroll Information  </h2>
-        <div class='col-md-4 well'>
+        <div class='col-md-6 well'>
             <%= link_to "Add Direct Deposit", new_admin_employee_direct_deposit_path(@employee), class: "btn btn-default" %>
             <hr>
             <ul class="fa-ul">
@@ -92,7 +97,7 @@
                 <% end %>
             </ul>
         </div>
-        <div class='col-md-4 well'>
+        <div class='col-md-6 well'>
             <% if @user.current_sign_in_at.present? %>
             
             <p>

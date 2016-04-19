@@ -3,7 +3,7 @@
 	<% if admin_signed_in? && @current_admin.id == event.admin.try(:id) %>
    You
    <% else %>
-   	<%= event.admin.try(:first_name) %>
+   	<%= event.admin.try(:first_name) if @admin.nil? %>
    	<%= event.user.try(:first_name) %>
 	<%= event.company_admin.try(:first_name)  %>
     <% end %>

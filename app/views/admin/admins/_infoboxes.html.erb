@@ -27,3 +27,17 @@
 	
 		
 </div>
+<div class="col-md-12">
+    <% if @admin.events.any? %>
+	<h4>Recent Activity</h4>
+	<div class="scroll400">
+		<% @admin.events.order(created_at: :desc).limit(10).each do |event| %>
+			<% if lookup_context.template_exists?(event.action, "events/activities", true) %>
+				<%= render partial: "events/activities/#{event.action}", locals: {event: event} %>
+			<% end %>
+		<% end %>
+	</div>
+	<% else %>
+	<p class='bold'>No activity to show.</p>
+	<% end %>
+</div>

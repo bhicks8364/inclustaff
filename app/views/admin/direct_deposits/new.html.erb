@@ -4,6 +4,5 @@
 
     <%= render 'form' %>
     
-    <%= link_to 'Back', admin_employee_path(@employee) %>
-    <%= link_to "#{@employee.name}", admin_employee_direct_deposits_path(@employee) %>
+    <%= link_to 'Back', admin_employee_path(@employee), class: "btn-default" %>
 </div>

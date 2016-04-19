@@ -2,25 +2,7 @@
     <div class='col-md-12 well well-sm'>
         
 		<%= form_for @import, url: import_company_timesheets_path, multipart: true do |f| %>
-		<div class="col-md-6 well">
-		    <h4 class="bold text-center">Import Timesheets as CSV</h4>
-		    <hr>
-		<% if @import.errors.any? %>
-			<div class='alert alert-error'>
-    		<% @import.errors.full_messages.each do |msg| %>
-    			<div><%= msg %></div>
-    		<% end %>
-			</div>
-		<% end %>
 		
-    		<div class="form-group">
-    			<%= f.file_field :file %>
-    			<%= f.submit "Upload" %>
-    		</div>
-    		
-		<% end %>
-	
-		</div>
 		<div class="col-md-6">	
     		<div class="col-md-4 well well-sm">
     		    <h5 class="bold">Required Fields</h5>
@@ -30,6 +12,22 @@
         		    <li>Reg_hours</li>
         		    <li>Ot_hours</li>
         		</ul>
+        		<div class="well">
+        		    <h4 class="bold text-center">Import Timesheets as CSV</h4>
+        		    <hr>
+        		<% if @import.errors.any? %>
+        			<div class='alert alert-error'>
+            		<% @import.errors.full_messages.each do |msg| %>
+            			<div><%= msg %></div>
+            		<% end %>
+        			</div>
+        		<% end %>
+            		<div class="form-group">
+            			<%= f.file_field :file %>
+            			<%= f.submit "Upload" %>
+            		</div>
+        		<% end %>
+        		</div>
     		</div>
     		<div class="col-md-8 well">
     		    <h5 class="bold text-center">Employees without current timesheets.</h5>

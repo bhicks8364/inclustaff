@@ -19,7 +19,12 @@ class Company::JobsController < ApplicationController
     skip_authorization
     # authorize @pending_approval, :index?
   end
-
+  def pending
+    @company = @current_company
+    @jobs = @company.jobs.pending_approval.order(created_at: :asc)
+    render action: :index
+    skip_authorization
+  end
   def show
     authorize @job
     @employee = @job.employee
@@ -78,7 +83,6 @@ class Company::JobsController < ApplicationController
   end
 
   def clock_out
-
     authorize @job, :clock_out?
     if @job.on_shift? && @job.current_shift.present?
         @shift = @job.current_shift

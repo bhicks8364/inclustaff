@@ -1,0 +1,5 @@
+<% if @current_agency.employees.needing_dd.any? %>
+<div class="alert alert-danger" role="alert">
+   <%= pluralize(@current_agency.employees.needing_dd.count, "employees") %> need direct deposit 
+</div>
+<% end %>

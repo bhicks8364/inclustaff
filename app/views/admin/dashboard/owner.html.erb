@@ -4,6 +4,7 @@
 		<div class="clearfix">
 			<ul class="nav nav-tabs">
 			  <li class="active"><a href="#tab-home" data-toggle="tab">Owner Dashboard</a></li>
+			  <li class=""><a href="#tab-orders" data-toggle="tab">Job Orders</a></li>
 			  <li class=""><a href="#tab-invoices" data-toggle="tab">Invoices</a></li>
 			  <li class=""><a href="#tab-admins" data-toggle="tab">Admins</a></li>
 			  <li class=""><a href="#tab-leaderboard" data-toggle="tab">Stats</a></li>
@@ -43,18 +44,25 @@
 		                  </div>
 		                </div>
 		                <h4 class='text-right '>  <span class='label label-success black'>Sales Goal &nbsp;<%= number_to_currency(@current_agency.weekly_sales_goal) %></span> </h4>
-	       				<hr>
-	       			<%= render "admin/dashboard/orders_by_company", companies: @current_agency.companies %>
 	       			<h2>Company Billings</h2>
 	       				<%= line_chart   Company.uniq.map { |c| { name: c.name, data: c.invoices.group_by_month(:week, range: Date.current.beginning_of_year...Date.current, format: "%B %Y").sum(:total) }  }, discrete: true %>
 	       			
 	       			</div>
        			</div>
 			</div>
-			
+			<div class="tab-pane fade" id="tab-orders">
+				<div class='col-md-7 well'>
+					<h2>Job Orders</h2>
+				<hr>
+	       		<%= render "admin/shared/company_collapse", companies: @current_agency.companies %>
+				</div>
+				<div class="col-md-5 well">
+					<%= pie_chart Order.distinct.group(:status).count %>
+				</div>
+			</div>
 			<div class="tab-pane fade" id="tab-admins">
 				
-				<div class='col-md-8 well well-sm shadow'>
+				<div class='well well-sm shadow'>
 	       				<%= line_chart   Admin.account_managers.uniq.map { |c| { name: c.name, data: c.invoices.group_by_month(:week, range: Date.current.beginning_of_year...Date.current, format: "%B %Y").sum(:total) }  }, discrete: true %>
 	       			</div>
 				<div class='col-md-4'>

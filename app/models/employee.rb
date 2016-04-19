@@ -81,7 +81,7 @@ class Employee < ActiveRecord::Base
   end  
   
   scope :working, -> { where(status: 'Working')}
-  scope :needing_dd, -> { without_direct_deposit.where(status: 'Working').joins(:timesheets).merge(Timesheet.current_week)}
+  scope :needing_dd, -> { without_direct_deposit.where(status: 'Working').joins(:timesheets).merge(Timesheet.last_week)}
   def available?
     current_job.nil? && dns == false
   end
@@ -121,6 +121,7 @@ class Employee < ActiveRecord::Base
   scope :at_work, -> { joins(:shifts).merge(Shift.at_work)}
   scope :off_shift, -> { joins(:current_shift).merge(Shift.clocked_out)}
   scope :with_current_timesheet, -> { joins(:timesheets).merge(Timesheet.this_week)}
+  scope :with_last_week_timesheet, -> { joins(:timesheets).merge(Timesheet.last_week)}
   scope :on_break, -> { joins(:shifts).merge(Shift.on_break)}
   scope :dns, -> { where(dns: true) }
   scope :unassigned, -> { where(assigned: false) }
