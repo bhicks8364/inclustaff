@@ -15,7 +15,7 @@
         <th>Hours</th>
         <th>Pay</th>
         <th>Total Hours</th>
-        <th></th>
+        <th>New Timesheet</th>
       </tr>
     </thead>
     <tbody>
@@ -33,7 +33,7 @@
           <td><%= job.current_week_hours.round(2) %></td>
           <td><%= number_to_currency(job.current_week_pay) %></td>
           <td class='bold'><%= job.total_hours.round(2) %></td>
-          <td><%= link_to "<i class='fa fa-plus fa-fw'></i> Timesheet".html_safe, new_company_job_timesheet_path(job) %></td>
+          <td><%= link_to "<i class='fa fa-plus fa-fw'></i>".html_safe, new_company_job_timesheet_path(job) %></td>
         </tr>
       <% end %>
     </tbody>

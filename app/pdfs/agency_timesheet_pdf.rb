@@ -38,6 +38,7 @@ class AgencyTimesheetPdf < Prawn::Document
     end
     def timesheet_rows
         if @scope == "all"
+            total = 0
             @t = [["Company", "Week", "Employee", "Pay Rate", "Hours", "Gross Pay", "Approved by"]]
             @timesheets.map do |timesheet|
                @t <<  [timesheet.company.name, timesheet.week_ending, "#{timesheet.employee.name}", price(timesheet.pay_rate), timesheet.total_hours.round(2), price(timesheet.gross_pay), timesheet.user_approved.titleize]

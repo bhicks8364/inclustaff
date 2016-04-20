@@ -2,13 +2,17 @@
     <h1>Search</h1>
     <%= render "shared/searching_btw_form", search_path: search_admin_timesheets_path %>
     <%= render "admin/timesheets/search" %>
+    <div class="" data-behavior='timesheet-list'>
+        <%= render "edit_table", timesheets: @timesheets.pending %>
+    </div>
+    <hr>
     <div class="col-md-12 well scroll300" data-behavior='timesheet-list'>
         <%= will_paginate @timesheets.approved %>
         <%= render "table", timesheets: @timesheets.approved %>
         
     </div>
-    <hr>
-    <%= render "edit_table", timesheets: @timesheets.pending %>
+    
+    
     
     
 </div>
