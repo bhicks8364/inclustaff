@@ -246,9 +246,9 @@ class Admin::TimesheetsController < ApplicationController
     respond_to do |format|
       if @timesheet.save
           if params[:redirect_to].present?
-              format.html { redirect_to admin_job_timesheets_path(@timesheet.job, anchor: "timesheet_#{@timesheet.id}"), notice: 'Timesheet was successfully updated.' }
+              format.html { redirect_to admin_timesheets_path(anchor: "timesheet_#{@timesheet.id}"), notice: 'Timesheet was successfully updated.' }
           else
-              format.html { redirect_to admin_job_timesheets_path(@timesheet.job, anchor: "timesheet_#{@timesheet.id}"), notice: 'Timesheet was successfully updated.' }
+              format.html { redirect_to admin_timesheets_path(anchor: "timesheet_#{@timesheet.id}"), notice: 'Timesheet was successfully updated.' }
           end
         format.json { render :show, status: :created, location: @timesheet }
       else
@@ -286,7 +286,7 @@ class Admin::TimesheetsController < ApplicationController
           if params[:redirect_to].present?
               format.html { redirect_to params[:redirect_to], notice: 'Timesheet was successfully updated.' }
           else
-              format.html { redirect_to admin_job_timesheets_path(@timesheet.job, anchor: "timesheet_#{@timesheet.id}"), notice: 'Timesheet was successfully updated.' }
+              format.html { redirect_to admin_timesheets_path(anchor: "timesheet_#{@timesheet.id}"), notice: 'Timesheet was successfully updated.' }
           end
         format.json { render :show, status: :ok, location: @timesheet }
       else

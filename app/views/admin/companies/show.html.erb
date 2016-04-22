@@ -158,9 +158,9 @@
 		</div>
   </div>
   <div role="tabpanel" class="tab-pane fade" id="employees">
-    <h3>This week</h3>
+    <h3>Current Employees</h3>
      <div class='table-responsive well'>
-       <%= render 'admin/shifts/week_calendar', shifts: @company.shifts.current_week %>
+       <%= render 'admin/employees/table', employees: @company.employees %>
      </div>
       <div class='col-md-12 well well-sm'>
         <p class='lead text-center'>Hours by Employee <small> Last 4 weeks</small></p>
@@ -171,16 +171,16 @@
     </div>
   </div>
   <div role="tabpanel" class="tab-pane fade" id="invoices">
-     <div class='col-md-6'>
-       <h3>Balance: <%= number_to_currency(@company.balance) %></h3>
+     <h3>Invoices <span class="small pull-right"> Balance: <%= number_to_currency(@company.balance) %></span></h3>
+     <div class='col-md-12 table-responsive'>
        <% if @company.invoices.any? %>
-       <h3>Paid Invoices</h3>
+     
     <%= render partial: "admin/invoices/table", locals: { invoices: @company.invoices.order(created_at: :desc) } %>
     <% else %>
       <h3>No paid invoices to display.</h3>
       <% end %>
      </div>
-     <div class='col-md-6'>
+     <div class='col-md-12 well'>
        <% if @company.invoices.unpaid.any? %>
        <h3>Open Invoices</h3>
     <%= render @company.invoices.unpaid.order(created_at: :desc) %>

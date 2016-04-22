@@ -215,7 +215,7 @@ class Admin::JobsController < ApplicationController
           # @job.send_notifications!
         end
 
-        format.html { redirect_to admin_job_path(@job), notice: 'Job was successfully created.' }
+        format.html { redirect_to admin_job_path, notice: 'Job was successfully created.' }
         format.json { render :show, status: :created, location: @job }
       else
         format.html { render :new }

@@ -2,16 +2,17 @@
     <% companies.each do |company| %>
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="heading<%=company.id%>">
-          <% if company.orders.any? %>
-          <h4 class="panel-title">
-            <span class="pull-left"><%= company.name %> </span>
-            <a class="text-right" role="button" data-toggle="collapse" data-parent="#accordion" href="#company_collapse<%=company.id%>" aria-expanded="true" aria-controls="company_collapse<%=company.id%>">
-             <br> <span class='text-danger'><%= company_status(company) %> <i class="fa fa-caret-down"></i></span>
+        
+          <div class="panel-title">
+            <span class=""><%= link_to company.name, admin_company_path(company) %> </span>
+            <a class="" role="button" data-toggle="collapse" data-parent="#accordion" href="#company_collapse<%=company.id%>" aria-expanded="true" aria-controls="company_collapse<%=company.id%>">
+             <br> <p class='text-danger text-right small'><%= company_status(company) %> <i class="fa fa-caret-down"></i></p>
             </a>
-          </h4>
+          </div>
         </div>
         <div id="company_collapse<%=company.id%>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading<%=company.id%>">
-          <div class="list-group">
+           <% if company.orders.any? %>
+         <div class="list-group">
               <% company.orders.order(:title).each do |order| %>
                   <li class='list-group-item'>
                     <%= status_tag(order) %> 
@@ -19,10 +20,10 @@
                   </li>
               <% end %>
           </div>
-        </div>
         <% else %>
         <%= company_status(company) %>
         <%end%>
+        </div>
     </div>
     <% end %>
 </div>

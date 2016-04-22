@@ -12,7 +12,6 @@
 						<tr>
 							<th>Company</th>
 							<th>Employee</th>
-							<th>Title</th>
 							<th>Week Gross</th>
 							<th>YTD Gross</th>
 							<th class='text-center'><i class='fa fa-cog fa-lg'></i></th>
@@ -27,12 +26,13 @@
 				        <% end %>
 				        <td><%= employee.company %></td>
 							<td><%= link_to employee.name, admin_employee_path(employee), class: "" %><br>
-							<small><%= employee.ssn %></small>
+							<small><%= employee.current_job.company.name %></small>
 							</td>
-							<td><%= employee.title %></td>
 							<td><%= number_to_currency(employee.current_timesheet.try(:gross_pay) || 0) %> </td>
 							<td><%= number_to_currency(employee.current_job.try(:total_gross_pay) || 0) %> </td>
-							<td class='text-center'><%= link_to "<i class='fa fa-edit fa-lg'></i>".html_safe, edit_admin_employee_path(employee), class: "" %></td>
+							<td class='text-center'>
+								<%= link_to "<i class='fa fa-plus fa-fw'></i>".html_safe, new_admin_job_timesheet_path(employee.current_job) %>
+								<%= link_to "<i class='fa fa-edit fa-fw'></i>".html_safe, edit_admin_employee_path(employee), class: "" %></td>
 							</tr>
 						<% end %>
 						

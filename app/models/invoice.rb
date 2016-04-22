@@ -109,7 +109,7 @@ class Invoice < ActiveRecord::Base
         end
     end
     def unpaid?
-        paid == false || nil
+        paid != true
     end
         
     def timesheets_approved?

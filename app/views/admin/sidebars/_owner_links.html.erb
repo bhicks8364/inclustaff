@@ -9,6 +9,7 @@
 <li role="separator" class="divider"></li>
 <li><%= link_to "<i class='fa fa-file-o'></i> ACA Tracking".html_safe, report_admin_employees_path, class: "navbar-link" %></li>
 <li class=''><%= link_to "<i class='fa fa-wrench'></i> &nbsp; Working Employees".html_safe, admin_employees_path, class: "navbar-link" if policy(Job).index? %></li>
+<li class=''><%= link_to "<i class='fa fa-wrench'></i> &nbsp; Jobs".html_safe, admin_jobs_path, class: "navbar-link" if policy(Job).index? %></li>
 <li class=''><%= link_to "<i class='fa fa-users'></i> &nbsp; Candidate List".html_safe, admin_users_path, class: "navbar-link" if policy(User).index? %></li>
 <li><%= link_to "<i class='fa fa-pause-circle-o'></i> Pending Jobs".html_safe, inactive_admin_jobs_path, class: "navbar-link" if policy(Order).index? %></li>
 

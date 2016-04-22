@@ -7,7 +7,6 @@
             <th>Company</th>
             <th>Week</th>
             <th>Due by</th>
-            <th>Paid</th>
             <th>Total</th>
             <th>Amt paid</th>
             <th>Paid on</th>
@@ -19,11 +18,10 @@
           
           
             <tr id="inv-row-<%=invoice.id%>"  class="<%= invoice.paid ? "bg-info" : "bg-danger" %>">
-              <td id='mark-paid-<%=invoice.id%>'><%= link_to mark_as_paid_admin_invoice_path(invoice), method: :patch, remote: true, id: 'pay-button', class: 'btn btn-default' do %><%= invoice.state %> <% end %></td>
+              <td id='mark-paid-<%=invoice.id%>'><%= link_to mark_as_paid_admin_invoice_path(invoice), method: :patch, remote: true, id: "pay-button-#{invoice.id}", class: 'btn btn-default' do %><%= invoice.state %> <% end %><span id='status-<%=invoice.id%>'></span></td>
               <td><%= invoice.company.name %></td>
               <td> <%= inv_sym(invoice) %> &nbsp; <%= link_to invoice.week_ending.stamp('11/13'), admin_invoice_path(invoice) %></td>
               <td><%= invoice.due_by.stamp('11/13') %></td>
-              <td><%= invoice.state %></td>
               <td><%= number_to_currency(invoice.total) %></td>
               <td><%= number_to_currency(invoice.amt_paid) %></td>
               <td><%= invoice.paid_on %></td>
