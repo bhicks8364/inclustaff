@@ -9,9 +9,13 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-    <%= link_to root_url, class: 'logo' do %>
-				<%= image_tag("logo.png", class: 'logo-img') %>
-			 <% end %>
+   <%= link_to root_url, class: 'logo' do %>
+      <% if @current_agency.present? && @current_agency.logo_url.present? %>
+			  <%= image_tag(@current_agency.logo_url, class: "logo-img", alt: "#{@current_agency.name}") %> 
+			<% else %>
+			  <p class='navbar-text'><%= @current_agency.name %></p>
+			<% end %>
+		<% end %>
     </div>
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
