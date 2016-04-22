@@ -13,6 +13,8 @@
 				  <%= image_tag(@current_agency.logo_url, class: "logo-img", alt: "#{@current_agency.name}") %> 
 				<% elsif @current_agency.present?  %>
       <p class='navbar-text'><%= @current_agency.name %></p>
+      <% else %>
+      <%= image_tag("logo.png", class: "logo-img", alt: "IncluStaff") %> 
 			<% end %>
 			 <% end %>
     </div>
