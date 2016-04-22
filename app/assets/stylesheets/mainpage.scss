@@ -146,7 +146,7 @@ input.file-field {
     max-height: 100%;
     // padding: 20px;
     // margin: 20px;
-    border: solid 2px black;
+    border: solid 1px black;
 }
 
 .feature-icon {
@@ -157,12 +157,18 @@ input.file-field {
     // margin-right: auto;
 }
 
+.bullet-icon2 {
+    width: 150px;
+    height: 150px;
+    display:block;
+    margin:auto;
+    // margin-top: 25px;
+}
 .bullet-icon {
     width: 100px;
     height: 100px;
-    // display: block;
-    // margin-left: auto;
-    // margin-right: auto;
+    display:block;
+    margin:auto;
     // margin-top: 25px;
 }
 

@@ -41,6 +41,7 @@
                         <div class='metal'>
                             <span data-behavior="job-state">
                                 <h2 class='text-info'><%= @job.state %></h2>
+                                <p>Total Hours: <%= @job.total_hours %></p>
                             </span>
                             <div class='well bg-warning'>
                                 <% if @employee.available? && @job.pending_approval? %>

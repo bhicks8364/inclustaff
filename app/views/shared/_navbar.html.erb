@@ -42,8 +42,10 @@
         <li><%= link_to "Client Login", sign_in_path %></li>
         <% end %>
       </ul>
-      <% if @current_agency.nil? %>
-      <a href='http://demo.inclustaff.com' class='btn btn-success navbar-btn navbar-right'>Try a Demo Agency! </a>
+      <% if @current_agency.nil? && Rails.env == "production"%>
+      <a href='http://demo.inclustaff.com' class='btn btn-success navbar-btn navbar-right'>Try a Free Demo! </a>
+      <% elsif @current_agency.nil? && Rails.env == "development"%>
+      <a href='http://demo.inclustaff-bhicks8364.c9.io/' class='btn btn-success navbar-btn navbar-right'>Try a Free Demo! </a>
      <% end %>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
