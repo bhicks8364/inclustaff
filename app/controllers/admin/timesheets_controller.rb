@@ -9,15 +9,15 @@ class Admin::TimesheetsController < ApplicationController
         if params[:job_id]
             @job = Job.includes(:employee, :timesheets).find(params[:job_id])
             @q = @job.timesheets.ransack(params[:q])
-            @timesheets = @q.result.includes(:job, :employee).paginate(page: params[:page], per_page: 10)
+            @timesheets = @q.result.includes(:job, :employee).paginate(page: params[:page], per_page: 30)
         elsif params[:company_id]
             @company = Company.includes(:jobs, :timesheets).find(params[:company_id])
             @q = @company.timesheets.ransack(params[:q])
-            @timesheets = @q.result.includes(:job, :employee).paginate(page: params[:page], per_page: 10)
+            @timesheets = @q.result.includes(:job, :employee).paginate(page: params[:page], per_page: 30)
             
         else
             @q = @current_admin.timesheets.ransack(params[:q])
-            @timesheets = @q.result.includes(:job, :employee).paginate(page: params[:page], per_page: 10)
+            @timesheets = @q.result.includes(:job, :employee).paginate(page: params[:page], per_page: 30)
         end
         authorize @timesheets
         @scope = params[:scope]
@@ -111,7 +111,7 @@ class Admin::TimesheetsController < ApplicationController
 	
 	def last_week
 	    @q = @current_admin.timesheets.last_week.ransack(params[:q])
-        @timesheets = @q.result.includes(:job, :employee).paginate(page: params[:page], per_page: 10)
+        @timesheets = @q.result.includes(:job, :employee).paginate(page: params[:page], per_page: 30)
         gon.timesheets = @timesheets
         authorize @timesheets, :index?
 		respond_to do |format|
@@ -263,9 +263,9 @@ class Admin::TimesheetsController < ApplicationController
     @redirect_to = edit_multiple_admin_timesheets_path
     
     @q = @current_agency.timesheets.last_week.includes(:job, :order, :company).distinct.ransack(params[:q])
-    @timesheets = @q.result.includes(:job, :employee).paginate(page: params[:page], per_page: 10)
-    @approved_timesheets = @timesheets.approved.distinct.paginate(page: params[:page], per_page: 10)
-    @pending_timesheets = @timesheets.pending.distinct.paginate(page: params[:page], per_page: 10)
+    @timesheets = @q.result.includes(:job, :employee).paginate(page: params[:page], per_page: 30)
+    @approved_timesheets = @timesheets.approved.distinct.paginate(page: params[:page], per_page: 30)
+    @pending_timesheets = @timesheets.pending.distinct.paginate(page: params[:page], per_page: 30)
     skip_authorization
   end
   

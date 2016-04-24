@@ -1,7 +1,7 @@
 <%= div_for event do %>
 <% if !user_signed_in? %>
 <i class="fa fa-user fa-fw" data-toggle= "tooltip" title="<%=event.eventable.skills.map {|p| p.name.titleize}.join(', ')%> " ></i>
-<%= link_to event.eventable.name, event.eventable if !current_page?('/users/:id') %> 
+<%= link_to event.eventable.name, admin_user_path(event.eventable)  %> 
    	
    <% else %>
    You updated as available for work

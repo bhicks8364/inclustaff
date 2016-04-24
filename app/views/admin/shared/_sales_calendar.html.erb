@@ -6,7 +6,7 @@
   
        <%= link_to admin_order_path(job_order) do %>
        <p><%= status_tag(job_order) %><%= title_for(job_order) %><br>
-       <small>Need: <%= order_count(job_order) %></small></p>
+       <small><%= job_order.needs_attention? ? order_count(job_order) : "Filled" %></small></p>
          
        <% end %>
   <% end %>

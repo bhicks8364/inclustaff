@@ -47,7 +47,7 @@
   </div>
 
 
-  <div class='col-md-3 well well-sm shadow scroll500'>
+  <div class='col-md-6 well well-sm shadow scroll500'>
     <h2 class="text-center">Unpaid</strong></h2>
     <div class=''>
     <% if @company.present? %>
@@ -60,7 +60,7 @@
     <% else %>
       <% @current_agency.companies.includes(:invoices).order(:name).each do |company| %>
        <h3> <%= link_to company.name, admin_company_path(company) %>
-       <small>%= company.account_manager.try(:name) || "Unassigned" %></small></h3>
+       <small><%= company.account_manager.try(:name) || "Unassigned" %></small></h3>
           <% company.invoices.unpaid.order(week: :desc).each do |invoice| %>
           <%= inv_timesheets_collaspe(invoice) %><br>
           <div class='collapse' id="collapseInv_<%=invoice.id%>">

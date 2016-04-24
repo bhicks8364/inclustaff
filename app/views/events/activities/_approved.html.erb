@@ -9,7 +9,6 @@
     <% end %>
      <strong>	<%= event.action.humanize.downcase %></strong>
     <% if event.eventable.present? %>
-   
     <%=  signed_in_link_to event.eventable.name, event.eventable %> <small> at <%= event.eventable.company.name %></small>
 		<span class='label label-success black pull-right'>
 		    <%= event.created_at.stamp('11/13') %>

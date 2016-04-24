@@ -19,7 +19,7 @@
         Last signed in: <%= @admin.last_sign_in_at.present? ? @admin.last_sign_in_at.stamp("11/12 at 11:15am") : "Yet to sign in" %></h4>
         <hr>
             <p> Current Commission: <%= number_to_currency(@admin.current_commission) %></p>
-             <p> Top Company: <%= @admin.companies.ordered_by_current_bill.first.name %>        <span class="pull-right">(<%= number_to_currency(@admin.companies.ordered_by_current_bill.first.current_billing) %>)</span>         </p>
+             <p> Top Company: <%= @admin.companies.ordered_by_current_bill.first.name if @admin.companies.any? %>        <span class="pull-right">(<%= number_to_currency(@admin.companies.ordered_by_current_bill.first.current_billing) %>)</span>         </p>
         <h3 class="text-info text-center"><%= @admin.first_name %>'s Companies</h3>
         <%= render 'admin/shared/company_collapse', companies: @admin.companies.distinct %>
         <hr>
