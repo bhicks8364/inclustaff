@@ -44,11 +44,11 @@ class Invoice < ActiveRecord::Base
       
     has_paper_trail
     
-    scope :unpaid, -> { where(paid: false)}
+    scope :unpaid, -> { where(paid: [false, nil])}
     scope :paid, -> { where(paid: true)}
     scope :past, -> { joins(:timesheets).merge(Timesheet.past) }
-    scope :past_due, -> { unpaid.where("due_by < ?", Date.today) }
-    scope :current_week, ->{ joins(:shifts).merge(Shift.current_week) }
+    scope :past_due, -> { unpaid.where("due_by < ?", Date.today.to_date) }
+    scope :current_week, ->{ joins(:timesheets).merge(Timesheet.current_week).distinct }
     
     def self.by_recruiter(admin_id)
         joins(:jobs).where(jobs: { recruiter_id: admin_id })
