@@ -109,6 +109,7 @@ class Admin::JobsController < ApplicationController
       @company = @order.company
       @agency = @order.agency
       @job = @order.jobs.new
+      @job.title = @order.title
       authorize @job
     elsif params[:employee_id]
       @employee = Employee.find(params[:employee_id])
@@ -215,7 +216,7 @@ class Admin::JobsController < ApplicationController
           # @job.send_notifications!
         end
 
-        format.html { redirect_to admin_job_path, notice: 'Job was successfully created.' }
+        format.html { redirect_to admin_job_path(@job), notice: 'Job was successfully created.' }
         format.json { render :show, status: :created, location: @job }
       else
         format.html { render :new }
