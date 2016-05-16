@@ -46,7 +46,7 @@ module TimesheetsHelper
     end
     def timesheet_collaspe(timesheet)
       title = @job.present? ? "#{timesheet.week.stamp("12/18")} - #{timesheet.week_ending.stamp("12/18")}" : "#{timesheet.employee.name}"
-      "<a class='button text-center' role='button' data-toggle='collapse' href='#collapseTimesheet_#{timesheet.id}' aria-expanded='false' aria-controls='collapseTimesheet_#{timesheet.id}'>
+      "<a class='button text-center ' role='button' data-toggle='collapse' href='#collapseTimesheet_#{timesheet.id}' aria-expanded='false' aria-controls='collapseTimesheet_#{timesheet.id}'>
        <span class='small'>#{truncate(title)}</span>
       </a>".html_safe
     end

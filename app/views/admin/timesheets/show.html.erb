@@ -54,6 +54,7 @@
         <h3 class='text-info bold text-center'>Adjustments</h3>
         <%= div_for @timesheet.adjustments do |adjustment| %>
         <p class="lead bold"><%= adjustment.adj_type %>  <%= is_taxable?(adjustment) %></p>
+        <% if adjustment.adj_type == "Vacation" %> <p><%= adjustment.hours %> <% end %></p>
             <p>Pay: <%= number_to_currency(adjustment.amount) %>  (Bill: <%= number_to_currency(adjustment.bill_amount) %>) <br>
             <span class="small text-muted">Added by: <%= adjustment.creator.try(:name) %></span>
             <%= link_to "<i class='fa fa-trash'></i>".html_safe, admin_timesheet_adjustment_path(@timesheet, adjustment), method: :delete, class: "pull-right" %></p>

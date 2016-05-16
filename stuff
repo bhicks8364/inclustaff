@@ -1,6 +1,10 @@
 rails server -b $IP -p $PORT
 sleepy-bayou-7553
 
+sudo service postgresql start
+sudo sudo -u postgres psql
+
+
 Apartment::Tenant.switch!('testing')
 Apartment::Tenant.switch!('gtrjobs')
 Apartment::Tenant.switch!('demo')

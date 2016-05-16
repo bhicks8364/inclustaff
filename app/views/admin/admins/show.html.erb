@@ -6,6 +6,10 @@
          <p>Total Hours: <%= @admin.timesheets.current_week.sum(:total_hours).round(2) %></p>
         <hr>
         <div class="charts">
+            <div class='col-md-12 well well-sm'>
+                <%= column_chart @admin.timesheets.group_by_week('timesheets.week', range: 6.weeks.ago.midnight...Date.current, 
+                format: "%m/%d").sum(:total_bill), library: {title: "#{@admin.first_name}'s Billings per Week"}, xtitle: "Week", ytitle: "Total Billing" %>
+            </div>
             <%= render "admin/charts/owner_charts" if @admin.owner? %>
             <%= render "admin/charts/account_manager_charts", admin: @admin if @admin.account_manager? %>
             <%= render "admin/charts/recruiter_charts", recruiter: @admin if @admin.recruiter? %>
@@ -20,8 +24,11 @@
         <hr>
             <p> Current Commission: <%= number_to_currency(@admin.current_commission) %></p>
              <p> Top Company: <%= @admin.companies.ordered_by_current_bill.first.name if @admin.companies.any? %>        <span class="pull-right">(<%= number_to_currency(@admin.companies.ordered_by_current_bill.first.current_billing) %>)</span>         </p>
+        
+        <% if @admin.account_manager? %>
         <h3 class="text-info text-center"><%= @admin.first_name %>'s Companies</h3>
-        <%= render 'admin/shared/company_collapse', companies: @admin.companies.distinct %>
+        <%= render 'admin/shared/company_collapse', companies: @admin.companies.distinct  %>
+        <% end %>
         <hr>
         <%= render 'infoboxes'  %>
     </div>
