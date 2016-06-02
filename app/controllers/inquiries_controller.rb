@@ -44,19 +44,23 @@ class InquiriesController < ApplicationController
   # POST /inquiries.json
   def create
     @inquiry = Inquiry.new(inquiry_params)
+    @inquiry.ip_address = request.remote_ip
   skip_authorization
     respond_to do |format|
       if @inquiry.save
         if ENV['RAILS_ENV'] == "production"
           format.html { redirect_to "http://demo.inclustaff.com", notice: "Thanks for your interest! We'll be contacting you shortly. In the mean time, take our demo out for a spin!" }
           format.json { render :show, status: :created, location: @inquiry }
+          format.js
         else
           format.html { redirect_to "http://demo.inclustaff-bhicks8364.c9.io", notice: "Thanks for your interest! We'll be contacting you shortly. In the mean time, take our demo out for a spin!" }
           format.json { render :show, status: :created, location: @inquiry }
+          format.js
         end
       else
         format.html { render :new }
         format.json { render json: @inquiry.errors, status: :unprocessable_entity }
+        format.js
       end
     end
   end
@@ -95,6 +99,6 @@ class InquiriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def inquiry_params
-      params.require(:inquiry).permit(:name, :job_title, :agency_name, :email, :agency_size, :phone_number)
+      params.require(:inquiry).permit(:name, :job_title, :agency_name, :email, :agency_size, :phone_number, :ip_address)
     end
 end

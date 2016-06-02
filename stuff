@@ -1,6 +1,7 @@
 rails server -b $IP -p $PORT
 sleepy-bayou-7553
 
+// Connect to DB
 sudo service postgresql start
 sudo sudo -u postgres psql
 

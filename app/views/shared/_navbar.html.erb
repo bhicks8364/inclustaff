@@ -49,9 +49,9 @@
         <% end %>
       </ul>
       <% if @current_agency.nil? && Rails.env == "production"%>
-      <a href='http://demo.inclustaff.com' class='btn btn-success navbar-btn navbar-right'>Try a Free Demo! </a>
+      <a href='http://demo.inclustaff.com' class='btn btn-success navbar-btn navbar-right'>Try a Demo! </a>
       <% elsif @current_agency.nil? && Rails.env == "development"%>
-      <a href='http://demo.inclustaff-bhicks8364.c9.io/' class='btn btn-success navbar-btn navbar-right'>Try a Free Demo! </a>
+      <a href='http://demo.inclustaff-bhicks8364.c9.io/' class='btn btn-success navbar-btn navbar-right'>Try a Demo! </a>
      <% end %>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

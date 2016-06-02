@@ -13,6 +13,7 @@
             <%= render "admin/charts/owner_charts" if @admin.owner? %>
             <%= render "admin/charts/account_manager_charts", admin: @admin if @admin.account_manager? %>
             <%= render "admin/charts/recruiter_charts", recruiter: @admin if @admin.recruiter? %>
+            
             <%= render "admin/charts/payroll_charts", admin: @admin if @admin.payroll? %>
         </div>
         
@@ -31,6 +32,7 @@
         <% end %>
         <hr>
         <%= render 'infoboxes'  %>
+        <%= render "admin/recruiting/jobs_collaspe", jobs: @admin.jobs if @admin.recruiter? %>
     </div>
     
     

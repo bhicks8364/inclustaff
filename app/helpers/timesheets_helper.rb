@@ -96,7 +96,7 @@ module TimesheetsHelper
     
     def text_color_for(timesheet)
         if timesheet.approved?
-            "text-sucess"
+            "text-success"
         else
             "text-danger"
         end

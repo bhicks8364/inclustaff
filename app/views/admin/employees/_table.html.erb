@@ -19,7 +19,7 @@
 				<td><%= employee.title %></td>
 				<td><%= number_to_currency(employee.current_pay) %><br>
 				<small><%= number_to_currency(employee.ytd_gross_pay) %></small> </td>
-				<td><%= link_to "<i class='fa fa-plus fa-fw'></i>".html_safe, new_admin_job_timesheet_path(employee.current_job), class: "" %></td>
+				<td><%= link_to "<i class='fa fa-plus fa-fw'></i>".html_safe, new_admin_job_timesheet_path(employee.current_job), class: "" if employee.current_job.present? %></td>
 				</tr>
 			<% end %>
 			

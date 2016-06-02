@@ -1,4 +1,8 @@
-<div class='col-md-12 mainpage shadow'>
+<div class='col-md-12 text-center well'>
+    <hr>
+    <%= render 'prelaunch' %>
+</div>
+<div class='col-md-12 mainpage shadow <%= @last_inquiry.present? ? "" : "hide-this" %>'>
     <h3 class='text-center text-muted'>This is a DEMO account.</h3>
     <h1 class='text-center page-header text-info  bold'> Go ahead & have a look around!   </h1>
     <hr>
@@ -13,8 +17,4 @@
     	<%= link_to "<h3 class=''> Employee</h3> ".html_safe, new_user_session_path, class: 'btn btn-primary btn-lg btn-block ' %>
     </div>
 
-<div class='col-md-12 text-center'>
-    <hr>
-    <%= render 'prelaunch' %>
-</div>
 </div>

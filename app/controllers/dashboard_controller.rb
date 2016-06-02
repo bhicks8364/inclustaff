@@ -4,7 +4,7 @@ class DashboardController < ApplicationController
 
   def home
     @inquiry = Inquiry.new
-
+    @last_inquiry = Inquiry.where(ip_address: request.remote_ip).last
     #ROOT LANDING PAGE - NO SUBDOMAIN && NO ONE IS SIGNED IN
     if @current_agency.nil? && signed_in? == false
       render 'mainpage'
@@ -12,7 +12,11 @@ class DashboardController < ApplicationController
 
     # DEMO
     if @current_agency.present? && @current_agency.demo? && !signed_in?
-      render 'demo_page'
+      if @last_inquiry.present?
+        render 'demo_page'
+      else
+        render 'mainpage'
+      end
     end
 
     #WITH SUBDOMAIN

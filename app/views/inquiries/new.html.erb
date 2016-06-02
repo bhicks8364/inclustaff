@@ -1,3 +1,7 @@
-
+<div class="col-md-12 mainpage">
+    <% if @inquiry.errors.any? %>
     <h1 class='bold text-center'>Uh-oh...There was a problem.</h1>
+    <% end %>
     <%= render 'form' %>
+
+</div>

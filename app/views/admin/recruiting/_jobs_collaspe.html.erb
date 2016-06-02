@@ -5,23 +5,24 @@
         
           <div class="panel-title">
             <span class=""><%= link_to job.name, admin_job_path(job) %> </span>
+            <br> <span><%= job.company.name %></span>
             <a class="" role="button" data-toggle="collapse" data-parent="#accordion" href="#job_collapse<%=job.id%>" aria-expanded="true" aria-controls="job_collapse<%=job.id%>">
-             <br> <p class='text-danger text-right small'><%= job_status(job) %> <i class="fa fa-caret-down"></i></p>
+             <br> <p class='text-danger text-right small'><%= current_job_status(job) %> <i class="fa fa-caret-down"></i></p>
             </a>
           </div>
         </div>
         <div id="job_collapse<%=job.id%>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading<%=job.id%>">
            <% if job.timesheets.any? %>
          <div class="list-group">
-              <% job.timesheets.timesheet(:title).each do |timesheet| %>
-                  <li class='list-group-item'>
+              <% job.timesheets.order(week: :desc).each do |timesheet| %>
+                  <li class='<%= text_color_for(timesheet) %> list-group-item'>
                     <%= timesheet_sym(timesheet) %> 
-                    <%= link_to title_count(timesheet), admin_job_timesheet_path(job, timesheet) %>
+                    <%= link_to timesheet.week, admin_timesheet_path(timesheet) %>
                   </li>
               <% end %>
           </div>
         <% else %>
-        <%= job_status(job) %>
+        <%= current_job_status(job) %>
         <%end%>
         </div>
     </div>

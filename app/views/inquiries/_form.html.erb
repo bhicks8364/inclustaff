@@ -4,7 +4,14 @@
         <%= f.input :name, label: "Full Name", autofocus: true, input_html: {class: "form-control"} %>
         <%= f.input :email, label: "Email Address", input_html: {class: "form-control"} %>
         <%= f.input :agency_name, label: "Company Name", input_html: {class: "form-control"} %>
-      <%= f.submit 'Try Again!', class: 'btn btn-success btn-lg' %>
+        <div class="pull-right">
+          <% if @inquiry.errors.any? %>
+            <%= f.submit 'Try Again!', class: 'btn btn-success btn-lg' %>
+          <% else %>
+            <%= f.submit 'Continue to Demo', class: 'btn btn-success btn-lg' %>
+          <% end %>
+        </div>
+    
   <% end %>
 </div>
 

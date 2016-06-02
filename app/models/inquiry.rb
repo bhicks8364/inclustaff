@@ -11,6 +11,7 @@
 #  phone_number :string
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
+#  ip_address   :string
 #
 
 class Inquiry < ActiveRecord::Base

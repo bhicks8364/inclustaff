@@ -17,7 +17,7 @@
     </div>
     <div class='col-md-12'>
         <hr>
-      <%= column_chart @employee.jobs.active.map{|job| {name: job.title_company, data: job.timesheets.group_by_week(:week, range: @employee.initial_start_date.beginning_of_week.midnight..Time.current, format: "%m/%d").sum(:total_hours)}}, xtitle: "Week", ytitle: "Total Hours", library: {} %>
+      <%= column_chart @employee.jobs.active.distinct.map{|job| {name: job.title_company, data: job.timesheets.group_by_week(:week, range: @employee.initial_start_date.beginning_of_week.midnight..Time.current, format: "%m/%d").sum(:total_hours)}}, xtitle: "Week", ytitle: "Total Hours", library: {} %>
     </div>
 </div>
 
